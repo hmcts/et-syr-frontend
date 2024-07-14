@@ -1,0 +1,61 @@
+import axios from 'axios';
+import config from 'config';
+import jwtDecode from 'jwt-decode';
+
+import { UserDetails } from '../definitions/appRequest';
+import { CITIZEN_ROLE } from '../definitions/constants';
+
+export const getRedirectUrl = (
+  serviceUrl: string,
+  callbackUrlPage: string,
+  guid: string,
+  languageParam: string
+): string => {
+  const clientID: string = process.env.IDAM_CLIENT_ID ?? config.get('services.idam.clientID');
+  const loginUrl: string = process.env.IDAM_WEB_URL ?? config.get('services.idam.authorizationURL');
+  const callbackUrl = encodeURI(serviceUrl + callbackUrlPage);
+  return `${loginUrl}?client_id=${clientID}&response_type=code&redirect_uri=${callbackUrl}&state=${guid}&ui_locales=${languageParam}`;
+};
+
+export const getUserDetails = async (
+  serviceUrl: string,
+  rawCode: string,
+  callbackUrlPageLink: string
+): Promise<UserDetails> => {
+  const id: string = process.env.IDAM_CLIENT_ID ?? config.get('services.idam.clientID');
+  const secret: string = config.get('services.idam.clientSecret');
+  const tokenUrl: string = process.env.IDAM_API_URL ?? config.get('services.idam.tokenURL');
+  const callbackUrl = encodeURI(serviceUrl + callbackUrlPageLink);
+  const code = encodeURIComponent(rawCode);
+  const env = process.env.NODE_ENV || 'development';
+  const data =
+    env === 'development'
+      ? `client_id=${id}&client_secret=${secret}&grant_type=authorization_code&redirect_uri=${callbackUrl}&code=${code}&scope=roles&username=citizen@gmail.com&password=password`
+      : `client_id=${id}&client_secret=${secret}&grant_type=authorization_code&redirect_uri=${callbackUrl}&code=${code}`;
+  const headers = {
+    Accept: 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+
+  const response = await axios.post(tokenUrl, data, { headers });
+  const jwt = jwtDecode(response.data.id_token) as IdTokenJwtPayload;
+  if (env === 'development') {
+    jwt.roles = ['citizen'];
+  }
+  return {
+    accessToken: response.data.access_token,
+    id: jwt.uid,
+    email: jwt.sub,
+    givenName: jwt.given_name,
+    familyName: jwt.family_name,
+    isCitizen: jwt.roles ? jwt.roles.includes(CITIZEN_ROLE) : false,
+  };
+};
+
+export interface IdTokenJwtPayload {
+  uid: string;
+  sub: string;
+  given_name: string;
+  family_name: string;
+  roles: string[];
+}

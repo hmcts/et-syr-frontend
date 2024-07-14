@@ -1,0 +1,59 @@
+{
+  "port": 3003,
+  "useCSRFProtection": true,
+  "security": {
+    "referrerPolicy": "origin"
+  },
+  "appInsights": {
+    "instrumentationKey": false,
+    "roleName": "et-syr"
+  },
+  "featureFlags": {
+    "welsh": "true"
+  },
+  "session": {
+    "maxAgeInMs": "3600000",
+    "secret": "local",
+    "redis": {
+      "host": "",
+      "key": ""
+    }
+  },
+  "services": {
+    "idam": {
+      "clientID": "et-syr",
+      "authorizationURL": "https://idam-web-public.aat.platform.hmcts.net/login",
+      "clientSecret": "TO BE PICKED UP FROM ENV",
+      "tokenURL": "https://idam-api.aat.platform.hmcts.net/o/token"
+    },
+    "addressLookup": {
+      "url": "https://api.os.uk/search/places/v1/postcode",
+      "token": "TO BE PICKED UP FROM ENV"
+    },
+    "pcq": {
+      "url": "https://pcq.aat.platform.hmcts.net/service-endpoint",
+      "health": "https://pcq.aat.platform.hmcts.net/health",
+      "token": "xssdssdedd",
+      "enabled": "true"
+    },
+    "et1Legacy": {
+      "url": "https://et-pet-et1.aat.platform.hmcts.net"
+    },
+    "manageOrg": {
+      "url": "https://manage-org.aat.platform.hmcts.net"
+    },
+    "manageCase": {
+      "url": "https://manage-case.aat.platform.hmcts.net"
+    },
+    "launchDarkly": {
+      "key": "TO BE PICKED UP FROM ENV"
+    }
+  },
+  "pact": {
+    "branchName": "master",
+    "brokerUrl": "https://pact-broker.platform.hmcts.net",
+    "consumerVersion": "",
+    "brokerUsername": "",
+    "brokerPassword": ""
+  }
+}

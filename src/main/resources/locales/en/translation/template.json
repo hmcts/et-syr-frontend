@@ -1,0 +1,45 @@
+{
+  "serviceName": "Employment Tribunals",
+  "help": "Help",
+  "privacy": "Privacy",
+  "cookiePolicy": "Cookies",
+  "accessibility": "Accessibility Statement",
+  "contact": "Contact",
+  "termsAndConditions": "Terms and Conditions",
+  "wasanaethau": "Rhestr o Wasanaethau Cymraeg",
+  "digitalService": "Government Digital Service",
+  "licence": {
+    "p1": "All content is available under the ",
+    "p2": "Open Government Licence v3.0",
+    "p3": ", except where otherwise stated"
+  },
+  "copyright": "© Crown copyright",
+  "stage": "Beta",
+  "signOut": "Sign out",
+  "logIn": "Login",
+  "phaseBanner": {
+    "feedback": "Your feedback",
+    "smartSurveyFeedbackUrl": "https://www.smartsurvey.co.uk/s/ET_Feedback/?pageurl=",
+    "additionalText": "helps us to improve this service.",
+    "languageToggle": "<a href=\"{currentUrl}{languageFlag}\" class=\"govuk-link language\">Cymraeg</a>"
+  },
+  "contactUsTitle": "Contact us",
+  "contactUsForeword": "Call one of our Employment Tribunal customer contact centres. They cannot give you legal advice.",
+  "mainTelephone": "Telephone: 0300 323 0196",
+  "welshTelephone": "Telephone: 0300 303 5176 (Welsh language)",
+  "scotlandTelephone": "Telephone: 0300 790 6234 (Scotland)",
+  "contactDuration": "Monday to Friday, 9am to 5pm",
+  "contactCharges": "Find out about call charges",
+  "scotlandOnly": "Scotland only",
+  "noticeLengthInsetText": "If you're not sure, check the terms and conditions of your employment contract.",
+  "clearSelection": "Clear selection",
+  "sessionTimeout": {
+    "modal": {
+      "title": "You're about to be signed out",
+      "body": ["For security reasons, you will be signed out of this service in ", "minutes."],
+      "info": "Automatic timeout",
+      "extend": "Stay signed in ",
+      "cancel": "Sign out"
+    }
+  }
+}

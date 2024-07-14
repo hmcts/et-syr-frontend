@@ -1,0 +1,143 @@
+{
+  "title": "Response Hub",
+  "header": "Case overview - ",
+  "caseNumber": "Case number: ",
+  "claimAccepted": "Claim accepted",
+  "responseAccepted": "Response accepted",
+  "hearingDetails": "View details of your hearings",
+  "caseDecision": "Case decision",
+  "iWantTo": "I want to...",
+  "contactTribunalAboutTheCase": "Contact the tribunal about my case",
+  "findLegalAdvice": "Find legal advice (opens in new tab)",
+  "section1": "About you",
+  "section2": "The claim",
+  "section3": "Your response",
+  "section4": "Your hearings",
+  "section5": "Applications to the tribunal",
+  "section6": "Orders and requests from the tribunal",
+  "section7": "Judgments from the tribunal",
+  "section8": "Case documents",
+  "aboutYou": "View and edit your personal details",
+  "et1ClaimForm": "The claimant's ET1 claim form",
+  "respondentResponse": "Your response form (ET3)",
+  "hearingDetailsWording": "View details of your hearings",
+  "requestsAndApplications": "Your request and applications",
+  "respondentApplications": "Respondent's applications",
+  "contactTribunal": "Contact the tribunal about your case",
+  "tribunalOrders": "All orders and requests issued by the tribunal",
+  "tribunalJudgements": "View all judgments",
+  "documents": "All documents",
+  "completed": "Completed",
+  "submitted": "Submitted",
+  "optional": "Optional",
+  "viewed": "Viewed",
+  "important": "Important",
+  "notViewedYet": "Not viewed yet",
+  "notStartedYet": "Not started yet",
+  "notAvailableYet": "Not available yet",
+  "inProgress": "In progress",
+  "waitingForTheTribunal": "Waiting for the tribunal",
+  "submittedAndViewed": "Submitted",
+  "updated": "Updated",
+  "readyToView": "Ready to view",
+  "stored": "Stored",
+  "submittedAlert": "You have submitted your claim to the tribunal",
+  "processClaim": "We aim to process your claim by",
+  "busyPeriod": ". In busy periods it may take longer.",
+  "tribunalRespondedP1": "The tribunal has responded to ",
+  "tribunalRespondedP2": " application to ",
+  "respondToTribunal": "Respond to the tribunal",
+  "mustRespond": "You must respond to this.",
+  "notificationBanner": {
+    "viewResponse": "View the response",
+    "acknowledgement": {
+      "header": "The tribunal has acknowledged a claim against Redde Ltd",
+      "link": "View the claimant's ET1 claim form",
+      "link2": "Respond to the claim",
+      "p1": "You should respond to this claim by 05/08/2024",
+      "p2": "<span class=\"govuk-body govuk-!-font-weight-bold\">What happens next</span><br>The tribunal has asked the respondent to respond to your claim by"
+    },
+    "rejection": {
+      "header": "The tribunal has rejected all or part of your claim",
+      "link": "View the claim rejection",
+      "p1": "The tribunal will close your claim."
+    },
+    "respondentReceived": {
+      "header": "The tribunal has received a response from the respondent",
+      "p1": "We will process the response and contact you soon to tell you what will happen next."
+    },
+    "respondentRejection": {
+      "header": "The tribunal has rejected the respondent's response.",
+      "link": "View the rejection letter"
+    },
+    "respondentAcknowledgement": {
+      "header": "The tribunal has acknowledged the respondent's response."
+    },
+    "respondentApplicationReceived": {
+      "header": "The respondent has applied to ",
+      "p1TypeB": "You do not need to respond to this application.",
+      "p1": "If you have any objections or responses to their application you must send them to the tribunal as soon as possible and by ",
+      "p1a": " at the latest.",
+      "link": "Respond to the application"
+    },
+    "ecc": {
+      "title": "The tribunal has sent you a notification: "
+    },
+    "orderOrRequest": {
+      "responseRequired": "The tribunal requires some information from you.",
+      "noResponseRequired": "The tribunal has sent you a notification",
+      "link": "View the notification",
+      "respond": "Respond to the tribunal"
+    },
+    "judgment": {
+      "header": "The tribunal has made a decision on your case.",
+      "link": "View the decision"
+    },
+    "decisionJudgment": {
+      "headerClaimant": "The tribunal has made a decision on your application to ",
+      "headerRespondent": "The tribunal has made a decision on the respondent's application to ",
+      "link": "View the decision"
+    },
+    "storedPending": {
+      "header": "You have stored correspondence which you have not submitted to the tribunal",
+      "line1": "You must send a copy of this correspondence and all supporting documents to the other party before you submit it to the tribunal.",
+      "line2": "If the other party does respond to your application, they are expected to copy their response to you.",
+      "link": "View correspondence"
+    },
+    "claimantResponseToTribunal": {
+      "title": {
+        "rule92Yes": "You have sent a response to the tribunal and copied it to the respondent.",
+        "rule92No": {
+          "p1": "You have sent a response to the tribunal and given your reasons not to copy it to the respondent.",
+          "p2": "The tribunal will consider your reasons and let you know what happens next."
+        }
+      },
+      "link": "View your response"
+    }
+  },
+  "multiples": {
+    "leadClaim": "LEAD CLAIM",
+    "stayedCase": "CASE STAYED",
+    "groupClaim": "Your claim is part of a group claim",
+    "designated": "Your individual case is designated the lead case in a group claim. You will be notified of the progress of the group claim.",
+    "stayed": "Your individual claim is stayed. The group claim will progress. You will be notified of the progress of the group claim.",
+    "nonLead": "You will be notified of the progress of the group claim.",
+    "viewClaim": "View the group claim"
+  },
+  "Change personal details": "change personal details",
+  "Claimant not complied": "tell the tribunal the claimant has not complied",
+  "Consider a decision afresh": "consider a decision afresh",
+  "Contact the tribunal": "contact the tribunal",
+  "Order other party": "order other party",
+  "Order a witness to attend to give evidence": "order a witness to attend to give evidence",
+  "Postpone a hearing": "postpone a hearing",
+  "Reconsider judgement": "reconsider judgement",
+  "Restrict publicity": "restrict publicity",
+  "Strike out all or part of a claim": "strike out all or part of a claim",
+  "Vary or revoke an order": "vary or revoke an order",
+  "Withdraw all/part of claim": "withdraw all/part of claim",
+  "withdraw": "withdraw all/part of claim",
+  "Amend response": "amend response",
+  "your": "your",
+  "theRespondent": "the respondent's"
+}
