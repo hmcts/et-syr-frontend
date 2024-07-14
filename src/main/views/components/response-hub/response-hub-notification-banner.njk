@@ -1,0 +1,36 @@
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+
+{% set htmlForAcknowledgementAlert %}
+
+{% if showAcknowledgementAlert %}
+  <h3 class="govuk-notification-banner__heading">
+    {{notificationBanner.acknowledgement.header}}
+  </h3>
+
+  <p class="govuk-body">
+    {{notificationBanner.acknowledgement.p1}}
+  </p>
+
+  <p class="govuk-body">
+    <a class="govuk-link" href="#"><b>{{notificationBanner.acknowledgement.link}}</b></a><br>
+    <a class="govuk-link" href="#"><b>{{notificationBanner.acknowledgement.link2}}</b></a>
+  </p>
+
+  {% if respondentResponseDeadline %}
+    <p class="govuk-body">
+      {{notificationBanner.acknowledgement.p2 | safe}}
+      {{respondentResponseDeadline}}.
+    </p>
+  {% endif %}
+{% endif %}
+
+{% endset %}
+
+{% if showAcknowledgementAlert %}
+  {{ govukNotificationBanner({
+   html: htmlForAcknowledgementAlert,
+   titleText: important
+  }) }}
+{% endif %}
+

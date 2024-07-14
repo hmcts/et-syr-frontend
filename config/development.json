@@ -1,0 +1,33 @@
+{
+  "port": 3003,
+  "services": {
+    "idam": {
+      "clientID": "et-syr",
+      "authorizationURL": "http://localhost:5062/login",
+      "clientSecret": "test1234",
+      "tokenURL": "http://localhost:5062/o/token"
+    },
+    "addressLookup": {
+      "url": "https://api.os.uk/search/places/v1/postcode",
+      "token": "Da8zarIOqLo6AYwRxN7TuyGrv6neZJAy"
+    },
+    "etSyaApi": {
+      "host": "http://localhost:4550/"
+    },
+    "pcq": {
+      "url": "https://pcq.aat.platform.hmcts.net/service-endpoint",
+      "health": "https://pcq.aat.platform.hmcts.net/health",
+      "token": "TO BE PICKED FROM ENV",
+      "enabled": "true"
+    },
+    "launchDarkly": {
+      "key": "sdk-33e26490-a665-4612-929b-7a1b202963d5"
+    }
+  },
+  "session": {
+    "secret": "local",
+    "redis": {
+      "host": "127.0.0.1"
+    }
+  }
+}

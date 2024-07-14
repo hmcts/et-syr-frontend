@@ -1,0 +1,138 @@
+@import 'govuk-frontend';
+@import '~@hmcts/frontend/all';
+@import './utilities/borders';
+@import 'patterns/task-list';
+@import 'patterns/timeout-modal';
+@import './cookies/cookie-banner';
+
+$govuk-grey: #b1b4b6;
+$govuk-blue: #1d70b8;
+$lightgrey-panel: #d3d3d3;
+
+.govuk-phase-banner__text {
+  width: 100%;
+
+  .language {
+    float: right;
+  }
+}
+
+// interupt the user with important information
+.govuk-panel--interruption {
+  background-color: govuk-colour('blue');
+  margin-bottom: govuk-spacing(3);
+  padding: govuk-spacing(6);
+
+  .govuk-panel__title {
+    @include govuk-font($size: 24, $weight: bold);
+  }
+
+  .govuk-panel__body {
+    @include govuk-font($size: 16, $weight: bold);
+  }
+
+  div,
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  ul,
+  ol {
+    color: govuk-colour('white');
+    text-align: left;
+  }
+}
+
+.multiple-panel {
+  align-items: center;
+  background: $lightgrey-panel;
+  display: flex;
+  justify-content: center;
+  padding-top: 21px;
+}
+
+.circle {
+  background: govuk-colour('black');
+  border-radius: 50%;
+  color: govuk-colour('white');
+  display: inline-block;
+  font-family: 'ntatabularnumbers', 'nta', Arial, sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.circle-step {
+  float: left;
+  line-height: 25px;
+  margin-right: 10px;
+  min-height: 25px;
+  min-width: 25px;
+}
+
+.circle-white {
+  background: govuk-colour('white');
+  color: govuk-colour('blue');
+}
+
+.hidden {
+  display: none;
+}
+
+.tel-link {
+  color: govuk-colour('blue');
+}
+
+// IOS
+@media only screen and (max-device-width: 760px) {
+  * {
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+}
+
+// Android & Windows-CE
+@media screen and (max-device-width: 760px) {
+  * {
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+}
+
+// Safari
+@media screen and (max-width: 760px) {
+  * {
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+}
+
+.hmcts-progress-bar__icon {
+  border: 1px solid $govuk-grey;
+
+  .hmcts-progress-bar__icon--complete {
+    background-color: $govuk-blue;
+  }
+}
+
+.hmcts-progress-bar__list {
+  &::before {
+    border-top: 6px solid $govuk-grey;
+  }
+}
+
+.top-border-blue {
+  border-top: 2px solid $govuk-blue;
+  padding-top: 40px;
+}
+
+.no-text-transform {
+  text-transform: none;
+}

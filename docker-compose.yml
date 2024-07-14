@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  syr:
+    build:
+      context: .
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    ports:
+      - 3003:3003
