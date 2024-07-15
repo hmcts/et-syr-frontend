@@ -39,8 +39,10 @@ Run Dev Mode With Redis server:
 ```bash
 $ yarn start:dev-red
 ```
+Before starting the app, create a new case by using claimant journey (et-sya-api, https://localhost:3002). Use
+caseReferenceId and connect to this app by using the link https://localhost:3003/response-hub/{{caseReferenceId}}?lng=en
 
-The applications's home page will be available at https://localhost:3003
+For now it doesn't have a home page as we are waiting for UX Design details.
 
 ### Running with Docker
 
@@ -194,6 +196,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ```bash
 $ yarn test:functional
 ```
+
+## Testing Locally
+
+Before you start this project, you need to create a new case. After creation of the case you can connect to response hub by using the link: 
 
 ### Responsible Team
 
