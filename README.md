@@ -61,8 +61,8 @@ Run the application by executing the following command:
 This will start the frontend container exposing the application's port
 (set to `3003` in this template app).
 
-create a new case by using claimant journey (et-sya-api, https://localhost:3002). Use
-caseReferenceId and connect to this app by using the link https://localhost:3003/response-hub/{{caseReferenceId}}?lng=en
+In order to test if the application is up, create a new case by using claimant journey (et-sya-api, https://localhost:3002). 
+Use caseReferenceId and connect to this app by using the link https://localhost:3003/response-hub/{{caseReferenceId}}?lng=en
 
 You should get a very basic response hub page.
 
