@@ -9,6 +9,7 @@ import {
   postcode_MidlandsEast,
   postcode_Newcastle,
 } from './postcode';
+import { AnyRecord } from './util-types';
 
 export const LegacyUrls = {
   ET1: 'https://et-pet-et1.aat.platform.hmcts.net/en/apply/application-number',
@@ -292,7 +293,17 @@ export const FEATURE_FLAGS = {
 export const SessionErrors = {
   ERROR_DESTROYING_SESSION: 'Error destroying session',
 } as const;
-export const GenericTestConstants = {
+
+export const GenericConstants = {
+  CLASS_GOV_UK_INPUT_WIDTH_2: 'govuk-input--width-2',
+  CLASS_GOV_UK_INPUT_WIDTH_4: 'govuk-input--width-4',
+  CLASS_GOV_UK_DATE_INPUT: 'govuk-date-input',
+  TYPE_DATE: 'date',
+  ATTRIBUTE_MAX_LENGTH_2: { maxLength: 2 },
+  ATTRIBUTE_MAX_LENGTH_4: { maxLength: 4 },
+  TRANSLATION_FUNCTION_LABEL_LEGEND: (l: AnyRecord): string => l.legend,
+  TRANSLATION_FUNCTION_LABEL_HINT: (l: AnyRecord): string => l.hint,
+  LABEL_SIZE_LARGE: 'l',
   TRUE: true,
   FALSE: false,
 };

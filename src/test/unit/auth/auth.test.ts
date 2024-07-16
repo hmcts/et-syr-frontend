@@ -2,12 +2,7 @@ import axios from 'axios';
 import config from 'config';
 
 import { getRedirectUrl, getUserDetails } from '../../../main/auth';
-import {
-  AuthUrls,
-  AuthorisationTestConstants,
-  GenericTestConstants,
-  languages,
-} from '../../../main/definitions/constants';
+import { AuthUrls, AuthorisationTestConstants, GenericConstants, languages } from '../../../main/definitions/constants';
 
 const loginUrl =
   process.env.IDAM_WEB_URL ?? config.get(AuthorisationTestConstants.AUTHORISATION_URL_CONFIGURATION_NAME);
@@ -48,7 +43,7 @@ describe('AuthorisationTest', () => {
         givenName: AuthorisationTestConstants.GENERIC_USER_GIVEN_NAME,
         familyName: AuthorisationTestConstants.GENERIC_USER_FAMILY_NAME,
         id: AuthorisationTestConstants.GENERIC_USER_ID,
-        isCitizen: GenericTestConstants.FALSE,
+        isCitizen: GenericConstants.FALSE,
       });
     });
   });
@@ -72,7 +67,7 @@ describe('AuthorisationTest', () => {
       givenName: AuthorisationTestConstants.CITIZEN_USER_GIVEN_NAME,
       familyName: AuthorisationTestConstants.CITIZEN_USER_FAMILY_NAME,
       id: AuthorisationTestConstants.CITIZEN_USER_ID,
-      isCitizen: GenericTestConstants.TRUE,
+      isCitizen: GenericConstants.TRUE,
     });
   });
 });
