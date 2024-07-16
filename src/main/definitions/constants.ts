@@ -319,3 +319,9 @@ export const AuthorisationTestConstants = {
 export const CallbackTestConstants = {
   REDIS_ERROR: 'redisError',
 };
+export const CaseSelectionServiceTestConstants = {
+  TEST_CASE_ID: 'testCaseId',
+  TEST_LANGUAGE_PARAM: '/testLanguageParam',
+  RESPONSE_HUB_MAIN_URL: '/response-hub/${userCase.id}${languageParam}',
+  GET_REDIRECT_URL_EXPECTED_VALUE: '/response-hub/testCaseId/testLanguageParam',
+};
