@@ -11,7 +11,6 @@ export class Routes {
   public enableFor(app: Application): void {
     app.get(PageUrls.RESPONSE_HUB, new ResponseHubController().get);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
-    app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,
       infoRequestHandler({
