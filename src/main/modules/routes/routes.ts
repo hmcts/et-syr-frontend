@@ -3,12 +3,14 @@ import os from 'os';
 import { infoRequestHandler } from '@hmcts/info-provider';
 import { Application } from 'express';
 
+import HomeController from '../../controllers/HomeController';
 import ResponseHubController from '../../controllers/ResponseHubController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
 import { PageUrls, Urls } from '../../definitions/constants';
 
 export class Routes {
   public enableFor(app: Application): void {
+    app.get(PageUrls.HOME, new HomeController().get);
     app.get(PageUrls.RESPONSE_HUB, new ResponseHubController().get);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(

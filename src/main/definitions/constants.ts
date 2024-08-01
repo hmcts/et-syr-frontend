@@ -20,6 +20,7 @@ export const LegacyUrls = {
 
 export const TranslationKeys = {
   COMMON: 'common',
+  HOME: 'home',
   RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
   RESPONSE_HUB: 'response-hub',
   YOUR_APPLICATIONS: 'your-applications',
@@ -27,8 +28,9 @@ export const TranslationKeys = {
 } as const;
 
 export const PageUrls = {
-  HOME: '/response-hub/:caseId',
+  HOME: '/',
   RESPONSE_HUB: '/response-hub/:caseId',
+  CHECKLIST: '/checklist',
 } as const;
 
 export const InterceptPaths = {

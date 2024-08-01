@@ -1,0 +1,89 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ pageTitle }}</h1>
+
+      <p class="govuk-body">{{ serviceInfo }}</p>
+
+      {{ govukInsetText({
+        html: infoTxt + ' <a href="' + infoTxtLinkUrl + '" class="govuk-link" target="_blank">' + infoTxtLink + '</a>'
+      }) }}
+
+      <h2 class="govuk-heading-m">{{ whatYouNeedHeading }}</h2>
+
+      <ul class="govuk-list govuk-list--bullet">
+        <li>{{ whatYouNeedListTxt1 }}</li>
+        <li>{{ whatYouNeedListTxt2 }}</li>
+        <li>{{ whatYouNeedListTxt3 }}</li>
+        <li>{{ whatYouNeedListTxt4 }}</li>
+        <li>{{ whatYouNeedListTxt5 }}</li>
+        <li>{{ whatYouNeedListTxt6 }}</li>
+      </ul>
+
+      <h2 class="govuk-heading-m">{{ howToCompleteFormHeading }}</h2>
+
+      <ul class="govuk-list govuk-list--bullet">
+        <li>{{ howToCompleteFormListTxt1 }}</li>
+        <li>{{ howToCompleteFormListTxt2 }}</li>
+        <li>{{ howToCompleteFormListTxt3 }}</li>
+      </ul>
+
+      <h2 class="govuk-heading-m">{{ dataProtectionHeading }}</h2>
+
+      <ul class="govuk-list">
+        <li>{{ dataProtectionTxt1 }}</li>
+      </ul>
+
+      {{ govukButton({
+        text: startNow,
+        href: redirectUrl,
+        isStartButton: true
+      }) }}
+
+      <ul class="govuk-list">
+        <li><b>{{ claimStartedTxt }}</b></li>
+        <li><a href="{{ PageUrls.RETURN_TO_EXISTING + languageParam }}" class="govuk-link">{{ returnClaimTxt }}</a></li>
+      </ul>
+
+      <h2 class="govuk-heading-m">{{ contactUsHelpTitle }}</h2>
+      <div class="govuk-body">
+        {{ contactUsForeword }}
+        <br><br>
+        {{ contactDuration }}<br />
+        {{ mainTelephone }}<br />
+        {{ welshTelephone }}<br />
+        {{ scotlandTelephone }}<br />
+        <br /><br />
+        <p class="govuk-body" style="margin:0;">
+          <a href="https://www.gov.uk/call-charges" class="govuk-link" target="_blank">
+            {{ contactCharges }}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <h2 class="govuk-heading-m">{{ otherLinksHeading }}</h2>
+
+      <ul class="govuk-list">
+        <li>
+          <a target="_blank" class="govuk-link"
+             href="{{ howToMakeClaimLinkUrl }}">{{ howToMakeClaimLinkTxt }}</a>
+        </li>
+        <li>
+          <a target="_blank" class="govuk-link"
+             href="{{ howToMakeResponseLinkUrl }}">{{ howToMakeResponseLinkTxt }}</a>
+        </li>
+        <hr>
+        <li>
+          <a target="_blank" class="govuk-link" href="{{ moreFromLinkUrl }}">{{ moreFromLinkTxt }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}
