@@ -10,51 +10,27 @@
   <script>
     window.dataLayer = window.dataLayer || [];
   </script>
-  {% if "perftest" in currentHost %}
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-M8XNFRG');</script>
-    <!-- End Google Tag Manager -->
-  {% else %}
-    <!-- Google Tag Manager -->
-    <script>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != 'dataLayer'
-            ? '&l=' + l
-            : '';
-        j.async = true;
-        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-        f
-          .parentNode
-          .insertBefore(j, f);
-      })(window, document, 'script', 'dataLayer', 'GTM-M29HRGV');
-    </script>
-    <!-- End Google Tag Manager -->
-  {% endif %}
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
+      {'gtm.start': new Date().getTime(),event:'gtm.js'}
+    );var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5F47WFXR');
+  </script>
+  <!-- End Google Tag Manager -->
+
   <meta name="format-detection" content="telephone=no">
 {% endblock %}
 
 {% block bodyStart %}
-  {% if "perftest" in currentHost %}
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M8XNFRG" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
-  {% else %}
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M29HRGV" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
-  {% endif %}
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5F47WFXR"
+                    height="0" width="0" style="display:none;visibility:hidden">
+    </iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
   {% if "aat" in currentHost %}
     <!-- Dynatrace RUM Script -->
@@ -64,7 +40,7 @@
 
   {% if "claim-employment-tribunals" in currentHost %}
     <!-- Dynatrace RUM Script -->
-      <script type="text/javascript" src="https://js-cdn.dynatrace.com/jstag/17177a07246/bf00910jpo/15d45f7c5933b5bc_complete.js"crossorigin="anonymous"></script>
+      <script type="text/javascript" src="https://js-cdn.dynatrace.com/jstag/17177a07246/bf00910jpo/15d45f7c5933b5bc_complete.js" crossorigin="anonymous"></script>
     <!-- End Dynatrace RUM Script -->
   {% endif %}
 
