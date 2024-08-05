@@ -91,6 +91,7 @@ export const JavaApiUrls = {
 } as const;
 
 export const Urls = {
+  HOME: '/',
   INFO: '/info',
   DOWNLOAD_CLAIM: '/download-claim',
   PCQ: '/pcq',
