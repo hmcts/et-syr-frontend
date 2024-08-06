@@ -20,6 +20,7 @@ export const LegacyUrls = {
 
 export const TranslationKeys = {
   COMMON: 'common',
+  HOME: 'home',
   COOKIE_PREFERENCES: 'cookie-preferences',
   RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
   RESPONSE_HUB: 'response-hub',
@@ -28,8 +29,9 @@ export const TranslationKeys = {
 } as const;
 
 export const PageUrls = {
-  HOME: '/response-hub/:caseId',
+  HOME: '/',
   RESPONSE_HUB: '/response-hub/:caseId',
+  CHECKLIST: '/checklist',
   COOKIE_PREFERENCES: '/cookies',
 } as const;
 
@@ -91,6 +93,7 @@ export const JavaApiUrls = {
 } as const;
 
 export const Urls = {
+  HOME: '/',
   INFO: '/info',
   DOWNLOAD_CLAIM: '/download-claim',
   PCQ: '/pcq',
