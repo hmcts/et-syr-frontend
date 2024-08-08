@@ -3,8 +3,9 @@ import os from 'os';
 import { infoRequestHandler } from '@hmcts/info-provider';
 import { Application } from 'express';
 
-import HomeController from '../../controllers/HomeController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
+import HomeController from '../../controllers/HomeController';
+import ResponseFormLandingController from '../../controllers/ResponseFormLandingController';
 import ResponseHubController from '../../controllers/ResponseHubController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
 import { PageUrls, Urls } from '../../definitions/constants';
@@ -14,6 +15,7 @@ export class Routes {
     app.get(PageUrls.HOME, new HomeController().get);
     app.get(PageUrls.RESPONSE_HUB, new ResponseHubController().get);
     app.get(PageUrls.COOKIE_PREFERENCES, new CookiePreferencesController().get);
+    app.get(PageUrls.RESPONSE_FORM_LANDING, new ResponseFormLandingController().get);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,
