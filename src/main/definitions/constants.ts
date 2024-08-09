@@ -24,6 +24,7 @@ export const TranslationKeys = {
   COOKIE_PREFERENCES: 'cookie-preferences',
   RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
   RESPONSE_HUB: 'response-hub',
+  RESPONSE_FORM_LANDING: 'response-form-landing',
   YOUR_APPLICATIONS: 'your-applications',
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
 } as const;
@@ -33,6 +34,7 @@ export const PageUrls = {
   RESPONSE_HUB: '/response-hub/:caseId',
   CHECKLIST: '/checklist',
   COOKIE_PREFERENCES: '/cookies',
+  RESPONSE_FORM_LANDING: '/response-form-landing',
 } as const;
 
 export const InterceptPaths = {
