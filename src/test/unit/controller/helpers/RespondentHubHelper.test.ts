@@ -119,14 +119,14 @@ describe('getHubLinksUrlMap', () => {
 
   it('returns correct links when respondent is system user in Welsh', () => {
     const linksMap: Map<string, string> = new Map<string, string>([
-      [HubLinkNames.Et1ClaimForm, '#' + languages.WELSH_URL_PARAMETER],
+      [HubLinkNames.Et1ClaimForm, '#'],
       [HubLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING + languages.WELSH_URL_PARAMETER],
-      [HubLinkNames.ContactTribunal, '#' + languages.WELSH_URL_PARAMETER],
-      [HubLinkNames.RequestsAndApplications, '#' + languages.WELSH_URL_PARAMETER],
-      [HubLinkNames.RespondentApplications, '#' + languages.WELSH_URL_PARAMETER],
-      [HubLinkNames.TribunalOrders, '#' + languages.WELSH_URL_PARAMETER],
-      [HubLinkNames.TribunalJudgements, '#' + languages.WELSH_URL_PARAMETER],
-      [HubLinkNames.Documents, '#' + languages.WELSH_URL_PARAMETER],
+      [HubLinkNames.ContactTribunal, '#'],
+      [HubLinkNames.RequestsAndApplications, '#'],
+      [HubLinkNames.RespondentApplications, '#'],
+      [HubLinkNames.TribunalOrders, '#'],
+      [HubLinkNames.TribunalJudgements, '#'],
+      [HubLinkNames.Documents, '#'],
     ]);
     expect(getHubLinksUrlMap(languages.WELSH_URL_PARAMETER)).toEqual(linksMap);
   });
@@ -147,14 +147,14 @@ describe('getHubLinksUrlMap', () => {
 
   it('returns correct links when respondent is non-system user in Welsh', () => {
     const linksMap: Map<string, string> = new Map<string, string>([
-      [HubLinkNames.Et1ClaimForm, '#' + languages.WELSH_URL_PARAMETER],
+      [HubLinkNames.Et1ClaimForm, '#'],
       [HubLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING + languages.WELSH_URL_PARAMETER],
-      [HubLinkNames.ContactTribunal, '#' + languages.WELSH_URL_PARAMETER],
-      [HubLinkNames.RequestsAndApplications, '#' + languages.WELSH_URL_PARAMETER],
-      [HubLinkNames.RespondentApplications, '#' + languages.WELSH_URL_PARAMETER],
-      [HubLinkNames.TribunalOrders, '#' + languages.WELSH_URL_PARAMETER],
-      [HubLinkNames.TribunalJudgements, '#' + languages.WELSH_URL_PARAMETER],
-      [HubLinkNames.Documents, '#' + languages.WELSH_URL_PARAMETER],
+      [HubLinkNames.ContactTribunal, '#'],
+      [HubLinkNames.RequestsAndApplications, '#'],
+      [HubLinkNames.RespondentApplications, '#'],
+      [HubLinkNames.TribunalOrders, '#'],
+      [HubLinkNames.TribunalJudgements, '#'],
+      [HubLinkNames.Documents, '#'],
     ]);
     expect(getHubLinksUrlMap(languages.WELSH_URL_PARAMETER)).toEqual(linksMap);
   });
