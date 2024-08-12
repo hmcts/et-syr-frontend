@@ -7,13 +7,13 @@ import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import { setUrlLanguage } from './helpers/LanguageHelper';
 import { getLanguageParam } from './helpers/RouterHelpers';
 
-export default class ResponseHubController {
+export default class RespondentResponseLandingController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue('welsh-language', null);
-    const redirectUrl = setUrlLanguage(req, PageUrls.CHECKLIST);
-    res.render(TranslationKeys.RESPONSE_FORM_LANDING, {
-      ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
-      ...req.t(TranslationKeys.RESPONSE_FORM_LANDING, { returnObjects: true }),
+    const redirectUrl = setUrlLanguage(req, '#');
+    res.render(TranslationKeys.RESPONDENT_RESPONSE_LANDING, {
+      ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.RESPONDENT_RESPONSE_LANDING as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,
       hideContactUs: true,
