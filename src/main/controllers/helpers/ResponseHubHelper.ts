@@ -1,7 +1,7 @@
 import { CaseWithId } from '../../definitions/case';
 import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { SendNotificationTypeItem } from '../../definitions/complexTypes/sendNotificationTypeItem';
-import { Applicant, NotificationSubjects } from '../../definitions/constants';
+import { Applicant, NotificationSubjects, PageUrls, languages } from '../../definitions/constants';
 import { HubLinkNames, HubLinkStatus } from '../../definitions/hub';
 
 export const userCaseContainsGeneralCorrespondence = (notifications: SendNotificationTypeItem[]): boolean => {
@@ -106,10 +106,14 @@ export const updateYourApplicationsStatusTag = (
   ] as HubLinkStatus;
 };
 
-export const getHubLinksUrlMap = (): Map<string, string> => {
+export const getHubLinksUrlMap = (languageParam: string): Map<string, string> => {
+  const baseUrls = {
+    [languages.ENGLISH_URL_PARAMETER]: '',
+    [languages.WELSH_URL_PARAMETER]: languages.WELSH_URL_PARAMETER,
+  };
   return new Map<string, string>([
     [HubLinkNames.Et1ClaimForm, '#'],
-    [HubLinkNames.RespondentResponse, '#'],
+    [HubLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING + baseUrls[languageParam]],
     [HubLinkNames.ContactTribunal, '#'],
     [HubLinkNames.RequestsAndApplications, '#'],
     [HubLinkNames.RespondentApplications, '#'],

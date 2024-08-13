@@ -39,6 +39,7 @@ export default class ResponseHubController {
     }
     const currentState = currentStateFn(userCase);
     const hubLinksStatuses = userCase.hubLinksStatuses;
+    const languageParam = getLanguageParam(req.url);
 
     getClaimantAppsAndUpdateStatusTag(userCase);
 
@@ -58,7 +59,7 @@ export default class ResponseHubController {
             linkTxt: (l: AnyRecord): string => l[linkName],
             status: (l: AnyRecord): string => l[status],
             shouldShow: shouldHubLinkBeClickable(status, linkName),
-            url: () => getHubLinksUrlMap().get(linkName),
+            url: () => getHubLinksUrlMap(languageParam).get(linkName),
             statusColor: () => statusColorMap.get(status),
           };
         }),
