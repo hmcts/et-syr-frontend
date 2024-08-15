@@ -25,6 +25,7 @@ export const TranslationKeys = {
   RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
   RESPONSE_HUB: 'response-hub',
   RESPONDENT_RESPONSE_LANDING: 'respondent-response-landing',
+  RESPONDENT_RESPONSE_TASK_LIST: 'respondent-response-task-list',
   YOUR_APPLICATIONS: 'your-applications',
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
 } as const;
@@ -35,6 +36,7 @@ export const PageUrls = {
   CHECKLIST: '/checklist',
   COOKIE_PREFERENCES: '/cookies',
   RESPONDENT_RESPONSE_LANDING: '/respondent-response-landing',
+  RESPONDENT_RESPONSE_TASK_LIST: '/respondent-response-task-list',
 } as const;
 
 export const InterceptPaths = {

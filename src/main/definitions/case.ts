@@ -225,6 +225,10 @@ export interface Case {
   multipleFlag?: YesOrNo;
   leadClaimant?: YesOrNo;
   caseStayed?: YesOrNo;
+  //ET3 Response Form
+  respondentDetails?: YesOrNo;
+  claimantDetails?: YesOrNo;
+  respondentResponse?: YesOrNo;
 }
 
 export const enum StillWorking {
