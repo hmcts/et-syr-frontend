@@ -2811,12 +2811,12 @@ __metadata:
   linkType: hard
 
 "@pact-foundation/pact@npm:^13.1.1":
-  version: 13.1.1
-  resolution: "@pact-foundation/pact@npm:13.1.1"
+  version: 13.1.2
+  resolution: "@pact-foundation/pact@npm:13.1.2"
   dependencies:
     "@pact-foundation/pact-core": ^15.1.0
     "@types/express": ^4.17.11
-    axios: ^1.6.1
+    axios: ^1.7.4
     body-parser: ^1.20.0
     cli-color: ^2.0.1
     express: ^4.19.2
@@ -2833,7 +2833,7 @@ __metadata:
     pkginfo: ^0.4.1
     ramda: ^0.30.0
     randexp: ^0.5.3
-  checksum: 842da75eef805b4101c0b706c0e7345f3a70ccb4eaa9a4ac3d00d3a5562e21b3f6e94e6194adc6a62e8204a732965de119133129e23f0819d29106e04daef79d
+  checksum: f582cd03839fb7a301215a522cd689199b0013372923504454f55dac714cff8332f978928f953602e533f339ead5330d645ca48bb79e986bdff7f546b79c92d9
   languageName: node
   linkType: hard
 
