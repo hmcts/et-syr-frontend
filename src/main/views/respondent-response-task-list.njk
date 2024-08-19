@@ -1,0 +1,111 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{%- from "govuk/components/tag/macro.njk" import govukTag -%}
+
+{% block beforeContent %}
+  {{ super() }}
+  {% include "back-link.njk"%}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ pageTitle }}</h1>
+
+      <p class="govuk-body">{{ responseLandingTxt1 }}</p>
+      <p class="govuk-body">{{ responseLandingTxt2 }}</p>
+      <p class="govuk-body">{{ responseLandingTxt3 }}</p>
+      <p class="govuk-body">{{ responseLandingTxt4 }}</p>
+
+      <p class="govuk-body">{{ helpTxt1 }}</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>
+          <p class="govuk-body">
+            <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank"> {{ helpET1ClaimTxt }}</a>
+          </p>
+        </li>
+        <li>
+          <p class="govuk-body">
+            <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank"> {{ helpAcasTxt }}</a>
+          </p>
+        </li>
+      </ul>
+
+      {{ govukInsetText({
+        html: "<p class='govuk-body'>" + insetTxt1 + "</p>
+              <p class='govuk-body'>" + insetTxt2 + "</p>"
+      }) }}
+
+      <ol class="app-task-list">
+        {% for section in sections %}
+
+          <li>
+            <h2 class="app-task-list__section">
+              <span class="app-task-list__section-number">{{loop.index}}. </span> {{ getContent(section.title) }}
+            </h2>
+            <ul class="app-task-list__items">
+
+              {% for link in section.links %}
+                <li class="app-task-list__item">
+                <span class="app-task-list__task-name--300px">
+                    {% if getContent(link.url) !="" %}
+                      <a href= "{{ getContent(link.url) }}">
+                    {{ getContent(link.linkTxt) }}
+                    </a>
+                    {% else %}
+                      {{getContent(link.linkTxt)}}
+                    {% endif %}
+                </span>
+                  {% if getContent(link.status) =="NOT STARTED" %}
+                    {{ govukTag({
+                      text: notStartedYet,
+                      classes: "no-text-transform app-task-list__tag govuk-tag--red"
+                    }) }}
+                  {% endif %}
+
+                  {% if getContent(link.status) =="COMPLETED" %}
+                    {{ govukTag({
+                      text: completed,
+                      classes: "no-text-transform app-task-list__tag govuk-tag"
+                    }) }}
+                  {% endif %}
+
+                  {% if getContent(link.status) =="IN PROGRESS" %}
+                    {{ govukTag({
+                      text: inProgress,
+                      classes: "no-text-transform app-task-list__tag govuk-tag--blue"
+                    }) }}
+                  {% endif %}
+
+                  {% if getContent(link.status) =="CANNOT START YET" %}
+                    {{ govukTag({
+                      text: cannotStartYet,
+                      classes: "no-text-transform app-task-list__tag govuk-tag--grey"
+                    }) }}
+                  {% endif %}
+                </li>
+              {% endfor %}
+
+            </ul>
+          </li>
+        {% endfor %}
+
+      </ol>
+    </div>
+
+    <div class="govuk-grid-column-one-third-from-desktop">
+        {% set sideBarContent %}
+          {% include "./components/response-hub/response-hub-sidebar.njk" %}
+        {% endset %}
+
+        {{ govukDetails({
+          summaryHtml: "<span id='contact-us-sidebar'>" + contact + "</span>",
+          html: sideBarContent
+        }) }}
+      </div>
+  </div>
+{% endblock %}

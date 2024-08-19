@@ -9,6 +9,7 @@ import RespondentResponseLandingController from '../../controllers/RespondentRes
 import ResponseHubController from '../../controllers/ResponseHubController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
 import { PageUrls, Urls } from '../../definitions/constants';
+import RespondentResponseTaskListController from '../../controllers/RespondentResponseTaskListController';
 
 export class Routes {
   public enableFor(app: Application): void {
@@ -16,6 +17,7 @@ export class Routes {
     app.get(PageUrls.RESPONSE_HUB, new ResponseHubController().get);
     app.get(PageUrls.COOKIE_PREFERENCES, new CookiePreferencesController().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_LANDING, new RespondentResponseLandingController().get);
+    app.get(PageUrls.RESPONDENT_RESPONSE_TASK_LIST, new RespondentResponseTaskListController().get);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,

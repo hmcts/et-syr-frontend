@@ -10,7 +10,7 @@ import { getLanguageParam } from './helpers/RouterHelpers';
 export default class RespondentResponseLandingController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue('welsh-language', null);
-    const redirectUrl = setUrlLanguage(req, '#');
+    const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_TASK_LIST);
     res.render(TranslationKeys.RESPONDENT_RESPONSE_LANDING, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.RESPONDENT_RESPONSE_LANDING as never, { returnObjects: true } as never),
