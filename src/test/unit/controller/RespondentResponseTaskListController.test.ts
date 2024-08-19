@@ -8,12 +8,12 @@ import { mockResponse } from '../mocks/mockResponse';
 // Define interfaces for sections and links
 interface Link {
   url: () => string;
-  linkTxt: (l: any) => string;
+  linkTxt: (l: never) => string;
   status: () => string;
 }
 
 interface Section {
-  title: (l: any) => string;
+  title: (l: never) => string;
   links: Link[];
 }
 
