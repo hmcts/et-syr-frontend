@@ -1,0 +1,12 @@
+{
+  "title": "Self Assignment",
+  "pageTitle": "Self assignment",
+  "respondentSelfAssignmentInfo": "You can use this self assignment page to get access to the details of the digital case and it's contents.",
+  "onlineCaseReferenceNumber": "Online case reference number",
+  "errors": {
+    "onlineCaseReferenceNumber": {
+      "required": "Enter an online case reference number that exactly matches the case details",
+      "invalid": "Enter an online case reference number that exactly matches the case details"
+    }
+  }
+}

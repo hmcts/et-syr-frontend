@@ -4,7 +4,7 @@ import config from 'config';
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
 import { CaseWithId } from '../definitions/case';
 import { JavaApiUrls } from '../definitions/constants';
-import { toApiFormat } from '../helper/ApiFormatter';
+import { toApiFormat } from '../helpers/ApiFormatter';
 
 import { axiosErrorDetails } from './AxiosErrorAdapter';
 
@@ -36,6 +36,14 @@ export class CaseApi {
       return await this.axios.post(JavaApiUrls.GET_CASE, { case_id: id });
     } catch (error) {
       throw new Error('Error getting user case: ' + axiosErrorDetails(error));
+    }
+  };
+
+  getUserCases = async (): Promise<AxiosResponse<CaseApiDataResponse[]>> => {
+    try {
+      return await this.axios.get<CaseApiDataResponse[]>(JavaApiUrls.GET_CASES);
+    } catch (error) {
+      throw new Error('Error getting user cases: ' + axiosErrorDetails(error));
     }
   };
 }

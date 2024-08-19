@@ -1,3 +1,4 @@
+import { CaseDate } from '../../../main/definitions/case';
 import {
   areDateFieldsFilledIn,
   areDates10YearsApartOrMore,
@@ -11,8 +12,7 @@ import {
   isDateNotInPast,
   isDateNotPartial,
   isFirstDateBeforeSecond,
-} from '../../../main/components/form/dateValidators';
-import { CaseDate } from '../../../main/definitions/case';
+} from '../../../main/validators/dateValidators';
 
 describe('areDateFieldsFilledIn()', () => {
   it('Should check if values in object exist', () => {

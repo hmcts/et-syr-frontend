@@ -1,7 +1,3 @@
-import { isDateEmpty } from '../components/form/dateValidators';
-import { retrieveCurrentLocale } from '../controllers/helpers/ApplicationTableRecordTranslationHelper';
-import { returnTranslatedDateString } from '../controllers/helpers/DateHelper';
-import { combineDocuments } from '../controllers/helpers/DocumentHelpers';
 import { CreateCaseBody, RespondentRequestBody, UpdateCaseBody } from '../definitions/api/caseApiBody';
 import {
   CaseApiDataResponse,
@@ -41,6 +37,11 @@ import {
 } from '../definitions/constants';
 import { DocumentDetail } from '../definitions/definition';
 import { TypeItem } from '../definitions/util-types';
+import { isDateEmpty } from '../validators/dateValidators';
+
+import { retrieveCurrentLocale } from './ApplicationTableRecordTranslationHelper';
+import { returnTranslatedDateString } from './DateHelper';
+import { combineDocuments } from './DocumentHelpers';
 
 export function toApiFormatCreate(
   userDataMap: Map<CaseDataCacheKey, string>,

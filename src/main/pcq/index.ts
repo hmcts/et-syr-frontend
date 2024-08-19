@@ -3,10 +3,10 @@ import config from 'config';
 import { Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 
-import { handleUpdateDraftCase } from '../controllers/helpers/CaseHelpers';
-import { setUrlLanguage } from '../controllers/helpers/LanguageHelper';
 import { AppRequest } from '../definitions/appRequest';
 import { Applicant, ErrorPages } from '../definitions/constants';
+import { handleUpdateDraftCase } from '../helpers/CaseHelpers';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLogger } from '../logger';
 
 import { createToken } from './createToken';

@@ -1,5 +1,5 @@
-import { ALLOWED_FILE_FORMATS } from '../../definitions/constants';
-import { Logger } from '../../logger';
+import { ALLOWED_FILE_FORMATS } from '../definitions/constants';
+import { Logger } from '../logger';
 
 export type Validator = (value: string | string[] | undefined) => void | string;
 

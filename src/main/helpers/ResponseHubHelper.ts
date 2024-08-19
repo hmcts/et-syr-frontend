@@ -1,8 +1,8 @@
-import { CaseWithId } from '../../definitions/case';
-import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { SendNotificationTypeItem } from '../../definitions/complexTypes/sendNotificationTypeItem';
-import { Applicant, NotificationSubjects } from '../../definitions/constants';
-import { HubLinkNames, HubLinkStatus } from '../../definitions/hub';
+import { CaseWithId } from '../definitions/case';
+import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
+import { SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
+import { Applicant, NotificationSubjects } from '../definitions/constants';
+import { HubLinkNames, HubLinkStatus } from '../definitions/hub';
 
 export const userCaseContainsGeneralCorrespondence = (notifications: SendNotificationTypeItem[]): boolean => {
   return notifications?.some(it =>

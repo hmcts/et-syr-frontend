@@ -1,0 +1,13 @@
+{
+  "title": "Hunan aseiniad ymatebydd",
+  "pageTitle": "Hunan aseiniad",
+  "respondentSelfAssignmentInfo": "Gallwch ddefnyddio'r dudalen hunan-aseinio hon i gael mynediad at fanylion yr achos digidol a'i gynnwys.",
+  "onlineCaseReferenceNumber": "Cyfeirnod achos ar-lein",
+  "required": "Enter an online case reference number that exactly matches the case details",
+  "errors": {
+    "onlineCaseReferenceNumber": {
+      "required": "Enter an online case reference number that exactly matches the case details",
+      "invalid": "Enter an online case reference number that exactly matches the case details"
+    }
+  }
+}

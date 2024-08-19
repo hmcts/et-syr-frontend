@@ -5,15 +5,15 @@ import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 
-export default class HomeController {
-  public get = (req: AppRequest, res: Response): void => {
-    const redirectUrl = setUrlLanguage(req, PageUrls.CHECKLIST);
-    res.render(TranslationKeys.HOME, {
+export default class ChecklistController {
+  public get(req: AppRequest, res: Response): void {
+    const redirectUrl = setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER);
+    res.render(TranslationKeys.CHECKLIST, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.HOME as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.CHECKLIST as never, { returnObjects: true } as never),
       PageUrls,
       redirectUrl,
       languageParam: getLanguageParam(req.url),
     });
-  };
+  }
 }

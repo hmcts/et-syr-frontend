@@ -21,17 +21,24 @@ export const LegacyUrls = {
 export const TranslationKeys = {
   COMMON: 'common',
   HOME: 'home',
+  CHECKLIST: 'checklist',
   COOKIE_PREFERENCES: 'cookie-preferences',
   RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
   RESPONSE_HUB: 'response-hub',
   YOUR_APPLICATIONS: 'your-applications',
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
+  SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER: 'self-assignment-case-reference-number',
+  SELF_ASSIGNMENT_DETAILS: 'self-assignment-details',
+  RESPONDENT_REPLIES: 'respondent-replies',
 } as const;
 
 export const PageUrls = {
   HOME: '/',
-  RESPONSE_HUB: '/response-hub/:caseId',
   CHECKLIST: '/checklist',
+  SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER: '/self-assignment-case-reference-number',
+  SELF_ASSIGNMENT_DETAILS: '/self-assignment-details',
+  RESPONDENT_REPLIES: '/respondent-replies',
+  RESPONSE_HUB: '/response-hub/:caseId',
   COOKIE_PREFERENCES: '/cookies',
 } as const;
 
@@ -72,6 +79,7 @@ export const JavaApiUrls = {
   DOCUMENT_DETAILS: '/document/details/',
   GET_CASES: 'cases/user-cases',
   GET_CASE: 'cases/user-case',
+  GET_CASE_BY_IDS: '/getCaseData',
   INITIATE_CASE_DRAFT: 'cases/initiate-case',
   UPDATE_CASE_DRAFT: 'cases/update-case',
   SUBMIT_CASE: 'cases/submit-case',

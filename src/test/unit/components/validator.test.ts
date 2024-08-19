@@ -20,7 +20,7 @@ import {
   isValidTwoDigitInteger,
   isValidUKTelNumber,
   validateTitlePreference,
-} from '../../../main/components/form/validator';
+} from '../../../main/validators/validator';
 import { mockFile } from '../mocks/mockFile';
 
 describe('Validation', () => {

@@ -2,9 +2,9 @@ import { nextTick } from 'process';
 
 import axios, { AxiosResponse } from 'axios';
 
-import { handleUpdateDraftCase, handleUpdateHubLinksStatuses } from '../../../../main/controllers/helpers/CaseHelpers';
 import { CaseApiDataResponse } from '../../../../main/definitions/api/caseApiResponse';
 import { CaseState } from '../../../../main/definitions/definition';
+import { handleUpdateDraftCase, handleUpdateHubLinksStatuses } from '../../../../main/helpers/CaseHelpers';
 import * as CaseService from '../../../../main/services/CaseService';
 import { CaseApi } from '../../../../main/services/CaseService';
 import { mockSession } from '../../mocks/mockApp';

@@ -1,4 +1,4 @@
-import { Form } from '../../../main/components/form/form';
+import { Form } from '../../../main/components/form';
 import { FormField, ValidationCheck } from '../../../main/definitions/form';
 export const mockForm = (fields: Record<string, FormField>): Form => {
   return new Form(fields);
