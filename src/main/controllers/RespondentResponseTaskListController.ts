@@ -13,13 +13,12 @@ export default class RespondentResponseTaskListController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue('welsh-language', null);
     const redirectUrl = setUrlLanguage(req, '#');
-
     const sections = [
       {
         title: (l: AnyRecord): string => l.section1.title,
         links: [
           {
-            url: setUrlLanguage(req, '#'),
+            url: setUrlLanguage(req, PageUrls.RESPONDENT_NAME),
             linkTxt: (l: AnyRecord): string => l.section1.link1Text,
             status: (): string => sectionStatus.notStarted,
           },
