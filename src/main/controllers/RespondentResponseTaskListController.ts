@@ -4,10 +4,9 @@ import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { sectionStatus } from '../definitions/definition';
 import { AnyRecord } from '../definitions/util-types';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
-
-import { setUrlLanguage } from './helpers/LanguageHelper';
-import { getLanguageParam } from './helpers/RouterHelpers';
 
 export default class RespondentResponseTaskListController {
   public async get(req: AppRequest, res: Response): Promise<void> {
