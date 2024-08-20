@@ -25,6 +25,8 @@ export const TranslationKeys = {
   COOKIE_PREFERENCES: 'cookie-preferences',
   RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
   RESPONSE_HUB: 'response-hub',
+  RESPONDENT_RESPONSE_LANDING: 'respondent-response-landing',
+  RESPONDENT_RESPONSE_TASK_LIST: 'respondent-response-task-list',
   YOUR_APPLICATIONS: 'your-applications',
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
   SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER: 'self-assignment-case-reference-number',
@@ -40,6 +42,8 @@ export const PageUrls = {
   RESPONDENT_REPLIES: '/respondent-replies',
   RESPONSE_HUB: '/response-hub/:caseId',
   COOKIE_PREFERENCES: '/cookies',
+  RESPONDENT_RESPONSE_LANDING: '/respondent-response-landing',
+  RESPONDENT_RESPONSE_TASK_LIST: '/respondent-response-task-list',
 } as const;
 
 export const InterceptPaths = {
