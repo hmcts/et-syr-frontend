@@ -29,7 +29,7 @@ export const TranslationKeys = {
   RESPONDENT_RESPONSE_TASK_LIST: 'respondent-response-task-list',
   YOUR_APPLICATIONS: 'your-applications',
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
-  SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER: 'self-assignment-case-reference-number',
+  SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER: 'self-assignment-data-check',
   SELF_ASSIGNMENT_DETAILS: 'self-assignment-details',
   RESPONDENT_REPLIES: 'respondent-replies',
 } as const;
@@ -37,7 +37,7 @@ export const TranslationKeys = {
 export const PageUrls = {
   HOME: '/',
   CHECKLIST: '/checklist',
-  SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER: '/self-assignment-case-reference-number',
+  SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER: '/self-assignment-data-check',
   SELF_ASSIGNMENT_DETAILS: '/self-assignment-details',
   RESPONDENT_REPLIES: '/respondent-replies',
   RESPONSE_HUB: '/response-hub/:caseId',

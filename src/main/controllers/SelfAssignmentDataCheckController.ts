@@ -68,29 +68,29 @@ export default class SelfAssignmentDataCheckController {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
     req.session.errors = [];
-    let caseReferenceId: string = req.body.id;
-    if (caseReferenceId) {
-      caseReferenceId = caseReferenceId.replace('-', '');
-      req.session.userCase = <CaseWithId>{
-        createdDate: '',
-        lastModified: '',
-        state: undefined,
-        id: caseReferenceId,
-        respondentName: formData.respondentName,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-      };
-    }
+    req.session.userCase = <CaseWithId>{
+      createdDate: '',
+      lastModified: '',
+      state: undefined,
+      id: formData.id,
+      respondentName: formData.respondentName,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+    };
     const errors = this.form.getValidatorErrors(formData);
     if (errors.length === 0) {
+      let caseReferenceId: string = req.session.userCase.id;
+      if (caseReferenceId) {
+        caseReferenceId = caseReferenceId.replace('-', '');
+      }
       const caseData = (
-        await getCaseApi(req.session.user?.accessToken).getCaseByIdRespondentAndClaimantNames(
-          formData.id,
+        await getCaseApi(req.session.user?.accessToken)?.getCaseByIdRespondentAndClaimantNames(
+          caseReferenceId,
           formData.respondentName,
           formData.firstName,
           formData.lastName
         )
-      ).data;
+      )?.data;
       if (caseData) {
         req.session.userCase = fromApiFormat(caseData);
         return res.redirect(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_DETAILS));
