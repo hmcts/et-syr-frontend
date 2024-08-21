@@ -95,6 +95,18 @@ export const isValidTwoDigitInteger: Validator = value => {
   }
 };
 
+export const isValidCompanyRegistrationNumber: Validator = value => {
+  // Allow empty value (optional field)
+  if (!value || (value as string).trim().length === 0) {
+    return;
+  }
+
+  // Ensure the value is alphanumeric and does not exceed 8 characters
+  if (!/^[a-zA-Z0-9]{1,8}$/.test(value as string)) {
+    return 'invalidCompanyRegistrationNumber';
+  }
+};
+
 export const isValidNoticeLength: Validator = value => {
   if (!value || (value as string).trim().length === 0) {
     return;

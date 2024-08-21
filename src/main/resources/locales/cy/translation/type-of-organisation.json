@@ -1,0 +1,18 @@
+{
+  "title": "[WELSH]Type of Organisation",
+  "h1": "[WELSH]What type of organisation is the respondent?",
+  "sectionTitle": "[WELSH]1. Tell us about the respondent",
+  "individual": "[WELSH]Individual",
+  "limitedCompany": "[WELSH]Limited Company",
+  "partnership": "[WELSH]Partnership",
+  "unincorporatedAssociation": "[WELSH]Unincorporated association (such as a sports club)",
+  "other": "[WELSH]Other",
+  "individualTextLabel": "[WELSH]Preferred title (optional)",
+  "limitedCompanyTextLabel": "[WELSH]Company registration number (optional)",
+  "errors": {
+    "typeOfOrg": {
+      "required": "[WELSH]Select an organisation type",
+      "invalidCompanyRegistrationNumber": "[WELSH]Enter a valid Company Registration number"
+    }
+  }
+}

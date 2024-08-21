@@ -13,6 +13,7 @@ import {
   isPayIntervalNull,
   isRespondentNameValid,
   isValidAvgWeeklyHours,
+  isValidCompanyRegistrationNumber,
   isValidCurrency,
   isValidNoticeLength,
   isValidPay,
@@ -179,6 +180,37 @@ describe('Validation', () => {
     });
   });
 
+  describe('isValidCompanyRegistrationNumber', () => {
+    it('should return undefined for an empty value', () => {
+      expect(isValidCompanyRegistrationNumber('')).toBeUndefined();
+      expect(isValidCompanyRegistrationNumber(' ')).toBeUndefined();
+      expect(isValidCompanyRegistrationNumber(null)).toBeUndefined();
+      expect(isValidCompanyRegistrationNumber(undefined)).toBeUndefined();
+    });
+
+    it('should return undefined for valid alphanumeric strings up to 8 characters', () => {
+      expect(isValidCompanyRegistrationNumber('12345678')).toBeUndefined();
+      expect(isValidCompanyRegistrationNumber('ABCDEFGH')).toBeUndefined();
+      expect(isValidCompanyRegistrationNumber('1A2B3C4D')).toBeUndefined();
+    });
+
+    it('should return "invalidCompanyRegistrationNumber" for strings longer than 8 characters', () => {
+      expect(isValidCompanyRegistrationNumber('123456789')).toBe('invalidCompanyRegistrationNumber');
+      expect(isValidCompanyRegistrationNumber('ABCDEFGHI')).toBe('invalidCompanyRegistrationNumber');
+    });
+
+    it('should return "invalidCompanyRegistrationNumber" for strings with non-alphanumeric characters', () => {
+      expect(isValidCompanyRegistrationNumber('12345-78')).toBe('invalidCompanyRegistrationNumber');
+      expect(isValidCompanyRegistrationNumber('12 45678')).toBe('invalidCompanyRegistrationNumber');
+      expect(isValidCompanyRegistrationNumber('ABC#EFG')).toBe('invalidCompanyRegistrationNumber');
+    });
+
+    it('should return "invalidCompanyRegistrationNumber" for non-alphanumeric strings of valid length', () => {
+      expect(isValidCompanyRegistrationNumber('!@#$%^&*')).toBe('invalidCompanyRegistrationNumber');
+      expect(isValidCompanyRegistrationNumber('1234!@')).toBe('invalidCompanyRegistrationNumber');
+    });
+  });
+
   describe('isValidNoticeLength()', () => {
     it.each([
       { mockRef: 'a', expected: 'notANumber' },
@@ -186,6 +218,7 @@ describe('Validation', () => {
       { mockRef: '2a', expected: 'notANumber' },
     ])('check notice length is valid', ({ mockRef, expected }) => {
       expect(isValidNoticeLength(mockRef)).toEqual(expected);
+      expect(isValidNoticeLength('')).toBeUndefined();
     });
   });
 
@@ -355,6 +388,7 @@ describe('Validation', () => {
       { fileName: 'file<1>.csv', expected: 'invalidFileName' },
     ])('Check filename %o', ({ fileName, expected }) => {
       expect(hasInvalidName(fileName)).toEqual(expected);
+      expect(hasInvalidName('')).toBeUndefined();
     });
   });
   describe('isAcasNumberValid()', () => {

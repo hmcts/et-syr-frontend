@@ -367,3 +367,11 @@ export const enum claimantRepresented {
   LEGAL_REP_SINGLE_CLAIM = 'Legal Representative Single Claim',
   LEGAL_REP_GROUP_CLAIM = 'Legal Representative Group Claim',
 }
+
+export const enum TypeOfOrganisation {
+  INDIVIDUAL = 'Individual',
+  LIMITED_COMPANY = 'Limited Company',
+  PARTNERSHIP = 'Partnership',
+  UNINCORPORATED_ASSOCIATION = 'Unincorporated association (such as a sports club)',
+  OTHER = 'Other',
+}
