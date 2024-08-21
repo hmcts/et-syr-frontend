@@ -31,6 +31,24 @@ export class CaseApi {
     }
   };
 
+  getCaseByIdRespondentAndClaimantNames = async (
+    caseSubmissionReference: string,
+    respondentName: string,
+    claimantFirstNames: string,
+    claimantLastName: string
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      return await this.axios.post(JavaApiUrls.FIND_CASE_FOR_ROLE_MODIFICATION, {
+        caseSubmissionReference,
+        respondentName,
+        claimantFirstNames,
+        claimantLastName,
+      });
+    } catch (error) {
+      throw new Error('Error getting user case: ' + axiosErrorDetails(error));
+    }
+  };
+
   getUserCase = async (id: string): Promise<AxiosResponse<CaseApiDataResponse>> => {
     try {
       return await this.axios.post(JavaApiUrls.GET_CASE, { case_id: id });

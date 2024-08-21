@@ -77,6 +77,7 @@ export const AuthUrls = {
 } as const;
 
 export const JavaApiUrls = {
+  FIND_CASE_FOR_ROLE_MODIFICATION: '/caseRoleManagement/findCaseForRoleModification',
   DOWNLOAD_CLAIM_PDF: '/generate-pdf',
   UPLOAD_FILE: '/documents/upload/',
   DOCUMENT_DOWNLOAD: '/document/download/',
