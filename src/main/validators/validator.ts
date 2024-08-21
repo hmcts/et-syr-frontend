@@ -145,13 +145,10 @@ export const isValidAvgWeeklyHours: Validator = value => {
   }
 
   const maxValue = 168;
-  const minValue = 0;
   const hours = parseFloat(value as string);
 
   if (hours > maxValue) {
     return 'exceeded';
-  } else if (hours < minValue) {
-    return 'negativeNumber';
   }
 };
 
