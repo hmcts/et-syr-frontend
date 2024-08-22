@@ -76,6 +76,7 @@
   "CookieView": "View cookies",
   "CookieAccepted": "You’ve accepted additional cookies. You can <a class=\"govuk-link\" href=\"/cookies\">change your cookie settings</a> at any time.",
   "CookieRejected": " <p class=\"govuk-body\">You’ve rejected additional cookies. You can <a class=\"govuk-link\" href=\"/cookies\">change your cookie settings</a> at any time.</p>",
+  "postcode": "Postcode",
   "enterPostcode": "Enter a UK postcode",
   "addressPageHeader": "What is your contact or home address?",
   "addressPageText": "We'll send any correspondence to this address.",

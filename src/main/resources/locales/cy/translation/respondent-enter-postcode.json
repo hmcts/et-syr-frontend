@@ -4,11 +4,6 @@
   "sectionTitle": "[WELSH]1. Tell us about the respondent",
   "enterPostcode": "[WELSH]Enter a UK postcode",
   "cannotEnterPostcode": "[WELSH]I cannot enter a UK postcode",
-  "findAddress": "[WELSH]Find address",
-  "errors": {
-    "addressEnterPostcode": {
-      "invalid": "[WELSH]Enter a UK postcode, like AA1 1AA",
-      "required": "[WELSH]Enter a UK postcode"
-    }
-  }
+  "submit": "[WELSH]Find address",
+  "manualAddressLink": "#"
 }

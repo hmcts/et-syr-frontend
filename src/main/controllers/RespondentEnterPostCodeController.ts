@@ -1,5 +1,6 @@
 import { Response } from 'express';
 
+import { isValidUKPostcode } from '../components/form/address_validator';
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent } from '../definitions/form';
@@ -8,7 +9,6 @@ import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 
 import { setUrlLanguage } from './helpers/LanguageHelper';
 import { getLanguageParam } from './helpers/RouterHelpers';
-import { isValidUKPostcode } from '../components/form/address_validator';
 
 export default class RespondentEnterPostCodeController {
   public async get(req: AppRequest, res: Response): Promise<void> {
@@ -18,8 +18,8 @@ export default class RespondentEnterPostCodeController {
 
     const respondentEnterPostCodeContent: FormContent = {
       fields: {
-        addressEnterPostcode: {
-          id: 'addressEnterPostcode',
+        respondentEnterPostcode: {
+          id: 'respondentEnterPostcode',
           type: 'text',
           label: l => l.enterPostcode,
           classes: 'govuk-label govuk-!-width-one-half',
