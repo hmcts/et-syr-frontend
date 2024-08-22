@@ -28,6 +28,7 @@ export const TranslationKeys = {
   RESPONDENT_RESPONSE_TASK_LIST: 'respondent-response-task-list',
   RESPONDENT_NAME: 'respondent-name',
   TYPE_OF_ORGANISATION: 'type-of-organisation',
+  RESPONDENT_ADDRESS: 'respondent-address',
   YOUR_APPLICATIONS: 'your-applications',
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
 } as const;
@@ -41,6 +42,7 @@ export const PageUrls = {
   RESPONDENT_RESPONSE_TASK_LIST: '/respondent-response-task-list',
   RESPONDENT_NAME: '/respondent-name',
   TYPE_OF_ORGANISATION: '/type-of-organisation',
+  RESPONDENT_ADDRESS: '/respondent-address',
 } as const;
 
 export const InterceptPaths = {

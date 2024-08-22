@@ -1,0 +1,12 @@
+{
+  "title": "[WELSH]Respondent address",
+  "h1": "[WELSH]Respondent address",
+  "sectionTitle": "[WELSH]1. Tell us about the respondent",
+  "addressText": "[WELSH]Address provided on ET1",
+  "correctAddressQuestion": "[WELSH]Is this the respondent’s correct address?",
+  "errors": {
+    "respondentAddress": {
+      "required": "[WELSH]Make a selection"
+    }
+  }
+}
