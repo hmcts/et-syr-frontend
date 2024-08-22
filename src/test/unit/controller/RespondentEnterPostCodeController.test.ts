@@ -1,11 +1,10 @@
 import RespondentEnterPostCodeController from '../../../main/controllers/RespondentEnterPostCodeController';
-import { TranslationKeys, PageUrls } from '../../../main/definitions/constants';
-import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import { setUrlLanguage } from '../../../main/controllers/helpers/LanguageHelper';
 import { getLanguageParam } from '../../../main/controllers/helpers/RouterHelpers';
+import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
-import request from 'supertest';
 
 jest.mock('../../../main/modules/featureFlag/launchDarkly');
 jest.mock('../../../main/controllers/helpers/LanguageHelper');
