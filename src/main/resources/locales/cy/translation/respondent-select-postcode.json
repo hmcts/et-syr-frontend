@@ -1,0 +1,13 @@
+{
+  "title": "[WELSH]Respondent address",
+  "h1": "[WELSH]Respondent address",
+  "sectionTitle": "[WELSH]1. Tell us about the respondent",
+  "enterPostcode": "[WELSH]Enter a UK postcode",
+  "cannotEnterPostcode": "[WELSH]I cannot find the address in the list",
+  "manualAddressLink": "#",
+  "errors": {
+    "addressEnterPostcode": {
+      "required": "[WELSH]Make a selection"
+    }
+  }
+}
