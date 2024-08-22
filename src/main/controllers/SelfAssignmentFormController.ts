@@ -14,7 +14,7 @@ import { getCaseApi } from '../services/CaseService';
 import { isValidCaseReferenceId } from '../validators/numeric-validator';
 import { isFieldFilledIn } from '../validators/validator';
 
-export default class SelfAssignmentDataCheckController {
+export default class SelfAssignmentFormController {
   private readonly form: Form;
   private readonly caseReferenceIdContent: FormContent = {
     fields: {
@@ -93,7 +93,8 @@ export default class SelfAssignmentDataCheckController {
       )?.data;
       if (caseData) {
         req.session.userCase = fromApiFormat(caseData);
-        return res.redirect(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_DETAILS));
+        req.session.userCase.respondentName = caseData.case_data.respondentCollection[0].value.respondent_name;
+        return res.redirect(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK));
       }
       errors.push({ errorType: 'api', propertyName: 'hiddenErrorField' });
       req.session.errors = errors;
@@ -110,12 +111,15 @@ export default class SelfAssignmentDataCheckController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const redirectUrl = setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER);
+    if (req.url.toString().includes('isNew')) {
+      req.session.userCase = undefined;
+    }
+    const redirectUrl = setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_FORM);
     const caseReferenceIdContentForm = this.caseReferenceIdContent;
     assignFormData(req.session.userCase, this.form.getFormFields());
-    res.render(TranslationKeys.SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER, {
+    res.render(TranslationKeys.SELF_ASSIGNMENT_FORM, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.SELF_ASSIGNMENT_FORM as never, { returnObjects: true } as never),
       PageUrls,
       redirectUrl,
       languageParam: getLanguageParam(req.url),

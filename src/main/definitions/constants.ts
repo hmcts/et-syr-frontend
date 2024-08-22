@@ -29,16 +29,16 @@ export const TranslationKeys = {
   RESPONDENT_RESPONSE_TASK_LIST: 'respondent-response-task-list',
   YOUR_APPLICATIONS: 'your-applications',
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
-  SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER: 'self-assignment-data-check',
-  SELF_ASSIGNMENT_DETAILS: 'self-assignment-details',
+  SELF_ASSIGNMENT_FORM: 'self-assignment-form',
+  SELF_ASSIGNMENT_CHECK: 'self-assignment-check',
   RESPONDENT_REPLIES: 'respondent-replies',
 } as const;
 
 export const PageUrls = {
   HOME: '/',
   CHECKLIST: '/checklist',
-  SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER: '/self-assignment-data-check',
-  SELF_ASSIGNMENT_DETAILS: '/self-assignment-details',
+  SELF_ASSIGNMENT_FORM: '/self-assignment-form',
+  SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
   RESPONDENT_REPLIES: '/respondent-replies',
   RESPONSE_HUB: '/response-hub/:caseId',
   COOKIE_PREFERENCES: '/cookies',
@@ -78,6 +78,7 @@ export const AuthUrls = {
 
 export const JavaApiUrls = {
   FIND_CASE_FOR_ROLE_MODIFICATION: '/caseRoleManagement/findCaseForRoleModification',
+  ASSIGN_CASE_USER_ROLES: '/caseRoleManagement/modifyCaseUserRoles?modificationType=Assignment',
   DOWNLOAD_CLAIM_PDF: '/generate-pdf',
   UPLOAD_FILE: '/documents/upload/',
   DOCUMENT_DOWNLOAD: '/document/download/',

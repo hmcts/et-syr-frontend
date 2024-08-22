@@ -49,6 +49,16 @@ export class CaseApi {
     }
   };
 
+  assignCaseUserRole = async (caseId: string, userId: string, caseRole: string): Promise<AxiosResponse<string>> => {
+    try {
+      return await this.axios.post(JavaApiUrls.ASSIGN_CASE_USER_ROLES, {
+        case_users: [{ case_id: caseId, user_id: userId, case_role: caseRole }],
+      });
+    } catch (error) {
+      throw new Error('Error getting user case: ' + axiosErrorDetails(error));
+    }
+  };
+
   getUserCase = async (id: string): Promise<AxiosResponse<CaseApiDataResponse>> => {
     try {
       return await this.axios.post(JavaApiUrls.GET_CASE, { case_id: id });

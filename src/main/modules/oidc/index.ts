@@ -43,13 +43,13 @@ export class Oidc {
       return next();
     });
 
-    app.get(PageUrls.SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER, (req: AppRequest, res: Response, next: NextFunction) => {
+    app.get(PageUrls.SELF_ASSIGNMENT_FORM, (req: AppRequest, res: Response, next: NextFunction) => {
       const redisClient = req.app.locals?.redisClient;
       if (!redisClient) {
         return ErrorUtil.throwManuelError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
       } else {
         try {
-          req.session.guid = cachePreLoginUrl(redisClient, PageUrls.SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER);
+          req.session.guid = cachePreLoginUrl(redisClient, PageUrls.SELF_ASSIGNMENT_FORM);
         } catch (err) {
           return ErrorUtil.throwError(err, RedisErrors.FAILED_TO_SAVE);
         }

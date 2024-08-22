@@ -10,8 +10,8 @@ import RespondentRepliesController from '../../controllers/RespondentRepliesCont
 import RespondentResponseLandingController from '../../controllers/RespondentResponseLandingController';
 import RespondentResponseTaskListController from '../../controllers/RespondentResponseTaskListController';
 import ResponseHubController from '../../controllers/ResponseHubController';
-import SelfAssignmentDataCheckController from '../../controllers/SelfAssignmentDataCheckController';
-import SelfAssignmentDetailsController from '../../controllers/SelfAssignmentDetailsController';
+import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheckController';
+import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
 import { PageUrls, Urls } from '../../definitions/constants';
 
@@ -19,10 +19,10 @@ export class Routes {
   public enableFor(app: Application): void {
     app.get(PageUrls.HOME, new HomeController().get);
     app.get(PageUrls.CHECKLIST, new ChecklistController().get);
-    app.get(PageUrls.SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER, new SelfAssignmentDataCheckController().get);
-    app.post(PageUrls.SELF_ASSIGNMENT_CASE_REFERENCE_NUMBER, new SelfAssignmentDataCheckController().post);
-    app.get(PageUrls.SELF_ASSIGNMENT_DETAILS, new SelfAssignmentDetailsController().get);
-    app.post(PageUrls.SELF_ASSIGNMENT_DETAILS, new SelfAssignmentDetailsController().post);
+    app.get(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().get);
+    app.post(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().post);
+    app.get(PageUrls.SELF_ASSIGNMENT_CHECK, new SelfAssignmentCheckController().get);
+    app.post(PageUrls.SELF_ASSIGNMENT_CHECK, new SelfAssignmentCheckController().post);
     app.get(PageUrls.RESPONDENT_REPLIES, new RespondentRepliesController().get);
     app.get(PageUrls.RESPONSE_HUB, new ResponseHubController().get);
     app.get(PageUrls.COOKIE_PREFERENCES, new CookiePreferencesController().get);

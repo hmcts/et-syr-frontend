@@ -1,0 +1,74 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% block beforeContent %}
+  {{ super() }}
+  {% include "back-link.njk"%}
+{% endblock %}
+
+{% block content %}
+  {% block errorSummary %}
+     {% include "./form/main/error-summary.njk" %}
+  {% endblock %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ pageTitle }}</h1>
+      <div class="govuk-summary-list govuk-!-margin-bottom-9">
+        <div class = "govuk-summary-list__row">
+          <div class = "govuk-summary-list__key">
+            {{ request }}
+          </div>
+          <div class = "govuk-summary-list__value">
+            {{ caseAssignment }}
+          </div>
+        </div>
+        <div class = "govuk-summary-list__row">
+          <div class = "govuk-summary-list__key">
+            {{ caseNumber }}
+          </div>
+          <div class = "govuk-summary-list__value">
+            {{ userCase.id }}
+          </div>
+        </div>
+        <div class = "govuk-summary-list__row">
+          <div class = "govuk-summary-list__key">
+            {{ respondentName }}
+          </div>
+          <div class = "govuk-summary-list__value">
+            {{ userCase.respondents[0].respondentName }}
+          </div>
+        </div>
+        <div class = "govuk-summary-list__row">
+          <div class = "govuk-summary-list__key">
+            {{ claimantFirstName }}
+          </div>
+          <div class = "govuk-summary-list__value">
+            {{ userCase.firstName }}
+          </div>
+        </div>
+        <div class = "govuk-summary-list__row">
+          <div class = "govuk-summary-list__key">
+            {{ claimantLastName }}
+          </div>
+          <div class = "govuk-summary-list__value">
+            {{ userCase.lastName }}
+          </div>
+        </div>
+      </div>
+      <p class="govuk-body">{{ tick }}</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>{{ satisfied }}</li>
+      </ul>
+      {% block form %}
+        {% include "form/form.njk" %}
+      {% endblock %}
+     </div>
+    </div>
+  </div>
+{% endblock %}

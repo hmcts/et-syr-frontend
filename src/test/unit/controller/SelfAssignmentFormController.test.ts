@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 
-import SelfAssignmentDataCheckController from '../../../main/controllers/SelfAssignmentDataCheckController';
+import SelfAssignmentFormController from '../../../main/controllers/SelfAssignmentFormController';
 import { CaseApiDataResponse } from '../../../main/definitions/api/caseApiResponse';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
@@ -22,9 +22,9 @@ describe('Self Assignment Data Check Controller', () => {
     const response = mockResponse();
     const request = mockRequest({ t });
 
-    new SelfAssignmentDataCheckController().get(request, response);
+    new SelfAssignmentFormController().get(request, response);
 
-    expect(response.render).toHaveBeenCalledWith('self-assignment-data-check', expect.anything());
+    expect(response.render).toHaveBeenCalledWith('self-assignment-form', expect.anything());
   });
 
   describe('post()', () => {
@@ -40,7 +40,7 @@ describe('Self Assignment Data Check Controller', () => {
 
       const req = mockRequest({ body });
       const res = mockResponse();
-      new SelfAssignmentDataCheckController().post(req, res);
+      new SelfAssignmentFormController().post(req, res);
 
       expect(res.redirect).toHaveBeenCalledWith(req.path);
       expect(req.session.errors).toEqual(errors);
@@ -68,7 +68,7 @@ describe('Self Assignment Data Check Controller', () => {
 
       const req = mockRequest({ body });
       const res = mockResponse();
-      await new SelfAssignmentDataCheckController().post(req, res);
+      await new SelfAssignmentFormController().post(req, res);
       expect(req.session.userCase).toBeDefined();
     });
   });
@@ -85,7 +85,7 @@ describe('Self Assignment Data Check Controller', () => {
     const errors = [{ propertyName: 'hiddenErrorField', errorType: 'api' }];
     const req = mockRequest({ body });
     const res = mockResponse();
-    await new SelfAssignmentDataCheckController().post(req, res);
+    await new SelfAssignmentFormController().post(req, res);
     expect(req.session.errors).toEqual(errors);
   });
 });
