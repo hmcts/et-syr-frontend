@@ -13,6 +13,7 @@ import RespondentResponseTaskListController from '../../controllers/RespondentRe
 import RespondentNameController from '../../controllers/RespondentNameController';
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
+import RespondentEnterPostCodeController from '../../controllers/RespondentEnterPostCodeController';
 
 export class Routes {
   public enableFor(app: Application): void {
@@ -24,6 +25,7 @@ export class Routes {
     app.get(PageUrls.RESPONDENT_NAME, new RespondentNameController().get);
     app.get(PageUrls.TYPE_OF_ORGANISATION, new TypeOfOrganisationController().get);
     app.get(PageUrls.RESPONDENT_ADDRESS, new RespondentAddressController().get);
+    app.get(PageUrls.RESPONDENT_ENTER_POST_CODE, new RespondentEnterPostCodeController().get);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,

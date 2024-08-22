@@ -29,6 +29,7 @@ export const TranslationKeys = {
   RESPONDENT_NAME: 'respondent-name',
   TYPE_OF_ORGANISATION: 'type-of-organisation',
   RESPONDENT_ADDRESS: 'respondent-address',
+  RESPONDENT_ENTER_POST_CODE: 'respondent-enter-postcode',
   YOUR_APPLICATIONS: 'your-applications',
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
 } as const;
@@ -43,6 +44,7 @@ export const PageUrls = {
   RESPONDENT_NAME: '/respondent-name',
   TYPE_OF_ORGANISATION: '/type-of-organisation',
   RESPONDENT_ADDRESS: '/respondent-address',
+  RESPONDENT_ENTER_POST_CODE: '/respondent-enter-postcode',
 } as const;
 
 export const InterceptPaths = {

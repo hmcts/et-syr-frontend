@@ -1,0 +1,15 @@
+{
+  "title": "Respondent address",
+  "h1": "Respondent address",
+  "sectionTitle": "1. Tell us about the respondent",
+  "enterPostcode": "Enter a UK postcode",
+  "cannotEnterPostcode": "I cannot enter a UK postcode",
+  "submit": "Find address",
+  "manualAddressLink": "#",
+  "errors": {
+    "addressEnterPostcode": {
+      "invalid": "Enter a UK postcode, like AA1 1AA",
+      "required": "Enter a UK postcode"
+    }
+  }
+}
