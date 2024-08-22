@@ -18,7 +18,7 @@ describe('Self Assignment Data Check Controller', () => {
     common: {},
   };
 
-  it('should render the Self Assignment Data Check page', () => {
+  it('should render the Self Assignment Form page', () => {
     const response = mockResponse();
     const request = mockRequest({ t });
 
