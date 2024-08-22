@@ -1,14 +1,14 @@
 import { Response } from 'express';
 
-import { isValidUKPostcode } from '../components/form/address_validator';
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { isValidUKPostcode } from '../validators/address_validator';
+import { getLanguageParam } from '../helpers/RouterHelpers';
 
-import { setUrlLanguage } from './helpers/LanguageHelper';
-import { getLanguageParam } from './helpers/RouterHelpers';
 
 export default class RespondentEnterPostCodeController {
   public async get(req: AppRequest, res: Response): Promise<void> {

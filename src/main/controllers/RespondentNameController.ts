@@ -1,6 +1,5 @@
 import { Response } from 'express';
 
-import { isFieldFilledIn, isOptionSelected } from '../components/form/validator';
 import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
@@ -8,9 +7,9 @@ import { FormContent } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
-
-import { setUrlLanguage } from './helpers/LanguageHelper';
-import { getLanguageParam } from './helpers/RouterHelpers';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
+import { getLanguageParam } from '../helpers/RouterHelpers';
 
 export default class RespondentNameController {
   public async get(req: AppRequest, res: Response): Promise<void> {

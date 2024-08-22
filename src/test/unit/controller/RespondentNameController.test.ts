@@ -1,4 +1,3 @@
-import { isFieldFilledIn, isOptionSelected } from '../../../main/components/form/validator';
 import RespondentNameController from '../../../main/controllers/RespondentNameController';
 import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
@@ -6,6 +5,7 @@ import { saveForLaterButton, submitButton } from '../../../main/definitions/radi
 import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+import { isFieldFilledIn, isOptionSelected } from '../../../main/validators/validator';
 
 describe('RespondentNameController', () => {
   const mockWelshFlag = jest.spyOn(LaunchDarkly, 'getFlagValue');
