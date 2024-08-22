@@ -1,4 +1,4 @@
-import { setUrlLanguage } from '../../../../main/controllers/helpers/LanguageHelper';
+import { setUrlLanguage } from '../../../../main/helpers/LanguageHelper';
 import { mockSession } from '../../mocks/mockApp';
 import { mockRequest } from '../../mocks/mockRequest';
 

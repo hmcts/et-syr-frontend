@@ -1,12 +1,12 @@
+import { CaseWithId } from '../../../../main/definitions/case';
+import { PageUrls, languages } from '../../../../main/definitions/constants';
+import { HubLinkNames, HubLinkStatus } from '../../../../main/definitions/hub';
 import {
   StatusesInOrderOfUrgency,
   getHubLinksUrlMap,
   shouldHubLinkBeClickable,
   updateYourApplicationsStatusTag,
-} from '../../../../main/controllers/helpers/ResponseHubHelper';
-import { CaseWithId } from '../../../../main/definitions/case';
-import { PageUrls, languages } from '../../../../main/definitions/constants';
-import { HubLinkNames, HubLinkStatus } from '../../../../main/definitions/hub';
+} from '../../../../main/helpers/ResponseHubHelper';
 import mockUserCaseWithoutTseApp from '../../../../main/resources/mocks/mockUserCaseWithoutTseApp';
 import {
   mockTseAdminClaimantRespondNotViewed,

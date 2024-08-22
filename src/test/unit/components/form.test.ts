@@ -1,9 +1,9 @@
-import { areDateFieldsFilledIn } from '../../../main/components/form/dateValidators';
-import { Form } from '../../../main/components/form/form';
-import { convertToDateObject } from '../../../main/components/form/parser';
-import { isFieldFilledIn } from '../../../main/components/form/validator';
+import { Form } from '../../../main/components/form';
+import { convertToDateObject } from '../../../main/components/parser';
 import { Case, CaseDate, Checkbox, YesOrNo } from '../../../main/definitions/case';
 import { FormContent, FormFields, FormFieldsFn } from '../../../main/definitions/form';
+import { areDateFieldsFilledIn } from '../../../main/validators/dateValidators';
+import { isFieldFilledIn } from '../../../main/validators/validator';
 
 describe('Form', () => {
   const mockForm: FormContent = {

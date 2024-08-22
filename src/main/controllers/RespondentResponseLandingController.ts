@@ -2,10 +2,9 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
-
-import { setUrlLanguage } from './helpers/LanguageHelper';
-import { getLanguageParam } from './helpers/RouterHelpers';
 
 export default class RespondentResponseLandingController {
   public async get(req: AppRequest, res: Response): Promise<void> {

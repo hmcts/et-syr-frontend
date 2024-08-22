@@ -1,9 +1,10 @@
-import { AppRequest } from '../../definitions/appRequest';
-import { fromApiFormat } from '../../helper/ApiFormatter';
-import { Logger } from '../../logger';
-import localesCy from '../../resources/locales/cy/translation/common.json';
-import locales from '../../resources/locales/en/translation/common.json';
-import { getCaseApi } from '../../services/CaseService';
+import { AppRequest } from '../definitions/appRequest';
+import { Logger } from '../logger';
+import localesCy from '../resources/locales/cy/translation/common.json';
+import locales from '../resources/locales/en/translation/common.json';
+import { getCaseApi } from '../services/CaseService';
+
+import { fromApiFormat } from './ApiFormatter';
 
 // Used for invoking PCQ survey.
 export const handleUpdateDraftCase = async (req: AppRequest, logger: Logger): Promise<void> => {

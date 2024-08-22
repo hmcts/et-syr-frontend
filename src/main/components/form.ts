@@ -1,6 +1,6 @@
-import { Case, CaseWithId } from '../../definitions/case';
-import { FormContent, FormError, FormField, FormFields, FormInput, FormOptions } from '../../definitions/form';
-import { AnyRecord } from '../../definitions/util-types';
+import { Case, CaseWithId } from '../definitions/case';
+import { FormContent, FormError, FormField, FormFields, FormInput, FormOptions } from '../definitions/form';
+import { AnyRecord } from '../definitions/util-types';
 
 import { setupCheckboxParser } from './parser';
 

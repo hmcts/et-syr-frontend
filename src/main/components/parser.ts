@@ -1,6 +1,6 @@
-import { CaseDate } from '../../definitions/case';
-import { FormField, FormOptions } from '../../definitions/form';
-import { AnyRecord } from '../../definitions/util-types';
+import { CaseDate } from '../definitions/case';
+import { FormField, FormOptions } from '../definitions/form';
+import { AnyRecord } from '../definitions/util-types';
 
 export type DateParser = (property: string, body: Record<string, unknown>) => CaseDate;
 

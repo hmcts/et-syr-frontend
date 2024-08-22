@@ -1,4 +1,4 @@
-import { languages } from '../../definitions/constants';
+import { languages } from '../definitions/constants';
 
 export const getLanguageParam = (url: string): string => {
   if (url?.includes('lng=cy')) {

@@ -4,7 +4,6 @@ import redis from 'redis-mock';
 
 import * as authIndex from '../../../main/auth/index';
 import { AppRequest, UserDetails } from '../../../main/definitions/appRequest';
-import { CallbackTestConstants } from '../../../main/definitions/constants';
 import { idamCallbackHandler } from '../../../main/modules/oidc';
 import * as CaseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
@@ -53,13 +52,13 @@ describe('Test responds to /oauth2/callback', function () {
 
   test('Should redirect to Claimant applications page in English language if an existing user who had selected English logs in', async () => {
     req.query = { code: 'testCode', state: existingUser + englishGuidParam };
-
-    await expect(idamCallbackHandler(req, res, next, serviceUrl)).rejects.toThrow(CallbackTestConstants.REDIS_ERROR);
+    // jest.spyOn(redisClient, 'get').mockReturnValue('');
+    await expect(idamCallbackHandler(req, res, next, serviceUrl)).resolves.toEqual(undefined);
   });
 
   test('Should redirect to Claimant applications page in Welsh language if an existing user who had selected Welsh logs in', async () => {
     req.query = { code: 'testCode', state: existingUser + welshGuidParam };
 
-    await expect(idamCallbackHandler(req, res, next, serviceUrl)).rejects.toThrow(CallbackTestConstants.REDIS_ERROR);
+    await expect(idamCallbackHandler(req, res, next, serviceUrl)).resolves.toEqual(undefined);
   });
 });

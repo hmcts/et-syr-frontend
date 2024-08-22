@@ -44,7 +44,7 @@ import {
   setDocumentValues,
   toApiFormat,
   toApiFormatCreate,
-} from '../../../main/helper/ApiFormatter';
+} from '../../../main/helpers/ApiFormatter';
 import { mockEt1DataModel, mockEt1DataModelUpdate } from '../mocks/mockEt1DataModel';
 import mockUserCaseComplete from '../mocks/mockUserCaseComplete';
 import { mockedApiData } from '../mocks/mockedApiData';

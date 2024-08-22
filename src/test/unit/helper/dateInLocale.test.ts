@@ -1,4 +1,4 @@
-import { dateInLocale, datesStringToDateInLocale } from '../../../main/helper/dateInLocale';
+import { dateInLocale, datesStringToDateInLocale } from '../../../main/helpers/dateInLocale';
 
 describe('dateInLocale()', () => {
   test.each([
