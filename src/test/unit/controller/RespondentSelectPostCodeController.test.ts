@@ -1,11 +1,11 @@
-import { isOptionSelected } from '../../../main/components/form/validator';
 import RespondentSelectPostCodeController from '../../../main/controllers/RespondentSelectPostCodeController';
-import { setUrlLanguage } from '../../../main/controllers/helpers/LanguageHelper';
-import { getLanguageParam } from '../../../main/controllers/helpers/RouterHelpers';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
+import { getLanguageParam } from '../../../main/helpers/RouterHelpers';
+import { isOptionSelected } from '../../../main/validators/validator';
 
 jest.mock('../../../main/modules/featureFlag/launchDarkly');
 jest.mock('../../../main/controllers/helpers/LanguageHelper');

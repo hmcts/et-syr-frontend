@@ -1,4 +1,4 @@
-import { convertToDateObject, setupCheckboxParser } from '../../../main/components/form/parser';
+import { convertToDateObject, setupCheckboxParser } from '../../../main/components/parser';
 import { FormField } from '../../../main/definitions/form';
 
 describe('Parser', () => {

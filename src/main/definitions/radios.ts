@@ -1,4 +1,4 @@
-import { Validator, isFieldFilledIn } from '../components/form/validator';
+import { Validator, isFieldFilledIn } from '../validators/validator';
 
 import { PayInterval, YesOrNo } from './case';
 import { SubmitButton } from './form';

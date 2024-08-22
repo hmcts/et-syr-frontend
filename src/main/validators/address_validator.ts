@@ -1,5 +1,5 @@
-import { ValidationErrors } from '../../definitions/constants';
-import { AnyRecord } from '../../definitions/util-types';
+import { ValidationErrors } from '../definitions/constants';
+import { AnyRecord } from '../definitions/util-types';
 
 import { isFieldFilledIn } from './validator';
 

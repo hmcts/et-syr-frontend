@@ -1,10 +1,10 @@
+import { ValidationErrors } from '../../../main/definitions/constants';
 import {
   isValidAddressFirstLine,
   isValidAddressSecondLine,
   isValidCountryTownOrCity,
   isValidUKPostcode,
-} from '../../../main/components/form/address_validator';
-import { ValidationErrors } from '../../../main/definitions/constants';
+} from '../../../main/validators/address_validator';
 
 describe('Validation', () => {
   describe('isValidUKPostcode()', () => {

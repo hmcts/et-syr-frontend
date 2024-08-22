@@ -4,7 +4,7 @@ import config from 'config';
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
 import { CaseWithId } from '../definitions/case';
 import { JavaApiUrls } from '../definitions/constants';
-import { toApiFormat } from '../helper/ApiFormatter';
+import { toApiFormat } from '../helpers/ApiFormatter';
 
 import { axiosErrorDetails } from './AxiosErrorAdapter';
 
@@ -31,11 +31,47 @@ export class CaseApi {
     }
   };
 
+  getCaseByIdRespondentAndClaimantNames = async (
+    caseSubmissionReference: string,
+    respondentName: string,
+    claimantFirstNames: string,
+    claimantLastName: string
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      return await this.axios.post(JavaApiUrls.FIND_CASE_FOR_ROLE_MODIFICATION, {
+        caseSubmissionReference,
+        respondentName,
+        claimantFirstNames,
+        claimantLastName,
+      });
+    } catch (error) {
+      throw new Error('Error getting user case: ' + axiosErrorDetails(error));
+    }
+  };
+
+  assignCaseUserRole = async (caseId: string, userId: string, caseRole: string): Promise<AxiosResponse<string>> => {
+    try {
+      return await this.axios.post(JavaApiUrls.ASSIGN_CASE_USER_ROLES, {
+        case_users: [{ case_id: caseId, user_id: userId, case_role: caseRole }],
+      });
+    } catch (error) {
+      throw new Error('Error getting user case: ' + axiosErrorDetails(error));
+    }
+  };
+
   getUserCase = async (id: string): Promise<AxiosResponse<CaseApiDataResponse>> => {
     try {
       return await this.axios.post(JavaApiUrls.GET_CASE, { case_id: id });
     } catch (error) {
       throw new Error('Error getting user case: ' + axiosErrorDetails(error));
+    }
+  };
+
+  getUserCases = async (): Promise<AxiosResponse<CaseApiDataResponse[]>> => {
+    try {
+      return await this.axios.get<CaseApiDataResponse[]>(JavaApiUrls.GET_CASES);
+    } catch (error) {
+      throw new Error('Error getting user cases: ' + axiosErrorDetails(error));
     }
   };
 }

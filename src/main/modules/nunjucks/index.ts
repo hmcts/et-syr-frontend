@@ -6,7 +6,7 @@ import nunjucks from 'nunjucks';
 import { AppRequest } from '../../definitions/appRequest';
 import { FormError, FormField, FormFields, FormInput } from '../../definitions/form';
 import { AnyRecord } from '../../definitions/util-types';
-import { dateInLocale, datesStringToDateInLocale } from '../../helper/dateInLocale';
+import { dateInLocale, datesStringToDateInLocale } from '../../helpers/dateInLocale';
 
 import createFilters from './njkFilters';
 

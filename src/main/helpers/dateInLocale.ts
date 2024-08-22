@@ -1,5 +1,6 @@
-import { retrieveCurrentLocale } from '../controllers/helpers/ApplicationTableRecordTranslationHelper';
 import { languages } from '../definitions/constants';
+
+import { retrieveCurrentLocale } from './ApplicationTableRecordTranslationHelper';
 
 // returns Welsh or English representation of a Date instance in long format based on param in url
 export const dateInLocale = (dateToTransform: Date, url: string): string => {

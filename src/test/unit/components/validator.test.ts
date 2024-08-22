@@ -1,4 +1,6 @@
+import { getLogger } from '../../../main/logger';
 import {
+  areBenefitsValid,
   arePayValuesNull,
   atLeastOneFieldIsChecked,
   hasInvalidFileFormat,
@@ -21,7 +23,7 @@ import {
   isValidTwoDigitInteger,
   isValidUKTelNumber,
   validateTitlePreference,
-} from '../../../main/components/form/validator';
+} from '../../../main/validators/validator';
 import { mockFile } from '../mocks/mockFile';
 
 describe('Validation', () => {
@@ -71,6 +73,10 @@ describe('Validation', () => {
   });
 
   describe('isContentBetween3And100Chars()', () => {
+    it('should warn when content is empty', () => {
+      expect(isContentBetween3And100Chars('')).toStrictEqual('required');
+    });
+
     it('should not warn when content is valid length', () => {
       expect(isContentBetween3And100Chars('abc')).toStrictEqual(undefined);
       expect(isContentBetween3And100Chars('1'.repeat(100))).toStrictEqual(undefined);
@@ -216,9 +222,16 @@ describe('Validation', () => {
       { mockRef: 'a', expected: 'notANumber' },
       { mockRef: '%', expected: 'notANumber' },
       { mockRef: '2a', expected: 'notANumber' },
+      { mockRef: '', expected: undefined },
     ])('check notice length is valid', ({ mockRef, expected }) => {
       expect(isValidNoticeLength(mockRef)).toEqual(expected);
       expect(isValidNoticeLength('')).toBeUndefined();
+    });
+  });
+
+  describe('areBenefitsValid()', () => {
+    it.each([{ mockRef: 'a', expected: undefined }])('check if benefits are valid', ({ mockRef, expected }) => {
+      expect(areBenefitsValid(mockRef)).toEqual(expected);
     });
   });
 
@@ -272,12 +285,12 @@ describe('Validation', () => {
 
   describe('arePayValuesNull()', () => {
     it('Should check if pay values exists', () => {
-      const isValid = arePayValuesNull(['123', '123']);
+      const isValid = arePayValuesNull(['123', '123', null]);
       expect(isValid).toStrictEqual(undefined);
     });
 
     it('Should check if pay values do not exist', () => {
-      const value = ['', ''];
+      const value = ['', '', undefined];
       const isValid = arePayValuesNull(value);
       expect(isValid).toStrictEqual('required');
     });
@@ -377,8 +390,18 @@ describe('Validation', () => {
     ])('Check file format %o', ({ fileName, expected }) => {
       const newFile = mockFile;
       newFile.originalname = fileName;
-      expect(hasInvalidFileFormat(newFile, undefined)).toEqual(expected);
+      expect(hasInvalidFileFormat(newFile, getLogger('test'))).toEqual(expected);
     });
+    it.each([{ fileName: 'file.invalidFormat', expected: 'invalidFileFormat' }])(
+      'Check file format %o',
+      ({ fileName, expected }) => {
+        const newFile = mockFile;
+        newFile.originalname = fileName;
+        expect(hasInvalidFileFormat(newFile, undefined)).toEqual(expected);
+      }
+    );
+  });
+  describe('hasValidFileName()', () => {
     it.each([
       { fileName: 'file Copy(0).csv', expected: undefined },
       { fileName: 'file_with_underscore.txt', expected: undefined },
@@ -386,6 +409,7 @@ describe('Validation', () => {
       { fileName: 'file.csv.csv', expected: undefined },
       { fileName: 'file?.csv', expected: 'invalidFileName' },
       { fileName: 'file<1>.csv', expected: 'invalidFileName' },
+      { fileName: undefined, expected: undefined },
     ])('Check filename %o', ({ fileName, expected }) => {
       expect(hasInvalidName(fileName)).toEqual(expected);
       expect(hasInvalidName('')).toBeUndefined();

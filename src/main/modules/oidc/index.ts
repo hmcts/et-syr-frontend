@@ -1,5 +1,5 @@
 import config from 'config';
-import { Application, NextFunction, Request, Response } from 'express';
+import { Application, NextFunction, Response } from 'express';
 
 import { getRedirectUrl, getUserDetails } from '../../auth';
 import { AppRequest } from '../../definitions/appRequest';
@@ -43,6 +43,20 @@ export class Oidc {
       return next();
     });
 
+    app.get(PageUrls.SELF_ASSIGNMENT_FORM, (req: AppRequest, res: Response, next: NextFunction) => {
+      const redisClient = req.app.locals?.redisClient;
+      if (!redisClient) {
+        return ErrorUtil.throwManuelError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
+      } else {
+        try {
+          req.session.guid = cachePreLoginUrl(redisClient, PageUrls.SELF_ASSIGNMENT_FORM);
+        } catch (err) {
+          return ErrorUtil.throwError(err, RedisErrors.FAILED_TO_SAVE);
+        }
+      }
+      return next();
+    });
+
     app.get(AuthUrls.LOGIN, (req: AppRequest, res) => {
       let stateParam;
       const languageParam = req.cookies.i18next === languages.WELSH ? languages.WELSH : languages.ENGLISH;
@@ -52,12 +66,11 @@ export class Oidc {
     });
 
     app.get(AuthUrls.LOGOUT, (req: AppRequest, res: Response) => {
-      const guid = req.session.guid;
       req.session.destroy(err => {
         if (err) {
           logger.error(SessionErrors.ERROR_DESTROYING_SESSION);
         }
-        return handleRedirectUrl(req, res, guid);
+        return res.redirect(PageUrls.HOME);
       });
     });
 
@@ -77,20 +90,6 @@ export class Oidc {
         return res.redirect(AuthUrls.LOGIN);
       }
     });
-  }
-}
-
-async function handleRedirectUrl(req: Request, res: Response, guid: string) {
-  try {
-    const redisClient = req.app.locals?.redisClient;
-    if (redisClient) {
-      const preLoginUrl = await getPreLoginUrl(redisClient, guid);
-      if (preLoginUrl) {
-        return res.redirect(preLoginUrl);
-      }
-    }
-  } catch (err) {
-    return ErrorUtil.throwError(err, RedisErrors.FAILED_TO_RETRIEVE);
   }
 }
 
@@ -124,6 +123,6 @@ export const idamCallbackHandler = async (
     }
     logger.error(RedisErrors.FAILED_TO_RETRIEVE_PRE_LOGIN_URL);
   } catch (err) {
-    ErrorUtil.throwError(err, RedisErrors.FAILED_TO_RETRIEVE_PRE_LOGIN_URL);
+    logger.error(RedisErrors.FAILED_TO_RETRIEVE_PRE_LOGIN_URL);
   }
 };

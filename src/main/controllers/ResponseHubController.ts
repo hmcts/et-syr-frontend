@@ -4,21 +4,20 @@ import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { HubLinkStatus, HubLinksStatuses, sectionIndexToLinkNames, statusColorMap } from '../definitions/hub';
 import { AnyRecord } from '../definitions/util-types';
-import { formatDate, fromApiFormat, getDueDate } from '../helper/ApiFormatter';
-import { currentStateFn } from '../helper/state-sequence';
-import { getLogger } from '../logger';
-import { getFlagValue } from '../modules/featureFlag/launchDarkly';
-import { getCaseApi } from '../services/CaseService';
-
-import { handleUpdateHubLinksStatuses } from './helpers/CaseHelpers';
+import { formatDate, fromApiFormat, getDueDate } from '../helpers/ApiFormatter';
+import { handleUpdateHubLinksStatuses } from '../helpers/CaseHelpers';
 import {
   getClaimantAppsAndUpdateStatusTag,
   getHubLinksUrlMap,
   shouldHubLinkBeClickable,
   userCaseContainsGeneralCorrespondence,
-} from './helpers/ResponseHubHelper';
-import { getLanguageParam } from './helpers/RouterHelpers';
-import { setUrlLanguage } from './helpers/LanguageHelper';
+} from '../helpers/ResponseHubHelper';
+import { getLanguageParam } from '../helpers/RouterHelpers';
+import { currentStateFn } from '../helpers/state-sequence';
+import { getLogger } from '../logger';
+import { getFlagValue } from '../modules/featureFlag/launchDarkly';
+import { getCaseApi } from '../services/CaseService';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
 
 const logger = getLogger('ResponseHubController');
 const DAYS_FOR_PROCESSING = 7;

@@ -1,5 +1,5 @@
-import { ALLOWED_FILE_FORMATS } from '../../definitions/constants';
-import { Logger } from '../../logger';
+import { ALLOWED_FILE_FORMATS } from '../definitions/constants';
+import { Logger } from '../logger';
 
 export type Validator = (value: string | string[] | undefined) => void | string;
 
@@ -157,13 +157,10 @@ export const isValidAvgWeeklyHours: Validator = value => {
   }
 
   const maxValue = 168;
-  const minValue = 0;
   const hours = parseFloat(value as string);
 
   if (hours > maxValue) {
     return 'exceeded';
-  } else if (hours < minValue) {
-    return 'negativeNumber';
   }
 };
 

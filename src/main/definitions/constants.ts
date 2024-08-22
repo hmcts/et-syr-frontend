@@ -21,6 +21,7 @@ export const LegacyUrls = {
 export const TranslationKeys = {
   COMMON: 'common',
   HOME: 'home',
+  CHECKLIST: 'checklist',
   COOKIE_PREFERENCES: 'cookie-preferences',
   RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
   RESPONSE_HUB: 'response-hub',
@@ -33,12 +34,18 @@ export const TranslationKeys = {
   RESPONDENT_SELECT_POST_CODE: 'respondent-select-postcode',
   YOUR_APPLICATIONS: 'your-applications',
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
+  SELF_ASSIGNMENT_FORM: 'self-assignment-form',
+  SELF_ASSIGNMENT_CHECK: 'self-assignment-check',
+  RESPONDENT_REPLIES: 'respondent-replies',
 } as const;
 
 export const PageUrls = {
   HOME: '/',
-  RESPONSE_HUB: '/response-hub/:caseId',
   CHECKLIST: '/checklist',
+  SELF_ASSIGNMENT_FORM: '/self-assignment-form',
+  SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
+  RESPONDENT_REPLIES: '/respondent-replies',
+  RESPONSE_HUB: '/response-hub/:caseId',
   COOKIE_PREFERENCES: '/cookies',
   RESPONDENT_RESPONSE_LANDING: '/respondent-response-landing',
   RESPONDENT_RESPONSE_TASK_LIST: '/respondent-response-task-list',
@@ -80,12 +87,15 @@ export const AuthUrls = {
 } as const;
 
 export const JavaApiUrls = {
+  FIND_CASE_FOR_ROLE_MODIFICATION: '/caseRoleManagement/findCaseForRoleModification',
+  ASSIGN_CASE_USER_ROLES: '/caseRoleManagement/modifyCaseUserRoles?modificationType=Assignment',
   DOWNLOAD_CLAIM_PDF: '/generate-pdf',
   UPLOAD_FILE: '/documents/upload/',
   DOCUMENT_DOWNLOAD: '/document/download/',
   DOCUMENT_DETAILS: '/document/details/',
   GET_CASES: 'cases/user-cases',
   GET_CASE: 'cases/user-case',
+  GET_CASE_BY_IDS: '/getCaseData',
   INITIATE_CASE_DRAFT: 'cases/initiate-case',
   UPDATE_CASE_DRAFT: 'cases/update-case',
   SUBMIT_CASE: 'cases/submit-case',

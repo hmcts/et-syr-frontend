@@ -5,11 +5,11 @@ import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
-
-import { setUrlLanguage } from './helpers/LanguageHelper';
-import { getLanguageParam } from './helpers/RouterHelpers';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { AnyRecord } from '../definitions/util-types';
-import { isOptionSelected } from '../components/form/validator';
+import { isOptionSelected } from '../validators/validator';
+import { getLanguageParam } from '../helpers/RouterHelpers';
+
 
 export default class RespondentSelectPostCodeController {
   public async get(req: AppRequest, res: Response): Promise<void> {

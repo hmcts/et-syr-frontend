@@ -3,7 +3,6 @@
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../components/timeout-modal.njk" import timeoutModal with context %}
-{% from "../../components/web-chat.njk" import webChatModal %}
 
 {% block head %}
   {% include "../../webpack/css.njk" %}
@@ -126,11 +125,6 @@ if isLoggedIn %}
           {{ mainTelephone }}<br/>
           {{ welshTelephone }}<br/>
           {{ scotlandTelephone }}<br/>
-          {% if i18n.language == "en" %}
-            <table><tr><td>Webchat:</td><td>{{ webChatModal() }}</td><td>({{ scotlandOnly }})</td></tr></table><br/>
-          {% else %}
-            <br/><br/>
-          {% endif %}
           <a href="https://www.gov.uk/call-charges" class="govuk-link">{{ contactCharges }}</a>
         </div>
       </details>

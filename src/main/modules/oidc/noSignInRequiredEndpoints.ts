@@ -1,6 +1,6 @@
-import { Urls, languages } from '../../definitions/constants';
+import { PageUrls, Urls, languages } from '../../definitions/constants';
 
-export const noSignInRequiredEndpoints: string[] = [Urls.INFO, Urls.HOME];
+export const noSignInRequiredEndpoints: string[] = [Urls.INFO, Urls.HOME, PageUrls.CHECKLIST];
 
 export const validateNoSignInEndpoints = (url: string): boolean => {
   const removeWelshQueryString = url.replace(languages.WELSH_URL_PARAMETER, '');

@@ -1,4 +1,4 @@
-import { combineDocuments } from '../../../../main/controllers/helpers/DocumentHelpers';
+import { combineDocuments } from '../../../../main/helpers/DocumentHelpers';
 
 it('should combine documents correctly', () => {
   expect(

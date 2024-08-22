@@ -1,0 +1,27 @@
+{
+  "title": "Self Assignment - Form",
+  "pageTitle": "Self Assignment",
+  "respondentSelfAssignmentInfo": "You can use this self assignment page to get access to the details of the digital case and it's contents.",
+  "caseReferenceId": "Case reference number",
+  "respondentName": "Respondent name",
+  "claimantFirstName": "Claimant first name(s)",
+  "claimantLastName": "Claimant last name",
+  "errors": {
+    "id": {
+      "required": "Enter an online case reference number that exactly matches the case details",
+      "invalid": "Enter an online case reference number that exactly matches the case details"
+    },
+    "respondentName": {
+      "required": "Enter respondent name that exactly matches the case details"
+    },
+    "firstName": {
+      "required": "Enter claimant name that exactly matches the case details"
+    },
+    "lastName": {
+      "required": "Enter claimant last name that exactly matches the case details"
+    },
+    "hiddenErrorField": {
+      "api": "Unable to find the case. Data you entered does not match with any case"
+    }
+  }
+}

@@ -1,5 +1,5 @@
-import { AppRequest } from '../../definitions/appRequest';
-import { languages } from '../../definitions/constants';
+import { AppRequest } from '../definitions/appRequest';
+import { languages } from '../definitions/constants';
 
 // Used for invoking PCQ surver.
 export const setUrlLanguage = (req: AppRequest, redirectUrl: string): string => {

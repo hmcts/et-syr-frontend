@@ -1,7 +1,7 @@
 import HomeController from '../../../main/controllers/HomeController';
-import { setUrlLanguage } from '../../../main/controllers/helpers/LanguageHelper';
 import { PageUrls } from '../../../main/definitions/constants';
 import { AnyRecord } from '../../../main/definitions/util-types';
+import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
