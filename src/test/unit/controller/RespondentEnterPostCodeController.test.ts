@@ -13,18 +13,6 @@ jest.mock('../../../main/controllers/helpers/RouterHelpers');
 describe('RespondentEnterPostCodeController', () => {
   const mockWelshFlag = jest.spyOn(LaunchDarkly, 'getFlagValue');
 
-  const request = mockRequest({
-    session: {
-      userCase: {
-        addressEnterPostcode: 'AB12 3CD',
-      },
-    },
-  });
-
-  const translationMock = {
-    enterPostcode: 'Enter your postcode',
-  };
-
   beforeEach(() => {
     mockWelshFlag.mockClear();
   });
@@ -33,6 +21,17 @@ describe('RespondentEnterPostCodeController', () => {
     mockWelshFlag.mockResolvedValue(true);
     const controller = new RespondentEnterPostCodeController();
     const response = mockResponse();
+    const request = mockRequest({
+      session: {
+        userCase: {
+          respondentEnterPostcode: 'AB12 3CD', // Align with field name in the controller
+        },
+      },
+    });
+
+    const translationMock = {
+      enterPostcode: 'Enter your postcode',
+    };
 
     (request.t as unknown as jest.Mock).mockReturnValue(translationMock);
     (setUrlLanguage as jest.Mock).mockReturnValue('/redirect-url');
@@ -51,8 +50,9 @@ describe('RespondentEnterPostCodeController', () => {
         redirectUrl: '/redirect-url',
         form: {
           fields: {
-            addressEnterPostcode: expect.objectContaining({
-              id: 'addressEnterPostcode',
+            respondentEnterPostcode: expect.objectContaining({
+              // Ensure this matches the field name in the controller
+              id: 'respondentEnterPostcode',
               type: 'text',
               label: expect.any(Function),
               classes: 'govuk-label govuk-!-width-one-half',
@@ -70,13 +70,24 @@ describe('RespondentEnterPostCodeController', () => {
     const form = renderMock.mock.calls[0][1].form;
 
     // Verify the label function returns the correct value
-    expect(form.fields.addressEnterPostcode.label(translationMock)).toBe('Enter your postcode');
+    expect(form.fields.respondentEnterPostcode.label(translationMock)).toBe('Enter your postcode');
   });
 
   it('should handle when Welsh language feature flag is disabled', async () => {
     mockWelshFlag.mockResolvedValue(false);
     const controller = new RespondentEnterPostCodeController();
     const response = mockResponse();
+    const request = mockRequest({
+      session: {
+        userCase: {
+          respondentEnterPostcode: 'AB12 3CD',
+        },
+      },
+    });
+
+    const translationMock = {
+      enterPostcode: 'Enter your postcode',
+    };
 
     (request.t as unknown as jest.Mock).mockReturnValue(translationMock);
     (setUrlLanguage as jest.Mock).mockReturnValue('/redirect-url');
@@ -96,6 +107,17 @@ describe('RespondentEnterPostCodeController', () => {
     mockWelshFlag.mockResolvedValue(true);
     const controller = new RespondentEnterPostCodeController();
     const response = mockResponse();
+    const request = mockRequest({
+      session: {
+        userCase: {
+          respondentEnterPostcode: 'AB12 3CD',
+        },
+      },
+    });
+
+    const translationMock = {
+      enterPostcode: 'Enter your postcode',
+    };
 
     (request.t as unknown as jest.Mock).mockReturnValue(translationMock);
     (setUrlLanguage as jest.Mock).mockReturnValue('/redirect-url');
