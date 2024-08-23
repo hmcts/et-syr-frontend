@@ -1,3 +1,6 @@
+import { AppRequest } from '../definitions/appRequest';
+import { FormError } from '../definitions/form';
+
 export default class ErrorUtil {
   public static throwError(err: Error, errorName: string): void {
     const error = new Error(err.message);
@@ -12,4 +15,14 @@ export default class ErrorUtil {
     err.name = name;
     throw err;
   }
+
+  public static setManuelErrorToRequestSession = (
+    request: AppRequest,
+    errorType: string,
+    propertyName: string
+  ): void => {
+    const errors: FormError[] = [];
+    errors.push({ errorType, propertyName });
+    request.session.errors = errors;
+  };
 }

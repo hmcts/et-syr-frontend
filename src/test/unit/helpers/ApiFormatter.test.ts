@@ -30,8 +30,8 @@ import {
 } from '../../../main/definitions/definition';
 import { TypeItem } from '../../../main/definitions/util-types';
 import {
+  formatApiCaseDataToCaseWithId,
   formatDate,
-  fromApiFormat,
   fromApiFormatDocument,
   getDocId,
   getDueDate,
@@ -220,7 +220,7 @@ describe('Format document model', () => {
 
 describe('Format Case Data to Frontend Model', () => {
   it('should format Case Api Response`', () => {
-    const result = fromApiFormat(mockedApiData);
+    const result = formatApiCaseDataToCaseWithId(mockedApiData);
     expect(result).toStrictEqual(mockUserCaseComplete);
   });
 
@@ -230,7 +230,7 @@ describe('Format Case Data to Frontend Model', () => {
     const complete = mockUserCaseComplete;
     complete.genericTseApplicationCollection = [];
 
-    const result = fromApiFormat(mock);
+    const result = formatApiCaseDataToCaseWithId(mock);
 
     expect(result).toStrictEqual(complete);
   });
@@ -245,7 +245,7 @@ describe('Format Case Data to Frontend Model', () => {
         claimantRepresentedQuestion: YesOrNo.YES,
       },
     };
-    const result = fromApiFormat(mockedApiDataEmpty);
+    const result = formatApiCaseDataToCaseWithId(mockedApiDataEmpty);
     expect(result).toStrictEqual({
       id: '1234',
       feeGroupReference: undefined,
@@ -393,7 +393,7 @@ describe('Format Case Data to Frontend Model', () => {
         ],
       },
     };
-    const result = fromApiFormat(mockedApiDataWelsh);
+    const result = formatApiCaseDataToCaseWithId(mockedApiDataWelsh);
     expect(result).toEqual({
       feeGroupReference: undefined,
       ethosCaseReference: undefined,

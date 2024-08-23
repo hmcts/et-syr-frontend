@@ -20,6 +20,7 @@ export const LegacyUrls = {
 
 export const TranslationKeys = {
   COMMON: 'common',
+  WELSH_ENABLED: 'welsh-language',
   HOME: 'home',
   CHECKLIST: 'checklist',
   COOKIE_PREFERENCES: 'cookie-preferences',
@@ -35,6 +36,7 @@ export const TranslationKeys = {
 } as const;
 
 export const PageUrls = {
+  NOT_IMPLEMENTED: '#',
   HOME: '/',
   CHECKLIST: '/checklist',
   SELF_ASSIGNMENT_FORM: '/self-assignment-form',
@@ -68,6 +70,7 @@ export const ErrorPages = {
 export const ValidationErrors = {
   REQUIRED: 'required',
   INVALID_VALUE: 'invalid',
+  API: 'api',
 } as const;
 
 export const AuthUrls = {
@@ -310,6 +313,8 @@ export const FEATURE_FLAGS = {
 
 export const SessionErrors = {
   ERROR_DESTROYING_SESSION: 'Error destroying session',
+  ERROR_FAILED_TO_RETRIEVE_USER_CASE_FROM_REQUEST_SESSION: 'User case not found in the request session',
+  ERROR_NAME_DATA_NOT_FOUND: 'Data not found in the session',
 } as const;
 export const GenericTestConstants = {
   TRUE: true,
@@ -337,4 +342,17 @@ export const AuthorisationTestConstants = {
 } as const;
 export const CallbackTestConstants = {
   REDIS_ERROR: 'redisError',
+};
+export const DefaultValues = {
+  STRING_EMPTY: '',
+  STRING_DASH: '-',
+};
+export const FormFieldNames = {
+  SELF_ASSIGNMENT_FORM_FIELDS: {
+    CASE_REFERENCE_ID: 'caseReferenceId',
+    RESPONDENT_NAME: 'respondentName',
+    CLAIMANT_FIRST_NAME: 'claimantFirstName',
+    CLAIMANT_LAST_NAME: 'claimantLastName',
+    HIDDEN_ERROR_FIELD: 'hiddenErrorField',
+  },
 };

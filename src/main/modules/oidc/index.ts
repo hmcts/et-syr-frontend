@@ -14,7 +14,7 @@ import {
 } from '../../definitions/constants';
 import { getLogger } from '../../logger';
 import { cachePreLoginUrl, getPreLoginUrl } from '../../services/CacheService';
-import ErrorUtil from '../../utils/errorUtil';
+import ErrorUtil from '../../utils/ErrorUtil';
 
 import { validateNoSignInEndpoints } from './noSignInRequiredEndpoints';
 

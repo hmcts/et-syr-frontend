@@ -10,20 +10,20 @@ import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 
 export default class RespondentResponseTaskListController {
   public async get(req: AppRequest, res: Response): Promise<void> {
-    const welshEnabled = await getFlagValue('welsh-language', null);
-    const redirectUrl = setUrlLanguage(req, '#');
+    const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
+    const redirectUrl = setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED);
 
     const sections = [
       {
         title: (l: AnyRecord): string => l.section1.title,
         links: [
           {
-            url: setUrlLanguage(req, '#'),
+            url: setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED),
             linkTxt: (l: AnyRecord): string => l.section1.link1Text,
             status: (): string => sectionStatus.notStarted,
           },
           {
-            url: setUrlLanguage(req, '#'),
+            url: setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED),
             linkTxt: (l: AnyRecord): string => l.section1.link2Text,
             status: (): string => sectionStatus.notStarted,
           },
@@ -33,12 +33,12 @@ export default class RespondentResponseTaskListController {
         title: (l: AnyRecord): string => l.section2.title,
         links: [
           {
-            url: setUrlLanguage(req, '#'),
+            url: setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED),
             linkTxt: (l: AnyRecord): string => l.section2.link1Text,
             status: (): string => sectionStatus.notStarted,
           },
           {
-            url: setUrlLanguage(req, '#'),
+            url: setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED),
             linkTxt: (l: AnyRecord): string => l.section2.link2Text,
             status: (): string => sectionStatus.notStarted,
           },
@@ -48,7 +48,7 @@ export default class RespondentResponseTaskListController {
         title: (l: AnyRecord): string => l.section3.title,
         links: [
           {
-            url: setUrlLanguage(req, '#'),
+            url: setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED),
             linkTxt: (l: AnyRecord): string => l.section3.link1Text,
             status: (): string => sectionStatus.notStarted,
           },

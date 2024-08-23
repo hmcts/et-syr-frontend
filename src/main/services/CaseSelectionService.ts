@@ -5,7 +5,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, Respondent, YesOrNo } from '../definitions/case';
 import { ApplicationTableRecord, CaseState } from '../definitions/definition';
 import { AnyRecord } from '../definitions/util-types';
-import { fromApiFormat } from '../helpers/ApiFormatter';
+import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { translateOverallStatus, translateTypesOfClaims } from '../helpers/ApplicationTableRecordTranslationHelper';
 import { getLogger } from '../logger';
 
@@ -29,7 +29,7 @@ export const getUserCasesByLastModified = async (req: AppRequest): Promise<CaseW
     } else {
       logger.info(`Retrieving cases for ${req.session.user?.id}`);
       const casesByLastModified: CaseApiDataResponse[] = sortCasesByLastModified(cases);
-      return casesByLastModified.map(app => fromApiFormat(app, req));
+      return casesByLastModified.map(app => formatApiCaseDataToCaseWithId(app, req));
     }
   } catch (err) {
     logger.error(err.message);
