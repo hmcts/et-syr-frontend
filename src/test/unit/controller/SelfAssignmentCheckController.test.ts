@@ -1,11 +1,16 @@
+import axios from 'axios';
+
 import SelfAssignmentCheckController from '../../../main/controllers/SelfAssignmentCheckController';
+import { PageUrls } from '../../../main/definitions/constants';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
+import { mockValidCaseWithId } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+import { mockUserDetails } from '../mocks/mockUser';
 
 const getCaseApiMock = jest.spyOn(caseService, 'getCaseApi');
-const axios = require('axios');
+
 jest.mock('axios');
 const api = new CaseApi(axios);
 
@@ -47,17 +52,24 @@ describe('Self Assignment Check controller', () => {
       getCaseApiMock.mockReturnValue(api);
       api.assignCaseUserRole = jest.fn().mockResolvedValueOnce(Promise.resolve('TEST'));
       const req = mockRequest({ body });
-      req.session.user = {
-        id: 'testUserId',
-        accessToken: 'testAccessToken',
-        email: 'testEmail',
-        familyName: 'testFamilyName',
-        isCitizen: true,
-        givenName: 'givenName',
-      };
+      req.session.user = mockUserDetails;
       const res = mockResponse();
       await new SelfAssignmentCheckController().post(req, res);
-      expect(req.session.userCase).toBeDefined();
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_REPLIES);
+    });
+
+    it('should redirect to self assignment check page when case could not assigned', async () => {
+      const body = {
+        selfAssignmentCheck: 'Yes',
+      };
+      getCaseApiMock.mockReturnValue(api);
+      api.assignCaseUserRole = jest.fn().mockResolvedValueOnce(Promise.resolve());
+      const req = mockRequest({ body });
+      const res = mockResponse();
+      req.session.userCase = mockValidCaseWithId;
+      req.session.user = mockUserDetails;
+      await new SelfAssignmentCheckController().post(req, res);
+      expect(res.redirect).toHaveBeenCalledWith(req.path);
     });
   });
 });
