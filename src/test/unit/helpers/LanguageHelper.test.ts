@@ -1,6 +1,6 @@
-import { setUrlLanguage } from '../../../../main/helpers/LanguageHelper';
-import { mockSession } from '../../mocks/mockApp';
-import { mockRequest } from '../../mocks/mockRequest';
+import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
+import { mockSession } from '../mocks/mockApp';
+import { mockRequest } from '../mocks/mockRequest';
 
 describe('setUrlLanguageForRedirectPage', () => {
   it('should add welsh parameters to the redirected url if the request url has welsh parameters', () => {

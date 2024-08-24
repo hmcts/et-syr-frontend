@@ -2,14 +2,14 @@ import { nextTick } from 'process';
 
 import axios, { AxiosResponse } from 'axios';
 
-import { CaseApiDataResponse } from '../../../../main/definitions/api/caseApiResponse';
-import { CaseState } from '../../../../main/definitions/definition';
-import { handleUpdateDraftCase, handleUpdateHubLinksStatuses } from '../../../../main/helpers/CaseHelpers';
-import * as CaseService from '../../../../main/services/CaseService';
-import { CaseApi } from '../../../../main/services/CaseService';
-import { mockSession } from '../../mocks/mockApp';
-import { mockLogger } from '../../mocks/mockLogger';
-import { mockRequest } from '../../mocks/mockRequest';
+import { CaseApiDataResponse } from '../../../main/definitions/api/caseApiResponse';
+import { CaseState } from '../../../main/definitions/definition';
+import { handleUpdateDraftCase, handleUpdateHubLinksStatuses } from '../../../main/helpers/CaseHelpers';
+import * as CaseService from '../../../main/services/CaseService';
+import { CaseApi } from '../../../main/services/CaseService';
+import { mockSession } from '../mocks/mockApp';
+import { mockLogger } from '../mocks/mockLogger';
+import { mockRequest } from '../mocks/mockRequest';
 
 jest.mock('axios');
 const caseApi = new CaseApi(axios as jest.Mocked<typeof axios>);
