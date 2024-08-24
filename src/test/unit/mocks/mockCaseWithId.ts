@@ -1,5 +1,6 @@
 import { CaseWithId } from '../../../main/definitions/case';
 import { DefaultValues } from '../../../main/definitions/constants';
+import { TypesOfClaim } from '../../../main/definitions/definition';
 
 export const MockCaseWithIdConstants = {
   TEST_SUBMISSION_REFERENCE_NUMBER: '1234567890123456',
@@ -16,6 +17,7 @@ export const mockValidCaseWithId = <CaseWithId>{
   respondentName: MockCaseWithIdConstants.TEST_RESPONDENT_NAME,
   firstName: MockCaseWithIdConstants.TEST_CLAIMANT_NAME,
   lastName: MockCaseWithIdConstants.TEST_CLAIMANT_SURNAME,
+  typeOfClaim: [TypesOfClaim.DISCRIMINATION],
 };
 
 export const mockInvalidCaseWithId = <CaseWithId>{
