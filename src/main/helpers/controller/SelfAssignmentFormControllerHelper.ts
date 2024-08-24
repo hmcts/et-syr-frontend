@@ -28,6 +28,12 @@ export default class SelfAssignmentFormControllerHelper {
     };
   };
 
+  /**
+   * Sets respondent name to the req.session.userCase object. Because when data returns from case service api
+   * it doesn't have respondent name value as in the CaseWithId data model.
+   * @param req request object to set session's userCase respondent name value.
+   * @param caseData CaseApiData response that has respondent name.
+   */
   public static setRespondentName = (req: AppRequest, caseData: CaseApiDataResponse): void => {
     if (req.session.userCase) {
       if (caseData?.case_data?.respondentCollection) {

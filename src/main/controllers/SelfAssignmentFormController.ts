@@ -6,10 +6,10 @@ import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
-import SelfAssignmentFormControllerHelper from '../helpers/Controller/SelfAssignmentFormControllerHelper';
 import { assignFormData } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
+import SelfAssignmentFormControllerHelper from '../helpers/controller/SelfAssignmentFormControllerHelper';
 import { getCaseApi } from '../services/CaseService';
 import ErrorUtil from '../utils/ErrorUtil';
 import { isValidCaseReferenceId } from '../validators/numeric-validator';

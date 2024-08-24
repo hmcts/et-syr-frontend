@@ -7,7 +7,7 @@ import { mockResponse } from '../mocks/mockResponse';
 
 const homeController = new HomeController();
 
-describe('Introduction Controller', () => {
+describe('Introduction controller', () => {
   const t = {
     home: {},
   };

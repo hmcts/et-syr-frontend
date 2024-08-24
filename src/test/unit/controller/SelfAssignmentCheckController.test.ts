@@ -9,7 +9,7 @@ const axios = require('axios');
 jest.mock('axios');
 const api = new CaseApi(axios);
 
-describe('Self Assignment Check Controller', () => {
+describe('Self Assignment Check controller', () => {
   const t = {
     'self-assignment-case-reference-number': {},
     common: {},
