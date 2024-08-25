@@ -12,7 +12,7 @@ describe('isValidCaseReferenceId()', () => {
     { value: '123456', result: 'invalid' },
     { value: '1234567890123456', result: undefined },
     { value: '1234-5678-9012-3456', result: undefined },
-  ])('check if case reference id, %o is valid:', ({ value, result }) => {
+  ])('check if case reference id is valid: %o', ({ value, result }) => {
     expect(isValidCaseReferenceId(value, null)).toStrictEqual(result);
   });
 });
