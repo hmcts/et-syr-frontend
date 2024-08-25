@@ -11,7 +11,7 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import SelfAssignmentFormControllerHelper from '../helpers/controller/SelfAssignmentFormControllerHelper';
 import { getCaseApi } from '../services/CaseService';
-import ErrorUtil from '../utils/ErrorUtil';
+import ErrorUtils from '../utils/ErrorUtils';
 import { isValidCaseReferenceId } from '../validators/numeric-validator';
 import { isFieldFilledIn } from '../validators/validator';
 
@@ -85,7 +85,7 @@ export default class SelfAssignmentFormController {
         SelfAssignmentFormControllerHelper.setRespondentName(req, caseData);
         return res.redirect(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK));
       }
-      ErrorUtil.setManuelErrorToRequestSession(
+      ErrorUtils.setManuelErrorToRequestSession(
         req,
         ValidationErrors.API,
         FormFieldNames.SELF_ASSIGNMENT_FORM_FIELDS.HIDDEN_ERROR_FIELD

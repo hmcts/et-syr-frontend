@@ -107,7 +107,7 @@ describe('Get user cases by last modified date tests', () => {
     expect(result).toStrictEqual([]);
   });
 
-  test('Should hit error block and return empty array', async () => {
+  test('Should throw axios error', async () => {
     const response = {
       data: [{ invalidData: 1234 }],
       status: 500,
@@ -116,8 +116,9 @@ describe('Get user cases by last modified date tests', () => {
     const caseApi = new CaseApi(axios as jest.Mocked<typeof axios>);
     getCaseApiClientMock.mockReturnValue(caseApi);
     caseApi.getUserCases = jest.fn().mockResolvedValue(response);
-    const result = await getUserCasesByLastModified(req);
-    expect(result).toStrictEqual([]);
+    await expect(getUserCasesByLastModified(req)).rejects.toEqual(
+      new TypeError("Cannot read properties of undefined (reading 'substring')")
+    );
   });
 });
 

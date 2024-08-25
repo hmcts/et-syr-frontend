@@ -1,10 +1,10 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
-import { CaseApiDataResponse } from '../../../main/definitions/api/caseApiResponse';
 import { ServiceErrors } from '../../../main/definitions/constants';
 import { HubLinkStatus } from '../../../main/definitions/hub';
 import { CaseApi, getCaseApi } from '../../../main/services/CaseService';
 import { mockAxiosError, mockAxiosErrorWithDataError } from '../mocks/mockAxios';
+import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import { mockCaseApiDataResponse } from '../mocks/mockCaseApiDataResponse';
 import { mockCaseWithIdWithHubLinkStatuses, mockValidCaseWithId } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
@@ -14,20 +14,6 @@ jest.mock('axios');
 
 describe('Case Service Tests', () => {
   const token = 'testToken';
-  const axiosResponse: AxiosResponse<CaseApiDataResponse> = {
-    data: mockCaseApiDataResponse,
-    status: 200,
-    statusText: '',
-    headers: undefined,
-    config: undefined,
-  };
-  const axiosResponseWithCaseApiDataResponseList: AxiosResponse<[CaseApiDataResponse]> = {
-    data: [mockCaseApiDataResponse],
-    status: 200,
-    statusText: '',
-    headers: undefined,
-    config: undefined,
-  };
   const hubLinkStatusesReadyToView = {
     documents: HubLinkStatus.READY_TO_VIEW,
     et1ClaimForm: HubLinkStatus.READY_TO_VIEW,
@@ -44,7 +30,7 @@ describe('Case Service Tests', () => {
     it('should update draft case data and return the updated data', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
-      mockedAxios.put.mockResolvedValue(axiosResponse);
+      mockedAxios.put.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse);
       const value = await api.updateDraftCase(mockCaseWithIdWithHubLinkStatuses);
       expect(value.data).toEqual(mockCaseApiDataResponse);
     });
@@ -65,7 +51,7 @@ describe('Case Service Tests', () => {
     it('should update all hub link statuses to ready to view', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
-      mockedAxios.put.mockResolvedValue(axiosResponse);
+      mockedAxios.put.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse);
       const value = await api.updateHubLinksStatuses(mockCaseWithIdWithHubLinkStatuses);
       expect(value.data.case_data.hubLinksStatuses).toEqual(hubLinkStatusesReadyToView);
     });
@@ -91,7 +77,7 @@ describe('Case Service Tests', () => {
     it('should get case by application request', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
-      mockedAxios.post.mockResolvedValue(axiosResponse);
+      mockedAxios.post.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse);
       const value = await api.getCaseByApplicationRequest(request);
       expect(value.data).toEqual(mockCaseApiDataResponse);
     });
@@ -136,7 +122,7 @@ describe('Case Service Tests', () => {
     it('should get user case by case id', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
-      mockedAxios.post.mockResolvedValue(axiosResponse);
+      mockedAxios.post.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse);
       const value = await api.getUserCase(caseId);
       expect(value.data).toEqual(mockCaseApiDataResponse);
     });
@@ -156,7 +142,7 @@ describe('Case Service Tests', () => {
     it('should get user cases', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
-      mockedAxios.get.mockResolvedValue(axiosResponseWithCaseApiDataResponseList);
+      mockedAxios.get.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponseList);
       const value = await api.getUserCases();
       expect(value.data).toEqual([mockCaseApiDataResponse]);
     });

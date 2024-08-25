@@ -1,7 +1,7 @@
 import { AppRequest } from '../definitions/appRequest';
 import { FormError } from '../definitions/form';
 
-export default class ErrorUtil {
+export default class ErrorUtils {
   public static throwError(err: Error, errorName: string): void {
     const error = new Error(err.message);
     error.name = errorName;
@@ -10,6 +10,7 @@ export default class ErrorUtil {
     }
     throw error;
   }
+
   public static throwManuelError(message: string, name: string): void {
     const err = new Error(message);
     err.name = name;

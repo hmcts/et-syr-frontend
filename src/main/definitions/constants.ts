@@ -40,6 +40,7 @@ export const PageUrls = {
   HOME: '/',
   CHECKLIST: '/checklist',
   SELF_ASSIGNMENT_FORM: '/self-assignment-form',
+  RESPONDENT_CASE_LIST_CHECK: '/respondent-case-list-check',
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
   RESPONDENT_REPLIES: '/respondent-replies',
   RESPONSE_HUB: '/response-hub/:caseId',
@@ -364,4 +365,9 @@ export const ServiceErrors = {
   ERROR_GETTING_USER_CASES: 'Error getting user cases: ',
   ERROR_ASSIGNING_USER_ROLE: 'Error assigning user role: ',
   ERROR_DUMMY_DATA: 'Dummy data error',
+};
+export const CacheErrors = {
+  ERROR_HOST_NOT_FOUND_FOR_PRE_LOGIN_URL: 'Host not found for pre login url',
+  ERROR_PORT_NOT_FOUND_FOR_PRE_LOGIN_URL: 'Port not found for pre login url',
+  ERROR_URL_NOT_FOUND_FOR_PRE_LOGIN_URL: 'Url not found for pre login url',
 };

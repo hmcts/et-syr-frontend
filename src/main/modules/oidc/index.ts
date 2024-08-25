@@ -13,11 +13,11 @@ import {
   languages,
 } from '../../definitions/constants';
 import { getLogger } from '../../logger';
-import { cachePreLoginUrl, getPreLoginUrl } from '../../services/CacheService';
-import ErrorUtil from '../../utils/ErrorUtil';
+import { cachePreLoginUrl, generatePreLoginUrl, getPreLoginUrl } from '../../services/CacheService';
+import ErrorUtils from '../../utils/ErrorUtils';
+import LanguageUtils from '../../utils/LanguageUtils';
 
 import { validateNoSignInEndpoints } from './noSignInRequiredEndpoints';
-
 const logger = getLogger('oidc');
 
 export class Oidc {
@@ -28,13 +28,13 @@ export class Oidc {
     app.get(PageUrls.RESPONSE_HUB, (req: AppRequest, res: Response, next: NextFunction) => {
       const redisClient = req.app.locals?.redisClient;
       if (!redisClient) {
-        return ErrorUtil.throwManuelError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
+        return ErrorUtils.throwManuelError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
       } else {
         try {
-          const preLoginUrl = HTTPS_PROTOCOL + res.locals.host + port + req.url;
+          const preLoginUrl = generatePreLoginUrl(res.locals.host, port, req.url);
           req.session.guid = cachePreLoginUrl(redisClient, preLoginUrl);
         } catch (err) {
-          return ErrorUtil.throwError(err, RedisErrors.FAILED_TO_SAVE);
+          return ErrorUtils.throwError(err, RedisErrors.FAILED_TO_SAVE);
         }
       }
       if (!req.session.user?.isCitizen) {
@@ -43,15 +43,18 @@ export class Oidc {
       return next();
     });
 
-    app.get(PageUrls.SELF_ASSIGNMENT_FORM, (req: AppRequest, res: Response, next: NextFunction) => {
+    app.get(PageUrls.RESPONDENT_CASE_LIST_CHECK, (req: AppRequest, res: Response, next: NextFunction) => {
       const redisClient = req.app.locals?.redisClient;
       if (!redisClient) {
-        return ErrorUtil.throwManuelError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
+        return ErrorUtils.throwManuelError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
       } else {
         try {
-          req.session.guid = cachePreLoginUrl(redisClient, PageUrls.SELF_ASSIGNMENT_FORM);
+          req.session.guid = cachePreLoginUrl(
+            redisClient,
+            PageUrls.RESPONDENT_CASE_LIST_CHECK + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url)
+          );
         } catch (err) {
-          return ErrorUtil.throwError(err, RedisErrors.FAILED_TO_SAVE);
+          return ErrorUtils.throwError(err, RedisErrors.FAILED_TO_SAVE);
         }
       }
       return next();
@@ -74,8 +77,8 @@ export class Oidc {
       });
     });
 
-    app.get(AuthUrls.CALLBACK, (req: AppRequest, res: Response, next: NextFunction) => {
-      idamCallbackHandler(req, res, next, serviceUrl(res)).then();
+    app.get(AuthUrls.CALLBACK, (req: AppRequest, res: Response) => {
+      idamCallbackHandler(req, res, serviceUrl(res)).then();
     });
 
     app.use(async (req: AppRequest, res: Response, next: NextFunction) => {
@@ -93,15 +96,10 @@ export class Oidc {
   }
 }
 
-export const idamCallbackHandler = async (
-  req: AppRequest,
-  res: Response,
-  next: NextFunction,
-  serviceUrl: string
-): Promise<void> => {
+export const idamCallbackHandler = async (req: AppRequest, res: Response, serviceUrl: string): Promise<void> => {
   const redisClient = req.app.locals?.redisClient;
   if (!redisClient) {
-    return ErrorUtil.throwManuelError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
+    return ErrorUtils.throwManuelError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
   }
   if (typeof req.query.code === 'string' && typeof req.query.state === 'string') {
     req.session.user = await getUserDetails(serviceUrl, req.query.code, AuthUrls.CALLBACK);

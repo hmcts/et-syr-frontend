@@ -6,7 +6,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import { DefaultValues, JavaApiUrls, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { toApiFormat } from '../helpers/ApiFormatter';
-import ErrorUtil from '../utils/ErrorUtil';
+import ErrorUtils from '../utils/ErrorUtils';
 
 import { axiosErrorDetails } from './AxiosErrorAdapter';
 
@@ -64,7 +64,7 @@ export class CaseApi {
         throw new Error(ServiceErrors.ERROR_GETTING_USER_CASE + axiosErrorDetails(error));
       }
     } else {
-      ErrorUtil.throwManuelError(
+      ErrorUtils.throwManuelError(
         SessionErrors.ERROR_FAILED_TO_RETRIEVE_USER_CASE_FROM_REQUEST_SESSION,
         SessionErrors.ERROR_NAME_DATA_NOT_FOUND
       );

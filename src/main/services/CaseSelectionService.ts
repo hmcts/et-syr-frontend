@@ -22,18 +22,13 @@ export const getRedirectUrl = (userCase: CaseWithId, languageParam: string): str
 };
 
 export const getUserCasesByLastModified = async (req: AppRequest): Promise<CaseWithId[]> => {
-  try {
-    const cases = await getCaseApi(req.session.user?.accessToken).getUserCases();
-    if (cases.data.length === 0) {
-      return [];
-    } else {
-      logger.info(`Retrieving cases for ${req.session.user?.id}`);
-      const casesByLastModified: CaseApiDataResponse[] = sortCasesByLastModified(cases);
-      return casesByLastModified.map(app => formatApiCaseDataToCaseWithId(app, req));
-    }
-  } catch (err) {
-    logger.error(err.message);
+  const cases = await getCaseApi(req.session.user?.accessToken).getUserCases();
+  if (!cases || !cases.data || cases.data.length === 0) {
     return [];
+  } else {
+    logger.info(`Retrieving cases for ${req.session.user?.id}`);
+    const casesByLastModified: CaseApiDataResponse[] = sortCasesByLastModified(cases);
+    return casesByLastModified.map(app => formatApiCaseDataToCaseWithId(app, req));
   }
 };
 
