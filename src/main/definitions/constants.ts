@@ -356,3 +356,12 @@ export const FormFieldNames = {
     HIDDEN_ERROR_FIELD: 'hiddenErrorField',
   },
 };
+export const ServiceErrors = {
+  ERROR_UPDATING_DRAFT_CASE: 'Error updating draft case: ',
+  ERROR_CASE_NOT_FOUND: 'Case Not Found',
+  ERROR_UPDATING_HUB_LINKS_STATUSES: 'Error updating hub links statuses: ',
+  ERROR_GETTING_USER_CASE: 'Error getting user case: ',
+  ERROR_GETTING_USER_CASES: 'Error getting user cases: ',
+  ERROR_ASSIGNING_USER_ROLE: 'Error assigning user role: ',
+  ERROR_DUMMY_DATA: 'Dummy data error',
+};

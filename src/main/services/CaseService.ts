@@ -4,7 +4,7 @@ import config from 'config';
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { DefaultValues, JavaApiUrls, SessionErrors } from '../definitions/constants';
+import { DefaultValues, JavaApiUrls, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { toApiFormat } from '../helpers/ApiFormatter';
 import ErrorUtil from '../utils/ErrorUtil';
 
@@ -17,7 +17,7 @@ export class CaseApi {
     try {
       return await this.axios.put(JavaApiUrls.UPDATE_CASE_DRAFT, toApiFormat(caseItem));
     } catch (error) {
-      throw new Error('Error updating draft case: ' + axiosErrorDetails(error));
+      throw new Error(ServiceErrors.ERROR_UPDATING_DRAFT_CASE + axiosErrorDetails(error));
     }
   };
 
@@ -43,7 +43,7 @@ export class CaseApi {
    *                firstName First Name of the claimant entered to the form by respondent.
    *                lastName Last name of the claimant entered to the form by respondent.
    */
-  getCaseByIdRespondentAndClaimantNames = async (request: AppRequest): Promise<AxiosResponse<CaseApiDataResponse>> => {
+  getCaseByApplicationRequest = async (request: AppRequest): Promise<AxiosResponse<CaseApiDataResponse>> => {
     if (request.session.userCase) {
       try {
         const caseWithId: CaseWithId = request.session.userCase;
@@ -61,7 +61,7 @@ export class CaseApi {
           claimantLastName: caseWithId.lastName,
         });
       } catch (error) {
-        throw new Error('Error getting user case: ' + axiosErrorDetails(error));
+        throw new Error(ServiceErrors.ERROR_GETTING_USER_CASE + axiosErrorDetails(error));
       }
     } else {
       ErrorUtil.throwManuelError(
@@ -77,7 +77,7 @@ export class CaseApi {
         case_users: [{ case_id: caseId, user_id: userId, case_role: caseRole }],
       });
     } catch (error) {
-      throw new Error('Error getting user case: ' + axiosErrorDetails(error));
+      throw new Error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + axiosErrorDetails(error));
     }
   };
 

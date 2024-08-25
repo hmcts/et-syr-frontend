@@ -75,7 +75,7 @@ describe('Self Assignment Data Check controller', () => {
       const response = mockResponse();
       request.body = mockValidCaseWithId;
       getCaseApiMock.mockReturnValue(api);
-      api.getCaseByIdRespondentAndClaimantNames = jest
+      api.getCaseByApplicationRequest = jest
         .fn()
         .mockResolvedValueOnce(Promise.resolve(mockCaseApiDataResponseForSelfAssignment));
       await new SelfAssignmentFormController().post(request, response);
@@ -92,7 +92,7 @@ describe('Self Assignment Data Check controller', () => {
     const response = mockResponse();
     request.body = mockValidCaseWithId;
     getCaseApiMock.mockReturnValue(api);
-    api.getCaseByIdRespondentAndClaimantNames = jest.fn().mockResolvedValueOnce(null);
+    api.getCaseByApplicationRequest = jest.fn().mockResolvedValueOnce(null);
     const errors = [{ propertyName: 'hiddenErrorField', errorType: 'api' }];
     await new SelfAssignmentFormController().post(request, response);
     expect(request.session.errors).toEqual(errors);
