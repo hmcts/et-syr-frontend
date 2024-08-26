@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 
 import { CaseApiDataResponse } from '../../../main/definitions/api/caseApiResponse';
 import { CaseType, CaseWithId, YesOrNo } from '../../../main/definitions/case';
+import { ServiceErrors } from '../../../main/definitions/constants';
 import { CaseState } from '../../../main/definitions/definition';
 import {
   getRedirectUrl,
@@ -11,6 +12,7 @@ import {
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
 import { mockApplications } from '../mocks/mockApplications';
+import { mockAxiosError } from '../mocks/mockAxios';
 import { mockValidCaseWithId } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockEnglishClaimTypesTranslations } from '../mocks/mockTranslations';
@@ -108,16 +110,14 @@ describe('Get user cases by last modified date tests', () => {
   });
 
   test('Should throw axios error', async () => {
-    const response = {
-      data: [{ invalidData: 1234 }],
-      status: 500,
-      statusText: '',
-    };
-    const caseApi = new CaseApi(axios as jest.Mocked<typeof axios>);
-    getCaseApiClientMock.mockReturnValue(caseApi);
-    caseApi.getUserCases = jest.fn().mockResolvedValue(response);
+    const mockedAxios = axios as jest.Mocked<typeof axios>;
+    mockedAxios.get.mockImplementation(() => {
+      throw mockAxiosError('TEST', ServiceErrors.ERROR_CASE_NOT_FOUND, 404);
+    });
+    const api = new CaseApi(mockedAxios);
+    getCaseApiClientMock.mockReturnValue(api);
     await expect(getUserCasesByLastModified(req)).rejects.toEqual(
-      new TypeError("Cannot read properties of undefined (reading 'substring')")
+      new Error(ServiceErrors.ERROR_GETTING_USER_CASES + ServiceErrors.ERROR_CASE_NOT_FOUND)
     );
   });
 });
