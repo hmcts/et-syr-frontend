@@ -17,7 +17,7 @@ export default class ErrorUtils {
     throw err;
   }
 
-  public static setManuelErrorToRequestSession = (
+  public static readonly setManuelErrorToRequestSession = (
     request: AppRequest,
     errorType: string,
     propertyName: string

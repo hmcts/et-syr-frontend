@@ -16,7 +16,9 @@ export default class SelfAssignmentFormControllerHelper {
    *                  firstName First Name of the claimant entered to the form by respondent.
    *                  lastName Last name of the claimant entered to the form by respondent.
    */
-  public static generateBasicUserCaseBySelfAssignmentFormData = (formData: Partial<CaseWithId>): CaseWithId => {
+  public static readonly generateBasicUserCaseBySelfAssignmentFormData = (
+    formData: Partial<CaseWithId>
+  ): CaseWithId => {
     return <CaseWithId>{
       createdDate: DefaultValues.STRING_EMPTY,
       lastModified: DefaultValues.STRING_EMPTY,
@@ -34,7 +36,7 @@ export default class SelfAssignmentFormControllerHelper {
    * @param req request object to set session's userCase respondent name value.
    * @param caseData CaseApiData response that has respondent name.
    */
-  public static setRespondentName = (req: AppRequest, caseData: CaseApiDataResponse): void => {
+  public static readonly setRespondentName = (req: AppRequest, caseData: CaseApiDataResponse): void => {
     if (req.session.userCase) {
       if (caseData?.case_data?.respondentCollection) {
         caseData?.case_data?.respondentCollection.forEach(respondent => {

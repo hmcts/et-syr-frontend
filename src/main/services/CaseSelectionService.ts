@@ -23,7 +23,7 @@ export const getRedirectUrl = (userCase: CaseWithId, languageParam: string): str
 
 export const getUserCasesByLastModified = async (req: AppRequest): Promise<CaseWithId[]> => {
   const cases = await getCaseApi(req.session.user?.accessToken).getUserCases();
-  if (!cases || !cases.data || cases.data.length === 0) {
+  if (cases?.data?.length === 0) {
     return [];
   } else {
     logger.info(`Retrieving cases for ${req.session.user?.id}`);
