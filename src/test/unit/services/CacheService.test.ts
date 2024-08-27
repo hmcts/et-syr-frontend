@@ -3,9 +3,9 @@ import { randomUUID } from 'crypto';
 import redis from 'redis-mock';
 
 import { CaseDataCacheKey, CaseType, YesOrNo } from '../../../main/definitions/case';
-import { RedisErrors } from '../../../main/definitions/constants';
+import { CacheErrors, RedisErrors } from '../../../main/definitions/constants';
 import { TypesOfClaim } from '../../../main/definitions/definition';
-import { cachePreloginCaseData, getPreloginCaseData } from '../../../main/services/CacheService';
+import { cachePreLoginCaseData, generatePreLoginUrl, getPreloginCaseData } from '../../../main/services/CacheService';
 
 const redisClient = redis.createClient();
 const uuid = 'f0d62bc6-5c7b-4ac1-98d2-c745a2df79b8';
@@ -47,7 +47,7 @@ describe('Cache Types of Claim to Redis', () => {
     mockedRandomUUID.mockImplementation(() => uuid);
     jest.spyOn(redisClient, 'set');
 
-    cachePreloginCaseData(redisClient, cacheMap);
+    cachePreLoginCaseData(redisClient, cacheMap);
     expect(redisClient.set).toHaveBeenCalledWith(uuid, JSON.stringify(Array.from(cacheMap.entries())));
   });
 
@@ -56,6 +56,46 @@ describe('Cache Types of Claim to Redis', () => {
     jest.spyOn(redisClient, 'set');
     jest.spyOn(redisClient, 'set');
 
-    expect(cachePreloginCaseData(redisClient, cacheMap)).toBe(uuid);
+    expect(cachePreLoginCaseData(redisClient, cacheMap)).toBe(uuid);
+  });
+});
+
+describe('Generate pre login url', () => {
+  const host: string = 'localhost';
+  const port: string = ':8080';
+  const url: string = '/test-url';
+  const expectedPreLoginUrl = 'https://localhost:8080/test-url';
+  it('should generate pre login url', () => {
+    expect(generatePreLoginUrl(host, port, url)).toEqual(expectedPreLoginUrl);
+  });
+
+  it('should throw error when host is empty', async () => {
+    let caughtError;
+    try {
+      generatePreLoginUrl(undefined, port, url);
+    } catch (error) {
+      caughtError = error;
+    }
+    expect(caughtError).toEqual(new Error(CacheErrors.ERROR_HOST_NOT_FOUND_FOR_PRE_LOGIN_URL));
+  });
+
+  it('should throw error when port is empty', async () => {
+    let caughtError;
+    try {
+      generatePreLoginUrl(host, undefined, url);
+    } catch (error) {
+      caughtError = error;
+    }
+    expect(caughtError).toEqual(new Error(CacheErrors.ERROR_PORT_NOT_FOUND_FOR_PRE_LOGIN_URL));
+  });
+
+  it('should throw error when url is empty', async () => {
+    let caughtError;
+    try {
+      generatePreLoginUrl(host, port, undefined);
+    } catch (error) {
+      caughtError = error;
+    }
+    expect(caughtError).toEqual(new Error(CacheErrors.ERROR_URL_NOT_FOUND_FOR_PRE_LOGIN_URL));
   });
 });

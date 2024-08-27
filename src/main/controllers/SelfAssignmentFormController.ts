@@ -2,15 +2,16 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId } from '../definitions/case';
-import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
-import { fromApiFormat } from '../helpers/ApiFormatter';
+import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { assignFormData } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
+import SelfAssignmentFormControllerHelper from '../helpers/controller/SelfAssignmentFormControllerHelper';
 import { getCaseApi } from '../services/CaseService';
+import ErrorUtils from '../utils/ErrorUtils';
 import { isValidCaseReferenceId } from '../validators/numeric-validator';
 import { isFieldFilledIn } from '../validators/validator';
 
@@ -19,39 +20,39 @@ export default class SelfAssignmentFormController {
   private readonly caseReferenceIdContent: FormContent = {
     fields: {
       id: {
-        id: 'caseReferenceId',
-        name: 'caseReferenceId',
+        id: FormFieldNames.SELF_ASSIGNMENT_FORM_FIELDS.CASE_REFERENCE_ID,
+        name: FormFieldNames.SELF_ASSIGNMENT_FORM_FIELDS.CASE_REFERENCE_ID,
         type: 'text',
         classes: 'govuk-!-width-one-half',
         validator: isValidCaseReferenceId,
         label: (l: AnyRecord): string => l.caseReferenceId,
       },
       respondentName: {
-        id: 'respondentName',
-        name: 'respondentName',
+        id: FormFieldNames.SELF_ASSIGNMENT_FORM_FIELDS.RESPONDENT_NAME,
+        name: FormFieldNames.SELF_ASSIGNMENT_FORM_FIELDS.RESPONDENT_NAME,
         type: 'text',
         classes: 'govuk-!-width-one-half',
         validator: isFieldFilledIn,
         label: (l: AnyRecord): string => l.respondentName,
       },
       firstName: {
-        id: 'claimantFirstName',
-        name: 'claimantFirstName',
+        id: FormFieldNames.SELF_ASSIGNMENT_FORM_FIELDS.CLAIMANT_FIRST_NAME,
+        name: FormFieldNames.SELF_ASSIGNMENT_FORM_FIELDS.CLAIMANT_FIRST_NAME,
         type: 'text',
         classes: 'govuk-!-width-one-half',
         validator: isFieldFilledIn,
         label: (l: AnyRecord): string => l.claimantFirstName,
       },
       lastName: {
-        id: 'claimantLastName',
-        name: 'claimantLastName',
+        id: FormFieldNames.SELF_ASSIGNMENT_FORM_FIELDS.CLAIMANT_LAST_NAME,
+        name: FormFieldNames.SELF_ASSIGNMENT_FORM_FIELDS.CLAIMANT_LAST_NAME,
         type: 'text',
         classes: 'govuk-!-width-one-half',
         validator: isFieldFilledIn,
         label: (l: AnyRecord): string => l.claimantLastName,
       },
       hiddenErrorField: {
-        id: 'hiddenErrorField',
+        id: FormFieldNames.SELF_ASSIGNMENT_FORM_FIELDS.HIDDEN_ERROR_FIELD,
         type: 'text',
         hidden: true,
       },
@@ -65,43 +66,30 @@ export default class SelfAssignmentFormController {
     this.form = new Form(<FormFields>this.caseReferenceIdContent.fields);
   }
 
+  /**
+   * Checks all the input values of the SelfAssignmentFormController. If any of the field is not entered returns
+   * validator error. It also returns validation error when id value doesn't match with the regex values of
+   * /^[0-9]{16}$/ and /^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$/
+   * @param req Request value of the session.
+   * @param res Response value of the session.
+   */
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
     req.session.errors = [];
-    req.session.userCase = <CaseWithId>{
-      createdDate: '',
-      lastModified: '',
-      state: undefined,
-      id: formData.id,
-      respondentName: formData.respondentName,
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-    };
+    req.session.userCase = SelfAssignmentFormControllerHelper.generateBasicUserCaseBySelfAssignmentFormData(formData);
     const errors = this.form.getValidatorErrors(formData);
     if (errors.length === 0) {
-      let caseReferenceId: string = req.session.userCase.id;
-      if (caseReferenceId) {
-        caseReferenceId = caseReferenceId.replace('-', '');
-      }
-      const caseData = (
-        await getCaseApi(req.session.user?.accessToken)?.getCaseByIdRespondentAndClaimantNames(
-          caseReferenceId,
-          formData.respondentName,
-          formData.firstName,
-          formData.lastName
-        )
-      )?.data;
+      const caseData = (await getCaseApi(req.session.user?.accessToken)?.getCaseByApplicationRequest(req))?.data;
       if (caseData) {
-        req.session.userCase = fromApiFormat(caseData);
-        if (req.session.userCase) {
-          if (caseData?.case_data?.respondentCollection) {
-            req.session.userCase.respondentName = caseData?.case_data?.respondentCollection[0]?.value.respondent_name;
-          }
-        }
+        req.session.userCase = formatApiCaseDataToCaseWithId(caseData);
+        SelfAssignmentFormControllerHelper.setRespondentName(req, caseData);
         return res.redirect(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK));
       }
-      errors.push({ errorType: 'api', propertyName: 'hiddenErrorField' });
-      req.session.errors = errors;
+      ErrorUtils.setManualErrorToRequestSession(
+        req,
+        ValidationErrors.API,
+        FormFieldNames.SELF_ASSIGNMENT_FORM_FIELDS.HIDDEN_ERROR_FIELD
+      );
       return res.redirect(req.url);
     } else {
       req.session.errors = errors;

@@ -2,9 +2,11 @@ import axiosService, { AxiosInstance, AxiosResponse } from 'axios';
 import config from 'config';
 
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
+import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { JavaApiUrls } from '../definitions/constants';
+import { DefaultValues, JavaApiUrls, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { toApiFormat } from '../helpers/ApiFormatter';
+import ErrorUtils from '../utils/ErrorUtils';
 
 import { axiosErrorDetails } from './AxiosErrorAdapter';
 
@@ -15,7 +17,7 @@ export class CaseApi {
     try {
       return await this.axios.put(JavaApiUrls.UPDATE_CASE_DRAFT, toApiFormat(caseItem));
     } catch (error) {
-      throw new Error('Error updating draft case: ' + axiosErrorDetails(error));
+      throw new Error(ServiceErrors.ERROR_UPDATING_DRAFT_CASE + axiosErrorDetails(error));
     }
   };
 
@@ -30,22 +32,42 @@ export class CaseApi {
       throw new Error('Error updating hub links statuses: ' + axiosErrorDetails(error));
     }
   };
-
-  getCaseByIdRespondentAndClaimantNames = async (
-    caseSubmissionReference: string,
-    respondentName: string,
-    claimantFirstNames: string,
-    claimantLastName: string
-  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
-    try {
-      return await this.axios.post(JavaApiUrls.FIND_CASE_FOR_ROLE_MODIFICATION, {
-        caseSubmissionReference,
-        respondentName,
-        claimantFirstNames,
-        claimantLastName,
-      });
-    } catch (error) {
-      throw new Error('Error getting user case: ' + axiosErrorDetails(error));
+  /**
+   * Retrieves case data by userCase value of the session(req.session.userCase).
+   * throws an exception when there is no value of userCase in the session.
+   * @param request receives userCase from request object's session field. Fields that we use from userCase are:
+   *                id Case id, usually referred as case submission reference entered to the form by respondent.
+   *                id value can be only 16 digit decimal or 16 digit divided by dash like 1234-5678-1234-5678.
+   *                If it is divided by dash, this method automatically removes dash values with empty string.
+   *                respondentName Name of the respondent entered to the form by respondent.
+   *                firstName First Name of the claimant entered to the form by respondent.
+   *                lastName Last name of the claimant entered to the form by respondent.
+   */
+  getCaseByApplicationRequest = async (request: AppRequest): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    if (request.session.userCase) {
+      try {
+        const caseWithId: CaseWithId = request.session.userCase;
+        let caseSubmissionReference = caseWithId.id;
+        if (caseSubmissionReference?.includes(DefaultValues.STRING_DASH)) {
+          caseSubmissionReference = caseSubmissionReference.replace(
+            DefaultValues.STRING_DASH,
+            DefaultValues.STRING_EMPTY
+          );
+        }
+        return await this.axios.post(JavaApiUrls.FIND_CASE_FOR_ROLE_MODIFICATION, {
+          caseSubmissionReference,
+          respondentName: caseWithId.respondentName,
+          claimantFirstNames: caseWithId.firstName,
+          claimantLastName: caseWithId.lastName,
+        });
+      } catch (error) {
+        throw new Error(ServiceErrors.ERROR_GETTING_USER_CASE + axiosErrorDetails(error));
+      }
+    } else {
+      ErrorUtils.throwManualError(
+        SessionErrors.ERROR_FAILED_TO_RETRIEVE_USER_CASE_FROM_REQUEST_SESSION,
+        SessionErrors.ERROR_NAME_DATA_NOT_FOUND
+      );
     }
   };
 
@@ -55,7 +77,7 @@ export class CaseApi {
         case_users: [{ case_id: caseId, user_id: userId, case_role: caseRole }],
       });
     } catch (error) {
-      throw new Error('Error getting user case: ' + axiosErrorDetails(error));
+      throw new Error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + axiosErrorDetails(error));
     }
   };
 

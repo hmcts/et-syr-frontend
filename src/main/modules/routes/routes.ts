@@ -6,6 +6,7 @@ import { Application } from 'express';
 import ChecklistController from '../../controllers/ChecklistController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import HomeController from '../../controllers/HomeController';
+import RespondentCaseListCheckController from '../../controllers/RespondentCaseListCheckController';
 import RespondentRepliesController from '../../controllers/RespondentRepliesController';
 import RespondentResponseLandingController from '../../controllers/RespondentResponseLandingController';
 import RespondentResponseTaskListController from '../../controllers/RespondentResponseTaskListController';
@@ -19,6 +20,7 @@ export class Routes {
   public enableFor(app: Application): void {
     app.get(PageUrls.HOME, new HomeController().get);
     app.get(PageUrls.CHECKLIST, new ChecklistController().get);
+    app.get(PageUrls.RESPONDENT_CASE_LIST_CHECK, new RespondentCaseListCheckController().get);
     app.get(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().get);
     app.post(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().post);
     app.get(PageUrls.SELF_ASSIGNMENT_CHECK, new SelfAssignmentCheckController().get);

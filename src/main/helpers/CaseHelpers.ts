@@ -4,7 +4,7 @@ import localesCy from '../resources/locales/cy/translation/common.json';
 import locales from '../resources/locales/en/translation/common.json';
 import { getCaseApi } from '../services/CaseService';
 
-import { fromApiFormat } from './ApiFormatter';
+import { formatApiCaseDataToCaseWithId } from './ApiFormatter';
 
 // Used for invoking PCQ survey.
 export const handleUpdateDraftCase = async (req: AppRequest, logger: Logger): Promise<void> => {
@@ -21,7 +21,7 @@ export const handleUpdateDraftCase = async (req: AppRequest, logger: Logger): Pr
       const workAddressTypes = req.session.userCase.workAddressTypes;
       const respondentAddressTypes = req.session.userCase.respondentAddressTypes;
       const addressAddressTypes = req.session.userCase.addressAddressTypes;
-      req.session.userCase = fromApiFormat(response.data);
+      req.session.userCase = formatApiCaseDataToCaseWithId(response.data);
       if (req.session.userCase.workEnterPostcode === undefined) {
         req.session.userCase.workEnterPostcode = workEnterPostcode;
       }
