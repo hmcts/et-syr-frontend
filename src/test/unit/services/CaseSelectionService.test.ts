@@ -68,7 +68,7 @@ describe('Get user cases by last modified date tests', () => {
         },
         {
           id: '122345',
-          state: CaseState.AWAITING_SUBMISSION_TO_HMCTS,
+          state: CaseState.ACCEPTED,
           last_modified: '2019-02-13T14:25:39.015',
           created_date: '2019-02-12T14:25:39.015',
           case_data: {
