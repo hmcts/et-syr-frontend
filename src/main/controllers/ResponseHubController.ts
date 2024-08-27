@@ -4,7 +4,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { HubLinkStatus, HubLinksStatuses, sectionIndexToLinkNames, statusColorMap } from '../definitions/hub';
 import { AnyRecord } from '../definitions/util-types';
-import { formatDate, fromApiFormat, getDueDate } from '../helpers/ApiFormatter';
+import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
 import { handleUpdateHubLinksStatuses } from '../helpers/CaseHelpers';
 import {
   getClaimantAppsAndUpdateStatusTag,
@@ -27,7 +27,7 @@ export default class ResponseHubController {
     const respondToClaimUrl = setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_LANDING);
 
     try {
-      req.session.userCase = fromApiFormat(
+      req.session.userCase = formatApiCaseDataToCaseWithId(
         (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseId)).data
       );
     } catch (error) {

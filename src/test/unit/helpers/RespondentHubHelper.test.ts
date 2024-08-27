@@ -1,21 +1,21 @@
-import { CaseWithId } from '../../../../main/definitions/case';
-import { PageUrls, languages } from '../../../../main/definitions/constants';
-import { HubLinkNames, HubLinkStatus } from '../../../../main/definitions/hub';
+import { CaseWithId } from '../../../main/definitions/case';
+import { PageUrls, languages } from '../../../main/definitions/constants';
+import { HubLinkNames, HubLinkStatus } from '../../../main/definitions/hub';
 import {
   StatusesInOrderOfUrgency,
   getHubLinksUrlMap,
   shouldHubLinkBeClickable,
   updateYourApplicationsStatusTag,
-} from '../../../../main/helpers/ResponseHubHelper';
-import mockUserCaseWithoutTseApp from '../../../../main/resources/mocks/mockUserCaseWithoutTseApp';
+} from '../../../main/helpers/ResponseHubHelper';
+import mockUserCaseWithoutTseApp from '../../../main/resources/mocks/mockUserCaseWithoutTseApp';
 import {
   mockTseAdminClaimantRespondNotViewed,
   mockTseAdminClaimantRespondWaitingForTrib,
   mockTseRespondentRespondsToAdminRequestNotViewed,
   mockTseRespondentRespondsToAdminRequestWaitingForTrib,
-} from '../../mocks/mockGenericTseCollection';
-import mockUserCase from '../../mocks/mockUserCase';
-import { clone } from '../../test-helpers/clone';
+} from '../mocks/mockGenericTseCollection';
+import mockUserCase from '../mocks/mockUserCase';
+import { clone } from '../test-helpers/clone';
 
 describe('shouldHubLinkBeClickable', () => {
   it('should not be clickable if not yet available', () => {

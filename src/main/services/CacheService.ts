@@ -3,7 +3,21 @@ import { randomUUID } from 'crypto';
 import { RedisClient } from 'redis';
 
 import { CaseDataCacheKey } from '../definitions/case';
-import { RedisErrors } from '../definitions/constants';
+import { CacheErrors, HTTPS_PROTOCOL, RedisErrors } from '../definitions/constants';
+import StringUtils from '../utils/StringUtils';
+
+export const generatePreLoginUrl = (host: string, port: string, url: string): string => {
+  if (StringUtils.isBlank(host)) {
+    throw new Error(CacheErrors.ERROR_HOST_NOT_FOUND_FOR_PRE_LOGIN_URL);
+  }
+  if (StringUtils.isBlank(port)) {
+    throw new Error(CacheErrors.ERROR_PORT_NOT_FOUND_FOR_PRE_LOGIN_URL);
+  }
+  if (StringUtils.isBlank(url)) {
+    throw new Error(CacheErrors.ERROR_URL_NOT_FOUND_FOR_PRE_LOGIN_URL);
+  }
+  return HTTPS_PROTOCOL + host + port + url;
+};
 
 export const cachePreLoginUrl = (redisClient: RedisClient, preLoginUrl: string): string => {
   const guid = randomUUID();
@@ -11,7 +25,7 @@ export const cachePreLoginUrl = (redisClient: RedisClient, preLoginUrl: string):
   return guid;
 };
 
-export const cachePreloginCaseData = (redisClient: RedisClient, cacheMap: Map<CaseDataCacheKey, string>): string => {
+export const cachePreLoginCaseData = (redisClient: RedisClient, cacheMap: Map<CaseDataCacheKey, string>): string => {
   const guid = randomUUID();
   redisClient.set(guid, JSON.stringify(Array.from(cacheMap.entries())));
   return guid;

@@ -17,7 +17,7 @@ interface Section {
   links: Link[];
 }
 
-describe('Respondent Response Task List Controller', () => {
+describe('Respondent Response Task List controller', () => {
   const mockLdClient = jest.spyOn(LaunchDarkly, 'getFlagValue');
   const mockWelshFlag = jest.spyOn(LaunchDarkly, 'getFlagValue');
 

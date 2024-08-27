@@ -80,7 +80,7 @@ export function toApiFormatCreate(
   return caseBody;
 }
 
-export function fromApiFormat(fromApiCaseData: CaseApiDataResponse, req?: AppRequest): CaseWithId {
+export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataResponse, req?: AppRequest): CaseWithId {
   return {
     id: fromApiCaseData.id,
     ClaimantPcqId: fromApiCaseData.case_data?.ClaimantPcqId,

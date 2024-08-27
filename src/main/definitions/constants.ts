@@ -20,6 +20,7 @@ export const LegacyUrls = {
 
 export const TranslationKeys = {
   COMMON: 'common',
+  WELSH_ENABLED: 'welsh-language',
   HOME: 'home',
   CHECKLIST: 'checklist',
   COOKIE_PREFERENCES: 'cookie-preferences',
@@ -40,9 +41,11 @@ export const TranslationKeys = {
 } as const;
 
 export const PageUrls = {
+  NOT_IMPLEMENTED: '#',
   HOME: '/',
   CHECKLIST: '/checklist',
   SELF_ASSIGNMENT_FORM: '/self-assignment-form',
+  RESPONDENT_CASE_LIST_CHECK: '/respondent-case-list-check',
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
   RESPONDENT_REPLIES: '/respondent-replies',
   RESPONSE_HUB: '/response-hub/:caseId',
@@ -78,6 +81,7 @@ export const ErrorPages = {
 export const ValidationErrors = {
   REQUIRED: 'required',
   INVALID_VALUE: 'invalid',
+  API: 'api',
 } as const;
 
 export const AuthUrls = {
@@ -320,6 +324,8 @@ export const FEATURE_FLAGS = {
 
 export const SessionErrors = {
   ERROR_DESTROYING_SESSION: 'Error destroying session',
+  ERROR_FAILED_TO_RETRIEVE_USER_CASE_FROM_REQUEST_SESSION: 'User case not found in the request session',
+  ERROR_NAME_DATA_NOT_FOUND: 'Data not found in the session',
 } as const;
 export const GenericTestConstants = {
   TRUE: true,
@@ -347,4 +353,31 @@ export const AuthorisationTestConstants = {
 } as const;
 export const CallbackTestConstants = {
   REDIS_ERROR: 'redisError',
+};
+export const DefaultValues = {
+  STRING_EMPTY: '',
+  STRING_DASH: '-',
+};
+export const FormFieldNames = {
+  SELF_ASSIGNMENT_FORM_FIELDS: {
+    CASE_REFERENCE_ID: 'caseReferenceId',
+    RESPONDENT_NAME: 'respondentName',
+    CLAIMANT_FIRST_NAME: 'claimantFirstName',
+    CLAIMANT_LAST_NAME: 'claimantLastName',
+    HIDDEN_ERROR_FIELD: 'hiddenErrorField',
+  },
+};
+export const ServiceErrors = {
+  ERROR_UPDATING_DRAFT_CASE: 'Error updating draft case: ',
+  ERROR_CASE_NOT_FOUND: 'Case Not Found',
+  ERROR_UPDATING_HUB_LINKS_STATUSES: 'Error updating hub links statuses: ',
+  ERROR_GETTING_USER_CASE: 'Error getting user case: ',
+  ERROR_GETTING_USER_CASES: 'Error getting user cases: ',
+  ERROR_ASSIGNING_USER_ROLE: 'Error assigning user role: ',
+  ERROR_DUMMY_DATA: 'Dummy data error',
+};
+export const CacheErrors = {
+  ERROR_HOST_NOT_FOUND_FOR_PRE_LOGIN_URL: 'Host not found for pre login url',
+  ERROR_PORT_NOT_FOUND_FOR_PRE_LOGIN_URL: 'Port not found for pre login url',
+  ERROR_URL_NOT_FOUND_FOR_PRE_LOGIN_URL: 'Url not found for pre login url',
 };

@@ -4,7 +4,7 @@ import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
-describe('Respondent Response Landing Controller', () => {
+describe('Respondent Response Landing controller', () => {
   const mockLdClient = jest.spyOn(LaunchDarkly, 'getFlagValue');
   mockLdClient.mockResolvedValue(true);
   it('should render the Respondent Response Landing for ET3', async () => {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Application, NextFunction, Response } from 'express';
+import { Application, Response } from 'express';
 import redis from 'redis-mock';
 
 import * as authIndex from '../../../main/auth/index';
@@ -26,10 +26,8 @@ const welshGuidParam = '-cy';
 describe('Test responds to /oauth2/callback', function () {
   let req: AppRequest;
   let res: Response;
-  let next: NextFunction;
 
   beforeAll(() => {
-    next = jest.fn();
     req = mockRequest({});
     res = mockResponse();
 
@@ -53,12 +51,12 @@ describe('Test responds to /oauth2/callback', function () {
   test('Should redirect to Claimant applications page in English language if an existing user who had selected English logs in', async () => {
     req.query = { code: 'testCode', state: existingUser + englishGuidParam };
     // jest.spyOn(redisClient, 'get').mockReturnValue('');
-    await expect(idamCallbackHandler(req, res, next, serviceUrl)).resolves.toEqual(undefined);
+    await expect(idamCallbackHandler(req, res, serviceUrl)).resolves.toEqual(undefined);
   });
 
   test('Should redirect to Claimant applications page in Welsh language if an existing user who had selected Welsh logs in', async () => {
     req.query = { code: 'testCode', state: existingUser + welshGuidParam };
 
-    await expect(idamCallbackHandler(req, res, next, serviceUrl)).resolves.toEqual(undefined);
+    await expect(idamCallbackHandler(req, res, serviceUrl)).resolves.toEqual(undefined);
   });
 });
