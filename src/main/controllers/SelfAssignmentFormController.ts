@@ -85,7 +85,7 @@ export default class SelfAssignmentFormController {
         SelfAssignmentFormControllerHelper.setRespondentName(req, caseData);
         return res.redirect(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK));
       }
-      ErrorUtils.setManuelErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSession(
         req,
         ValidationErrors.API,
         FormFieldNames.SELF_ASSIGNMENT_FORM_FIELDS.HIDDEN_ERROR_FIELD

@@ -28,7 +28,7 @@ export class Oidc {
     app.get(PageUrls.RESPONSE_HUB, (req: AppRequest, res: Response, next: NextFunction) => {
       const redisClient = req.app.locals?.redisClient;
       if (!redisClient) {
-        return ErrorUtils.throwManuelError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
+        return ErrorUtils.throwManualError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
       } else {
         try {
           const preLoginUrl = generatePreLoginUrl(res.locals.host, port, req.url);
@@ -46,7 +46,7 @@ export class Oidc {
     app.get(PageUrls.RESPONDENT_CASE_LIST_CHECK, (req: AppRequest, res: Response, next: NextFunction) => {
       const redisClient = req.app.locals?.redisClient;
       if (!redisClient) {
-        return ErrorUtils.throwManuelError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
+        return ErrorUtils.throwManualError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
       } else {
         try {
           req.session.guid = cachePreLoginUrl(
@@ -99,7 +99,7 @@ export class Oidc {
 export const idamCallbackHandler = async (req: AppRequest, res: Response, serviceUrl: string): Promise<void> => {
   const redisClient = req.app.locals?.redisClient;
   if (!redisClient) {
-    return ErrorUtils.throwManuelError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
+    return ErrorUtils.throwManualError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
   }
   if (typeof req.query.code === 'string' && typeof req.query.state === 'string') {
     req.session.user = await getUserDetails(serviceUrl, req.query.code, AuthUrls.CALLBACK);

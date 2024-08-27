@@ -19,7 +19,7 @@ describe('ErrorUtils tests', () => {
     const errorName = 'Test error name';
     let caughtError = undefined;
     try {
-      ErrorUtils.throwManuelError(message, errorName);
+      ErrorUtils.throwManualError(message, errorName);
     } catch (error) {
       caughtError = error;
     }
@@ -29,7 +29,7 @@ describe('ErrorUtils tests', () => {
     const errorType = ValidationErrors.API;
     const propertyName = 'hiddenErrorField';
     const request = mockRequest({});
-    ErrorUtils.setManuelErrorToRequestSession(request, errorType, propertyName);
+    ErrorUtils.setManualErrorToRequestSession(request, errorType, propertyName);
     expect(request.session.errors).toStrictEqual([{ errorType, propertyName }]);
   });
 });

@@ -64,7 +64,7 @@ export class CaseApi {
         throw new Error(ServiceErrors.ERROR_GETTING_USER_CASE + axiosErrorDetails(error));
       }
     } else {
-      ErrorUtils.throwManuelError(
+      ErrorUtils.throwManualError(
         SessionErrors.ERROR_FAILED_TO_RETRIEVE_USER_CASE_FROM_REQUEST_SESSION,
         SessionErrors.ERROR_NAME_DATA_NOT_FOUND
       );

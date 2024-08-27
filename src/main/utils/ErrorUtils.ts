@@ -11,13 +11,13 @@ export default class ErrorUtils {
     throw error;
   }
 
-  public static throwManuelError(message: string, name: string): void {
+  public static throwManualError(message: string, name: string): void {
     const err = new Error(message);
     err.name = name;
     throw err;
   }
 
-  public static readonly setManuelErrorToRequestSession = (
+  public static readonly setManualErrorToRequestSession = (
     request: AppRequest,
     errorType: string,
     propertyName: string
