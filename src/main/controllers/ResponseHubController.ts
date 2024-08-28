@@ -23,14 +23,9 @@ const DAYS_FOR_PROCESSING = 7;
 export default class ResponseHubController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue('welsh-language', null);
-    try {
-      req.session.userCase = formatApiCaseDataToCaseWithId(
-        (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseId)).data
-      );
-    } catch (error) {
-      logger.error(error.message);
-      return res.redirect('/not-found');
-    }
+    req.session.userCase = formatApiCaseDataToCaseWithId(
+      (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseId)).data
+    );
     const userCase = req.session.userCase;
     if (!userCase.hubLinksStatuses || userCase.hubLinksStatuses['documents'] === HubLinkStatus.NOT_YET_AVAILABLE) {
       userCase.hubLinksStatuses = new HubLinksStatuses();
