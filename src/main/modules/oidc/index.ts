@@ -32,7 +32,7 @@ export class Oidc {
         return ErrorUtils.throwManualError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
       } else {
         try {
-          const preLoginUrl = generatePreLoginUrl(res.locals.host, port, req.url);
+          const preLoginUrl = generatePreLoginUrl(res.locals.host, port, req.url, app.locals.developmentMode);
           req.session.guid = cachePreLoginUrl(redisClient, preLoginUrl);
         } catch (err) {
           logger.error('Unable to cache pre login URL' + err.message);
