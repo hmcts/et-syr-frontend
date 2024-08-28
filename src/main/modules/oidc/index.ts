@@ -35,7 +35,7 @@ export class Oidc {
           const preLoginUrl = generatePreLoginUrl(res.locals.host, port, req.url);
           req.session.guid = cachePreLoginUrl(redisClient, preLoginUrl);
         } catch (err) {
-          logger.error('Unable to cache pre login URL');
+          logger.error('Unable to cache pre login URL' + err.message);
           return ErrorUtils.throwError(err, RedisErrors.FAILED_TO_SAVE);
         }
       }
