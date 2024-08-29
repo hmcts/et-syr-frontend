@@ -6,6 +6,7 @@ import { Application } from 'express';
 import ChecklistController from '../../controllers/ChecklistController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import HomeController from '../../controllers/HomeController';
+import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
 import RespondentCaseListCheckController from '../../controllers/RespondentCaseListCheckController';
 import RespondentRepliesController from '../../controllers/RespondentRepliesController';
 import RespondentResponseLandingController from '../../controllers/RespondentResponseLandingController';
@@ -30,6 +31,7 @@ export class Routes {
     app.get(PageUrls.COOKIE_PREFERENCES, new CookiePreferencesController().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_LANDING, new RespondentResponseLandingController().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_TASK_LIST, new RespondentResponseTaskListController().get);
+    app.get(PageUrls.NEW_SELF_ASSIGNMENT_REQUEST, new NewSelfAssignmentRequestController().get);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,

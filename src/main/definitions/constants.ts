@@ -47,6 +47,7 @@ export const PageUrls = {
   COOKIE_PREFERENCES: '/cookies',
   RESPONDENT_RESPONSE_LANDING: '/respondent-response-landing',
   RESPONDENT_RESPONSE_TASK_LIST: '/respondent-response-task-list',
+  NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
 } as const;
 
 export const InterceptPaths = {
