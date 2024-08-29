@@ -103,9 +103,6 @@ export default class SelfAssignmentFormController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    if (req.url?.toString().includes('isNew')) {
-      req.session.userCase = undefined;
-    }
     const redirectUrl = setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_FORM);
     const caseReferenceIdContentForm = this.caseReferenceIdContent;
     assignFormData(req.session.userCase, this.form.getFormFields());
