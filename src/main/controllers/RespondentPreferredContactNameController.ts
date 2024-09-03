@@ -2,38 +2,26 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { isOptionSelected } from '../validators/validator';
+import { isNameValid } from '../validators/validator';
 
-export default class RespondentAddressController {
+export default class RespondentPreferredContactNameController {
   private readonly form: Form;
-  private readonly respondentAddressContent: FormContent = {
+  private readonly respondentPreferredContactNameContent: FormContent = {
     fields: {
-      respondentAddress: {
-        classes: 'govuk-radios--inline',
-        id: 'respondentAddress',
-        type: 'radios',
-        label: (l: AnyRecord): string => l.correctAddressQuestion,
-        labelHidden: false,
-        values: [
-          {
-            name: 'respondentAddress',
-            label: (l: AnyRecord): string => l.yes,
-            value: YesOrNo.YES,
-          },
-          {
-            name: 'respondentAddress',
-            label: (l: AnyRecord): string => l.no,
-            value: YesOrNo.NO,
-          },
-        ],
-        validator: isOptionSelected,
+      respondentPreferredContactName: {
+        id: 'respondentPreferredContactName',
+        name: 'respondentPreferredContactName',
+        type: 'text',
+        hint: (l: AnyRecord): string => l.respondentPreferredContactName,
+        classes: 'govuk-text',
+        attributes: { maxLength: 100 },
+        validator: isNameValid,
       },
     },
     submit: submitButton,
@@ -41,7 +29,7 @@ export default class RespondentAddressController {
   } as never;
 
   constructor() {
-    this.form = new Form(<FormFields>this.respondentAddressContent.fields);
+    this.form = new Form(<FormFields>this.respondentPreferredContactNameContent.fields);
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
@@ -52,24 +40,23 @@ export default class RespondentAddressController {
       return res.redirect(req.url);
     }
 
-    return res.redirect(PageUrls.RESPONDENT_ENTER_POST_CODE);
+    return res.redirect(PageUrls.RESPONDENT_DX_ADDRESS);
   };
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
-    const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ADDRESS);
-    const respondentAddressContent = this.respondentAddressContent;
-    const userCase = req.session.userCase;
+    const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME);
+    const respondentPreferredContactNameContent = this.respondentPreferredContactNameContent;
 
-    res.render(TranslationKeys.RESPONDENT_ADDRESS, {
+    res.render(TranslationKeys.RESPONDENT_PREFERRED_CONTACT_NAME, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.RESPONDENT_ADDRESS as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.RESPONDENT_PREFERRED_CONTACT_NAME as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,
-      hideContactUs: true,
-      form: respondentAddressContent,
-      userCase,
       redirectUrl,
+      hideContactUs: true,
       languageParam: getLanguageParam(req.url),
+      form: respondentPreferredContactNameContent,
+      userCase: req.session?.userCase,
       sessionErrors: req.session.errors,
     });
   };

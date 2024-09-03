@@ -1,95 +1,98 @@
 import RespondentAddressController from '../../../main/controllers/RespondentAddressController';
 import { YesOrNo } from '../../../main/definitions/case';
-import { TranslationKeys } from '../../../main/definitions/constants';
-import { getFlagValue } from '../../../main/modules/featureFlag/launchDarkly';
-import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
+import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { saveForLaterButton, submitButton } from '../../../main/definitions/radios';
+import { isOptionSelected } from '../../../main/validators/validator';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
-jest.mock('../../../main/modules/featureFlag/launchDarkly');
-
 describe('RespondentAddressController', () => {
   let controller: RespondentAddressController;
-  let response: ReturnType<typeof mockResponse>;
-  let request: ReturnType<typeof mockRequest>;
-  const mockWelshFlag = jest.spyOn(LaunchDarkly, 'getFlagValue');
+  let req: ReturnType<typeof mockRequest>;
+  let res: ReturnType<typeof mockResponse>;
 
   beforeEach(() => {
     controller = new RespondentAddressController();
-    response = mockResponse();
-    request = mockRequest({});
-    mockWelshFlag.mockClear();
+    req = mockRequest({
+      session: {
+        userCase: {
+          respondents: [{ respondentName: 'Test Respondent' }],
+        },
+      },
+    });
+    res = mockResponse();
   });
 
-  it('should render the Respondent Address page with the correct content', async () => {
-    // Mock the LaunchDarkly flag for Welsh language
-    mockWelshFlag.mockResolvedValue(true);
-
-    // Mock the translation function
-    const translationMock = {
+  it('should render the Respondent Address page with the correct form content', async () => {
+    (req.t as unknown as jest.Mock).mockReturnValue({
       correctAddressQuestion: 'Is this the correct address?',
       yes: 'Yes',
       no: 'No',
-    } as const;
+    });
 
-    (request.t as unknown as jest.Mock).mockReturnValue(translationMock);
+    await controller.get(req, res);
 
-    await controller.get(request, response);
-
-    expect(response.render).toHaveBeenCalledWith(
+    expect(res.render).toHaveBeenCalledWith(
       TranslationKeys.RESPONDENT_ADDRESS,
       expect.objectContaining({
+        PageUrls,
+        hideContactUs: true,
         form: expect.objectContaining({
-          fields: expect.objectContaining({
+          fields: {
             respondentAddress: expect.objectContaining({
+              classes: 'govuk-radios--inline',
+              id: 'respondentAddress',
+              type: 'radios',
               label: expect.any(Function),
+              labelHidden: false,
               values: expect.arrayContaining([
-                expect.objectContaining({
+                {
+                  name: 'respondentAddress',
                   label: expect.any(Function),
                   value: YesOrNo.YES,
-                }),
-                expect.objectContaining({
+                },
+                {
+                  name: 'respondentAddress',
                   label: expect.any(Function),
                   value: YesOrNo.NO,
-                }),
+                },
               ]),
+              validator: isOptionSelected,
             }),
-          }),
+          },
+          submit: submitButton,
+          saveForLater: saveForLaterButton,
         }),
-        PageUrls: expect.any(Object),
-        hideContactUs: true,
-        userCase: request.session.userCase,
-        redirectUrl: expect.any(String),
-        languageParam: expect.any(String),
-        welshEnabled: true,
       })
     );
 
-    // Explicitly invoke each label function and check their outputs
-    const form = (response.render as jest.Mock).mock.calls[0][1].form;
-    const respondentAddressField = form.fields.respondentAddress;
-
-    expect(respondentAddressField.label(translationMock)).toBe('Is this the correct address?');
-
-    // Explicitly invoke each label function for the radio button values
-    const respondentAddressValues = respondentAddressField.values;
-
-    expect(respondentAddressValues[0].label(translationMock)).toBe(YesOrNo.YES);
-    expect(respondentAddressValues[1].label(translationMock)).toBe(YesOrNo.NO);
+    // Check that the form label functions return the correct values
+    const renderMock = res.render as jest.Mock;
+    const formContent = renderMock.mock.calls[0][1].form;
+    expect(formContent.fields.respondentAddress.label({ correctAddressQuestion: 'Is this the correct address?' })).toBe(
+      'Is this the correct address?'
+    );
+    expect(formContent.fields.respondentAddress.values[0].label({ yes: 'Yes' })).toBe('Yes');
+    expect(formContent.fields.respondentAddress.values[1].label({ no: 'No' })).toBe('No');
   });
 
-  it('should call the LaunchDarkly flag for Welsh language', async () => {
-    // Mock the LaunchDarkly flag for Welsh language
-    mockWelshFlag.mockResolvedValue(true);
+  it('should handle the post method without validation errors', async () => {
+    req.body = {
+      respondentAddress: 'NO', // 'Selected' value on radio button
+    };
 
-    await controller.get(request, response);
+    await controller.post(req, res);
 
-    expect(getFlagValue).toHaveBeenCalledWith('welsh-language', null);
-    expect(response.render).toHaveBeenCalledWith(
-      TranslationKeys.RESPONDENT_ADDRESS,
-      expect.objectContaining({
-        welshEnabled: true,
-      })
-    );
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_ENTER_POST_CODE);
+  });
+
+  it('should handle the post method with validation errors', async () => {
+    req.body = {
+      respondentAddress: '', // Empty input to trigger validation error
+    };
+
+    await controller.post(req, res);
+
+    expect(req.session.errors).toBeDefined();
   });
 });

@@ -11,8 +11,10 @@ import {
   isContentBetween3And100Chars,
   isFieldFilledIn,
   isJobTitleValid,
+  isNameValid,
   isOptionSelected,
   isPayIntervalNull,
+  isPhoneNumberValid,
   isRespondentNameValid,
   isValidAvgWeeklyHours,
   isValidCompanyRegistrationNumber,
@@ -520,6 +522,94 @@ describe('Validation', () => {
 
     it('should warn when content longer than 100 characters', () => {
       expect(isContent100CharsOrLess('1'.repeat(101))).toStrictEqual('tooLong');
+    });
+  });
+
+  describe('isNameValid', () => {
+    it('should return undefined for a valid name', () => {
+      const validNames = [
+        'John Doe', // Standard name with first and last name
+        "Jane O'Connor", // Name with an apostrophe
+        'Alice Smith', // Simple first and last name
+        "Bob O'Rourke", // Name with an apostrophe
+        'Charles, the Great', // Name with a comma
+        'Dr. John Doe', // Name with a title (Dr.)
+        'Mary Jane', // Simple first and last name
+        "James O'Reilly", // Name with an apostrophe
+        'Lisa-Marie', // Name with a hyphen
+      ];
+
+      validNames.forEach(name => {
+        expect(isNameValid(name)).toBeUndefined();
+      });
+    });
+
+    it('should return "invalidName" for an invalid name', () => {
+      const invalidNames = [
+        'John@Doe', // Name with an invalid character (@)
+        'Jane#Smith', // Name with an invalid character (#)
+        'Alice^Smith', // Name with an invalid character (^)
+        'Bob O`Connor', // Name with an invalid character (`)
+        'John*Doe', // Name with an invalid character (*)
+        '<script>alert("xss")</script>', // Malicious script to test XSS vulnerability
+      ];
+
+      // Iterate through each invalid name and check that validation returns 'invalidName'
+      invalidNames.forEach(name => {
+        expect(isNameValid(name)).toStrictEqual('invalidName');
+      });
+    });
+
+    it('should return if null or empty', () => {
+      const validNoEntryInField = ['', null];
+
+      validNoEntryInField.forEach(name => {
+        expect(isNameValid(name)).toBeUndefined();
+      });
+    });
+  });
+
+  describe('isPhoneNumberValid', () => {
+    it('should return undefined for a valid phone number', () => {
+      const validPhoneNumbers = [
+        '01234567890', // Standard UK phone number
+        '+441632960961', // UK phone number with international code
+        '+1 (202) 555-0165', // US phone number with international code and formatting
+        '123-456-7890', // US phone number with dashes
+        '+44 20 7946 0958', // UK phone number with international code and spaces
+        '555-1234', // Shorter phone number format
+        '+33 1 70 18 99 00', // French phone number with international code and spaces
+        '(555) 123-4567', // US phone number with parentheses and dashes
+        '+91 9876543210', // Indian phone number with international code
+      ];
+
+      validPhoneNumbers.forEach(phoneNumber => {
+        expect(isPhoneNumberValid(phoneNumber)).toBeUndefined();
+      });
+    });
+
+    it('should return "invalidPhoneNumber" for an invalid phone number', () => {
+      const invalidPhoneNumbers = [
+        '12345', // Phone number too short
+        'abcdef', // Phone number with letters
+        '+44 123456789012345678901', // Phone number too long
+        '555-1234-5678234567876548', // Phone number too long
+        '1234ABCD', // Phone number with letters
+        '+44 15', // Phone number too short
+        '55555', // Phone number too short
+      ];
+
+      invalidPhoneNumbers.forEach(phoneNumber => {
+        expect(isPhoneNumberValid(phoneNumber)).toStrictEqual('invalidPhoneNumber');
+      });
+    });
+
+    it('should return if null or empty', () => {
+      const validNoEntryInField = ['', null];
+
+      validNoEntryInField.forEach(phoneNumber => {
+        expect(isPhoneNumberValid(phoneNumber)).toBeUndefined();
+      });
     });
   });
 });

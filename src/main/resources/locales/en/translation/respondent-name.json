@@ -10,6 +10,9 @@
   "errors": {
     "respondentName": {
       "required": "Select whether this is the correct name"
+    },
+    "respondentNameDetail": {
+      "required": "Enter correct name"
     }
   }
 }

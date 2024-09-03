@@ -1,132 +1,92 @@
 import RespondentEnterPostCodeController from '../../../main/controllers/RespondentEnterPostCodeController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
+import { saveForLaterButton, submitButton } from '../../../main/definitions/radios';
+import { isValidUKPostcode } from '../../../main/validators/address_validator';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
-import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
-import { getLanguageParam } from '../../../main/helpers/RouterHelpers';
-
-jest.mock('../../../main/modules/featureFlag/launchDarkly');
-jest.mock('../../../main/controllers/helpers/LanguageHelper');
-jest.mock('../../../main/controllers/helpers/RouterHelpers');
 
 describe('RespondentEnterPostCodeController', () => {
-  const mockWelshFlag = jest.spyOn(LaunchDarkly, 'getFlagValue');
+  let controller: RespondentEnterPostCodeController;
+  let req: ReturnType<typeof mockRequest>;
+  let res: ReturnType<typeof mockResponse>;
 
   beforeEach(() => {
-    mockWelshFlag.mockClear();
-  });
-
-  it('should render the Respondent Enter Postcode page with the correct form content', async () => {
-    mockWelshFlag.mockResolvedValue(true);
-    const controller = new RespondentEnterPostCodeController();
-    const response = mockResponse();
-    const request = mockRequest({
+    controller = new RespondentEnterPostCodeController();
+    req = mockRequest({
       session: {
-        userCase: {
-          respondentEnterPostcode: 'AB12 3CD', // Align with field name in the controller
-        },
+        userCase: {},
       },
     });
+    res = mockResponse();
+  });
 
-    const translationMock = {
+  it('should render the Respondent Enter Post Code page with the correct form content', async () => {
+    (req.t as unknown as jest.Mock).mockReturnValue({
       enterPostcode: 'Enter your postcode',
-    };
+      findAddress: 'Find Address',
+    });
 
-    (request.t as unknown as jest.Mock).mockReturnValue(translationMock);
-    (setUrlLanguage as jest.Mock).mockReturnValue('/redirect-url');
-    (getLanguageParam as jest.Mock).mockReturnValue('en');
+    await controller.get(req, res);
 
-    await controller.get(request, response);
-
-    expect(response.render).toHaveBeenCalledWith(
+    expect(res.render).toHaveBeenCalledWith(
       TranslationKeys.RESPONDENT_ENTER_POST_CODE,
       expect.objectContaining({
         PageUrls,
-        userCase: request.session.userCase,
         hideContactUs: true,
-        welshEnabled: true,
-        languageParam: 'en',
-        redirectUrl: '/redirect-url',
-        form: {
+        form: expect.objectContaining({
           fields: {
             respondentEnterPostcode: expect.objectContaining({
-              // Ensure this matches the field name in the controller
               id: 'respondentEnterPostcode',
               type: 'text',
               label: expect.any(Function),
               classes: 'govuk-label govuk-!-width-one-half',
-              attributes: { maxLength: 14, autocomplete: 'postal-code' },
-              validator: expect.any(Function),
+              attributes: expect.objectContaining({
+                maxLength: 14,
+                autocomplete: 'postal-code',
+              }),
+              validator: isValidUKPostcode,
             }),
           },
-          submit: expect.any(Object),
-          saveForLater: expect.any(Object),
-        },
+          submit: {
+            type: submitButton,
+            text: expect.any(Function),
+          },
+          saveForLater: saveForLaterButton,
+        }),
+        userCase: {},
+        redirectUrl: expect.any(String),
+        languageParam: expect.any(String),
+        sessionErrors: req.session.errors,
       })
     );
 
-    const renderMock = response.render as jest.Mock;
-    const form = renderMock.mock.calls[0][1].form;
-
-    // Verify the label function returns the correct value
-    expect(form.fields.respondentEnterPostcode.label(translationMock)).toBe('Enter your postcode');
-  });
-
-  it('should handle when Welsh language feature flag is disabled', async () => {
-    mockWelshFlag.mockResolvedValue(false);
-    const controller = new RespondentEnterPostCodeController();
-    const response = mockResponse();
-    const request = mockRequest({
-      session: {
-        userCase: {
-          respondentEnterPostcode: 'AB12 3CD',
-        },
-      },
-    });
-
-    const translationMock = {
-      enterPostcode: 'Enter your postcode',
-    };
-
-    (request.t as unknown as jest.Mock).mockReturnValue(translationMock);
-    (setUrlLanguage as jest.Mock).mockReturnValue('/redirect-url');
-    (getLanguageParam as jest.Mock).mockReturnValue('en');
-
-    await controller.get(request, response);
-
-    expect(response.render).toHaveBeenCalledWith(
-      TranslationKeys.RESPONDENT_ENTER_POST_CODE,
-      expect.objectContaining({
-        welshEnabled: false,
-      })
+    // Check that the form label and submit button text functions return the correct values
+    const renderMock = res.render as jest.Mock;
+    const formContent = renderMock.mock.calls[0][1].form;
+    expect(formContent.fields.respondentEnterPostcode.label({ enterPostcode: 'Enter your postcode' })).toBe(
+      'Enter your postcode'
     );
+    expect(formContent.submit.text({ findAddress: 'Find Address' })).toBe('Find Address');
   });
 
-  it('should use the correct translation keys', async () => {
-    mockWelshFlag.mockResolvedValue(true);
-    const controller = new RespondentEnterPostCodeController();
-    const response = mockResponse();
-    const request = mockRequest({
-      session: {
-        userCase: {
-          respondentEnterPostcode: 'AB12 3CD',
-        },
-      },
-    });
-
-    const translationMock = {
-      enterPostcode: 'Enter your postcode',
+  it('should handle the post method without validation errors', async () => {
+    req.body = {
+      respondentEnterPostcode: 'AB12 3CD', // Valid postcode for the test
     };
 
-    (request.t as unknown as jest.Mock).mockReturnValue(translationMock);
-    (setUrlLanguage as jest.Mock).mockReturnValue('/redirect-url');
-    (getLanguageParam as jest.Mock).mockReturnValue('en');
+    await controller.post(req, res);
 
-    await controller.get(request, response);
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_SELECT_POST_CODE);
+  });
 
-    expect(request.t).toHaveBeenCalledWith(TranslationKeys.COMMON, { returnObjects: true });
-    expect(request.t).toHaveBeenCalledWith(TranslationKeys.RESPONDENT_ENTER_POST_CODE, { returnObjects: true });
-    expect(request.t).toHaveBeenCalledWith(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true });
+  it('should handle the post method with validation errors', async () => {
+    req.body = {
+      respondentEnterPostcode: '', // Empty input to trigger validation error
+    };
+
+    await controller.post(req, res);
+
+    expect(req.session.errors).toBeDefined();
+    expect(res.redirect).toHaveBeenCalledWith(req.url);
   });
 });

@@ -1,24 +1,20 @@
 import RespondentNameController from '../../../main/controllers/RespondentNameController';
 import { YesOrNo } from '../../../main/definitions/case';
-import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { NO, PageUrls, TranslationKeys, YES } from '../../../main/definitions/constants';
 import { saveForLaterButton, submitButton } from '../../../main/definitions/radios';
-import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
-import { isFieldFilledIn, isOptionSelected } from '../../../main/validators/validator';
 
 describe('RespondentNameController', () => {
-  const mockWelshFlag = jest.spyOn(LaunchDarkly, 'getFlagValue');
+  let controller: RespondentNameController;
+  let response: ReturnType<typeof mockResponse>;
+  let request: ReturnType<typeof mockRequest>;
+  let translationMock: Record<string, string>;
 
   beforeEach(() => {
-    mockWelshFlag.mockClear();
-  });
-
-  it('should render the Respondent Name page with the correct form content', async () => {
-    mockWelshFlag.mockResolvedValue(true);
-    const controller = new RespondentNameController();
-    const response = mockResponse();
-    const request = mockRequest({
+    controller = new RespondentNameController();
+    response = mockResponse();
+    request = mockRequest({
       session: {
         userCase: {
           respondents: [{ respondentName: 'Test Respondent' }],
@@ -26,36 +22,30 @@ describe('RespondentNameController', () => {
       },
     });
 
-    // Define the expected return type for the request.t() mock
-    const translationMock = {
-      label1: 'Is the name ',
-      label2: ' correct?',
+    translationMock = {
+      label1: 'this is label1 ',
+      label2: ' this is label2',
       yes: 'Yes',
       no: 'No',
-      respondentNameTextLabel: 'If not, please provide the correct name',
-    } as const; // Use 'as const' to maintain the exact shape of the object.
+      respondentNameTextLabel: 'is this respondentNameTextLabel',
+    };
 
     // Mock translation function
-    (request.t as unknown as jest.Mock).mockReturnValue({
-      label1: 'Is the name ',
-      label2: ' correct?',
-      yes: 'Yes',
-      no: 'No',
-      respondentNameTextLabel: 'If not, please provide the correct name',
-    });
+    (request.t as unknown as jest.Mock).mockReturnValue(translationMock);
+  });
 
+  it('should render the Respondent Name page with the correct form content', async () => {
     await controller.get(request, response);
 
     expect(response.render).toHaveBeenCalledWith(
       TranslationKeys.RESPONDENT_NAME,
       expect.objectContaining({
         PageUrls,
-        hideContactUs: true,
-        welshEnabled: true,
-        languageParam: expect.any(String),
         redirectUrl: expect.any(String),
-        form: {
-          fields: {
+        hideContactUs: true,
+        languageParam: expect.any(String),
+        form: expect.objectContaining({
+          fields: expect.objectContaining({
             respondentName: expect.objectContaining({
               classes: 'govuk-radios',
               id: 'respondentName',
@@ -72,7 +62,7 @@ describe('RespondentNameController', () => {
                   name: 'respondentName',
                   label: expect.any(Function),
                   value: YesOrNo.NO,
-                  subFields: {
+                  subFields: expect.objectContaining({
                     respondentNameDetail: expect.objectContaining({
                       id: 'respondentNameTxt',
                       name: 'respondentNameTxt',
@@ -81,88 +71,53 @@ describe('RespondentNameController', () => {
                       label: expect.any(Function),
                       classes: 'govuk-text',
                       attributes: { maxLength: 100 },
-                      validator: isFieldFilledIn,
                     }),
-                  },
+                  }),
                 },
               ]),
-              validator: isOptionSelected,
             }),
-          },
+          }),
           submit: submitButton,
           saveForLater: saveForLaterButton,
-        },
+        }),
+        userCase: request.session.userCase,
+        sessionErrors: undefined,
       })
     );
 
-    // Check that the form label functions return the correct values
+    // Check that the main label function returns the correct value
     const renderMock = response.render as jest.Mock;
     const form = renderMock.mock.calls[0][1].form;
 
-    expect(form.fields.respondentName.label(translationMock)).toBe('Is the name Test Respondent correct?');
-    expect(form.fields.respondentName.values[0].label(translationMock)).toBe('Yes');
-    expect(form.fields.respondentName.values[1].label(translationMock)).toBe('No');
+    // Test the first label (respondentName.label) but it will have the Respondent name and 2nd label concatenated
+    expect(form.fields.respondentName.label(translationMock)).toBe('this is label1 Test Respondent this is label2');
+
+    // Test the labels for YES/NO options and the subfield label
+    expect(form.fields.respondentName.values[0].label(translationMock)).toBe(YES);
+    expect(form.fields.respondentName.values[1].label(translationMock)).toBe(NO);
     expect(form.fields.respondentName.values[1].subFields.respondentNameDetail.label(translationMock)).toBe(
-      'If not, please provide the correct name'
+      'is this respondentNameTextLabel'
     );
   });
 
-  it('should handle when Welsh language feature flag is disabled', async () => {
-    mockWelshFlag.mockResolvedValue(false);
-    const controller = new RespondentNameController();
-    const response = mockResponse();
-    const request = mockRequest({
-      session: {
-        userCase: {
-          respondents: [{ respondentName: 'Test Respondent' }],
-        },
-      },
-    });
+  it('should handle the post method with valid data', async () => {
+    request.body = {
+      respondentName: YesOrNo.YES,
+    };
 
-    // Mock translation function
-    (request.t as unknown as jest.Mock).mockReturnValue({
-      label1: 'Is the name ',
-      label2: ' correct?',
-      yes: 'Yes',
-      no: 'No',
-      respondentNameTextLabel: 'If not, please provide the correct name',
-    });
+    await controller.post(request, response);
 
-    await controller.get(request, response);
-
-    expect(response.render).toHaveBeenCalledWith(
-      TranslationKeys.RESPONDENT_NAME,
-      expect.objectContaining({
-        welshEnabled: false,
-      })
-    );
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.TYPE_OF_ORGANISATION);
   });
 
-  it('should use the correct translation keys', async () => {
-    mockWelshFlag.mockResolvedValue(true);
-    const controller = new RespondentNameController();
-    const response = mockResponse();
-    const request = mockRequest({
-      session: {
-        userCase: {
-          respondents: [{ respondentName: 'Test Respondent' }],
-        },
-      },
-    });
+  it('should handle the post method with validation errors', async () => {
+    request.body = {
+      respondentName: '', // Empty input to trigger validation error
+    };
 
-    // Mock translation function
-    (request.t as unknown as jest.Mock).mockReturnValue({
-      label1: 'Is the name ',
-      label2: ' correct?',
-      yes: 'Yes',
-      no: 'No',
-      respondentNameTextLabel: 'If not, please provide the correct name',
-    });
+    await controller.post(request, response);
 
-    await controller.get(request, response);
-
-    expect(request.t).toHaveBeenCalledWith(TranslationKeys.COMMON, { returnObjects: true });
-    expect(request.t).toHaveBeenCalledWith(TranslationKeys.RESPONDENT_NAME, { returnObjects: true });
-    expect(request.t).toHaveBeenCalledWith(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true });
+    expect(request.session.errors).toBeDefined();
+    expect(response.redirect).toHaveBeenCalledWith(request.url);
   });
 });

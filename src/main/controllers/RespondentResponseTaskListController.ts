@@ -18,7 +18,7 @@ export default class RespondentResponseTaskListController {
         title: (l: AnyRecord): string => l.section1.title,
         links: [
           {
-            url: setUrlLanguage(req, '#'),
+            url: setUrlLanguage(req, PageUrls.RESPONDENT_NAME),
             linkTxt: (l: AnyRecord): string => l.section1.link1Text,
             status: (): string => sectionStatus.notStarted,
           },

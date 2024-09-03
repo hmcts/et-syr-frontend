@@ -6,6 +6,7 @@ import { HubLinkStatus, HubLinksStatuses, sectionIndexToLinkNames, statusColorMa
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
 import { handleUpdateHubLinksStatuses } from '../helpers/CaseHelpers';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
 import {
   getClaimantAppsAndUpdateStatusTag,
   getHubLinksUrlMap,
@@ -17,7 +18,6 @@ import { currentStateFn } from '../helpers/state-sequence';
 import { getLogger } from '../logger';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import { getCaseApi } from '../services/CaseService';
-import { setUrlLanguage } from '../helpers/LanguageHelper';
 
 const logger = getLogger('ResponseHubController');
 const DAYS_FOR_PROCESSING = 7;

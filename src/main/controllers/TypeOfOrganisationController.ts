@@ -1,96 +1,112 @@
 import { Response } from 'express';
 
+import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { TypeOfOrganisation } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
-import { FormContent } from '../definitions/form';
+import { FormContent, FormFields } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { isOptionSelected, isValidCompanyRegistrationNumber, validateTitlePreference } from '../validators/validator';
 import { getLanguageParam } from '../helpers/RouterHelpers';
+import { isOptionSelected, isValidCompanyRegistrationNumber } from '../validators/validator';
 
 export default class TypeOfOrganisationController {
-  public async get(req: AppRequest, res: Response): Promise<void> {
-    const welshEnabled = await getFlagValue('welsh-language', null);
-    const redirectUrl = setUrlLanguage(req, '#');
-
-    const TypeOfOrgContent: FormContent = {
-      fields: {
-        typeOfOrg: {
-          classes: 'govuk-radios',
-          id: 'typeOfOrg',
-          type: 'radios',
-          labelHidden: false,
-          values: [
-            {
-              name: 'typeOfOrg',
-              label: (l: AnyRecord): string => l.individual,
-              value: TypeOfOrganisation.INDIVIDUAL,
-              subFields: {
-                typeOfOrgDetail: {
-                  id: 'typeOfOrgIndividualTxt',
-                  name: 'typeOfOrgIndividualTxt',
-                  type: 'text',
-                  labelSize: 'normal',
-                  label: (l: AnyRecord): string => l.individualTextLabel,
-                  classes: 'govuk-text',
-                  attributes: { maxLength: 20 },
-                  validator: validateTitlePreference,
-                },
+  private readonly form: Form;
+  private readonly typeOfOrgContent: FormContent = {
+    fields: {
+      typeOfOrg: {
+        classes: 'govuk-radios',
+        id: 'typeOfOrg',
+        type: 'radios',
+        labelHidden: false,
+        values: [
+          {
+            name: 'typeOfOrg',
+            label: (l: AnyRecord): string => l.individual,
+            value: TypeOfOrganisation.INDIVIDUAL,
+            subFields: {
+              typeOfOrgDetail: {
+                id: 'typeOfOrgIndividualTxt',
+                name: 'typeOfOrgIndividualTxt',
+                type: 'text',
+                labelSize: 'normal',
+                label: (l: AnyRecord): string => l.individualTextLabel,
+                classes: 'govuk-text',
+                attributes: { maxLength: 20 },
               },
             },
-            {
-              name: 'typeOfOrg',
-              label: (l: AnyRecord): string => l.limitedCompany,
-              value: TypeOfOrganisation.LIMITED_COMPANY,
-              subFields: {
-                typeOfOrgDetail: {
-                  id: 'typeOfOrgLimitedCompanyTxt',
-                  name: 'typeOfOrgLimitedCompanyTxt',
-                  type: 'text',
-                  labelSize: 'normal',
-                  label: (l: AnyRecord): string => l.limitedCompanyTextLabel,
-                  classes: 'govuk-text',
-                  attributes: { maxLength: 8 },
-                  validator: isValidCompanyRegistrationNumber,
-                },
+          },
+          {
+            name: 'typeOfOrg',
+            label: (l: AnyRecord): string => l.limitedCompany,
+            value: TypeOfOrganisation.LIMITED_COMPANY,
+            subFields: {
+              typeOfOrgDetail: {
+                id: 'typeOfOrgLimitedCompanyTxt',
+                name: 'typeOfOrgLimitedCompanyTxt',
+                type: 'text',
+                labelSize: 'normal',
+                label: (l: AnyRecord): string => l.limitedCompanyTextLabel,
+                classes: 'govuk-text',
+                attributes: { maxLength: 8 },
+                validator: isValidCompanyRegistrationNumber,
               },
             },
-            {
-              name: 'typeOfOrg',
-              label: (l: AnyRecord): string => l.partnership,
-              value: TypeOfOrganisation.PARTNERSHIP,
-            },
-            {
-              name: 'typeOfOrg',
-              label: (l: AnyRecord): string => l.unincorporatedAssociation,
-              value: TypeOfOrganisation.UNINCORPORATED_ASSOCIATION,
-            },
-            {
-              name: 'typeOfOrg',
-              label: (l: AnyRecord): string => l.other,
-              value: TypeOfOrganisation.OTHER,
-            },
-          ],
-          validator: isOptionSelected,
-        },
+          },
+          {
+            name: 'typeOfOrg',
+            label: (l: AnyRecord): string => l.partnership,
+            value: TypeOfOrganisation.PARTNERSHIP,
+          },
+          {
+            name: 'typeOfOrg',
+            label: (l: AnyRecord): string => l.unincorporatedAssociation,
+            value: TypeOfOrganisation.UNINCORPORATED_ASSOCIATION,
+          },
+          {
+            name: 'typeOfOrg',
+            label: (l: AnyRecord): string => l.other,
+            value: TypeOfOrganisation.OTHER,
+          },
+        ],
+        validator: isOptionSelected,
       },
-      submit: submitButton,
-      saveForLater: saveForLaterButton,
-    };
+    },
+    submit: submitButton,
+    saveForLater: saveForLaterButton,
+  } as never;
+
+  constructor() {
+    this.form = new Form(<FormFields>this.typeOfOrgContent.fields);
+  }
+
+  public post = async (req: AppRequest, res: Response): Promise<void> => {
+    const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
+    const errors = this.form.getValidatorErrors(formData);
+    if (errors.length !== 0) {
+      req.session.errors = errors;
+      return res.redirect(req.url);
+    }
+
+    return res.redirect(PageUrls.RESPONDENT_ADDRESS);
+  };
+
+  public get = async (req: AppRequest, res: Response): Promise<void> => {
+    const redirectUrl = setUrlLanguage(req, PageUrls.TYPE_OF_ORGANISATION);
+    const typeOfOrgContent = this.typeOfOrgContent;
 
     res.render(TranslationKeys.TYPE_OF_ORGANISATION, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.TYPE_OF_ORGANISATION as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,
-      hideContactUs: true,
-      form: TypeOfOrgContent,
       redirectUrl,
+      hideContactUs: true,
       languageParam: getLanguageParam(req.url),
-      welshEnabled,
+      form: typeOfOrgContent,
+      userCase: req.session?.userCase,
+      sessionErrors: req.session.errors,
     });
-  }
+  };
 }

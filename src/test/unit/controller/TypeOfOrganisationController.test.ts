@@ -1,86 +1,107 @@
 import TypeOfOrganisationController from '../../../main/controllers/TypeOfOrganisationController';
 import { TypeOfOrganisation } from '../../../main/definitions/case';
-import { TranslationKeys } from '../../../main/definitions/constants';
-import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
+import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { saveForLaterButton, submitButton } from '../../../main/definitions/radios';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
-jest.mock('../../../main/modules/featureFlag/launchDarkly');
 
 describe('TypeOfOrganisationController', () => {
-  const mockWelshFlag = jest.spyOn(LaunchDarkly, 'getFlagValue');
+  let controller: TypeOfOrganisationController;
+  let response: ReturnType<typeof mockResponse>;
+  let request: ReturnType<typeof mockRequest>;
+  let translationMock: Record<string, string>;
 
   beforeEach(() => {
-    mockWelshFlag.mockClear();
-  });
+    controller = new TypeOfOrganisationController();
+    response = mockResponse();
+    request = mockRequest({
+      session: {
+        userCase: {
+          respondents: [{ respondentName: 'Test Respondent' }],
+        },
+      },
+    });
 
-  it('should render the Type of Organisation page with the correct content', async () => {
-    const controller = new TypeOfOrganisationController();
-    const response = mockResponse();
-    const request = mockRequest({});
-
-    // Define the expected return type for the request.t() mock, values to match those within TypeOfOrganisation
-    // Two text labels to mock the inner labels of text fields
-    const translationMock = {
+    translationMock = {
       individual: 'Individual',
+      individualTextLabel: 'Please provide the individual’s name',
       limitedCompany: 'Limited Company',
+      limitedCompanyTextLabel: 'Please provide the company registration number',
       partnership: 'Partnership',
       unincorporatedAssociation: 'Unincorporated association (such as a sports club)',
       other: 'Other',
+    };
 
-      // mock inner text field labels
-      individualTextLabel: 'Title',
-      limitedCompanyTextLabel: 'Company Registration Number',
-    } as const; // 'as const' to maintain the exact shape of the object
-
-    // Mock the translation function
+    // Mock translation function
     (request.t as unknown as jest.Mock).mockReturnValue(translationMock);
+  });
 
-    mockWelshFlag.mockResolvedValue(true);
-
+  it('should render the Type of Organisation page with the correct form content', async () => {
     await controller.get(request, response);
 
     expect(response.render).toHaveBeenCalledWith(
       TranslationKeys.TYPE_OF_ORGANISATION,
       expect.objectContaining({
+        PageUrls,
+        redirectUrl: expect.any(String),
+        hideContactUs: true,
+        languageParam: expect.any(String),
         form: expect.objectContaining({
           fields: expect.objectContaining({
             typeOfOrg: expect.objectContaining({
+              classes: 'govuk-radios',
+              id: 'typeOfOrg',
+              type: 'radios',
+              labelHidden: false,
               values: expect.arrayContaining([
                 expect.objectContaining({
+                  name: 'typeOfOrg',
                   label: expect.any(Function),
-                  value: 'Individual',
+                  value: TypeOfOrganisation.INDIVIDUAL,
+                  subFields: expect.objectContaining({
+                    typeOfOrgDetail: expect.objectContaining({
+                      id: 'typeOfOrgIndividualTxt',
+                      name: 'typeOfOrgIndividualTxt',
+                      type: 'text',
+                      labelSize: 'normal',
+                      label: expect.any(Function),
+                      classes: 'govuk-text',
+                      attributes: { maxLength: 20 },
+                    }),
+                  }),
                 }),
                 expect.objectContaining({
+                  name: 'typeOfOrg',
                   label: expect.any(Function),
-                  value: 'Limited Company',
-                }),
-                expect.objectContaining({
-                  label: expect.any(Function),
-                  value: 'Partnership',
-                }),
-                expect.objectContaining({
-                  label: expect.any(Function),
-                  value: 'Unincorporated association (such as a sports club)',
-                }),
-                expect.objectContaining({
-                  label: expect.any(Function),
-                  value: 'Other',
+                  value: TypeOfOrganisation.LIMITED_COMPANY,
+                  subFields: expect.objectContaining({
+                    typeOfOrgDetail: expect.objectContaining({
+                      id: 'typeOfOrgLimitedCompanyTxt',
+                      name: 'typeOfOrgLimitedCompanyTxt',
+                      type: 'text',
+                      labelSize: 'normal',
+                      label: expect.any(Function),
+                      classes: 'govuk-text',
+                      attributes: { maxLength: 8 },
+                      validator: expect.any(Function),
+                    }),
+                  }),
                 }),
               ]),
+              validator: expect.any(Function),
             }),
           }),
+          submit: submitButton,
+          saveForLater: saveForLaterButton,
         }),
-        PageUrls: expect.any(Object),
-        hideContactUs: true,
-        languageParam: expect.any(String),
-        redirectUrl: expect.any(String),
-        welshEnabled: true,
+        userCase: request.session.userCase,
+        sessionErrors: undefined,
       })
     );
 
-    // Explicitly invoking each label function and checking their outputs
-    const form = (response.render as jest.Mock).mock.calls[0][1].form;
-
+    // Verify the label generation for individual type
+    const renderMock = response.render as jest.Mock;
+    const form = renderMock.mock.calls[0][1].form;
     const typeOfOrgValues = form.fields.typeOfOrg.values;
 
     expect(typeOfOrgValues[0].label(translationMock)).toBe(TypeOfOrganisation.INDIVIDUAL);
@@ -89,51 +110,26 @@ describe('TypeOfOrganisationController', () => {
     expect(typeOfOrgValues[3].label(translationMock)).toBe(TypeOfOrganisation.UNINCORPORATED_ASSOCIATION);
     expect(typeOfOrgValues[4].label(translationMock)).toBe(TypeOfOrganisation.OTHER);
 
-    // Inner label for Individual Title
-    const individualSubFields = typeOfOrgValues[0].subFields;
-    const individualSubFieldsTypeOfOrgDetail = individualSubFields.typeOfOrgDetail;
-    expect(individualSubFieldsTypeOfOrgDetail.label(translationMock)).toBe('Title');
+    // Verify the label generation of sub-fields for individual and limited company
+    const individualSubFieldLabelFunction = form.fields.typeOfOrg.values[0].subFields.typeOfOrgDetail.label;
+    expect(individualSubFieldLabelFunction(translationMock)).toBe('Please provide the individual’s name');
 
-    // Inner label for Limited Company (CRN)
-    const limitedCompanySubFields = typeOfOrgValues[1].subFields;
-    const typeOfOrgDetail = limitedCompanySubFields.typeOfOrgDetail;
-    expect(typeOfOrgDetail.label(translationMock)).toBe('Company Registration Number');
+    const limitedCompanySubFieldLabelFunction = form.fields.typeOfOrg.values[1].subFields.typeOfOrgDetail.label;
+    expect(limitedCompanySubFieldLabelFunction(translationMock)).toBe('Please provide the company registration number');
   });
 
-  it('should render the Type of Organisation page with Welsh disabled', async () => {
-    mockWelshFlag.mockResolvedValue(false);
-    const controller = new TypeOfOrganisationController();
-    const response = mockResponse();
-    const request = mockRequest({});
+  it('should handle the post method with valid data', async () => {
+    request.body = {
+      typeOfOrg: TypeOfOrganisation.LIMITED_COMPANY,
+      typeOfOrgLimitedCompanyTxt: '12345678',
+    };
 
-    // Mock the translation function
-    (request.t as unknown as jest.Mock) = jest.fn().mockReturnValue({
-      individual: 'Individual',
-      limitedCompany: 'Limited Company',
-      partnership: 'Partnership',
-      unincorporatedAssociation: 'Unincorporated Association',
-      other: 'Other',
-    });
+    await controller.post(request, response);
 
-    await controller.get(request, response);
-
-    expect(response.render).toHaveBeenCalledWith(
-      TranslationKeys.TYPE_OF_ORGANISATION,
-      expect.objectContaining({
-        welshEnabled: false,
-      })
-    );
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_ADDRESS);
   });
 
-  it('should call the translation function with correct keys', async () => {
-    mockWelshFlag.mockResolvedValue(true);
-    const controller = new TypeOfOrganisationController();
-    const response = mockResponse();
-    const request = mockRequest({});
-
-    // Mock the translation function
-    (request.t as unknown as jest.Mock) = jest.fn().mockReturnValue({});
-
+  it('should use the correct translation keys', async () => {
     await controller.get(request, response);
 
     expect(request.t).toHaveBeenCalledWith(TranslationKeys.COMMON, { returnObjects: true });

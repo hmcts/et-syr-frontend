@@ -33,6 +33,10 @@ export const TranslationKeys = {
   RESPONDENT_ADDRESS: 'respondent-address',
   RESPONDENT_ENTER_POST_CODE: 'respondent-enter-postcode',
   RESPONDENT_SELECT_POST_CODE: 'respondent-select-postcode',
+  RESPONDENT_ENTER_ADDRESS: 'respondent-enter-address',
+  RESPONDENT_PREFERRED_CONTACT_NAME: 'respondent-preferred-contact-name',
+  RESPONDENT_DX_ADDRESS: 'respondent-dx-address',
+  RESPONDENT_CONTACT_PHONE_NUMBER: 'respondent-contact-phone-number',
   YOUR_APPLICATIONS: 'your-applications',
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
   SELF_ASSIGNMENT_FORM: 'self-assignment-form',
@@ -57,6 +61,11 @@ export const PageUrls = {
   RESPONDENT_ADDRESS: '/respondent-address',
   RESPONDENT_ENTER_POST_CODE: '/respondent-enter-postcode',
   RESPONDENT_SELECT_POST_CODE: '/respondent-select-postcode',
+  RESPONDENT_ENTER_ADDRESS: '/respondent-enter-address',
+  RESPONDENT_PREFERRED_CONTACT_NAME: '/respondent-preferred-contact-name',
+  RESPONDENT_DX_ADDRESS: '/respondent-dx-address',
+  RESPONDENT_CONTACT_PHONE_NUMBER: '/respondent-contact-phone-number',
+  RESPONDENT_CONTACT_PREFERENCES: '/respondent-contact-preferences',
 } as const;
 
 export const InterceptPaths = {

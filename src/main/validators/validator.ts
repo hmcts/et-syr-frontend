@@ -271,3 +271,31 @@ export const isAcasNumberValid: Validator = value => {
     return 'invalidAcasNumber';
   }
 };
+
+export const isNameValid: Validator = value => {
+  if (value === null || value === '') {
+    return;
+  }
+
+  // regular expression to allow alphanumeric characters, spaces, and specific special characters
+  const namePattern = /^[a-zA-Z0-9 ,.'-]+$/;
+
+  // Test the name against the regular expression above
+  if (!namePattern.test(value as string)) {
+    return 'invalidName';
+  }
+};
+
+export const isPhoneNumberValid: Validator = value => {
+  if (value === null || value === '') {
+    return;
+  }
+
+  // regular expression to cover Uk and International number upto 20 chars
+  const phonePattern = /^\+?[0-9\s\-().]{7,20}$/;
+
+  // Test the value against the regular expression
+  if (!phonePattern.test(value as string)) {
+    return 'invalidPhoneNumber';
+  }
+};

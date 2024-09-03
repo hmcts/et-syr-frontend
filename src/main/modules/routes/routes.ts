@@ -6,20 +6,24 @@ import { Application } from 'express';
 import ChecklistController from '../../controllers/ChecklistController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import HomeController from '../../controllers/HomeController';
+import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentCaseListCheckController from '../../controllers/RespondentCaseListCheckController';
+import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
+import RespondentDXAddressController from '../../controllers/RespondentDXAddressController';
+import RespondentEnterAddressController from '../../controllers/RespondentEnterAddressController';
+import RespondentEnterPostCodeController from '../../controllers/RespondentEnterPostCodeController';
+import RespondentNameController from '../../controllers/RespondentNameController';
+import RespondentPreferredContactNameController from '../../controllers/RespondentPreferredContactNameController';
 import RespondentRepliesController from '../../controllers/RespondentRepliesController';
 import RespondentResponseLandingController from '../../controllers/RespondentResponseLandingController';
+import RespondentResponseTaskListController from '../../controllers/RespondentResponseTaskListController';
+import RespondentSelectPostCodeController from '../../controllers/RespondentSelectPostCodeController';
 import ResponseHubController from '../../controllers/ResponseHubController';
 import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheckController';
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
-import { PageUrls, Urls } from '../../definitions/constants';
-import RespondentResponseTaskListController from '../../controllers/RespondentResponseTaskListController';
-import RespondentAddressController from '../../controllers/RespondentAddressController';
-import RespondentNameController from '../../controllers/RespondentNameController';
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
-import RespondentEnterPostCodeController from '../../controllers/RespondentEnterPostCodeController';
-import RespondentSelectPostCodeController from '../../controllers/RespondentSelectPostCodeController';
+import { PageUrls, Urls } from '../../definitions/constants';
 
 export class Routes {
   public enableFor(app: Application): void {
@@ -36,10 +40,23 @@ export class Routes {
     app.get(PageUrls.RESPONDENT_RESPONSE_LANDING, new RespondentResponseLandingController().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_TASK_LIST, new RespondentResponseTaskListController().get);
     app.get(PageUrls.RESPONDENT_NAME, new RespondentNameController().get);
+    app.post(PageUrls.RESPONDENT_NAME, new RespondentNameController().post);
     app.get(PageUrls.TYPE_OF_ORGANISATION, new TypeOfOrganisationController().get);
+    app.post(PageUrls.TYPE_OF_ORGANISATION, new TypeOfOrganisationController().post);
     app.get(PageUrls.RESPONDENT_ADDRESS, new RespondentAddressController().get);
+    app.post(PageUrls.RESPONDENT_ADDRESS, new RespondentAddressController().post);
     app.get(PageUrls.RESPONDENT_ENTER_POST_CODE, new RespondentEnterPostCodeController().get);
+    app.post(PageUrls.RESPONDENT_ENTER_POST_CODE, new RespondentEnterPostCodeController().post);
     app.get(PageUrls.RESPONDENT_SELECT_POST_CODE, new RespondentSelectPostCodeController().get);
+    app.post(PageUrls.RESPONDENT_SELECT_POST_CODE, new RespondentSelectPostCodeController().post);
+    app.get(PageUrls.RESPONDENT_ENTER_ADDRESS, new RespondentEnterAddressController().get);
+    app.post(PageUrls.RESPONDENT_ENTER_ADDRESS, new RespondentEnterAddressController().post);
+    app.get(PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME, new RespondentPreferredContactNameController().get);
+    app.post(PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME, new RespondentPreferredContactNameController().post);
+    app.get(PageUrls.RESPONDENT_DX_ADDRESS, new RespondentDXAddressController().get);
+    app.post(PageUrls.RESPONDENT_DX_ADDRESS, new RespondentDXAddressController().post);
+    app.get(PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER, new RespondentContactPhoneNumberController().get);
+    app.post(PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER, new RespondentContactPhoneNumberController().post);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,
