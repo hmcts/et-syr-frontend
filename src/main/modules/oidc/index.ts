@@ -28,12 +28,14 @@ export class Oidc {
     app.get(PageUrls.RESPONSE_HUB, (req: AppRequest, res: Response, next: NextFunction) => {
       const redisClient = req.app.locals?.redisClient;
       if (!redisClient) {
+        logger.error('Unable to connect to Redis');
         return ErrorUtils.throwManualError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
       } else {
         try {
-          const preLoginUrl = generatePreLoginUrl(res.locals.host, port, req.url);
+          const preLoginUrl = generatePreLoginUrl(res.locals.host, port, req.url, app.locals.developmentMode);
           req.session.guid = cachePreLoginUrl(redisClient, preLoginUrl);
         } catch (err) {
+          logger.error('Unable to cache pre login URL' + err.message);
           return ErrorUtils.throwError(err, RedisErrors.FAILED_TO_SAVE);
         }
       }

@@ -66,13 +66,13 @@ describe('Generate pre login url', () => {
   const url: string = '/test-url';
   const expectedPreLoginUrl = 'https://localhost:8080/test-url';
   it('should generate pre login url', () => {
-    expect(generatePreLoginUrl(host, port, url)).toEqual(expectedPreLoginUrl);
+    expect(generatePreLoginUrl(host, port, url, undefined)).toEqual(expectedPreLoginUrl);
   });
 
   it('should throw error when host is empty', async () => {
     let caughtError;
     try {
-      generatePreLoginUrl(undefined, port, url);
+      generatePreLoginUrl(undefined, port, url, true);
     } catch (error) {
       caughtError = error;
     }
@@ -82,17 +82,27 @@ describe('Generate pre login url', () => {
   it('should throw error when port is empty', async () => {
     let caughtError;
     try {
-      generatePreLoginUrl(host, undefined, url);
+      generatePreLoginUrl(host, undefined, url, true);
     } catch (error) {
       caughtError = error;
     }
     expect(caughtError).toEqual(new Error(CacheErrors.ERROR_PORT_NOT_FOUND_FOR_PRE_LOGIN_URL));
   });
 
+  it('should not throw error when port is empty but not development mode', async () => {
+    let caughtError;
+    try {
+      generatePreLoginUrl(host, undefined, url, false);
+    } catch (error) {
+      caughtError = error;
+    }
+    expect(caughtError).toEqual(undefined);
+  });
+
   it('should throw error when url is empty', async () => {
     let caughtError;
     try {
-      generatePreLoginUrl(host, port, undefined);
+      generatePreLoginUrl(host, port, undefined, undefined);
     } catch (error) {
       caughtError = error;
     }

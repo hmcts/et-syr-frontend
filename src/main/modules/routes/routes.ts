@@ -7,6 +7,7 @@ import ChecklistController from '../../controllers/ChecklistController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import HomeController from '../../controllers/HomeController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
+import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
 import RespondentCaseListCheckController from '../../controllers/RespondentCaseListCheckController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentDXAddressController from '../../controllers/RespondentDXAddressController';
@@ -57,6 +58,7 @@ export class Routes {
     app.post(PageUrls.RESPONDENT_DX_ADDRESS, new RespondentDXAddressController().post);
     app.get(PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER, new RespondentContactPhoneNumberController().get);
     app.post(PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER, new RespondentContactPhoneNumberController().post);
+    app.get(PageUrls.NEW_SELF_ASSIGNMENT_REQUEST, new NewSelfAssignmentRequestController().get);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,

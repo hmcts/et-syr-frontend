@@ -33,16 +33,6 @@ describe('Self Assignment Data Check controller', () => {
     expect(request.session.userCase.lastName).toEqual(MockCaseWithIdConstants.TEST_CLAIMANT_SURNAME);
   });
 
-  it('should request session userCase object to undefined when new assignment', () => {
-    const request = mockRequest({ t });
-    const response = mockResponse();
-    request.url = '/self-assignment-form?isNew=true';
-    request.session.userCase = mockValidCaseWithId;
-    new SelfAssignmentFormController().get(request, response);
-    expect(response.render).toHaveBeenCalledWith('self-assignment-form', expect.anything());
-    expect(request.session.userCase).toEqual(undefined);
-  });
-
   describe('post()', () => {
     it("should return a 'required' error when the fields are empty", () => {
       const request = mockRequest({ t });

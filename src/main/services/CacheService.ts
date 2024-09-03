@@ -6,11 +6,11 @@ import { CaseDataCacheKey } from '../definitions/case';
 import { CacheErrors, HTTPS_PROTOCOL, RedisErrors } from '../definitions/constants';
 import StringUtils from '../utils/StringUtils';
 
-export const generatePreLoginUrl = (host: string, port: string, url: string): string => {
+export const generatePreLoginUrl = (host: string, port: string, url: string, developmentMode: boolean): string => {
   if (StringUtils.isBlank(host)) {
     throw new Error(CacheErrors.ERROR_HOST_NOT_FOUND_FOR_PRE_LOGIN_URL);
   }
-  if (StringUtils.isBlank(port)) {
+  if (StringUtils.isBlank(port) && developmentMode) {
     throw new Error(CacheErrors.ERROR_PORT_NOT_FOUND_FOR_PRE_LOGIN_URL);
   }
   if (StringUtils.isBlank(url)) {

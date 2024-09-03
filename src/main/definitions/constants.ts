@@ -66,6 +66,7 @@ export const PageUrls = {
   RESPONDENT_DX_ADDRESS: '/respondent-dx-address',
   RESPONDENT_CONTACT_PHONE_NUMBER: '/respondent-contact-phone-number',
   RESPONDENT_CONTACT_PREFERENCES: '/respondent-contact-preferences',
+  NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
 } as const;
 
 export const InterceptPaths = {
