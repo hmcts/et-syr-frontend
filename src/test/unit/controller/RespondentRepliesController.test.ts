@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import RespondentRepliesController from '../../../main/controllers/RespondentRepliesController';
+import RespondentCaseListController from '../../../main/controllers/RespondentCaseListController';
 import { ServiceErrors, TranslationKeys } from '../../../main/definitions/constants';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
@@ -17,7 +17,7 @@ describe('Respondent Replies list controller', () => {
   };
   const getCaseApiMock = jest.spyOn(caseService, 'getCaseApi');
   const api = new CaseApi(axios);
-  const respondentRepliesController = new RespondentRepliesController();
+  const respondentRepliesController = new RespondentCaseListController();
   it('should render respondent replies page', async () => {
     const response = mockResponse();
     const request = mockRequest({ t });
@@ -27,7 +27,7 @@ describe('Respondent Replies list controller', () => {
       .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponseList));
     await respondentRepliesController.get(request, response);
 
-    expect(response.render).toHaveBeenCalledWith(TranslationKeys.RESPONDENT_REPLIES, expect.anything());
+    expect(response.render).toHaveBeenCalledWith(TranslationKeys.RESPONDENT_CASE_LIST, expect.anything());
   });
   it('should throw error when not able to get user cases', async () => {
     const response = mockResponse();

@@ -55,7 +55,7 @@ describe('Self Assignment Check controller', () => {
       req.session.user = mockUserDetails;
       const res = mockResponse();
       await new SelfAssignmentCheckController().post(req, res);
-      expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_REPLIES);
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CASE_LIST);
     });
 
     it('should redirect to self assignment check page when case could not assigned', async () => {

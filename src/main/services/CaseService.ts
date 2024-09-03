@@ -4,7 +4,7 @@ import config from 'config';
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { DefaultValues, JavaApiUrls, ServiceErrors, SessionErrors } from '../definitions/constants';
+import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { toApiFormat } from '../helpers/ApiFormatter';
 import ErrorUtils from '../utils/ErrorUtils';
 
@@ -83,7 +83,14 @@ export class CaseApi {
 
   getUserCase = async (id: string): Promise<AxiosResponse<CaseApiDataResponse>> => {
     try {
-      return await this.axios.post(JavaApiUrls.GET_CASE, { case_id: id });
+      return await this.axios.post(
+        JavaApiUrls.GET_CASE +
+          DefaultValues.STRING_QUESTION_MARK +
+          JavaApiUrls.ROLE_PARAM_NAME +
+          DefaultValues.STRING_EQUALS +
+          Roles.DEFENDANT_ROLE_WITHOUT_BRACKETS,
+        { case_id: id }
+      );
     } catch (error) {
       throw new Error('Error getting user case: ' + axiosErrorDetails(error));
     }
@@ -91,7 +98,13 @@ export class CaseApi {
 
   getUserCases = async (): Promise<AxiosResponse<CaseApiDataResponse[]>> => {
     try {
-      return await this.axios.get<CaseApiDataResponse[]>(JavaApiUrls.GET_CASES);
+      return await this.axios.get<CaseApiDataResponse[]>(
+        JavaApiUrls.GET_CASES +
+          DefaultValues.STRING_QUESTION_MARK +
+          JavaApiUrls.ROLE_PARAM_NAME +
+          DefaultValues.STRING_EQUALS +
+          Roles.DEFENDANT_ROLE_WITHOUT_BRACKETS
+      );
     } catch (error) {
       throw new Error('Error getting user cases: ' + axiosErrorDetails(error));
     }

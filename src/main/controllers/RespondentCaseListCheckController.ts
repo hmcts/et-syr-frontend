@@ -18,7 +18,7 @@ export default class RespondentCaseListCheckController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const userCases = await getUserCasesByLastModified(req);
     if (CollectionUtils.isNotEmpty<CaseWithId>(userCases)) {
-      return res.redirect(PageUrls.RESPONDENT_REPLIES + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url));
+      return res.redirect(PageUrls.RESPONDENT_CASE_LIST + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url));
     } else {
       return res.redirect(PageUrls.SELF_ASSIGNMENT_FORM + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url));
     }

@@ -3,12 +3,14 @@ import { AxiosResponse } from 'axios';
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, Respondent, YesOrNo } from '../definitions/case';
+import { LoggingConstants } from '../definitions/constants';
 import { ApplicationTableRecord, CaseState } from '../definitions/definition';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { translateOverallStatus, translateTypesOfClaims } from '../helpers/ApplicationTableRecordTranslationHelper';
 import { getLogger } from '../logger';
 import NumberUtils from '../utils/NumberUtils';
+import StringUtils from '../utils/StringUtils';
 
 import { getCaseApi } from './CaseService';
 
@@ -27,7 +29,13 @@ export const getUserCasesByLastModified = async (req: AppRequest): Promise<CaseW
   if (NumberUtils.isEmptyOrZero(cases?.data?.length)) {
     return [];
   } else {
-    logger.info(`Retrieving cases for ${req.session.user?.id}`);
+    logger.info(
+      `${LoggingConstants.INFO_LOG_RETRIEVING_CASES} ${
+        StringUtils.isNotBlank(req.session.user?.id)
+          ? req.session.user?.id
+          : LoggingConstants.INFO_LOG_USER_ID_NOT_EXISTS
+      }`
+    );
     const casesByLastModified: CaseApiDataResponse[] = sortCasesByLastModified(cases);
     return casesByLastModified.map(app => formatApiCaseDataToCaseWithId(app, req));
   }

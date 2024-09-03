@@ -24,7 +24,7 @@ describe('Respondent Case List Check controller', () => {
       .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponseList));
     await respondentCaseListCheckController.get(request, response);
     expect(response.redirect).toHaveBeenCalledTimes(1);
-    expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_REPLIES);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CASE_LIST);
   });
   it('should call response.redirect with /respondent-replies url in welsh language', async () => {
     const response = mockResponse();
@@ -36,7 +36,7 @@ describe('Respondent Case List Check controller', () => {
       .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponseList));
     await respondentCaseListCheckController.get(request, response);
     expect(response.redirect).toHaveBeenCalledTimes(1);
-    expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_REPLIES + languages.WELSH_URL_PARAMETER);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CASE_LIST + languages.WELSH_URL_PARAMETER);
   });
   it('should call response.redirect with /self-assignment-form url', async () => {
     const response = mockResponse();

@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
-import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { PageUrls, Roles, TranslationKeys } from "../definitions/constants";
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
@@ -54,12 +54,12 @@ export default class SelfAssignmentCheckController {
     const caseAssignmentResponse = await getCaseApi(req.session.user?.accessToken)?.assignCaseUserRole(
       req.session.userCase.id,
       req.session.user.id,
-      '[DEFENDANT]'
+      Roles.DEFENDANT_ROLE_WITH_BRACKETS
     );
     if (!caseAssignmentResponse) {
       return res.redirect(req.url);
     }
-    return res.redirect(PageUrls.RESPONDENT_REPLIES);
+    return res.redirect(PageUrls.RESPONDENT_CASE_LIST);
   };
 
   public get = (req: AppRequest, res: Response): void => {

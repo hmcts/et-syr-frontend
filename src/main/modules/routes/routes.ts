@@ -8,7 +8,7 @@ import CookiePreferencesController from '../../controllers/CookiePreferencesCont
 import HomeController from '../../controllers/HomeController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
 import RespondentCaseListCheckController from '../../controllers/RespondentCaseListCheckController';
-import RespondentRepliesController from '../../controllers/RespondentRepliesController';
+import RespondentCaseListController from '../../controllers/RespondentCaseListController';
 import RespondentResponseLandingController from '../../controllers/RespondentResponseLandingController';
 import RespondentResponseTaskListController from '../../controllers/RespondentResponseTaskListController';
 import ResponseHubController from '../../controllers/ResponseHubController';
@@ -26,7 +26,7 @@ export class Routes {
     app.post(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().post);
     app.get(PageUrls.SELF_ASSIGNMENT_CHECK, new SelfAssignmentCheckController().get);
     app.post(PageUrls.SELF_ASSIGNMENT_CHECK, new SelfAssignmentCheckController().post);
-    app.get(PageUrls.RESPONDENT_REPLIES, new RespondentRepliesController().get);
+    app.get(PageUrls.RESPONDENT_CASE_LIST, new RespondentCaseListController().get);
     app.get(PageUrls.RESPONSE_HUB, new ResponseHubController().get);
     app.get(PageUrls.COOKIE_PREFERENCES, new CookiePreferencesController().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_LANDING, new RespondentResponseLandingController().get);
