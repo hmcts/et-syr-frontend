@@ -32,7 +32,7 @@ export const TranslationKeys = {
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
   SELF_ASSIGNMENT_FORM: 'self-assignment-form',
   SELF_ASSIGNMENT_CHECK: 'self-assignment-check',
-  CASE_LIST: 'respondent-case-list',
+  CASE_LIST: 'case-list',
 } as const;
 
 export const PageUrls = {
