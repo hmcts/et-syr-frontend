@@ -59,7 +59,7 @@ export default class SelfAssignmentCheckController {
     if (!caseAssignmentResponse) {
       return res.redirect(req.url);
     }
-    return res.redirect(PageUrls.RESPONDENT_CASE_LIST);
+    return res.redirect(PageUrls.CASE_LIST);
   };
 
   public get = (req: AppRequest, res: Response): void => {

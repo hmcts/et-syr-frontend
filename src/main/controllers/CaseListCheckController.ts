@@ -7,7 +7,7 @@ import { getUserCasesByLastModified } from '../services/CaseSelectionService';
 import CollectionUtils from '../utils/CollectionUtils';
 import LanguageUtils from '../utils/LanguageUtils';
 
-export default class RespondentCaseListCheckController {
+export default class CaseListCheckController {
   /**
    * Tries to get the list of user cases ordered by last modification date.
    * If unable to find any case forwards to self assignment form else forwards to respondent replies list page
@@ -18,7 +18,7 @@ export default class RespondentCaseListCheckController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const userCases = await getUserCasesByLastModified(req);
     if (CollectionUtils.isNotEmpty<CaseWithId>(userCases)) {
-      return res.redirect(PageUrls.RESPONDENT_CASE_LIST + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url));
+      return res.redirect(PageUrls.CASE_LIST + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url));
     } else {
       return res.redirect(PageUrls.SELF_ASSIGNMENT_FORM + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url));
     }

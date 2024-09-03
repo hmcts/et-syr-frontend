@@ -32,7 +32,7 @@ export const TranslationKeys = {
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
   SELF_ASSIGNMENT_FORM: 'self-assignment-form',
   SELF_ASSIGNMENT_CHECK: 'self-assignment-check',
-  RESPONDENT_CASE_LIST: 'respondent-case-list',
+  CASE_LIST: 'respondent-case-list',
 } as const;
 
 export const PageUrls = {
@@ -40,9 +40,9 @@ export const PageUrls = {
   HOME: '/',
   CHECKLIST: '/checklist',
   SELF_ASSIGNMENT_FORM: '/self-assignment-form',
-  RESPONDENT_CASE_LIST_CHECK: '/respondent-case-list-check',
+  CASE_LIST_CHECK: '/case-list-check',
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
-  RESPONDENT_CASE_LIST: '/respondent-case-list',
+  CASE_LIST: '/case-list',
   RESPONSE_HUB: '/response-hub/:caseId',
   COOKIE_PREFERENCES: '/cookies',
   RESPONDENT_RESPONSE_LANDING: '/respondent-response-landing',
