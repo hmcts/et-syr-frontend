@@ -25,7 +25,7 @@ export class Oidc {
     const port = app.locals.developmentMode ? `:${config.get('port')}` : '';
     const serviceUrl = (res: Response): string => `${HTTPS_PROTOCOL}${res.locals.host}${port}`;
 
-    app.get(PageUrls.RESPONSE_HUB, (req: AppRequest, res: Response, next: NextFunction) => {
+    app.get(PageUrls.CASE_DETAILS_WITH_CASE_ID_PARAMETER, (req: AppRequest, res: Response, next: NextFunction) => {
       const redisClient = req.app.locals?.redisClient;
       if (!redisClient) {
         logger.error('Unable to connect to Redis');

@@ -14,7 +14,7 @@ jest.mock('axios');
 const api = new CaseApi(axios);
 const caseListCheckController = new CaseListCheckController();
 
-describe('Respondent Case List Check controller', () => {
+describe('Case list check controller', () => {
   it('should call response.redirect with /respondent-replies url', async () => {
     const response = mockResponse();
     const request = mockRequest({});

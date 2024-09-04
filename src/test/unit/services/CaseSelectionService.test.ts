@@ -29,7 +29,7 @@ describe('Get redirect url tests', () => {
   });
   it('Should return response hub link when user case state is not awaiting submission to HMCTS', async () => {
     userCase.state = CaseState.ACCEPTED;
-    expect(getRedirectUrl(userCase, languageParam)).toEqual('/response-hub/1234567890123456?lng=en');
+    expect(getRedirectUrl(userCase, languageParam)).toEqual('/case-details/1234567890123456?lng=en');
   });
 });
 

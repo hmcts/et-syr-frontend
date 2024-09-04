@@ -18,9 +18,9 @@ import { getLogger } from '../logger';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import { getCaseApi } from '../services/CaseService';
 
-const logger = getLogger('ResponseHubController');
+const logger = getLogger('CaseDetailsController');
 const DAYS_FOR_PROCESSING = 7;
-export default class ResponseHubController {
+export default class CaseDetailsController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue('welsh-language', null);
     try {
@@ -65,9 +65,9 @@ export default class ResponseHubController {
       };
     });
 
-    res.render(TranslationKeys.RESPONSE_HUB, {
+    res.render(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.RESPONSE_HUB as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,
       userCase,

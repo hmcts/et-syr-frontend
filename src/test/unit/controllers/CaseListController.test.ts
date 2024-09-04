@@ -11,7 +11,7 @@ import { mockResponse } from '../mocks/mockResponse';
 
 jest.mock('axios');
 
-describe('Respondent Replies list controller', () => {
+describe('Case list controller', () => {
   const t = {
     common: {},
   };

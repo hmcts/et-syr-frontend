@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, Respondent, YesOrNo } from '../definitions/case';
-import { LoggingConstants } from '../definitions/constants';
+import { LoggingConstants, PageUrls } from "../definitions/constants";
 import { ApplicationTableRecord, CaseState } from '../definitions/definition';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
@@ -20,7 +20,7 @@ export const getRedirectUrl = (userCase: CaseWithId, languageParam: string): str
   if (userCase.state === CaseState.AWAITING_SUBMISSION_TO_HMCTS) {
     return `/claimant-application/${userCase.id}${languageParam}`;
   } else {
-    return `/response-hub/${userCase.id}${languageParam}`;
+    return `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${userCase.id}${languageParam}`;
   }
 };
 
