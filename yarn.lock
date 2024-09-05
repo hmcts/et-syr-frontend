@@ -3292,7 +3292,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core@npm:^1.3.76":
+"@swc/core@npm:^1.3.100":
   version: 1.7.23
   resolution: "@swc/core@npm:1.7.23"
   dependencies:
@@ -8135,7 +8135,7 @@ __metadata:
     "@jest/globals": ^29.5.0
     "@launchdarkly/node-server-sdk": ^9.0.0
     "@pact-foundation/pact": ^13.1.1
-    "@swc/core": ^1.3.76
+    "@swc/core": ^1.3.100
     "@swc/helpers": ^0.5.1
     "@swc/jest": ^0.2.29
     "@types/chai-as-promised": ^7.1.5
@@ -8192,7 +8192,6 @@ __metadata:
     jest: ^29.6.2
     jest-environment-jsdom: ^29.5.0
     jest-pact: 0.11.1
-    jest_workaround: ^0.79.19
     jwt-decode: ^3.1.2
     lint-staged: ^15.0.0
     lodash: ^4.17.21
@@ -8224,6 +8223,7 @@ __metadata:
     sonar-scanner: ^3.1.0
     style-loader: ^4.0.0
     supertest: ^7.0.0
+    swc_mut_cjs_exports: ^0.99.0
     ts-loader: ^9.4.2
     ts-node: ^10.9.1
     tsconfig-paths: ^4.2.0
@@ -11216,16 +11216,6 @@ __metadata:
   bin:
     jest: bin/jest.js
   checksum: 17ca8d67504a7dbb1998cf3c3077ec9031ba3eb512da8d71cb91bcabb2b8995c4e4b292b740cb9bf1cbff5ce3e110b3f7c777b0cefb6f41ab05445f248d0ee0b
-  languageName: node
-  linkType: hard
-
-"jest_workaround@npm:^0.79.19":
-  version: 0.79.19
-  resolution: "jest_workaround@npm:0.79.19"
-  peerDependencies:
-    "@swc/core": ^1.3.68
-    "@swc/jest": ^0.2.26
-  checksum: 52c3256593576a76ba483c85cf4068feeb2e0b0a21eb8278345b140f730be72a0981c92465023c1f72d7205488045b0e79f747a72a17318c1ce69f886cc2892f
   languageName: node
   linkType: hard
 
@@ -15861,6 +15851,16 @@ __metadata:
   version: 1.0.0
   resolution: "supports-preserve-symlinks-flag@npm:1.0.0"
   checksum: 53b1e247e68e05db7b3808b99b892bd36fb096e6fba213a06da7fab22045e97597db425c724f2bbd6c99a3c295e1e73f3e4de78592289f38431049e1277ca0ae
+  languageName: node
+  linkType: hard
+
+"swc_mut_cjs_exports@npm:^0.99.0":
+  version: 0.99.0
+  resolution: "swc_mut_cjs_exports@npm:0.99.0"
+  peerDependencies:
+    "@swc/core": ^1.7.0
+    "@swc/jest": ^0.2.36
+  checksum: d7ddc3f086b157631aeb0bf2147541b2bc478c029917a3c9ffc6e253a65f3d2d2cb7ddaa518a73493314c44ae6e766d6d98ed4c3c64fc652d9e7dedcd91a014a
   languageName: node
   linkType: hard
 
