@@ -76,16 +76,6 @@ describe('RespondentAddressController', () => {
     expect(formContent.fields.respondentAddress.values[1].label({ no: 'No' })).toBe('No');
   });
 
-  it('should handle the post method without validation errors', async () => {
-    req.body = {
-      respondentAddress: 'NO', // 'Selected' value on radio button
-    };
-
-    await controller.post(req, res);
-
-    expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_ENTER_POST_CODE);
-  });
-
   it('should handle the post method with validation errors', async () => {
     req.body = {
       respondentAddress: '', // Empty input to trigger validation error

@@ -8,7 +8,7 @@ import { FormContent, FormFields } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { conditionalRedirect, getLanguageParam } from '../helpers/RouterHelpers';
 import { isOptionSelected } from '../validators/validator';
 
 export default class RespondentAddressController {
@@ -47,12 +47,17 @@ export default class RespondentAddressController {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
     const errors = this.form.getValidatorErrors(formData);
+
     if (errors.length !== 0) {
       req.session.errors = errors;
       return res.redirect(req.url);
     }
 
-    return res.redirect(PageUrls.RESPONDENT_ENTER_POST_CODE);
+    if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)) {
+      return res.redirect(PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME);
+    } else if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.NO)) {
+      return res.redirect(PageUrls.RESPONDENT_ENTER_POST_CODE);
+    }
   };
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {

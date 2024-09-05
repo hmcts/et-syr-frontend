@@ -1,13 +1,13 @@
 {
-  "title": "[WELSH]Respondent address",
-  "h1": "[WELSH]Respondent address",
-  "sectionTitle": "[WELSH]1. Tell us about the respondent",
-  "enterPostcode": "[WELSH]Enter a UK postcode",
-  "cannotEnterPostcode": "[WELSH]I cannot find the address in the list",
+  "title": "[W]Respondent address",
+  "h1": "[W]Respondent address",
+  "sectionTitle": "[W]1. Tell us about the respondent",
+  "enterPostcode": "[W]Enter a UK postcode",
+  "cannotEnterPostcode": "[W]I cannot find the address in the list",
   "manualAddressLink": "/respondent-enter-address",
   "errors": {
     "addressEnterPostcode": {
-      "required": "[WELSH]Make a selection"
+      "required": "[W]Make a selection"
     }
   }
 }

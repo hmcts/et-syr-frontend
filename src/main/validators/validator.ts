@@ -97,7 +97,7 @@ export const isValidTwoDigitInteger: Validator = value => {
 
 export const isValidCompanyRegistrationNumber: Validator = value => {
   // Allow empty value (optional field)
-  if (!value || (value as string).trim().length === 0) {
+  if (value === null || value === '') {
     return;
   }
 

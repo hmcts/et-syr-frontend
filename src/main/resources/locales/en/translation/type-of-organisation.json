@@ -11,7 +11,9 @@
   "limitedCompanyTextLabel": "Company registration number (optional)",
   "errors": {
     "typeOfOrg": {
-      "required": "Select an organisation type",
+      "required": "Select an organisation type"
+    },
+    "typeOfOrgCRNDetail": {
       "invalidCompanyRegistrationNumber": "Enter a valid Company Registration number"
     }
   }

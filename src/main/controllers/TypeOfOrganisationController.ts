@@ -26,9 +26,9 @@ export default class TypeOfOrganisationController {
             label: (l: AnyRecord): string => l.individual,
             value: TypeOfOrganisation.INDIVIDUAL,
             subFields: {
-              typeOfOrgDetail: {
-                id: 'typeOfOrgIndividualTxt',
-                name: 'typeOfOrgIndividualTxt',
+              typeOfOrgIndividualDetail: {
+                id: 'typeOfOrgIndividualDetail',
+                name: 'typeOfOrgIndividualDetail',
                 type: 'text',
                 labelSize: 'normal',
                 label: (l: AnyRecord): string => l.individualTextLabel,
@@ -42,9 +42,9 @@ export default class TypeOfOrganisationController {
             label: (l: AnyRecord): string => l.limitedCompany,
             value: TypeOfOrganisation.LIMITED_COMPANY,
             subFields: {
-              typeOfOrgDetail: {
-                id: 'typeOfOrgLimitedCompanyTxt',
-                name: 'typeOfOrgLimitedCompanyTxt',
+              typeOfOrgCRNDetail: {
+                id: 'typeOfOrgCRNDetail',
+                name: 'typeOfOrgCRNDetail',
                 type: 'text',
                 labelSize: 'normal',
                 label: (l: AnyRecord): string => l.limitedCompanyTextLabel,

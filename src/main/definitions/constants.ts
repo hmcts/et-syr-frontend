@@ -37,6 +37,8 @@ export const TranslationKeys = {
   RESPONDENT_PREFERRED_CONTACT_NAME: 'respondent-preferred-contact-name',
   RESPONDENT_DX_ADDRESS: 'respondent-dx-address',
   RESPONDENT_CONTACT_PHONE_NUMBER: 'respondent-contact-phone-number',
+  RESPONDENT_CONTACT_PREFERENCES: 'respondent-contact-preferences',
+  CONTACT_DETAILS_CYA: 'contact-details-check-your-answers',
   YOUR_APPLICATIONS: 'your-applications',
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
   SELF_ASSIGNMENT_FORM: 'self-assignment-form',
@@ -66,6 +68,7 @@ export const PageUrls = {
   RESPONDENT_DX_ADDRESS: '/respondent-dx-address',
   RESPONDENT_CONTACT_PHONE_NUMBER: '/respondent-contact-phone-number',
   RESPONDENT_CONTACT_PREFERENCES: '/respondent-contact-preferences',
+  CONTACT_DETAILS_CYA: '/contact-details-check-your-answers',
   NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
 } as const;
 

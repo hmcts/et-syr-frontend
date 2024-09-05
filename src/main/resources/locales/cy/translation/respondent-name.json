@@ -1,18 +1,18 @@
 {
-  "title": "[WELSH]Respondent name",
-  "h1": "[WELSH]Respondent name",
-  "sectionTitle": "[WELSH]1. Tell us about the respondent",
-  "insetTxt1": "[WELSH]If you consider another person or company may be liable, you should still submit a response.",
-  "insetTxt2": "[WELSH]You will have a chance in this form to explain why you think someone else may be liable.",
-  "label1": "[WELSH]Is ",
-  "label2": " the respondent’s correct name?[WELSH]",
-  "respondentNameTextLabel": "[WELSH]Enter correct name",
+  "title": "[W]Respondent name",
+  "h1": "[W]Respondent name",
+  "sectionTitle": "[W]1. Tell us about the respondent",
+  "insetTxt1": "[W]If you consider another person or company may be liable, you should still submit a response.",
+  "insetTxt2": "[W]You will have a chance in this form to explain why you think someone else may be liable.",
+  "label1": "[W]Is ",
+  "label2": " the respondent’s correct name?[W]",
+  "respondentNameTextLabel": "[W]Enter correct name",
   "errors": {
     "respondentName": {
-      "required": "Select whether this is the correct name"
+      "required": "[W]Select whether this is the correct name"
     },
     "respondentNameDetail": {
-      "required": "Enter correct name"
+      "required": "[W]Enter correct name"
     }
   }
 }

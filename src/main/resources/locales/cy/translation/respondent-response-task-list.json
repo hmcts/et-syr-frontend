@@ -1,31 +1,31 @@
 {
-  "title": "[WELSH]Your response form (ET3)",
-  "pageTitle": "[WELSH]Your response form (ET3)",
-  "helpTxt1": "[WELSH]To help you complete this, open the:",
-  "helpAcasTxt": "[WELSH]Acas certificate (opens in new tab)",
-  "helpET1ClaimTxt": "[WELSH]ET1 claim form (opens in new tab)",
-  "insetTxt1": "[WELSH]If you do not provide a response, a judgment may be issued against you without a hearing.",
-  "insetTxt2": "[WELSH]If you consider another person or company may be liable, you should still submit a response. You will have a chance in this response to explain why you think someone else may be liable.",
-  "notStartedYet": "[WELSH]Not started yet",
-  "completed": "[WELSH]Completed",
-  "inProgress": "[WELSH]In progress",
-  "cannotStartYet": "[WELSH]Cannot start yet",
+  "title": "[W]Your response form (ET3)",
+  "pageTitle": "[W]Your response form (ET3)",
+  "helpTxt1": "[W]To help you complete this, open the:",
+  "helpAcasTxt": "[W]Acas certificate (opens in new tab)",
+  "helpET1ClaimTxt": "[W]ET1 claim form (opens in new tab)",
+  "insetTxt1": "[W]If you do not provide a response, a judgment may be issued against you without a hearing.",
+  "insetTxt2": "[W]If you consider another person or company may be liable, you should still submit a response. You will have a chance in this response to explain why you think someone else may be liable.",
+  "notStartedYet": "[W]Not started yet",
+  "completed": "[W]Completed",
+  "inProgress": "[W]In progress",
+  "cannotStartYet": "[W]Cannot start yet",
   "section1": {
-    "title": "[WELSH]Tell us about the respondent",
-    "link1Text": "[WELSH]Contact details",
-    "link2Text": "[WELSH]Hearing format and employer details"
+    "title": "[W]Tell us about the respondent",
+    "link1Text": "[W]Contact details",
+    "link2Text": "[W]Hearing format and employer details"
   },
   "section2": {
-    "title": "[WELSH]Tell us about the claimant ",
-    "link1Text": "[WELSH]Early conciliation and employee details",
-    "link2Text": "[WELSH]Pay, pension and benefits details"
+    "title": "[W]Tell us about the claimant ",
+    "link1Text": "[W]Early conciliation and employee details",
+    "link2Text": "[W]Pay, pension and benefits details"
   },
   "section3": {
-    "title": "[WELSH]Give us your response",
-    "link1Text": "[WELSH]Contest the claim"
+    "title": "[W]Give us your response",
+    "link1Text": "[W]Contest the claim"
   },
   "section4": {
-    "title": "[WELSH]Check and submit your response",
-    "link1Text": "[WELSH]Check your answers"
+    "title": "[W]Check and submit your response",
+    "link1Text": "[W]Check your answers"
   }
 }

@@ -1,6 +1,7 @@
 {% extends "form/main/template.njk" %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% block beforeContent %}
@@ -17,6 +18,13 @@
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <span class="govuk-caption-xl">{{ sectionTitle }}</span>
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ h1 }}</h1>
+
+      {{ govukSummaryList({
+        rows: contactPreferencesRespondentSection
+      }) }}
+
+      <p class="govuk-body"> {{ sectionText1  }} </p>
+      <p class="govuk-body"> {{ sectionText2  }} <a href="{{ contactTribunalLink }}" target="_blank"> {{  contactTribunalLinkText }} </a></p>
 
       {% block form %}
         {% include "form/form.njk"%}
