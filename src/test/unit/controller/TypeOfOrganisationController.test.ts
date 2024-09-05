@@ -22,6 +22,7 @@ describe('TypeOfOrganisationController', () => {
       },
     });
 
+    // Mock translation function
     translationMock = {
       individual: 'Individual',
       individualTextLabel: 'Please provide the individual’s name',
@@ -32,8 +33,18 @@ describe('TypeOfOrganisationController', () => {
       other: 'Other',
     };
 
-    // Mock translation function
-    (request.t as unknown as jest.Mock).mockReturnValue(translationMock);
+    (request.t as unknown as jest.Mock).mockImplementation((key: string) => {
+      switch (key) {
+        case TranslationKeys.TYPE_OF_ORGANISATION:
+          return translationMock;
+        case TranslationKeys.COMMON:
+          return translationMock;
+        case TranslationKeys.SIDEBAR_CONTACT_US:
+          return translationMock;
+        default:
+          return key;
+      }
+    });
   });
 
   it('should render the Type of Organisation page with the correct form content', async () => {
@@ -59,9 +70,9 @@ describe('TypeOfOrganisationController', () => {
                   label: expect.any(Function),
                   value: TypeOfOrganisation.INDIVIDUAL,
                   subFields: expect.objectContaining({
-                    typeOfOrgDetail: expect.objectContaining({
-                      id: 'typeOfOrgIndividualTxt',
-                      name: 'typeOfOrgIndividualTxt',
+                    typeOfOrgIndividualDetail: expect.objectContaining({
+                      id: 'typeOfOrgIndividualDetail',
+                      name: 'typeOfOrgIndividualDetail',
                       type: 'text',
                       labelSize: 'normal',
                       label: expect.any(Function),
@@ -75,9 +86,9 @@ describe('TypeOfOrganisationController', () => {
                   label: expect.any(Function),
                   value: TypeOfOrganisation.LIMITED_COMPANY,
                   subFields: expect.objectContaining({
-                    typeOfOrgDetail: expect.objectContaining({
-                      id: 'typeOfOrgLimitedCompanyTxt',
-                      name: 'typeOfOrgLimitedCompanyTxt',
+                    typeOfOrgCRNDetail: expect.objectContaining({
+                      id: 'typeOfOrgCRNDetail',
+                      name: 'typeOfOrgCRNDetail',
                       type: 'text',
                       labelSize: 'normal',
                       label: expect.any(Function),
@@ -86,6 +97,21 @@ describe('TypeOfOrganisationController', () => {
                       validator: expect.any(Function),
                     }),
                   }),
+                }),
+                expect.objectContaining({
+                  name: 'typeOfOrg',
+                  label: expect.any(Function),
+                  value: TypeOfOrganisation.PARTNERSHIP,
+                }),
+                expect.objectContaining({
+                  name: 'typeOfOrg',
+                  label: expect.any(Function),
+                  value: TypeOfOrganisation.UNINCORPORATED_ASSOCIATION,
+                }),
+                expect.objectContaining({
+                  name: 'typeOfOrg',
+                  label: expect.any(Function),
+                  value: TypeOfOrganisation.OTHER,
                 }),
               ]),
               validator: expect.any(Function),
@@ -104,29 +130,41 @@ describe('TypeOfOrganisationController', () => {
     const form = renderMock.mock.calls[0][1].form;
     const typeOfOrgValues = form.fields.typeOfOrg.values;
 
-    expect(typeOfOrgValues[0].label(translationMock)).toBe(TypeOfOrganisation.INDIVIDUAL);
-    expect(typeOfOrgValues[1].label(translationMock)).toBe(TypeOfOrganisation.LIMITED_COMPANY);
-    expect(typeOfOrgValues[2].label(translationMock)).toBe(TypeOfOrganisation.PARTNERSHIP);
-    expect(typeOfOrgValues[3].label(translationMock)).toBe(TypeOfOrganisation.UNINCORPORATED_ASSOCIATION);
-    expect(typeOfOrgValues[4].label(translationMock)).toBe(TypeOfOrganisation.OTHER);
+    expect(typeOfOrgValues[0].label(translationMock)).toBe(translationMock.individual);
+    expect(typeOfOrgValues[1].label(translationMock)).toBe(translationMock.limitedCompany);
+    expect(typeOfOrgValues[2].label(translationMock)).toBe(translationMock.partnership);
+    expect(typeOfOrgValues[3].label(translationMock)).toBe(translationMock.unincorporatedAssociation);
+    expect(typeOfOrgValues[4].label(translationMock)).toBe(translationMock.other);
 
     // Verify the label generation of sub-fields for individual and limited company
-    const individualSubFieldLabelFunction = form.fields.typeOfOrg.values[0].subFields.typeOfOrgDetail.label;
-    expect(individualSubFieldLabelFunction(translationMock)).toBe('Please provide the individual’s name');
+    const individualSubFieldLabelFunction = form.fields.typeOfOrg.values[0].subFields.typeOfOrgIndividualDetail.label;
+    expect(individualSubFieldLabelFunction(translationMock)).toBe(translationMock.individualTextLabel);
 
-    const limitedCompanySubFieldLabelFunction = form.fields.typeOfOrg.values[1].subFields.typeOfOrgDetail.label;
-    expect(limitedCompanySubFieldLabelFunction(translationMock)).toBe('Please provide the company registration number');
+    const limitedCompanySubFieldLabelFunction = form.fields.typeOfOrg.values[1].subFields.typeOfOrgCRNDetail.label;
+    expect(limitedCompanySubFieldLabelFunction(translationMock)).toBe(translationMock.limitedCompanyTextLabel);
   });
 
   it('should handle the post method with valid data', async () => {
     request.body = {
       typeOfOrg: TypeOfOrganisation.LIMITED_COMPANY,
-      typeOfOrgLimitedCompanyTxt: '12345678',
+      typeOfOrgCRNDetail: '12345678',
     };
 
     await controller.post(request, response);
 
     expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_ADDRESS);
+  });
+
+  it('should handle the post method with INVALID data', async () => {
+    request.body = {
+      typeOfOrg: TypeOfOrganisation.LIMITED_COMPANY,
+      typeOfOrgCRNDetail: '12345678901234567890',
+    };
+
+    await controller.post(request, response);
+
+    expect(request.session.errors).toBeDefined();
+    expect(response.redirect).toHaveBeenCalledWith(request.url);
   });
 
   it('should use the correct translation keys', async () => {

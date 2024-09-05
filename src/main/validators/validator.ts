@@ -97,7 +97,7 @@ export const isValidTwoDigitInteger: Validator = value => {
 
 export const isValidCompanyRegistrationNumber: Validator = value => {
   // Allow empty value (optional field)
-  if (value === null || value === '') {
+  if (!value || (value as string).trim().length === 0) {
     return;
   }
 
@@ -273,7 +273,7 @@ export const isAcasNumberValid: Validator = value => {
 };
 
 export const isNameValid: Validator = value => {
-  if (value === null || value === '') {
+  if (!value || (value as string).trim().length === 0) {
     return;
   }
 
@@ -287,7 +287,7 @@ export const isNameValid: Validator = value => {
 };
 
 export const isPhoneNumberValid: Validator = value => {
-  if (value === null || value === '') {
+  if (!value || (value as string).trim().length === 0) {
     return;
   }
 
