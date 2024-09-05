@@ -1,0 +1,18 @@
+{
+  "title": "[W]Respondent name",
+  "h1": "[W]Respondent name",
+  "sectionTitle": "[W]1. Tell us about the respondent",
+  "insetTxt1": "[W]If you consider another person or company may be liable, you should still submit a response.",
+  "insetTxt2": "[W]You will have a chance in this form to explain why you think someone else may be liable.",
+  "label1": "[W]Is ",
+  "label2": " the respondent’s correct name?[W]",
+  "respondentNameTextLabel": "[W]Enter correct name",
+  "errors": {
+    "respondentName": {
+      "required": "[W]Select whether this is the correct name"
+    },
+    "respondentNameDetail": {
+      "required": "[W]Enter correct name"
+    }
+  }
+}

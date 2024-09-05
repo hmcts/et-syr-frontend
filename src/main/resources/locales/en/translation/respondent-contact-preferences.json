@@ -1,0 +1,26 @@
+{
+  "title": "Respondent contact preferences",
+  "h1": "Respondent contact preferences",
+  "sectionTitle": "1. Tell us about the respondent",
+  "postalAddress": "Postal address",
+  "dxAddress": "DX address (optional)",
+  "contactPhoneNumber": "Contact phone number (optional)",
+  "emailAddress": "Email address",
+  "sectionText1": "Normally the tribunal will contact you by email. If you need contact by post, you must explain why.",
+  "contactPreferenceQuestion": "How would you prefer to be contacted?",
+  "email": "Email",
+  "post": "Post",
+  "postHintText": "Explain why you have selected post.",
+  "tribunalContactYouQuestion": "Which language should the tribunal use to contact you?",
+  "errors": {
+    "respondentContactPreference": {
+      "required": "Select a contact method"
+    },
+    "respondentLanguagePreference": {
+      "required": "Select language"
+    },
+    "respondentContactPreferenceDetail": {
+      "required": "Explain why you selected post"
+    }
+  }
+}

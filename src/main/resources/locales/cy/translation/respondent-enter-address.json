@@ -1,0 +1,21 @@
+{
+  "title": "[W]Respondent address",
+  "h1": "[W]Respondent address",
+  "sectionTitle": "[W]1. Tell us about the respondent",
+  "addressLine1": "[W]Address line 1",
+  "addressLine2": "[W]Address line 2 (optional)",
+  "townOrCity": "[W]Town or city",
+  "country": "[W]Country",
+  "postcodeOrAreaCode": "[W]Postcode or area code (optional)",
+  "errors": {
+    "addressLine1": {
+      "required": "[W]Enter address"
+    },
+    "townOrCity": {
+      "required": "[W]Enter town or city"
+    },
+    "country": {
+      "required": "[W]Enter country"
+    }
+  }
+}
