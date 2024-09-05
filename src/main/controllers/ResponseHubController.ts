@@ -6,6 +6,7 @@ import { HubLinkStatus, HubLinksStatuses, sectionIndexToLinkNames, statusColorMa
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
 import { handleUpdateHubLinksStatuses } from '../helpers/CaseHelpers';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
 import {
   getClaimantAppsAndUpdateStatusTag,
   getHubLinksUrlMap,
@@ -23,6 +24,8 @@ const DAYS_FOR_PROCESSING = 7;
 export default class ResponseHubController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue('welsh-language', null);
+    const respondToClaimUrl = setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_LANDING);
+
     try {
       req.session.userCase = formatApiCaseDataToCaseWithId(
         (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseId)).data
@@ -73,6 +76,7 @@ export default class ResponseHubController {
       userCase,
       currentState,
       sections,
+      respondToClaimUrl,
       hideContactUs: true,
       processingDueDate: getDueDate(formatDate(userCase.submittedDate), DAYS_FOR_PROCESSING),
       showAcknowledgementAlert: true,

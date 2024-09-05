@@ -1,0 +1,18 @@
+{
+  "title": "Respondent name",
+  "h1": "Respondent name",
+  "sectionTitle": "1. Tell us about the respondent",
+  "insetTxt1": "If you consider another person or company may be liable, you should still submit a response.",
+  "insetTxt2": "You will have a chance in this form to explain why you think someone else may be liable.",
+  "label1": "Is ",
+  "label2": " the respondent’s correct name?",
+  "respondentNameTextLabel": "Enter correct name",
+  "errors": {
+    "respondentName": {
+      "required": "Select whether this is the correct name"
+    },
+    "respondentNameDetail": {
+      "required": "Enter correct name"
+    }
+  }
+}

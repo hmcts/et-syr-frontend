@@ -33,7 +33,6 @@ describe('Respondent Response Task List controller', () => {
     const request = mockRequest({});
 
     // Mock the translation function to return valid section data
-    // Mock the translation function to return valid section data
     (request.t as unknown as jest.Mock).mockReturnValue({
       section1: { title: 'Section 1 Title', link1Text: 'Link 1 Text', link2Text: 'Link 2 Text' },
       section2: { title: 'Section 2 Title', link1Text: 'Link 3 Text', link2Text: 'Link 4 Text' },
