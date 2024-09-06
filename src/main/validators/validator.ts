@@ -95,6 +95,18 @@ export const isValidTwoDigitInteger: Validator = value => {
   }
 };
 
+export const isValidCompanyRegistrationNumber: Validator = value => {
+  // Allow empty value (optional field)
+  if (!value || (value as string).trim().length === 0) {
+    return;
+  }
+
+  // Ensure the value is alphanumeric and does not exceed 8 characters
+  if (!/^[a-zA-Z0-9]{1,8}$/.test(value as string)) {
+    return 'invalidCompanyRegistrationNumber';
+  }
+};
+
 export const isValidNoticeLength: Validator = value => {
   if (!value || (value as string).trim().length === 0) {
     return;
@@ -257,5 +269,33 @@ export const isAcasNumberValid: Validator = value => {
   const valueAsString = value as string;
   if (!/^[rR]\d{6}\/\d{2}\/\d{2}$/.test(valueAsString)) {
     return 'invalidAcasNumber';
+  }
+};
+
+export const isNameValid: Validator = value => {
+  if (!value || (value as string).trim().length === 0) {
+    return;
+  }
+
+  // regular expression to allow alphanumeric characters, spaces, and specific special characters
+  const namePattern = /^[a-zA-Z0-9 ,.'-]+$/;
+
+  // Test the name against the regular expression above
+  if (!namePattern.test(value as string)) {
+    return 'invalidName';
+  }
+};
+
+export const isPhoneNumberValid: Validator = value => {
+  if (!value || (value as string).trim().length === 0) {
+    return;
+  }
+
+  // regular expression to cover Uk and International number upto 20 chars
+  const phonePattern = /^\+?[0-9\s\-().]{7,20}$/;
+
+  // Test the value against the regular expression
+  if (!phonePattern.test(value as string)) {
+    return 'invalidPhoneNumber';
   }
 };

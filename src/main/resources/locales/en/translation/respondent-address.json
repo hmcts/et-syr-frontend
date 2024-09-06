@@ -1,0 +1,12 @@
+{
+  "title": "Respondent address",
+  "h1": "Respondent address",
+  "sectionTitle": "1. Tell us about the respondent",
+  "addressText": "Address provided on ET1",
+  "correctAddressQuestion": "Is this the respondent’s correct address?",
+  "errors": {
+    "respondentAddress": {
+      "required": "Make a selection"
+    }
+  }
+}

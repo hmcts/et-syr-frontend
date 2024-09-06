@@ -1,0 +1,20 @@
+{
+  "title": "Type of Organisation",
+  "h1": "What type of organisation is the respondent?",
+  "sectionTitle": "1. Tell us about the respondent",
+  "individual": "Individual",
+  "limitedCompany": "Limited Company",
+  "partnership": "Partnership",
+  "unincorporatedAssociation": "Unincorporated association (such as a sports club)",
+  "other": "Other",
+  "individualTextLabel": "Preferred title (optional)",
+  "limitedCompanyTextLabel": "Company registration number (optional)",
+  "errors": {
+    "typeOfOrg": {
+      "required": "Select an organisation type"
+    },
+    "typeOfOrgCRNDetail": {
+      "invalidCompanyRegistrationNumber": "Enter a valid Company Registration number"
+    }
+  }
+}
