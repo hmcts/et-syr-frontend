@@ -113,23 +113,9 @@ $lightgrey-panel: #d3d3d3;
   }
 }
 
-.hmcts-progress-bar__icon {
-  border: 1px solid $govuk-grey;
-
-  .hmcts-progress-bar__icon--complete {
-    background-color: $govuk-blue;
-  }
-}
-
-.hmcts-progress-bar__list {
-  &::before {
-    border-top: 6px solid $govuk-grey;
-  }
-}
-
-/* ==========================================================================
-   #PROGRESS BAR
-   ========================================================================== */
+// ==========================================================================
+// #PROGRESS BAR
+// ==========================================================================
 
 .hmcts-progress-bar {
   margin-bottom: govuk-spacing(7);
@@ -173,9 +159,9 @@ $lightgrey-panel: #d3d3d3;
     &::before {
       border-top: 6px solid govuk-colour('white');
       content: '';
+      left: 0;
       position: absolute;
       top: 13px;
-      left: 0;
       width: 50%;
     }
   }
@@ -200,7 +186,6 @@ $lightgrey-panel: #d3d3d3;
 }
 
 .hmcts-progress-bar__icon {
-  position: relative;
   background-color: govuk-colour('white');
   border: 6px solid govuk-colour('green');
   border-radius: 50%; // IE8 does not support border radius but we’re ok with that
@@ -209,6 +194,7 @@ $lightgrey-panel: #d3d3d3;
   height: 32px;
   margin-left: auto;
   margin-right: auto;
+  position: relative;
   width: 32px;
 }
 
