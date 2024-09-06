@@ -25,7 +25,6 @@ export class Nunjucks {
       express: app,
     });
     createFilters(nunEnv);
-    // const hmctsProgressBarPath = path.join(__dirname, '..', '..', '..', '..', 'src', 'main', 'views');
     nunEnv.addGlobal('getContent', function (prop: ((param: string) => string) | string): string {
       return typeof prop === 'function' ? prop(this.ctx) : prop;
     });
