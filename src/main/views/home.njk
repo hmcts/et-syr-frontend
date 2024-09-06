@@ -2,6 +2,9 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "components/hmcts-progress-bar/macro.njk" import hmctsProgressBar %}
+
+
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -15,6 +18,28 @@
       }) }}
 
       <h2 class="govuk-heading-m">{{ whatYouNeedHeading }}</h2>
+
+{{ hmctsProgressBar({
+  items: [{
+    label: {
+      text: 'You apply'
+    },
+    complete: true
+  }, {
+    label: {
+      text: 'Your husband/wife responds'
+    },
+    active: true
+  }, {
+    label: {
+      text: 'The court decides'
+    }
+  }, {
+    label: {
+      text: 'Divorce finalised'
+    }
+  }]
+}) }}
 
       <ul class="govuk-list govuk-list--bullet">
         <li>{{ whatYouNeedListTxt1 }}</li>
