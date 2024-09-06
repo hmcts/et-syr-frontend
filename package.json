@@ -45,7 +45,6 @@
   "dependencies": {
     "@faker-js/faker": "^8.0.0",
     "@hmcts/cookie-manager": "^1.0.0",
-    "@hmcts/frontend": "^0.0.50-alpha",
     "@hmcts/info-provider": "^1.0.0",
     "@hmcts/nodejs-healthcheck": "^1.8.0",
     "@hmcts/nodejs-logging": "^4.0.4",
