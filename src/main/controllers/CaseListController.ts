@@ -23,6 +23,7 @@ export default class CaseListController {
       sessionErrors: req.session?.errors || [],
       PageUrls,
       userCase: req.session?.userCase,
+      user: req.session?.user,
       usersApplications,
       languageParam,
       newSelfAssignmentRequestUrl,

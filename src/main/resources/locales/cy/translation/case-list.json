@@ -1,8 +1,9 @@
 {
   "title": "ET3 Responses",
   "p1": "Reply to a new claim",
-  "h1": "Draft responses",
-  "h2": "Submitted responses",
+  "table1Header": "Claims - Awaiting Response",
+  "table2Header": "Claims - Draft Response",
+  "table3Header": "Claims - Submitted Response",
   "col1": "Date created",
   "col2": "Reference",
   "col3": "Type of claim",

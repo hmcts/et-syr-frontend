@@ -4,6 +4,9 @@ import jwtDecode from 'jwt-decode';
 
 import { UserDetails } from '../definitions/appRequest';
 import { CITIZEN_ROLE } from '../definitions/constants';
+import { getLogger } from '../logger';
+
+const logger = getLogger('AuthorizationIndex');
 
 export const getRedirectUrl = (
   serviceUrl: string,
@@ -25,6 +28,8 @@ export const getUserDetails = async (
   const id: string = process.env.IDAM_CLIENT_ID ?? config.get('services.idam.clientID');
   const secret: string = config.get('services.idam.clientSecret');
   const tokenUrl: string = process.env.IDAM_API_URL ?? config.get('services.idam.tokenURL');
+  // This variable is added for getting user details for development environment.
+  const userInfoUrl: string = process.env.IDAM_API_USER_INFO_URL ?? config.get('services.idam.userInfoURL');
   const callbackUrl = encodeURI(serviceUrl + callbackUrlPageLink);
   const code = encodeURIComponent(rawCode);
   const env = process.env.NODE_ENV || 'development';
@@ -40,7 +45,23 @@ export const getUserDetails = async (
   const response = await axios.post(tokenUrl, data, { headers });
   const jwt = jwtDecode(response.data.id_token) as IdTokenJwtPayload;
   if (env === 'development') {
-    jwt.roles = ['citizen'];
+    const userInfoResponse = await fetch(userInfoUrl, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: 'Bearer ' + response.data.access_token,
+        'Content-Type': 'application/json',
+      }),
+    });
+    if (!userInfoResponse.ok) {
+      logger.error('Unable to get user info with access token ' + response.data.access_token);
+    }
+    await userInfoResponse.json().then(userInfo => {
+      jwt.uid = userInfo?.uid;
+      jwt.roles = userInfo?.roles;
+      jwt.sub = userInfo?.sub;
+      jwt.family_name = userInfo?.family_name;
+      jwt.given_name = userInfo?.given_name;
+    });
   }
   return {
     accessToken: response.data.access_token,

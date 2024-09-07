@@ -1,64 +1,52 @@
 {% extends "form/main/template.njk" %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
-{% set draftApplications = [] %}
-{% set submittedApplications = [] %}
+{% set et3Started = [] %}
+{% set et3NotStarted = [] %}
 
 {% for app in usersApplications %}
+  {% for respondent in app.userCase.respondents %}
+    {% if app.userCase.state === 'Accepted' and (respondent.personalDetailsSection === 'Yes' or respondent.employmentDetailsSection === 'Yes' or respondent.claimDetailsSection === 'Yes') %}
+      {% set et3Started = (et3Started.push([
+        {
+          text: app.userCase.createdDate
+        }, {
+          text: app.userCase.id
+        }, {
+          text: app.userCase.typeOfClaimString
+        }, {
+          text: noRespondents
+        }, {
+          text: app.completionStatus
+        }, {
+          text: app.userCase.lastModified
+        }, {
+          html: "<a href=\"" + app.url + "\" aria-label=\"" + view + " " + col2 + ": " + app.userCase.id + "\">" + continue + "</a>"
+        }
+      ]), et3Started) %}
 
-  {% if app.respondents === 'undefined' and app.userCase.state === 'AWAITING_SUBMISSION_TO_HMCTS' %}
-    {% set draftApplications = (draftApplications.push([
-      {
-        text: app.userCase.createdDate
-      }, {
-        text: app.userCase.id
-      }, {
-        text: app.userCase.typeOfClaimString
-      }, {
-        text: noRespondents
-      }, {
-        text: app.completionStatus
-      }, {
-        text: app.userCase.lastModified
-      }, {
-        html: "<a href=\"#\">" + view + "</a>"
-      }
-    ]), draftApplications) %}
-  {% elif app.userCase.state === 'AWAITING_SUBMISSION_TO_HMCTS' %}
-    {% set draftApplications = (draftApplications.push([
-      {
-        text: app.userCase.createdDate
-      }, {
-        text: app.userCase.id
-      }, {
-        text: app.userCase.typeOfClaimString
-      }, {
-        text: app.respondents | safe
-      }, {
-        text: app.completionStatus
-      }, {
-        text: app.userCase.lastModified
-      }, {
-        html: "<a href=\"#\">" + view + "</a>"
-      }
-    ]), draftApplications) %}
-  {% else %}
-    {% set submittedApplications = (submittedApplications.push([
-      {
-        text: app.userCase.createdDate
-      }, {
-        text: app.userCase.id
-      }, {
-        text: app.userCase.typeOfClaimString
-      }, {
-        text: app.respondents | safe
-      }, {
-        text: app.userCase.lastModified
-      }, {
-        html: "<a href=\"" + app.url + "\" aria-label=\"" + view + " " + col2 + ": " + app.userCase.id + "\">" + continue + "</a>"
-      }
-    ]), submittedApplications) %}
-  {% endif %}
+    {% endif %}
+
+    {% if app.userCase.state === 'Accepted' and respondent.personalDetailsSection !== 'Yes' and respondent.employmentDetailsSection !== 'Yes' and respondent.claimDetailsSection !== 'Yes' %}
+      {% set et3NotStarted = (et3NotStarted.push([
+        {
+          text: app.userCase.createdDate
+        }, {
+          text: app.userCase.id
+        }, {
+          text: app.userCase.typeOfClaimString
+        }, {
+          text: noRespondents
+        }, {
+          text: app.completionStatus
+        }, {
+          text: app.userCase.lastModified
+        }, {
+          html: "<a href=\"" + app.url + "\" aria-label=\"" + view + " " + col2 + ": " + app.userCase.id + "\">" + continue + "</a>"
+        }
+      ]), et3NotStarted) %}
+    {% endif %}
+  {% endfor %}
 {% endfor %}
 
 {% block content %}
@@ -68,10 +56,8 @@
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-4">{{ title }}</h1>
     </br>
     <p class="govuk-body"><a href='{{newSelfAssignmentRequestUrl}}'>{{ p1 }}</a></p>
-
-    {% if submittedApplications.length != 0 %}
-      <h2 class="govuk-heading-l">{{ h1 }}</h2>
-
+    {% if et3NotStarted.length != 0 %}
+      <h2 class="govuk-heading-l">{{ table1Header }}</h2>
       <div class="scrollableTable">
       {{ govukTable({
           caption: h2,
@@ -91,52 +77,53 @@
               text: col4
             },
             {
+              text: col5
+            },
+            {
               text: col6
             },
             {
               text: col7
             }
           ],
-          rows: submittedApplications
+          rows: et3NotStarted
         }) }}
       </div>
     {% endif %}
-
-    {% if draftApplications.length != 0 %}
-          <h2 class="govuk-heading-l">{{ h2 }}</h2>
-          <div class="scrollableTable">
-          {{ govukTable({
-              caption: h1,
-              captionClasses: "govuk-visually-hidden",
-              firstCellIsHeader: false,
-              head: [
-                {
-                  text: col1
-                },
-                {
-                  text: col2
-                },
-                {
-                  text: col3
-                },
-                {
-                  text: col4
-                },
-                {
-                  text: col5
-                },
-                {
-                  text: col6
-                },
-                {
-                  text: col7
-                }
-              ],
-              rows: draftApplications
-            }) }}
-          </div>
-        {% endif %}
-
+    {% if et3Started.length != 0 %}
+      <h2 class="govuk-heading-l">{{ table2Header }}</h2>
+      <div class="scrollableTable">
+      {{ govukTable({
+          caption: h2,
+          captionClasses: "govuk-visually-hidden",
+          firstCellIsHeader: false,
+          head: [
+            {
+              text: col1
+            },
+            {
+              text: col2
+            },
+            {
+              text: col3
+            },
+            {
+              text: col4
+            },
+            {
+              text: col5
+            },
+            {
+              text: col6
+            },
+            {
+              text: col7
+            }
+          ],
+          rows: et3Started
+        }) }}
+      </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}
