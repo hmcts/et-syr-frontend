@@ -24,6 +24,8 @@ export class HubLinksStatuses {
         this[name] = HubLinkStatus.OPTIONAL;
       } else if (name === HubLinkNames.Documents) {
         this[name] = HubLinkStatus.READY_TO_VIEW;
+      } else if (name === HubLinkNames.AboutYou) {
+        this[name] = HubLinkStatus.NOT_STARTED_YET;
       } else {
         this[name] = HubLinkStatus.NOT_YET_AVAILABLE;
       }
