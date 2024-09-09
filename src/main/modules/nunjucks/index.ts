@@ -18,17 +18,13 @@ export class Nunjucks {
   enableFor(app: express.Express): void {
     app.set('view engine', 'njk');
     const govUkFrontendPath = path.join(__dirname, '..', '..', '..', '..', 'node_modules', 'govuk-frontend', 'dist');
-    const hmctsFrontendPath = path.join(__dirname, '..', '..', '..', '..', 'node_modules', '@hmcts', 'frontend');
-    const nunEnv = nunjucks.configure(
-      [path.join(__dirname, '..', '..', 'views'), govUkFrontendPath, hmctsFrontendPath],
-      {
-        autoescape: true,
-        watch: app.locals.developmentMode,
-        express: app,
-      }
-    );
-    createFilters(nunEnv);
 
+    const nunEnv = nunjucks.configure([path.join(__dirname, '..', '..', 'views'), govUkFrontendPath], {
+      autoescape: true,
+      watch: app.locals.developmentMode,
+      express: app,
+    });
+    createFilters(nunEnv);
     nunEnv.addGlobal('getContent', function (prop: ((param: string) => string) | string): string {
       return typeof prop === 'function' ? prop(this.ctx) : prop;
     });
