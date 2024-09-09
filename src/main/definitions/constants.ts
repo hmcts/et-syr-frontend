@@ -105,8 +105,8 @@ export const AuthUrls = {
 } as const;
 
 export const JavaApiUrls = {
-  FIND_CASE_FOR_ROLE_MODIFICATION: '/caseRoleManagement/findCaseForRoleModification',
-  ASSIGN_CASE_USER_ROLES: '/caseRoleManagement/modifyCaseUserRoles?modificationType=Assignment',
+  FIND_CASE_FOR_ROLE_MODIFICATION: '/manageCaseRole/findCaseForRoleModification',
+  ASSIGN_CASE_USER_ROLES: '/manageCaseRole/modifyCaseUserRoles?modificationType=Assignment',
   DOWNLOAD_CLAIM_PDF: '/generate-pdf',
   UPLOAD_FILE: '/documents/upload/',
   DOCUMENT_DOWNLOAD: '/document/download/',
