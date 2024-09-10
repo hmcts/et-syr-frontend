@@ -102,7 +102,8 @@ export const mockApp = ({
   session?: AppSession;
 }): Express => {
   const mock = express();
-  mock.all('*', function (req, res, next) {
+
+  mock.use((req, res, next) => {
     req.body = body;
     req.session = {
       userCase: {
@@ -120,6 +121,7 @@ export const mockApp = ({
     } as unknown as AppSession;
     next();
   });
+
   mock.use(app);
   app.locals.CSRF_DISABLED = true;
   const mockClient = jest.spyOn(LaunchDarkly, 'getFlagValue');
