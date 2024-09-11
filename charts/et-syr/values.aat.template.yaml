@@ -12,7 +12,7 @@ nodejs:
       secrets:
         - AppInsightsInstrumentationKey
         - idam-secret
-        - et-syr-redis-access-key
+        - et-syr-redis-key
         - os-places-token
         - pcq-token-key
         - launch-darkly-sdk-key

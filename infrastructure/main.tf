@@ -39,7 +39,7 @@ data "azurerm_key_vault" "key_vault" {
 }
 
 resource "azurerm_key_vault_secret" "redis_access_key" {
-  name         = "et-syr-redis-access-key"
+  name         = "et-syr-redis-key"
   value        = module.et-frontend-session-storage.access_key
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
