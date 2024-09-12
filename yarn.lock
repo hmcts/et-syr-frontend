@@ -2222,6 +2222,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hmcts/frontend@npm:^0.0.50-alpha":
+  version: 0.0.50-alpha
+  resolution: "@hmcts/frontend@npm:0.0.50-alpha"
+  checksum: 40121f8b72d9e4045f8f544458a5a48fd09dab61c75da7d719f5225a0a6019deb84cee08b03b3596fb409dc3518efaed264269257cc6b8e9f6abbdc48d25e4bf
+  languageName: node
+  linkType: hard
+
 "@hmcts/info-provider@npm:^1.0.0":
   version: 1.2.1
   resolution: "@hmcts/info-provider@npm:1.2.1"
@@ -7987,6 +7994,7 @@ __metadata:
     "@codeceptjs/allure-legacy": ^1.0.2
     "@faker-js/faker": ^9.0.0
     "@hmcts/cookie-manager": ^1.0.0
+    "@hmcts/frontend": ^0.0.50-alpha
     "@hmcts/info-provider": ^1.0.0
     "@hmcts/nodejs-healthcheck": ^1.8.0
     "@hmcts/nodejs-logging": ^4.0.4
@@ -8042,7 +8050,7 @@ __metadata:
     express-rate-limit: ^7.0.0
     express-session: ^1.17.3
     git-rev-sync: 3.0.2
-    govuk-frontend: ^5.0.0
+    govuk-frontend: 4.6.0
     helmet: ^7.0.0
     html-webpack-plugin: ^5.5.1
     husky: ^9.0.0
@@ -9355,10 +9363,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:^5.0.0":
-  version: 5.6.0
-  resolution: "govuk-frontend@npm:5.6.0"
-  checksum: ad78858d9ca6df73e4e4662731efeb2e39619a876c955b716c678f9f4f659d3c035549a2aad49d09a92c7c9b60e61eed404fdecf24ec9bd014ac334e7536abb1
+"govuk-frontend@npm:4.6.0":
+  version: 4.6.0
+  resolution: "govuk-frontend@npm:4.6.0"
+  checksum: 025a5b99f59aa84586a221b227c66c9ccf48d1b71e6df69ebd39e055b181328dd59ba392cef9f6a38b108c0b1276ba888619cc51343b2e2f35c668772f2ec472
   languageName: node
   linkType: hard
 
