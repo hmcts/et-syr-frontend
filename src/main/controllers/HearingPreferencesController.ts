@@ -6,9 +6,13 @@ import { HearingPreference } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
+import { postLogic } from '../helpers/CaseHelpers';
+import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLogger } from '../logger';
 import { atLeastOneFieldIsChecked, isFieldFilledIn } from '../validators/validator';
+
+const logger = getLogger('HearingPreferencesController');
 
 export default class HearingPreferencesController {
   private readonly form: Form;
@@ -66,32 +70,21 @@ export default class HearingPreferencesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
-    const errors = this.form.getValidatorErrors(formData);
-    if (errors.length !== 0) {
-      req.session.errors = errors;
-      return res.redirect(req.url);
-    }
-
-    return res.redirect(PageUrls.NOT_IMPLEMENTED);
+    await postLogic(req, res, this.form, logger, PageUrls.NOT_IMPLEMENTED);
   };
 
-  public get = async (req: AppRequest, res: Response): Promise<void> => {
+  public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.HEARING_PREFERENCES);
-    const userCase = req.session?.userCase;
-    const hearingPreferencesForm = this.hearingPreferences;
-
+    const content = getPageContent(req, this.hearingPreferences, [
+      TranslationKeys.COMMON,
+      TranslationKeys.HEARING_PREFERENCES,
+      TranslationKeys.SIDEBAR_CONTACT_US,
+    ]);
+    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.HEARING_PREFERENCES, {
-      ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.HEARING_PREFERENCES as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
-      PageUrls,
+      ...content,
       redirectUrl,
       hideContactUs: true,
-      languageParam: getLanguageParam(req.url),
-      userCase,
-      form: hearingPreferencesForm,
-      sessionErrors: req.session.errors,
     });
   };
 }

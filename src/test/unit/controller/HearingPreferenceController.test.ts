@@ -1,136 +1,142 @@
 import HearingPreferencesController from '../../../main/controllers/HearingPreferencesController';
+import { AppRequest } from '../../../main/definitions/appRequest';
 import { HearingPreference } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { saveForLaterButton, submitButton } from '../../../main/definitions/radios';
+import { AnyRecord } from '../../../main/definitions/util-types';
+import { postLogic } from '../../../main/helpers/CaseHelpers';
+import { assignFormData, getPageContent } from '../../../main/helpers/FormHelper';
+import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
+import { atLeastOneFieldIsChecked, isFieldFilledIn } from '../../../main/validators/validator';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
+jest.mock('../../../main/helpers/CaseHelpers');
+jest.mock('../../../main/helpers/FormHelper');
+jest.mock('../../../main/helpers/LanguageHelper');
+jest.mock('../../../main/validators/validator');
+
 describe('HearingPreferencesController', () => {
   let controller: HearingPreferencesController;
-  let req: ReturnType<typeof mockRequest>;
-  let res: ReturnType<typeof mockResponse>;
-  let translationMock: Record<string, string>;
+  let response: ReturnType<typeof mockResponse>;
+  let request: ReturnType<typeof mockRequest>;
+  let contentMock: AnyRecord;
 
   beforeEach(() => {
     controller = new HearingPreferencesController();
-    req = mockRequest({
+    response = mockResponse();
+    request = mockRequest({
       session: {
-        userCase: {
-          hearingPreferences: [HearingPreference.PHONE],
-        },
+        userCase: {},
       },
     });
-    res = mockResponse();
 
-    translationMock = {
-      legend: 'How would you like to attend the hearing?',
-      selectAllHint: 'Select all that apply',
-      checkboxVideo: 'Video',
-      checkboxPhone: 'Phone',
-      checkboxNeither: 'Neither',
-      explain: 'Explain your preference',
-    };
-
-    // Mock translation function
-    (req.t as unknown as jest.Mock).mockImplementation((key: string) => translationMock[key]);
-  });
-
-  it('should render the Hearing Preferences page with the correct form content', async () => {
-    await controller.get(req, res);
-
-    expect(res.render).toHaveBeenCalledWith(
-      TranslationKeys.HEARING_PREFERENCES,
-      expect.objectContaining({
-        PageUrls,
-        redirectUrl: expect.any(String),
-        hideContactUs: true,
-        languageParam: expect.any(String),
-        form: expect.objectContaining({
-          fields: expect.objectContaining({
-            hearingPreferences: expect.objectContaining({
-              id: 'hearingPreferences',
-              label: expect.any(Function),
-              labelHidden: false,
-              labelSize: 'l',
-              type: 'checkboxes',
-              hint: expect.any(Function),
-              values: expect.arrayContaining([
-                {
-                  name: 'hearingPreferences',
-                  label: expect.any(Function),
-                  value: HearingPreference.VIDEO,
-                },
-                {
-                  name: 'hearingPreferences',
-                  label: expect.any(Function),
-                  value: HearingPreference.PHONE,
-                },
-                {
-                  divider: true,
-                },
-                {
-                  name: 'hearingPreferences',
-                  label: expect.any(Function),
-                  exclusive: true,
-                  value: HearingPreference.NEITHER,
-                  subFields: {
-                    hearingAssistance: expect.objectContaining({
-                      id: 'hearingAssistance',
-                      type: 'textarea',
-                      label: expect.any(Function),
-                      labelSize: 'normal',
-                      attributes: { maxLength: 2500 },
-                    }),
+    // Mocking necessary methods and content
+    contentMock = {
+      fields: {
+        hearingPreferences: {
+          id: 'hearingPreferences',
+          label: (l: AnyRecord): string => l.legend,
+          labelHidden: false,
+          labelSize: 'l',
+          type: 'checkboxes',
+          hint: (l: AnyRecord): string => l.selectAllHint,
+          validator: atLeastOneFieldIsChecked,
+          values: [
+            {
+              name: 'hearingPreferences',
+              label: (l: AnyRecord): string => l.checkboxVideo,
+              value: HearingPreference.VIDEO,
+            },
+            {
+              name: 'hearingPreferences',
+              label: (l: AnyRecord): string => l.checkboxPhone,
+              value: HearingPreference.PHONE,
+            },
+            {
+              divider: true,
+            },
+            {
+              name: 'hearingPreferences',
+              label: (l: AnyRecord): string => l.checkboxNeither,
+              exclusive: true,
+              value: HearingPreference.NEITHER,
+              subFields: {
+                hearingAssistance: {
+                  id: 'hearingAssistance',
+                  type: 'textarea',
+                  label: (l: AnyRecord): string => l.explain,
+                  labelSize: 'normal',
+                  attributes: {
+                    maxLength: 2500,
                   },
+                  validator: isFieldFilledIn,
                 },
-              ]),
-            }),
-          }),
-          submit: submitButton,
-          saveForLater: saveForLaterButton,
-        }),
-        userCase: req.session.userCase,
-        sessionErrors: undefined,
-      })
-    );
-
-    // Check that the main label function returns the correct value
-    const renderMock = res.render as jest.Mock;
-    const form = renderMock.mock.calls[0][1].form;
-
-    // Testing the main label and hint
-    expect(form.fields.hearingPreferences.label(translationMock)).toBe(translationMock.legend);
-    expect(form.fields.hearingPreferences.hint(translationMock)).toBe(translationMock.selectAllHint);
-
-    // Testing the individual checkbox labels
-    expect(form.fields.hearingPreferences.values[0].label(translationMock)).toBe(translationMock.checkboxVideo);
-    expect(form.fields.hearingPreferences.values[1].label(translationMock)).toBe(translationMock.checkboxPhone);
-    expect(form.fields.hearingPreferences.values[3].label(translationMock)).toBe(translationMock.checkboxNeither);
-
-    // Testing the label for the 'hearingAssistance' subfield
-    expect(form.fields.hearingPreferences.values[3].subFields.hearingAssistance.label(translationMock)).toBe(
-      translationMock.explain
-    );
-  });
-
-  it('should handle the post method with valid data and redirect to NOT_IMPLEMENTED', async () => {
-    req.body = {
-      hearingPreferences: [HearingPreference.PHONE],
+              },
+            },
+          ],
+        },
+      },
+      submit: submitButton,
+      saveForLater: saveForLaterButton,
     };
 
-    await controller.post(req, res);
-
-    expect(res.redirect).toHaveBeenCalledWith(PageUrls.NOT_IMPLEMENTED);
+    (getPageContent as jest.Mock).mockReturnValue(contentMock);
+    (setUrlLanguage as jest.Mock).mockReturnValue(PageUrls.HEARING_PREFERENCES);
   });
 
-  it('should handle the post method with empty data and redirect to NOT_IMPLEMENTED', async () => {
-    req.body = {
-      hearingPreferences: [],
-    };
+  describe('GET method', () => {
+    it('should render the Hearing Preferences page with the correct form content', () => {
+      controller.get(request as unknown as AppRequest, response);
 
-    await controller.post(req, res);
+      expect(response.render).toHaveBeenCalledWith(
+        TranslationKeys.HEARING_PREFERENCES,
+        expect.objectContaining({
+          ...contentMock,
+          redirectUrl: PageUrls.HEARING_PREFERENCES,
+          hideContactUs: true,
+        })
+      );
+    });
 
-    expect(req.session.errors).toBeDefined();
-    expect(res.redirect).toHaveBeenCalledWith(req.url);
+    it('should call assignFormData with the correct form fields', () => {
+      controller.get(request as unknown as AppRequest, response);
+
+      expect(assignFormData).toHaveBeenCalledWith(
+        request.session.userCase,
+        expect.objectContaining({
+          hearingPreferences: expect.any(Object),
+        })
+      );
+    });
+
+    it('should call setUrlLanguage with the correct arguments', () => {
+      controller.get(request as unknown as AppRequest, response);
+
+      expect(setUrlLanguage).toHaveBeenCalledWith(request, PageUrls.HEARING_PREFERENCES);
+    });
+  });
+
+  describe('POST method', () => {
+    it('should call postLogic with the correct parameters', async () => {
+      const postLogicMock = postLogic as jest.Mock;
+
+      await controller.post(request as unknown as AppRequest, response);
+
+      expect(postLogicMock).toHaveBeenCalledWith(
+        request,
+        response,
+        expect.any(Object), // The form object
+        expect.any(Object), // Logger
+        PageUrls.NOT_IMPLEMENTED
+      );
+    });
+
+    it('should use the atLeastOneFieldIsChecked validator for hearingPreferences field', async () => {
+      const formFields = controller['form'].getFormFields();
+      const hearingPreferencesField = formFields.hearingPreferences;
+
+      expect(hearingPreferencesField.validator).toBe(atLeastOneFieldIsChecked);
+    });
   });
 });

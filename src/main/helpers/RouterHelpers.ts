@@ -1,5 +1,7 @@
-import { languages } from '../definitions/constants';
+import { Response } from 'express';
+
 import { AppRequest } from '../definitions/appRequest';
+import { languages } from '../definitions/constants';
 import { FormFields } from '../definitions/form';
 
 export const getLanguageParam = (url: string): string => {
@@ -21,4 +23,17 @@ export const conditionalRedirect = (
     });
   }
   return matchingValues?.some(v => v === condition);
+};
+
+export const returnNextPage = (req: AppRequest, res: Response, redirectUrl: string): void => {
+  return res.redirect(handleReturnUrl(req, redirectUrl));
+};
+
+const handleReturnUrl = (req: AppRequest, redirectUrl: string): string => {
+  let nextPage = redirectUrl;
+  if (req.session.returnUrl) {
+    nextPage = req.session.returnUrl;
+    req.session.returnUrl = undefined;
+  }
+  return nextPage;
 };
