@@ -23,7 +23,7 @@ export default class RespondentResponseTaskListController {
             status: (): string => sectionStatus.notStarted,
           },
           {
-            url: setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED),
+            url: setUrlLanguage(req, PageUrls.HEARING_PREFERENCES),
             linkTxt: (l: AnyRecord): string => l.section1.link2Text,
             status: (): string => sectionStatus.notStarted,
           },

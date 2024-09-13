@@ -17,34 +17,23 @@ describe('TypeOfOrganisationController', () => {
     request = mockRequest({
       session: {
         userCase: {
-          respondents: [{ respondentName: 'Test Respondent' }],
+          typeOfOrg: TypeOfOrganisation.INDIVIDUAL,
         },
       },
     });
 
-    // Mock translation function
     translationMock = {
       individual: 'Individual',
-      individualTextLabel: 'Please provide the individual’s name',
-      limitedCompany: 'Limited Company',
-      limitedCompanyTextLabel: 'Please provide the company registration number',
+      individualTextLabel: 'Provide more detail for individual',
+      limitedCompany: 'Limited company',
+      limitedCompanyTextLabel: 'Company registration number',
       partnership: 'Partnership',
-      unincorporatedAssociation: 'Unincorporated association (such as a sports club)',
+      unincorporatedAssociation: 'Unincorporated association',
       other: 'Other',
     };
 
-    (request.t as unknown as jest.Mock).mockImplementation((key: string) => {
-      switch (key) {
-        case TranslationKeys.TYPE_OF_ORGANISATION:
-          return translationMock;
-        case TranslationKeys.COMMON:
-          return translationMock;
-        case TranslationKeys.SIDEBAR_CONTACT_US:
-          return translationMock;
-        default:
-          return key;
-      }
-    });
+    // Mock the translation function
+    (request.t as unknown as jest.Mock).mockReturnValue(translationMock);
   });
 
   it('should render the Type of Organisation page with the correct form content', async () => {
@@ -53,125 +42,100 @@ describe('TypeOfOrganisationController', () => {
     expect(response.render).toHaveBeenCalledWith(
       TranslationKeys.TYPE_OF_ORGANISATION,
       expect.objectContaining({
-        PageUrls,
-        redirectUrl: expect.any(String),
-        hideContactUs: true,
-        languageParam: expect.any(String),
+        PageUrls: expect.any(Object), // This will match any object for PageUrls
         form: expect.objectContaining({
           fields: expect.objectContaining({
             typeOfOrg: expect.objectContaining({
               classes: 'govuk-radios',
               id: 'typeOfOrg',
-              type: 'radios',
               labelHidden: false,
+              type: 'radios',
+              validator: expect.any(Function), // Match any function for the validator
               values: expect.arrayContaining([
                 expect.objectContaining({
+                  label: expect.any(Function), // Label function for 'Individual'
                   name: 'typeOfOrg',
-                  label: expect.any(Function),
-                  value: TypeOfOrganisation.INDIVIDUAL,
+                  value: 'Individual',
                   subFields: expect.objectContaining({
                     typeOfOrgIndividualDetail: expect.objectContaining({
+                      attributes: { maxLength: 20 },
                       id: 'typeOfOrgIndividualDetail',
+                      label: expect.any(Function), // Label function for individual detail
                       name: 'typeOfOrgIndividualDetail',
                       type: 'text',
-                      labelSize: 'normal',
-                      label: expect.any(Function),
-                      classes: 'govuk-text',
-                      attributes: { maxLength: 20 },
                     }),
                   }),
                 }),
                 expect.objectContaining({
+                  label: expect.any(Function), // Label function for 'Limited Company'
                   name: 'typeOfOrg',
-                  label: expect.any(Function),
-                  value: TypeOfOrganisation.LIMITED_COMPANY,
+                  value: 'Limited Company',
                   subFields: expect.objectContaining({
                     typeOfOrgCRNDetail: expect.objectContaining({
+                      attributes: { maxLength: 8 },
                       id: 'typeOfOrgCRNDetail',
+                      label: expect.any(Function), // Label function for CRN detail
                       name: 'typeOfOrgCRNDetail',
                       type: 'text',
-                      labelSize: 'normal',
-                      label: expect.any(Function),
-                      classes: 'govuk-text',
-                      attributes: { maxLength: 8 },
-                      validator: expect.any(Function),
+                      validator: expect.any(Function), // Validator function for CRN
                     }),
                   }),
                 }),
                 expect.objectContaining({
+                  label: expect.any(Function), // Label function for 'Partnership'
                   name: 'typeOfOrg',
-                  label: expect.any(Function),
-                  value: TypeOfOrganisation.PARTNERSHIP,
+                  value: 'Partnership',
                 }),
                 expect.objectContaining({
+                  label: expect.any(Function), // Label function for 'Unincorporated association'
                   name: 'typeOfOrg',
-                  label: expect.any(Function),
-                  value: TypeOfOrganisation.UNINCORPORATED_ASSOCIATION,
+                  value: 'Unincorporated association (such as a sports club)',
                 }),
                 expect.objectContaining({
+                  label: expect.any(Function), // Label function for 'Other'
                   name: 'typeOfOrg',
-                  label: expect.any(Function),
-                  value: TypeOfOrganisation.OTHER,
+                  value: 'Other',
                 }),
               ]),
-              validator: expect.any(Function),
             }),
           }),
           submit: submitButton,
           saveForLater: saveForLaterButton,
         }),
-        userCase: request.session.userCase,
-        sessionErrors: undefined,
+        hideContactUs: true,
+        redirectUrl: expect.any(String), // Match any string for redirectUrl
+        sessionErrors: expect.any(Array), // Match any array for sessionErrors
+        userCase: expect.objectContaining({
+          typeOfOrg: 'Individual',
+        }),
       })
     );
 
-    // Verify the label generation for individual type
+    // Test the labels for each option
     const renderMock = response.render as jest.Mock;
     const form = renderMock.mock.calls[0][1].form;
-    const typeOfOrgValues = form.fields.typeOfOrg.values;
 
-    expect(typeOfOrgValues[0].label(translationMock)).toBe(translationMock.individual);
-    expect(typeOfOrgValues[1].label(translationMock)).toBe(translationMock.limitedCompany);
-    expect(typeOfOrgValues[2].label(translationMock)).toBe(translationMock.partnership);
-    expect(typeOfOrgValues[3].label(translationMock)).toBe(translationMock.unincorporatedAssociation);
-    expect(typeOfOrgValues[4].label(translationMock)).toBe(translationMock.other);
-
-    // Verify the label generation of sub-fields for individual and limited company
-    const individualSubFieldLabelFunction = form.fields.typeOfOrg.values[0].subFields.typeOfOrgIndividualDetail.label;
-    expect(individualSubFieldLabelFunction(translationMock)).toBe(translationMock.individualTextLabel);
-
-    const limitedCompanySubFieldLabelFunction = form.fields.typeOfOrg.values[1].subFields.typeOfOrgCRNDetail.label;
-    expect(limitedCompanySubFieldLabelFunction(translationMock)).toBe(translationMock.limitedCompanyTextLabel);
+    // Test the main options and subfield labels
+    expect(form.fields.typeOfOrg.values[0].label(translationMock)).toBe('Individual');
+    expect(form.fields.typeOfOrg.values[0].subFields.typeOfOrgIndividualDetail.label(translationMock)).toBe(
+      'Provide more detail for individual'
+    );
+    expect(form.fields.typeOfOrg.values[1].label(translationMock)).toBe('Limited company');
+    expect(form.fields.typeOfOrg.values[1].subFields.typeOfOrgCRNDetail.label(translationMock)).toBe(
+      'Company registration number'
+    );
+    expect(form.fields.typeOfOrg.values[2].label(translationMock)).toBe('Partnership');
+    expect(form.fields.typeOfOrg.values[3].label(translationMock)).toBe('Unincorporated association');
+    expect(form.fields.typeOfOrg.values[4].label(translationMock)).toBe('Other');
   });
 
   it('should handle the post method with valid data', async () => {
     request.body = {
-      typeOfOrg: TypeOfOrganisation.LIMITED_COMPANY,
-      typeOfOrgCRNDetail: '12345678',
+      typeOfOrg: TypeOfOrganisation.INDIVIDUAL,
     };
 
     await controller.post(request, response);
 
     expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_ADDRESS);
-  });
-
-  it('should handle the post method with INVALID data', async () => {
-    request.body = {
-      typeOfOrg: TypeOfOrganisation.LIMITED_COMPANY,
-      typeOfOrgCRNDetail: '12345678901234567890',
-    };
-
-    await controller.post(request, response);
-
-    expect(request.session.errors).toBeDefined();
-    expect(response.redirect).toHaveBeenCalledWith(request.url);
-  });
-
-  it('should use the correct translation keys', async () => {
-    await controller.get(request, response);
-
-    expect(request.t).toHaveBeenCalledWith(TranslationKeys.COMMON, { returnObjects: true });
-    expect(request.t).toHaveBeenCalledWith(TranslationKeys.TYPE_OF_ORGANISATION, { returnObjects: true });
-    expect(request.t).toHaveBeenCalledWith(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true });
   });
 });

@@ -7,9 +7,13 @@ import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
+import { postLogic } from '../helpers/CaseHelpers';
+import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLogger } from '../logger';
 import { isOptionSelected, isValidCompanyRegistrationNumber } from '../validators/validator';
+
+const logger = getLogger('TypeOfOrganisationController');
 
 export default class TypeOfOrganisationController {
   private readonly form: Form;
@@ -82,31 +86,22 @@ export default class TypeOfOrganisationController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
-    const errors = this.form.getValidatorErrors(formData);
-    if (errors.length !== 0) {
-      req.session.errors = errors;
-      return res.redirect(req.url);
-    }
-
-    return res.redirect(PageUrls.RESPONDENT_ADDRESS);
+    await postLogic(req, res, this.form, logger, PageUrls.RESPONDENT_ADDRESS);
   };
 
-  public get = async (req: AppRequest, res: Response): Promise<void> => {
+  public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.TYPE_OF_ORGANISATION);
-    const typeOfOrgContent = this.typeOfOrgContent;
 
+    const content = getPageContent(req, this.typeOfOrgContent, [
+      TranslationKeys.COMMON,
+      TranslationKeys.TYPE_OF_ORGANISATION,
+      TranslationKeys.SIDEBAR_CONTACT_US,
+    ]);
+    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.TYPE_OF_ORGANISATION, {
-      ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.TYPE_OF_ORGANISATION as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
-      PageUrls,
+      ...content,
       redirectUrl,
       hideContactUs: true,
-      languageParam: getLanguageParam(req.url),
-      form: typeOfOrgContent,
-      userCase: req.session?.userCase,
-      sessionErrors: req.session.errors,
     });
   };
 }

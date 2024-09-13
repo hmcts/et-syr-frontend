@@ -1,83 +1,92 @@
 import RespondentSelectPostCodeController from '../../../main/controllers/RespondentSelectPostCodeController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import { saveForLaterButton, submitButton } from '../../../main/definitions/radios';
-import { isOptionSelected } from '../../../main/validators/validator';
+import { postLogic } from '../../../main/helpers/CaseHelpers';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
+jest.mock('../../../main/helpers/CaseHelpers');
+
 describe('RespondentSelectPostCodeController', () => {
   let controller: RespondentSelectPostCodeController;
-  let req: ReturnType<typeof mockRequest>;
-  let res: ReturnType<typeof mockResponse>;
+  let response: ReturnType<typeof mockResponse>;
+  let request: ReturnType<typeof mockRequest>;
+  let translationMock: Record<string, string>;
 
   beforeEach(() => {
     controller = new RespondentSelectPostCodeController();
-    req = mockRequest({
+    response = mockResponse();
+    request = mockRequest({
       session: {
         userCase: {},
       },
     });
-    res = mockResponse();
+
+    translationMock = {
+      selectAddress: 'Select an address',
+    };
+
+    // Mock translation function
+    (request.t as unknown as jest.Mock).mockReturnValue(translationMock);
   });
 
-  it('should render the Respondent Select Post Code page with the correct form content', async () => {
-    (req.t as unknown as jest.Mock).mockReturnValue({
-      selectAddress: 'Select your address',
-    });
+  describe('GET method', () => {
+    it('should render the Respondent Select Post Code page with the correct form content', async () => {
+      await controller.get(request, response);
 
-    await controller.get(req, res);
-
-    expect(res.render).toHaveBeenCalledWith(
-      TranslationKeys.RESPONDENT_SELECT_POST_CODE,
-      expect.objectContaining({
-        PageUrls,
-        hideContactUs: true,
-        form: expect.objectContaining({
-          fields: {
-            addressEnterPostcode: expect.objectContaining({
-              type: 'text', // Should be 'option' when addresses are loaded based on postcode
-              classes: 'govuk-select',
-              label: expect.any(Function),
-              id: 'addressAddressTypes',
-              validator: isOptionSelected,
+      expect(response.render).toHaveBeenCalledWith(
+        TranslationKeys.RESPONDENT_SELECT_POST_CODE,
+        expect.objectContaining({
+          PageUrls: expect.any(Object), // Allows for flexible checking of the PageUrls object
+          redirectUrl: expect.any(String), // Matches any redirect URL
+          hideContactUs: true,
+          form: expect.objectContaining({
+            fields: expect.objectContaining({
+              addressEnterPostcode: expect.objectContaining({
+                classes: 'govuk-select',
+                id: 'addressAddressTypes',
+                type: 'text',
+                label: expect.any(Function), // Label is a function
+                validator: expect.any(Function), // Validator is a function
+              }),
             }),
-          },
-          submit: submitButton,
-          saveForLater: saveForLaterButton,
-        }),
-        userCase: {},
-        redirectUrl: expect.any(String),
-        languageParam: expect.any(String),
-        sessionErrors: req.session.errors,
-      })
-    );
+            submit: expect.objectContaining({
+              classes: 'govuk-!-margin-right-2',
+              text: expect.any(Function), // Text is also a function
+            }),
+            saveForLater: expect.objectContaining({
+              classes: 'govuk-button--secondary',
+              text: expect.any(Function), // Text is a function here as well
+            }),
+          }),
+          userCase: request.session.userCase, // Match the user case
+          sessionErrors: expect.any(Array), // Allows for session errors to be either undefined or an array
+        })
+      );
 
-    // Check that the form label function returns the correct value
-    const renderMock = res.render as jest.Mock;
-    const formContent = renderMock.mock.calls[0][1].form;
-    expect(formContent.fields.addressEnterPostcode.label({ selectAddress: 'Select your address' })).toBe(
-      'Select your address'
-    );
+      // Verify that the label function returns the correct value
+      const renderMock = response.render as jest.Mock;
+      const form = renderMock.mock.calls[0][1].form;
+
+      expect(form.fields.addressEnterPostcode.label(translationMock)).toBe('Select an address');
+    });
   });
 
-  it('should handle the post method without validation errors', async () => {
-    req.body = {
-      addressEnterPostcode: '123 Main St', // Simulating a selected address
-    };
+  describe('POST method', () => {
+    it('should handle the post method with valid data', async () => {
+      request.body = {
+        addressEnterPostcode: '12345',
+      };
 
-    await controller.post(req, res);
+      await controller.post(request, response);
 
-    expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME);
-  });
-
-  it('should handle the post method with validation errors', async () => {
-    req.body = {
-      addressEnterPostcode: '', // Empty input to trigger validation error
-    };
-
-    await controller.post(req, res);
-
-    expect(req.session.errors).toBeDefined();
-    expect(res.redirect).toHaveBeenCalledWith(req.url);
+      // Ensure postLogic is called correctly
+      expect(postLogic).toHaveBeenCalledWith(
+        request,
+        response,
+        expect.anything(),
+        expect.anything(),
+        PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME
+      );
+    });
   });
 });
