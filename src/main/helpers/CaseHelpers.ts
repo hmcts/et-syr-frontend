@@ -1,12 +1,30 @@
+import { Response } from 'express';
+import { LoggerInstance } from 'winston';
+
+import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
+import { PageUrls } from '../definitions/constants';
 import { Logger } from '../logger';
 import localesCy from '../resources/locales/cy/translation/common.json';
 import locales from '../resources/locales/en/translation/common.json';
 import { getCaseApi } from '../services/CaseService';
 
 import { formatApiCaseDataToCaseWithId } from './ApiFormatter';
+import { handleErrors, returnSessionErrors } from './ErrorHelpers';
+import { setUrlLanguage } from './LanguageHelper';
+import { returnNextPage } from './RouterHelpers';
 
-// Used for invoking PCQ survey.
+/**
+ * Updates the draft case data for the current session.
+ * Retrieves and updates the draft case using an API call and updates the session with the new case data.
+ * If the update fails, it logs the error and sets an error message in the session.
+ *
+ * Used for invoking PCQ survey.
+ *
+ * @param {AppRequest} req
+ * @param {Logger} logger
+ * @return {Promise<void>}
+ */
 export const handleUpdateDraftCase = async (req: AppRequest, logger: Logger): Promise<void> => {
   if (!req.session.errors?.length) {
     try {
@@ -50,6 +68,52 @@ export const handleUpdateDraftCase = async (req: AppRequest, logger: Logger): Pr
   }
 };
 
+/**
+ * Handles form submission logic. If the form is valid, it either saves the data (saveForLater)
+ * or redirects to the next page.
+ * If there are validation errors, they are handled and displayed to the user on their current page.
+ *
+ * @param {AppRequest} req
+ * @param {Response} res
+ * @param {Form} form
+ * @param {LoggerInstance} logger
+ * @param {string} redirectUrl
+ * @return {Promise<void>}
+ */
+export const postLogic = async (
+  req: AppRequest,
+  res: Response,
+  form: Form,
+  logger: LoggerInstance,
+  redirectUrl: string
+): Promise<void> => {
+  const errors = returnSessionErrors(req, form);
+  const { saveForLater } = req.body;
+
+  if (errors.length === 0) {
+    req.session.errors = [];
+    if (saveForLater) {
+      // TODO: Need to implement saveForLater screen
+      redirectUrl = setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED);
+      return res.redirect(redirectUrl);
+    } else {
+      redirectUrl = setUrlLanguage(req, redirectUrl);
+      returnNextPage(req, res, redirectUrl);
+    }
+  } else {
+    handleErrors(req, res, errors);
+  }
+};
+
+/**
+ * Updates the status of hub links in the case.
+ * Makes an API call to update the hub links statuses for the current case.
+ * Logs a success message if the update is successful, and logs an error message otherwise.
+ *
+ * @param {AppRequest} req
+ * @param {Logger} logger
+ * @return {Promise<void>}
+ */
 export const handleUpdateHubLinksStatuses = async (req: AppRequest, logger: Logger): Promise<void> => {
   try {
     await getCaseApi(req.session.user?.accessToken).updateHubLinksStatuses(req.session.userCase);

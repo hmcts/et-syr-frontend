@@ -3,14 +3,18 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { EmailOrPost, EnglishOrWelsh } from '../definitions/case';
-import { InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
+import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
+import { postLogic } from '../helpers/CaseHelpers';
+import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getContactPreferencesDetails } from '../helpers/controller/RespondentContactPreferencesControllerHelper';
+import { getLogger } from '../logger';
 import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
+
+const logger = getLogger('RespondentContactPreferencesController');
 
 export default class RespondentContactPreferencesController {
   private readonly form: Form;
@@ -78,39 +82,29 @@ export default class RespondentContactPreferencesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
-    const errors = this.form.getValidatorErrors(formData);
-    if (errors.length !== 0) {
-      req.session.errors = errors;
-      return res.redirect(req.url);
-    }
-
-    return res.redirect(PageUrls.NOT_IMPLEMENTED);
+    await postLogic(req, res, this.form, logger, PageUrls.NOT_IMPLEMENTED);
   };
 
-  public get = async (req: AppRequest, res: Response): Promise<void> => {
+  public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_CONTACT_PREFERENCES);
     const userCase = req.session?.userCase;
-    const contactPreferencesForm = this.respondentContactPreferences;
 
     const translations: AnyRecord = {
       ...req.t(TranslationKeys.RESPONDENT_CONTACT_PREFERENCES as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
     };
 
+    const content = getPageContent(req, this.respondentContactPreferences, [
+      TranslationKeys.COMMON,
+      TranslationKeys.RESPONDENT_CONTACT_PREFERENCES,
+      TranslationKeys.SIDEBAR_CONTACT_US,
+    ]);
+    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.RESPONDENT_CONTACT_PREFERENCES, {
-      ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.RESPONDENT_CONTACT_PREFERENCES as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
-      PageUrls,
+      ...content,
       redirectUrl,
       hideContactUs: true,
-      InterceptPaths,
-      languageParam: getLanguageParam(req.url),
-      userCase,
       contactPreferencesRespondentSection: getContactPreferencesDetails(userCase, translations),
-      form: contactPreferencesForm,
-      sessionErrors: req.session.errors,
     });
   };
 }

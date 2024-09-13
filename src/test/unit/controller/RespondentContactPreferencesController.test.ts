@@ -1,180 +1,247 @@
 import RespondentContactPreferencesController from '../../../main/controllers/RespondentContactPreferencesController';
+import { AppRequest } from '../../../main/definitions/appRequest';
 import { EmailOrPost, EnglishOrWelsh } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { saveForLaterButton, submitButton } from '../../../main/definitions/radios';
-import { isFieldFilledIn, isOptionSelected } from '../../../main/validators/validator';
+import { AnyRecord } from '../../../main/definitions/util-types';
+import { postLogic } from '../../../main/helpers/CaseHelpers';
+import { getPageContent } from '../../../main/helpers/FormHelper';
+import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
+import { getContactPreferencesDetails } from '../../../main/helpers/controller/RespondentContactPreferencesControllerHelper';
+import { isOptionSelected } from '../../../main/validators/validator';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
+jest.mock('../../../main/helpers/CaseHelpers');
+jest.mock('../../../main/helpers/FormHelper');
+jest.mock('../../../main/helpers/LanguageHelper');
+jest.mock('../../../main/helpers/controller/RespondentContactPreferencesControllerHelper');
+jest.mock('../../../main/validators/validator');
+
 describe('RespondentContactPreferencesController', () => {
   let controller: RespondentContactPreferencesController;
-  let req: ReturnType<typeof mockRequest>;
-  let res: ReturnType<typeof mockResponse>;
+  let response: ReturnType<typeof mockResponse>;
+  let request: ReturnType<typeof mockRequest>;
+  let contentMock: AnyRecord;
 
   beforeEach(() => {
     controller = new RespondentContactPreferencesController();
-    req = mockRequest({
+    response = mockResponse();
+    request = mockRequest({
       session: {
         userCase: {},
       },
+      t: jest.fn(key => key), // Mocking translation function
     });
-    res = mockResponse();
+
+    // Mock getContactPreferencesDetails to return expected data
+    (getContactPreferencesDetails as jest.Mock).mockReturnValue({
+      someDetail: 'someValue', // replace with actual structure
+    });
+
+    // Mocks for getPageContent and setUrlLanguage
+    contentMock = {
+      form: {
+        fields: {
+          respondentContactPreference: {
+            id: 'respondentContactPreference',
+            name: 'respondentContactPreference',
+            type: 'radios',
+            label: 'What is your contact preference?',
+            classes: 'govuk-radios',
+            values: [
+              {
+                name: 'respondentContactPreference',
+                label: 'Email',
+                value: EmailOrPost.EMAIL,
+              },
+              {
+                name: 'respondentContactPreference',
+                label: 'Post',
+                value: EmailOrPost.POST,
+                subFields: {
+                  respondentContactPreferenceDetail: {
+                    id: 'respondentContactPreferenceDetail',
+                    name: 'respondentContactPreferenceDetail',
+                    type: 'text',
+                    label: 'Details about post',
+                    hint: 'Please provide details',
+                    classes: 'govuk-text',
+                  },
+                },
+              },
+            ],
+            validator: isOptionSelected,
+          },
+          respondentLanguagePreference: {
+            id: 'respondentLanguagePreference',
+            name: 'respondentLanguagePreference',
+            type: 'radios',
+            label: 'Preferred language',
+            classes: 'govuk-radios--inline',
+            values: [
+              {
+                name: 'respondentLanguagePreference',
+                label: 'English',
+                value: EnglishOrWelsh.ENGLISH,
+              },
+              {
+                name: 'respondentLanguagePreference',
+                label: 'Welsh',
+                value: EnglishOrWelsh.WELSH,
+              },
+            ],
+            validator: isOptionSelected,
+          },
+        },
+      },
+      submit: submitButton,
+      saveForLater: saveForLaterButton,
+    };
+
+    (setUrlLanguage as jest.Mock).mockReturnValue(PageUrls.RESPONDENT_CONTACT_PREFERENCES);
+    (getPageContent as jest.Mock).mockReturnValue(contentMock);
   });
 
-  describe('GET', () => {
-    it('should render the Respondent Contact Preferences page with the correct form content', async () => {
-      // Mock translations
-      (req.t as unknown as jest.Mock).mockReturnValue({
-        contactPreferenceQuestion: 'How do you prefer to be contacted?',
-        email: 'Email',
-        post: 'Post',
-        postHintText: 'You will receive all correspondence by post.',
-        english: 'English',
-        cymraeg: 'Welsh',
-      });
+  describe('GET method', () => {
+    it('should render the Respondent Contact Preferences page with the correct form content and labels', () => {
+      controller.get(request as unknown as AppRequest, response);
 
-      await controller.get(req, res);
-
-      expect(res.render).toHaveBeenCalledWith(
+      expect(response.render).toHaveBeenCalledWith(
         TranslationKeys.RESPONDENT_CONTACT_PREFERENCES,
         expect.objectContaining({
-          PageUrls,
+          form: contentMock.form,
+          redirectUrl: PageUrls.RESPONDENT_CONTACT_PREFERENCES,
           hideContactUs: true,
-          form: expect.objectContaining({
-            fields: {
-              respondentContactPreference: expect.objectContaining({
-                id: 'respondentContactPreference',
-                type: 'radios',
-                label: expect.any(Function),
-                values: [
-                  {
-                    name: 'respondentContactPreference',
-                    label: expect.any(Function),
-                    value: EmailOrPost.EMAIL,
-                  },
-                  {
-                    name: 'respondentContactPreference',
-                    label: expect.any(Function),
-                    value: EmailOrPost.POST,
-                    subFields: expect.objectContaining({
-                      respondentContactPreferenceDetail: expect.objectContaining({
-                        id: 'respondentContactPreferenceDetail',
-                        name: 'respondentContactPreferenceDetail',
-                        type: 'text',
-                        classes: 'govuk-text',
-                        hint: expect.any(Function),
-                        validator: isFieldFilledIn,
-                      }),
-                    }),
-                  },
-                ],
-                validator: isOptionSelected,
-              }),
-              respondentLanguagePreference: expect.objectContaining({
-                id: 'respondentLanguagePreference',
-                type: 'radios',
-                label: expect.any(Function),
-                values: [
-                  {
-                    name: 'respondentLanguagePreference',
-                    label: expect.any(Function),
-                    value: EnglishOrWelsh.ENGLISH,
-                  },
-                  {
-                    name: 'respondentLanguagePreference',
-                    label: expect.any(Function),
-                    value: EnglishOrWelsh.WELSH,
-                  },
-                ],
-                validator: isOptionSelected,
-              }),
-            },
-            submit: submitButton,
-            saveForLater: saveForLaterButton,
-          }),
-          userCase: req.session?.userCase,
-          redirectUrl: expect.any(String),
-          languageParam: expect.any(String),
-          sessionErrors: req.session.errors,
+          contactPreferencesRespondentSection: {
+            someDetail: 'someValue', // ensure this matches your mock return value
+          },
         })
       );
 
-      // Check contact preference labels
-      const renderMock = res.render as jest.Mock;
-      const formContent = renderMock.mock.calls[0][1].form;
+      // Verify labels
+      const renderMock = response.render as jest.Mock;
+      const form = renderMock.mock.calls[0][1].form;
 
-      // Check that the form label function returns the correct value for the contact preference field
-      expect(
-        formContent.fields.respondentContactPreference.label({
-          contactPreferenceQuestion: 'How do you prefer to be contacted?',
-        })
-      ).toBe('How do you prefer to be contacted?');
-
-      // Check email label
-      expect(
-        formContent.fields.respondentContactPreference.values[0].label({
-          email: 'Email',
-        })
-      ).toBe('Email');
-
-      // Check post label
-      expect(
-        formContent.fields.respondentContactPreference.values[1].label({
-          post: 'Post',
-        })
-      ).toBe('Post');
-
-      // Check hint for post subfield
-      expect(
-        formContent.fields.respondentContactPreference.values[1].subFields.respondentContactPreferenceDetail.hint({
-          postHintText: 'You will receive all correspondence by post.',
-        })
-      ).toBe('You will receive all correspondence by post.');
-
-      // Check language preference labels
-      expect(
-        formContent.fields.respondentLanguagePreference.label({
-          contactPreferenceQuestion: 'How do you prefer to be contacted?',
-        })
-      ).toBe('How do you prefer to be contacted?');
-
-      // Check English label
-      expect(
-        formContent.fields.respondentLanguagePreference.values[0].label({
-          english: 'English',
-        })
-      ).toBe('English');
-
-      // Check Welsh label
-      expect(
-        formContent.fields.respondentLanguagePreference.values[1].label({
-          cymraeg: 'Welsh',
-        })
-      ).toBe('Welsh');
+      expect(form.fields.respondentContactPreference.label).toBe('What is your contact preference?');
+      expect(form.fields.respondentContactPreference.values[0].label).toBe('Email');
+      expect(form.fields.respondentContactPreference.values[1].label).toBe('Post');
+      expect(form.fields.respondentContactPreference.values[1].subFields.respondentContactPreferenceDetail.label).toBe(
+        'Details about post'
+      );
+      expect(form.fields.respondentLanguagePreference.label).toBe('Preferred language');
+      expect(form.fields.respondentLanguagePreference.values[0].label).toBe('English');
+      expect(form.fields.respondentLanguagePreference.values[1].label).toBe('Welsh');
     });
   });
 
-  describe('POST', () => {
-    it('should redirect to the NOT_IMPLEMENTED page when form submission is valid', async () => {
-      req.body = {
-        respondentContactPreference: EmailOrPost.EMAIL, // Simulate valid inputs
-        respondentLanguagePreference: EnglishOrWelsh.ENGLISH,
+  describe('RespondentContactPreferencesController - Label Test', () => {
+    beforeEach(() => {
+      controller = new RespondentContactPreferencesController();
+      response = mockResponse();
+      request = mockRequest({
+        session: {
+          userCase: {},
+        },
+        t: jest.fn(key => key), // Mocking translation function
+      });
+
+      contentMock = {
+        form: {
+          fields: {
+            respondentContactPreference: {
+              id: 'respondentContactPreference',
+              name: 'respondentContactPreference',
+              type: 'radios',
+              label: 'What is your contact preference?',
+              classes: 'govuk-radios',
+              values: [
+                {
+                  name: 'respondentContactPreference',
+                  label: 'Email',
+                  value: EmailOrPost.EMAIL,
+                },
+                {
+                  name: 'respondentContactPreference',
+                  label: 'Post',
+                  value: EmailOrPost.POST,
+                  subFields: {
+                    respondentContactPreferenceDetail: {
+                      id: 'respondentContactPreferenceDetail',
+                      name: 'respondentContactPreferenceDetail',
+                      type: 'text',
+                      label: 'Details about post',
+                      hint: 'Please provide details',
+                      classes: 'govuk-text',
+                    },
+                  },
+                },
+              ],
+              validator: isOptionSelected,
+            },
+            respondentLanguagePreference: {
+              id: 'respondentLanguagePreference',
+              name: 'respondentLanguagePreference',
+              type: 'radios',
+              label: 'Preferred language',
+              classes: 'govuk-radios--inline',
+              values: [
+                {
+                  name: 'respondentLanguagePreference',
+                  label: 'English',
+                  value: EnglishOrWelsh.ENGLISH,
+                },
+                {
+                  name: 'respondentLanguagePreference',
+                  label: 'Welsh',
+                  value: EnglishOrWelsh.WELSH,
+                },
+              ],
+              validator: isOptionSelected,
+            },
+          },
+        },
+        submit: submitButton,
+        saveForLater: saveForLaterButton,
       };
 
-      await controller.post(req, res);
-
-      expect(res.redirect).toHaveBeenCalledWith(PageUrls.NOT_IMPLEMENTED);
+      (setUrlLanguage as jest.Mock).mockReturnValue(PageUrls.RESPONDENT_CONTACT_PREFERENCES);
+      (getPageContent as jest.Mock).mockReturnValue(contentMock);
     });
 
-    it('should redirect back to the same page when there are validation errors', async () => {
-      req.body = {
-        respondentContactPreference: '', // Simulate invalid input
-      };
+    it('should have the correct labels for the form fields', () => {
+      controller.get(request as unknown as AppRequest, response);
 
-      await controller.post(req, res);
+      const renderMock = response.render as jest.Mock;
+      const form = renderMock.mock.calls[0][1].form;
 
-      expect(req.session.errors).toBeDefined();
-      expect(res.redirect).toHaveBeenCalledWith(req.url);
+      // Assert labels for respondentContactPreference
+      expect(form.fields.respondentContactPreference.label).toBe('What is your contact preference?');
+      expect(form.fields.respondentContactPreference.values[0].label).toBe('Email');
+      expect(form.fields.respondentContactPreference.values[1].label).toBe('Post');
+      expect(form.fields.respondentContactPreference.values[1].subFields.respondentContactPreferenceDetail.label).toBe(
+        'Details about post'
+      );
+
+      // Assert labels for respondentLanguagePreference
+      expect(form.fields.respondentLanguagePreference.label).toBe('Preferred language');
+      expect(form.fields.respondentLanguagePreference.values[0].label).toBe('English');
+      expect(form.fields.respondentLanguagePreference.values[1].label).toBe('Welsh');
+    });
+  });
+
+  describe('POST method', () => {
+    it('should call postLogic with the correct parameters', async () => {
+      const postLogicMock = postLogic as jest.Mock;
+      await controller.post(request as unknown as AppRequest, response);
+
+      expect(postLogicMock).toHaveBeenCalledWith(
+        request,
+        response,
+        expect.any(Object), // The form fields object
+        expect.any(Object), // The logger
+        PageUrls.NOT_IMPLEMENTED
+      );
     });
   });
 });

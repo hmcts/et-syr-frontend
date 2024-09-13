@@ -5,9 +5,10 @@ import { Application } from 'express';
 
 import ChecklistController from '../../controllers/ChecklistController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
+import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
-import RespondentAddressController from '../../controllers/RespondentAddressController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
+import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentCaseListCheckController from '../../controllers/RespondentCaseListCheckController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
@@ -61,6 +62,8 @@ export class Routes {
     app.post(PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER, new RespondentContactPhoneNumberController().post);
     app.get(PageUrls.RESPONDENT_CONTACT_PREFERENCES, new RespondentContactPreferencesController().get);
     app.post(PageUrls.RESPONDENT_CONTACT_PREFERENCES, new RespondentContactPreferencesController().post);
+    app.get(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().get);
+    app.post(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().post);
     app.get(PageUrls.NEW_SELF_ASSIGNMENT_REQUEST, new NewSelfAssignmentRequestController().get);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
