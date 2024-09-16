@@ -16,31 +16,28 @@ const logger = getLogger('ClaimantIsEmploymentContinuingController');
 
 export default class ClaimantIsEmploymentContinuingController {
   form: Form;
-  private readonly claimantEmploymentDatesContent: FormContent = {
+  private readonly claimantIsEmploymentContinuingContent: FormContent = {
     fields: {
-      areDatesOfEmploymentCorrect: {
+      isEmploymentContinuing: {
         classes: 'govuk-radios',
-        id: 'areDatesOfEmploymentCorrect',
+        id: 'isEmploymentContinuing',
         type: 'radios',
-        label: (l: AnyRecord): string => l.label,
-        labelHidden: false,
+        hint: (l: AnyRecord): string => l.hint,
         values: [
           {
-            name: 'areDatesOfEmploymentCorrect',
+            name: 'isEmploymentContinuing',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNoOrNotSure.YES,
           },
           {
-            name: 'areDatesOfEmploymentCorrect',
+            name: 'isEmploymentContinuing',
             label: (l: AnyRecord): string => l.no,
             value: YesOrNoOrNotSure.NO,
-            hint: (l: AnyRecord): string => l.noHintLabel,
           },
           {
-            name: 'areDatesOfEmploymentCorrect',
+            name: 'isEmploymentContinuing',
             label: (l: AnyRecord): string => l.notSure,
             value: YesOrNoOrNotSure.NOT_SURE,
-            hint: (l: AnyRecord): string => l.notSureHintLabel,
           },
         ],
         validator: isOptionSelected,
@@ -51,24 +48,22 @@ export default class ClaimantIsEmploymentContinuingController {
   } as never;
 
   constructor() {
-    this.form = new Form(<FormFields>this.claimantEmploymentDatesContent.fields);
+    this.form = new Form(<FormFields>this.claimantIsEmploymentContinuingContent.fields);
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE);
+    await postLogic(req, res, this.form, logger, PageUrls.NOT_IMPLEMENTED);
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const content = getPageContent(req, this.claimantEmploymentDatesContent, [
+    const content = getPageContent(req, this.claimantIsEmploymentContinuingContent, [
       TranslationKeys.COMMON,
-      TranslationKeys.CLAIMANT_EMPLOYMENT_DATES,
+      TranslationKeys.CLAIMANT_IS_EMPLOYMENT_CONTINUING,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
     assignFormData(req.session.userCase, this.form.getFormFields());
-    res.render(TranslationKeys.CLAIMANT_EMPLOYMENT_DATES, {
+    res.render(TranslationKeys.CLAIMANT_IS_EMPLOYMENT_CONTINUING, {
       ...content,
-      startDate: '[Date entered by Claimant / Not provided]',
-      endDate: '[Date entered by Claimant / Not provided]',
       hideContactUs: true,
     });
   };

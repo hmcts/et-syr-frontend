@@ -7,6 +7,7 @@ import ChecklistController from '../../controllers/ChecklistController';
 import ClaimantAcasEarlyConciliationCertificateController from '../../controllers/ClaimantAcasEarlyConciliationCertificateController';
 import ClaimantEmploymentDatesController from '../../controllers/ClaimantEmploymentDatesController';
 import ClaimantEmploymentDatesEnterController from '../../controllers/ClaimantEmploymentDatesEnterController';
+import ClaimantIsEmploymentContinuingController from '../../controllers/ClaimantIsEmploymentContinuingController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
@@ -80,6 +81,8 @@ export class Routes {
     app.post(PageUrls.CLAIMANT_EMPLOYMENT_DATES, new ClaimantEmploymentDatesController().post);
     app.get(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, new ClaimantEmploymentDatesEnterController().get);
     app.post(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, new ClaimantEmploymentDatesEnterController().post);
+    app.get(PageUrls.CLAIMANT_IS_EMPLOYMENT_CONTINUING, new ClaimantIsEmploymentContinuingController().get);
+    app.post(PageUrls.CLAIMANT_IS_EMPLOYMENT_CONTINUING, new ClaimantIsEmploymentContinuingController().post);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,

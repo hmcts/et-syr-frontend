@@ -23,7 +23,6 @@ export default class ClaimantEmploymentDatesController {
         id: 'areDatesOfEmploymentCorrect',
         type: 'radios',
         label: (l: AnyRecord): string => l.label,
-        labelHidden: false,
         values: [
           {
             name: 'areDatesOfEmploymentCorrect',
@@ -57,8 +56,9 @@ export default class ClaimantEmploymentDatesController {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     if (req.body.areDatesOfEmploymentCorrect === YesOrNoOrNotSure.NO) {
       await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
+    } else {
+      await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_IS_EMPLOYMENT_CONTINUING);
     }
-    await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_IS_EMPLOYMENT_CONTINUING);
   };
 
   public get = (req: AppRequest, res: Response): void => {

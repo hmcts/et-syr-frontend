@@ -16,14 +16,13 @@ const logger = getLogger('ClaimantAcasEarlyConciliationCertificateController');
 
 export default class ClaimantAcasEarlyConciliationCertificateController {
   form: Form;
-  private readonly acasEarlyConciliationCertificateContent: FormContent = {
+  private readonly claimantAcasEarlyConciliationCertificateContent: FormContent = {
     fields: {
       disagreeEarlyConciliation: {
         classes: 'govuk-radios',
         id: 'disagreeEarlyConciliation',
         type: 'radios',
         label: (l: AnyRecord): string => l.label,
-        labelHidden: false,
         values: [
           {
             name: 'disagreeEarlyConciliation',
@@ -40,7 +39,6 @@ export default class ClaimantAcasEarlyConciliationCertificateController {
                 name: 'disagreeEarlyConciliationWhy',
                 type: 'textarea',
                 label: (l: AnyRecord): string => l.whyLabel,
-                labelSize: 'normal',
                 attributes: {
                   maxLength: 2500,
                 },
@@ -56,7 +54,7 @@ export default class ClaimantAcasEarlyConciliationCertificateController {
   } as never;
 
   constructor() {
-    this.form = new Form(<FormFields>this.acasEarlyConciliationCertificateContent.fields);
+    this.form = new Form(<FormFields>this.claimantAcasEarlyConciliationCertificateContent.fields);
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
@@ -64,7 +62,7 @@ export default class ClaimantAcasEarlyConciliationCertificateController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const content = getPageContent(req, this.acasEarlyConciliationCertificateContent, [
+    const content = getPageContent(req, this.claimantAcasEarlyConciliationCertificateContent, [
       TranslationKeys.COMMON,
       TranslationKeys.CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE,
       TranslationKeys.SIDEBAR_CONTACT_US,
