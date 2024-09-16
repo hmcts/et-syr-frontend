@@ -13,12 +13,12 @@ import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
 import { areDateFieldsFilledIn, isDateInPast, isDateInputInvalid } from '../validators/dateValidators';
 
-const logger = getLogger('ClaimantEnterCorrectDatesController');
+const logger = getLogger('ClaimantEmploymentDatesEnterController');
 type DateTypes = string | void | InvalidField;
 
-export default class ClaimantEnterCorrectDatesController {
+export default class ClaimantEmploymentDatesEnterController {
   form: Form;
-  private readonly claimantEnterCorrectDatesContent: FormContent = {
+  private readonly claimantEmploymentDatesEnterContent: FormContent = {
     fields: {
       employmentStartDate: {
         classes: 'govuk-date-input',
@@ -37,7 +37,7 @@ export default class ClaimantEnterCorrectDatesController {
   } as never;
 
   constructor() {
-    this.form = new Form(<FormFields>this.claimantEnterCorrectDatesContent.fields);
+    this.form = new Form(<FormFields>this.claimantEmploymentDatesEnterContent.fields);
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
@@ -45,7 +45,7 @@ export default class ClaimantEnterCorrectDatesController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const content = getPageContent(req, this.claimantEnterCorrectDatesContent, [
+    const content = getPageContent(req, this.claimantEmploymentDatesEnterContent, [
       TranslationKeys.COMMON,
       TranslationKeys.CLAIMANT_EMPLOYMENT_DATES,
       TranslationKeys.SIDEBAR_CONTACT_US,

@@ -56,7 +56,7 @@ export default class ClaimantEmploymentDatesController {
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     if (req.body.areDatesOfEmploymentCorrect === YesOrNoOrNotSure.NO) {
-      await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER_CORRECT_DATES);
+      await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
     }
     await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_IS_EMPLOYMENT_CONTINUING);
   };

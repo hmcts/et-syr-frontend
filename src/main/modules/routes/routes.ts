@@ -6,7 +6,7 @@ import { Application } from 'express';
 import ChecklistController from '../../controllers/ChecklistController';
 import ClaimantAcasEarlyConciliationCertificateController from '../../controllers/ClaimantAcasEarlyConciliationCertificateController';
 import ClaimantEmploymentDatesController from '../../controllers/ClaimantEmploymentDatesController';
-import ClaimantEnterCorrectDatesController from '../../controllers/ClaimantEnterCorrectDatesController';
+import ClaimantEmploymentDatesEnterController from '../../controllers/ClaimantEmploymentDatesEnterController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
@@ -78,8 +78,8 @@ export class Routes {
     );
     app.get(PageUrls.CLAIMANT_EMPLOYMENT_DATES, new ClaimantEmploymentDatesController().get);
     app.post(PageUrls.CLAIMANT_EMPLOYMENT_DATES, new ClaimantEmploymentDatesController().post);
-    app.get(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER_CORRECT_DATES, new ClaimantEnterCorrectDatesController().get);
-    app.post(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER_CORRECT_DATES, new ClaimantEnterCorrectDatesController().post);
+    app.get(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, new ClaimantEmploymentDatesEnterController().get);
+    app.post(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, new ClaimantEmploymentDatesEnterController().post);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,

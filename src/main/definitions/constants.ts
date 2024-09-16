@@ -47,7 +47,7 @@ export const TranslationKeys = {
   RESPONDENT_REPLIES: 'respondent-replies',
   CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE: 'claimant-acas-early-conciliation-certificate',
   CLAIMANT_EMPLOYMENT_DATES: 'claimant-employment-dates',
-  CLAIMANT_EMPLOYMENT_DATES_ENTER_CORRECT_DATES: 'claimant-employment-dates-enter-correct-dates',
+  CLAIMANT_EMPLOYMENT_DATES_ENTER: 'claimant-employment-dates-enter',
   CLAIMANT_IS_EMPLOYMENT_CONTINUING: 'claimant-is-employment-continuing',
 } as const;
 
@@ -78,7 +78,7 @@ export const PageUrls = {
   NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
   CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE: '/claimant-acas-early-conciliation-certificate',
   CLAIMANT_EMPLOYMENT_DATES: '/claimant-employment-dates',
-  CLAIMANT_EMPLOYMENT_DATES_ENTER_CORRECT_DATES: '/claimant-employment-dates-enter-correct-dates',
+  CLAIMANT_EMPLOYMENT_DATES_ENTER: '/claimant-employment-dates-enter',
   CLAIMANT_IS_EMPLOYMENT_CONTINUING: '/claimant-is-employment-continuing',
 } as const;
 
