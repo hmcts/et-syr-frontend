@@ -12,9 +12,9 @@ import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
 import { isOptionSelected } from '../validators/validator';
 
-const logger = getLogger('ClaimantEmploymentDatesController');
+const logger = getLogger('ClaimantEmploymentDatesEnterCorrectDatesController');
 
-export default class ClaimantEmploymentDatesController {
+export default class ClaimantEmploymentDatesEnterCorrectDatesController {
   form: Form;
   private readonly claimantEmploymentDatesContent: FormContent = {
     fields: {
@@ -55,10 +55,7 @@ export default class ClaimantEmploymentDatesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    if (req.body.areDatesOfEmploymentCorrect === YesOrNoOrNotSure.NO) {
-      await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER_CORRECT_DATES);
-    }
-    await postLogic(req, res, this.form, logger, PageUrls.IS_CLAIMANT_EMPLOYMENT_CONTINUING);
+    await postLogic(req, res, this.form, logger, PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE);
   };
 
   public get = (req: AppRequest, res: Response): void => {

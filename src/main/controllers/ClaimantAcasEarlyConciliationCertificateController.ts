@@ -12,9 +12,9 @@ import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
 import { isOptionSelected } from '../validators/validator';
 
-const logger = getLogger('RespondentAddressController');
+const logger = getLogger('ClaimantAcasEarlyConciliationCertificateController');
 
-export default class AcasEarlyConciliationCertificateController {
+export default class ClaimantAcasEarlyConciliationCertificateController {
   form: Form;
   private readonly acasEarlyConciliationCertificateContent: FormContent = {
     fields: {
