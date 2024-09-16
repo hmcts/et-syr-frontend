@@ -6,7 +6,7 @@
   "label": "Is the claimant’s job title correct?",
   "noLabel": "What is or was the claimant’s correct job title? (optional)",
   "errors": {
-    "isJobTitleCorrect": {
+    "isClaimantJobTitleCorrect": {
       "required": "Make a selection"
     }
   }

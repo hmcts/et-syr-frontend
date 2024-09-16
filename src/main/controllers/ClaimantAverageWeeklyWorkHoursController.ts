@@ -12,39 +12,40 @@ import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
 import { isOptionSelected } from '../validators/validator';
 
-const logger = getLogger('ClaimantJobTitleController');
+const logger = getLogger('ClaimantAverageWeeklyWorkHoursController');
 
-export default class ClaimantJobTitleController {
+export default class ClaimantAverageWeeklyWorkHoursController {
   form: Form;
-  private readonly claimantJobTitleContent: FormContent = {
+  private readonly claimantAverageWeeklyWorkHoursContent: FormContent = {
     fields: {
-      isClaimantJobTitleCorrect: {
+      areWorkHourCorrect: {
         classes: 'govuk-radios',
-        id: 'isClaimantJobTitleCorrect',
+        id: 'areWorkHourCorrect',
         type: 'radios',
         label: (l: AnyRecord): string => l.label,
         values: [
           {
-            name: 'isClaimantJobTitleCorrect',
+            name: 'areWorkHourCorrect',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNoOrNotSure.YES,
           },
           {
-            name: 'isClaimantJobTitleCorrect',
+            name: 'areWorkHourCorrect',
             label: (l: AnyRecord): string => l.no,
             value: YesOrNoOrNotSure.NO,
             subFields: {
-              whatIsClaimantJobTitle: {
-                id: 'whatIsClaimantJobTitle',
-                name: 'whatIsClaimantJobTitle',
+              whatAreWorkHour: {
+                id: 'whatAreWorkHour',
+                name: 'whatAreWorkHour',
                 type: 'text',
                 label: (l: AnyRecord): string => l.noLabel,
                 attributes: { maxLength: 100 },
+                hint: (l: AnyRecord): string => l.noLabelHint,
               },
             },
           },
           {
-            name: 'isClaimantJobTitleCorrect',
+            name: 'areWorkHourCorrect',
             label: (l: AnyRecord): string => l.notSure,
             value: YesOrNoOrNotSure.NOT_SURE,
           },
@@ -57,23 +58,23 @@ export default class ClaimantJobTitleController {
   } as never;
 
   constructor() {
-    this.form = new Form(<FormFields>this.claimantJobTitleContent.fields);
+    this.form = new Form(<FormFields>this.claimantAverageWeeklyWorkHoursContent.fields);
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS);
+    await postLogic(req, res, this.form, logger, PageUrls.NOT_IMPLEMENTED);
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const content = getPageContent(req, this.claimantJobTitleContent, [
+    const content = getPageContent(req, this.claimantAverageWeeklyWorkHoursContent, [
       TranslationKeys.COMMON,
-      TranslationKeys.CLAIMANT_JOB_TITLE,
+      TranslationKeys.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
     assignFormData(req.session.userCase, this.form.getFormFields());
-    res.render(TranslationKeys.CLAIMANT_JOB_TITLE, {
+    res.render(TranslationKeys.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS, {
       ...content,
-      jobTitle: '[Job title / Not provided]',
+      workHour: '[Average weekly work hours]',
       hideContactUs: true,
     });
   };

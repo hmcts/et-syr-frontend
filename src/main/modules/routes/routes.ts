@@ -5,6 +5,7 @@ import { Application } from 'express';
 
 import ChecklistController from '../../controllers/ChecklistController';
 import ClaimantAcasEarlyConciliationCertificateController from '../../controllers/ClaimantAcasEarlyConciliationCertificateController';
+import ClaimantAverageWeeklyWorkHoursController from '../../controllers/ClaimantAverageWeeklyWorkHoursController';
 import ClaimantEmploymentDatesController from '../../controllers/ClaimantEmploymentDatesController';
 import ClaimantEmploymentDatesEnterController from '../../controllers/ClaimantEmploymentDatesEnterController';
 import ClaimantIsEmploymentContinuingController from '../../controllers/ClaimantIsEmploymentContinuingController';
@@ -86,6 +87,8 @@ export class Routes {
     app.post(PageUrls.CLAIMANT_IS_EMPLOYMENT_CONTINUING, new ClaimantIsEmploymentContinuingController().post);
     app.get(PageUrls.CLAIMANT_JOB_TITLE, new ClaimantJobTitleController().get);
     app.post(PageUrls.CLAIMANT_JOB_TITLE, new ClaimantJobTitleController().post);
+    app.get(PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS, new ClaimantAverageWeeklyWorkHoursController().get);
+    app.post(PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS, new ClaimantAverageWeeklyWorkHoursController().post);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,
