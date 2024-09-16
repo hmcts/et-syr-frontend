@@ -58,7 +58,7 @@ export default class ClaimantEmploymentDatesController {
     if (req.body.areDatesOfEmploymentCorrect === YesOrNoOrNotSure.NO) {
       await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER_CORRECT_DATES);
     }
-    await postLogic(req, res, this.form, logger, PageUrls.IS_CLAIMANT_EMPLOYMENT_CONTINUING);
+    await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_IS_EMPLOYMENT_CONTINUING);
   };
 
   public get = (req: AppRequest, res: Response): void => {

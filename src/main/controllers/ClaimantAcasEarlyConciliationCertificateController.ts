@@ -66,11 +66,11 @@ export default class ClaimantAcasEarlyConciliationCertificateController {
   public get = (req: AppRequest, res: Response): void => {
     const content = getPageContent(req, this.acasEarlyConciliationCertificateContent, [
       TranslationKeys.COMMON,
-      TranslationKeys.ACAS_EARLY_CONCILIATION_CERTIFICATE,
+      TranslationKeys.CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
     assignFormData(req.session.userCase, this.form.getFormFields());
-    res.render(TranslationKeys.ACAS_EARLY_CONCILIATION_CERTIFICATE, {
+    res.render(TranslationKeys.CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE, {
       ...content,
       hideContactUs: true,
     });

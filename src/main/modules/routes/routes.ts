@@ -3,9 +3,10 @@ import os from 'os';
 import { infoRequestHandler } from '@hmcts/info-provider';
 import { Application } from 'express';
 
-import AcasEarlyConciliationCertificateController from '../../controllers/AcasEarlyConciliationCertificateController';
 import ChecklistController from '../../controllers/ChecklistController';
+import ClaimantAcasEarlyConciliationCertificateController from '../../controllers/ClaimantAcasEarlyConciliationCertificateController';
 import ClaimantEmploymentDatesController from '../../controllers/ClaimantEmploymentDatesController';
+import ClaimantEnterCorrectDatesController from '../../controllers/ClaimantEnterCorrectDatesController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
@@ -67,10 +68,18 @@ export class Routes {
     app.get(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().get);
     app.post(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().post);
     app.get(PageUrls.NEW_SELF_ASSIGNMENT_REQUEST, new NewSelfAssignmentRequestController().get);
-    app.get(PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE, new AcasEarlyConciliationCertificateController().get);
-    app.post(PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE, new AcasEarlyConciliationCertificateController().post);
+    app.get(
+      PageUrls.CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE,
+      new ClaimantAcasEarlyConciliationCertificateController().get
+    );
+    app.post(
+      PageUrls.CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE,
+      new ClaimantAcasEarlyConciliationCertificateController().post
+    );
     app.get(PageUrls.CLAIMANT_EMPLOYMENT_DATES, new ClaimantEmploymentDatesController().get);
     app.post(PageUrls.CLAIMANT_EMPLOYMENT_DATES, new ClaimantEmploymentDatesController().post);
+    app.get(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER_CORRECT_DATES, new ClaimantEnterCorrectDatesController().get);
+    app.post(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER_CORRECT_DATES, new ClaimantEnterCorrectDatesController().post);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,

@@ -45,10 +45,10 @@ export const TranslationKeys = {
   SELF_ASSIGNMENT_FORM: 'self-assignment-form',
   SELF_ASSIGNMENT_CHECK: 'self-assignment-check',
   RESPONDENT_REPLIES: 'respondent-replies',
-  ACAS_EARLY_CONCILIATION_CERTIFICATE: 'acas-early-conciliation-certificate',
+  CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE: 'claimant-acas-early-conciliation-certificate',
   CLAIMANT_EMPLOYMENT_DATES: 'claimant-employment-dates',
   CLAIMANT_EMPLOYMENT_DATES_ENTER_CORRECT_DATES: 'claimant-employment-dates-enter-correct-dates',
-  IS_CLAIMANT_EMPLOYMENT_CONTINUING: 'is-claimant-employment-continuing',
+  CLAIMANT_IS_EMPLOYMENT_CONTINUING: 'claimant-is-employment-continuing',
 } as const;
 
 export const PageUrls = {
@@ -76,10 +76,10 @@ export const PageUrls = {
   CONTACT_DETAILS_CYA: '/contact-details-check-your-answers',
   HEARING_PREFERENCES: '/hearing-preferences',
   NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
-  ACAS_EARLY_CONCILIATION_CERTIFICATE: '/acas-early-conciliation-certificate',
+  CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE: '/claimant-acas-early-conciliation-certificate',
   CLAIMANT_EMPLOYMENT_DATES: '/claimant-employment-dates',
   CLAIMANT_EMPLOYMENT_DATES_ENTER_CORRECT_DATES: '/claimant-employment-dates-enter-correct-dates',
-  IS_CLAIMANT_EMPLOYMENT_CONTINUING: '/is-claimant-employment-continuing',
+  CLAIMANT_IS_EMPLOYMENT_CONTINUING: '/claimant-is-employment-continuing',
 } as const;
 
 export const InterceptPaths = {

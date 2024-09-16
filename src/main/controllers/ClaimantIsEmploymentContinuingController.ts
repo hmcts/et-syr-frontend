@@ -55,7 +55,7 @@ export default class ClaimantIsEmploymentContinuingController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE);
+    await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE);
   };
 
   public get = (req: AppRequest, res: Response): void => {
