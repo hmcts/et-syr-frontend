@@ -45,6 +45,8 @@ export const TranslationKeys = {
   SELF_ASSIGNMENT_FORM: 'self-assignment-form',
   SELF_ASSIGNMENT_CHECK: 'self-assignment-check',
   RESPONDENT_REPLIES: 'respondent-replies',
+  ACAS_EARLY_CONCILIATION_CERTIFICATE: 'acas-early-conciliation-certificate',
+  CLAIMANT_EMPLOYMENT_DATES: 'claimant-employment-dates',
 } as const;
 
 export const PageUrls = {
@@ -72,6 +74,8 @@ export const PageUrls = {
   CONTACT_DETAILS_CYA: '/contact-details-check-your-answers',
   HEARING_PREFERENCES: '/hearing-preferences',
   NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
+  ACAS_EARLY_CONCILIATION_CERTIFICATE: '/acas-early-conciliation-certificate',
+  CLAIMANT_EMPLOYMENT_DATES: '/claimant-employment-dates',
 } as const;
 
 export const InterceptPaths = {

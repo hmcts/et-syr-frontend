@@ -1,0 +1,13 @@
+{
+  "sectionTitle": "2. Tell us about the claimant",
+  "title": "Acas early conciliation certificate",
+  "p1": "You should check the Acas certificate number and date, or whether the claimant was correct to say they were exempt from early conciliation.",
+  "link": "View Acas certificate (opens in new tab)",
+  "label": "Do you disagree with any details given by the claimant about early conciliation with Acas?",
+  "whyLabel": "Why do you disagree with the Acas conciliation details given?",
+  "errors": {
+    "disagreeEarlyConciliation": {
+      "required": "Make a selection"
+    }
+  }
+}
