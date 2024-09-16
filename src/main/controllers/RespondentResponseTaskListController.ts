@@ -33,7 +33,7 @@ export default class RespondentResponseTaskListController {
         title: (l: AnyRecord): string => l.section2.title,
         links: [
           {
-            url: setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED),
+            url: setUrlLanguage(req, PageUrls.CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE),
             linkTxt: (l: AnyRecord): string => l.section2.link1Text,
             status: (): string => sectionStatus.notStarted,
           },

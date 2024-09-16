@@ -12,30 +12,39 @@ import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
 import { isOptionSelected } from '../validators/validator';
 
-const logger = getLogger('ClaimantIsEmploymentContinuingController');
+const logger = getLogger('ClaimantJobTitleController');
 
-export default class ClaimantIsEmploymentContinuingController {
+export default class ClaimantJobTitleController {
   form: Form;
-  private readonly claimantIsEmploymentContinuingContent: FormContent = {
+  private readonly claimantJobTitleContent: FormContent = {
     fields: {
-      isEmploymentContinuing: {
+      isClaimantJobTitleCorrect: {
         classes: 'govuk-radios',
-        id: 'isEmploymentContinuing',
+        id: 'isClaimantJobTitleCorrect',
         type: 'radios',
-        hint: (l: AnyRecord): string => l.hint,
+        label: (l: AnyRecord): string => l.label,
         values: [
           {
-            name: 'isEmploymentContinuing',
+            name: 'isClaimantJobTitleCorrect',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNoOrNotSure.YES,
           },
           {
-            name: 'isEmploymentContinuing',
+            name: 'isClaimantJobTitleCorrect',
             label: (l: AnyRecord): string => l.no,
             value: YesOrNoOrNotSure.NO,
+            subFields: {
+              whatIsClaimantJobTitle: {
+                id: 'whatIsClaimantJobTitle',
+                name: 'whatIsClaimantJobTitle',
+                type: 'text',
+                label: (l: AnyRecord): string => l.noLabel,
+                attributes: { maxLength: 100 },
+              },
+            },
           },
           {
-            name: 'isEmploymentContinuing',
+            name: 'isClaimantJobTitleCorrect',
             label: (l: AnyRecord): string => l.notSure,
             value: YesOrNoOrNotSure.NOT_SURE,
           },
@@ -48,22 +57,23 @@ export default class ClaimantIsEmploymentContinuingController {
   } as never;
 
   constructor() {
-    this.form = new Form(<FormFields>this.claimantIsEmploymentContinuingContent.fields);
+    this.form = new Form(<FormFields>this.claimantJobTitleContent.fields);
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_JOB_TITLE);
+    await postLogic(req, res, this.form, logger, PageUrls.NOT_IMPLEMENTED);
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const content = getPageContent(req, this.claimantIsEmploymentContinuingContent, [
+    const content = getPageContent(req, this.claimantJobTitleContent, [
       TranslationKeys.COMMON,
-      TranslationKeys.CLAIMANT_IS_EMPLOYMENT_CONTINUING,
+      TranslationKeys.CLAIMANT_JOB_TITLE,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
     assignFormData(req.session.userCase, this.form.getFormFields());
-    res.render(TranslationKeys.CLAIMANT_IS_EMPLOYMENT_CONTINUING, {
+    res.render(TranslationKeys.CLAIMANT_JOB_TITLE, {
       ...content,
+      jobTitle: '[Job title / Not provided]',
       hideContactUs: true,
     });
   };

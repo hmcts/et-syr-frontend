@@ -1,0 +1,13 @@
+{
+  "sectionTitle": "2. Tell us about the claimant",
+  "title": "Claimant job title",
+  "jobTitleLabel": "Job title provided on ET1",
+  "p1": "It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
+  "label": "Is the claimant’s job title correct?",
+  "noLabel": "What is or was the claimant’s correct job title? (optional)",
+  "errors": {
+    "isJobTitleCorrect": {
+      "required": "Make a selection"
+    }
+  }
+}

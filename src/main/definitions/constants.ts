@@ -49,6 +49,7 @@ export const TranslationKeys = {
   CLAIMANT_EMPLOYMENT_DATES: 'claimant-employment-dates',
   CLAIMANT_EMPLOYMENT_DATES_ENTER: 'claimant-employment-dates-enter',
   CLAIMANT_IS_EMPLOYMENT_CONTINUING: 'claimant-is-employment-continuing',
+  CLAIMANT_JOB_TITLE: 'claimant-job-title',
 } as const;
 
 export const PageUrls = {
@@ -80,6 +81,7 @@ export const PageUrls = {
   CLAIMANT_EMPLOYMENT_DATES: '/claimant-employment-dates',
   CLAIMANT_EMPLOYMENT_DATES_ENTER: '/claimant-employment-dates-enter',
   CLAIMANT_IS_EMPLOYMENT_CONTINUING: '/claimant-is-employment-continuing',
+  CLAIMANT_JOB_TITLE: '/claimant-job-title',
 } as const;
 
 export const InterceptPaths = {
