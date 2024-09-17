@@ -19,25 +19,20 @@ export default class ClaimantAcasEarlyConciliationCertificateController {
   private readonly claimantAcasEarlyConciliationCertificateContent: FormContent = {
     fields: {
       disagreeEarlyConciliation: {
-        classes: 'govuk-radios',
-        id: 'disagreeEarlyConciliation',
         type: 'radios',
         label: (l: AnyRecord): string => l.label,
         values: [
           {
-            name: 'disagreeEarlyConciliation',
             label: (l: AnyRecord): string => l.no,
             value: YesOrNo.NO,
           },
           {
-            name: 'disagreeEarlyConciliation',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNo.YES,
             subFields: {
               disagreeEarlyConciliationWhy: {
-                id: 'disagreeEarlyConciliationWhy',
-                name: 'disagreeEarlyConciliationWhy',
                 type: 'textarea',
+                id: 'disagreeEarlyConciliationWhy',
                 label: (l: AnyRecord): string => l.whyLabel,
                 attributes: {
                   maxLength: 2500,

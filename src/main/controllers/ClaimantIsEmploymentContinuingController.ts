@@ -19,23 +19,18 @@ export default class ClaimantIsEmploymentContinuingController {
   private readonly claimantIsEmploymentContinuingContent: FormContent = {
     fields: {
       isEmploymentContinuing: {
-        classes: 'govuk-radios',
-        id: 'isEmploymentContinuing',
         type: 'radios',
         hint: (l: AnyRecord): string => l.hint,
         values: [
           {
-            name: 'isEmploymentContinuing',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNoOrNotSure.YES,
           },
           {
-            name: 'isEmploymentContinuing',
             label: (l: AnyRecord): string => l.no,
             value: YesOrNoOrNotSure.NO,
           },
           {
-            name: 'isEmploymentContinuing',
             label: (l: AnyRecord): string => l.notSure,
             value: YesOrNoOrNotSure.NOT_SURE,
           },

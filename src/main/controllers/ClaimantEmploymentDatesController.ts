@@ -19,24 +19,19 @@ export default class ClaimantEmploymentDatesController {
   private readonly claimantEmploymentDatesContent: FormContent = {
     fields: {
       areDatesOfEmploymentCorrect: {
-        classes: 'govuk-radios',
-        id: 'areDatesOfEmploymentCorrect',
         type: 'radios',
         label: (l: AnyRecord): string => l.label,
         values: [
           {
-            name: 'areDatesOfEmploymentCorrect',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNoOrNotSure.YES,
           },
           {
-            name: 'areDatesOfEmploymentCorrect',
             label: (l: AnyRecord): string => l.no,
             value: YesOrNoOrNotSure.NO,
             hint: (l: AnyRecord): string => l.noHintLabel,
           },
           {
-            name: 'areDatesOfEmploymentCorrect',
             label: (l: AnyRecord): string => l.notSure,
             value: YesOrNoOrNotSure.NOT_SURE,
             hint: (l: AnyRecord): string => l.notSureHintLabel,

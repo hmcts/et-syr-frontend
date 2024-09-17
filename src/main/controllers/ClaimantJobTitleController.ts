@@ -19,32 +19,28 @@ export default class ClaimantJobTitleController {
   private readonly claimantJobTitleContent: FormContent = {
     fields: {
       isClaimantJobTitleCorrect: {
-        classes: 'govuk-radios',
-        id: 'isClaimantJobTitleCorrect',
         type: 'radios',
         label: (l: AnyRecord): string => l.label,
         values: [
           {
-            name: 'isClaimantJobTitleCorrect',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNoOrNotSure.YES,
           },
           {
-            name: 'isClaimantJobTitleCorrect',
             label: (l: AnyRecord): string => l.no,
             value: YesOrNoOrNotSure.NO,
             subFields: {
               whatIsClaimantJobTitle: {
-                id: 'whatIsClaimantJobTitle',
-                name: 'whatIsClaimantJobTitle',
                 type: 'text',
+                id: 'whatIsClaimantJobTitle',
                 label: (l: AnyRecord): string => l.noLabel,
-                attributes: { maxLength: 100 },
+                attributes: {
+                  maxLength: 100,
+                },
               },
             },
           },
           {
-            name: 'isClaimantJobTitleCorrect',
             label: (l: AnyRecord): string => l.notSure,
             value: YesOrNoOrNotSure.NOT_SURE,
           },

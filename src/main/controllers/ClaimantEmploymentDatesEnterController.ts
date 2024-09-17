@@ -21,9 +21,8 @@ export default class ClaimantEmploymentDatesEnterController {
   private readonly claimantEmploymentDatesEnterContent: FormContent = {
     fields: {
       employmentStartDate: {
-        id: 'employmentStartDate',
-        classes: 'govuk-date-input',
         type: 'date',
+        id: 'employmentStartDate',
         label: (l: AnyRecord): string => l.startDateLabel,
         hint: (l: AnyRecord): string => l.startDateLabelHint,
         values: DateValues,
@@ -32,9 +31,8 @@ export default class ClaimantEmploymentDatesEnterController {
         parser: (body: UnknownRecord): CaseDate => convertToDateObject('employmentStartDate', body),
       },
       employmentEndDate: {
-        id: 'employmentEndDate',
-        classes: 'govuk-date-input',
         type: 'date',
+        id: 'employmentEndDate',
         label: (l: AnyRecord): string => l.endDateLabel,
         hint: (l: AnyRecord): string => l.endDateLabelHint,
         values: DateValues,
@@ -43,9 +41,8 @@ export default class ClaimantEmploymentDatesEnterController {
         parser: (body: UnknownRecord): CaseDate => convertToDateObject('employmentEndDate', body),
       },
       employmentDatesFurtherInformation: {
-        id: 'employmentDatesFurtherInformation',
-        name: 'employmentDatesFurtherInformation',
         type: 'textarea',
+        id: 'employmentDatesFurtherInformation',
         label: (l: AnyRecord): string => l.furtherInformationLabel,
         attributes: {
           maxLength: 2500,

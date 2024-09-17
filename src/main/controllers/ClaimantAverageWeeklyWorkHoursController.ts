@@ -19,33 +19,29 @@ export default class ClaimantAverageWeeklyWorkHoursController {
   private readonly claimantAverageWeeklyWorkHoursContent: FormContent = {
     fields: {
       areWorkHourCorrect: {
-        classes: 'govuk-radios',
-        id: 'areWorkHourCorrect',
         type: 'radios',
         label: (l: AnyRecord): string => l.label,
         values: [
           {
-            name: 'areWorkHourCorrect',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNoOrNotSure.YES,
           },
           {
-            name: 'areWorkHourCorrect',
             label: (l: AnyRecord): string => l.no,
             value: YesOrNoOrNotSure.NO,
             subFields: {
               whatAreWorkHour: {
-                id: 'whatAreWorkHour',
-                name: 'whatAreWorkHour',
                 type: 'text',
+                id: 'whatAreWorkHour',
                 label: (l: AnyRecord): string => l.noLabel,
-                attributes: { maxLength: 100 },
                 hint: (l: AnyRecord): string => l.noLabelHint,
+                attributes: {
+                  maxLength: 100,
+                },
               },
             },
           },
           {
-            name: 'areWorkHourCorrect',
             label: (l: AnyRecord): string => l.notSure,
             value: YesOrNoOrNotSure.NOT_SURE,
           },
