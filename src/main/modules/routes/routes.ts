@@ -4,9 +4,9 @@ import { infoRequestHandler } from '@hmcts/info-provider';
 import { Application } from 'express';
 
 import AcasEarlyConciliationCertificateController from '../../controllers/AcasEarlyConciliationCertificateController';
+import CheckYourAnswersEarlyConciliationAndEmployeeDetailsController from '../../controllers/CheckYourAnswersEarlyConciliationAndEmployeeDetailsController';
 import ChecklistController from '../../controllers/ChecklistController';
 import ClaimantAverageWeeklyWorkHoursController from '../../controllers/ClaimantAverageWeeklyWorkHoursController';
-import ClaimantEarlyConciliationAndEmployeeDetailsCYAController from '../../controllers/ClaimantEarlyConciliationAndEmployeeDetailsCYAController';
 import ClaimantEmploymentDatesController from '../../controllers/ClaimantEmploymentDatesController';
 import ClaimantEmploymentDatesEnterController from '../../controllers/ClaimantEmploymentDatesEnterController';
 import ClaimantJobTitleController from '../../controllers/ClaimantJobTitleController';
@@ -92,11 +92,11 @@ export class Routes {
     app.post(PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS, new ClaimantAverageWeeklyWorkHoursController().post);
     app.get(
       PageUrls.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS,
-      new ClaimantEarlyConciliationAndEmployeeDetailsCYAController().get
+      new CheckYourAnswersEarlyConciliationAndEmployeeDetailsController().get
     );
     app.post(
       PageUrls.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS,
-      new ClaimantEarlyConciliationAndEmployeeDetailsCYAController().post
+      new CheckYourAnswersEarlyConciliationAndEmployeeDetailsController().post
     );
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
