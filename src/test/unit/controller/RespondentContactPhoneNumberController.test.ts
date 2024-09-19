@@ -1,87 +1,80 @@
 import RespondentContactPhoneNumberController from '../../../main/controllers/RespondentContactPhoneNumberController';
+import { AppRequest } from '../../../main/definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { saveForLaterButton, submitButton } from '../../../main/definitions/radios';
-import { isPhoneNumberValid } from '../../../main/validators/validator';
+import { postLogic } from '../../../main/helpers/CaseHelpers';
+import { getPageContent } from '../../../main/helpers/FormHelper';
+import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
+jest.mock('../../../main/helpers/CaseHelpers');
+jest.mock('../../../main/helpers/FormHelper');
+jest.mock('../../../main/helpers/LanguageHelper');
+jest.mock('../../../main/validators/validator');
+
 describe('RespondentContactPhoneNumberController', () => {
   let controller: RespondentContactPhoneNumberController;
-  let req: ReturnType<typeof mockRequest>;
-  let res: ReturnType<typeof mockResponse>;
+  let response: ReturnType<typeof mockResponse>;
+  let request: ReturnType<typeof mockRequest>;
+  let contentMock: any;
 
   beforeEach(() => {
     controller = new RespondentContactPhoneNumberController();
-    req = mockRequest({
+    response = mockResponse();
+    request = mockRequest({
       session: {
         userCase: {},
       },
     });
-    res = mockResponse();
+
+    // Mocks for getPageContent and setUrlLanguage
+    contentMock = {
+      fields: {
+        respondentContactPhoneNumber: {
+          id: 'respondentContactPhoneNumber',
+          name: 'respondentContactPhoneNumber',
+          type: 'text',
+          hint: 'Phone number',
+          classes: 'govuk-text',
+          attributes: { maxLength: 20 },
+        },
+      },
+      submit: submitButton,
+      saveForLater: saveForLaterButton,
+    };
+
+    (setUrlLanguage as jest.Mock).mockReturnValue(PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER);
+    (getPageContent as jest.Mock).mockReturnValue(contentMock);
   });
 
-  it('should render the Respondent Contact Phone Number page with the correct form content', async () => {
-    (req.t as unknown as jest.Mock).mockReturnValue({
-      respondentContactPhoneNumber: 'Enter your phone number',
+  describe('GET method', () => {
+    it('should render the Respondent Contact Phone Number page with the correct form content', () => {
+      controller.get(request as unknown as AppRequest, response);
+
+      expect(response.render).toHaveBeenCalledWith(
+        TranslationKeys.RESPONDENT_CONTACT_PHONE_NUMBER,
+        expect.objectContaining({
+          ...contentMock,
+          redirectUrl: PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER,
+          hideContactUs: true,
+        })
+      );
     });
-
-    await controller.get(req, res);
-
-    expect(res.render).toHaveBeenCalledWith(
-      TranslationKeys.RESPONDENT_CONTACT_PHONE_NUMBER,
-      expect.objectContaining({
-        PageUrls,
-        hideContactUs: true,
-        form: expect.objectContaining({
-          fields: {
-            respondentContactPhoneNumber: expect.objectContaining({
-              id: 'respondentContactPhoneNumber',
-              name: 'respondentContactPhoneNumber',
-              type: 'text',
-              hint: expect.any(Function),
-              classes: 'govuk-text',
-              attributes: expect.objectContaining({
-                maxLength: 20,
-              }),
-              validator: isPhoneNumberValid,
-            }),
-          },
-          submit: submitButton,
-          saveForLater: saveForLaterButton,
-        }),
-        userCase: {},
-        redirectUrl: PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER,
-        languageParam: expect.any(String),
-        sessionErrors: req.session.errors,
-      })
-    );
-
-    // Check that the form hint and submit button text functions return the correct values
-    const renderMock = res.render as jest.Mock;
-    const formContent = renderMock.mock.calls[0][1].form;
-    expect(
-      formContent.fields.respondentContactPhoneNumber.hint({ respondentContactPhoneNumber: 'Enter your phone number' })
-    ).toBe('Enter your phone number');
   });
 
-  it('should handle the post method without validation errors', async () => {
-    req.body = {
-      respondentContactPhoneNumber: '01234567890', // Valid phone number for the test
-    };
+  describe('POST method', () => {
+    it('should call postLogic with the correct parameters', async () => {
+      const postLogicMock = postLogic as jest.Mock;
+      await controller.post(request as unknown as AppRequest, response);
 
-    await controller.post(req, res);
-
-    expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTACT_PREFERENCES);
-  });
-
-  it('should handle the post method with validation errors', async () => {
-    req.body = {
-      respondentContactPhoneNumber: '@1234567890', // Invalid input to trigger validation error
-    };
-
-    await controller.post(req, res);
-
-    expect(req.session.errors).toBeDefined();
-    expect(res.redirect).toHaveBeenCalledWith(req.url);
+      expect(postLogicMock).toHaveBeenCalledWith(
+        request,
+        response,
+        expect.any(Object), // The form fields object
+        expect.any(Object), // The logger
+        PageUrls.RESPONDENT_CONTACT_PREFERENCES
+      );
+    });
   });
 });

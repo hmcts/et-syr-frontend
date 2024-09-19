@@ -1,0 +1,24 @@
+{
+  "title": "[W]Hearing preference",
+  "h1": "[W]Hearing format",
+  "sectionTitle": "[W]1. Tell us about the respondent",
+  "legend": "[W]Would you be able to take part in hearings by video and phone?",
+  "hearingText1": "[W]If your case goes to a hearing, it can take place either:",
+  "hearingBullet1": "[W]in person, in a room at a tribunal (‘face-to-face’)",
+  "hearingBullet2": "[W]by video (where you can join from a place suitable to you)",
+  "hearingBullet3": "[W]by phone",
+  "hearingText2": "[W]Some hearings use a combination of these methods. The approach taken will be decided by a judge. It may depend on the type of claim.",
+  "checkboxVideo": "[W]Yes, I can take part in video hearings",
+  "checkboxPhone": "[W]Yes, I can take part in phone hearings",
+  "checkboxNeither": "[W]No, I cannot take part in either video or phone hearings",
+  "explain": "[W]Explain why you are unable to take part in video or phone hearings",
+  "selectAllHint": "[W]Select all that apply",
+  "errors": {
+    "hearingPreferences": {
+      "required": "[W]Select whether you can take part in video or phone hearings"
+    },
+    "hearingAssistance": {
+      "required": "[W]Explain why you cannot take part"
+    }
+  }
+}

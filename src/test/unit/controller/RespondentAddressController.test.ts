@@ -2,9 +2,14 @@ import RespondentAddressController from '../../../main/controllers/RespondentAdd
 import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { saveForLaterButton, submitButton } from '../../../main/definitions/radios';
+import { postLogic } from '../../../main/helpers/CaseHelpers';
+import { conditionalRedirect } from '../../../main/helpers/RouterHelpers';
 import { isOptionSelected } from '../../../main/validators/validator';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+
+jest.mock('../../../main/helpers/RouterHelpers');
+jest.mock('../../../main/helpers/CaseHelpers');
 
 describe('RespondentAddressController', () => {
   let controller: RespondentAddressController;
@@ -18,6 +23,9 @@ describe('RespondentAddressController', () => {
         userCase: {
           respondents: [{ respondentName: 'Test Respondent' }],
         },
+      },
+      body: {
+        respondentAddress: YesOrNo.YES,
       },
     });
     res = mockResponse();
@@ -76,13 +84,38 @@ describe('RespondentAddressController', () => {
     expect(formContent.fields.respondentAddress.values[1].label({ no: 'No' })).toBe('No');
   });
 
-  it('should handle the post method with validation errors', async () => {
-    req.body = {
-      respondentAddress: '', // Empty input to trigger validation error
-    };
+  it('should redirect to RESPONDENT_PREFERRED_CONTACT_NAME when YesOrNo.YES is selected', async () => {
+    // Mock conditionalRedirect to return true for YesOrNo.YES
+    (conditionalRedirect as jest.Mock).mockReturnValue(true);
 
     await controller.post(req, res);
 
-    expect(req.session.errors).toBeDefined();
+    // Assert that postLogic is called with the correct parameters
+    expect(postLogic).toHaveBeenCalledWith(
+      req,
+      res,
+      controller.form,
+      expect.anything(),
+      PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME
+    );
+  });
+
+  it('should redirect to RESPONDENT_ENTER_POST_CODE when YesOrNo.NO is selected', async () => {
+    // Change the request body to reflect No selection
+    req.body.respondentAddress = YesOrNo.NO;
+
+    // Mock conditionalRedirect to return true for YesOrNo.NO
+    (conditionalRedirect as jest.Mock).mockReturnValueOnce(false).mockReturnValueOnce(true);
+
+    await controller.post(req, res);
+
+    // Assert that postLogic is called with the correct parameters
+    expect(postLogic).toHaveBeenCalledWith(
+      req,
+      res,
+      controller.form,
+      expect.anything(),
+      PageUrls.RESPONDENT_ENTER_POST_CODE
+    );
   });
 });

@@ -7,12 +7,17 @@ import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
+import { postLogic } from '../helpers/CaseHelpers';
+import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { conditionalRedirect, getLanguageParam } from '../helpers/RouterHelpers';
+import { conditionalRedirect } from '../helpers/RouterHelpers';
+import { getLogger } from '../logger';
 import { isOptionSelected } from '../validators/validator';
 
+const logger = getLogger('RespondentAddressController');
+
 export default class RespondentAddressController {
-  private readonly form: Form;
+  form: Form;
   private readonly respondentAddressContent: FormContent = {
     fields: {
       respondentAddress: {
@@ -45,37 +50,26 @@ export default class RespondentAddressController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
-    const errors = this.form.getValidatorErrors(formData);
-
-    if (errors.length !== 0) {
-      req.session.errors = errors;
-      return res.redirect(req.url);
-    }
-
     if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)) {
-      return res.redirect(PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME);
+      await postLogic(req, res, this.form, logger, PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME);
     } else if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.NO)) {
-      return res.redirect(PageUrls.RESPONDENT_ENTER_POST_CODE);
+      await postLogic(req, res, this.form, logger, PageUrls.RESPONDENT_ENTER_POST_CODE);
     }
   };
 
-  public get = async (req: AppRequest, res: Response): Promise<void> => {
+  public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ADDRESS);
-    const respondentAddressContent = this.respondentAddressContent;
-    const userCase = req.session.userCase;
 
+    const content = getPageContent(req, this.respondentAddressContent, [
+      TranslationKeys.COMMON,
+      TranslationKeys.RESPONDENT_ADDRESS,
+      TranslationKeys.SIDEBAR_CONTACT_US,
+    ]);
+    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.RESPONDENT_ADDRESS, {
-      ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.RESPONDENT_ADDRESS as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
-      PageUrls,
-      hideContactUs: true,
-      form: respondentAddressContent,
-      userCase,
+      ...content,
       redirectUrl,
-      languageParam: getLanguageParam(req.url),
-      sessionErrors: req.session.errors,
+      hideContactUs: true,
     });
   };
 }
