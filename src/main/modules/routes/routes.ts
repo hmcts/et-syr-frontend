@@ -3,16 +3,17 @@ import os from 'os';
 import { infoRequestHandler } from '@hmcts/info-provider';
 import { Application } from 'express';
 
+import AcasEarlyConciliationCertificateController from '../../controllers/AcasEarlyConciliationCertificateController';
 import ChecklistController from '../../controllers/ChecklistController';
-import ClaimantAcasEarlyConciliationCertificateController from '../../controllers/ClaimantAcasEarlyConciliationCertificateController';
 import ClaimantAverageWeeklyWorkHoursController from '../../controllers/ClaimantAverageWeeklyWorkHoursController';
+import ClaimantEarlyConciliationAndEmployeeDetailsCYAController from '../../controllers/ClaimantEarlyConciliationAndEmployeeDetailsCYAController';
 import ClaimantEmploymentDatesController from '../../controllers/ClaimantEmploymentDatesController';
 import ClaimantEmploymentDatesEnterController from '../../controllers/ClaimantEmploymentDatesEnterController';
-import ClaimantIsEmploymentContinuingController from '../../controllers/ClaimantIsEmploymentContinuingController';
 import ClaimantJobTitleController from '../../controllers/ClaimantJobTitleController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
+import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentCaseListCheckController from '../../controllers/RespondentCaseListCheckController';
@@ -71,24 +72,32 @@ export class Routes {
     app.get(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().get);
     app.post(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().post);
     app.get(PageUrls.NEW_SELF_ASSIGNMENT_REQUEST, new NewSelfAssignmentRequestController().get);
-    app.get(
-      PageUrls.CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE,
-      new ClaimantAcasEarlyConciliationCertificateController().get
-    );
-    app.post(
-      PageUrls.CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE,
-      new ClaimantAcasEarlyConciliationCertificateController().post
-    );
+    app.get(PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE, new AcasEarlyConciliationCertificateController().get);
+    app.post(PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE, new AcasEarlyConciliationCertificateController().post);
     app.get(PageUrls.CLAIMANT_EMPLOYMENT_DATES, new ClaimantEmploymentDatesController().get);
     app.post(PageUrls.CLAIMANT_EMPLOYMENT_DATES, new ClaimantEmploymentDatesController().post);
     app.get(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, new ClaimantEmploymentDatesEnterController().get);
     app.post(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, new ClaimantEmploymentDatesEnterController().post);
-    app.get(PageUrls.CLAIMANT_IS_EMPLOYMENT_CONTINUING, new ClaimantIsEmploymentContinuingController().get);
-    app.post(PageUrls.CLAIMANT_IS_EMPLOYMENT_CONTINUING, new ClaimantIsEmploymentContinuingController().post);
+    app.get(
+      PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING,
+      new IsClaimantEmploymentWithRespondentContinuingController().get
+    );
+    app.post(
+      PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING,
+      new IsClaimantEmploymentWithRespondentContinuingController().post
+    );
     app.get(PageUrls.CLAIMANT_JOB_TITLE, new ClaimantJobTitleController().get);
     app.post(PageUrls.CLAIMANT_JOB_TITLE, new ClaimantJobTitleController().post);
     app.get(PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS, new ClaimantAverageWeeklyWorkHoursController().get);
     app.post(PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS, new ClaimantAverageWeeklyWorkHoursController().post);
+    app.get(
+      PageUrls.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS,
+      new ClaimantEarlyConciliationAndEmployeeDetailsCYAController().get
+    );
+    app.post(
+      PageUrls.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS,
+      new ClaimantEarlyConciliationAndEmployeeDetailsCYAController().post
+    );
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,

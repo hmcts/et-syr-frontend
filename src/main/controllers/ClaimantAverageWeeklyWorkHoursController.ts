@@ -16,7 +16,7 @@ const logger = getLogger('ClaimantAverageWeeklyWorkHoursController');
 
 export default class ClaimantAverageWeeklyWorkHoursController {
   form: Form;
-  private readonly claimantAverageWeeklyWorkHoursContent: FormContent = {
+  private readonly formContent: FormContent = {
     fields: {
       areWorkHourCorrect: {
         type: 'radios',
@@ -54,15 +54,15 @@ export default class ClaimantAverageWeeklyWorkHoursController {
   } as never;
 
   constructor() {
-    this.form = new Form(<FormFields>this.claimantAverageWeeklyWorkHoursContent.fields);
+    this.form = new Form(<FormFields>this.formContent.fields);
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.NOT_IMPLEMENTED);
+    await postLogic(req, res, this.form, logger, PageUrls.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS);
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const content = getPageContent(req, this.claimantAverageWeeklyWorkHoursContent, [
+    const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS,
       TranslationKeys.SIDEBAR_CONTACT_US,

@@ -16,7 +16,7 @@ const logger = getLogger('ClaimantJobTitleController');
 
 export default class ClaimantJobTitleController {
   form: Form;
-  private readonly claimantJobTitleContent: FormContent = {
+  private readonly formContent: FormContent = {
     fields: {
       isClaimantJobTitleCorrect: {
         type: 'radios',
@@ -53,7 +53,7 @@ export default class ClaimantJobTitleController {
   } as never;
 
   constructor() {
-    this.form = new Form(<FormFields>this.claimantJobTitleContent.fields);
+    this.form = new Form(<FormFields>this.formContent.fields);
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
@@ -61,7 +61,7 @@ export default class ClaimantJobTitleController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const content = getPageContent(req, this.claimantJobTitleContent, [
+    const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.CLAIMANT_JOB_TITLE,
       TranslationKeys.SIDEBAR_CONTACT_US,

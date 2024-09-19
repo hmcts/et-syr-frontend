@@ -18,7 +18,7 @@ const logger = getLogger('ClaimantEmploymentDatesEnterController');
 
 export default class ClaimantEmploymentDatesEnterController {
   form: Form;
-  private readonly claimantEmploymentDatesEnterContent: FormContent = {
+  private readonly formContent: FormContent = {
     fields: {
       employmentStartDate: {
         type: 'date',
@@ -54,15 +54,15 @@ export default class ClaimantEmploymentDatesEnterController {
   } as never;
 
   constructor() {
-    this.form = new Form(<FormFields>this.claimantEmploymentDatesEnterContent.fields);
+    this.form = new Form(<FormFields>this.formContent.fields);
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_IS_EMPLOYMENT_CONTINUING);
+    await postLogic(req, res, this.form, logger, PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const content = getPageContent(req, this.claimantEmploymentDatesEnterContent, [
+    const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.CLAIMANT_EMPLOYMENT_DATES_ENTER,
       TranslationKeys.SIDEBAR_CONTACT_US,

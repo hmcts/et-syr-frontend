@@ -16,7 +16,7 @@ const logger = getLogger('ClaimantEmploymentDatesController');
 
 export default class ClaimantEmploymentDatesController {
   form: Form;
-  private readonly claimantEmploymentDatesContent: FormContent = {
+  private readonly formContent: FormContent = {
     fields: {
       areDatesOfEmploymentCorrect: {
         type: 'radios',
@@ -45,19 +45,19 @@ export default class ClaimantEmploymentDatesController {
   } as never;
 
   constructor() {
-    this.form = new Form(<FormFields>this.claimantEmploymentDatesContent.fields);
+    this.form = new Form(<FormFields>this.formContent.fields);
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     if (req.body.areDatesOfEmploymentCorrect === YesOrNoOrNotSure.NO) {
       await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
     } else {
-      await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_IS_EMPLOYMENT_CONTINUING);
+      await postLogic(req, res, this.form, logger, PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
     }
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const content = getPageContent(req, this.claimantEmploymentDatesContent, [
+    const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.CLAIMANT_EMPLOYMENT_DATES,
       TranslationKeys.SIDEBAR_CONTACT_US,

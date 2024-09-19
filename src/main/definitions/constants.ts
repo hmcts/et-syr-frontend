@@ -45,12 +45,15 @@ export const TranslationKeys = {
   SELF_ASSIGNMENT_FORM: 'self-assignment-form',
   SELF_ASSIGNMENT_CHECK: 'self-assignment-check',
   RESPONDENT_REPLIES: 'respondent-replies',
-  CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE: 'claimant-acas-early-conciliation-certificate',
+  // 2. Tell us about the claimant
+  ACAS_EARLY_CONCILIATION_CERTIFICATE: 'acas-early-conciliation-certificate',
   CLAIMANT_EMPLOYMENT_DATES: 'claimant-employment-dates',
   CLAIMANT_EMPLOYMENT_DATES_ENTER: 'claimant-employment-dates-enter',
-  CLAIMANT_IS_EMPLOYMENT_CONTINUING: 'claimant-is-employment-continuing',
+  IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING: 'is-claimant-employment-with-respondent-continuing',
   CLAIMANT_JOB_TITLE: 'claimant-job-title',
   CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS: 'claimant-average-weekly-work-hours',
+  CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS:
+    'check-your-answers-early-conciliation-and-employee-details',
 } as const;
 
 export const PageUrls = {
@@ -78,12 +81,15 @@ export const PageUrls = {
   CONTACT_DETAILS_CYA: '/contact-details-check-your-answers',
   HEARING_PREFERENCES: '/hearing-preferences',
   NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
-  CLAIMANT_ACAS_EARLY_CONCILIATION_CERTIFICATE: '/claimant-acas-early-conciliation-certificate',
+  // 2. Tell us about the claimant
+  ACAS_EARLY_CONCILIATION_CERTIFICATE: '/acas-early-conciliation-certificate',
   CLAIMANT_EMPLOYMENT_DATES: '/claimant-employment-dates',
   CLAIMANT_EMPLOYMENT_DATES_ENTER: '/claimant-employment-dates-enter',
-  CLAIMANT_IS_EMPLOYMENT_CONTINUING: '/claimant-is-employment-continuing',
+  IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING: '/is-claimant-employment-with-respondent-continuing',
   CLAIMANT_JOB_TITLE: '/claimant-job-title',
   CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS: '/claimant-average-weekly-work-hours',
+  CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS:
+    '/check-your-answers-early-conciliation-and-employee-details',
 } as const;
 
 export const InterceptPaths = {
