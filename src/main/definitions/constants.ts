@@ -40,6 +40,7 @@ export const TranslationKeys = {
   RESPONDENT_CONTACT_PREFERENCES: 'respondent-contact-preferences',
   CONTACT_DETAILS_CYA: 'contact-details-check-your-answers',
   HEARING_PREFERENCES: 'hearing-preferences',
+  REASONABLE_ADJUSTMENTS: 'reasonable-adjustments',
   YOUR_APPLICATIONS: 'your-applications',
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
   SELF_ASSIGNMENT_FORM: 'self-assignment-form',
@@ -71,6 +72,7 @@ export const PageUrls = {
   RESPONDENT_CONTACT_PREFERENCES: '/respondent-contact-preferences',
   CONTACT_DETAILS_CYA: '/contact-details-check-your-answers',
   HEARING_PREFERENCES: '/hearing-preferences',
+  REASONABLE_ADJUSTMENTS: '/reasonable-adjustments',
   NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
 } as const;
 

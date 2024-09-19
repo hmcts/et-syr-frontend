@@ -8,6 +8,7 @@ import CookiePreferencesController from '../../controllers/CookiePreferencesCont
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
+import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentCaseListCheckController from '../../controllers/RespondentCaseListCheckController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
@@ -64,6 +65,8 @@ export class Routes {
     app.post(PageUrls.RESPONDENT_CONTACT_PREFERENCES, new RespondentContactPreferencesController().post);
     app.get(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().get);
     app.post(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().post);
+    app.get(PageUrls.REASONABLE_ADJUSTMENTS, new ReasonableAdjustmentsController().get);
+    app.post(PageUrls.REASONABLE_ADJUSTMENTS, new ReasonableAdjustmentsController().post);
     app.get(PageUrls.NEW_SELF_ASSIGNMENT_REQUEST, new NewSelfAssignmentRequestController().get);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(

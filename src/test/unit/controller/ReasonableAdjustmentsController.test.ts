@@ -1,13 +1,13 @@
-import HearingPreferencesController from '../../../main/controllers/HearingPreferencesController';
+import ReasonableAdjustmentsController from '../../../main/controllers/ReasonableAdjustmentsController';
 import { AppRequest } from '../../../main/definitions/appRequest';
-import { HearingPreference } from '../../../main/definitions/case';
+import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { saveForLaterButton, submitButton } from '../../../main/definitions/radios';
 import { AnyRecord } from '../../../main/definitions/util-types';
 import { postLogic } from '../../../main/helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../../../main/helpers/FormHelper';
 import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
-import { atLeastOneFieldIsChecked, isFieldFilledIn } from '../../../main/validators/validator';
+import { isFieldFilledIn, isOptionSelected } from '../../../main/validators/validator';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
@@ -16,14 +16,15 @@ jest.mock('../../../main/helpers/FormHelper');
 jest.mock('../../../main/helpers/LanguageHelper');
 jest.mock('../../../main/validators/validator');
 
-describe('HearingPreferencesController', () => {
-  let controller: HearingPreferencesController;
+describe('ReasonableAdjustmentsController', () => {
+  let controller: ReasonableAdjustmentsController;
   let response: ReturnType<typeof mockResponse>;
   let request: ReturnType<typeof mockRequest>;
   let contentMock: AnyRecord;
+  let translationMock: Record<string, string>;
 
   beforeEach(() => {
-    controller = new HearingPreferencesController();
+    controller = new ReasonableAdjustmentsController();
     response = mockResponse();
     request = mockRequest({
       session: {
@@ -31,69 +32,66 @@ describe('HearingPreferencesController', () => {
       },
     });
 
-    // Mocking necessary methods and content
+    // Mock necessary methods and content
     contentMock = {
       fields: {
-        hearingPreferences: {
-          id: 'hearingPreferences',
-          label: (l: AnyRecord): string => l.legend,
+        reasonableAdjustments: {
+          id: 'reasonableAdjustments',
+          label: expect.any(Function),
           labelHidden: false,
-          labelSize: 'l',
-          type: 'checkboxes',
-          hint: (l: AnyRecord): string => l.selectAllHint,
-          validator: atLeastOneFieldIsChecked,
+          type: 'radios',
           values: [
             {
-              name: 'hearingPreferences',
-              label: (l: AnyRecord): string => l.checkboxVideo,
-              value: HearingPreference.VIDEO,
-            },
-            {
-              name: 'hearingPreferences',
-              label: (l: AnyRecord): string => l.checkboxPhone,
-              value: HearingPreference.PHONE,
-            },
-            {
-              divider: true,
-            },
-            {
-              name: 'hearingPreferences',
-              label: (l: AnyRecord): string => l.checkboxNeither,
-              exclusive: true,
-              value: HearingPreference.NEITHER,
+              name: 'reasonableAdjustments',
+              label: (l: AnyRecord): string => l.yes,
+              value: YesOrNo.YES,
               subFields: {
-                hearingAssistance: {
-                  id: 'hearingAssistance',
-                  type: 'textarea',
-                  label: (l: AnyRecord): string => l.explain,
+                reasonableAdjustmentsDetail: {
+                  id: 'reasonableAdjustmentsDetail',
+                  name: 'reasonableAdjustmentsDetail',
+                  type: 'text',
                   labelSize: 'normal',
-                  attributes: {
-                    maxLength: 2500,
-                  },
+                  label: expect.any(Function),
                   validator: isFieldFilledIn,
                 },
               },
             },
+            {
+              name: 'reasonableAdjustments',
+              label: expect.any(Function),
+              value: YesOrNo.NO,
+            },
           ],
+          validator: isOptionSelected,
         },
       },
       submit: submitButton,
       saveForLater: saveForLaterButton,
     };
 
+    translationMock = {
+      reasonableAdjustments: 'this is reasonableAdjustments',
+      yes: 'Yes',
+      radioNo: 'No',
+      yesLabelText: 'this is yesLabelText',
+    };
+
+    // Mock translation function
+    (request.t as unknown as jest.Mock).mockReturnValue(translationMock);
+
     (getPageContent as jest.Mock).mockReturnValue(contentMock);
-    (setUrlLanguage as jest.Mock).mockReturnValue(PageUrls.HEARING_PREFERENCES);
+    (setUrlLanguage as jest.Mock).mockReturnValue(PageUrls.REASONABLE_ADJUSTMENTS);
   });
 
   describe('GET method', () => {
-    it('should render the Hearing Preferences page with the correct form content', () => {
+    it('should render the Reasonable Adjustments page with the correct form content', () => {
       controller.get(request as unknown as AppRequest, response);
 
       expect(response.render).toHaveBeenCalledWith(
-        TranslationKeys.HEARING_PREFERENCES,
+        TranslationKeys.REASONABLE_ADJUSTMENTS,
         expect.objectContaining({
           ...contentMock,
-          redirectUrl: PageUrls.HEARING_PREFERENCES,
+          redirectUrl: PageUrls.REASONABLE_ADJUSTMENTS,
           hideContactUs: true,
         })
       );
@@ -105,7 +103,7 @@ describe('HearingPreferencesController', () => {
       expect(assignFormData).toHaveBeenCalledWith(
         request.session.userCase,
         expect.objectContaining({
-          hearingPreferences: expect.any(Object),
+          reasonableAdjustments: expect.any(Object),
         })
       );
     });
@@ -113,7 +111,7 @@ describe('HearingPreferencesController', () => {
     it('should call setUrlLanguage with the correct arguments', () => {
       controller.get(request as unknown as AppRequest, response);
 
-      expect(setUrlLanguage).toHaveBeenCalledWith(request, PageUrls.HEARING_PREFERENCES);
+      expect(setUrlLanguage).toHaveBeenCalledWith(request, PageUrls.REASONABLE_ADJUSTMENTS);
     });
   });
 
@@ -128,15 +126,23 @@ describe('HearingPreferencesController', () => {
         response,
         expect.any(Object), // The form object
         expect.any(Object), // Logger
-        PageUrls.REASONABLE_ADJUSTMENTS
+        PageUrls.NOT_IMPLEMENTED
       );
     });
 
-    it('should use the atLeastOneFieldIsChecked validator for hearingPreferences field', async () => {
+    it('should use the isOptionSelected validator for reasonableAdjustments field', async () => {
       const formFields = controller['form'].getFormFields();
-      const hearingPreferencesField = formFields.hearingPreferences;
+      const reasonableAdjustmentsField = formFields.reasonableAdjustments;
 
-      expect(hearingPreferencesField.validator).toBe(atLeastOneFieldIsChecked);
+      expect(reasonableAdjustmentsField.validator).toBe(isOptionSelected);
+    });
+
+    it('should use the isFieldFilledIn validator for reasonableAdjustmentsDetail field when Yes is selected', async () => {
+      const formFields = controller['form'].getFormFields();
+      const reasonableAdjustmentsDetailField =
+        formFields.reasonableAdjustments.values[0].subFields.reasonableAdjustmentsDetail;
+
+      expect(reasonableAdjustmentsDetailField.validator).toBe(isFieldFilledIn);
     });
   });
 });
