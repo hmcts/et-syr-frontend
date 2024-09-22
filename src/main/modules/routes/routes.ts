@@ -11,10 +11,8 @@ import HearingPreferencesController from '../../controllers/HearingPreferencesCo
 import HomeController from '../../controllers/HomeController';
 import InterruptionCardController from '../../controllers/InterruptionCardController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
-import RespondentAddressController from '../../controllers/RespondentAddressController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
-import RespondentCaseListCheckController from '../../controllers/RespondentCaseListCheckController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
 import RespondentDXAddressController from '../../controllers/RespondentDXAddressController';
