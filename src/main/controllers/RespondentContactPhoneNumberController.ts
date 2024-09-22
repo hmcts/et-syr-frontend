@@ -6,9 +6,13 @@ import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
+import { postLogic } from '../helpers/CaseHelpers';
+import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLogger } from '../logger';
 import { isPhoneNumberValid } from '../validators/validator';
+
+const logger = getLogger('RespondentContactPhoneNumberController');
 
 export default class RespondentContactPhoneNumberController {
   private readonly form: Form;
@@ -33,31 +37,22 @@ export default class RespondentContactPhoneNumberController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
-    const errors = this.form.getValidatorErrors(formData);
-    if (errors.length !== 0) {
-      req.session.errors = errors;
-      return res.redirect(req.url);
-    }
-
-    return res.redirect(PageUrls.RESPONDENT_CONTACT_PREFERENCES);
+    await postLogic(req, res, this.form, logger, PageUrls.RESPONDENT_CONTACT_PREFERENCES);
   };
 
-  public get = async (req: AppRequest, res: Response): Promise<void> => {
+  public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER);
-    const respondentContactPhoneNumber = this.respondentContactPhoneNumber;
 
+    const content = getPageContent(req, this.respondentContactPhoneNumber, [
+      TranslationKeys.COMMON,
+      TranslationKeys.RESPONDENT_CONTACT_PHONE_NUMBER,
+      TranslationKeys.SIDEBAR_CONTACT_US,
+    ]);
+    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.RESPONDENT_CONTACT_PHONE_NUMBER, {
-      ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.RESPONDENT_CONTACT_PHONE_NUMBER as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
-      PageUrls,
+      ...content,
       redirectUrl,
       hideContactUs: true,
-      languageParam: getLanguageParam(req.url),
-      form: respondentContactPhoneNumber,
-      userCase: req.session?.userCase,
-      sessionErrors: req.session.errors,
     });
   };
 }

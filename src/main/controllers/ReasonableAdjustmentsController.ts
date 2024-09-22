@@ -10,31 +10,41 @@ import { AnyRecord } from '../definitions/util-types';
 import { postLogic } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { conditionalRedirect } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
-import { isOptionSelected } from '../validators/validator';
+import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
 
-const logger = getLogger('RespondentAddressController');
+const logger = getLogger('ReasonableAdjustmentsController');
 
-export default class RespondentAddressController {
-  form: Form;
-  private readonly respondentAddressContent: FormContent = {
+export default class ReasonableAdjustmentsController {
+  private readonly form: Form;
+  private readonly reasonableAdjustments: FormContent = {
     fields: {
-      respondentAddress: {
-        classes: 'govuk-radios--inline',
-        id: 'respondentAddress',
+      reasonableAdjustments: {
+        classes: 'govuk-radios',
+        id: 'reasonableAdjustments',
         type: 'radios',
-        label: (l: AnyRecord): string => l.correctAddressQuestion,
+        label: (l: AnyRecord): string => l.reasonableAdjustments,
         labelHidden: false,
         values: [
           {
-            name: 'respondentAddress',
+            name: 'reasonableAdjustments',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNo.YES,
+            subFields: {
+              reasonableAdjustmentsDetail: {
+                id: 'reasonableAdjustmentsDetail',
+                name: 'reasonableAdjustmentsDetail',
+                type: 'text',
+                labelSize: 'normal',
+                label: (l: AnyRecord): string => l.yesLabelText,
+                classes: 'govuk-text',
+                validator: isFieldFilledIn,
+              },
+            },
           },
           {
-            name: 'respondentAddress',
-            label: (l: AnyRecord): string => l.no,
+            name: 'reasonableAdjustments',
+            label: (l: AnyRecord): string => l.radioNo,
             value: YesOrNo.NO,
           },
         ],
@@ -43,30 +53,25 @@ export default class RespondentAddressController {
     },
     submit: submitButton,
     saveForLater: saveForLaterButton,
-  } as never;
+  };
 
   constructor() {
-    this.form = new Form(<FormFields>this.respondentAddressContent.fields);
+    this.form = new Form(<FormFields>this.reasonableAdjustments.fields);
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)) {
-      await postLogic(req, res, this.form, logger, PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME);
-    } else if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.NO)) {
-      await postLogic(req, res, this.form, logger, PageUrls.RESPONDENT_ENTER_POST_CODE);
-    }
+    await postLogic(req, res, this.form, logger, PageUrls.NOT_IMPLEMENTED);
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ADDRESS);
-
-    const content = getPageContent(req, this.respondentAddressContent, [
+    const redirectUrl = setUrlLanguage(req, PageUrls.REASONABLE_ADJUSTMENTS);
+    const content = getPageContent(req, this.reasonableAdjustments, [
       TranslationKeys.COMMON,
-      TranslationKeys.RESPONDENT_ADDRESS,
+      TranslationKeys.REASONABLE_ADJUSTMENTS,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
     assignFormData(req.session.userCase, this.form.getFormFields());
-    res.render(TranslationKeys.RESPONDENT_ADDRESS, {
+    res.render(TranslationKeys.REASONABLE_ADJUSTMENTS, {
       ...content,
       redirectUrl,
       hideContactUs: true,

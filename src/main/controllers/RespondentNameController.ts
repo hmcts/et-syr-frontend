@@ -7,9 +7,13 @@ import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields, FormInput } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
+import { postLogic } from '../helpers/CaseHelpers';
+import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLogger } from '../logger';
 import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
+
+const logger = getLogger('RespondentNameController');
 
 export default class RespondentNameController {
   private readonly form: Form;
@@ -57,36 +61,26 @@ export default class RespondentNameController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
-    const errors = this.form.getValidatorErrors(formData);
-    if (errors.length !== 0) {
-      req.session.errors = errors;
-      return res.redirect(req.url);
-    }
-
-    return res.redirect(PageUrls.TYPE_OF_ORGANISATION);
+    await postLogic(req, res, this.form, logger, PageUrls.TYPE_OF_ORGANISATION);
   };
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_NAME);
-    const respondentNameContentForm = this.respondentNameContent;
     const userCase = req.session.userCase;
 
     const respondentNameQuestion = Object.entries(this.form.getFormFields())[0][1] as FormInput;
     respondentNameQuestion.label = (l: AnyRecord): string =>
       l.label1 + userCase.respondents[0].respondentName + l.label2;
 
+    const content = getPageContent(req, this.respondentNameContent, [
+      TranslationKeys.COMMON,
+      TranslationKeys.RESPONDENT_NAME,
+      TranslationKeys.SIDEBAR_CONTACT_US,
+    ]);
     res.render(TranslationKeys.RESPONDENT_NAME, {
-      ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.RESPONDENT_NAME as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
-      PageUrls,
+      ...content,
       redirectUrl,
       hideContactUs: true,
-      languageParam: getLanguageParam(req.url),
-      form: respondentNameContentForm,
-      userCase: req.session?.userCase,
-      sessionErrors: req.session.errors,
     });
   };
 }

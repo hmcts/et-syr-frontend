@@ -1,6 +1,27 @@
+import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { FormField, FormFields, FormInput, FormOptions } from '../definitions/form';
+import { PageUrls } from '../definitions/constants';
+import { FormContent, FormField, FormFields, FormInput, FormOptions } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
+
+import { getLanguageParam } from './RouterHelpers';
+
+export const getPageContent = (req: AppRequest, formContent: FormContent, translations: string[] = []): AnyRecord => {
+  const sessionErrors = req.session?.errors || [];
+  const userCase = req.session?.userCase;
+
+  let content = {
+    form: formContent,
+    sessionErrors,
+    userCase,
+    PageUrls,
+    languageParam: getLanguageParam(req.url),
+  };
+  translations.forEach(t => {
+    content = { ...content, ...req.t(t, { returnObjects: true }) };
+  });
+  return content;
+};
 
 export const assignFormData = (userCase: CaseWithId | undefined, fields: FormFields): void => {
   if (!userCase) {
