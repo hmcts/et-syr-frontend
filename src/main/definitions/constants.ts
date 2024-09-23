@@ -381,6 +381,7 @@ export const AuthorisationTestConstants = {
   CITIZEN_USER_GIVEN_NAME: 'Citizen',
   CITIZEN_USER_FAMILY_NAME: 'Tester',
   CITIZEN_USER_ID: 'a4396b10-6928-4711-a3ba-89fcf6adb779',
+  CITIZEN_USER_ROLE_AS_LIST: ['citizen'],
 } as const;
 
 export const CallbackTestConstants = {

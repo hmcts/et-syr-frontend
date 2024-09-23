@@ -52,16 +52,17 @@ export const getUserDetails = async (
         'Content-Type': 'application/json',
       }),
     });
-    if (!userInfoResponse.ok) {
+    if (userInfoResponse.ok) {
+      await userInfoResponse.json().then(userInfo => {
+        jwt.uid = userInfo?.uid;
+        jwt.roles = userInfo?.roles;
+        jwt.sub = userInfo?.sub;
+        jwt.family_name = userInfo?.family_name;
+        jwt.given_name = userInfo?.given_name;
+      });
+    } else {
       logger.error('Unable to get user info with access token ' + response.data.access_token);
     }
-    await userInfoResponse.json().then(userInfo => {
-      jwt.uid = userInfo?.uid;
-      jwt.roles = userInfo?.roles;
-      jwt.sub = userInfo?.sub;
-      jwt.family_name = userInfo?.family_name;
-      jwt.given_name = userInfo?.given_name;
-    });
   }
   return {
     accessToken: response.data.access_token,
