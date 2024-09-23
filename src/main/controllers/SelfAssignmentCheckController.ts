@@ -3,12 +3,13 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
-import { PageUrls, Roles, TranslationKeys } from "../definitions/constants";
+import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getCaseApi } from '../services/CaseService';
+import ErrorUtils from '../utils/ErrorUtils';
 import { atLeastOneFieldIsChecked } from '../validators/validator';
 
 export default class SelfAssignmentCheckController {
@@ -16,7 +17,7 @@ export default class SelfAssignmentCheckController {
   private readonly detailsCheckContent: FormContent = {
     fields: {
       selfAssignmentCheck: {
-        id: 'selfAssignmentCheck',
+        id: FormFieldNames.SELF_ASSIGNMENT_CHECK_FIELDS.SELF_ASSIGNMENT_CHECK,
         type: 'checkboxes',
         labelHidden: false,
         label: (l: AnyRecord) => l.h1,
@@ -27,11 +28,16 @@ export default class SelfAssignmentCheckController {
         values: [
           {
             id: 'confirmation',
-            name: 'selfAssignmentCheck',
+            name: FormFieldNames.SELF_ASSIGNMENT_CHECK_FIELDS.SELF_ASSIGNMENT_CHECK,
             label: (l: AnyRecord) => l.confirmation.checkbox,
             value: YesOrNo.YES,
           },
         ],
+      },
+      hiddenErrorField: {
+        id: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
+        type: 'text',
+        hidden: true,
       },
     },
     submit: {
@@ -50,12 +56,16 @@ export default class SelfAssignmentCheckController {
       req.session.errors = errors;
       return res.redirect(req.url);
     }
-
-    const caseAssignmentResponse = await getCaseApi(req.session.user?.accessToken)?.assignCaseUserRole(
-      req.session.userCase.id,
-      req.session.user.id,
-      Roles.DEFENDANT_ROLE_WITH_BRACKETS
-    );
+    let caseAssignmentResponse;
+    try {
+      caseAssignmentResponse = await getCaseApi(req.session.user?.accessToken)?.assignCaseUserRole(req);
+    } catch (error) {
+      ErrorUtils.setManualErrorToRequestSession(
+        req,
+        ValidationErrors.API,
+        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+      );
+    }
     if (!caseAssignmentResponse) {
       return res.redirect(req.url);
     }

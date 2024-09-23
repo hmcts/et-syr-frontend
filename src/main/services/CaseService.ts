@@ -2,11 +2,12 @@ import axiosService, { AxiosInstance, AxiosResponse } from 'axios';
 import config from 'config';
 
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
-import { AppRequest } from '../definitions/appRequest';
+import { AppRequest, UserDetails } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { toApiFormat } from '../helpers/ApiFormatter';
 import ErrorUtils from '../utils/ErrorUtils';
+import StringUtils from '../utils/StringUtils';
 
 import { axiosErrorDetails } from './AxiosErrorAdapter';
 
@@ -78,14 +79,35 @@ export class CaseApi {
     }
   };
 
-  assignCaseUserRole = async (caseId: string, userId: string, caseRole: string): Promise<AxiosResponse<string>> => {
+  assignCaseUserRole = async (request: AppRequest): Promise<AxiosResponse<string>> => {
     try {
       return await this.axios.post(JavaApiUrls.ASSIGN_CASE_USER_ROLES, {
-        case_users: [{ case_id: caseId, user_id: userId, case_role: caseRole }],
+        case_users: [
+          {
+            case_id: request.session.userCase.id,
+            user_id: request.session.user.id,
+            case_role: Roles.DEFENDANT_ROLE_WITH_BRACKETS,
+            case_type_id: request.session.userCase.caseTypeId,
+            user_full_name: CaseApi.getUserNameBySessionUser(request.session.user),
+          },
+        ],
       });
     } catch (error) {
       throw new Error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + axiosErrorDetails(error));
     }
+  };
+
+  static getUserNameBySessionUser = (user: UserDetails): string => {
+    let userName: string = DefaultValues.STRING_EMPTY;
+    if (StringUtils.isNotBlank(user.givenName)) {
+      userName = user.givenName;
+      if (StringUtils.isNotBlank(user.familyName)) {
+        userName = user.givenName + DefaultValues.STRING_SPACE + user.givenName;
+      }
+    } else if (StringUtils.isNotBlank(user.familyName)) {
+      userName = user.familyName;
+    }
+    return userName;
   };
 
   getUserCase = async (id: string): Promise<AxiosResponse<CaseApiDataResponse>> => {

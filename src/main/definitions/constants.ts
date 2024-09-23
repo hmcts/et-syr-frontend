@@ -386,15 +386,21 @@ export const DefaultValues = {
   STRING_DASH: '-',
   STRING_QUESTION_MARK: '?',
   STRING_EQUALS: '=',
+  STRING_SPACE: ' ',
 } as const;
 
 export const FormFieldNames = {
+  GENERIC_FORM_FIELDS: {
+    HIDDEN_ERROR_FIELD: 'hiddenErrorField',
+  },
   SELF_ASSIGNMENT_FORM_FIELDS: {
     CASE_REFERENCE_ID: 'caseReferenceId',
     RESPONDENT_NAME: 'respondentName',
     CLAIMANT_FIRST_NAME: 'claimantFirstName',
     CLAIMANT_LAST_NAME: 'claimantLastName',
-    HIDDEN_ERROR_FIELD: 'hiddenErrorField',
+  },
+  SELF_ASSIGNMENT_CHECK_FIELDS: {
+    SELF_ASSIGNMENT_CHECK: 'selfAssignmentCheck',
   },
 } as const;
 
