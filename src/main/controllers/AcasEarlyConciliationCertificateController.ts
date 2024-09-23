@@ -10,7 +10,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { postLogic } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
-import { isOptionSelected } from '../validators/validator';
+import { isContent2500CharsOrLess, isOptionSelected } from '../validators/validator';
 
 const logger = getLogger('AcasEarlyConciliationCertificateController');
 
@@ -37,6 +37,7 @@ export default class AcasEarlyConciliationCertificateController {
                 attributes: {
                   maxLength: 2500,
                 },
+                validator: isContent2500CharsOrLess,
               },
             },
           },

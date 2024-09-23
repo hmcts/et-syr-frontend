@@ -8,6 +8,9 @@
   "errors": {
     "disagreeEarlyConciliation": {
       "required": "[W]Make a selection"
+    },
+    "disagreeEarlyConciliationWhy": {
+      "tooLong": "[W]The details of why you disagree must be less than 2500 characters"
     }
   }
 }
