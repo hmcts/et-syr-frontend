@@ -1,7 +1,6 @@
 import IsClaimantEmploymentWithRespondentContinuingController from '../../../main/controllers/IsClaimantEmploymentWithRespondentContinuingController';
 import { YesOrNoOrNotSure } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
-import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
@@ -9,8 +8,6 @@ import { mockResponse } from '../mocks/mockResponse';
 
 describe('Claimant employment dates Controller', () => {
   const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
-  const mockLdClient = jest.spyOn(LaunchDarkly, 'getFlagValue');
-  mockLdClient.mockResolvedValue(true);
 
   it('should render the page', () => {
     const response = mockResponse();
