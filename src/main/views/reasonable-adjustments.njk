@@ -1,7 +1,7 @@
 {% extends "form/main/template.njk" %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
-{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% block beforeContent %}
@@ -19,11 +19,19 @@
       <span class="govuk-caption-xl">{{ sectionTitle }}</span>
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ h1 }}</h1>
 
-      {{ govukSummaryList({
-        rows: contactPreferencesRespondentSection
+      {{ govukInsetText({
+        html: "<p class='govuk-body'>" + insetText + "</p>"
       }) }}
 
-      <p class="govuk-body"> {{ sectionText1  }} </p>
+      {{ govukDetails({
+        summaryText: additionalInfo,
+        html: "<p class='govuk-body'>"+ additionalText + "</p>
+        <ul class='govuk-list govuk-list--bullet'>
+        <li>" + bullet1 + "</li>
+        <li>" + bullet2 + "</li>
+        <li>" + bullet3 + "</li>
+        </ul>"
+      }) }}
 
       {% block form %}
         {% include "form/form.njk"%}
@@ -32,7 +40,7 @@
 
     <div class="govuk-grid-column-one-third-from-desktop">
       {% set sideBarContent %}
-        {% include "./components/sidebar/sidebar.njk" %}
+        {% include "./components/response-hub/response-hub-sidebar.njk" %}
       {% endset %}
 
       {{ govukDetails({

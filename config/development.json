@@ -5,7 +5,8 @@
       "clientID": "et-syr",
       "authorizationURL": "http://localhost:5062/login",
       "clientSecret": "test1234",
-      "tokenURL": "http://localhost:5062/o/token"
+      "tokenURL": "http://localhost:5062/o/token",
+      "userInfoURL": "http://localhost:5062/o/userinfo"
     },
     "addressLookup": {
       "url": "https://api.os.uk/search/places/v1/postcode",

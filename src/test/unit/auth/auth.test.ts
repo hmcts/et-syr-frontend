@@ -1,3 +1,5 @@
+import * as process from 'node:process';
+
 import axios from 'axios';
 import config from 'config';
 
@@ -8,7 +10,6 @@ import {
   GenericTestConstants,
   languages,
 } from '../../../main/definitions/constants';
-
 const loginUrl =
   process.env.IDAM_WEB_URL ?? config.get(AuthorisationTestConstants.AUTHORISATION_URL_CONFIGURATION_NAME);
 jest.mock('axios');
@@ -61,6 +62,75 @@ describe('AuthorisationTest', () => {
       },
     });
 
+    const result = await getUserDetails(
+      AuthorisationTestConstants.URL_LOCALHOST,
+      AuthorisationTestConstants.RAW_CODE,
+      AuthUrls.CALLBACK
+    );
+    expect(result).toStrictEqual({
+      accessToken: AuthorisationTestConstants.CITIZEN_USER_TOKEN,
+      email: AuthorisationTestConstants.CITIZEN_USER_EMAIL,
+      givenName: AuthorisationTestConstants.CITIZEN_USER_GIVEN_NAME,
+      familyName: AuthorisationTestConstants.CITIZEN_USER_FAMILY_NAME,
+      id: AuthorisationTestConstants.CITIZEN_USER_ID,
+      isCitizen: GenericTestConstants.TRUE,
+    });
+  });
+
+  test('should get userinfo when environment is development', async () => {
+    mockedAxios.post.mockResolvedValue({
+      data: {
+        access_token: AuthorisationTestConstants.CITIZEN_USER_TOKEN,
+        id_token: AuthorisationTestConstants.CITIZEN_USER_TOKEN,
+      },
+    });
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () =>
+          Promise.resolve({
+            uid: AuthorisationTestConstants.CITIZEN_USER_ID,
+            roles: AuthorisationTestConstants.CITIZEN_USER_ROLE_AS_LIST,
+            sub: AuthorisationTestConstants.CITIZEN_USER_EMAIL,
+            family_name: AuthorisationTestConstants.CITIZEN_USER_FAMILY_NAME,
+            given_name: AuthorisationTestConstants.CITIZEN_USER_GIVEN_NAME,
+          }),
+        ok: true,
+        status: 200,
+      })
+    ) as jest.Mock;
+    process.env.NODE_ENV = 'development';
+    const result = await getUserDetails(
+      AuthorisationTestConstants.URL_LOCALHOST,
+      AuthorisationTestConstants.RAW_CODE,
+      AuthUrls.CALLBACK
+    );
+    expect(result).toStrictEqual({
+      accessToken: AuthorisationTestConstants.CITIZEN_USER_TOKEN,
+      email: AuthorisationTestConstants.CITIZEN_USER_EMAIL,
+      givenName: AuthorisationTestConstants.CITIZEN_USER_GIVEN_NAME,
+      familyName: AuthorisationTestConstants.CITIZEN_USER_FAMILY_NAME,
+      id: AuthorisationTestConstants.CITIZEN_USER_ID,
+      isCitizen: GenericTestConstants.TRUE,
+    });
+  });
+  test('should not get userinfo when not fetch', async () => {
+    mockedAxios.post.mockResolvedValue({
+      data: {
+        access_token: AuthorisationTestConstants.CITIZEN_USER_TOKEN,
+        id_token: AuthorisationTestConstants.CITIZEN_USER_TOKEN,
+      },
+    });
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () =>
+          Promise.resolve({
+            nothing: 'found',
+          }),
+        ok: false,
+        status: 400,
+      })
+    ) as jest.Mock;
+    process.env.NODE_ENV = 'development';
     const result = await getUserDetails(
       AuthorisationTestConstants.URL_LOCALHOST,
       AuthorisationTestConstants.RAW_CODE,

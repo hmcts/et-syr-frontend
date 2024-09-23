@@ -3,6 +3,7 @@ import {
   GenericTseApplicationType,
   GenericTseApplicationTypeItem,
 } from '../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
+import { PageUrls } from '../../../main/definitions/constants';
 import { ApplicationTableRecord, CaseState, RespondentApplicationDetails } from '../../../main/definitions/definition';
 import { HubLinkStatus } from '../../../main/definitions/hub';
 import { clone } from '../test-helpers/clone';
@@ -67,7 +68,7 @@ export const mockApplications: ApplicationTableRecord[] = [
     },
     respondents: 'Globo Corp',
     completionStatus: '0 of 4 tasks completed',
-    url: '/response-hub/1234567?lng=en',
+    url: PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER + '/1234567?lng=en',
   },
 ];
 
