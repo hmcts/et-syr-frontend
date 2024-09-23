@@ -11,26 +11,25 @@ const commonJsonRaw = fs.readFileSync(
   'utf-8'
 );
 const pageJsonRaw = fs.readFileSync(
-  path.resolve(__dirname, '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json'),
+  path.resolve(__dirname, '../../../main/resources/locales/en/translation/claimant-average-weekly-work-hours.json'),
   'utf-8'
 );
 const commonJson = JSON.parse(commonJsonRaw);
 const pageJson = JSON.parse(pageJsonRaw);
 
-const PAGE_URL = '/acas-early-conciliation-certificate';
+const PAGE_URL = '/claimant-average-weekly-work-hours';
 const titleClass = 'govuk-heading-xl';
 const expectedTitle = pageJson.title;
 const pClass = 'govuk-body';
 const expectedP1 = pageJson.p1;
-const linkClass = 'govuk-link';
-const expectedLink = pageJson.link;
 const radioClass = 'govuk-radios__item';
-const expectedRadioLabel1 = commonJson.no;
-const expectedRadioLabel2 = commonJson.yes;
+const expectedRadioLabel1 = commonJson.yes;
+const expectedRadioLabel2 = commonJson.no;
+const expectedRadioLabel3 = commonJson.notSure;
 const buttonClass = 'govuk-button';
 
 let htmlRes: Document;
-describe('Acas early conciliation certificate page', () => {
+describe('Claimant average weekly work hours page', () => {
   beforeAll(async () => {
     await request(mockApp({}))
       .get(PAGE_URL)
@@ -49,14 +48,9 @@ describe('Acas early conciliation certificate page', () => {
     expect(p[6].innerHTML).contains(expectedP1, 'Paragraph does not exist');
   });
 
-  it('should display link', () => {
-    const cancel = htmlRes.getElementsByClassName(linkClass);
-    expect(cancel[5].innerHTML).contains(expectedLink, 'Could not find the link');
-  });
-
-  it('should display 2 input fields', () => {
+  it('should display 3 input fields', () => {
     const radioButtons = htmlRes.getElementsByClassName(radioClass);
-    expect(radioButtons.length).equal(2, `only ${radioButtons.length} found`);
+    expect(radioButtons.length).equal(3, `only ${radioButtons.length} found`);
   });
 
   it('should display inputs with valid labels', () => {
@@ -68,6 +62,10 @@ describe('Acas early conciliation certificate page', () => {
     expect(radioButtons[1].innerHTML).contains(
       expectedRadioLabel2,
       'Could not find the radio button with label ' + expectedRadioLabel2
+    );
+    expect(radioButtons[1].innerHTML).contains(
+      expectedRadioLabel2,
+      'Could not find the radio button with label ' + expectedRadioLabel3
     );
   });
 
