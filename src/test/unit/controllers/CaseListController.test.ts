@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import RespondentRepliesController from '../../../main/controllers/RespondentRepliesController';
+import CaseListController from '../../../main/controllers/CaseListController';
 import { ServiceErrors, TranslationKeys } from '../../../main/definitions/constants';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
@@ -11,13 +11,13 @@ import { mockResponse } from '../mocks/mockResponse';
 
 jest.mock('axios');
 
-describe('Respondent Replies list controller', () => {
+describe('Case list controller', () => {
   const t = {
     common: {},
   };
   const getCaseApiMock = jest.spyOn(caseService, 'getCaseApi');
   const api = new CaseApi(axios);
-  const respondentRepliesController = new RespondentRepliesController();
+  const caseListController = new CaseListController();
   it('should render respondent replies page', async () => {
     const response = mockResponse();
     const request = mockRequest({ t });
@@ -25,9 +25,9 @@ describe('Respondent Replies list controller', () => {
     api.getUserCases = jest
       .fn()
       .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponseList));
-    await respondentRepliesController.get(request, response);
+    await caseListController.get(request, response);
 
-    expect(response.render).toHaveBeenCalledWith(TranslationKeys.RESPONDENT_REPLIES, expect.anything());
+    expect(response.render).toHaveBeenCalledWith(TranslationKeys.CASE_LIST, expect.anything());
   });
   it('should throw error when not able to get user cases', async () => {
     const response = mockResponse();
@@ -39,7 +39,7 @@ describe('Respondent Replies list controller', () => {
     });
     const apiForMockingException = new CaseApi(mockedAxios);
     getCaseApiMock.mockReturnValue(apiForMockingException);
-    await expect(respondentRepliesController.get(request, response)).rejects.toEqual(
+    await expect(caseListController.get(request, response)).rejects.toEqual(
       new Error(ServiceErrors.ERROR_GETTING_USER_CASES + ServiceErrors.ERROR_CASE_NOT_FOUND)
     );
   });

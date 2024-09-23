@@ -1,10 +1,10 @@
-import ChecklistController from '../../../main/controllers/ChecklistController';
+import InterruptionCardController from '../../../main/controllers/InterruptionCardController';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
 jest.mock('axios');
 
-describe('Check list controller', () => {
+describe('Interruption card controller', () => {
   const t = {
     common: {},
   };
@@ -13,8 +13,8 @@ describe('Check list controller', () => {
     const response = mockResponse();
     const request = mockRequest({ t });
 
-    new ChecklistController().get(request, response);
+    new InterruptionCardController().get(request, response);
 
-    expect(response.render).toHaveBeenCalledWith('checklist', expect.anything());
+    expect(response.render).toHaveBeenCalledWith('interruption-card', expect.anything());
   });
 });

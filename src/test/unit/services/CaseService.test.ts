@@ -8,6 +8,8 @@ import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import { mockCaseApiDataResponse } from '../mocks/mockCaseApiDataResponse';
 import { mockCaseWithIdWithHubLinkStatuses, mockValidCaseWithId } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
+import { mockUserDetails } from '../mocks/mockUser';
+import mockUserCase from '../mocks/mockUserCase';
 
 jest.mock('config');
 jest.mock('axios');
@@ -94,15 +96,16 @@ describe('Case Service Tests', () => {
   });
 
   describe('Assign case user role', () => {
-    const caseId: string = '1234567890123456';
-    const userId: string = 'testUserId';
-    const userRole: string = '[DEFENDANT]';
     const expectedResponse = 'User roles successfully updated';
     it('should assign case user role', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
       mockedAxios.post.mockResolvedValue(expectedResponse);
-      const value = await api.assignCaseUserRole(caseId, userId, userRole);
+      const request = mockRequest({
+        body: mockValidCaseWithId,
+        session: { userCase: mockUserCase, user: mockUserDetails },
+      });
+      const value = await api.assignCaseUserRole(request);
       expect(value).toEqual(expectedResponse);
     });
     it('should throw exception when there is a problem while updating user role', async () => {
@@ -111,7 +114,11 @@ describe('Case Service Tests', () => {
       mockedAxios.post.mockImplementation(() => {
         throw mockAxiosError('TEST', ServiceErrors.ERROR_CASE_NOT_FOUND, 404);
       });
-      await expect(() => api.assignCaseUserRole(caseId, userId, userRole)).rejects.toEqual(
+      const request = mockRequest({
+        body: mockValidCaseWithId,
+        session: { userCase: mockUserCase, user: mockUserDetails },
+      });
+      await expect(() => api.assignCaseUserRole(request)).rejects.toEqual(
         new Error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + ServiceErrors.ERROR_CASE_NOT_FOUND)
       );
     });

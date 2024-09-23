@@ -7,7 +7,7 @@ import { mockResponse } from '../mocks/mockResponse';
 
 const homeController = new HomeController();
 
-describe('Introduction controller', () => {
+describe('Home controller', () => {
   const t = {
     home: {},
   };
@@ -15,7 +15,7 @@ describe('Introduction controller', () => {
   it('should render the introduction (home) page', () => {
     const response = mockResponse();
     const request = mockRequest({ t });
-    const redirectUrl = setUrlLanguage(request, PageUrls.CHECKLIST);
+    const redirectUrl = setUrlLanguage(request, PageUrls.INTERRUPTION_CARD);
     homeController.get(request, response);
 
     expect(response.render).toHaveBeenCalledWith('home', {
