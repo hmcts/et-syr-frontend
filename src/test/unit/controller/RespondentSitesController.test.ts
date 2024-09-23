@@ -1,80 +1,109 @@
 import RespondentSitesController from '../../../main/controllers/RespondentSitesController';
-import { AppRequest } from '../../../main/definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { postLogic } from '../../../main/helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../../../main/helpers/FormHelper';
-import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
 jest.mock('../../../main/helpers/CaseHelpers');
-jest.mock('../../../main/helpers/FormHelper');
-jest.mock('../../../main/helpers/LanguageHelper');
 
 describe('RespondentSitesController', () => {
   let controller: RespondentSitesController;
-  let req: ReturnType<typeof mockRequest>;
-  let res: ReturnType<typeof mockResponse>;
-  let formMock: any;
+  let response: ReturnType<typeof mockResponse>;
+  let request: ReturnType<typeof mockRequest>;
 
   beforeEach(() => {
     controller = new RespondentSitesController();
-    req = mockRequest({
+    response = mockResponse();
+    request = mockRequest({
       session: {
         userCase: {},
       },
     });
-    res = mockResponse();
-    formMock = {
-      fields: {
-        respondentSites: {
-          classes: 'govuk-radios',
-          id: 'respondentSites',
-          type: 'text',
-          hint: 'This is the hint',
-        },
-      },
-      submit: 'submit button',
-      saveForLater: 'save for later button',
-    };
-
-    (getPageContent as jest.Mock).mockReturnValue(formMock);
-    (setUrlLanguage as jest.Mock).mockReturnValue(PageUrls.RESPONDENT_SITES);
   });
 
   describe('GET method', () => {
     it('should render the Respondent Sites page with the correct form content', () => {
-      controller.get(req as unknown as AppRequest, res);
+      controller.get(request, response);
 
-      expect(getPageContent).toHaveBeenCalledWith(req, controller['respondentSites'], [
-        TranslationKeys.COMMON,
+      expect(response.render).toHaveBeenCalledWith(
         TranslationKeys.RESPONDENT_SITES,
-        TranslationKeys.SIDEBAR_CONTACT_US,
-      ]);
+        expect.objectContaining({
+          PageUrls: expect.any(Object),
+          redirectUrl: expect.any(String),
+          hideContactUs: true,
+          form: expect.objectContaining({
+            fields: expect.objectContaining({
+              respondentSites: expect.objectContaining({
+                classes: 'govuk-radios',
+                id: 'respondentSites',
+                type: 'radios',
+                hint: expect.any(Function), // Account for hint function
+                labelHidden: true, // Include labelHidden: true
+                values: expect.arrayContaining([
+                  expect.objectContaining({
+                    name: 'respondentSites',
+                    label: expect.any(Function), // Check for label function
+                    value: 'Yes',
+                  }),
+                  expect.objectContaining({
+                    name: 'respondentSites',
+                    label: expect.any(Function), // Check for label function
+                    value: 'No',
+                  }),
+                  expect.objectContaining({
+                    name: 'respondentSites',
+                    label: expect.any(Function), // Check for label function
+                    value: 'Not Sure',
+                  }),
+                ]),
+                validator: expect.any(Function), // Check for validator function
+              }),
+            }),
+            submit: expect.objectContaining({
+              classes: 'govuk-!-margin-right-2',
+              text: expect.any(Function),
+            }),
+            saveForLater: expect.objectContaining({
+              classes: 'govuk-button--secondary',
+              text: expect.any(Function),
+            }),
+          }),
+          userCase: request.session.userCase,
+          sessionErrors: expect.any(Array),
+        })
+      );
 
-      expect(assignFormData).toHaveBeenCalledWith(req.session.userCase, expect.any(Object));
+      const mockLabels = {
+        yes: 'Yes', // expected label for 'Yes' option
+        no: 'No', // expected label for 'No' option
+        notSure: 'Not Sure', // expected label for 'Not Sure' option
+        hint: 'This is the hint', // expected hint text
+      };
 
-      expect(res.render).toHaveBeenCalledWith(TranslationKeys.RESPONDENT_SITES, {
-        ...formMock,
-        redirectUrl: PageUrls.RESPONDENT_SITES,
-        hideContactUs: true,
-      });
-    });
+      // Verify that the main label function returns the correct value
+      const renderMock = response.render as jest.Mock;
+      const form = renderMock.mock.calls[0][1].form;
 
-    it('should call setUrlLanguage with correct arguments', () => {
-      controller.get(req as unknown as AppRequest, res);
+      // Extract the label and hint functions from the form fields
+      const respondentSitesField = form.fields.respondentSites;
 
-      expect(setUrlLanguage).toHaveBeenCalledWith(req, PageUrls.RESPONDENT_SITES);
+      // Test the labels
+      expect(respondentSitesField.values[0].label(mockLabels)).toBe('Yes');
+      expect(respondentSitesField.values[1].label(mockLabels)).toBe('No');
+      expect(respondentSitesField.values[2].label(mockLabels)).toBe('Not Sure');
+
+      // Test the hint
+      expect(respondentSitesField.hint(mockLabels)).toBe('This is the hint');
     });
   });
 
   describe('POST method', () => {
     it('should call postLogic with the correct parameters', async () => {
-      await controller.post(req as unknown as AppRequest, res);
+      await controller.post(request, response);
 
       expect(postLogic).toHaveBeenCalledWith(
-        req,
-        res,
+        request,
+        response,
         controller['form'],
         expect.anything(),
         PageUrls.RESPONDENT_SITE_EMPLOYEES
