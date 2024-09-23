@@ -18,6 +18,9 @@
   "errors": {
     "selfAssignmentCheck": {
       "required": "Please confirm case assignment."
+    },
+    "hiddenErrorField": {
+      "api": "Unable to assign role. Please check your name recorded in the system"
     }
   }
 }

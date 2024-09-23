@@ -1,6 +1,8 @@
 import { HearingModel } from './api/caseApiResponse';
 import { DocumentTypeItem } from './complexTypes/documentTypeItem';
+import { Et1Address } from './complexTypes/et1Address';
 import { GenericTseApplicationTypeItem, TseRespondTypeItem } from './complexTypes/genericTseApplicationTypeItem';
+import { ET3VettingType } from './complexTypes/respondent';
 import { PseResponseType, SendNotificationTypeItem } from './complexTypes/sendNotificationTypeItem';
 import {
   CaseState,
@@ -31,7 +33,6 @@ export interface AddressType {
 }
 
 export interface Respondent {
-  respondentNumber?: number;
   respondentName?: string;
   respondentAddress1?: string;
   respondentAddress2?: string;
@@ -47,6 +48,98 @@ export interface Respondent {
   acasCertNum?: string;
   noAcasReason?: NoAcasNumberReason;
   ccdId?: string;
+  respondentACASNo?: NoAcasNumberReason;
+  claimantWorkAddress?: Et1Address;
+  responseReceived?: YesOrNo;
+  responseStatus?: string;
+  responseToClaim?: string;
+  rejectionReason?: string;
+  respondentAddress?: Et1Address;
+  respondentACASQuestion?: YesOrNo;
+  respondentACAS?: string;
+  rejectionReasonOther?: string;
+  responseOutOfTime?: string;
+  responseNotOnPrescribedForm?: string;
+  et3ResponseEmploymentInformation?: string;
+  et3ResponseContinuingEmployment?: YesOrNo;
+  et3ResponseIsJobTitleCorrect?: YesOrNo;
+  et3ResponseCorrectJobTitle?: string;
+  et3ResponseClaimantWeeklyHours?: YesOrNo;
+  et3ResponseClaimantCorrectHours?: string;
+  et3ResponseEarningDetailsCorrect?: YesOrNo;
+  et3ResponsePayFrequency?: string;
+  et3ResponsePayBeforeTax?: string;
+  et3ResponsePayTakehome?: string;
+  respondentEmail?: string;
+  responseStruckOut?: YesOrNo;
+  respondentContactPreference?: string;
+  responseStruckOutDate?: string;
+  responseStruckOutChairman?: string;
+  et3ResponseIsNoticeCorrect?: YesOrNo;
+  responseRequiredInfoAbsent?: string;
+  responseNotes?: string;
+  responseReferredToJudge?: string;
+  responseReturnedFromJudge?: string;
+  respondentType?: string;
+  respondentOrganisation?: string;
+  respondentFirstName?: string;
+  respondentLastName?: string;
+  respondentPhone1?: string;
+  respondentPhone2?: string;
+  et3ResponseRespondentEmployerType?: string;
+  et3ResponseRespondentPreferredTitle?: string;
+  et3ResponseRespondentContactName?: string;
+  et3ResponseDXAddress?: Et1Address;
+  et3ResponseContactReason?: string;
+  responseStruckOutReason?: string;
+  responseRespondentAddress?: Et1Address;
+  responseRespondentPhone1?: string;
+  responseRespondentPhone2?: string;
+  et3Vetting?: ET3VettingType;
+  et3VettingCompleted?: YesOrNo;
+  et3ResponseIsClaimantNameCorrect?: YesOrNo;
+  et3ResponseClaimantNameCorrection?: string;
+  et3ResponseRespondentCompanyNumber?: string;
+  et3ResponseHearingRepresentative?: string[];
+  et3ResponseHearingRespondent?: string[];
+  et3ResponseEmploymentCount?: string;
+  et3ResponseMultipleSites?: YesOrNo;
+  et3ResponseSiteEmploymentCount?: string;
+  et3ResponseEmployerClaim?: YesOrNo;
+  et3ResponseEmployerClaimDetails?: string;
+  et3ResponseEmployerClaimDocument?: UploadedDocumentType;
+  et3ResponseRespondentSupportNeeded?: YesOrNo;
+  et3ResponseAcasAgree?: YesOrNo;
+  et3ResponseAcasAgreeReason?: string;
+  et3ResponseAreDatesCorrect?: YesOrNo;
+  et3ResponseEmploymentStartDate?: string;
+  et3ResponseEmploymentEndDate?: string;
+  et3ResponseCorrectNoticeDetails?: string;
+  et3ResponseIsPensionCorrect?: YesOrNo;
+  et3ResponsePensionCorrectDetails?: string;
+  et3ResponseRespondentContestClaim?: YesOrNo;
+  et3ResponseContestClaimDocument?: DocumentTypeItem[];
+  et3ResponseContestClaimDetails?: string;
+  et3ResponseRespondentSupportDetails?: string;
+  et3ResponseRespondentSupportDocument?: UploadedDocumentType;
+  et3Form?: UploadedDocumentType;
+  personalDetailsSection?: string;
+  employmentDetailsSection?: string;
+  claimDetailsSection?: string;
+  respondentEnterPostcode?: string;
+  responseRespondentEmail?: string;
+  responseRespondentContactPreference?: string;
+  responseReceivedDate?: string;
+  responseReceivedCount?: string;
+  responseRespondentNameQuestion?: YesOrNo;
+  responseRespondentName?: string;
+  responseContinue?: YesOrNo;
+  responseCounterClaim?: string;
+  responseReference?: string;
+  extensionRequested?: YesOrNo;
+  extensionGranted?: YesOrNo;
+  extensionDate?: string;
+  extensionResubmitted?: YesOrNo;
 }
 
 export interface RespondentApiModel {
@@ -354,6 +447,14 @@ export interface Document {
   document_size?: number;
   document_mime_type?: string;
   createdOn?: string;
+}
+
+export interface UploadedDocumentType {
+  document_binary_url: string;
+  document_filename: string;
+  document_url: string;
+  category_id: string;
+  upload_timestamp: string;
 }
 
 export interface Representative {
