@@ -6,7 +6,7 @@ import commonJsonRaw from '../../../main/resources/locales/en/translation/common
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
-describe('Claimant employment dates Controller', () => {
+describe('Is the claimant’s employment with the respondent continuing? Controller', () => {
   const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
 
   it('should render the page', () => {
