@@ -16,6 +16,7 @@ import RespondentAddressController from '../../controllers/RespondentAddressCont
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
 import RespondentDXAddressController from '../../controllers/RespondentDXAddressController';
+import RespondentEmployeesController from '../../controllers/RespondentEmployeesController';
 import RespondentEnterAddressController from '../../controllers/RespondentEnterAddressController';
 import RespondentEnterPostCodeController from '../../controllers/RespondentEnterPostCodeController';
 import RespondentNameController from '../../controllers/RespondentNameController';
@@ -23,6 +24,8 @@ import RespondentPreferredContactNameController from '../../controllers/Responde
 import RespondentResponseLandingController from '../../controllers/RespondentResponseLandingController';
 import RespondentResponseTaskListController from '../../controllers/RespondentResponseTaskListController';
 import RespondentSelectPostCodeController from '../../controllers/RespondentSelectPostCodeController';
+import RespondentSiteEmployeesController from '../../controllers/RespondentSiteEmployeesController';
+import RespondentSitesController from '../../controllers/RespondentSitesController';
 import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheckController';
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
@@ -67,6 +70,12 @@ export class Routes {
     app.post(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().post);
     app.get(PageUrls.REASONABLE_ADJUSTMENTS, new ReasonableAdjustmentsController().get);
     app.post(PageUrls.REASONABLE_ADJUSTMENTS, new ReasonableAdjustmentsController().post);
+    app.get(PageUrls.RESPONDENT_EMPLOYEES, new RespondentEmployeesController().get);
+    app.post(PageUrls.RESPONDENT_EMPLOYEES, new RespondentEmployeesController().post);
+    app.get(PageUrls.RESPONDENT_SITES, new RespondentSitesController().get);
+    app.post(PageUrls.RESPONDENT_SITES, new RespondentSitesController().post);
+    app.get(PageUrls.RESPONDENT_SITE_EMPLOYEES, new RespondentSiteEmployeesController().get);
+    app.post(PageUrls.RESPONDENT_SITE_EMPLOYEES, new RespondentSiteEmployeesController().post);
     app.get(PageUrls.NEW_SELF_ASSIGNMENT_REQUEST, new NewSelfAssignmentRequestController().get);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
