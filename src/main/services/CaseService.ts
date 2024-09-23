@@ -102,7 +102,7 @@ export class CaseApi {
     if (StringUtils.isNotBlank(user.givenName)) {
       userName = user.givenName;
       if (StringUtils.isNotBlank(user.familyName)) {
-        userName = user.givenName + DefaultValues.STRING_SPACE + user.givenName;
+        userName = user.givenName + DefaultValues.STRING_SPACE + user.familyName;
       }
     } else if (StringUtils.isNotBlank(user.familyName)) {
       userName = user.familyName;
