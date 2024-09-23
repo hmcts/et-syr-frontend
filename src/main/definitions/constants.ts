@@ -22,10 +22,10 @@ export const TranslationKeys = {
   COMMON: 'common',
   WELSH_ENABLED: 'welsh-language',
   HOME: 'home',
-  CHECKLIST: 'checklist',
+  INTERRUPTION_CARD: 'interruption-card',
   COOKIE_PREFERENCES: 'cookie-preferences',
   RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
-  RESPONSE_HUB: 'response-hub',
+  CASE_DETAILS_WITH_CASE_ID_PARAMETER: 'case-details',
   RESPONDENT_RESPONSE_LANDING: 'respondent-response-landing',
   RESPONDENT_RESPONSE_TASK_LIST: 'respondent-response-task-list',
   RESPONDENT_NAME: 'respondent-name',
@@ -48,18 +48,19 @@ export const TranslationKeys = {
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
   SELF_ASSIGNMENT_FORM: 'self-assignment-form',
   SELF_ASSIGNMENT_CHECK: 'self-assignment-check',
-  RESPONDENT_REPLIES: 'respondent-replies',
+  CASE_LIST: 'case-list',
 } as const;
 
 export const PageUrls = {
   NOT_IMPLEMENTED: '#',
   HOME: '/',
-  CHECKLIST: '/checklist',
+  INTERRUPTION_CARD: '/interruption-card',
   SELF_ASSIGNMENT_FORM: '/self-assignment-form',
-  RESPONDENT_CASE_LIST_CHECK: '/respondent-case-list-check',
+  CASE_LIST_CHECK: '/case-list-check',
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
-  RESPONDENT_REPLIES: '/respondent-replies',
-  RESPONSE_HUB: '/response-hub/:caseId',
+  CASE_LIST: '/case-list',
+  CASE_DETAILS_WITH_CASE_ID_PARAMETER: '/case-details/:caseId',
+  CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER: '/case-details',
   COOKIE_PREFERENCES: '/cookies',
   RESPONDENT_RESPONSE_LANDING: '/respondent-response-landing',
   RESPONDENT_RESPONSE_TASK_LIST: '/respondent-response-task-list',
@@ -114,8 +115,8 @@ export const AuthUrls = {
 } as const;
 
 export const JavaApiUrls = {
-  FIND_CASE_FOR_ROLE_MODIFICATION: '/caseRoleManagement/findCaseForRoleModification',
-  ASSIGN_CASE_USER_ROLES: '/caseRoleManagement/modifyCaseUserRoles?modificationType=Assignment',
+  FIND_CASE_FOR_ROLE_MODIFICATION: '/manageCaseRole/findCaseForRoleModification',
+  ASSIGN_CASE_USER_ROLES: '/manageCaseRole/modifyCaseUserRoles?modificationType=Assignment',
   DOWNLOAD_CLAIM_PDF: '/generate-pdf',
   UPLOAD_FILE: '/documents/upload/',
   DOCUMENT_DOWNLOAD: '/document/download/',
@@ -141,6 +142,12 @@ export const JavaApiUrls = {
   SUBMIT_STORED_RESPOND_TO_TRIBUNAL: 'store/submit-stored-respond-to-tribunal',
   UPDATE_ADMIN_DECISION_STATE: '/tseAdmin/update-admin-decision-state',
   SUBMIT_BUNDLES: 'bundles/submit-bundles',
+  ROLE_PARAM_NAME: 'case_user_role',
+} as const;
+
+export const Roles = {
+  DEFENDANT_ROLE_WITH_BRACKETS: '[DEFENDANT]',
+  DEFENDANT_ROLE_WITHOUT_BRACKETS: 'DEFENDANT',
 } as const;
 
 export const Urls = {
@@ -350,10 +357,11 @@ export const SessionErrors = {
   ERROR_FAILED_TO_RETRIEVE_USER_CASE_FROM_REQUEST_SESSION: 'User case not found in the request session',
   ERROR_NAME_DATA_NOT_FOUND: 'Data not found in the session',
 } as const;
+
 export const GenericTestConstants = {
   TRUE: true,
   FALSE: false,
-};
+} as const;
 
 export const AuthorisationTestConstants = {
   AUTHORISATION_URL_CONFIGURATION_NAME: 'services.idam.authorizationURL',
@@ -373,23 +381,36 @@ export const AuthorisationTestConstants = {
   CITIZEN_USER_GIVEN_NAME: 'Citizen',
   CITIZEN_USER_FAMILY_NAME: 'Tester',
   CITIZEN_USER_ID: 'a4396b10-6928-4711-a3ba-89fcf6adb779',
+  CITIZEN_USER_ROLE_AS_LIST: ['citizen'],
 } as const;
+
 export const CallbackTestConstants = {
   REDIS_ERROR: 'redisError',
-};
+} as const;
+
 export const DefaultValues = {
   STRING_EMPTY: '',
   STRING_DASH: '-',
-};
+  STRING_QUESTION_MARK: '?',
+  STRING_EQUALS: '=',
+  STRING_SPACE: ' ',
+} as const;
+
 export const FormFieldNames = {
+  GENERIC_FORM_FIELDS: {
+    HIDDEN_ERROR_FIELD: 'hiddenErrorField',
+  },
   SELF_ASSIGNMENT_FORM_FIELDS: {
     CASE_REFERENCE_ID: 'caseReferenceId',
     RESPONDENT_NAME: 'respondentName',
     CLAIMANT_FIRST_NAME: 'claimantFirstName',
     CLAIMANT_LAST_NAME: 'claimantLastName',
-    HIDDEN_ERROR_FIELD: 'hiddenErrorField',
   },
-};
+  SELF_ASSIGNMENT_CHECK_FIELDS: {
+    SELF_ASSIGNMENT_CHECK: 'selfAssignmentCheck',
+  },
+} as const;
+
 export const ServiceErrors = {
   ERROR_UPDATING_DRAFT_CASE: 'Error updating draft case: ',
   ERROR_CASE_NOT_FOUND: 'Case Not Found',
@@ -398,9 +419,15 @@ export const ServiceErrors = {
   ERROR_GETTING_USER_CASES: 'Error getting user cases: ',
   ERROR_ASSIGNING_USER_ROLE: 'Error assigning user role: ',
   ERROR_DUMMY_DATA: 'Dummy data error',
-};
+} as const;
+
 export const CacheErrors = {
   ERROR_HOST_NOT_FOUND_FOR_PRE_LOGIN_URL: 'Host not found for pre login url',
   ERROR_PORT_NOT_FOUND_FOR_PRE_LOGIN_URL: 'Port not found for pre login url',
   ERROR_URL_NOT_FOUND_FOR_PRE_LOGIN_URL: 'Url not found for pre login url',
-};
+} as const;
+
+export const LoggingConstants = {
+  INFO_LOG_RETRIEVING_CASES: 'Retrieving cases for',
+  INFO_LOG_USER_ID_NOT_EXISTS: 'undefined user id',
+} as const;

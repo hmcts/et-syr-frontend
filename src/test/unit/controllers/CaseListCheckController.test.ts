@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import RespondentCaseListCheckController from '../../../main/controllers/RespondentCaseListCheckController';
+import CaseListCheckController from '../../../main/controllers/CaseListCheckController';
 import { PageUrls, ServiceErrors, languages } from '../../../main/definitions/constants';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
@@ -12,9 +12,9 @@ import { mockResponse } from '../mocks/mockResponse';
 const getCaseApiMock = jest.spyOn(caseService, 'getCaseApi');
 jest.mock('axios');
 const api = new CaseApi(axios);
-const respondentCaseListCheckController = new RespondentCaseListCheckController();
+const caseListCheckController = new CaseListCheckController();
 
-describe('Respondent Case List Check controller', () => {
+describe('Case list check controller', () => {
   it('should call response.redirect with /respondent-replies url', async () => {
     const response = mockResponse();
     const request = mockRequest({});
@@ -22,9 +22,9 @@ describe('Respondent Case List Check controller', () => {
     api.getUserCases = jest
       .fn()
       .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponseList));
-    await respondentCaseListCheckController.get(request, response);
+    await caseListCheckController.get(request, response);
     expect(response.redirect).toHaveBeenCalledTimes(1);
-    expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_REPLIES);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.CASE_LIST);
   });
   it('should call response.redirect with /respondent-replies url in welsh language', async () => {
     const response = mockResponse();
@@ -34,16 +34,16 @@ describe('Respondent Case List Check controller', () => {
     api.getUserCases = jest
       .fn()
       .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponseList));
-    await respondentCaseListCheckController.get(request, response);
+    await caseListCheckController.get(request, response);
     expect(response.redirect).toHaveBeenCalledTimes(1);
-    expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_REPLIES + languages.WELSH_URL_PARAMETER);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.CASE_LIST + languages.WELSH_URL_PARAMETER);
   });
   it('should call response.redirect with /self-assignment-form url', async () => {
     const response = mockResponse();
     const request = mockRequest({});
     getCaseApiMock.mockReturnValue(api);
     api.getUserCases = jest.fn().mockResolvedValueOnce(Promise.resolve(undefined));
-    await respondentCaseListCheckController.get(request, response);
+    await caseListCheckController.get(request, response);
     expect(response.redirect).toHaveBeenCalledTimes(1);
     expect(response.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_FORM);
   });
@@ -53,7 +53,7 @@ describe('Respondent Case List Check controller', () => {
     request.url = '/test?lng=cy';
     getCaseApiMock.mockReturnValue(api);
     api.getUserCases = jest.fn().mockResolvedValueOnce(Promise.resolve(undefined));
-    await respondentCaseListCheckController.get(request, response);
+    await caseListCheckController.get(request, response);
     expect(response.redirect).toHaveBeenCalledTimes(1);
     expect(response.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_FORM + languages.WELSH_URL_PARAMETER);
   });
@@ -66,7 +66,7 @@ describe('Respondent Case List Check controller', () => {
     });
     const apiForMockingException = new CaseApi(mockedAxios);
     getCaseApiMock.mockReturnValue(apiForMockingException);
-    await expect(respondentCaseListCheckController.get(request, response)).rejects.toEqual(
+    await expect(caseListCheckController.get(request, response)).rejects.toEqual(
       new Error(ServiceErrors.ERROR_GETTING_USER_CASES + ServiceErrors.ERROR_CASE_NOT_FOUND)
     );
   });

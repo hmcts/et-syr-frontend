@@ -15,7 +15,7 @@ const getCaseApiMock = jest.spyOn(caseService, 'getCaseApi');
 jest.mock('axios');
 const api = new CaseApi(axios);
 
-describe('Self Assignment Data Check controller', () => {
+describe('Self assignment form controller', () => {
   const t = {
     'self-assignment-case-reference-number': {},
     common: {},
