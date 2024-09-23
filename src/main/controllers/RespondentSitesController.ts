@@ -22,7 +22,7 @@ export default class RespondentSitesController {
       respondentSites: {
         classes: 'govuk-radios',
         id: 'respondentSites',
-        type: 'text',
+        type: 'radios',
         hint: (l: AnyRecord): string => l.hint,
         labelHidden: true,
         values: [
