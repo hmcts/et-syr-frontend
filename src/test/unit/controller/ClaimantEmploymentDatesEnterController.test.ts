@@ -7,55 +7,65 @@ import { mockResponse } from '../mocks/mockResponse';
 
 describe('Claimant employment dates enter Controller', () => {
   const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
+  let controller: ClaimantEmploymentDatesEnterController;
+  let request: ReturnType<typeof mockRequest>;
+  let response: ReturnType<typeof mockResponse>;
 
-  it('should render the page', () => {
-    const response = mockResponse();
-    const request = mockRequestWithTranslation({}, translationJsons);
-    new ClaimantEmploymentDatesEnterController().get(request, response);
-
-    expect(response.render).toHaveBeenCalledWith(TranslationKeys.CLAIMANT_EMPLOYMENT_DATES_ENTER, expect.anything());
+  beforeEach(() => {
+    controller = new ClaimantEmploymentDatesEnterController();
+    request = mockRequest({});
+    response = mockResponse();
   });
 
-  it('should render the same page when input empty', () => {
-    const req = mockRequest({
-      body: {
-        'employmentStartDate-day': '',
-        'employmentStartDate-month': '',
-        'employmentStartDate-year': '',
-        'employmentEndDate-day': '',
-        'employmentEndDate-month': '',
-        'employmentEndDate-year': '',
-      },
-    });
-    req.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER + languages.ENGLISH_URL_PARAMETER;
-    const res = mockResponse();
-    new ClaimantEmploymentDatesEnterController().post(req, res);
+  describe('GET method', () => {
+    it('should render the page', () => {
+      request = mockRequestWithTranslation({}, translationJsons);
+      controller.get(request, response);
 
-    expect(res.redirect).toHaveBeenCalledWith(
-      PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING + languages.ENGLISH_URL_PARAMETER
-    );
+      expect(response.render).toHaveBeenCalledWith(TranslationKeys.CLAIMANT_EMPLOYMENT_DATES_ENTER, expect.anything());
+    });
   });
 
-  it('should have error when date more than 10 years in future', () => {
-    const req = mockRequest({
-      body: {
-        'newJobStartDate-day': 'a',
-        'newJobStartDate-month': '',
-        'newJobStartDate-year': '',
-        'employmentEndDate-day': '',
-        'employmentEndDate-month': '',
-        'employmentEndDate-year': '',
-      },
+  describe('POST method', () => {
+    it('should render the same page when input empty', () => {
+      request = mockRequest({
+        body: {
+          'employmentStartDate-day': '',
+          'employmentStartDate-month': '',
+          'employmentStartDate-year': '',
+          'employmentEndDate-day': '',
+          'employmentEndDate-month': '',
+          'employmentEndDate-year': '',
+        },
+      });
+      request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER + languages.ENGLISH_URL_PARAMETER;
+      controller.post(request, response);
+
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING + languages.ENGLISH_URL_PARAMETER
+      );
     });
-    req.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER + languages.ENGLISH_URL_PARAMETER;
-    const res = mockResponse();
-    new ClaimantEmploymentDatesEnterController().post(req, res);
 
-    expect(res.redirect).toHaveBeenCalledWith(
-      PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER + languages.ENGLISH_URL_PARAMETER
-    );
+    it('should have error when date more than 10 years in future', () => {
+      request = mockRequest({
+        body: {
+          'newJobStartDate-day': 'a',
+          'newJobStartDate-month': '',
+          'newJobStartDate-year': '',
+          'employmentEndDate-day': '',
+          'employmentEndDate-month': '',
+          'employmentEndDate-year': '',
+        },
+      });
+      request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER + languages.ENGLISH_URL_PARAMETER;
+      controller.post(request, response);
 
-    const errors = [{ propertyName: 'employmentStartDate', fieldName: 'day', errorType: 'dayRequired' }];
-    expect(req.session.errors).toEqual(errors);
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER + languages.ENGLISH_URL_PARAMETER
+      );
+
+      const errors = [{ propertyName: 'employmentStartDate', fieldName: 'day', errorType: 'dayRequired' }];
+      expect(request.session.errors).toEqual(errors);
+    });
   });
 });

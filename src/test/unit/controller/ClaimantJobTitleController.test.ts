@@ -8,70 +8,78 @@ import { mockResponse } from '../mocks/mockResponse';
 
 describe('Claimant job title Controller', () => {
   const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
+  let controller: ClaimantJobTitleController;
+  let request: ReturnType<typeof mockRequest>;
+  let response: ReturnType<typeof mockResponse>;
 
-  it('should render the page', () => {
-    const response = mockResponse();
-    const request = mockRequestWithTranslation({}, translationJsons);
-    new ClaimantJobTitleController().get(request, response);
-
-    expect(response.render).toHaveBeenCalledWith(TranslationKeys.CLAIMANT_JOB_TITLE, expect.anything());
+  beforeEach(() => {
+    controller = new ClaimantJobTitleController();
+    request = mockRequest({});
+    response = mockResponse();
   });
 
-  it('should redirect to next page when yes is selected', () => {
-    const req = mockRequest({
-      body: {
-        isClaimantJobTitleCorrect: YesOrNoOrNotSure.YES,
-      },
+  describe('GET method', () => {
+    it('should render the page', () => {
+      request = mockRequestWithTranslation({}, translationJsons);
+      controller.get(request, response);
+
+      expect(response.render).toHaveBeenCalledWith(TranslationKeys.CLAIMANT_JOB_TITLE, expect.anything());
     });
-    req.url = PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER;
-    const res = mockResponse();
-    new ClaimantJobTitleController().post(req, res);
-
-    expect(res.redirect).toHaveBeenCalledWith(
-      PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER
-    );
   });
 
-  it('should redirect to next page when no is selected', () => {
-    const req = mockRequest({
-      body: {
-        isClaimantJobTitleCorrect: YesOrNoOrNotSure.NO,
-        whatIsClaimantJobTitle: 'Test',
-      },
+  describe('POST method', () => {
+    it('should redirect to next page when yes is selected', () => {
+      request = mockRequest({
+        body: {
+          isClaimantJobTitleCorrect: YesOrNoOrNotSure.YES,
+        },
+      });
+      request.url = PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER;
+      controller.post(request, response);
+
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER
+      );
     });
-    req.url = PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER;
-    const res = mockResponse();
-    new ClaimantJobTitleController().post(req, res);
 
-    expect(res.redirect).toHaveBeenCalledWith(
-      PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER
-    );
-  });
+    it('should redirect to next page when no is selected', () => {
+      request = mockRequest({
+        body: {
+          isClaimantJobTitleCorrect: YesOrNoOrNotSure.NO,
+          whatIsClaimantJobTitle: 'Test',
+        },
+      });
+      request.url = PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER;
+      controller.post(request, response);
 
-  it('should redirect to next page when Not Sure is selected', () => {
-    const req = mockRequest({
-      body: {
-        isClaimantJobTitleCorrect: YesOrNoOrNotSure.NOT_SURE,
-      },
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER
+      );
     });
-    req.url = PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER;
-    const res = mockResponse();
-    new ClaimantJobTitleController().post(req, res);
 
-    expect(res.redirect).toHaveBeenCalledWith(
-      PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER
-    );
-  });
+    it('should redirect to next page when Not Sure is selected', () => {
+      request = mockRequest({
+        body: {
+          isClaimantJobTitleCorrect: YesOrNoOrNotSure.NOT_SURE,
+        },
+      });
+      request.url = PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER;
+      controller.post(request, response);
 
-  it('should render the same page when nothing is selected', () => {
-    const req = mockRequest({ body: {} });
-    req.url = PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER;
-    const res = mockResponse();
-    new ClaimantJobTitleController().post(req, res);
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER
+      );
+    });
 
-    expect(res.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER);
+    it('should render the same page when nothing is selected', () => {
+      request = mockRequest({ body: {} });
+      request.url = PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER;
+      controller.post(request, response);
 
-    const errors = [{ propertyName: 'isClaimantJobTitleCorrect', errorType: 'required' }];
-    expect(req.session.errors).toEqual(errors);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER);
+
+      const errors = [{ propertyName: 'isClaimantJobTitleCorrect', errorType: 'required' }];
+      expect(request.session.errors).toEqual(errors);
+    });
   });
 });
