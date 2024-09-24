@@ -1,0 +1,10 @@
+{
+  "sectionTitle": "2. Tell us about the claimant",
+  "title": "Is the claimant’s employment with the respondent continuing?",
+  "hint": "It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
+  "errors": {
+    "isEmploymentContinuing": {
+      "required": "Make a selection"
+    }
+  }
+}
