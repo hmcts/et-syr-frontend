@@ -65,8 +65,8 @@ export default class ClaimantEmploymentDatesController {
     assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.CLAIMANT_EMPLOYMENT_DATES, {
       ...content,
-      startDate: '[Date entered by Claimant / Not provided]',
-      endDate: '[Date entered by Claimant / Not provided]',
+      startDate: '[Date entered by Claimant / Not provided]', // TODO: Update start date
+      endDate: '[Date entered by Claimant / Not provided]', // TODO: Update end date
       hideContactUs: true,
     });
   };

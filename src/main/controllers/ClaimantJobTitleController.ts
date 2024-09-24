@@ -69,7 +69,7 @@ export default class ClaimantJobTitleController {
     assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.CLAIMANT_JOB_TITLE, {
       ...content,
-      jobTitle: '[Job title / Not provided]',
+      jobTitle: '[Job title / Not provided]', // TODO: Update job title
       hideContactUs: true,
     });
   };

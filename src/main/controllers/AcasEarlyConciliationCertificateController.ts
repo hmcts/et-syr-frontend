@@ -66,6 +66,7 @@ export default class AcasEarlyConciliationCertificateController {
     assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.ACAS_EARLY_CONCILIATION_CERTIFICATE, {
       ...content,
+      acasLink: PageUrls.NOT_IMPLEMENTED, // TODO: Update Acas link
       hideContactUs: true,
     });
   };

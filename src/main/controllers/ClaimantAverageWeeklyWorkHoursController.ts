@@ -70,7 +70,7 @@ export default class ClaimantAverageWeeklyWorkHoursController {
     assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS, {
       ...content,
-      workHour: '[Average weekly work hours]',
+      workHour: '[Average weekly work hours]', // TODO: Update work hour
       hideContactUs: true,
     });
   };
