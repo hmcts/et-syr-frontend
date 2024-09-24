@@ -15,6 +15,8 @@ import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustm
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
+import RespondentContestClaimController from '../../controllers/RespondentContestClaimController';
+import RespondentContestClaimReasonController from '../../controllers/RespondentContestClaimReasonController';
 import RespondentDXAddressController from '../../controllers/RespondentDXAddressController';
 import RespondentEmployeesController from '../../controllers/RespondentEmployeesController';
 import RespondentEnterAddressController from '../../controllers/RespondentEnterAddressController';
@@ -76,6 +78,10 @@ export class Routes {
     app.post(PageUrls.RESPONDENT_SITES, new RespondentSitesController().post);
     app.get(PageUrls.RESPONDENT_SITE_EMPLOYEES, new RespondentSiteEmployeesController().get);
     app.post(PageUrls.RESPONDENT_SITE_EMPLOYEES, new RespondentSiteEmployeesController().post);
+    app.get(PageUrls.RESPONDENT_CONTEST_CLAIM, new RespondentContestClaimController().get);
+    app.post(PageUrls.RESPONDENT_CONTEST_CLAIM, new RespondentContestClaimController().post);
+    app.get(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, new RespondentContestClaimReasonController().get);
+    app.post(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, new RespondentContestClaimReasonController().post);
     app.get(PageUrls.NEW_SELF_ASSIGNMENT_REQUEST, new NewSelfAssignmentRequestController().get);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
