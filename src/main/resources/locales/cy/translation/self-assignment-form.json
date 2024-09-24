@@ -21,7 +21,8 @@
       "required": "Enter claimant last name that exactly matches the case details"
     },
     "hiddenErrorField": {
-      "api": "Unable to find the case. Data you entered does not match with any case"
+      "api": "Unable to find the case. Data you entered does not match with any case",
+      "exception": "A system problem occurred, please try again later."
     }
   }
 }

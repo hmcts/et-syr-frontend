@@ -106,6 +106,7 @@ export const ValidationErrors = {
   REQUIRED: 'required',
   INVALID_VALUE: 'invalid',
   API: 'api',
+  EXCEPTION: 'exception',
 } as const;
 
 export const AuthUrls = {
