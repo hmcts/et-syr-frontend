@@ -1,0 +1,26 @@
+{
+  "title": "Respondent contest claim",
+  "h1": "Contest the claim",
+  "sectionTitle": "3. Give us your response",
+  "et1Form": "ET1 claim form (opens in new tab)",
+  "p1": "This is your response to the claimant’s claim. You should refer to the ET1 claim form in your response.",
+  "p2": "Tell us what happened in your own words. You do not need to use formal legal language.  ",
+  "bulletTitle": "Consider in your response:",
+  "bullet1": "setting out the aspects of the claim you agree or disagree with, including if you’re contesting only part of the claim",
+  "bullet2": "making sure that any facts or events are in date order",
+  "bullet3": "whether you think another person or company may be liable and why",
+  "p3": "You can use the text box or upload a file containing the details of your response.",
+  "p4": "Files should be a maximum of 100MB in size (larger files must be split).",
+  "textAreaLabel1": "Explain why ",
+  "textAreaLabel2": " contests the claim",
+  "files": {
+    "title": "Upload a file (Optional)",
+    "button": "Upload file",
+    "uploaded": "Files uploaded"
+  },
+  "errors": {
+    "respondentContestClaimReason": {
+      "required": "Explain why the respondent contests the claim"
+    }
+  }
+}

@@ -44,6 +44,8 @@ export const TranslationKeys = {
   RESPONDENT_EMPLOYEES: 'respondent-employees',
   RESPONDENT_SITES: 'respondent-sites',
   RESPONDENT_SITE_EMPLOYEES: 'respondent-site-employees',
+  RESPONDENT_CONTEST_CLAIM: 'respondent-contest-claim',
+  RESPONDENT_CONTEST_CLAIM_REASON: 'respondent-contest-claim-reason',
   YOUR_APPLICATIONS: 'your-applications',
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
   SELF_ASSIGNMENT_FORM: 'self-assignment-form',
@@ -80,6 +82,8 @@ export const PageUrls = {
   RESPONDENT_EMPLOYEES: '/respondent-employees',
   RESPONDENT_SITES: '/respondent-sites',
   RESPONDENT_SITE_EMPLOYEES: '/respondent-site-employees',
+  RESPONDENT_CONTEST_CLAIM: '/respondent-contest-claim',
+  RESPONDENT_CONTEST_CLAIM_REASON: '/respondent-contest-claim-reason',
   NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
 } as const;
 
