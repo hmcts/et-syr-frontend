@@ -1,0 +1,13 @@
+{
+  "title": "[W]Check your answers",
+  "subtitle": "[W]Early conciliation and employee details",
+  "question": "[W]Have you completed this section?",
+  "hint": "[W]You can change your answers later.",
+  "yesCompleted": "[W]Yes, I’ve completed this section",
+  "noComeBack": "[W]No, I’ll come back later",
+  "errors": {
+    "haveYouCompleted": {
+      "required": "[W]Make a selection"
+    }
+  }
+}
