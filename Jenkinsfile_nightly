@@ -5,7 +5,6 @@ properties([
 pipelineTriggers([cron('H 8 * * 1-5')]),
 parameters([
         string(name: 'TEST_URL', defaultValue: 'https://et-syr.aat.platform.hmcts.net', description: 'The URL you want to run tests against'),
-        string(name: 'ZAP_URL_EXCLUSIONS', defaultValue: "-config globalexcludeurl.url_list.url\\(1\\).regex=\\'.*jquery-3.5.1.min.js${'$'}\\' -config globalexcludeurl.url_list.url\\(2\\).regex=\\'.*/assets/images.*\\' -config globalexcludeurl.url_list.url\\(3\\).regex=\\'.*/assets/stylesheets.*\\' -config globalexcludeurl.url_list.url\\(4\\).regex=\\'.*/assets/javascripts.*\\' -config globalexcludeurl.url_list.url\\(5\\).regex=\\'.*/ruxitagentjs_.*\\' -config globalexcludeurl.url_list.url\\(6\\).regex=\\'.*/terms-and-conditions.*\\' -config globalexcludeurl.url_list.url\\(7\\).regex=\\'.*/privacy-policy.*\\' -config globalexcludeurl.url_list.url\\(8\\).regex=\\'.*/contact-us.*\\' -config globalexcludeurl.url_list.url\\(9\\).regex=\\'.*/login.*\\' -config globalexcludeurl.url_list.url\\(10\\).regex=\\'.*/cookies.*\\' -config globalexcludeurl.url_list.url\\(11\\).regex=\\'.*/cookie-preferences.*\\' -config globalexcludeurl.url_list.url\\(12\\).regex=\\'.*jquery-3.4.1.min.js${'$'}\\'")
     ])
 ])
 
@@ -33,43 +32,9 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 
 withNightlyPipeline(type, product, component) {
     loadVaultSecrets(secrets)
-    //enableSecurityScan(
-    //   urlExclusions: urlExclusions
-    //)
-    //enableFullFunctionalTest()
-    //enableCrossBrowserTest()
-    //enableFortifyScan('et-aat')
 
     env.TEST_URL = params.TEST_URL
     env.RUNNING_ENV = params.ENVIRONMENT
 
-    afterAlways('crossBrowserTest') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
-        enableSlackNotifications('#et-builds')
-    }
-
-    before('fullFunctionalTest') {
-        sh """
-           yarn playwright install
-        """
-    }
-
-    afterAlways('fullFunctionalTest') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
-
-        publishHTML target: [
-                allowMissing : true,
-                alwaysLinkToLastBuild: true,
-                keepAll : true,
-                reportDir : "functional-output/reports/",
-                reportFiles : "ET-syr-functional-tests.html",
-                reportName : "ET SYR Functional Tests Report"
-        ]
-        
-    }
-
-    afterSuccess('fortify-scan') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
-    }
     enableSlackNotification('#et-builds')
 }
