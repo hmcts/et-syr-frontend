@@ -3,6 +3,7 @@ import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/gener
 import { SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
 import { Applicant, NotificationSubjects, PageUrls, languages } from '../definitions/constants';
 import { HubLinkNames, HubLinkStatus } from '../definitions/hub';
+import { LinkStatus } from '../definitions/links';
 
 export const userCaseContainsGeneralCorrespondence = (notifications: SendNotificationTypeItem[]): boolean => {
   return notifications?.some(it =>
@@ -19,6 +20,10 @@ export enum StatusesInOrderOfUrgency {
   waitingForTheTribunal = 5,
   stored = 6,
 }
+
+export const shouldCaseDetailsLinkBeClickable = (status: LinkStatus): boolean => {
+  return status !== LinkStatus.NOT_YET_AVAILABLE;
+};
 
 export const shouldHubLinkBeClickable = (status: HubLinkStatus, linkName: string): boolean => {
   if (status === HubLinkStatus.NOT_YET_AVAILABLE) {

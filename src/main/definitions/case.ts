@@ -13,6 +13,7 @@ import {
   TellUsWhatYouWant,
 } from './definition';
 import { HubLinksStatuses } from './hub';
+import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from './links';
 import { TypeItem, UnknownRecord } from './util-types';
 
 export enum Checkbox {
@@ -140,6 +141,9 @@ export interface Respondent {
   extensionGranted?: YesOrNo;
   extensionDate?: string;
   extensionResubmitted?: YesOrNo;
+  idamId?: string;
+  et3CaseDetailsLinksStatuses?: ET3CaseDetailsLinksStatuses;
+  et3HubLinksStatuses?: ET3HubLinksStatuses;
 }
 
 export interface RespondentApiModel {
