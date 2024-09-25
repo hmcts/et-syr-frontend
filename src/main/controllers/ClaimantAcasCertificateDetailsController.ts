@@ -10,6 +10,7 @@ export default class ClaimantAcasCertificateDetailsController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const redirectUrl = setUrlLanguage(req, PageUrls.CLAIMANT_ACAS_CERTIFICATE_DETAILS);
+    const acasCertDoc = setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED);
     // TODO: acasCert, acasCertDesc and acasCertDate
     res.render(TranslationKeys.CLAIMANT_ACAS_CERTIFICATE_DETAILS, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
@@ -19,6 +20,7 @@ export default class ClaimantAcasCertificateDetailsController {
       hideContactUs: true,
       useCase: req.session.userCase,
       redirectUrl,
+      acasCertDoc,
       languageParam: getLanguageParam(req.url),
       welshEnabled,
     });
