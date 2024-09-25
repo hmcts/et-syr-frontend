@@ -59,6 +59,15 @@ export const TranslationKeys = {
   SELF_ASSIGNMENT_FORM: 'self-assignment-form',
   SELF_ASSIGNMENT_CHECK: 'self-assignment-check',
   CASE_LIST: 'case-list',
+  // 2. Tell us about the claimant
+  ACAS_EARLY_CONCILIATION_CERTIFICATE: 'acas-early-conciliation-certificate',
+  CLAIMANT_EMPLOYMENT_DATES: 'claimant-employment-dates',
+  CLAIMANT_EMPLOYMENT_DATES_ENTER: 'claimant-employment-dates-enter',
+  IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING: 'is-claimant-employment-with-respondent-continuing',
+  CLAIMANT_JOB_TITLE: 'claimant-job-title',
+  CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS: 'claimant-average-weekly-work-hours',
+  CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS:
+    'check-your-answers-early-conciliation-and-employee-details',
 } as const;
 
 export const PageUrls = {
@@ -101,6 +110,15 @@ export const PageUrls = {
   RESPONDENT_CONTEST_CLAIM: '/respondent-contest-claim',
   RESPONDENT_CONTEST_CLAIM_REASON: '/respondent-contest-claim-reason',
   NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
+  // 2. Tell us about the claimant
+  ACAS_EARLY_CONCILIATION_CERTIFICATE: '/acas-early-conciliation-certificate',
+  CLAIMANT_EMPLOYMENT_DATES: '/claimant-employment-dates',
+  CLAIMANT_EMPLOYMENT_DATES_ENTER: '/claimant-employment-dates-enter',
+  IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING: '/is-claimant-employment-with-respondent-continuing',
+  CLAIMANT_JOB_TITLE: '/claimant-job-title',
+  CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS: '/claimant-average-weekly-work-hours',
+  CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS:
+    '/check-your-answers-early-conciliation-and-employee-details',
 } as const;
 
 export const InterceptPaths = {
