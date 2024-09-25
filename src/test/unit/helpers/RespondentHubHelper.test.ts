@@ -105,7 +105,7 @@ describe('should not update response hub status', () => {
 describe('getHubLinksUrlMap', () => {
   it('returns correct links when respondent is system user in English', () => {
     const linksMap: Map<string, string> = new Map<string, string>([
-      [HubLinkNames.Et1ClaimForm, '#'],
+      [HubLinkNames.Et1ClaimForm, PageUrls.CLAIMANT_ET1_FORM],
       [HubLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING],
       [HubLinkNames.ContactTribunal, '#'],
       [HubLinkNames.RequestsAndApplications, '#'],
@@ -119,7 +119,7 @@ describe('getHubLinksUrlMap', () => {
 
   it('returns correct links when respondent is system user in Welsh', () => {
     const linksMap: Map<string, string> = new Map<string, string>([
-      [HubLinkNames.Et1ClaimForm, '#'],
+      [HubLinkNames.Et1ClaimForm, PageUrls.CLAIMANT_ET1_FORM + languages.WELSH_URL_PARAMETER],
       [HubLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING + languages.WELSH_URL_PARAMETER],
       [HubLinkNames.ContactTribunal, '#'],
       [HubLinkNames.RequestsAndApplications, '#'],
@@ -133,7 +133,7 @@ describe('getHubLinksUrlMap', () => {
 
   it('returns correct links when respondent is non-system user in English', () => {
     const linksMap: Map<string, string> = new Map<string, string>([
-      [HubLinkNames.Et1ClaimForm, '#'],
+      [HubLinkNames.Et1ClaimForm, PageUrls.CLAIMANT_ET1_FORM],
       [HubLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING],
       [HubLinkNames.ContactTribunal, '#'],
       [HubLinkNames.RequestsAndApplications, '#'],
@@ -147,7 +147,7 @@ describe('getHubLinksUrlMap', () => {
 
   it('returns correct links when respondent is non-system user in Welsh', () => {
     const linksMap: Map<string, string> = new Map<string, string>([
-      [HubLinkNames.Et1ClaimForm, '#'],
+      [HubLinkNames.Et1ClaimForm, PageUrls.CLAIMANT_ET1_FORM + languages.WELSH_URL_PARAMETER],
       [HubLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING + languages.WELSH_URL_PARAMETER],
       [HubLinkNames.ContactTribunal, '#'],
       [HubLinkNames.RequestsAndApplications, '#'],

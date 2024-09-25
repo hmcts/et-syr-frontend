@@ -18,6 +18,7 @@ const logger = getLogger('CaseDetailsController');
 const DAYS_FOR_PROCESSING = 7;
 export default class CaseDetailsController {
   public async get(req: AppRequest, res: Response): Promise<void> {
+    const et1FormUrl = setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM);
     const respondToClaimUrl = setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_LANDING);
     let showAcknowledgementAlert: boolean = false;
     try {
@@ -67,6 +68,7 @@ export default class CaseDetailsController {
       userCase,
       currentState,
       sections,
+      et1FormUrl,
       respondToClaimUrl,
       hideContactUs: true,
       processingDueDate: getDueDate(formatDate(userCase.submittedDate), DAYS_FOR_PROCESSING),

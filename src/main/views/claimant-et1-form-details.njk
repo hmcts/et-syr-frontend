@@ -2,7 +2,6 @@
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% block beforeContent %}
   {{ super() }}
@@ -10,33 +9,50 @@
 {% endblock %}
 
 {% block content %}
-  {% block errorSummary %}
-    {% include "./form/main/error-summary.njk" %}
-  {% endblock %}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <span class="govuk-caption-xl">{{ sectionTitle }}</span>
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ h1 }}</h1>
 
-      {# Todo: Need to change so it uses the same address creation as SYA #}
+      {# Todo: Need to change so it uses the acasCert, acasCertDetail and asacCertDate #}
       {{ govukSummaryList({
         classes: "govuk-!-margin-bottom-9",
         rows: [
           {
             key: {
-            text: addressText
+            text: description
           },
             value: {
-            text: userCase.address1 + ', ' + userCase.addressPostcode
+            text: et1Form
+          }
+          },
+          {
+            key: {
+            text: document
+          },
+            value: {
+            html: '<a href="' ~ et1FormDoc ~ '" aria-label="' ~ et1Form ~ ' : ' ~ userCase.et1SubmittedForm.id ~ '">' ~ et1FormDocument ~ '</a>'
+          }
+          },
+          {
+            key: {
+            text: details
+          },
+            value: {
+            text: "[et1FormDetails]"
+          }
+          },
+          {
+            key: {
+            text: date
+          },
+            value: {
+            text: "[et1FormDate]"
           }
           }
         ]
       }) }}
-
-      {% block form %}
-        {% include "form/form.njk" %}
-      {% endblock %}
     </div>
 
     <div class="govuk-grid-column-one-third-from-desktop">
