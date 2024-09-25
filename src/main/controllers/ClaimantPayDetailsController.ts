@@ -10,13 +10,13 @@ import { postLogic } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
 
-const logger = getLogger('ClaimantEmploymentDatesController');
+const logger = getLogger('ClaimantPayDetailsController');
 
-export default class ClaimantEmploymentDatesController {
+export default class ClaimantPayDetailsController {
   form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      areDatesOfEmploymentCorrect: YesNoNotSureRadio,
+      arePayDetailsGivenCorrect: YesNoNotSureRadio,
     },
     submit: submitButton,
     saveForLater: saveForLaterButton,
@@ -27,24 +27,25 @@ export default class ClaimantEmploymentDatesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    if (req.body.areDatesOfEmploymentCorrect === YesOrNoOrNotSure.NO) {
-      await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
+    if (req.body.arePayDetailsGivenCorrect === YesOrNoOrNotSure.NO) {
+      await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_PAY_DETAILS_ENTER);
     } else {
-      await postLogic(req, res, this.form, logger, PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
+      await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_NOTICE_PERIOD);
     }
   };
 
   public get = (req: AppRequest, res: Response): void => {
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
-      TranslationKeys.CLAIMANT_EMPLOYMENT_DATES,
+      TranslationKeys.CLAIMANT_PAY_DETAILS,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
     assignFormData(req.session.userCase, this.form.getFormFields());
-    res.render(TranslationKeys.CLAIMANT_EMPLOYMENT_DATES, {
+    res.render(TranslationKeys.CLAIMANT_PAY_DETAILS, {
       ...content,
-      startDate: '[Date entered by Claimant / Not provided]', // TODO: Update start date
-      endDate: '[Date entered by Claimant / Not provided]', // TODO: Update end date
+      periodPay: '[Weekly / Monthly / Annual / Not provided]', // TODO: Update value
+      payBeforeTax: '[Pay BEFORE tax and National Insurance / Not provided]', // TODO: Update value
+      payAfterTax: '[Pay AFTER tax and National Insurance / Not provided]', // TODO: Update value
       hideContactUs: true,
     });
   };
