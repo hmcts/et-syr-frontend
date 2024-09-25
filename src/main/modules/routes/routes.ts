@@ -6,6 +6,9 @@ import { Application } from 'express';
 import CaseDetailsController from '../../controllers/CaseDetailsController';
 import CaseListCheckController from '../../controllers/CaseListCheckController';
 import CaseListController from '../../controllers/CaseListController';
+import ClaimantAcasCertificateDetailsController from '../../controllers/ClaimantAcasCertificateDetailsController';
+import ClaimantET1FormController from '../../controllers/ClaimantET1FormController';
+import ClaimantET1FormDetailsController from '../../controllers/ClaimantET1FormDetailsController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
@@ -46,8 +49,15 @@ export class Routes {
     app.get(PageUrls.CASE_LIST, new CaseListController().get);
     app.get(PageUrls.CASE_DETAILS_WITH_CASE_ID_PARAMETER, new CaseDetailsController().get);
     app.get(PageUrls.COOKIE_PREFERENCES, new CookiePreferencesController().get);
+    // hub links
+    app.get(PageUrls.CLAIMANT_ET1_FORM, new ClaimantET1FormController().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_LANDING, new RespondentResponseLandingController().get);
+    // Claimant Form & Cert
+    app.get(PageUrls.CLAIMANT_ET1_FORM_DETAILS, new ClaimantET1FormDetailsController().get);
+    app.get(PageUrls.CLAIMANT_ACAS_CERTIFICATE_DETAILS, new ClaimantAcasCertificateDetailsController().get);
+    // ET3 task list
     app.get(PageUrls.RESPONDENT_RESPONSE_TASK_LIST, new RespondentResponseTaskListController().get);
+    // 1. Tell us about the respondent (contact details)
     app.get(PageUrls.RESPONDENT_NAME, new RespondentNameController().get);
     app.post(PageUrls.RESPONDENT_NAME, new RespondentNameController().post);
     app.get(PageUrls.TYPE_OF_ORGANISATION, new TypeOfOrganisationController().get);
@@ -68,6 +78,7 @@ export class Routes {
     app.post(PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER, new RespondentContactPhoneNumberController().post);
     app.get(PageUrls.RESPONDENT_CONTACT_PREFERENCES, new RespondentContactPreferencesController().get);
     app.post(PageUrls.RESPONDENT_CONTACT_PREFERENCES, new RespondentContactPreferencesController().post);
+    // 1. Tell us about the respondent (hearing preferences)
     app.get(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().get);
     app.post(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().post);
     app.get(PageUrls.REASONABLE_ADJUSTMENTS, new ReasonableAdjustmentsController().get);

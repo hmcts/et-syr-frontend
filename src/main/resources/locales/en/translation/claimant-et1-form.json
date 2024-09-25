@@ -1,0 +1,11 @@
+{
+  "title": "Claimant ET1 Form",
+  "h1": "The claimant’s ET1 claim form",
+  "tableTitle": "Claim related information",
+  "et1Form": "ET1 Form",
+  "et1FormUrl": "/claimant-et1-form-details",
+  "acasCert": "Acas certificate",
+  "acasCertUrl": "/claimant-acas-certificate-details",
+  "attachments": "Attachments included",
+  "dateServed": "[Date served]"
+}

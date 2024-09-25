@@ -112,7 +112,7 @@ export const getHubLinksUrlMap = (languageParam: string): Map<string, string> =>
     [languages.WELSH_URL_PARAMETER]: languages.WELSH_URL_PARAMETER,
   };
   return new Map<string, string>([
-    [HubLinkNames.Et1ClaimForm, '#'],
+    [HubLinkNames.Et1ClaimForm, PageUrls.CLAIMANT_ET1_FORM + baseUrls[languageParam]],
     [HubLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING + baseUrls[languageParam]],
     [HubLinkNames.ContactTribunal, '#'],
     [HubLinkNames.RequestsAndApplications, '#'],
