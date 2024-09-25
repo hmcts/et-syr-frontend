@@ -2,15 +2,12 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNoOrNotSure } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
-import { saveForLaterButton, submitButton } from '../definitions/radios';
-import { AnyRecord } from '../definitions/util-types';
+import { YesNoNotSureRadio, saveForLaterButton, submitButton } from '../definitions/radios';
 import { postLogic } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
-import { isOptionSelected } from '../validators/validator';
 
 const logger = getLogger('IsClaimantEmploymentWithRespondentContinuingController');
 
@@ -18,25 +15,7 @@ export default class IsClaimantEmploymentWithRespondentContinuingController {
   form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      isEmploymentContinuing: {
-        type: 'radios',
-        hint: (l: AnyRecord): string => l.hint,
-        values: [
-          {
-            label: (l: AnyRecord): string => l.yes,
-            value: YesOrNoOrNotSure.YES,
-          },
-          {
-            label: (l: AnyRecord): string => l.no,
-            value: YesOrNoOrNotSure.NO,
-          },
-          {
-            label: (l: AnyRecord): string => l.notSure,
-            value: YesOrNoOrNotSure.NOT_SURE,
-          },
-        ],
-        validator: isOptionSelected,
-      },
+      isEmploymentContinuing: YesNoNotSureRadio,
     },
     submit: submitButton,
     saveForLater: saveForLaterButton,
