@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, Respondent, YesOrNo } from '../definitions/case';
-import { LoggingConstants, PageUrls } from "../definitions/constants";
+import { LoggingConstants, PageUrls } from '../definitions/constants';
 import { ApplicationTableRecord, CaseState } from '../definitions/definition';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';

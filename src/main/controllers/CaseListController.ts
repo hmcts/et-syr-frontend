@@ -22,7 +22,6 @@ export default class CaseListController {
       form: <FormContent>{},
       sessionErrors: req.session?.errors || [],
       PageUrls,
-      userCase: req.session?.userCase,
       user: req.session?.user,
       usersApplications,
       languageParam,

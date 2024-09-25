@@ -1,4 +1,10 @@
-import { NoAcasNumberReason, UploadedDocumentType, YesOrNo } from '../case';
+import {
+  ET3CaseDetailsLinksStatuses,
+  ET3HubLinksStatuses,
+  NoAcasNumberReason,
+  UploadedDocumentType,
+  YesOrNo,
+} from '../case';
 
 import { DocumentTypeItem } from './documentTypeItem';
 import { Et1Address } from './et1Address';
@@ -103,6 +109,9 @@ export interface RespondentType {
   et3ResponseHearingRepresentative?: string[];
   et3ResponseHearingRespondent?: string[];
   et3ResponseEmploymentCount?: string;
+  idamId?: string;
+  et3CaseDetailsLinksStatuses?: ET3CaseDetailsLinksStatuses;
+  et3HubLinksStatuses?: ET3HubLinksStatuses;
 }
 
 export interface ET3VettingType {

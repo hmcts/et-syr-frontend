@@ -140,6 +140,31 @@ export interface Respondent {
   extensionGranted?: YesOrNo;
   extensionDate?: string;
   extensionResubmitted?: YesOrNo;
+  idamId?: string;
+  et3CaseDetailsLinksStatuses?: ET3CaseDetailsLinksStatuses;
+  et3HubLinksStatuses?: ET3HubLinksStatuses;
+}
+
+export interface ET3CaseDetailsLinksStatuses {
+  personalDetails?: string;
+  et1ClaimForm?: string;
+  respondentResponse?: string;
+  hearingDetails?: string;
+  respondentRequestsAndApplications?: string;
+  claimantApplications?: string;
+  contactTribunal?: string;
+  tribunalOrders?: string;
+  tribunalJudgements?: string;
+  documents?: string;
+}
+
+export interface ET3HubLinksStatuses {
+  contactDetails?: string;
+  employerDetails?: string;
+  conciliationAndEmployeeDetails?: string;
+  payPensionBenefitDetails?: string;
+  contestClaim?: string;
+  checkYorAnswers?: string;
 }
 
 export interface RespondentApiModel {

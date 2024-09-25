@@ -531,6 +531,9 @@ export const mapRespondents = (respondents: RespondentApiModel[]): Respondent[] 
       workAddressTown: respondent.value?.workAddressTown,
       workAddressCountry: respondent.value?.workAddressCountry,
       workAddressPostcode: respondent.value?.workAddressPostcode,
+      idamId: respondent.value?.idamId,
+      et3CaseDetailsLinksStatuses: respondent.value?.et3CaseDetailsLinksStatuses,
+      et3HubLinksStatuses: respondent.value?.et3HubLinksStatuses,
     };
   });
 };
