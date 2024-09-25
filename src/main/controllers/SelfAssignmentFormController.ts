@@ -52,7 +52,7 @@ export default class SelfAssignmentFormController {
         label: (l: AnyRecord): string => l.claimantLastName,
       },
       hiddenErrorField: {
-        id: FormFieldNames.SELF_ASSIGNMENT_FORM_FIELDS.HIDDEN_ERROR_FIELD,
+        id: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
         type: 'text',
         hidden: true,
       },
@@ -88,7 +88,7 @@ export default class SelfAssignmentFormController {
       ErrorUtils.setManualErrorToRequestSession(
         req,
         ValidationErrors.API,
-        FormFieldNames.SELF_ASSIGNMENT_FORM_FIELDS.HIDDEN_ERROR_FIELD
+        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
       );
       return res.redirect(req.url);
     } else {

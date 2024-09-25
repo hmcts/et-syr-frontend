@@ -70,7 +70,7 @@ export default class HearingPreferencesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.NOT_IMPLEMENTED);
+    await postLogic(req, res, this.form, logger, PageUrls.REASONABLE_ADJUSTMENTS);
   };
 
   public get = (req: AppRequest, res: Response): void => {

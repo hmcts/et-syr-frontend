@@ -1,0 +1,15 @@
+{
+  "title": "ET3 Responses",
+  "p1": "Reply to a new claim",
+  "table1Header": "Claims - Awaiting Response",
+  "table2Header": "Claims - Draft Response",
+  "table3Header": "Claims - Submitted Response",
+  "col1": "Date created",
+  "col2": "Reference",
+  "col3": "Type of claim",
+  "col4": "Respondents",
+  "col5": "Completion status",
+  "col6": "Date last modified",
+  "col7": "Options",
+  "p2": "For privacy purposes, a draft claim will be deleted 12 months after the date it's created."
+}

@@ -1,0 +1,14 @@
+{
+  "sectionTitle": "[W]2. Tell us about the claimant",
+  "title": "[W]Claimant employment dates",
+  "startDateLabel": "[W]Start date provided on ET1",
+  "endDateLabel": "[W]End date provided on ET1",
+  "label": "[W]Are the dates of employment given by the claimant correct?",
+  "noHintLabel": "[W]You will be able to enter correct employment dates at the next step.",
+  "notSureHintLabel": "[W]If you select Not sure, you will not be able to enter employment dates.",
+  "errors": {
+    "areDatesOfEmploymentCorrect": {
+      "required": "[W]Make a selection"
+    }
+  }
+}

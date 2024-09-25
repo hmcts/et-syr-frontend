@@ -1,0 +1,52 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% block beforeContent %}
+  {{ super() }}
+  {% include "back-link.njk"%}
+{% endblock %}
+
+{% block content %}
+  {% block errorSummary %}
+    {% include "./form/main/error-summary.njk" %}
+  {% endblock %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <span class="govuk-caption-xl">{{ sectionTitle }}</span>
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ h1 }}</h1>
+
+      {{ govukInsetText({
+        html: "<p class='govuk-body'>" + insetText + "</p>"
+      }) }}
+
+      {{ govukDetails({
+        summaryText: additionalInfo,
+        html: "<p class='govuk-body'>"+ additionalText + "</p>
+        <ul class='govuk-list govuk-list--bullet'>
+        <li>" + bullet1 + "</li>
+        <li>" + bullet2 + "</li>
+        <li>" + bullet3 + "</li>
+        </ul>"
+      }) }}
+
+      {% block form %}
+        {% include "form/form.njk"%}
+      {% endblock %}
+    </div>
+
+    <div class="govuk-grid-column-one-third-from-desktop">
+      {% set sideBarContent %}
+        {% include "./components/sidebar/sidebar.njk" %}
+      {% endset %}
+
+      {{ govukDetails({
+        summaryHtml: "<span id='contact-us-sidebar'>" + contact + "</span>",
+        html: sideBarContent
+      }) }}
+    </div>
+  </div>
+{% endblock %}

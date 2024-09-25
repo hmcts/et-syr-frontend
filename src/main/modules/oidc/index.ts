@@ -25,7 +25,7 @@ export class Oidc {
     const port = app.locals.developmentMode ? `:${config.get('port')}` : '';
     const serviceUrl = (res: Response): string => `${HTTPS_PROTOCOL}${res.locals.host}${port}`;
 
-    app.get(PageUrls.RESPONSE_HUB, (req: AppRequest, res: Response, next: NextFunction) => {
+    app.get(PageUrls.CASE_DETAILS_WITH_CASE_ID_PARAMETER, (req: AppRequest, res: Response, next: NextFunction) => {
       const redisClient = req.app.locals?.redisClient;
       if (!redisClient) {
         logger.error('Unable to connect to Redis');
@@ -45,7 +45,7 @@ export class Oidc {
       return next();
     });
 
-    app.get(PageUrls.RESPONDENT_CASE_LIST_CHECK, (req: AppRequest, res: Response, next: NextFunction) => {
+    app.get(PageUrls.CASE_LIST_CHECK, (req: AppRequest, res: Response, next: NextFunction) => {
       const redisClient = req.app.locals?.redisClient;
       if (!redisClient) {
         return ErrorUtils.throwManualError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
@@ -53,7 +53,7 @@ export class Oidc {
         try {
           req.session.guid = cachePreLoginUrl(
             redisClient,
-            PageUrls.RESPONDENT_CASE_LIST_CHECK + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url)
+            PageUrls.CASE_LIST_CHECK + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url)
           );
         } catch (err) {
           return ErrorUtils.throwError(err, RedisErrors.FAILED_TO_SAVE);

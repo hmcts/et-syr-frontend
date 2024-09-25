@@ -3,25 +3,38 @@ import os from 'os';
 import { infoRequestHandler } from '@hmcts/info-provider';
 import { Application } from 'express';
 
-import ChecklistController from '../../controllers/ChecklistController';
+import AcasEarlyConciliationCertificateController from '../../controllers/AcasEarlyConciliationCertificateController';
+import CaseDetailsController from '../../controllers/CaseDetailsController';
+import CaseListCheckController from '../../controllers/CaseListCheckController';
+import CaseListController from '../../controllers/CaseListController';
+import CheckYourAnswersEarlyConciliationAndEmployeeDetailsController from '../../controllers/CheckYourAnswersEarlyConciliationAndEmployeeDetailsController';
+import ClaimantAverageWeeklyWorkHoursController from '../../controllers/ClaimantAverageWeeklyWorkHoursController';
+import ClaimantEmploymentDatesController from '../../controllers/ClaimantEmploymentDatesController';
+import ClaimantEmploymentDatesEnterController from '../../controllers/ClaimantEmploymentDatesEnterController';
+import ClaimantJobTitleController from '../../controllers/ClaimantJobTitleController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
+import InterruptionCardController from '../../controllers/InterruptionCardController';
+import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
+import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
-import RespondentCaseListCheckController from '../../controllers/RespondentCaseListCheckController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
+import RespondentContestClaimController from '../../controllers/RespondentContestClaimController';
+import RespondentContestClaimReasonController from '../../controllers/RespondentContestClaimReasonController';
 import RespondentDXAddressController from '../../controllers/RespondentDXAddressController';
+import RespondentEmployeesController from '../../controllers/RespondentEmployeesController';
 import RespondentEnterAddressController from '../../controllers/RespondentEnterAddressController';
 import RespondentEnterPostCodeController from '../../controllers/RespondentEnterPostCodeController';
 import RespondentNameController from '../../controllers/RespondentNameController';
 import RespondentPreferredContactNameController from '../../controllers/RespondentPreferredContactNameController';
-import RespondentRepliesController from '../../controllers/RespondentRepliesController';
 import RespondentResponseLandingController from '../../controllers/RespondentResponseLandingController';
 import RespondentResponseTaskListController from '../../controllers/RespondentResponseTaskListController';
 import RespondentSelectPostCodeController from '../../controllers/RespondentSelectPostCodeController';
-import ResponseHubController from '../../controllers/ResponseHubController';
+import RespondentSiteEmployeesController from '../../controllers/RespondentSiteEmployeesController';
+import RespondentSitesController from '../../controllers/RespondentSitesController';
 import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheckController';
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
@@ -31,14 +44,14 @@ import { PageUrls, Urls } from '../../definitions/constants';
 export class Routes {
   public enableFor(app: Application): void {
     app.get(PageUrls.HOME, new HomeController().get);
-    app.get(PageUrls.CHECKLIST, new ChecklistController().get);
-    app.get(PageUrls.RESPONDENT_CASE_LIST_CHECK, new RespondentCaseListCheckController().get);
+    app.get(PageUrls.INTERRUPTION_CARD, new InterruptionCardController().get);
+    app.get(PageUrls.CASE_LIST_CHECK, new CaseListCheckController().get);
     app.get(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().get);
     app.post(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().post);
     app.get(PageUrls.SELF_ASSIGNMENT_CHECK, new SelfAssignmentCheckController().get);
     app.post(PageUrls.SELF_ASSIGNMENT_CHECK, new SelfAssignmentCheckController().post);
-    app.get(PageUrls.RESPONDENT_REPLIES, new RespondentRepliesController().get);
-    app.get(PageUrls.RESPONSE_HUB, new ResponseHubController().get);
+    app.get(PageUrls.CASE_LIST, new CaseListController().get);
+    app.get(PageUrls.CASE_DETAILS_WITH_CASE_ID_PARAMETER, new CaseDetailsController().get);
     app.get(PageUrls.COOKIE_PREFERENCES, new CookiePreferencesController().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_LANDING, new RespondentResponseLandingController().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_TASK_LIST, new RespondentResponseTaskListController().get);
@@ -64,7 +77,45 @@ export class Routes {
     app.post(PageUrls.RESPONDENT_CONTACT_PREFERENCES, new RespondentContactPreferencesController().post);
     app.get(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().get);
     app.post(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().post);
+    app.get(PageUrls.REASONABLE_ADJUSTMENTS, new ReasonableAdjustmentsController().get);
+    app.post(PageUrls.REASONABLE_ADJUSTMENTS, new ReasonableAdjustmentsController().post);
+    app.get(PageUrls.RESPONDENT_EMPLOYEES, new RespondentEmployeesController().get);
+    app.post(PageUrls.RESPONDENT_EMPLOYEES, new RespondentEmployeesController().post);
+    app.get(PageUrls.RESPONDENT_SITES, new RespondentSitesController().get);
+    app.post(PageUrls.RESPONDENT_SITES, new RespondentSitesController().post);
+    app.get(PageUrls.RESPONDENT_SITE_EMPLOYEES, new RespondentSiteEmployeesController().get);
+    app.post(PageUrls.RESPONDENT_SITE_EMPLOYEES, new RespondentSiteEmployeesController().post);
+    app.get(PageUrls.RESPONDENT_CONTEST_CLAIM, new RespondentContestClaimController().get);
+    app.post(PageUrls.RESPONDENT_CONTEST_CLAIM, new RespondentContestClaimController().post);
+    app.get(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, new RespondentContestClaimReasonController().get);
+    app.post(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, new RespondentContestClaimReasonController().post);
     app.get(PageUrls.NEW_SELF_ASSIGNMENT_REQUEST, new NewSelfAssignmentRequestController().get);
+    app.get(PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE, new AcasEarlyConciliationCertificateController().get);
+    app.post(PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE, new AcasEarlyConciliationCertificateController().post);
+    app.get(PageUrls.CLAIMANT_EMPLOYMENT_DATES, new ClaimantEmploymentDatesController().get);
+    app.post(PageUrls.CLAIMANT_EMPLOYMENT_DATES, new ClaimantEmploymentDatesController().post);
+    app.get(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, new ClaimantEmploymentDatesEnterController().get);
+    app.post(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, new ClaimantEmploymentDatesEnterController().post);
+    app.get(
+      PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING,
+      new IsClaimantEmploymentWithRespondentContinuingController().get
+    );
+    app.post(
+      PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING,
+      new IsClaimantEmploymentWithRespondentContinuingController().post
+    );
+    app.get(PageUrls.CLAIMANT_JOB_TITLE, new ClaimantJobTitleController().get);
+    app.post(PageUrls.CLAIMANT_JOB_TITLE, new ClaimantJobTitleController().post);
+    app.get(PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS, new ClaimantAverageWeeklyWorkHoursController().get);
+    app.post(PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS, new ClaimantAverageWeeklyWorkHoursController().post);
+    app.get(
+      PageUrls.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS,
+      new CheckYourAnswersEarlyConciliationAndEmployeeDetailsController().get
+    );
+    app.post(
+      PageUrls.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS,
+      new CheckYourAnswersEarlyConciliationAndEmployeeDetailsController().post
+    );
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,
