@@ -1,71 +1,55 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
+import { Respondent } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
-import { sectionStatus } from '../definitions/definition';
+import { ET3HubLinksStatuses, SectionIndexToEt3HubLinkNames, linkStatusColorMap } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
+import { handleUpdateHubLinksStatuses } from '../helpers/CaseHelpers';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { getET3HubLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLogger } from '../logger';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
+
+const logger = getLogger('RespondentResponseTaskListController');
 
 export default class RespondentResponseTaskListController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const redirectUrl = setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED);
 
-    const sections = [
-      {
-        title: (l: AnyRecord): string => l.section1.title,
-        links: [
-          {
-            url: setUrlLanguage(req, PageUrls.RESPONDENT_NAME),
-            linkTxt: (l: AnyRecord): string => l.section1.link1Text,
-            status: (): string => sectionStatus.notStarted,
-          },
-          {
-            url: setUrlLanguage(req, PageUrls.HEARING_PREFERENCES),
-            linkTxt: (l: AnyRecord): string => l.section1.link2Text,
-            status: (): string => sectionStatus.notStarted,
-          },
-        ],
-      },
-      {
-        title: (l: AnyRecord): string => l.section2.title,
-        links: [
-          {
-            url: setUrlLanguage(req, PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE),
-            linkTxt: (l: AnyRecord): string => l.section2.link1Text,
-            status: (): string => sectionStatus.notStarted,
-          },
-          {
-            url: setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED),
-            linkTxt: (l: AnyRecord): string => l.section2.link2Text,
-            status: (): string => sectionStatus.notStarted,
-          },
-        ],
-      },
-      {
-        title: (l: AnyRecord): string => l.section3.title,
-        links: [
-          {
-            url: setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM),
-            linkTxt: (l: AnyRecord): string => l.section3.link1Text,
-            status: (): string => sectionStatus.notStarted,
-          },
-        ],
-      },
-      {
-        title: (l: AnyRecord): string => l.section4.title,
-        links: [
-          {
-            url: (): string => '',
-            linkTxt: (l: AnyRecord): string => l.section4.link1Text,
-            status: (): string => sectionStatus.cannotStartYet,
-          },
-        ],
-      },
-    ];
+    let selectedRespondent: Respondent;
+    for (const respondent of req.session.userCase.respondents) {
+      if (respondent.idamId === req.session.user.id) {
+        selectedRespondent = respondent;
+        break;
+      }
+    }
 
+    if (!selectedRespondent.et3HubLinksStatuses) {
+      selectedRespondent.et3HubLinksStatuses = new ET3HubLinksStatuses();
+      await handleUpdateHubLinksStatuses(req, logger);
+    }
+
+    const et3HubLinksStatuses = selectedRespondent.et3HubLinksStatuses;
+    const languageParam = getLanguageParam(req.url);
+
+    const sections = Array.from(Array(SectionIndexToEt3HubLinkNames.length)).map((__ignored, index) => {
+      return {
+        title: (l: AnyRecord): string => l[`section${index + 1}`],
+        links: SectionIndexToEt3HubLinkNames[index].map(linkName => {
+          const status = et3HubLinksStatuses[linkName];
+          return {
+            linkTxt: (l: AnyRecord): string => l[linkName],
+            status: (l: AnyRecord): string => l[status],
+            shouldShow: shouldCaseDetailsLinkBeClickable(status),
+            url: () => getET3HubLinksUrlMap(languageParam).get(linkName),
+            statusColor: () => linkStatusColorMap.get(status),
+          };
+        }),
+      };
+    });
     res.render(TranslationKeys.RESPONDENT_RESPONSE_TASK_LIST, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.RESPONDENT_RESPONSE_TASK_LIST as never, { returnObjects: true } as never),

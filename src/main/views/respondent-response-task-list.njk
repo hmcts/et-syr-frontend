@@ -60,33 +60,10 @@
                       {{getContent(link.linkTxt)}}
                     {% endif %}
                 </span>
-                  {% if getContent(link.status) =="NOT STARTED" %}
-                    {{ govukTag({
-                      text: notStartedYet,
-                      classes: "no-text-transform app-task-list__tag govuk-tag--red"
-                    }) }}
-                  {% endif %}
-
-                  {% if getContent(link.status) =="COMPLETED" %}
-                    {{ govukTag({
-                      text: completed,
-                      classes: "no-text-transform app-task-list__tag govuk-tag"
-                    }) }}
-                  {% endif %}
-
-                  {% if getContent(link.status) =="IN PROGRESS" %}
-                    {{ govukTag({
-                      text: inProgress,
-                      classes: "no-text-transform app-task-list__tag govuk-tag--blue"
-                    }) }}
-                  {% endif %}
-
-                  {% if getContent(link.status) =="CANNOT START YET" %}
-                    {{ govukTag({
-                      text: cannotStartYet,
-                      classes: "no-text-transform app-task-list__tag govuk-tag--grey"
-                    }) }}
-                  {% endif %}
+                {{ govukTag({
+                  text: getContent(link.status),
+                  classes: "no-text-transform app-task-list__tag govuk-tag" + getContent(link.statusColor)
+                }) }}
                 </li>
               {% endfor %}
 

@@ -12,7 +12,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
 import { handleUpdateHubLinksStatuses } from '../helpers/CaseHelpers';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getHubLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
+import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { currentStateFn } from '../helpers/state-sequence';
 import { getLogger } from '../logger';
@@ -64,7 +64,7 @@ export default class CaseDetailsController {
             linkTxt: (l: AnyRecord): string => l[linkName],
             status: (l: AnyRecord): string => l[status],
             shouldShow: shouldCaseDetailsLinkBeClickable(status),
-            url: () => getHubLinksUrlMap(languageParam).get(linkName),
+            url: () => getET3CaseDetailsLinksUrlMap(languageParam).get(linkName),
             statusColor: () => linkStatusColorMap.get(status),
           };
         }),

@@ -10,22 +10,24 @@
   "completed": "Completed",
   "inProgress": "In progress",
   "cannotStartYet": "Cannot start yet",
-  "section1": {
-    "title": "Tell us about the respondent",
-    "link1Text": "Contact details",
-    "link2Text": "Hearing format and employer details"
-  },
-  "section2": {
-    "title": "Tell us about the claimant ",
-    "link1Text": "Early conciliation and employee details",
-    "link2Text": "Pay, pension and benefits details"
-  },
-  "section3": {
-    "title": "Give us your response",
-    "link1Text": "Contest the claim"
-  },
-  "section4": {
-    "title": "Check and submit your response",
-    "link1Text": "Check your answers"
-  }
+  "submitted": "Submitted",
+  "optional": "Optional",
+  "viewed": "Viewed",
+  "notViewedYet": "Not viewed yet",
+  "notAvailableYet": "Not available yet",
+  "waitingForTheTribunal": "Waiting for the tribunal",
+  "submittedAndViewed": "Submitted and viewed",
+  "stored": "Stored",
+  "updated": "Updated",
+  "readyToView": "Ready to view",
+  "section1": "Tell us about the respondent",
+  "contactDetails": "Contact details",
+  "employerDetails": "Hearing format and employer details",
+  "section2": "Tell us about the claimant ",
+  "conciliationAndEmployeeDetails": "Early conciliation and employee details",
+  "payPensionBenefitDetails": "Pay, pension and benefits details",
+  "section3": "Give us your response",
+  "contestClaim": "Contest the claim",
+  "section4": "Check and submit your response",
+  "checkYorAnswers": "Check your answers"
 }

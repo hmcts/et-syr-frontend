@@ -1,31 +1,33 @@
 {
-  "title": "[W]Your response form (ET3)",
-  "pageTitle": "[W]Your response form (ET3)",
-  "helpTxt1": "[W]To help you complete this, open the:",
-  "helpAcasTxt": "[W]Acas certificate (opens in new tab)",
-  "helpET1ClaimTxt": "[W]ET1 claim form (opens in new tab)",
-  "insetTxt1": "[W]If you do not provide a response, a judgment may be issued against you without a hearing.",
-  "insetTxt2": "[W]If you consider another person or company may be liable, you should still submit a response. You will have a chance in this response to explain why you think someone else may be liable.",
-  "notStartedYet": "[W]Not started yet",
-  "completed": "[W]Completed",
-  "inProgress": "[W]In progress",
-  "cannotStartYet": "[W]Cannot start yet",
-  "section1": {
-    "title": "[W]Tell us about the respondent",
-    "link1Text": "[W]Contact details",
-    "link2Text": "[W]Hearing format and employer details"
-  },
-  "section2": {
-    "title": "[W]Tell us about the claimant ",
-    "link1Text": "[W]Early conciliation and employee details",
-    "link2Text": "[W]Pay, pension and benefits details"
-  },
-  "section3": {
-    "title": "[W]Give us your response",
-    "link1Text": "[W]Contest the claim"
-  },
-  "section4": {
-    "title": "[W]Check and submit your response",
-    "link1Text": "[W]Check your answers"
-  }
+  "title": "Your response form (ET3)",
+  "pageTitle": "Your response form (ET3)",
+  "helpTxt1": "To help you complete this, open the:",
+  "helpAcasTxt": "Acas certificate (opens in new tab)",
+  "helpET1ClaimTxt": "ET1 claim form (opens in new tab)",
+  "insetTxt1": "If you do not provide a response, a judgment may be issued against you without a hearing.",
+  "insetTxt2": "If you consider another person or company may be liable, you should still submit a response. You will have a chance in this response to explain why you think someone else may be liable.",
+  "notStartedYet": "Not started yet",
+  "completed": "Completed",
+  "inProgress": "In progress",
+  "cannotStartYet": "Cannot start yet",
+  "submitted": "Submitted",
+  "optional": "Optional",
+  "viewed": "Viewed",
+  "notViewedYet": "Not viewed yet",
+  "notAvailableYet": "Not available yet",
+  "waitingForTheTribunal": "Waiting for the tribunal",
+  "submittedAndViewed": "Submitted and viewed",
+  "stored": "Stored",
+  "updated": "Updated",
+  "readyToView": "Ready to view",
+  "section1": "Tell us about the respondent",
+  "contactDetails": "Contact details",
+  "employerDetails": "Hearing format and employer details",
+  "section2": "Tell us about the claimant ",
+  "conciliationAndEmployeeDetails": "Early conciliation and employee details",
+  "payPensionBenefitDetails": "Pay, pension and benefits details",
+  "section3": "Give us your response",
+  "contestClaim": "Contest the claim",
+  "section4": "Check and submit your response",
+  "checkYorAnswers": "Check your answers"
 }

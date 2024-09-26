@@ -24,6 +24,7 @@ import {
   TellUsWhatYouWant,
 } from '../../../main/definitions/definition';
 import { HubLinksStatuses } from '../../../main/definitions/hub';
+import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from '../../../main/definitions/links';
 
 /**
  * Creates a notification response from the tribunal requesting more information that has not been viewed yet.
@@ -276,9 +277,9 @@ export default {
       workAddressCountry: undefined,
       workAddressPostcode: undefined,
       workAddressTown: undefined,
-      idamId: undefined,
-      et3CaseDetailsLinksStatuses: undefined,
-      et3HubLinksStatuses: undefined,
+      idamId: '1234',
+      et3CaseDetailsLinksStatuses: new ET3CaseDetailsLinksStatuses(),
+      et3HubLinksStatuses: new ET3HubLinksStatuses(),
     },
     {
       respondentName: 'Version1',
