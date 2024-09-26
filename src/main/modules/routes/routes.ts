@@ -15,6 +15,7 @@ import ClaimantEmploymentDatesEnterController from '../../controllers/ClaimantEm
 import ClaimantET1FormController from '../../controllers/ClaimantET1FormController';
 import ClaimantET1FormDetailsController from '../../controllers/ClaimantET1FormDetailsController';
 import ClaimantJobTitleController from '../../controllers/ClaimantJobTitleController';
+import ClaimantPayDetailsController from '../../controllers/ClaimantPayDetailsController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
@@ -127,6 +128,8 @@ export class Routes {
       PageUrls.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS,
       new CheckYourAnswersEarlyConciliationAndEmployeeDetailsController().post
     );
+    app.get(PageUrls.CLAIMANT_PAY_DETAILS, new ClaimantPayDetailsController().get);
+    app.post(PageUrls.CLAIMANT_PAY_DETAILS, new ClaimantPayDetailsController().post);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,

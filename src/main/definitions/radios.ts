@@ -1,6 +1,6 @@
-import { Validator, isFieldFilledIn } from '../validators/validator';
+import { Validator, isFieldFilledIn, isOptionSelected } from '../validators/validator';
 
-import { PayInterval, YesOrNo } from './case';
+import { PayInterval, YesOrNo, YesOrNoOrNotSure } from './case';
 import { SubmitButton } from './form';
 import { AnyRecord } from './util-types';
 
@@ -31,6 +31,32 @@ export const YesNoRadioValues = [
     value: YesOrNo.NO,
   },
 ];
+
+const YesNoNotSureRadioValues = [
+  {
+    label: (l: AnyRecord): string => l.yes,
+    value: YesOrNoOrNotSure.YES,
+    hint: (l: AnyRecord): string => l.yesHintLabel,
+  },
+  {
+    label: (l: AnyRecord): string => l.no,
+    value: YesOrNoOrNotSure.NO,
+    hint: (l: AnyRecord): string => l.noHintLabel,
+  },
+  {
+    label: (l: AnyRecord): string => l.notSure,
+    value: YesOrNoOrNotSure.NOT_SURE,
+    hint: (l: AnyRecord): string => l.notSureHintLabel,
+  },
+];
+
+export const YesNoNotSureRadio = {
+  type: 'radios',
+  label: (l: AnyRecord): string => l.label,
+  hint: (l: AnyRecord): string => l.hint,
+  values: YesNoNotSureRadioValues,
+  validator: isOptionSelected,
+};
 
 export const SupportingMaterialYesNoRadioValues = [
   {

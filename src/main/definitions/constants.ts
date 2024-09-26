@@ -68,6 +68,9 @@ export const TranslationKeys = {
   CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS: 'claimant-average-weekly-work-hours',
   CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS:
     'check-your-answers-early-conciliation-and-employee-details',
+  CLAIMANT_PAY_DETAILS: 'claimant-pay-details',
+  CLAIMANT_PAY_DETAILS_ENTER: 'claimant-pay-details-enter',
+  CLAIMANT_NOTICE_PERIOD: 'claimant-notice-period',
 } as const;
 
 export const PageUrls = {
@@ -119,6 +122,9 @@ export const PageUrls = {
   CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS: '/claimant-average-weekly-work-hours',
   CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS:
     '/check-your-answers-early-conciliation-and-employee-details',
+  CLAIMANT_PAY_DETAILS: '/claimant-pay-details',
+  CLAIMANT_PAY_DETAILS_ENTER: '/claimant-pay-details-enter',
+  CLAIMANT_NOTICE_PERIOD: '/claimant-notice-period',
 } as const;
 
 export const InterceptPaths = {

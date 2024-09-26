@@ -1,0 +1,16 @@
+{
+  "sectionTitle": "2. Tell us about the claimant",
+  "title": "Claimant pay details",
+  "subtitle": "Pay details provided on ET1",
+  "periodPayLabel": "Weekly, monthly or annual pay?",
+  "payBeforeTaxLabel": "Pay BEFORE tax and National Insurance",
+  "payAfterTaxLabel": "Pay AFTER tax and National Insurance",
+  "label": "Are the pay details given by the claimant correct?",
+  "noHintLabel": "You will be able to enter correct pay details at the next step.",
+  "notSureHintLabel": "If you select Not sure, you will not be able to enter pay details.",
+  "errors": {
+    "arePayDetailsGivenCorrect": {
+      "required": "Make a selection"
+    }
+  }
+}
