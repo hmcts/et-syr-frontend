@@ -359,6 +359,13 @@ export const enum YesOrNoOrNotSure {
   NOT_SURE = 'Not Sure',
 }
 
+export const enum HowOften {
+  WEEKLY = 'Weekly',
+  MONTHLY = 'Monthly',
+  ANNUALLY = 'Annually',
+  NOT_SURE = 'Not Sure',
+}
+
 export const enum CaseType {
   SINGLE = 'Single',
   MULTIPLE = 'Multiple',
