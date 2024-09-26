@@ -113,6 +113,7 @@ export const getHubLinksUrlMap = (languageParam: string): Map<string, string> =>
   };
   return new Map<string, string>([
     [HubLinkNames.Et1ClaimForm, PageUrls.CLAIMANT_ET1_FORM + baseUrls[languageParam]],
+    // todo: need to wire in so the below goes to 'RESPONDENT_RESPONSE' when submitted (RET-4330)
     [HubLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING + baseUrls[languageParam]],
     [HubLinkNames.ContactTribunal, '#'],
     [HubLinkNames.RequestsAndApplications, '#'],

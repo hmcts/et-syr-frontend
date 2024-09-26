@@ -8,15 +8,16 @@ import CaseDetailsController from '../../controllers/CaseDetailsController';
 import CaseListCheckController from '../../controllers/CaseListCheckController';
 import CaseListController from '../../controllers/CaseListController';
 import CheckYourAnswersEarlyConciliationAndEmployeeDetailsController from '../../controllers/CheckYourAnswersEarlyConciliationAndEmployeeDetailsController';
-import ClaimantAverageWeeklyWorkHoursController from '../../controllers/ClaimantAverageWeeklyWorkHoursController';
 import ClaimantAcasCertificateDetailsController from '../../controllers/ClaimantAcasCertificateDetailsController';
-import ClaimantEmploymentDatesController from '../../controllers/ClaimantEmploymentDatesController';
-import ClaimantEmploymentDatesEnterController from '../../controllers/ClaimantEmploymentDatesEnterController';
+import ClaimantAverageWeeklyWorkHoursController from '../../controllers/ClaimantAverageWeeklyWorkHoursController';
 import ClaimantET1FormController from '../../controllers/ClaimantET1FormController';
 import ClaimantET1FormDetailsController from '../../controllers/ClaimantET1FormDetailsController';
+import ClaimantEmploymentDatesController from '../../controllers/ClaimantEmploymentDatesController';
+import ClaimantEmploymentDatesEnterController from '../../controllers/ClaimantEmploymentDatesEnterController';
 import ClaimantJobTitleController from '../../controllers/ClaimantJobTitleController';
 import ClaimantPayDetailsController from '../../controllers/ClaimantPayDetailsController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
+import ET3ResponseController from '../../controllers/ET3ResponseController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
 import InterruptionCardController from '../../controllers/InterruptionCardController';
@@ -57,6 +58,7 @@ export class Routes {
     app.get(PageUrls.CASE_LIST, new CaseListController().get);
     app.get(PageUrls.CASE_DETAILS_WITH_CASE_ID_PARAMETER, new CaseDetailsController().get);
     app.get(PageUrls.COOKIE_PREFERENCES, new CookiePreferencesController().get);
+    app.get(PageUrls.RESPONDENT_ET3_RESPONSE, new ET3ResponseController().get);
     // hub links
     app.get(PageUrls.CLAIMANT_ET1_FORM, new ClaimantET1FormController().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_LANDING, new RespondentResponseLandingController().get);
