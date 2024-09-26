@@ -43,6 +43,7 @@ export const mockCaseApiDataResponse = <CaseApiDataResponse>{
         id: 'test',
         value: {
           respondent_name: MockCaseApiDataResponseConstants.TEST_RESPONDENT_NAME,
+          idamId: '1234',
         },
       },
     ],
