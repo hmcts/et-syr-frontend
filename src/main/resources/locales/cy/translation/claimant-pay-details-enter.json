@@ -1,0 +1,25 @@
+{
+  "sectionTitle": "[W]2. Tell us about the claimant",
+  "title": "[W]Claimant pay details",
+  "p1": "[W]It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
+  "howOftenClaimantPaid": {
+    "label": "[W]How often was the claimant paid?",
+    "hintLabel": "[W]Use the same time period (weekly, monthly or annual) that the claimant used on the ET1 form."
+  },
+  "claimantPayBeforeTax": {
+    "label": "[W]Enter the claimant’s pay BEFORE tax (optional)",
+    "hintLabel": "[W]Include overtime, commission and bonuses."
+  },
+  "claimantNormalTakeHomePay": {
+    "label": "[W]Enter the claimant’s normal take-home pay (optional)",
+    "hintLabel": "[W]Take-home pay is the pay after tax and insurance deductions.<br><br>Include overtime, commission and bonuses."
+  },
+  "furtherInfoAboutClaimantPayDetails": {
+    "label": "[W]Do you want to provide any further information about the claimant's pay details? (optional)"
+  },
+  "errors": {
+    "howOftenClaimantPaid": {
+      "required": "[W]Tell us how often the claimant was paid"
+    }
+  }
+}
