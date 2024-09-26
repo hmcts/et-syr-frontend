@@ -5,7 +5,7 @@
 
 {% if showAcknowledgementAlert %}
   <h3 class="govuk-notification-banner__heading">
-    {{notificationBanner.acknowledgement.header}}
+    {{notificationBanner.acknowledgement.header + userCase.respondents[0].respondentName }}
   </h3>
 
   <p class="govuk-body">
@@ -25,9 +25,23 @@
   {% endif %}
 {% endif %}
 
+{% if showViewResponseAlert %}
+  <h3 class="govuk-notification-banner__heading">
+    {{notificationBanner.viewResponse.header + userCase.respondents[0].respondentName }}
+  </h3>
+
+  <p class="govuk-body">
+    {{notificationBanner.viewResponse.p1}}
+  </p>
+
+  <p class="govuk-body">
+    <a class="govuk-link" href="{{ et3Response }}"><b>{{notificationBanner.viewResponse.link}}</b></a><br>
+  </p>
+{% endif %}
+
 {% endset %}
 
-{% if showAcknowledgementAlert %}
+{% if showAcknowledgementAlert or showViewResponseAlert %}
   {{ govukNotificationBanner({
    html: htmlForAcknowledgementAlert,
    titleText: important

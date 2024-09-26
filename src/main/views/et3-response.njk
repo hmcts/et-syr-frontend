@@ -1,0 +1,385 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% block beforeContent %}
+  {{ super() }}
+  {% include "back-link.njk" %}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <span class="govuk-caption-xl">{{ sectionTitle }}</span>
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ h1 }}</h1>
+
+      {# Todo: populate ET3 response data #}
+      <h2 class="govuk-heading-m">{{ section1.header }}</h2>
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-9",
+        rows: [
+          {
+            key: {
+            text: section1.respondentName
+          },
+            value: {
+            text: section1.exampleData
+          }
+          },
+          {
+            key: {
+            text: section1.contactName
+          },
+            value: {
+            text: section1.exampleData
+          }
+          },
+          {
+            key: {
+            text: section1.organisationType
+          },
+            value: {
+            text: section1.exampleData
+          }
+          },
+          {
+            key: {
+            text: section1.preferredTitleOptional
+          },
+            value: {
+            text: section1.exampleData
+          }
+          },
+          {
+            key: {
+            text: section1.companyRegistrationNumberOptional
+          },
+            value: {
+            text: section1.exampleData
+          }
+          },
+          {
+            key: {
+            text: section1.address
+          },
+            value: {
+            text: section1.exampleData
+          }
+          },
+          {
+            key: {
+            text: section1.dxAddressOptional
+          },
+            value: {
+            text: section1.exampleData
+          }
+          },
+          {
+            key: {
+            text: section1.contactNumberOptional
+          },
+            value: {
+            text: section1.exampleData
+          }
+          },
+          {
+            key: {
+            text: section1.contactFormat
+          },
+            value: {
+            text: section1.exampleData
+          }
+          },
+          {
+            key: {
+            text: section1.reasonForPost
+          },
+            value: {
+            text: section1.exampleData
+          }
+          },
+          {
+            key: {
+            text: section1.contactLanguage
+          },
+            value: {
+            text: section1.exampleData
+          }
+          }
+        ]
+      }) }}
+
+      <h2 class="govuk-heading-m">{{ section2.header }}</h2>
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-9",
+        rows: [
+          {
+            key: {
+            text: section2.participateInHearings
+          },
+            value: {
+            text: section2.exampleData
+          }
+          },
+          {
+            key: {
+            text: section2.explainReason
+          },
+            value: {
+            text: section2.exampleData
+          }
+          },
+          {
+            key: {
+            text: section2.disabilitySupport
+          },
+            value: {
+            text: section2.exampleData
+          }
+          },
+          {
+            key: {
+            text: section2.supportRequest
+          },
+            value: {
+            text: section2.exampleData
+          }
+          },
+          {
+            key: {
+            text: section2.employeesInGreatBritain
+          },
+            value: {
+            text: section2.exampleData
+          }
+          },
+          {
+            key: {
+            text: section2.multipleSites
+          },
+            value: {
+            text: section2.exampleData
+          }
+          },
+          {
+            key: {
+            text: section2.employeesAtSite
+          },
+            value: {
+            text: section2.exampleData
+          }
+          }
+        ]
+      }) }}
+
+      <h2 class="govuk-heading-m">{{ section3.header }}</h2>
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-9",
+        rows: [
+          {
+            key: {
+            text: section3.agreeWithClaimantDetails
+          },
+            value: {
+            text: section3.exampleData
+          }
+          },
+          {
+            key: {
+            text: section3.disagreeReason
+          },
+            value: {
+            text: section3.exampleData
+          }
+          },
+          {
+            key: {
+            text: section3.employmentDatesCorrect
+          },
+            value: {
+            text: section3.exampleData
+          }
+          },
+          {
+            key: {
+            text: section3.employmentStartDate
+          },
+            value: {
+            text: section3.exampleData
+          }
+          },
+          {
+            key: {
+            text: section3.employmentEndDate
+          },
+            value: {
+            text: section3.exampleData
+          }
+          },
+          {
+            key: {
+            text: section3.furtherInfoEmploymentDates
+          },
+            value: {
+            text: section3.exampleData
+          }
+          },
+          {
+            key: {
+            text: section3.continuingEmployment
+          },
+            value: {
+            text: section3.exampleData
+          }
+          },
+          {
+            key: {
+            text: section3.jobTitleCorrect
+          },
+            value: {
+            text: section3.exampleData
+          }
+          },
+          {
+            key: {
+            text: section3.correctJobTitle
+          },
+            value: {
+            text: section3.exampleData
+          }
+          },
+          {
+            key: {
+            text: section3.averageWeeklyHoursCorrect
+          },
+            value: {
+            text: section3.exampleData
+          }
+          },
+          {
+            key: {
+            text: section3.correctAverageWeeklyHours
+          },
+            value: {
+            text: section3.exampleData
+          }
+          }
+        ]
+      }) }}
+
+      <h2 class="govuk-heading-m">{{ section4.header }}</h2>
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-9",
+        rows: [
+          {
+            key: {
+            text: section4.payDetailsCorrect
+          },
+            value: {
+            text: section4.exampleData
+          }
+          },
+          {
+            key: {
+            text: section4.paymentFrequency
+          },
+            value: {
+            text: section4.exampleData
+          }
+          },
+          {
+            key: {
+            text: section4.claimantsPayBeforeTax
+          },
+            value: {
+            text: section4.exampleData
+          }
+          },
+          {
+            key: {
+            text: section4.claimantsPayAfterTax
+          },
+            value: {
+            text: section4.exampleData
+          }
+          },
+          {
+            key: {
+            text: section4.noticePeriodDetailsCorrect
+          },
+            value: {
+            text: section4.exampleData
+          }
+          },
+          {
+            key: {
+            text: section4.correctPayDetails
+          },
+            value: {
+            text: section4.exampleData
+          }
+          },
+          {
+            key: {
+            text: section4.pensionAndBenefitsDetailsCorrect
+          },
+            value: {
+            text: section4.exampleData
+          }
+          },
+          {
+            key: {
+            text: section4.correctPensionAndBenefitsDetails
+          },
+            value: {
+            text: section4.exampleData
+          }
+          }
+        ]
+      }) }}
+
+      <h2 class="govuk-heading-m">{{ section5.header }}</h2>
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-9",
+        rows: [
+          {
+            key: {
+            text: section5.contestClaim
+          },
+            value: {
+            text: section5.exampleData
+          }
+          },
+          {
+            key: {
+            text: section5.contestExplanation
+          },
+            value: {
+            text: section5.exampleData
+          }
+          },
+          {
+            key: {
+            text: section5.supportingMaterials
+          },
+            value: {
+            text: section5.exampleData
+          }
+          }
+        ]
+      }) }}
+    </div>
+
+    <div class="govuk-grid-column-one-third-from-desktop">
+      {% set sideBarContent %}
+        {% include "./components/sidebar/sidebar.njk" %}
+      {% endset %}
+
+      {{ govukDetails({
+        summaryHtml: "<span id='contact-us-sidebar'>" + contact + "</span>",
+        html: sideBarContent
+      }) }}
+    </div>
+  </div>
+{% endblock %}
