@@ -13423,15 +13423,15 @@ __metadata:
   linkType: hard
 
 "sass@npm:^1.65.1":
-  version: 1.79.1
-  resolution: "sass@npm:1.79.1"
+  version: 1.79.3
+  resolution: "sass@npm:1.79.3"
   dependencies:
     chokidar: ^4.0.0
     immutable: ^4.0.0
     source-map-js: ">=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: df014f287055c750349b7461ed8477662c7f9c8999cc1b10eb9096ccd4a67f850511e8828ba8780515513741a932d01b1948bd33d40cdac1403a13b6718fa14c
+  checksum: ad7cc538dcca26e4547a2b234c50b1708d932d9af36bfc1a992463eefbe51e01143497019e5ebfc3787f2e8f65dbdce5a094e224192ebf9b22a54b8d1ffed729
   languageName: node
   linkType: hard
 
