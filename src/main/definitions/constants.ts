@@ -26,6 +26,7 @@ export const TranslationKeys = {
   COOKIE_PREFERENCES: 'cookie-preferences',
   RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
   CASE_DETAILS_WITH_CASE_ID_PARAMETER: 'case-details',
+  RESPONDENT_ET3_RESPONSE: 'et3-response',
   // hub links
   CLAIMANT_ET1_FORM: 'claimant-et1-form',
   RESPONDENT_RESPONSE_LANDING: 'respondent-response-landing',
@@ -84,6 +85,7 @@ export const PageUrls = {
   CASE_DETAILS_WITH_CASE_ID_PARAMETER: '/case-details/:caseId',
   CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER: '/case-details',
   COOKIE_PREFERENCES: '/cookies',
+  RESPONDENT_ET3_RESPONSE: '/et3-response',
   // hub links
   CLAIMANT_ET1_FORM: '/claimant-et1-form',
   RESPONDENT_RESPONSE_LANDING: '/respondent-response-landing',
