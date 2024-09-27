@@ -21,6 +21,7 @@ import {
   TellUsWhatYouWant,
 } from '../../../main/definitions/definition';
 import { HubLinkStatus, HubLinksStatuses } from '../../../main/definitions/hub';
+import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from '../../../main/definitions/links';
 
 export const mockedApiData: CaseApiDataResponse = {
   id: '1234',
@@ -138,6 +139,9 @@ export const mockedApiData: CaseApiDataResponse = {
             Country: 'England',
             PostCode: 'SW1H 9AQ',
           },
+          idamId: '1234',
+          et3HubLinksStatuses: new ET3HubLinksStatuses(),
+          et3CaseDetailsLinksStatuses: new ET3CaseDetailsLinksStatuses(),
         },
         id: '3453xaa',
       },

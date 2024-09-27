@@ -3,6 +3,7 @@ import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/gener
 import { SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
 import { Applicant, NotificationSubjects, PageUrls, languages } from '../definitions/constants';
 import { HubLinkNames, HubLinkStatus } from '../definitions/hub';
+import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../definitions/links';
 
 export const userCaseContainsGeneralCorrespondence = (notifications: SendNotificationTypeItem[]): boolean => {
   return notifications?.some(it =>
@@ -19,6 +20,10 @@ export enum StatusesInOrderOfUrgency {
   waitingForTheTribunal = 5,
   stored = 6,
 }
+
+export const shouldCaseDetailsLinkBeClickable = (status: LinkStatus): boolean => {
+  return status !== LinkStatus.NOT_YET_AVAILABLE;
+};
 
 export const shouldHubLinkBeClickable = (status: HubLinkStatus, linkName: string): boolean => {
   if (status === HubLinkStatus.NOT_YET_AVAILABLE) {
@@ -106,20 +111,38 @@ export const updateYourApplicationsStatusTag = (
   ] as HubLinkStatus;
 };
 
-export const getHubLinksUrlMap = (languageParam: string): Map<string, string> => {
-  const baseUrls = {
-    [languages.ENGLISH_URL_PARAMETER]: '',
-    [languages.WELSH_URL_PARAMETER]: languages.WELSH_URL_PARAMETER,
-  };
+const baseUrls = {
+  [languages.ENGLISH_URL_PARAMETER]: '',
+  [languages.WELSH_URL_PARAMETER]: languages.WELSH_URL_PARAMETER,
+};
+
+export const getET3HubLinksUrlMap = (languageParam: string): Map<string, string> => {
   return new Map<string, string>([
-    [HubLinkNames.Et1ClaimForm, PageUrls.CLAIMANT_ET1_FORM + baseUrls[languageParam]],
-    // todo: need to wire in so the below goes to 'RESPONDENT_RESPONSE' when submitted (RET-4330)
-    [HubLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING + baseUrls[languageParam]],
-    [HubLinkNames.ContactTribunal, '#'],
-    [HubLinkNames.RequestsAndApplications, '#'],
-    [HubLinkNames.RespondentApplications, '#'],
-    [HubLinkNames.TribunalOrders, '#'],
-    [HubLinkNames.TribunalJudgements, '#'],
-    [HubLinkNames.Documents, '#'],
+    [ET3HubLinkNames.ContactDetails, PageUrls.RESPONDENT_NAME + baseUrls[languageParam]],
+    [ET3HubLinkNames.EmployerDetails, PageUrls.HEARING_PREFERENCES + baseUrls[languageParam]],
+    [
+      ET3HubLinkNames.ConciliationAndEmployeeDetails,
+      PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + baseUrls[languageParam],
+    ],
+    [ET3HubLinkNames.PayPensionBenefitDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
+    [ET3HubLinkNames.ContestClaim, PageUrls.RESPONDENT_CONTEST_CLAIM + baseUrls[languageParam]],
+    [ET3HubLinkNames.CheckYorAnswers, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
+  ]);
+};
+
+export const getET3CaseDetailsLinksUrlMap = (languageParam: string): Map<string, string> => {
+  return new Map<string, string>([
+    [ET3CaseDetailsLinkNames.PersonalDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
+    [ET3CaseDetailsLinkNames.ET1ClaimForm, PageUrls.CLAIMANT_ET1_FORM + baseUrls[languageParam]],
+    [ET3CaseDetailsLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING + baseUrls[languageParam]],
+    [ET3CaseDetailsLinkNames.HearingDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
+    [ET3CaseDetailsLinkNames.RespondentRequestsAndApplications, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
+    [ET3CaseDetailsLinkNames.RespondentRequestsAndApplications, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
+    [
+      ET3CaseDetailsLinkNames.ContactTribunal,
+      PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER + baseUrls[languageParam],
+    ],
+    [ET3CaseDetailsLinkNames.TribunalJudgements, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
+    [ET3CaseDetailsLinkNames.Documents, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
   ]);
 };

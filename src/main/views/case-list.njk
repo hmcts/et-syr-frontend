@@ -6,7 +6,11 @@
 
 {% for app in usersApplications %}
   {% for respondent in app.userCase.respondents %}
-    {% if app.userCase.state === 'Accepted' and (respondent.personalDetailsSection === 'Yes' or respondent.employmentDetailsSection === 'Yes' or respondent.claimDetailsSection === 'Yes') %}
+    {% if app.userCase.state === 'Accepted'
+        and user.id === respondent.idamId
+        and (respondent.personalDetailsSection === 'Yes'
+              or respondent.employmentDetailsSection === 'Yes'
+              or respondent.claimDetailsSection === 'Yes') %}
       {% set et3Started = (et3Started.push([
         {
           text: app.userCase.createdDate
@@ -27,7 +31,11 @@
 
     {% endif %}
 
-    {% if app.userCase.state === 'Accepted' and respondent.personalDetailsSection !== 'Yes' and respondent.employmentDetailsSection !== 'Yes' and respondent.claimDetailsSection !== 'Yes' %}
+    {% if app.userCase.state === 'Accepted'
+        and user.id === respondent.idamId
+        and respondent.personalDetailsSection !== 'Yes'
+        and respondent.employmentDetailsSection !== 'Yes'
+        and respondent.claimDetailsSection !== 'Yes' %}
       {% set et3NotStarted = (et3NotStarted.push([
         {
           text: app.userCase.createdDate

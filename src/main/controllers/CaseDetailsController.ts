@@ -1,14 +1,18 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNo } from '../definitions/case';
+import { Respondent, YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
-import { HubLinksStatuses, sectionIndexToLinkNames, statusColorMap } from '../definitions/hub';
+import {
+  ET3CaseDetailsLinksStatuses,
+  SectionIndexToEt3CaseDetailsLinkNames,
+  linkStatusColorMap,
+} from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
 import { handleUpdateHubLinksStatuses } from '../helpers/CaseHelpers';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getHubLinksUrlMap, shouldHubLinkBeClickable } from '../helpers/ResponseHubHelper';
+import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { currentStateFn } from '../helpers/state-sequence';
 import { getLogger } from '../logger';
@@ -42,25 +46,32 @@ export default class CaseDetailsController {
       return res.redirect('/not-found');
     }
     const userCase = req.session.userCase;
-    if (!userCase.hubLinksStatuses) {
-      userCase.hubLinksStatuses = new HubLinksStatuses();
+    let selectedRespondent: Respondent;
+    for (const respondent of req.session.userCase.respondents) {
+      if (respondent.idamId === req.session.user.id) {
+        selectedRespondent = respondent;
+        break;
+      }
+    }
+    if (!selectedRespondent.et3CaseDetailsLinksStatuses) {
+      selectedRespondent.et3CaseDetailsLinksStatuses = new ET3CaseDetailsLinksStatuses();
       await handleUpdateHubLinksStatuses(req, logger);
     }
     const currentState = currentStateFn(userCase);
-    const hubLinksStatuses = userCase.hubLinksStatuses;
+    const et3CaseDetailsLinksStatuses = selectedRespondent.et3CaseDetailsLinksStatuses;
     const languageParam = getLanguageParam(req.url);
 
-    const sections = Array.from(Array(sectionIndexToLinkNames.length)).map((__ignored, index) => {
+    const sections = Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
       return {
         title: (l: AnyRecord): string => l[`section${index + 1}`],
-        links: sectionIndexToLinkNames[index].map(linkName => {
-          const status = hubLinksStatuses[linkName];
+        links: SectionIndexToEt3CaseDetailsLinkNames[index].map(linkName => {
+          const status = et3CaseDetailsLinksStatuses[linkName];
           return {
             linkTxt: (l: AnyRecord): string => l[linkName],
             status: (l: AnyRecord): string => l[status],
-            shouldShow: shouldHubLinkBeClickable(status, linkName),
-            url: () => getHubLinksUrlMap(languageParam).get(linkName),
-            statusColor: () => statusColorMap.get(status),
+            shouldShow: shouldCaseDetailsLinkBeClickable(status),
+            url: () => getET3CaseDetailsLinksUrlMap(languageParam).get(linkName),
+            statusColor: () => linkStatusColorMap.get(status),
           };
         }),
       };

@@ -8,6 +8,7 @@ import { mockAxiosError } from '../mocks/mockAxios';
 import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+import { mockUserDetails } from '../mocks/mockUser';
 
 jest.mock('axios');
 
@@ -25,6 +26,7 @@ describe('Case list controller', () => {
     api.getUserCase = jest
       .fn()
       .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse));
+    request.session.user = mockUserDetails;
     await caseDetailsController.get(request, response);
 
     expect(response.render).toHaveBeenCalledWith(

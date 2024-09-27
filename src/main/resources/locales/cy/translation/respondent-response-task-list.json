@@ -10,22 +10,24 @@
   "completed": "[W]Completed",
   "inProgress": "[W]In progress",
   "cannotStartYet": "[W]Cannot start yet",
-  "section1": {
-    "title": "[W]Tell us about the respondent",
-    "link1Text": "[W]Contact details",
-    "link2Text": "[W]Hearing format and employer details"
-  },
-  "section2": {
-    "title": "[W]Tell us about the claimant ",
-    "link1Text": "[W]Early conciliation and employee details",
-    "link2Text": "[W]Pay, pension and benefits details"
-  },
-  "section3": {
-    "title": "[W]Give us your response",
-    "link1Text": "[W]Contest the claim"
-  },
-  "section4": {
-    "title": "[W]Check and submit your response",
-    "link1Text": "[W]Check your answers"
-  }
+  "submitted": "[W]Submitted",
+  "optional": "[W]Optional",
+  "viewed": "[W]Viewed",
+  "notViewedYet": "[W]Not viewed yet",
+  "notAvailableYet": "[W]Not available yet",
+  "waitingForTheTribunal": "[W]Waiting for the tribunal",
+  "submittedAndViewed": "[W]Submitted and viewed",
+  "stored": "[W]Stored",
+  "updated": "[W]Updated",
+  "readyToView": "[W]Ready to view",
+  "section1": "[W]Tell us about the respondent",
+  "contactDetails": "[W]Contact details",
+  "employerDetails": "[W]Hearing format and employer details",
+  "section2": "[W]Tell us about the claimant ",
+  "conciliationAndEmployeeDetails": "[W]Early conciliation and employee details",
+  "payPensionBenefitDetails": "[W]Pay, pension and benefits details",
+  "section3": "[W]Give us your response",
+  "contestClaim": "[W]Contest the claim",
+  "section4": "[W]Check and submit your response",
+  "checkYorAnswers": "[W]Check your answers"
 }
