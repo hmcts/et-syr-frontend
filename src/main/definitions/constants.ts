@@ -47,7 +47,6 @@ export const TranslationKeys = {
   RESPONDENT_CONTACT_PHONE_NUMBER: 'respondent-contact-phone-number',
   RESPONDENT_CONTACT_PREFERENCES: 'respondent-contact-preferences',
   CONTACT_DETAILS_CYA: 'contact-details-check-your-answers',
-  SECTION_TITLE: 'section-title',
   // 1. Tell us about the respondent (hearing preferences)
   HEARING_PREFERENCES: 'hearing-preferences',
   REASONABLE_ADJUSTMENTS: 'reasonable-adjustments',
