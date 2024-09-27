@@ -2050,31 +2050,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@launchdarkly/js-sdk-common@npm:2.8.0":
-  version: 2.8.0
-  resolution: "@launchdarkly/js-sdk-common@npm:2.8.0"
-  checksum: 94b4221e70ddfd15a724126758557acf50a190a1faf679cab6b666d49d958225d2ace8d1c6ef8f9a25651b6e41bfda30f1c00d32f94d3246541c9715d4638289
+"@launchdarkly/js-sdk-common@npm:2.9.0":
+  version: 2.9.0
+  resolution: "@launchdarkly/js-sdk-common@npm:2.9.0"
+  checksum: 09182247039f2229ec8e82cbb7a28d8835bb6db9851d768d64f81fe2a7415eb062cac127d61db9dc3d2542ac430178a7d295c1cdd5a794fef0737ce6fa8861ed
   languageName: node
   linkType: hard
 
-"@launchdarkly/js-server-sdk-common@npm:2.6.1":
-  version: 2.6.1
-  resolution: "@launchdarkly/js-server-sdk-common@npm:2.6.1"
+"@launchdarkly/js-server-sdk-common@npm:2.7.0":
+  version: 2.7.0
+  resolution: "@launchdarkly/js-server-sdk-common@npm:2.7.0"
   dependencies:
-    "@launchdarkly/js-sdk-common": 2.8.0
+    "@launchdarkly/js-sdk-common": 2.9.0
     semver: 7.5.4
-  checksum: 305b3fdcad2e0b862e38761487ec5aba9b7469b94eb4405e695576aebcbce3529a90ee0cd91d33f72472512e730a71e7baa454f58ca33095b6eef4e275327068
+  checksum: 28e26d0b1e79002a417f0b458990c250095f354991a719c8812c03ca73e0e5499b66a2beec631a3b2345655d158ae83306645621fddca68f89910fc60d6edfc2
   languageName: node
   linkType: hard
 
 "@launchdarkly/node-server-sdk@npm:^9.0.0":
-  version: 9.5.4
-  resolution: "@launchdarkly/node-server-sdk@npm:9.5.4"
+  version: 9.6.0
+  resolution: "@launchdarkly/node-server-sdk@npm:9.6.0"
   dependencies:
-    "@launchdarkly/js-server-sdk-common": 2.6.1
+    "@launchdarkly/js-server-sdk-common": 2.7.0
     https-proxy-agent: ^5.0.1
     launchdarkly-eventsource: 2.0.3
-  checksum: 7ea0417cad81480e6844d8cd64f87cd889d591bcc38f5d91ad6068f48680c7181f8834b97cdf89b56e31ce8b6b2e53df33bac5a3e4c176f9f4468b08a9955737
+  checksum: 06f285377f979a1031750bb5b59712e97b33e94137b0781d289ed3a88e740707d3032571ad07653bdd7284d310e8023e572a50ec0d3e6081aa026d907ddf8e21
   languageName: node
   linkType: hard
 
@@ -2769,6 +2769,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/express-serve-static-core@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@types/express-serve-static-core@npm:5.0.0"
+  dependencies:
+    "@types/node": "*"
+    "@types/qs": "*"
+    "@types/range-parser": "*"
+    "@types/send": "*"
+  checksum: d4e2abfc961a908098290958e43a077504ef669f3ef3c49e871932453d2281e86f5d483ae99ec3aaecd13ada0b18025a99ad5413577660587570c4e21d91c263
+  languageName: node
+  linkType: hard
+
 "@types/express-session@npm:*, @types/express-session@npm:^1.17.7":
   version: 1.18.0
   resolution: "@types/express-session@npm:1.18.0"
@@ -2778,7 +2790,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:*, @types/express@npm:^4.17.11, @types/express@npm:^4.17.17":
+"@types/express@npm:*, @types/express@npm:^4.17.11":
   version: 4.17.21
   resolution: "@types/express@npm:4.17.21"
   dependencies:
@@ -2787,6 +2799,18 @@ __metadata:
     "@types/qs": "*"
     "@types/serve-static": "*"
   checksum: fb238298630370a7392c7abdc80f495ae6c716723e114705d7e3fb67e3850b3859bbfd29391463a3fb8c0b32051847935933d99e719c0478710f8098ee7091c5
+  languageName: node
+  linkType: hard
+
+"@types/express@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@types/express@npm:5.0.0"
+  dependencies:
+    "@types/body-parser": "*"
+    "@types/express-serve-static-core": ^5.0.0
+    "@types/qs": "*"
+    "@types/serve-static": "*"
+  checksum: ef68d8e2b7593c930093b1e79bf4df15413773508c9acd6a1a933ed7017f2a4892a8d128b2222d7eab9a3fa43181067a378c2600d9258bd7ae917f170e962df4
   languageName: node
   linkType: hard
 
@@ -7061,7 +7085,7 @@ __metadata:
     "@types/connect-redis": ^0.0.23
     "@types/cookie-parser": ^1.4.3
     "@types/csurf": ^1.11.2
-    "@types/express": ^4.17.17
+    "@types/express": ^5.0.0
     "@types/express-session": ^1.17.7
     "@types/git-rev-sync": 2.0.2
     "@types/jest": ^29.5.1
@@ -15374,8 +15398,8 @@ __metadata:
   linkType: hard
 
 "webpack@npm:^5.80.0":
-  version: 5.94.0
-  resolution: "webpack@npm:5.94.0"
+  version: 5.95.0
+  resolution: "webpack@npm:5.95.0"
   dependencies:
     "@types/estree": ^1.0.5
     "@webassemblyjs/ast": ^1.12.1
@@ -15405,7 +15429,7 @@ __metadata:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: 6a3d667be304a69cd6dcb8d676bc29f47642c0d389af514cfcd646eaaa809961bc6989fc4b2621a717dfc461130f29c6e20006d62a32e012dafaa9517813a4e6
+  checksum: 0c3dfe288de4d62f8f3dc25478a618894883cab739121330763b7847e43304630ea2815ae2351a5f8ff6ab7c9642caf530d503d89bda261fe2cd220e524dd5d1
   languageName: node
   linkType: hard
 
