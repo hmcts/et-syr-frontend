@@ -50,6 +50,7 @@
   "weekly": "Wythnosol",
   "monthly": "Misol",
   "annual": "Blynyddol",
+  "annually": "[W]Annually",
   "selectAllHint": "Dewiswch bob un sy'n berthnasol.",
   "claimTypes": {
     "breachOfContract": "Torri contract",

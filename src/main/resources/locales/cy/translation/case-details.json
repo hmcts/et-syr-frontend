@@ -49,7 +49,11 @@
   "respondToTribunal": "Respond to the tribunal",
   "mustRespond": "You must respond to this.",
   "notificationBanner": {
-    "viewResponse": "View the response",
+    "viewResponse": {
+      "header": "[W]The tribunal has acknowledged a claim against ",
+      "p1": "[W]You have responded to this claim",
+      "link": "Gweld yr ymateb"
+    },
     "acknowledgement": {
       "header": "The tribunal has acknowledged a claim against Redde Ltd",
       "link": "View the claimant's ET1 claim form",

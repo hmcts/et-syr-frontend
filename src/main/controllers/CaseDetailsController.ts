@@ -24,7 +24,11 @@ export default class CaseDetailsController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const et1FormUrl = setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM);
     const respondToClaimUrl = setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_LANDING);
+    const et3Response = setUrlLanguage(req, PageUrls.RESPONDENT_ET3_RESPONSE);
+
     let showAcknowledgementAlert: boolean = false;
+    let showViewResponseAlert: boolean = false;
+
     try {
       req.session.userCase = formatApiCaseDataToCaseWithId(
         (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseId)).data
@@ -33,6 +37,8 @@ export default class CaseDetailsController {
       req.session.userCase?.respondents.forEach(respondent => {
         if (respondent.responseContinue === YesOrNo.YES) {
           return (showAcknowledgementAlert = true);
+        } else {
+          showViewResponseAlert = true;
         }
       });
     } catch (error) {
@@ -81,9 +87,11 @@ export default class CaseDetailsController {
       sections,
       et1FormUrl,
       respondToClaimUrl,
+      et3Response,
       hideContactUs: true,
       processingDueDate: getDueDate(formatDate(userCase.submittedDate), DAYS_FOR_PROCESSING),
       showAcknowledgementAlert,
+      showViewResponseAlert,
       respondentResponseDeadline: userCase?.respondentResponseDeadline,
       languageParam: getLanguageParam(req.url),
     });
