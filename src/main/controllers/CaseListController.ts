@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { DefaultValues, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { getLanguageParam } from '../helpers/RouterHelpers';
@@ -24,6 +24,7 @@ export default class CaseListController {
       PageUrls,
       userCase: req.session?.userCase,
       user: req.session?.user,
+      respondentName: req.session?.user?.givenName + DefaultValues.STRING_SPACE + req.session?.user?.familyName,
       usersApplications,
       languageParam,
       newSelfAssignmentRequestUrl,
