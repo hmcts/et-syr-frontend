@@ -3,69 +3,67 @@
 
 {% set et3Started = [] %}
 {% set et3NotStarted = [] %}
-
+{% set respondentName =  '' %}
 {% for app in usersApplications %}
   {% for respondent in app.userCase.respondents %}
-    {% if app.userCase.state === 'Accepted'
-        and user.id === respondent.idamId
-        and (respondent.personalDetailsSection === 'Yes'
-              or respondent.employmentDetailsSection === 'Yes'
-              or respondent.claimDetailsSection === 'Yes') %}
-      {% set respondentName =  '' %}
-      {% if selectedRespondent.respondentName !== null
+    {% if app.userCase.state === 'Accepted' and user.id === respondent.idamId %}
+      {% if respondent.respondentName !== null
             and respondent.respondentName !== ""
             and respondent.respondentName !== undefined %}
-        {{ set respondentName = selectedRespondent.respondentName }}
-      {% elif (respondent.respondentOrganisation !== null
-               and respondent.respondentOrganisation !== ""
-               and respondent.respondentOrganisation !== undefined) %}
-        {{ set respondentName = respondent.respondentOrganisation }}
+        {% set respondentName = respondent.respondentName %}
+      {% elif respondent.respondentOrganisation !== null
+              and respondent.respondentOrganisation !== ""
+              and respondent.respondentOrganisation !== undefined %}
+        {% set respondentName = respondent.respondentOrganisation %}
       {% else %}
-        {{ set respondentName = respondent.respondentFirstName + " " + respondent.respondentLastName }}
+        {% set respondentName = respondent.respondentFirstName + " " + respondent.respondentLastName %}
       {% endif %}
-      {% set et3Started = (et3Started.push([
-        {
-          text: app.userCase.createdDate
-        }, {
-          text: app.userCase.id
-        }, {
-          text: app.userCase.typeOfClaimString
-        }, {
-          text:
-        }, {
-          text: app.completionStatus
-        }, {
-          text: app.userCase.lastModified
-        }, {
-          html: "<a href=\"" + app.url + "\" aria-label=\"" + view + " " + col2 + ": " + app.userCase.id + "\">" + continue + "</a>"
-        }
-      ]), et3Started) %}
+      {% if respondent.personalDetailsSection === 'Yes'
+            or respondent.employmentDetailsSection === 'Yes'
+            or respondent.claimDetailsSection === 'Yes' %}
+        {% set et3Started = (et3Started.push([
+          {
+            text: app.userCase.createdDate
+          }, {
+            text: app.userCase.id
+          }, {
+            text: app.userCase.typeOfClaimString
+          }, {
+            text: respondentName
+          }, {
+            text: app.completionStatus
+          }, {
+            text: app.userCase.lastModified
+          }, {
+            html: "<a href=\"" + app.url + "\" aria-label=\"" + view + " " + col2 + ": " + app.userCase.id + "\">" + continue + "</a>"
+          }
+        ]), et3Started) %}
+      {% endif %}
 
+      {% if respondent.personalDetailsSection !== 'Yes'
+            and respondent.employmentDetailsSection !== 'Yes'
+            and respondent.claimDetailsSection !== 'Yes' %}
+        {% set et3NotStarted = (et3NotStarted.push([
+          {
+            text: app.userCase.createdDate
+          }, {
+            text: app.userCase.id
+          }, {
+            text: app.userCase.typeOfClaimString
+          }, {
+            text: respondentName
+          }, {
+            text: app.completionStatus
+          }, {
+            text: app.userCase.lastModified
+          }, {
+            html: "<a href=\"" + app.url + "\" aria-label=\"" + view + " " + col2 + ": " + app.userCase.id + "\">" + continue + "</a>"
+          }
+        ]), et3NotStarted) %}
+      {% endif %}
     {% endif %}
 
-    {% if app.userCase.state === 'Accepted'
-        and user.id === respondent.idamId
-        and respondent.personalDetailsSection !== 'Yes'
-        and respondent.employmentDetailsSection !== 'Yes'
-        and respondent.claimDetailsSection !== 'Yes' %}
-      {% set et3NotStarted = (et3NotStarted.push([
-        {
-          text: app.userCase.createdDate
-        }, {
-          text: app.userCase.id
-        }, {
-          text: app.userCase.typeOfClaimString
-        }, {
-          text: respondentName
-        }, {
-          text: app.completionStatus
-        }, {
-          text: app.userCase.lastModified
-        }, {
-          html: "<a href=\"" + app.url + "\" aria-label=\"" + view + " " + col2 + ": " + app.userCase.id + "\">" + continue + "</a>"
-        }
-      ]), et3NotStarted) %}
-    {% endif %}
+
   {% endfor %}
 {% endfor %}
 
