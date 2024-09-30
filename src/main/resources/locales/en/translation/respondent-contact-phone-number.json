@@ -1,7 +1,6 @@
 {
   "title": "Respondent contact phone number",
   "h1": "What is your contact phone number? (optional)",
-  "sectionTitle": "1. Tell us about the respondent",
   "respondentContactPhoneNumber": "Where we can contact you during the day. For international numbers include the country code.",
   "errors": {
     "respondentContactPhoneNumber": {

@@ -1,7 +1,6 @@
 {
   "title": "[W]Respondent address",
   "h1": "[W]Respondent address",
-  "sectionTitle": "[W]1. Tell us about the respondent",
   "addressText": "[W]Address provided on ET1",
   "correctAddressQuestion": "[W]Is this the respondent’s correct address?",
   "errors": {

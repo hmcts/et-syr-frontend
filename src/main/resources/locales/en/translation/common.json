@@ -133,5 +133,10 @@
   "Both Parties": "Both parties",
   "Claimant only": "Claimant only",
   "Case management order": "Case management order",
-  "Request": "Request"
+  "Request": "Request",
+  "sectionTitle": {
+    "s1": "1. Tell us about the respondent",
+    "s2": "2. Tell us about the claimant",
+    "s3": "3. Give us your response"
+  }
 }
