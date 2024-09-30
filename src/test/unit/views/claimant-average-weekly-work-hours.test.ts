@@ -6,18 +6,19 @@ import request from 'supertest';
 
 import { mockApp } from '../mocks/mockApp';
 
-const commonJsonRaw = fs.readFileSync(
-  path.resolve(__dirname, '../../../main/resources/locales/en/translation/common.json'),
-  'utf-8'
+const commonJson = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, '../../../main/resources/locales/en/translation/common.json'), 'utf-8')
 );
-const pageJsonRaw = fs.readFileSync(
-  path.resolve(__dirname, '../../../main/resources/locales/en/translation/claimant-average-weekly-work-hours.json'),
-  'utf-8'
+const pageJson = JSON.parse(
+  fs.readFileSync(
+    path.resolve(__dirname, '../../../main/resources/locales/en/translation/claimant-average-weekly-work-hours.json'),
+    'utf-8'
+  )
 );
-const commonJson = JSON.parse(commonJsonRaw);
-const pageJson = JSON.parse(pageJsonRaw);
 
 const PAGE_URL = '/claimant-average-weekly-work-hours';
+const sectionTitleClass = 'govuk-caption-xl';
+const expectedSectionTitle = commonJson.sectionTitle.s2;
 const titleClass = 'govuk-heading-xl';
 const expectedTitle = pageJson.title;
 const pClass = 'govuk-body';
@@ -36,6 +37,11 @@ describe('Claimant average weekly work hours page', () => {
       .then(res => {
         htmlRes = new DOMParser().parseFromString(res.text, 'text/html');
       });
+  });
+
+  it('should display section title', () => {
+    const sectionTitle = htmlRes.getElementsByClassName(sectionTitleClass);
+    expect(sectionTitle[0].innerHTML).contains(expectedSectionTitle, 'Page title does not exist');
   });
 
   it('should display title', () => {
