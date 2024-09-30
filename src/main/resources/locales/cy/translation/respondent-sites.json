@@ -1,7 +1,6 @@
 {
   "title": "[W]Respondent sites",
   "h1": "[W]Does the respondent have more than one site in Great Britain?",
-  "sectionTitle": "[W]1. Tell us about the respondent",
   "hint": "[W]It can help the tribunal to have an indication of the employer’s size.",
   "errors": {
     "respondentSites": {

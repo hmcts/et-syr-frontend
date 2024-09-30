@@ -133,5 +133,10 @@
   "Both Parties": "Y ddau barti",
   "Claimant only": "Hawlydd yn unig",
   "Case management order": "Gorchymyn rheoli achos",
-  "Request": "Cais"
+  "Request": "Cais",
+  "sectionTitle": {
+    "s1": "[W]1. Tell us about the respondent",
+    "s2": "[W]2. Tell us about the claimant",
+    "s3": "[W]3. Give us your response"
+  }
 }

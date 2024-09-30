@@ -2,7 +2,6 @@
   "title": "[W]Respondent contest claim",
   "h1": "[W]Does ",
   "h1Extra": " [W]contest the claim?",
-  "sectionTitle": "[W]3. Give us your response",
   "yes": "[W]Yes - [respondent name] contests all or part of the claim",
   "no": "[W]No - [respondent name] does not contest any of the claim",
   "errors": {

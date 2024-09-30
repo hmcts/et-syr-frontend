@@ -1,7 +1,6 @@
 {
   "title": "Respondent address",
   "h1": "Respondent address",
-  "sectionTitle": "1. Tell us about the respondent",
   "enterPostcode": "Enter a UK postcode",
   "cannotEnterPostcode": "I cannot enter a UK postcode",
   "findAddress": "Find address",
