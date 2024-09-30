@@ -12,7 +12,7 @@ import { AnyRecord, UnknownRecord } from '../definitions/util-types';
 import { postLogic } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
-import { isDateEmpty, isDateInPast, isDateInputInvalid, isDateNotPartial } from '../validators/dateValidators';
+import { isDateInPast, isDateInputInvalid } from '../validators/dateValidators';
 
 const logger = getLogger('ClaimantEmploymentDatesEnterController');
 
@@ -23,27 +23,25 @@ export default class ClaimantEmploymentDatesEnterController {
       employmentStartDate: {
         type: 'date',
         id: 'employmentStartDate',
-        label: (l: AnyRecord): string => l.startDateLabel,
-        hint: (l: AnyRecord): string => l.startDateLabelHint,
+        label: (l: AnyRecord): string => l.employmentStartDate.label,
+        hint: (l: AnyRecord): string => l.employmentStartDate.hint,
         values: DateValues,
-        validator: (value: CaseDate) =>
-          isDateNotPartial(value) || (isDateEmpty(value) ? '' : isDateInputInvalid(value)) || isDateInPast(value),
+        validator: (value: CaseDate) => isDateInputInvalid(value) || isDateInPast(value),
         parser: (body: UnknownRecord): CaseDate => convertToDateObject('employmentStartDate', body),
       },
       employmentEndDate: {
         type: 'date',
         id: 'employmentEndDate',
-        label: (l: AnyRecord): string => l.endDateLabel,
-        hint: (l: AnyRecord): string => l.endDateLabelHint,
+        label: (l: AnyRecord): string => l.employmentEndDate.label,
+        hint: (l: AnyRecord): string => l.employmentEndDate.hint,
         values: DateValues,
-        validator: (value: CaseDate) =>
-          isDateNotPartial(value) || (isDateEmpty(value) ? '' : isDateInputInvalid(value)),
+        validator: (value: CaseDate) => isDateInputInvalid(value),
         parser: (body: UnknownRecord): CaseDate => convertToDateObject('employmentEndDate', body),
       },
-      employmentDatesFurtherInformation: {
+      provideInfoAboutEmploymentDates: {
         type: 'textarea',
-        id: 'employmentDatesFurtherInformation',
-        label: (l: AnyRecord): string => l.furtherInformationLabel,
+        id: 'provideInfoAboutEmploymentDates',
+        label: (l: AnyRecord): string => l.provideInfoAboutEmploymentDates.label,
         attributes: {
           maxLength: 2500,
         },
