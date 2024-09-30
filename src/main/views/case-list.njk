@@ -11,6 +11,18 @@
         and (respondent.personalDetailsSection === 'Yes'
               or respondent.employmentDetailsSection === 'Yes'
               or respondent.claimDetailsSection === 'Yes') %}
+      {% set respondentName =  '' %}
+      {% if selectedRespondent.respondentName !== null
+            and respondent.respondentName !== ""
+            and respondent.respondentName !== undefined %}
+        {{ set respondentName = selectedRespondent.respondentName }}
+      {% elif (respondent.respondentOrganisation !== null
+               and respondent.respondentOrganisation !== ""
+               and respondent.respondentOrganisation !== undefined) %}
+        {{ set respondentName = respondent.respondentOrganisation }}
+      {% else %}
+        {{ set respondentName = respondent.respondentFirstName + " " + respondent.respondentLastName }}
+      {% endif %}
       {% set et3Started = (et3Started.push([
         {
           text: app.userCase.createdDate
@@ -19,7 +31,7 @@
         }, {
           text: app.userCase.typeOfClaimString
         }, {
-          text: respondentName
+          text:
         }, {
           text: app.completionStatus
         }, {
