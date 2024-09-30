@@ -5,7 +5,18 @@
 
 {% if showAcknowledgementAlert %}
   <h3 class="govuk-notification-banner__heading">
-    {{notificationBanner.acknowledgement.header + userCase.respondents[0].respondentName }}
+    {{notificationBanner.acknowledgement.header }}
+    {% if selectedRespondent.respondentName !== null
+            and selectedRespondent.respondentName !== ""
+            and selectedRespondent.respondentName !== undefined %}
+      {{ selectedRespondent.respondentName }}
+    {% elif (selectedRespondent.respondentOrganisation !== null
+              and selectedRespondent.respondentOrganisation !== ""
+              and selectedRespondent.respondentOrganisation !== undefined) %}
+      {{ selectedRespondent.respondentOrganisation }}
+    {% else %}
+      {{ selectedRespondent.respondentFirstName + " " + selectedRespondent.respondentLastName }}
+    {% endif %}
   </h3>
 
   <p class="govuk-body">

@@ -47,10 +47,12 @@ export default class CaseDetailsController {
     }
     const userCase = req.session.userCase;
     let selectedRespondent: Respondent;
-    for (const respondent of req.session.userCase.respondents) {
-      if (respondent.idamId === req.session.user.id) {
-        selectedRespondent = respondent;
-        break;
+    if (req.session.userCase.respondents) {
+      for (const respondent of req.session.userCase.respondents) {
+        if (respondent.idamId === req.session?.user?.id) {
+          selectedRespondent = respondent;
+          break;
+        }
       }
     }
     if (!selectedRespondent.et3CaseDetailsLinksStatuses) {
@@ -87,6 +89,7 @@ export default class CaseDetailsController {
       sections,
       et1FormUrl,
       respondToClaimUrl,
+      selectedRespondent,
       et3Response,
       hideContactUs: true,
       processingDueDate: getDueDate(formatDate(userCase.submittedDate), DAYS_FOR_PROCESSING),
