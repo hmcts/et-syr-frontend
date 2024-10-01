@@ -17,9 +17,9 @@ const pageJson = JSON.parse(
 );
 
 const PAGE_URL = '/claimant-employment-dates-enter';
-const sectionTitleClass = 'govuk-caption-xl';
+const sectionTitleClass = 'govuk-caption-l';
 const expectedSectionTitle = commonJson.sectionTitle.s2;
-const titleClass = 'govuk-heading-xl';
+const titleClass = 'govuk-heading-l';
 const expectedTitle = pageJson.title;
 const dateInputClass = 'govuk-date-input__item';
 const expectedInputLabel1 = 'Day';
