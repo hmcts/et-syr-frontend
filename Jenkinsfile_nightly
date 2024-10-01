@@ -13,7 +13,6 @@ parameters([
 def type = "nodejs"
 def product = "et"
 def component = "syr"
-def urlExclusions = params.ZAP_URL_EXCLUSIONS
 def secrets = [
     'et-aat': [
         secret('et-citizen-10-user-name', 'TEST_CASE_USERNAME'),
