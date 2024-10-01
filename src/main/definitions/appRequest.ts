@@ -56,6 +56,7 @@ export interface AppSession extends Session {
   contactType?: string;
   contactTribunalSelection?: string;
   documentDownloadPage?: string;
+  respondentNameFromForm?: string;
 }
 
 export interface UserDetails {

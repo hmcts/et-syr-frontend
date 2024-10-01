@@ -77,6 +77,7 @@ export default class SelfAssignmentFormController {
     const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
     req.session.errors = [];
     req.session.userCase = SelfAssignmentFormControllerHelper.generateBasicUserCaseBySelfAssignmentFormData(formData);
+    req.session.respondentNameFromForm = formData.respondentName;
     const errors = this.form.getValidatorErrors(formData);
     if (errors.length === 0) {
       const caseData = (await getCaseApi(req.session.user?.accessToken)?.getCaseByApplicationRequest(req))?.data;
