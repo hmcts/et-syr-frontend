@@ -85,6 +85,7 @@ export default class SelfAssignmentCheckController {
       userCase: req.session?.userCase,
       user: req.session?.user,
       sessionErrors: req.session.errors,
+      formRespondentName: req.session.respondentNameFromForm,
     });
   };
 }
