@@ -1,19 +1,25 @@
 {
   "title": "[W]Claimant employment dates",
   "p1": "[W]It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
-  "startDateLabel": "[W]Employment start date (optional)",
-  "startDateLabelHint": "[W]For example, 23 4 2011",
-  "endDateLabel": "[W]Employment end date (optional)",
-  "endDateLabelHint": "[W]For example, 23 4 2022",
-  "furtherInformationLabel": "[W]Do you want to provide any further information about the claimant's employment dates? (optional)",
+  "employmentStartDate": {
+    "label": "[W]Employment start date (optional)",
+    "hint": "[W]For example, 23 4 2011"
+  },
+  "employmentEndDate": {
+    "label": "[W]Employment end date (optional)",
+    "hint": "[W]For example, 23 4 2022"
+  },
+  "provideInfoAboutEmploymentDates": {
+    "label": "[W]Do you want to provide any further information about the claimant's employment dates? (optional)"
+  },
   "errors": {
     "employmentStartDate": {
-      "dayRequired": "[W]Enter a date in the correct format",
-      "monthRequired": "[W]Enter a date in the correct format",
-      "yearRequired": "[W]Enter a date in the correct format",
       "dayNotANumber": "[W]Enter a date in the correct format",
       "monthNotANumber": "[W]Enter a date in the correct format",
       "yearNotANumber": "[W]Enter a date in the correct format",
+      "dayRequired": "[W]Enter a date in the correct format",
+      "monthRequired": "[W]Enter a date in the correct format",
+      "yearRequired": "[W]Enter a date in the correct format",
       "dayInvalid": "[W]Enter a date in the correct format",
       "monthInvalid": "[W]Enter a date in the correct format",
       "yearInvalid": "[W]Enter a date in the correct format",
@@ -22,18 +28,17 @@
       "invalidDateInFuture": "[W]Enter a date in the past"
     },
     "employmentEndDate": {
-      "dayRequired": "[W]Enter a date in the correct format",
-      "monthRequired": "[W]Enter a date in the correct format",
-      "yearRequired": "[W]Enter a date in the correct format",
       "dayNotANumber": "[W]Enter a date in the correct format",
       "monthNotANumber": "[W]Enter a date in the correct format",
       "yearNotANumber": "[W]Enter a date in the correct format",
+      "dayRequired": "[W]Enter a date in the correct format",
+      "monthRequired": "[W]Enter a date in the correct format",
+      "yearRequired": "[W]Enter a date in the correct format",
       "dayInvalid": "[W]Enter a date in the correct format",
       "monthInvalid": "[W]Enter a date in the correct format",
       "yearInvalid": "[W]Enter a date in the correct format",
       "invalidDateTooFarInPast": "[W]Enter a date in the correct format",
-      "invalidDate": "[W]Enter a date in the correct format",
-      "invalidDateInFuture": "[W]Enter a date in the past"
+      "invalidDate": "[W]Enter a date in the correct format"
     }
   }
 }
