@@ -20,7 +20,7 @@ export default class ClaimantJobTitleController {
     fields: {
       isClaimantJobTitleCorrect: {
         type: 'radios',
-        label: (l: AnyRecord): string => l.label,
+        label: (l: AnyRecord): string => l.isClaimantJobTitleCorrect.label,
         values: [
           {
             label: (l: AnyRecord): string => l.yes,
@@ -33,7 +33,7 @@ export default class ClaimantJobTitleController {
               whatIsClaimantJobTitle: {
                 type: 'text',
                 id: 'whatIsClaimantJobTitle',
-                label: (l: AnyRecord): string => l.noLabel,
+                label: (l: AnyRecord): string => l.whatIsClaimantJobTitle.label,
                 attributes: {
                   maxLength: 100,
                 },

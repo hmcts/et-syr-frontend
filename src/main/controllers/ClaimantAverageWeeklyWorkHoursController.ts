@@ -18,9 +18,9 @@ export default class ClaimantAverageWeeklyWorkHoursController {
   form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      areWorkHourCorrect: {
+      areClaimantWorkHourCorrect: {
         type: 'radios',
-        label: (l: AnyRecord): string => l.label,
+        label: (l: AnyRecord): string => l.areClaimantWorkHourCorrect.label,
         values: [
           {
             label: (l: AnyRecord): string => l.yes,
@@ -30,11 +30,11 @@ export default class ClaimantAverageWeeklyWorkHoursController {
             label: (l: AnyRecord): string => l.no,
             value: YesOrNoOrNotSure.NO,
             subFields: {
-              whatAreWorkHour: {
+              whatAreClaimantCorrectWorkHour: {
                 type: 'text',
-                id: 'whatAreWorkHour',
-                label: (l: AnyRecord): string => l.noLabel,
-                hint: (l: AnyRecord): string => l.noLabelHint,
+                id: 'whatAreClaimantCorrectWorkHour',
+                label: (l: AnyRecord): string => l.whatAreClaimantCorrectWorkHour.label,
+                hint: (l: AnyRecord): string => l.whatAreClaimantCorrectWorkHour.hint,
                 attributes: {
                   maxLength: 100,
                 },
