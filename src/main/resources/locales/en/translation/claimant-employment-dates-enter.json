@@ -1,19 +1,25 @@
 {
   "title": "Claimant employment dates",
   "p1": "It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
-  "startDateLabel": "Employment start date (optional)",
-  "startDateLabelHint": "For example, 23 4 2011",
-  "endDateLabel": "Employment end date (optional)",
-  "endDateLabelHint": "For example, 23 4 2022",
-  "furtherInformationLabel": "Do you want to provide any further information about the claimant's employment dates? (optional)",
+  "employmentStartDate": {
+    "label": "Employment start date (optional)",
+    "hint": "For example, 23 4 2011"
+  },
+  "employmentEndDate": {
+    "label": "Employment end date (optional)",
+    "hint": "For example, 23 4 2022"
+  },
+  "provideInfoAboutEmploymentDates": {
+    "label": "Do you want to provide any further information about the claimant's employment dates? (optional)"
+  },
   "errors": {
     "employmentStartDate": {
-      "dayRequired": "Enter a date in the correct format",
-      "monthRequired": "Enter a date in the correct format",
-      "yearRequired": "Enter a date in the correct format",
       "dayNotANumber": "Enter a date in the correct format",
       "monthNotANumber": "Enter a date in the correct format",
       "yearNotANumber": "Enter a date in the correct format",
+      "dayRequired": "Enter a date in the correct format",
+      "monthRequired": "Enter a date in the correct format",
+      "yearRequired": "Enter a date in the correct format",
       "dayInvalid": "Enter a date in the correct format",
       "monthInvalid": "Enter a date in the correct format",
       "yearInvalid": "Enter a date in the correct format",
@@ -22,18 +28,17 @@
       "invalidDateInFuture": "Enter a date in the past"
     },
     "employmentEndDate": {
-      "dayRequired": "Enter a date in the correct format",
-      "monthRequired": "Enter a date in the correct format",
-      "yearRequired": "Enter a date in the correct format",
       "dayNotANumber": "Enter a date in the correct format",
       "monthNotANumber": "Enter a date in the correct format",
       "yearNotANumber": "Enter a date in the correct format",
+      "dayRequired": "Enter a date in the correct format",
+      "monthRequired": "Enter a date in the correct format",
+      "yearRequired": "Enter a date in the correct format",
       "dayInvalid": "Enter a date in the correct format",
       "monthInvalid": "Enter a date in the correct format",
       "yearInvalid": "Enter a date in the correct format",
       "invalidDateTooFarInPast": "Enter a date in the correct format",
-      "invalidDate": "Enter a date in the correct format",
-      "invalidDateInFuture": "Enter a date in the past"
+      "invalidDate": "Enter a date in the correct format"
     }
   }
 }
