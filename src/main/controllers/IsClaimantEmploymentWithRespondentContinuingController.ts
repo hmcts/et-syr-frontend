@@ -20,10 +20,6 @@ export default class IsClaimantEmploymentWithRespondentContinuingController {
     fields: {
       isEmploymentContinuing: {
         type: 'radios',
-        label: (l: AnyRecord): string => l.label,
-        labelHidden: false,
-        labelSize: 'l',
-        isPageHeading: true,
         hint: (l: AnyRecord): string => l.hint,
         values: [
           {
