@@ -34,6 +34,7 @@ export default class ClaimantJobTitleController {
                 type: 'text',
                 id: 'whatIsClaimantJobTitle',
                 label: (l: AnyRecord): string => l.whatIsClaimantJobTitle.label,
+                labelSize: 's',
                 attributes: {
                   maxLength: 100,
                 },

@@ -34,6 +34,7 @@ export default class ClaimantAverageWeeklyWorkHoursController {
                 type: 'text',
                 id: 'whatAreClaimantCorrectWorkHour',
                 label: (l: AnyRecord): string => l.whatAreClaimantCorrectWorkHour.label,
+                labelSize: 's',
                 hint: (l: AnyRecord): string => l.whatAreClaimantCorrectWorkHour.hint,
                 attributes: {
                   maxLength: 100,

@@ -34,6 +34,7 @@ export default class ClaimantNoticePeriodController {
                 type: 'textarea',
                 id: 'whatAreClaimantCorrectNoticeDetails',
                 label: (l: AnyRecord): string => l.whatAreClaimantCorrectNoticeDetails.label,
+                labelSize: 's',
                 hint: (l: AnyRecord): string => l.whatAreClaimantCorrectNoticeDetails.hint,
                 validator: isContent2500CharsOrLess,
               },
