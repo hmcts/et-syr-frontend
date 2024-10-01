@@ -1,4 +1,4 @@
-import { ET3ModificationConstants } from '../../../main/definitions/constants';
+import { ET3ModificationTypes } from '../../../main/definitions/constants';
 import ET3DataModelUtil from '../../../main/utils/ET3DataModelUtil';
 import { mockValidCaseWithIdWithFullRespondentDetails } from '../mocks/mockCaseWithIdWithFullRespondentDetails';
 import { ET3ExpectedRequest } from '../mocks/mockEt3ExpectedRequest';
@@ -10,7 +10,7 @@ describe('ET3DataModelUtil tests', () => {
     const et3Request = ET3DataModelUtil.convertCaseWithIdToET3Request(
       mockValidCaseWithIdWithFullRespondentDetails,
       idamId,
-      ET3ModificationConstants.MODIFICATION_TYPE_UPDATE
+      ET3ModificationTypes.MODIFICATION_TYPE_UPDATE
     );
     expect(et3Request.caseId).toEqual(ET3ExpectedRequest.CASE_ID);
     expect(et3Request.caseType).toEqual(ET3ExpectedRequest.CASE_TYPE);

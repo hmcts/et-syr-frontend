@@ -2,17 +2,15 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { Respondent, YesOrNo } from '../definitions/case';
-import { ET3ModificationConstants, PageUrls, TranslationKeys } from '../definitions/constants';
+import { CaseWithId, YesOrNo } from '../definitions/case';
+import { FormFieldNames, LoggerConstants, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields, FormInput } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
-import { postLogic } from '../helpers/CaseHelpers';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLogger } from '../logger';
-import { getCaseApi } from '../services/CaseService';
+import ET3Util from '../utils/ET3Util';
 import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
 
 const logger = getLogger('RespondentNameController');
@@ -53,6 +51,11 @@ export default class RespondentNameController {
         ],
         validator: isOptionSelected,
       },
+      hiddenErrorField: {
+        id: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
+        type: 'text',
+        hidden: true,
+      },
     },
     submit: submitButton,
     saveForLater: saveForLaterButton,
@@ -64,31 +67,21 @@ export default class RespondentNameController {
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
-    let selectedRespondent: Respondent;
-    if (req.session.userCase.respondents) {
-      for (const respondent of req.session.userCase.respondents) {
-        if (respondent.idamId === req.session?.user?.id) {
-          selectedRespondent = respondent;
-          break;
-        }
-      }
+    req.session.errors = this.form.getValidatorErrors(formData);
+    if (req.session.errors.length > 0) {
+      return res.redirect(req.url);
     }
-    selectedRespondent.responseRespondentNameQuestion = formData.respondentName === 'Yes' ? YesOrNo.YES : YesOrNo.NO;
-
-    try {
-      formatApiCaseDataToCaseWithId(
-        (
-          await getCaseApi(req.session.user?.accessToken)?.modifyEt3Data(
-            req.session.userCase,
-            req.session.user.id,
-            ET3ModificationConstants.MODIFICATION_TYPE_UPDATE
-          )
-        )?.data
-      );
-    } catch (exception) {
-      logger.info(exception);
+    req.session.selectedRespondent.responseRespondentNameQuestion =
+      formData.respondentName === 'Yes' ? YesOrNo.YES : YesOrNo.NO;
+    req.session.selectedRespondent.responseRespondentName = formData.respondentName;
+    const userCase: CaseWithId = await ET3Util.updateET3Data(req);
+    if (req.session.errors?.length > 0) {
+      logger.error(LoggerConstants.ERROR_API);
+      return res.redirect(req.url);
+    } else {
+      req.session.userCase = userCase;
+      res.redirect(PageUrls.TYPE_OF_ORGANISATION);
     }
-    await postLogic(req, res, this.form, logger, PageUrls.TYPE_OF_ORGANISATION);
   };
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {

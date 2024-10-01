@@ -154,6 +154,11 @@ export const ValidationErrors = {
   REQUIRED: 'required',
   INVALID_VALUE: 'invalid',
   API: 'api',
+  SESSION_USER_CASE: 'sessionUserCase',
+  SESSION_USER: 'sessionUser',
+  SESSION_RESPONDENT: 'sessionRespondent',
+  USER_ID: 'userId',
+  RESPONDENT_NOT_FOUND: 'respondentNotFound',
 } as const;
 
 export const AuthUrls = {
@@ -443,6 +448,7 @@ export const DefaultValues = {
   STRING_QUESTION_MARK: '?',
   STRING_EQUALS: '=',
   STRING_SPACE: ' ',
+  STRING_NEW_LINE: '\n',
 } as const;
 
 export const FormFieldNames = {
@@ -485,7 +491,18 @@ export const LoggingConstants = {
   INFO_LOG_USER_ID_NOT_EXISTS: 'undefined user id',
 } as const;
 
-export const ET3ModificationConstants = {
+export const ET3ModificationTypes = {
   MODIFICATION_TYPE_UPDATE: 'update',
   MODIFICATION_TYPE_SUBMIT: 'submit',
 } as const;
+
+export const LoggerConstants = {
+  ERROR_SESSION_USER_CASE_NOT_FOUND: 'User case not found in session',
+  ERROR_SESSION_USER_NOT_FOUND: 'User not found in session',
+  ERROR_SESSION_SELECTED_USER_NOT_FOUND: 'Selected user not found in session',
+  ERROR_SESSION_INVALID_USER_ID: 'Session user does not have a valid user id',
+  ERROR_SESSION_INVALID_RESPONDENT_LIST: 'Session case does not have respondent list',
+  ERROR_SESSION_INVALID_RESPONDENT: 'There is no matching respondent with the session user',
+  ERROR_API: 'An error occurred while calling API, ',
+  ERROR_SYSTEM: 'System error. ',
+};
