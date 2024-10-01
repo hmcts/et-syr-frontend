@@ -191,6 +191,7 @@ export const JavaApiUrls = {
   UPDATE_ADMIN_DECISION_STATE: '/tseAdmin/update-admin-decision-state',
   SUBMIT_BUNDLES: 'bundles/submit-bundles',
   ROLE_PARAM_NAME: 'case_user_role',
+  MODIFY_ET3_DATA: '/et3/modifyEt3Data',
 } as const;
 
 export const Roles = {
@@ -467,6 +468,10 @@ export const ServiceErrors = {
   ERROR_GETTING_USER_CASES: 'Error getting user cases: ',
   ERROR_ASSIGNING_USER_ROLE: 'Error assigning user role: ',
   ERROR_DUMMY_DATA: 'Dummy data error',
+  ERROR_MODIFYING_SUBMITTED_CASE: 'Error updating submit case: ',
+  ERROR_MODIFYING_SUBMITTED_CASE_IDAM_ID_NOT_FOUND: 'Idam id not found',
+  ERROR_MODIFYING_SUBMITTED_CASE_REQUEST_TYPE_NOT_FOUND: 'Request type not found',
+  ERROR_MODIFYING_SUBMITTED_CASE_RESPONDENT_NOT_FOUND: 'Respondent not found',
 } as const;
 
 export const CacheErrors = {
@@ -478,4 +483,9 @@ export const CacheErrors = {
 export const LoggingConstants = {
   INFO_LOG_RETRIEVING_CASES: 'Retrieving cases for',
   INFO_LOG_USER_ID_NOT_EXISTS: 'undefined user id',
+} as const;
+
+export const ET3ModificationConstants = {
+  MODIFICATION_TYPE_UPDATE: 'update',
+  MODIFICATION_TYPE_SUBMIT: 'submit',
 } as const;
