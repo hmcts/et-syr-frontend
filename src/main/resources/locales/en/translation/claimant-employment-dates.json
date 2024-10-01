@@ -2,9 +2,15 @@
   "title": "Claimant employment dates",
   "startDateLabel": "Start date provided on ET1",
   "endDateLabel": "End date provided on ET1",
-  "label": "Are the dates of employment given by the claimant correct?",
-  "noHintLabel": "You will be able to enter correct employment dates at the next step.",
-  "notSureHintLabel": "If you select Not sure, you will not be able to enter employment dates.",
+  "areDatesOfEmploymentCorrect": {
+    "label": "Are the dates of employment given by the claimant correct?",
+    "no": {
+      "hint": "You will be able to enter correct employment dates at the next step."
+    },
+    "notSure": {
+      "hint": "If you select Not sure, you will not be able to enter employment dates."
+    }
+  },
   "errors": {
     "areDatesOfEmploymentCorrect": {
       "required": "Make a selection"

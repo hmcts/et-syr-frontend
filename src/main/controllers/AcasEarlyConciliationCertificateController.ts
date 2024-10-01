@@ -18,9 +18,9 @@ export default class AcasEarlyConciliationCertificateController {
   form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      disagreeEarlyConciliation: {
+      doYouDisagreeAboutAcas: {
         type: 'radios',
-        label: (l: AnyRecord): string => l.label,
+        label: (l: AnyRecord): string => l.doYouDisagreeAboutAcas.label,
         values: [
           {
             label: (l: AnyRecord): string => l.no,
@@ -30,13 +30,10 @@ export default class AcasEarlyConciliationCertificateController {
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNo.YES,
             subFields: {
-              disagreeEarlyConciliationWhy: {
+              whyDoYouDisagreeAcas: {
                 type: 'textarea',
-                id: 'disagreeEarlyConciliationWhy',
-                label: (l: AnyRecord): string => l.whyLabel,
-                attributes: {
-                  maxLength: 2500,
-                },
+                id: 'whyDoYouDisagreeAcas',
+                label: (l: AnyRecord): string => l.whyDoYouDisagreeAcas.label,
                 validator: isContent2500CharsOrLess,
               },
             },
