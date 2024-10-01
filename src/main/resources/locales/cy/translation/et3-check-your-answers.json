@@ -1,7 +1,7 @@
 {
-  "response": {
-    "title": "[W]Your response form (ET3)",
-    "h1": "[W]Your response form (ET3)"
+  "cya": {
+    "title": "[W]Check your answers (ET3)",
+    "h1": "[W]Check your answers"
   },
   "section1": {
     "header": "[W]Contact details",
@@ -62,5 +62,7 @@
     "contestExplanation": "[W]Explain why [respondent name] contests the claim (text box label)",
     "supportingMaterials": "[W]Supporting materials",
     "exampleData": "[W][example data]"
-  }
+  },
+  "h2": "Submit your response",
+  "p1": "By submitting your response you are confirming that the details you are providing are correct. You will not be able to change your response after you submit it. You can view your submitted response on the Case overview page."
 }
