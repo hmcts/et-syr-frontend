@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { Respondent, YesOrNo } from '../definitions/case';
+import { YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import {
   ET3CaseDetailsLinksStatuses,
@@ -17,6 +17,7 @@ import { getLanguageParam } from '../helpers/RouterHelpers';
 import { currentStateFn } from '../helpers/state-sequence';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
+import ET3Util from '../utils/ET3Util';
 
 const logger = getLogger('CaseDetailsController');
 const DAYS_FOR_PROCESSING = 7;
@@ -46,21 +47,13 @@ export default class CaseDetailsController {
       return res.redirect('/not-found');
     }
     const userCase = req.session.userCase;
-    let selectedRespondent: Respondent;
-    if (req.session.userCase.respondents) {
-      for (const respondent of req.session.userCase.respondents) {
-        if (respondent.idamId === req.session?.user?.id) {
-          selectedRespondent = respondent;
-          break;
-        }
-      }
-    }
-    if (!selectedRespondent.et3CaseDetailsLinksStatuses) {
-      selectedRespondent.et3CaseDetailsLinksStatuses = new ET3CaseDetailsLinksStatuses();
+    req.session.selectedRespondent = ET3Util.findSelectedRespondent(req);
+    if (!req.session.selectedRespondent.et3CaseDetailsLinksStatuses) {
+      req.session.selectedRespondent.et3CaseDetailsLinksStatuses = new ET3CaseDetailsLinksStatuses();
       await handleUpdateHubLinksStatuses(req, logger);
     }
     const currentState = currentStateFn(userCase);
-    const et3CaseDetailsLinksStatuses = selectedRespondent.et3CaseDetailsLinksStatuses;
+    const et3CaseDetailsLinksStatuses = req.session.selectedRespondent.et3CaseDetailsLinksStatuses;
     const languageParam = getLanguageParam(req.url);
 
     const sections = Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
@@ -89,7 +82,7 @@ export default class CaseDetailsController {
       sections,
       et1FormUrl,
       respondToClaimUrl,
-      selectedRespondent,
+      selectedRespondent: req.session.selectedRespondent,
       et3Response,
       hideContactUs: true,
       processingDueDate: getDueDate(formatDate(userCase.submittedDate), DAYS_FOR_PROCESSING),
