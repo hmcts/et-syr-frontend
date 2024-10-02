@@ -27,7 +27,7 @@ describe('Claimant employment dates enter Controller', () => {
   });
 
   describe('POST method', () => {
-    it('should render the same page when input empty', () => {
+    it('should redirect to the next page when input empty', () => {
       request = mockRequest({
         body: {
           'employmentStartDate-day': '',
@@ -46,17 +46,66 @@ describe('Claimant employment dates enter Controller', () => {
       );
     });
 
-    it('should have error when date more than 10 years in future', () => {
-      request = mockRequest({
+    it.each([
+      {
+        length: 2,
         body: {
-          'newJobStartDate-day': 'a',
-          'newJobStartDate-month': '',
-          'newJobStartDate-year': '',
+          'employmentStartDate-day': 'test',
+          'employmentStartDate-month': 'test',
+          'employmentStartDate-year': 'test',
+          'employmentEndDate-day': 'test',
+          'employmentEndDate-month': 'test',
+          'employmentEndDate-year': 'test',
+        },
+        errors: [
+          { propertyName: 'employmentStartDate', fieldName: 'day', errorType: 'dayNotANumber' },
+          { propertyName: 'employmentEndDate', fieldName: 'day', errorType: 'dayNotANumber' },
+        ],
+      },
+      {
+        length: 2,
+        body: {
+          'employmentStartDate-day': '',
+          'employmentStartDate-month': '',
+          'employmentStartDate-year': '1',
+          'employmentEndDate-day': '1',
+          'employmentEndDate-month': '',
+          'employmentEndDate-year': '',
+        },
+        errors: [
+          { propertyName: 'employmentStartDate', fieldName: 'day', errorType: 'dayRequired' },
+          { propertyName: 'employmentEndDate', fieldName: 'month', errorType: 'monthRequired' },
+        ],
+      },
+      {
+        length: 2,
+        body: {
+          'employmentStartDate-day': '32',
+          'employmentStartDate-month': '1',
+          'employmentStartDate-year': '2000',
+          'employmentEndDate-day': '1',
+          'employmentEndDate-month': '13',
+          'employmentEndDate-year': '2000',
+        },
+        errors: [
+          { propertyName: 'employmentStartDate', fieldName: 'day', errorType: 'dayInvalid' },
+          { propertyName: 'employmentEndDate', fieldName: 'month', errorType: 'monthInvalid' },
+        ],
+      },
+      {
+        length: 1,
+        body: {
+          'employmentStartDate-day': '31',
+          'employmentStartDate-month': '12',
+          'employmentStartDate-year': `${new Date().getFullYear() + 1}`,
           'employmentEndDate-day': '',
           'employmentEndDate-month': '',
           'employmentEndDate-year': '',
         },
-      });
+        errors: [{ propertyName: 'employmentStartDate', fieldName: 'day', errorType: 'invalidDateInFuture' }],
+      },
+    ])('should return appropriate errors for invalid employment dates', ({ length, body, errors }) => {
+      request = mockRequest({ body });
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER + languages.ENGLISH_URL_PARAMETER;
       controller.post(request, response);
 
@@ -64,7 +113,7 @@ describe('Claimant employment dates enter Controller', () => {
         PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'employmentStartDate', fieldName: 'day', errorType: 'dayRequired' }];
+      expect(request.session.errors).toHaveLength(length);
       expect(request.session.errors).toEqual(errors);
     });
   });
