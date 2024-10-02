@@ -33,9 +33,7 @@ export function addSummaryRowWithAction(
   return {
     key: { text: key, classes: 'govuk-!-font-weight-regular-m' },
     value: { text: value || '' }, // Default to empty string if undefined
-    actions:
-      { items: [{ href: pageUrl + InterceptPaths.ANSWERS_CHANGE, text: linkText, visuallyHiddenText: key }] } ||
-      undefined, // Skip actions if no pageUrl
+    actions: createChangeAction(pageUrl + InterceptPaths.ANSWERS_CHANGE, linkText, key),
   };
 }
 
