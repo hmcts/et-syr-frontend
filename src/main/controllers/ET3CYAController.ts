@@ -28,7 +28,7 @@ export default class ET3CYAController {
     // TODO: ET3 cya data needs to be populated AND Submit & Save for Later buttons
     res.render(TranslationKeys.RESPONDENT_ET3_CYA, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.RESPONDENT_ET3_RESPONSE as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.RESPONDENT_ET3_CYA as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.RESPONDENT_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       InterceptPaths,

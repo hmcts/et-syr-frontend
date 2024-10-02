@@ -2,6 +2,7 @@
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block beforeContent %}
   {{ super() }}
@@ -66,6 +67,32 @@
 
       <h2 class="govuk-heading-m">{{ h2 }}</h2>
       <p class="govuk-body ">{{ p1 }}</p>
+
+      <div class="govuk-button-group">
+        {{ govukButton({
+          text: submit,
+          classes: 'govuk-!-margin-right-2',
+          type: "submit",
+          preventDoubleClick: true,
+          attributes: {
+            id: 'main-form-submit'
+          }
+        }) }}
+
+
+        {{ govukButton({
+          text: saveForLater,
+          classes: 'govuk-button--secondary',
+          preventDoubleClick: true,
+          name: 'saveForLater',
+          href: PageUrls.NOT_IMPLEMENTED + languageParam,
+          value: true,
+          attributes: {
+            id: 'main-form-save-for-later'
+          },
+          value: true
+        }) }}
+      </div>
     </div>
 
     <div class="govuk-grid-column-one-third-from-desktop">
