@@ -6,6 +6,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { toApiFormat } from '../helpers/ApiFormatter';
+import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ErrorUtils from '../utils/ErrorUtils';
 
 import { axiosErrorDetails } from './AxiosErrorAdapter';
@@ -122,6 +123,19 @@ export class CaseApi {
       );
     } catch (error) {
       throw new Error('Error getting user cases: ' + axiosErrorDetails(error));
+    }
+  };
+
+  modifyEt3Data = async (
+    caseDetails: CaseWithId,
+    idamId: string,
+    requestType: string
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      const et3Request = ET3DataModelUtil.convertCaseWithIdToET3Request(caseDetails, idamId, requestType);
+      return await this.axios.post(JavaApiUrls.MODIFY_ET3_DATA, et3Request);
+    } catch (error) {
+      throw new Error(ServiceErrors.ERROR_MODIFYING_SUBMITTED_CASE + axiosErrorDetails(error));
     }
   };
 }

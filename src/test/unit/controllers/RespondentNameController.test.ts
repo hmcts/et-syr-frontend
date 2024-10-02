@@ -1,11 +1,15 @@
 import RespondentNameController from '../../../main/controllers/RespondentNameController';
 import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import { postLogic } from '../../../main/helpers/CaseHelpers';
+import ET3Util from '../../../main/utils/ET3Util';
+import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
+import { mockEt3RespondentType } from '../mocks/mockEt3Respondent';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+import { mockUserDetails } from '../mocks/mockUser';
 
 jest.mock('../../../main/helpers/CaseHelpers');
+const updateET3DataMock = jest.spyOn(ET3Util, 'updateET3Data');
 
 describe('RespondentNameController', () => {
   let controller: RespondentNameController;
@@ -23,6 +27,9 @@ describe('RespondentNameController', () => {
         },
       },
     });
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.user = mockUserDetails;
+    request.session.selectedRespondent = mockEt3RespondentType;
 
     translationMock = {
       label1: 'this is label1 ',
@@ -94,7 +101,7 @@ describe('RespondentNameController', () => {
       const renderMock = response.render as jest.Mock;
       const form = renderMock.mock.calls[0][1].form;
 
-      expect(form.fields.respondentName.label(translationMock)).toBe('this is label1 Test Respondent this is label2');
+      expect(form.fields.respondentName.label(translationMock)).toBe('this is label1 Globo Corp this is label2');
       expect(form.fields.respondentName.values[0].label(translationMock)).toBe('Yes');
       expect(form.fields.respondentName.values[1].label(translationMock)).toBe('No');
       expect(form.fields.respondentName.values[1].subFields.respondentNameDetail.label(translationMock)).toBe(
@@ -108,35 +115,19 @@ describe('RespondentNameController', () => {
       request.body = {
         respondentName: YesOrNo.YES,
       };
-
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-
-      // Ensure postLogic is called correctly
-      expect(postLogic).toHaveBeenCalledWith(
-        request,
-        response,
-        expect.anything(),
-        expect.anything(),
-        PageUrls.TYPE_OF_ORGANISATION
-      );
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.TYPE_OF_ORGANISATION);
     });
 
     it('should handle the post method with valid data (No selected and subField filled)', async () => {
       request.body = {
         respondentName: YesOrNo.NO,
-        respondentNameTxt: 'Test Respondent Name Detail',
+        respondentNameDetail: 'Test Respondent Name Detail',
       };
-
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-
-      // Ensure postLogic is called correctly
-      expect(postLogic).toHaveBeenCalledWith(
-        request,
-        response,
-        expect.anything(),
-        expect.anything(),
-        PageUrls.TYPE_OF_ORGANISATION
-      );
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.TYPE_OF_ORGANISATION);
     });
   });
 });
