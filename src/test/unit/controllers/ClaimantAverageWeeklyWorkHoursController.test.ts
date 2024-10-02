@@ -34,7 +34,7 @@ describe('Claimant average weekly work hours Controller', () => {
     it('should redirect to next page when yes is selected', () => {
       request = mockRequest({
         body: {
-          areWorkHourCorrect: YesOrNoOrNotSure.YES,
+          areClaimantWorkHourCorrect: YesOrNoOrNotSure.YES,
         },
       });
       request.url = PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER;
@@ -48,8 +48,8 @@ describe('Claimant average weekly work hours Controller', () => {
     it('should redirect to next page when no is selected', () => {
       request = mockRequest({
         body: {
-          areWorkHourCorrect: YesOrNoOrNotSure.NO,
-          whatAreWorkHour: 'Test',
+          areClaimantWorkHourCorrect: YesOrNoOrNotSure.NO,
+          whatAreClaimantCorrectWorkHour: 'Test',
         },
       });
       request.url = PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER;
@@ -63,7 +63,7 @@ describe('Claimant average weekly work hours Controller', () => {
     it('should redirect to next page when Not Sure is selected', () => {
       request = mockRequest({
         body: {
-          areWorkHourCorrect: YesOrNoOrNotSure.NOT_SURE,
+          areClaimantWorkHourCorrect: YesOrNoOrNotSure.NOT_SURE,
         },
       });
       request.url = PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER;
@@ -83,7 +83,7 @@ describe('Claimant average weekly work hours Controller', () => {
         PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'areWorkHourCorrect', errorType: 'required' }];
+      const errors = [{ propertyName: 'areClaimantWorkHourCorrect', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
   });
