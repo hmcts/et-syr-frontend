@@ -18,7 +18,7 @@ const commonJson = JSON.parse(commonJsonRaw);
 const pageJson = JSON.parse(pageJsonRaw);
 
 const PAGE_URL = '/claimant-pay-details-enter';
-const titleClass = 'govuk-heading-xl';
+const titleClass = 'govuk-heading-l';
 const expectedTitle = pageJson.title;
 const radioClass = 'govuk-radios__item';
 const expectedRadioLabel1 = commonJson.weekly;

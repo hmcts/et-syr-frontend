@@ -17,9 +17,9 @@ const pageJson = JSON.parse(
 );
 
 const PAGE_URL = '/acas-early-conciliation-certificate';
-const sectionTitleClass = 'govuk-caption-xl';
+const sectionTitleClass = 'govuk-caption-l';
 const expectedSectionTitle = commonJson.sectionTitle.s2;
-const titleClass = 'govuk-heading-xl';
+const titleClass = 'govuk-heading-l';
 const expectedTitle = pageJson.title;
 const pClass = 'govuk-body';
 const expectedP1 = pageJson.p1;
