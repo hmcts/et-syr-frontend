@@ -9,7 +9,7 @@ export const getEt3Section1 = (userCase: CaseWithId, translations: AnyRecord): S
   et3ResponseSection1.push(
     addSummaryRowWithAction(
       translations.section1.respondentName,
-      userCase.respondents[0].respondentName, // todo: this is the data field that needs to be populated
+      translations.section1.exampleData, // todo: this is the data field that needs to be populated
       PageUrls.RESPONDENT_NAME,
       translations.change
     ),
