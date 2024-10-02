@@ -1,0 +1,21 @@
+{
+  "title": "[W]Claimant pension and benefits",
+  "p1": "[W]It may help the tribunal if you can provide this detail. You will not be penalised for not providing it.",
+  "tableHeader": "[W]Pension and benefits details provided in ET1",
+  "anyContributionsLabel": "[W]Did the respondent make any contributions to pension?",
+  "receiveBenefitsLabel": "[W]Receive any employee benefits?",
+  "areClaimantPensionBenefitsCorrect": {
+    "label": "[W]Are the claimant’s pension and benefits details correct?"
+  },
+  "whatAreClaimantCorrectPensionBenefits": {
+    "label": "[W]What are the claimant’s correct pension and benefits details? (optional)"
+  },
+  "errors": {
+    "areClaimantPensionBenefitsCorrect": {
+      "required": "[W]Make a selection"
+    },
+    "whatAreClaimantCorrectPensionBenefits": {
+      "tooLong": "[W]The claimant pension and benefits entered must be less than 2500 characters"
+    }
+  }
+}

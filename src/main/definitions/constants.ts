@@ -73,6 +73,7 @@ export const TranslationKeys = {
   CLAIMANT_PAY_DETAILS_ENTER: 'claimant-pay-details-enter',
   CLAIMANT_NOTICE_PERIOD: 'claimant-notice-period',
   CLAIMANT_PENSION_AND_BENEFITS: 'claimant-pension-and-benefits',
+  CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS: 'check-your-answers-pay-pension-and-benefits',
 } as const;
 
 export const PageUrls = {
@@ -129,6 +130,7 @@ export const PageUrls = {
   CLAIMANT_PAY_DETAILS_ENTER: '/claimant-pay-details-enter',
   CLAIMANT_NOTICE_PERIOD: '/claimant-notice-period',
   CLAIMANT_PENSION_AND_BENEFITS: '/claimant-pension-and-benefits',
+  CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS: '/check-your-answers-pay-pension-and-benefits',
 } as const;
 
 export const InterceptPaths = {
