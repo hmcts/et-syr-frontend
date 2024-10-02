@@ -34,6 +34,7 @@ export default class AcasEarlyConciliationCertificateController {
                 type: 'textarea',
                 id: 'whyDoYouDisagreeAcas',
                 label: (l: AnyRecord): string => l.whyDoYouDisagreeAcas.label,
+                labelSize: 's',
                 validator: isContent2500CharsOrLess,
               },
             },

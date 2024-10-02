@@ -2,8 +2,12 @@
   "title": "Claimant job title",
   "jobTitleLabel": "Job title provided on ET1",
   "p1": "It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
-  "label": "Is the claimant’s job title correct?",
-  "noLabel": "What is or was the claimant’s correct job title? (optional)",
+  "isClaimantJobTitleCorrect": {
+    "label": "Is the claimant’s job title correct?"
+  },
+  "whatIsClaimantJobTitle": {
+    "label": "What is or was the claimant’s correct job title? (optional)"
+  },
   "errors": {
     "isClaimantJobTitleCorrect": {
       "required": "Make a selection"
