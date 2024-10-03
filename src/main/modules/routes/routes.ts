@@ -7,6 +7,7 @@ import AcasEarlyConciliationCertificateController from '../../controllers/AcasEa
 import CaseDetailsController from '../../controllers/CaseDetailsController';
 import CaseListCheckController from '../../controllers/CaseListCheckController';
 import CaseListController from '../../controllers/CaseListController';
+import ChangeDetailsController from '../../controllers/ChangeDetailsController';
 import CheckYourAnswersEarlyConciliationAndEmployeeDetailsController from '../../controllers/CheckYourAnswersEarlyConciliationAndEmployeeDetailsController';
 import ClaimantAcasCertificateDetailsController from '../../controllers/ClaimantAcasCertificateDetailsController';
 import ClaimantAverageWeeklyWorkHoursController from '../../controllers/ClaimantAverageWeeklyWorkHoursController';
@@ -20,6 +21,7 @@ import ClaimantPayDetailsController from '../../controllers/ClaimantPayDetailsCo
 import ClaimantPayDetailsEnterController from '../../controllers/ClaimantPayDetailsEnterController';
 import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPensionAndBenefitsController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
+import ET3CYAController from '../../controllers/ET3CYAController';
 import ET3ResponseController from '../../controllers/ET3ResponseController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
@@ -47,10 +49,12 @@ import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheck
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
-import { PageUrls, Urls } from '../../definitions/constants';
+import { InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
 
 export class Routes {
   public enableFor(app: Application): void {
+    app.get(InterceptPaths.CHANGE_DETAILS, new ChangeDetailsController().get);
+    // Page URLs
     app.get(PageUrls.HOME, new HomeController().get);
     app.get(PageUrls.INTERRUPTION_CARD, new InterruptionCardController().get);
     app.get(PageUrls.CASE_LIST_CHECK, new CaseListCheckController().get);
@@ -62,6 +66,7 @@ export class Routes {
     app.get(PageUrls.CASE_DETAILS_WITH_CASE_ID_PARAMETER, new CaseDetailsController().get);
     app.get(PageUrls.COOKIE_PREFERENCES, new CookiePreferencesController().get);
     app.get(PageUrls.RESPONDENT_ET3_RESPONSE, new ET3ResponseController().get);
+    app.get(PageUrls.RESPONDENT_ET3_CYA, new ET3CYAController().get);
     // hub links
     app.get(PageUrls.CLAIMANT_ET1_FORM, new ClaimantET1FormController().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_LANDING, new RespondentResponseLandingController().get);

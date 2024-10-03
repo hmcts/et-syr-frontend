@@ -13,3 +13,17 @@ export const setUrlLanguage = (req: AppRequest, redirectUrl: string): string => 
   }
   return redirectUrl;
 };
+
+export const setChangeAnswersUrlLanguage = (req: AppRequest): string => {
+  if (req.cookies.i18next === languages.WELSH) {
+    return languages.WELSH_URL_PARAMETER;
+  }
+  return languages.ENGLISH_URL_PARAMETER;
+};
+
+export const setCheckAnswersLanguage = (req: AppRequest, sessionUrl: string): string => {
+  if (req.cookies.i18next === languages.WELSH) {
+    return sessionUrl + languages.WELSH_URL_PARAMETER;
+  }
+  return sessionUrl + languages.ENGLISH_URL_PARAMETER;
+};
