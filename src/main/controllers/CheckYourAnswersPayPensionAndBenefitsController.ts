@@ -8,32 +8,32 @@ import { FormContent, FormFields } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getEt3Section3 } from '../helpers/controller/CheckYourAnswersET3Helper';
+import { getEt3Section4 } from '../helpers/controller/CheckYourAnswersET3Helper';
 import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
 import { isOptionSelected } from '../validators/validator';
 
-const logger = getLogger('CheckYourAnswersEarlyConciliationAndEmployeeDetailsController');
+const logger = getLogger('CheckYourAnswersPayPensionAndBenefitsController');
 
-export default class CheckYourAnswersEarlyConciliationAndEmployeeDetailsController {
-  form: Form;
+export default class CheckYourAnswersPayPensionAndBenefitsController {
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      haveYouCompleted: {
+      pensionAndBenefitsSection: {
         classes: 'govuk-radios',
-        id: 'haveYouCompleted',
+        id: 'pensionAndBenefitsSection',
         type: 'radios',
         label: (l: AnyRecord): string => l.cya.label,
         hint: (l: AnyRecord): string => l.cya.hint,
         labelHidden: false,
         values: [
           {
-            name: 'haveYouCompleted',
+            name: 'pensionAndBenefitsSection',
             label: (l: AnyRecord): string => l.cya.yes,
             value: YesOrNo.YES,
           },
           {
-            name: 'haveYouCompleted',
+            name: 'pensionAndBenefitsSection',
             label: (l: AnyRecord): string => l.cya.no,
             value: YesOrNo.NO,
           },
@@ -69,12 +69,12 @@ export default class CheckYourAnswersEarlyConciliationAndEmployeeDetailsControll
       return res.redirect(req.url);
     } else {
       req.session.userCase = userCase;
-      res.redirect(PageUrls.CLAIMANT_PAY_DETAILS);
+      res.redirect(PageUrls.RESPONDENT_RESPONSE_TASK_LIST);
     }
   };
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
-    const redirectUrl = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS);
+    const redirectUrl = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS);
     const userCase = req.session.userCase;
 
     const sectionTranslations: AnyRecord = {
@@ -82,18 +82,15 @@ export default class CheckYourAnswersEarlyConciliationAndEmployeeDetailsControll
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
     };
 
-    res.render(TranslationKeys.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS, {
-      ...req.t(
-        TranslationKeys.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS as never,
-        { returnObjects: true } as never
-      ),
+    res.render(TranslationKeys.CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS, {
+      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       InterceptPaths,
       PageUrls,
       form: this.formContent,
-      et3ResponseSection3: getEt3Section3(userCase, sectionTranslations),
+      et3ResponseSection4: getEt3Section4(userCase, sectionTranslations),
       redirectUrl,
       hideContactUs: true,
     });
