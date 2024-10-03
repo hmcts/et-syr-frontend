@@ -75,6 +75,7 @@ export const TranslationKeys = {
   CLAIMANT_PAY_DETAILS_ENTER: 'claimant-pay-details-enter',
   CLAIMANT_NOTICE_PERIOD: 'claimant-notice-period',
   CLAIMANT_PENSION_AND_BENEFITS: 'claimant-pension-and-benefits',
+  CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS: 'check-your-answers-pay-pension-and-benefits',
 } as const;
 
 export const PageUrls = {
@@ -132,6 +133,7 @@ export const PageUrls = {
   CLAIMANT_PAY_DETAILS_ENTER: '/claimant-pay-details-enter',
   CLAIMANT_NOTICE_PERIOD: '/claimant-notice-period',
   CLAIMANT_PENSION_AND_BENEFITS: '/claimant-pension-and-benefits',
+  CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS: '/check-your-answers-pay-pension-and-benefits',
 } as const;
 
 export const InterceptPaths = {
@@ -157,6 +159,11 @@ export const ValidationErrors = {
   REQUIRED: 'required',
   INVALID_VALUE: 'invalid',
   API: 'api',
+  SESSION_USER_CASE: 'sessionUserCase',
+  SESSION_USER: 'sessionUser',
+  SESSION_RESPONDENT: 'sessionRespondent',
+  USER_ID: 'userId',
+  RESPONDENT_NOT_FOUND: 'respondentNotFound',
 } as const;
 
 export const AuthUrls = {
@@ -194,6 +201,7 @@ export const JavaApiUrls = {
   UPDATE_ADMIN_DECISION_STATE: '/tseAdmin/update-admin-decision-state',
   SUBMIT_BUNDLES: 'bundles/submit-bundles',
   ROLE_PARAM_NAME: 'case_user_role',
+  MODIFY_ET3_DATA: '/et3/modifyEt3Data',
 } as const;
 
 export const Roles = {
@@ -445,6 +453,7 @@ export const DefaultValues = {
   STRING_QUESTION_MARK: '?',
   STRING_EQUALS: '=',
   STRING_SPACE: ' ',
+  STRING_NEW_LINE: '\n',
 } as const;
 
 export const FormFieldNames = {
@@ -470,6 +479,10 @@ export const ServiceErrors = {
   ERROR_GETTING_USER_CASES: 'Error getting user cases: ',
   ERROR_ASSIGNING_USER_ROLE: 'Error assigning user role: ',
   ERROR_DUMMY_DATA: 'Dummy data error',
+  ERROR_MODIFYING_SUBMITTED_CASE: 'Error updating submit case: ',
+  ERROR_MODIFYING_SUBMITTED_CASE_IDAM_ID_NOT_FOUND: 'Idam id not found',
+  ERROR_MODIFYING_SUBMITTED_CASE_REQUEST_TYPE_NOT_FOUND: 'Request type not found',
+  ERROR_MODIFYING_SUBMITTED_CASE_RESPONDENT_NOT_FOUND: 'Respondent not found',
 } as const;
 
 export const CacheErrors = {
@@ -482,3 +495,19 @@ export const LoggingConstants = {
   INFO_LOG_RETRIEVING_CASES: 'Retrieving cases for',
   INFO_LOG_USER_ID_NOT_EXISTS: 'undefined user id',
 } as const;
+
+export const ET3ModificationTypes = {
+  MODIFICATION_TYPE_UPDATE: 'update',
+  MODIFICATION_TYPE_SUBMIT: 'submit',
+} as const;
+
+export const LoggerConstants = {
+  ERROR_SESSION_USER_CASE_NOT_FOUND: 'User case not found in session',
+  ERROR_SESSION_USER_NOT_FOUND: 'User not found in session',
+  ERROR_SESSION_SELECTED_USER_NOT_FOUND: 'Selected user not found in session',
+  ERROR_SESSION_INVALID_USER_ID: 'Session user does not have a valid user id',
+  ERROR_SESSION_INVALID_RESPONDENT_LIST: 'Session case does not have respondent list',
+  ERROR_SESSION_INVALID_RESPONDENT: 'There is no matching respondent with the session user',
+  ERROR_API: 'An error occurred while calling API, ',
+  ERROR_SYSTEM: 'System error. ',
+};

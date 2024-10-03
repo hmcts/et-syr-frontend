@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import { Request } from 'express';
 import { Session } from 'express-session';
 
-import { CaseWithId } from './case';
+import { CaseWithId, Respondent } from './case';
 import { FormError } from './form';
 import { AnyRecord } from './util-types';
 
@@ -57,6 +57,7 @@ export interface AppSession extends Session {
   contactTribunalSelection?: string;
   documentDownloadPage?: string;
   respondentNameFromForm?: string;
+  selectedRespondent?: Respondent;
 }
 
 export interface UserDetails {
