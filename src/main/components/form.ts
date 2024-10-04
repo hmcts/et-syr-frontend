@@ -1,3 +1,4 @@
+import { ET3FormModel } from '../definitions/ET3FormModel';
 import { Case, CaseWithId } from '../definitions/case';
 import { FormContent, FormError, FormField, FormFields, FormInput, FormOptions } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
@@ -48,7 +49,7 @@ export class Form {
   /**
    * Pass the form body to any fields with a parser and return mutated body;
    */
-  public getParsedBodyForET3(body: AnyRecord, checkFields?: FormContent['fields']): Partial<CaseWithId> {
+  public getET3ParsedBodyForET3FormModel(body: AnyRecord, checkFields?: FormContent['fields']): Partial<ET3FormModel> {
     const fields = checkFields || this.fields;
 
     const parsedBody = Object.entries(fields)

@@ -31,7 +31,7 @@ describe('Session and Error Handling Functions', () => {
     res = new MockResponse() as unknown as Response;
 
     form = {
-      getParsedBody: jest.fn().mockReturnValue({ someField: 'parsedValue' }),
+      getParsedBodyForCaseWithId: jest.fn().mockReturnValue({ someField: 'parsedValue' }),
       getFormFields: jest.fn().mockReturnValue({ someField: 'someValue' }),
       getValidatorErrors: jest.fn().mockReturnValue([]),
     } as unknown as Form;
