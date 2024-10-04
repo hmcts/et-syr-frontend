@@ -32,6 +32,9 @@ export const TranslationKeys = {
   SELF_ASSIGNMENT_CHECK: 'self-assignment-check',
   CASE_LIST: 'case-list',
   CHECK_YOUR_ANSWERS_ET3_COMMON: 'check-your-answers-et3-common',
+  APPLICATION_SUBMITTED: 'application-submitted',
+  RESPONSE_SAVED: 'response-saved',
+  RESPONDENT_ET3_COMMON: 'et3-common',
   RESPONDENT_ET3_RESPONSE: 'et3-response',
   CHECK_YOUR_ANSWERS_ET3: 'check-your-answers-et3',
   // hub links
@@ -93,6 +96,8 @@ export const PageUrls = {
   CASE_DETAILS_WITH_CASE_ID_PARAMETER: '/case-details/:caseId',
   CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER: '/case-details',
   COOKIE_PREFERENCES: '/cookies',
+  APPLICATION_SUBMITTED: '/application-submitted',
+  RESPONSE_SAVED: '/response-saved',
   RESPONDENT_ET3_RESPONSE: '/et3-response',
   CHECK_YOUR_ANSWERS_ET3: '/check-your-answers-et3',
   NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
