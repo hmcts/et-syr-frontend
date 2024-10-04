@@ -4,6 +4,7 @@ import { infoRequestHandler } from '@hmcts/info-provider';
 import { Application } from 'express';
 
 import AcasEarlyConciliationCertificateController from '../../controllers/AcasEarlyConciliationCertificateController';
+import ApplicationSubmittedController from '../../controllers/ApplicationSubmittedController';
 import CaseDetailsController from '../../controllers/CaseDetailsController';
 import CaseListCheckController from '../../controllers/CaseListCheckController';
 import CaseListController from '../../controllers/CaseListController';
@@ -45,6 +46,7 @@ import RespondentResponseTaskListController from '../../controllers/RespondentRe
 import RespondentSelectPostCodeController from '../../controllers/RespondentSelectPostCodeController';
 import RespondentSiteEmployeesController from '../../controllers/RespondentSiteEmployeesController';
 import RespondentSitesController from '../../controllers/RespondentSitesController';
+import ResponseSavedController from '../../controllers/ResponseSavedController';
 import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheckController';
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
@@ -65,6 +67,8 @@ export class Routes {
     app.get(PageUrls.CASE_LIST, new CaseListController().get);
     app.get(PageUrls.CASE_DETAILS_WITH_CASE_ID_PARAMETER, new CaseDetailsController().get);
     app.get(PageUrls.COOKIE_PREFERENCES, new CookiePreferencesController().get);
+    app.get(PageUrls.APPLICATION_SUBMITTED, new ApplicationSubmittedController().get);
+    app.get(PageUrls.RESPONSE_SAVED, new ResponseSavedController().get);
     app.get(PageUrls.RESPONDENT_ET3_RESPONSE, new ET3ResponseController().get);
     app.get(PageUrls.RESPONDENT_ET3_CYA, new ET3CYAController().get);
     // hub links
