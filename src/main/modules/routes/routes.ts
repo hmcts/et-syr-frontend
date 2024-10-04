@@ -4,9 +4,11 @@ import { infoRequestHandler } from '@hmcts/info-provider';
 import { Application } from 'express';
 
 import AcasEarlyConciliationCertificateController from '../../controllers/AcasEarlyConciliationCertificateController';
+import ApplicationSubmittedController from '../../controllers/ApplicationSubmittedController';
 import CaseDetailsController from '../../controllers/CaseDetailsController';
 import CaseListCheckController from '../../controllers/CaseListCheckController';
 import CaseListController from '../../controllers/CaseListController';
+import ChangeDetailsController from '../../controllers/ChangeDetailsController';
 import CheckYourAnswersEarlyConciliationAndEmployeeDetailsController from '../../controllers/CheckYourAnswersEarlyConciliationAndEmployeeDetailsController';
 import ClaimantAcasCertificateDetailsController from '../../controllers/ClaimantAcasCertificateDetailsController';
 import ClaimantAverageWeeklyWorkHoursController from '../../controllers/ClaimantAverageWeeklyWorkHoursController';
@@ -18,7 +20,9 @@ import ClaimantJobTitleController from '../../controllers/ClaimantJobTitleContro
 import ClaimantNoticePeriodController from '../../controllers/ClaimantNoticePeriodController';
 import ClaimantPayDetailsController from '../../controllers/ClaimantPayDetailsController';
 import ClaimantPayDetailsEnterController from '../../controllers/ClaimantPayDetailsEnterController';
+import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPensionAndBenefitsController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
+import ET3CYAController from '../../controllers/ET3CYAController';
 import ET3ResponseController from '../../controllers/ET3ResponseController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
@@ -42,14 +46,17 @@ import RespondentResponseTaskListController from '../../controllers/RespondentRe
 import RespondentSelectPostCodeController from '../../controllers/RespondentSelectPostCodeController';
 import RespondentSiteEmployeesController from '../../controllers/RespondentSiteEmployeesController';
 import RespondentSitesController from '../../controllers/RespondentSitesController';
+import ResponseSavedController from '../../controllers/ResponseSavedController';
 import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheckController';
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
-import { PageUrls, Urls } from '../../definitions/constants';
+import { InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
 
 export class Routes {
   public enableFor(app: Application): void {
+    app.get(InterceptPaths.CHANGE_DETAILS, new ChangeDetailsController().get);
+    // Page URLs
     app.get(PageUrls.HOME, new HomeController().get);
     app.get(PageUrls.INTERRUPTION_CARD, new InterruptionCardController().get);
     app.get(PageUrls.CASE_LIST_CHECK, new CaseListCheckController().get);
@@ -60,7 +67,10 @@ export class Routes {
     app.get(PageUrls.CASE_LIST, new CaseListController().get);
     app.get(PageUrls.CASE_DETAILS_WITH_CASE_ID_PARAMETER, new CaseDetailsController().get);
     app.get(PageUrls.COOKIE_PREFERENCES, new CookiePreferencesController().get);
+    app.get(PageUrls.APPLICATION_SUBMITTED, new ApplicationSubmittedController().get);
+    app.get(PageUrls.RESPONSE_SAVED, new ResponseSavedController().get);
     app.get(PageUrls.RESPONDENT_ET3_RESPONSE, new ET3ResponseController().get);
+    app.get(PageUrls.RESPONDENT_ET3_CYA, new ET3CYAController().get);
     // hub links
     app.get(PageUrls.CLAIMANT_ET1_FORM, new ClaimantET1FormController().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_LANDING, new RespondentResponseLandingController().get);
@@ -138,6 +148,8 @@ export class Routes {
     app.post(PageUrls.CLAIMANT_PAY_DETAILS_ENTER, new ClaimantPayDetailsEnterController().post);
     app.get(PageUrls.CLAIMANT_NOTICE_PERIOD, new ClaimantNoticePeriodController().get);
     app.post(PageUrls.CLAIMANT_NOTICE_PERIOD, new ClaimantNoticePeriodController().post);
+    app.get(PageUrls.CLAIMANT_PENSION_AND_BENEFITS, new ClaimantPensionAndBenefitsController().get);
+    app.post(PageUrls.CLAIMANT_PENSION_AND_BENEFITS, new ClaimantPensionAndBenefitsController().post);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,

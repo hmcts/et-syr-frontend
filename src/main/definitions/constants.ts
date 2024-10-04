@@ -26,7 +26,11 @@ export const TranslationKeys = {
   COOKIE_PREFERENCES: 'cookie-preferences',
   RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
   CASE_DETAILS_WITH_CASE_ID_PARAMETER: 'case-details',
+  APPLICATION_SUBMITTED: 'application-submitted',
+  RESPONSE_SAVED: 'response-saved',
+  RESPONDENT_ET3_COMMON: 'et3-common',
   RESPONDENT_ET3_RESPONSE: 'et3-response',
+  RESPONDENT_ET3_CYA: 'et3-check-your-answers',
   // hub links
   CLAIMANT_ET1_FORM: 'claimant-et1-form',
   RESPONDENT_RESPONSE_LANDING: 'respondent-response-landing',
@@ -73,6 +77,7 @@ export const TranslationKeys = {
   CLAIMANT_PAY_DETAILS_ENTER: 'claimant-pay-details-enter',
   CLAIMANT_NOTICE_PERIOD: 'claimant-notice-period',
   CLAIMANT_PENSION_AND_BENEFITS: 'claimant-pension-and-benefits',
+  CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS: 'check-your-answers-pay-pension-and-benefits',
 } as const;
 
 export const PageUrls = {
@@ -86,7 +91,10 @@ export const PageUrls = {
   CASE_DETAILS_WITH_CASE_ID_PARAMETER: '/case-details/:caseSubmissionReference',
   CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER: '/case-details',
   COOKIE_PREFERENCES: '/cookies',
+  APPLICATION_SUBMITTED: '/application-submitted',
+  RESPONSE_SAVED: '/response-saved',
   RESPONDENT_ET3_RESPONSE: '/et3-response',
+  RESPONDENT_ET3_CYA: '/et3-check-your-answers',
   // hub links
   CLAIMANT_ET1_FORM: '/claimant-et1-form',
   RESPONDENT_RESPONSE_LANDING: '/respondent-response-landing',
@@ -129,6 +137,7 @@ export const PageUrls = {
   CLAIMANT_PAY_DETAILS_ENTER: '/claimant-pay-details-enter',
   CLAIMANT_NOTICE_PERIOD: '/claimant-notice-period',
   CLAIMANT_PENSION_AND_BENEFITS: '/claimant-pension-and-benefits',
+  CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS: '/check-your-answers-pay-pension-and-benefits',
 } as const;
 
 export const InterceptPaths = {

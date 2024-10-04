@@ -1,0 +1,12 @@
+{
+  "title": "[W]Response saved",
+  "titleText": "[W]Response saved",
+  "heading1": "[W]What happens next",
+  "p1": "[W]You can return to your saved response from the case overview page at any time. ",
+  "deadline": {
+    "p1": "[W]You have until ",
+    "p2": "[W]to submit your response."
+  },
+  "returnToOverview": "[W]Return to case overview",
+  "returnToResponse": "[W]Return to response"
+}

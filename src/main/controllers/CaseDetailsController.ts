@@ -57,7 +57,6 @@ export default class CaseDetailsController {
     const et3CaseDetailsLinksStatuses =
       req.session.userCase.respondents[req.session.selectedRespondentIndex].et3CaseDetailsLinksStatuses;
     const languageParam = getLanguageParam(req.url);
-
     const sections = Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
       return {
         title: (l: AnyRecord): string => l[`section${index + 1}`],

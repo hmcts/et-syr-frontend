@@ -1,0 +1,40 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% block beforeContent %}
+  {{ super() }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+    {{ govukPanel({
+          titleText: titleText
+      })
+    }}
+
+    <h2 class="govuk-heading-m">{{ heading1 }}</h2>
+    <div class="govuk-body">
+      <p>{{ p1 }}</p>
+      <p>{{ deadline.p1 }} <b>[deadline date]</b> {{ deadline.p2 }}</p>    </div>
+
+    <div class="govuk-button-group">
+      {{ govukButton({
+        text: returnToOverview,
+        href: redirectUrl
+      }) }}
+      {{ govukButton({
+        classes: 'response-saved-button govuk-button--secondary',
+        text: returnToResponse,
+        href: '#'
+      }) }}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+  {% include "form/main/footer.njk" %}
+{% endblock %}

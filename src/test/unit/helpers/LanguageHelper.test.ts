@@ -1,35 +1,105 @@
-import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
-import { mockSession } from '../mocks/mockApp';
+import { languages } from '../../../main/definitions/constants';
+import {
+  setChangeAnswersUrlLanguage,
+  setCheckAnswersLanguage,
+  setUrlLanguage,
+} from '../../../main/helpers/LanguageHelper';
 import { mockRequest } from '../mocks/mockRequest';
 
-describe('setUrlLanguageForRedirectPage', () => {
-  it('should add welsh parameters to the redirected url if the request url has welsh parameters', () => {
-    const req = mockRequest({
-      session: mockSession([], [], []),
-      body: { saveForLater: true, testFormField: 'test value' },
+describe('Language Helper Functions', () => {
+  describe('setUrlLanguage', () => {
+    let req: ReturnType<typeof mockRequest>;
+
+    beforeEach(() => {
+      req = mockRequest({});
     });
-    req.url = '/testPageUrl?lng=cy';
-    const redirectUrl = setUrlLanguage(req, '/redirectTestPage');
-    expect(redirectUrl).toEqual('/redirectTestPage?lng=cy');
+
+    it('should append Welsh language parameter to the redirect URL and set session.lang to Welsh when URL contains Welsh parameter', () => {
+      req.url = '/some-url?lng=cy';
+      const redirectUrl = '/redirect-url';
+      const result = setUrlLanguage(req, redirectUrl);
+
+      expect(result).toBe(redirectUrl + languages.WELSH_URL_PARAMETER);
+      expect(req.session.lang).toBe(languages.WELSH);
+    });
+
+    it('should append English language parameter to the redirect URL and set session.lang to English when URL contains English parameter', () => {
+      req.url = '/some-url?lng=en';
+      const redirectUrl = '/redirect-url';
+      const result = setUrlLanguage(req, redirectUrl);
+
+      expect(result).toBe(redirectUrl + languages.ENGLISH_URL_PARAMETER);
+      expect(req.session.lang).toBe(languages.ENGLISH);
+    });
+
+    it('should return the original redirect URL if no language parameter is found in the URL', () => {
+      req.url = '/some-url';
+      const redirectUrl = '/redirect-url';
+      const result = setUrlLanguage(req, redirectUrl);
+
+      expect(result).toBe(redirectUrl);
+      expect(req.session.lang).toBe(languages.ENGLISH); // ENG as default if no lang is set
+    });
   });
 
-  it('should add english parameters to the redirected url if the request url has english parameters', () => {
-    const req = mockRequest({
-      session: mockSession([], [], []),
-      body: { saveForLater: true, testFormField: 'test value' },
+  describe('setChangeAnswersUrlLanguage', () => {
+    let req: ReturnType<typeof mockRequest>;
+
+    beforeEach(() => {
+      req = mockRequest({});
     });
-    req.url = '/testPageUrl?lng=en';
-    const redirectUrl = setUrlLanguage(req, '/redirectTestPage');
-    expect(redirectUrl).toEqual('/redirectTestPage?lng=en');
+
+    it('should return Welsh language parameter if the cookie i18next is set to Welsh', () => {
+      req.cookies.i18next = languages.WELSH;
+      const result = setChangeAnswersUrlLanguage(req);
+
+      expect(result).toBe(languages.WELSH_URL_PARAMETER);
+    });
+
+    it('should return English language parameter if the cookie i18next is set to English', () => {
+      req.cookies.i18next = languages.ENGLISH;
+      const result = setChangeAnswersUrlLanguage(req);
+
+      expect(result).toBe(languages.ENGLISH_URL_PARAMETER);
+    });
+
+    it('should return English language parameter by default if no i18next cookie is present', () => {
+      req.cookies.i18next = undefined;
+      const result = setChangeAnswersUrlLanguage(req);
+
+      expect(result).toBe(languages.ENGLISH_URL_PARAMETER);
+    });
   });
 
-  it('should keep the redirect page without any parameters if the request url does not contain them', () => {
-    const req = mockRequest({
-      session: mockSession([], [], []),
-      body: { saveForLater: true, testFormField: 'test value' },
+  describe('setCheckAnswersLanguage', () => {
+    let req: ReturnType<typeof mockRequest>;
+
+    beforeEach(() => {
+      req = mockRequest({});
     });
-    req.url = '/testPageUrl';
-    const redirectUrl = setUrlLanguage(req, '/redirectTestPage');
-    expect(redirectUrl).toEqual('/redirectTestPage');
+
+    it('should append Welsh language parameter to the session URL if the cookie i18next is set to Welsh', () => {
+      req.cookies.i18next = languages.WELSH;
+      const sessionUrl = '/check-answers';
+      const result = setCheckAnswersLanguage(req, sessionUrl);
+
+      expect(result).toBe(sessionUrl + languages.WELSH_URL_PARAMETER);
+    });
+
+    it('should append English language parameter to the session URL if the cookie i18next is set to English', () => {
+      req.cookies.i18next = languages.ENGLISH;
+      const sessionUrl = '/check-answers';
+      const result = setCheckAnswersLanguage(req, sessionUrl);
+
+      expect(result).toBe(sessionUrl + languages.ENGLISH_URL_PARAMETER);
+    });
+
+    it('should append English language parameter by default if no i18next cookie is present', () => {
+      req.cookies.i18next = undefined;
+      const sessionUrl = '/check-answers';
+      const result = setCheckAnswersLanguage(req, sessionUrl);
+
+      expect(result).toBe(sessionUrl + languages.ENGLISH_URL_PARAMETER);
+    });
   });
 });
