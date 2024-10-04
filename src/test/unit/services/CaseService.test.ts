@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { DefaultValues, ET3ModificationTypes, ServiceErrors } from '../../../main/definitions/constants';
 import { HubLinkStatus } from '../../../main/definitions/hub';
+import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
 import { CaseApi, getCaseApi } from '../../../main/services/CaseService';
 import { mockAxiosError, mockAxiosErrorWithDataError } from '../mocks/mockAxios';
 import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
@@ -177,7 +178,11 @@ describe('Case Service Tests', () => {
       const value = await api.modifyEt3Data(
         mockCaseWithIdWithRespondents,
         mockUserDetails.id,
-        ET3ModificationTypes.MODIFICATION_TYPE_UPDATE
+        ET3ModificationTypes.MODIFICATION_TYPE_UPDATE,
+        ET3CaseDetailsLinkNames.RespondentResponse,
+        LinkStatus.IN_PROGRESS,
+        ET3HubLinkNames.ContactDetails,
+        LinkStatus.IN_PROGRESS
       );
       expect(value.data).toEqual([mockCaseApiDataResponse]);
     });
@@ -190,7 +195,11 @@ describe('Case Service Tests', () => {
         api.modifyEt3Data(
           mockCaseWithIdWithRespondents,
           DefaultValues.STRING_EMPTY,
-          ET3ModificationTypes.MODIFICATION_TYPE_UPDATE
+          ET3ModificationTypes.MODIFICATION_TYPE_UPDATE,
+          ET3CaseDetailsLinkNames.RespondentResponse,
+          LinkStatus.IN_PROGRESS,
+          ET3HubLinkNames.ContactDetails,
+          LinkStatus.IN_PROGRESS
         )
       ).rejects.toEqual(
         new Error(
@@ -204,7 +213,15 @@ describe('Case Service Tests', () => {
       const api = new CaseApi(mockedAxios);
       mockedAxios.post.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponseList);
       await expect(() =>
-        api.modifyEt3Data(mockCaseWithIdWithRespondents, mockUserDetails.id, DefaultValues.STRING_SPACE)
+        api.modifyEt3Data(
+          mockCaseWithIdWithRespondents,
+          mockUserDetails.id,
+          DefaultValues.STRING_SPACE,
+          ET3CaseDetailsLinkNames.RespondentResponse,
+          LinkStatus.IN_PROGRESS,
+          ET3HubLinkNames.ContactDetails,
+          LinkStatus.IN_PROGRESS
+        )
       ).rejects.toEqual(
         new Error(
           ServiceErrors.ERROR_MODIFYING_SUBMITTED_CASE +
@@ -218,7 +235,15 @@ describe('Case Service Tests', () => {
       const api = new CaseApi(mockedAxios);
       mockedAxios.post.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponseList);
       await expect(() =>
-        api.modifyEt3Data(mockCaseWithIdWithRespondents, '123', ET3ModificationTypes.MODIFICATION_TYPE_UPDATE)
+        api.modifyEt3Data(
+          mockCaseWithIdWithRespondents,
+          '123',
+          ET3ModificationTypes.MODIFICATION_TYPE_UPDATE,
+          ET3CaseDetailsLinkNames.RespondentResponse,
+          LinkStatus.IN_PROGRESS,
+          ET3HubLinkNames.ContactDetails,
+          LinkStatus.IN_PROGRESS
+        )
       ).rejects.toEqual(
         new Error(
           ServiceErrors.ERROR_MODIFYING_SUBMITTED_CASE +
@@ -237,7 +262,11 @@ describe('Case Service Tests', () => {
         api.modifyEt3Data(
           mockCaseWithIdWithRespondents,
           mockUserDetails.id,
-          ET3ModificationTypes.MODIFICATION_TYPE_UPDATE
+          ET3ModificationTypes.MODIFICATION_TYPE_UPDATE,
+          ET3CaseDetailsLinkNames.RespondentResponse,
+          LinkStatus.IN_PROGRESS,
+          ET3HubLinkNames.ContactDetails,
+          LinkStatus.IN_PROGRESS
         )
       ).rejects.toEqual(new Error(ServiceErrors.ERROR_MODIFYING_SUBMITTED_CASE + ServiceErrors.ERROR_CASE_NOT_FOUND));
     });

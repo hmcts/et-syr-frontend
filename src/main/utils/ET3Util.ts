@@ -1,5 +1,5 @@
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, Respondent } from '../definitions/case';
+import { CaseWithId } from '../definitions/case';
 import {
   DefaultValues,
   ET3ModificationTypes,
@@ -17,7 +17,7 @@ import StringUtils from './StringUtils';
 const logger = getLogger('RespondentNameController');
 
 export default class ET3Util {
-  public static findSelectedRespondent(req: AppRequest): Respondent {
+  public static findSelectedRespondent(req: AppRequest): number {
     if (!req.session?.userCase) {
       ErrorUtils.setManualErrorToRequestSession(
         req,
@@ -54,11 +54,12 @@ export default class ET3Util {
       logger.error(LoggerConstants.ERROR_SESSION_INVALID_USER_ID);
       return;
     }
-
+    let selectedRespondentIndex: number = 0;
     for (const respondent of req.session.userCase.respondents) {
       if (respondent.idamId === req.session.user.id) {
-        return respondent;
+        return selectedRespondentIndex;
       }
+      selectedRespondentIndex++;
     }
     ErrorUtils.setManualErrorToRequestSession(
       req,
@@ -68,7 +69,13 @@ export default class ET3Util {
     logger.error(LoggerConstants.ERROR_SESSION_INVALID_RESPONDENT);
   }
 
-  public static async updateET3Data(req: AppRequest): Promise<CaseWithId> {
+  public static async updateET3Data(
+    req: AppRequest,
+    caseDetailsLinksSectionId: string,
+    caseDetailsLinksSectionStatus: string,
+    responseHubLinksSectionId: string,
+    responseHubLinksSectionStatus: string
+  ): Promise<CaseWithId> {
     let caseWithId: CaseWithId;
     try {
       caseWithId = formatApiCaseDataToCaseWithId(
@@ -76,7 +83,11 @@ export default class ET3Util {
           await getCaseApi(req.session.user?.accessToken)?.modifyEt3Data(
             req.session?.userCase,
             req.session?.user?.id,
-            ET3ModificationTypes.MODIFICATION_TYPE_UPDATE
+            ET3ModificationTypes.MODIFICATION_TYPE_UPDATE,
+            caseDetailsLinksSectionId,
+            caseDetailsLinksSectionStatus,
+            responseHubLinksSectionId,
+            responseHubLinksSectionStatus
           )
         )?.data
       );

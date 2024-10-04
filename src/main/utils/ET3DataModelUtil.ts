@@ -1,4 +1,4 @@
-import { ET3Request } from '../definitions/ET3Request';
+import { ET3RequestModel } from '../definitions/ET3RequestModel';
 import { CaseWithId, Respondent } from '../definitions/case';
 import { RespondentType } from '../definitions/complexTypes/respondent';
 import { ServiceErrors } from '../definitions/constants';
@@ -6,7 +6,15 @@ import { ServiceErrors } from '../definitions/constants';
 import StringUtils from './StringUtils';
 
 export default class ET3DataModelUtil {
-  public static convertCaseWithIdToET3Request(caseWithId: CaseWithId, idamId: string, requestType: string): ET3Request {
+  public static convertCaseWithIdToET3Request(
+    caseWithId: CaseWithId,
+    idamId: string,
+    requestType: string,
+    caseDetailsLinksSectionId: string,
+    caseDetailsLinksSectionStatus: string,
+    responseHubLinksSectionId: string,
+    responseHubLinksSectionStatus: string
+  ): ET3RequestModel {
     if (StringUtils.isBlank(idamId)) {
       throw new Error(ServiceErrors.ERROR_MODIFYING_SUBMITTED_CASE_IDAM_ID_NOT_FOUND);
     }
@@ -24,9 +32,13 @@ export default class ET3DataModelUtil {
       throw new Error(ServiceErrors.ERROR_MODIFYING_SUBMITTED_CASE_RESPONDENT_NOT_FOUND);
     }
     return {
-      caseId: caseWithId.id,
-      caseType: caseWithId.caseTypeId,
+      caseSubmissionReference: caseWithId.id,
+      caseTypeId: caseWithId.caseTypeId,
       requestType,
+      caseDetailsLinksSectionId,
+      caseDetailsLinksSectionStatus,
+      responseHubLinksSectionId,
+      responseHubLinksSectionStatus,
       respondent: this.convertSelectedRespondentToRespondentType(selectedRespondent),
     };
   }

@@ -83,7 +83,7 @@ export const PageUrls = {
   CASE_LIST_CHECK: '/case-list-check',
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
   CASE_LIST: '/case-list',
-  CASE_DETAILS_WITH_CASE_ID_PARAMETER: '/case-details/:caseId',
+  CASE_DETAILS_WITH_CASE_ID_PARAMETER: '/case-details/:caseSubmissionReference',
   CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER: '/case-details',
   COOKIE_PREFERENCES: '/cookies',
   RESPONDENT_ET3_RESPONSE: '/et3-response',

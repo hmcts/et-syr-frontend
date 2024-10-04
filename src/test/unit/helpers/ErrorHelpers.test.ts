@@ -38,10 +38,10 @@ describe('Session and Error Handling Functions', () => {
   });
 
   describe('returnSessionErrors', () => {
-    it('should call form.getParsedBody and return session errors', () => {
+    it('should call form.getParsedBodyForCaseWithId and return session errors', () => {
       const sessionErrors = returnSessionErrors(req as AppRequest, form);
 
-      expect(form.getParsedBody).toHaveBeenCalledWith(req.body, form.getFormFields());
+      expect(form.getParsedBodyForCaseWithId).toHaveBeenCalledWith(req.body, form.getFormFields());
       expect(sessionErrors).toBeDefined();
     });
   });

@@ -12,7 +12,7 @@ export class Form {
   /**
    * Pass the form body to any fields with a parser and return mutated body;
    */
-  public getParsedBody(body: AnyRecord, checkFields?: FormContent['fields']): Partial<CaseWithId> {
+  public getParsedBodyForCaseWithId(body: AnyRecord, checkFields?: FormContent['fields']): Partial<CaseWithId> {
     const fields = checkFields || this.fields;
 
     const parsedBody = Object.entries(fields)
@@ -28,7 +28,43 @@ export class Form {
       (value as FormOptions)?.values
         ?.filter((option: FormInput) => option.subFields !== undefined)
         .map((fieldWithSubFields: FormInput) => fieldWithSubFields.subFields)
-        .map((subField: AnyRecord) => this.getParsedBody(body, subField))
+        .map((subField: AnyRecord) => this.getParsedBodyForCaseWithId(body, subField))
+        .forEach((parsedSubField: CaseWithId) => {
+          subFieldsParsedBody = { ...subFieldsParsedBody, ...parsedSubField };
+        });
+    }
+
+    const formFieldValues = Object.keys(body)
+      .filter(key => WHITELISTED_FIELDS.includes(key) || (fields as AnyRecord)[key])
+      .reduce((newBody, key) => ({ [key]: body[key], ...newBody }), {});
+
+    return {
+      ...formFieldValues,
+      ...subFieldsParsedBody,
+      ...Object.fromEntries(parsedBody),
+    };
+  }
+
+  /**
+   * Pass the form body to any fields with a parser and return mutated body;
+   */
+  public getParsedBodyForET3(body: AnyRecord, checkFields?: FormContent['fields']): Partial<CaseWithId> {
+    const fields = checkFields || this.fields;
+
+    const parsedBody = Object.entries(fields)
+      .map(setupCheckboxParser(!!body?.saveForLater))
+      .filter(([, field]) => typeof field?.parser === 'function')
+      .flatMap(([key, field]: [string, FormField]) => {
+        const parsed = field.parser?.(body);
+        return Array.isArray(parsed) ? parsed : [[key, parsed]];
+      });
+
+    let subFieldsParsedBody = {};
+    for (const [, value] of Object.entries(fields)) {
+      (value as FormOptions)?.values
+        ?.filter((option: FormInput) => option.subFields !== undefined)
+        .map((fieldWithSubFields: FormInput) => fieldWithSubFields.subFields)
+        .map((subField: AnyRecord) => this.getParsedBodyForCaseWithId(body, subField))
         .forEach((parsedSubField: CaseWithId) => {
           subFieldsParsedBody = { ...subFieldsParsedBody, ...parsedSubField };
         });

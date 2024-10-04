@@ -5,6 +5,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, YesOrNo } from '../definitions/case';
 import { FormFieldNames, LoggerConstants, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields, FormInput } from '../definitions/form';
+import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
@@ -19,26 +20,26 @@ export default class RespondentNameController {
   private readonly form: Form;
   private readonly respondentNameContent: FormContent = {
     fields: {
-      respondentName: {
+      responseRespondentNameQuestion: {
         classes: 'govuk-radios',
-        id: 'respondentName',
+        id: 'responseRespondentNameQuestion',
         type: 'radios',
         label: (l: AnyRecord): string => l.label1,
         labelHidden: false,
         values: [
           {
-            name: 'respondentName',
+            name: 'responseRespondentNameQuestionYes',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNo.YES,
           },
           {
-            name: 'respondentName',
+            name: 'responseRespondentNameQuestionNo',
             label: (l: AnyRecord): string => l.no,
             value: YesOrNo.NO,
             subFields: {
-              respondentNameDetail: {
-                id: 'respondentNameTxt',
-                name: 'respondentNameTxt',
+              responseRespondentName: {
+                id: 'responseRespondentName',
+                name: 'responseRespondentName',
                 type: 'text',
                 labelSize: 'normal',
                 label: (l: AnyRecord): string => l.respondentNameTextLabel,
@@ -66,15 +67,22 @@ export default class RespondentNameController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
+    const formData = this.form.getParsedBodyForCaseWithId(req.body, this.form.getFormFields());
     req.session.errors = this.form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
       return res.redirect(req.url);
     }
-    req.session.selectedRespondent.responseRespondentNameQuestion =
+    req.session.userCase.respondents[req.session.selectedRespondentIndex].responseRespondentNameQuestion =
       formData.respondentName === 'Yes' ? YesOrNo.YES : YesOrNo.NO;
-    req.session.selectedRespondent.responseRespondentName = formData.respondentName;
-    const userCase: CaseWithId = await ET3Util.updateET3Data(req);
+    req.session.userCase.respondents[req.session.selectedRespondentIndex].responseRespondentName =
+      formData.respondentName;
+    const userCase: CaseWithId = await ET3Util.updateET3Data(
+      req,
+      ET3CaseDetailsLinkNames.RespondentResponse,
+      LinkStatus.IN_PROGRESS,
+      ET3HubLinkNames.ContactDetails,
+      LinkStatus.IN_PROGRESS
+    );
     if (req.session.errors?.length > 0) {
       logger.error(LoggerConstants.ERROR_API);
       return res.redirect(req.url);
