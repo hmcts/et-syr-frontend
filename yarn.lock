@@ -2476,6 +2476,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@puppeteer/browsers@npm:2.4.0":
+  version: 2.4.0
+  resolution: "@puppeteer/browsers@npm:2.4.0"
+  dependencies:
+    debug: ^4.3.6
+    extract-zip: ^2.0.1
+    progress: ^2.0.3
+    proxy-agent: ^6.4.0
+    semver: ^7.6.3
+    tar-fs: ^3.0.6
+    unbzip2-stream: ^1.4.3
+    yargs: ^17.7.2
+  bin:
+    browsers: lib/cjs/main-cli.js
+  checksum: c5f9890f1bf355783574c00b42e8a9bf9e4788d0dce76cc4cd50fcf80b5e5f99ae2b4325edd5350d4fb289f7dfa89f67edf8bc2da9abd53eba1f815caae97beb
+  languageName: node
+  linkType: hard
+
 "@rtsao/scc@npm:^1.1.0":
   version: 1.1.0
   resolution: "@rtsao/scc@npm:1.1.0"
@@ -3506,18 +3524,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wdio/config@npm:8.40.3":
-  version: 8.40.3
-  resolution: "@wdio/config@npm:8.40.3"
+"@wdio/config@npm:8.40.6":
+  version: 8.40.6
+  resolution: "@wdio/config@npm:8.40.6"
   dependencies:
     "@wdio/logger": 8.38.0
-    "@wdio/types": 8.40.3
-    "@wdio/utils": 8.40.3
+    "@wdio/types": 8.40.6
+    "@wdio/utils": 8.40.6
     decamelize: ^6.0.0
     deepmerge-ts: ^5.0.0
     glob: ^10.2.2
     import-meta-resolve: ^4.0.0
-  checksum: 4918fc934da7005a0733081a72d2d320b8a422c3add461226a9a5678235fc306961d060ae1fa2d4bebf5c98501303591d04ca77e39e3de32512edb3cf48bac9f
+  checksum: 8ee3baaff86bb641b235c720adaf21c1d5d19bbb4f42baf1e712966ee6ea7fb1480e2c68d7a8e56e28a9701e8eb25a19a2ccce15ab4efe3b8df5bad5d811477c
   languageName: node
   linkType: hard
 
@@ -3561,22 +3579,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wdio/types@npm:8.40.3":
-  version: 8.40.3
-  resolution: "@wdio/types@npm:8.40.3"
+"@wdio/types@npm:8.40.6":
+  version: 8.40.6
+  resolution: "@wdio/types@npm:8.40.6"
   dependencies:
     "@types/node": ^22.2.0
-  checksum: afe8201f82afbc35dc4da994f63df7b4eef5802e4f2e8fcf5b450d0099a3818d0ec0da476569f3b3aed8db555170d06b2267c0d93e3aebe8b4af9ad816187650
+  checksum: fca998cfe441aeea70fd0ed1e38512e9f07802250ba39ce03424fbefba074016aa6cf18ad4c4c3f36394f6338a60a2faa9404cfa9c14faebd780e1dc59356260
   languageName: node
   linkType: hard
 
-"@wdio/utils@npm:8.40.3":
-  version: 8.40.3
-  resolution: "@wdio/utils@npm:8.40.3"
+"@wdio/utils@npm:8.40.6":
+  version: 8.40.6
+  resolution: "@wdio/utils@npm:8.40.6"
   dependencies:
     "@puppeteer/browsers": ^1.6.0
     "@wdio/logger": 8.38.0
-    "@wdio/types": 8.40.3
+    "@wdio/types": 8.40.6
     decamelize: ^6.0.0
     deepmerge-ts: ^5.1.0
     edgedriver: ^5.5.0
@@ -3587,7 +3605,7 @@ __metadata:
     safaridriver: ^0.1.0
     split2: ^4.2.0
     wait-port: ^1.0.4
-  checksum: 27bb31dca1691f7602dcad12d831bb084601dde523e317d0c8b146555f2cdc1d3e87723477f0129f89f398647709e795fcf28d81593fb305fcf0c6328f13e494
+  checksum: 549f54c25310270b29772444b060c2392ccaeafd7d0903c87cc6f25e41e8e252c603b19063f9e4d5947817b94ac2b135da1d175de75a06b6e76478fb30d1344c
   languageName: node
   linkType: hard
 
@@ -5195,6 +5213,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chromium-bidi@npm:0.8.0":
+  version: 0.8.0
+  resolution: "chromium-bidi@npm:0.8.0"
+  dependencies:
+    mitt: 3.0.1
+    urlpattern-polyfill: 10.0.0
+    zod: 3.23.8
+  peerDependencies:
+    devtools-protocol: "*"
+  checksum: 5c5b12e00564b6f145511ca4c159db24b07bfc6a1eb6add26d88c4331d74ef6cc8cd2f58bc169e0726c689910a1888313722f39ccab1bac14284d1918155d5e9
+  languageName: node
+  linkType: hard
+
 "ci-info@npm:^3.2.0":
   version: 3.9.0
   resolution: "ci-info@npm:3.9.0"
@@ -6014,7 +6045,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.4, debug@npm:^4.3.5, debug@npm:^4.3.6, debug@npm:~4.3.6":
+"debug@npm:4, debug@npm:^4, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.4, debug@npm:^4.3.5, debug@npm:^4.3.6, debug@npm:^4.3.7, debug@npm:~4.3.6":
   version: 4.3.7
   resolution: "debug@npm:4.3.7"
   dependencies:
@@ -6229,10 +6260,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"devtools-protocol@npm:^0.0.1342118":
+"devtools-protocol@npm:0.0.1342118":
   version: 0.0.1342118
   resolution: "devtools-protocol@npm:0.0.1342118"
   checksum: 081d2a03b9cc28dae31fa6bde3b96f999b3d28e382cbfc9646fec639e425d21abbf8d2118424292a7341a1afde024835bfdc35bf29e367e3a12ebdb75106c942
+  languageName: node
+  linkType: hard
+
+"devtools-protocol@npm:^0.0.1359167":
+  version: 0.0.1359167
+  resolution: "devtools-protocol@npm:0.0.1359167"
+  checksum: d53eec87ffbfd6646fa24a9ec9993b5a7ae967358041d05ffda77a3aa8293bb78de0952a4de47f135abcce1322aa9696222e4b62fddb9b0a4936cf9e9b122af1
   languageName: node
   linkType: hard
 
@@ -7291,7 +7329,7 @@ __metadata:
     playwright: ^1.32.3
     postcode: ^5.1.0
     prettier: ^2.8.7
-    puppeteer: ^22.0.0
+    puppeteer: ^23.0.0
     redis: ^3.1.2
     redis-mock: ^0.56.3
     request: ^2.88.2
@@ -12752,6 +12790,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"puppeteer-core@npm:23.5.0":
+  version: 23.5.0
+  resolution: "puppeteer-core@npm:23.5.0"
+  dependencies:
+    "@puppeteer/browsers": 2.4.0
+    chromium-bidi: 0.8.0
+    debug: ^4.3.7
+    devtools-protocol: 0.0.1342118
+    typed-query-selector: ^2.12.0
+    ws: ^8.18.0
+  checksum: 2feceb682ef27e44283e8c152df5aed3f0c98c6d531b684f551ec7deffb0b3004571acf1b1a89debe856aa838b7559c40edb33f1f290f989049d723f68318428
+  languageName: node
+  linkType: hard
+
 "puppeteer-core@npm:^21.11.0":
   version: 21.11.0
   resolution: "puppeteer-core@npm:21.11.0"
@@ -12766,7 +12818,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer@npm:^22.0.0, puppeteer@npm:^22.3.0":
+"puppeteer@npm:^22.3.0":
   version: 22.15.0
   resolution: "puppeteer@npm:22.15.0"
   dependencies:
@@ -12777,6 +12829,22 @@ __metadata:
   bin:
     puppeteer: lib/esm/puppeteer/node/cli.js
   checksum: 64e9ff78fdd3d848a4404ec1abfd58df987c6fd216b78bc6144a616622c00375bae8cd06f6df8a313b6f2039c95526f4f3de47e907859a65c0b508261ce488f8
+  languageName: node
+  linkType: hard
+
+"puppeteer@npm:^23.0.0":
+  version: 23.5.0
+  resolution: "puppeteer@npm:23.5.0"
+  dependencies:
+    "@puppeteer/browsers": 2.4.0
+    chromium-bidi: 0.8.0
+    cosmiconfig: ^9.0.0
+    devtools-protocol: 0.0.1342118
+    puppeteer-core: 23.5.0
+    typed-query-selector: ^2.12.0
+  bin:
+    puppeteer: lib/cjs/puppeteer/node/cli.js
+  checksum: 9132391cc84168ab5d10edabe9b0a9f259d41880b06c9423337968a35368498b3fecf647e575072ded27cb4d27ae52acaf7a888c3a5dd9573a0b17261d83590e
   languageName: node
   linkType: hard
 
@@ -15038,6 +15106,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typed-query-selector@npm:^2.12.0":
+  version: 2.12.0
+  resolution: "typed-query-selector@npm:2.12.0"
+  checksum: c4652f2eec16112d69e0da30c2effab3f03d1710f9559da1e1209bbfc9a20990d5de4ba97890c11f9d17d85c8ae3310953a86c198166599d4c36abc63664f169
+  languageName: node
+  linkType: hard
+
 "typedarray-to-buffer@npm:^3.1.5":
   version: 3.1.5
   resolution: "typedarray-to-buffer@npm:3.1.5"
@@ -15432,41 +15507,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webdriver@npm:8.40.3":
-  version: 8.40.3
-  resolution: "webdriver@npm:8.40.3"
+"webdriver@npm:8.40.6":
+  version: 8.40.6
+  resolution: "webdriver@npm:8.40.6"
   dependencies:
     "@types/node": ^22.2.0
     "@types/ws": ^8.5.3
-    "@wdio/config": 8.40.3
+    "@wdio/config": 8.40.6
     "@wdio/logger": 8.38.0
     "@wdio/protocols": 8.40.3
-    "@wdio/types": 8.40.3
-    "@wdio/utils": 8.40.3
+    "@wdio/types": 8.40.6
+    "@wdio/utils": 8.40.6
     deepmerge-ts: ^5.1.0
     got: ^12.6.1
     ky: ^0.33.0
     ws: ^8.8.0
-  checksum: a5364b6ed9a09ba3da8e04bf83e7c3542c10b2b747a424fe28fe5ce67c97728ab739c3d9d7112988f4b926939df4274ffd1495d12dc559b922afcd35590ea952
+  checksum: f35a0f8daa4503537653af90ab91d4c2991dc37b085c35210baf369e83fbde1d45526bc03ee253d1cd26e3621caedda4b173f60f94d3f4d37284295f1f3780a4
   languageName: node
   linkType: hard
 
 "webdriverio@npm:^8.8.6":
-  version: 8.40.5
-  resolution: "webdriverio@npm:8.40.5"
+  version: 8.40.6
+  resolution: "webdriverio@npm:8.40.6"
   dependencies:
     "@types/node": ^22.2.0
-    "@wdio/config": 8.40.3
+    "@wdio/config": 8.40.6
     "@wdio/logger": 8.38.0
     "@wdio/protocols": 8.40.3
     "@wdio/repl": 8.40.3
-    "@wdio/types": 8.40.3
-    "@wdio/utils": 8.40.3
+    "@wdio/types": 8.40.6
+    "@wdio/utils": 8.40.6
     archiver: ^7.0.0
     aria-query: ^5.0.0
     css-shorthand-properties: ^1.1.1
     css-value: ^0.0.1
-    devtools-protocol: ^0.0.1342118
+    devtools-protocol: ^0.0.1359167
     grapheme-splitter: ^1.0.2
     import-meta-resolve: ^4.0.0
     is-plain-obj: ^4.1.0
@@ -15479,13 +15554,13 @@ __metadata:
     resq: ^1.9.1
     rgb2hex: 0.2.5
     serialize-error: ^11.0.1
-    webdriver: 8.40.3
+    webdriver: 8.40.6
   peerDependencies:
     devtools: ^8.14.0
   peerDependenciesMeta:
     devtools:
       optional: true
-  checksum: 120dd829aee8fde216c3184a08bded3ee21a3c2acda9003924849d56517902b1f76100865814107be76e5f557bffe986ef734f5309b22e333d373c2ac6b3cfe9
+  checksum: 0f350180ae11f5db70d815a47a81da8006703f09159f3b7114d0f629945e5b84f7e95d4dbad2d22bbba943f06c38c69f0d6393b7f49e702a58e22963ae9ef429
   languageName: node
   linkType: hard
 
