@@ -74,6 +74,7 @@ export enum ET3HubLinkNames {
   ConciliationAndEmployeeDetails = 'conciliationAndEmployeeDetails',
   PayPensionBenefitDetails = 'payPensionBenefitDetails',
   ContestClaim = 'contestClaim',
+  EmployersContractClaim = 'employersContractClaim',
   CheckYorAnswers = 'checkYorAnswers',
 }
 

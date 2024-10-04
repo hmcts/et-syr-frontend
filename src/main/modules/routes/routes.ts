@@ -24,6 +24,7 @@ import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPens
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import ET3CYAController from '../../controllers/ET3CYAController';
 import ET3ResponseController from '../../controllers/ET3ResponseController';
+import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
 import InterruptionCardController from '../../controllers/InterruptionCardController';
@@ -150,6 +151,8 @@ export class Routes {
     app.post(PageUrls.CLAIMANT_NOTICE_PERIOD, new ClaimantNoticePeriodController().post);
     app.get(PageUrls.CLAIMANT_PENSION_AND_BENEFITS, new ClaimantPensionAndBenefitsController().get);
     app.post(PageUrls.CLAIMANT_PENSION_AND_BENEFITS, new ClaimantPensionAndBenefitsController().post);
+    app.get(PageUrls.EMPLOYERS_CONTRACT_CLAIM, new EmployersContractClaimController().get);
+    app.post(PageUrls.EMPLOYERS_CONTRACT_CLAIM, new EmployersContractClaimController().post);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,

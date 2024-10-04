@@ -126,6 +126,7 @@ export const getET3HubLinksUrlMap = (languageParam: string): Map<string, string>
     ],
     [ET3HubLinkNames.PayPensionBenefitDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
     [ET3HubLinkNames.ContestClaim, PageUrls.RESPONDENT_CONTEST_CLAIM + baseUrls[languageParam]],
+    [ET3HubLinkNames.EmployersContractClaim, PageUrls.EMPLOYERS_CONTRACT_CLAIM + baseUrls[languageParam]],
     [ET3HubLinkNames.CheckYorAnswers, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
   ]);
 };

@@ -1,0 +1,13 @@
+{
+  "title": "Employer’s Contract Claim",
+  "details": {
+    "summaryText": "What is an Employer’s Contract Claim?",
+    "text": "A respondent can make this claim against the claimant if the claimant breached their employment terms which resulted in financial loss. This typically happens when a claimant has made a notice pay claim."
+  },
+  "label": "Does the respondent want to make an Employer’s Contract Claim?",
+  "errors": {
+    "doesRespondentWantToMakeECC": {
+      "required": "Make a selection"
+    }
+  }
+}
