@@ -2,6 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
+import { CaseWithId } from '../definitions/case';
 import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
@@ -74,7 +75,7 @@ export default class SelfAssignmentFormController {
    * @param res Response value of the session.
    */
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     req.session.errors = [];
     req.session.userCase = SelfAssignmentFormControllerHelper.generateBasicUserCaseBySelfAssignmentFormData(formData);
     req.session.respondentNameFromForm = formData.respondentName;
