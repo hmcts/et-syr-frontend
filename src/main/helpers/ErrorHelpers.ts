@@ -8,7 +8,7 @@ import { FormError } from '../definitions/form';
 import { isFieldFilledIn } from '../validators/validator';
 
 export const returnSessionErrors = (req: AppRequest, form: Form): FormError[] => {
-  const formData = form.getParsedBodyForCaseWithId(req.body, form.getFormFields());
+  const formData = form.getParsedBody(req.body, form.getFormFields());
   return getSessionErrors(req, form, formData);
 };
 

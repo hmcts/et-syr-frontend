@@ -1,6 +1,7 @@
 import { Response } from 'express';
 
 import { Form } from '../components/form';
+import { ET3FormModel } from '../definitions/ET3FormModel';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, YesOrNo } from '../definitions/case';
 import { FormFieldNames, LoggerConstants, PageUrls, TranslationKeys } from '../definitions/constants';
@@ -67,15 +68,15 @@ export default class RespondentNameController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const formData = this.form.getParsedBodyForCaseWithId(req.body, this.form.getFormFields());
+    const formData = this.form.getParsedBody<ET3FormModel>(req.body, this.form.getFormFields());
     req.session.errors = this.form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
       return res.redirect(req.url);
     }
     req.session.userCase.respondents[req.session.selectedRespondentIndex].responseRespondentNameQuestion =
-      formData.respondentName === 'Yes' ? YesOrNo.YES : YesOrNo.NO;
+      formData.responseRespondentNameQuestion === 'Yes' ? YesOrNo.YES : YesOrNo.NO;
     req.session.userCase.respondents[req.session.selectedRespondentIndex].responseRespondentName =
-      formData.respondentName;
+      formData.responseRespondentName;
     const userCase: CaseWithId = await ET3Util.updateET3Data(
       req,
       ET3CaseDetailsLinkNames.RespondentResponse,

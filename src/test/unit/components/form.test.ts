@@ -189,7 +189,7 @@ describe('Form', () => {
         checkboxes: ['', '', 'checkbox1', 'checkbox2'],
       };
 
-      expect(subFieldForm.getParsedBodyForCaseWithId(body)).toStrictEqual({
+      expect(subFieldForm.getParsedBody(body)).toStrictEqual({
         field: YesOrNo.YES,
         testSubField: 'test',
         checkboxes: ['checkbox1', 'checkbox2'],
@@ -206,7 +206,7 @@ describe('Form', () => {
       checkboxes: ['', '', 'checkbox1', 'checkbox2'],
     };
 
-    expect(form.getParsedBodyForCaseWithId(body)).toStrictEqual({
+    expect(form.getParsedBody(body)).toStrictEqual({
       field: 'Yes',
       dateField: {
         day: '1',

@@ -31,17 +31,17 @@ describe('Session and Error Handling Functions', () => {
     res = new MockResponse() as unknown as Response;
 
     form = {
-      getParsedBodyForCaseWithId: jest.fn().mockReturnValue({ someField: 'parsedValue' }),
+      getParsedBody: jest.fn().mockReturnValue({ someField: 'parsedValue' }),
       getFormFields: jest.fn().mockReturnValue({ someField: 'someValue' }),
       getValidatorErrors: jest.fn().mockReturnValue([]),
     } as unknown as Form;
   });
 
   describe('returnSessionErrors', () => {
-    it('should call form.getParsedBodyForCaseWithId and return session errors', () => {
+    it('should call form.getParsedBody and return session errors', () => {
       const sessionErrors = returnSessionErrors(req as AppRequest, form);
 
-      expect(form.getParsedBodyForCaseWithId).toHaveBeenCalledWith(req.body, form.getFormFields());
+      expect(form.getParsedBody).toHaveBeenCalledWith(req.body, form.getFormFields());
       expect(sessionErrors).toBeDefined();
     });
   });

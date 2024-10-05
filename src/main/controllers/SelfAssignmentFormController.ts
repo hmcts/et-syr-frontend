@@ -74,7 +74,7 @@ export default class SelfAssignmentFormController {
    * @param res Response value of the session.
    */
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const formData = this.form.getParsedBodyForCaseWithId(req.body, this.form.getFormFields());
+    const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
     req.session.errors = [];
     req.session.userCase = SelfAssignmentFormControllerHelper.generateBasicUserCaseBySelfAssignmentFormData(formData);
     req.session.respondentNameFromForm = formData.respondentName;

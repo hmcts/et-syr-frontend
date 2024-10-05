@@ -50,7 +50,7 @@ export default class SelfAssignmentCheckController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const formData = this.form.getParsedBodyForCaseWithId(req.body, this.form.getFormFields());
+    const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
     const errors = this.form.getValidatorErrors(formData);
     if (errors.length !== 0) {
       req.session.errors = errors;
