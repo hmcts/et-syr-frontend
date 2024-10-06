@@ -44,6 +44,8 @@ export class Helmet {
       "'sha256-FiZUeT/V4X81LXdIxje1wtfEjtxsNS8gTc9lEdDKSd8='",
       "'sha256-A7Uu54feRuB88PgtD97QX8ZfJfCfC4LuAP3rCwwhnbE='",
       "'sha256-TrZe7TNXf5jal9UL8qSy3pDcRFvZ3IbumaN7m05kuqY='",
+      "'sha256-sQ+JOmaJHC3U7PdwSPldeKowwh2+S8sobHqBGSAHJIw='",
+      "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
       idamUrl,
     ];
 
@@ -54,7 +56,6 @@ export class Helmet {
       googleAnalyticsDomain2,
       idamUrl,
       'https://bf24054dsx.bf.dynatrace.com',
-      '*://*.8x8.com',
     ];
 
     const imgSrc = [
@@ -68,7 +69,6 @@ export class Helmet {
       'https://ssl.gstatic.com',
       'https://www.gstatic.com',
       'https://fonts.googleapis.com',
-      '*://*.8x8.com',
     ];
 
     const frameSrc = [self, webChat];
@@ -84,7 +84,8 @@ export class Helmet {
       helmet.contentSecurityPolicy({
         directives: {
           connectSrc,
-          defaultSrc: ["'none'"],
+          defaultSrc: [self],
+          manifestSrc: [self, "'unsafe-inline'"],
           fontSrc: [self, 'data:', 'https://fonts.gstatic.com'],
           imgSrc,
           frameSrc,
