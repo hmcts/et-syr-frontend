@@ -57,6 +57,24 @@ describe('Claimant job title Controller', () => {
       );
     });
 
+    it('should render the same page when No is selected but text exceeds 100 characters', () => {
+      request = mockRequest({
+        body: {
+          isClaimantJobTitleCorrect: YesOrNoOrNotSure.NO,
+          whatIsClaimantJobTitle: '1'.repeat(101),
+        },
+      });
+      request.url = PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + languages.ENGLISH_URL_PARAMETER;
+      controller.post(request, response);
+
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + languages.ENGLISH_URL_PARAMETER
+      );
+
+      const errors = [{ propertyName: 'whatIsClaimantJobTitle', errorType: 'invalid-length' }];
+      expect(request.session.errors).toEqual(errors);
+    });
+
     it('should redirect to next page when Not Sure is selected', () => {
       request = mockRequest({
         body: {
