@@ -61,7 +61,7 @@ export default class CheckYourAnswersHearingPreferencesController {
       return res.redirect(req.url);
     }
 
-    // todo: handle the submission of cya screen and set to yes or no depending on value
+    // todo: handle the submission of CheckYourAnswersHearingPreferencesController screen and set to yes or no depending on value
 
     const userCase: CaseWithId = await ET3Util.updateET3Data(req);
     if (req.session.errors?.length > 0) {
