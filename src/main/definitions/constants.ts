@@ -97,15 +97,11 @@ export const PageUrls = {
   RESPONDENT_ET3_RESPONSE: '/et3-response',
   CHECK_YOUR_ANSWERS_ET3: '/check-your-answers-et3',
   NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
-  // hub links
   CLAIMANT_ET1_FORM: '/claimant-et1-form',
   RESPONDENT_RESPONSE_LANDING: '/respondent-response-landing',
-  //Claimant Form and Certs
   CLAIMANT_ET1_FORM_DETAILS: '/claimant-et1-form-details',
   CLAIMANT_ACAS_CERTIFICATE_DETAILS: '/claimant-acas-certificate-details',
-  // ET3 task list
   RESPONDENT_RESPONSE_TASK_LIST: '/respondent-response-task-list',
-  // 1. Tell us about the respondent (contact-details)
   RESPONDENT_NAME: '/respondent-name',
   TYPE_OF_ORGANISATION: '/type-of-organisation',
   RESPONDENT_ADDRESS: '/respondent-address',
@@ -117,14 +113,12 @@ export const PageUrls = {
   RESPONDENT_CONTACT_PHONE_NUMBER: '/respondent-contact-phone-number',
   RESPONDENT_CONTACT_PREFERENCES: '/respondent-contact-preferences',
   CHECK_YOUR_ANSWERS_CONTACT_DETAILS: '/check-your-answers-contact-details',
-  // 1. Tell us about the respondent (hearing-preferences)
   HEARING_PREFERENCES: '/hearing-preferences',
   REASONABLE_ADJUSTMENTS: '/reasonable-adjustments',
   RESPONDENT_EMPLOYEES: '/respondent-employees',
   RESPONDENT_SITES: '/respondent-sites',
   RESPONDENT_SITE_EMPLOYEES: '/respondent-site-employees',
   CHECK_YOUR_ANSWERS_HEARING_PREFERENCES: '/check-your-answers-hearing-preferences',
-  // 2. Tell us about the claimant (early-conciliation-and-employee-details)
   ACAS_EARLY_CONCILIATION_CERTIFICATE: '/acas-early-conciliation-certificate',
   CLAIMANT_EMPLOYMENT_DATES: '/claimant-employment-dates',
   CLAIMANT_EMPLOYMENT_DATES_ENTER: '/claimant-employment-dates-enter',
@@ -133,13 +127,11 @@ export const PageUrls = {
   CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS: '/claimant-average-weekly-work-hours',
   CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS:
     '/check-your-answers-early-conciliation-and-employee-details',
-  // 2. Tell us about the claimant (pay-pension-and-benefits)
   CLAIMANT_PAY_DETAILS: '/claimant-pay-details',
   CLAIMANT_PAY_DETAILS_ENTER: '/claimant-pay-details-enter',
   CLAIMANT_NOTICE_PERIOD: '/claimant-notice-period',
   CLAIMANT_PENSION_AND_BENEFITS: '/claimant-pension-and-benefits',
   CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS: '/check-your-answers-pay-pension-and-benefits',
-  // 3. Give us your response (contest-claim)
   RESPONDENT_CONTEST_CLAIM: '/respondent-contest-claim',
   RESPONDENT_CONTEST_CLAIM_REASON: '/respondent-contest-claim-reason',
   CHECK_YOUR_ANSWERS_CONTEST_CLAIM: '/check-your-answers-contest-claim',
