@@ -78,6 +78,10 @@ export const TranslationKeys = {
   CLAIMANT_NOTICE_PERIOD: 'claimant-notice-period',
   CLAIMANT_PENSION_AND_BENEFITS: 'claimant-pension-and-benefits',
   CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS: 'check-your-answers-pay-pension-and-benefits',
+  // 3. Give us your response
+  EMPLOYERS_CONTRACT_CLAIM: 'employers-contract-claim',
+  EMPLOYERS_CONTRACT_CLAIM_DETAILS: 'employers-contract-claim-details',
+  CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: 'check-your-answers-employers-contract-claim',
 } as const;
 
 export const PageUrls = {
@@ -138,6 +142,10 @@ export const PageUrls = {
   CLAIMANT_NOTICE_PERIOD: '/claimant-notice-period',
   CLAIMANT_PENSION_AND_BENEFITS: '/claimant-pension-and-benefits',
   CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS: '/check-your-answers-pay-pension-and-benefits',
+  // 3. Give us your response
+  EMPLOYERS_CONTRACT_CLAIM: '/employers-contract-claim',
+  EMPLOYERS_CONTRACT_CLAIM_DETAILS: '/employers-contract-claim-details',
+  CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: '/check-your-answers-employers-contract-claim',
 } as const;
 
 export const InterceptPaths = {
