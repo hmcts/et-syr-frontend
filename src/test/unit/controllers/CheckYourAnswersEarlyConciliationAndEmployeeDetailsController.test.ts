@@ -1,5 +1,6 @@
 import CheckYourAnswersEarlyConciliationAndEmployeeDetailsController from '../../../main/controllers/CheckYourAnswersEarlyConciliationAndEmployeeDetailsController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { FormError } from '../../../main/definitions/form';
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
 import commonJsonRaw from '../../../main/resources/locales/cy/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -58,6 +59,26 @@ describe('CheckYourAnswersEarlyConciliationAndEmployeeDetailsController', () => 
 
       expect(request.session.userCase).toEqual(userCase); // Validate the userCase is set
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_PAY_DETAILS); // Ensure the correct redirect occurs
+    });
+
+    it('should redirect back to Early Conciliation and Employee Details if ET3 data update fails', async () => {
+      // Simulate validation errors
+      const mockFormError: FormError = {
+        propertyName: 'haveYouCompleted',
+        errorType: 'required',
+      };
+
+      request.body = {
+        haveYouCompleted: '', // Simulate invalid input
+      };
+
+      // Simulate an error during ET3 update
+      (ET3Util.updateET3Data as jest.Mock).mockRejectedValue(mockFormError);
+
+      await controller.post(request, response);
+
+      expect(response.redirect).toHaveBeenCalledWith(request.url);
+      expect(request.session.errors).toEqual([mockFormError]); // Ensure the errors are still present
     });
   });
 });

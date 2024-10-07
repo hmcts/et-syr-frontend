@@ -1,5 +1,6 @@
 import CheckYourAnswersHearingPreferencesController from '../../../main/controllers/CheckYourAnswersHearingPreferencesController';
 import { TranslationKeys } from '../../../main/definitions/constants';
+import { FormError } from '../../../main/definitions/form';
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
 import commonJsonRaw from '../../../main/resources/locales/cy/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -47,7 +48,7 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
   });
 
   describe('POST method', () => {
-    it('should redirect to the respondent response task list on valid submission', async () => {
+    it('should go to the respondent response task list on valid submission', async () => {
       request.body = {
         hearingPreferencesSection: 'Yes', // Ensure this is set
       };
@@ -58,6 +59,26 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
 
       expect(request.session.userCase).toEqual(userCase); // Validate the userCase is set
       expect(response.redirect).toHaveBeenCalledWith('/respondent-response-task-list'); // Ensure the correct redirect occurs
+    });
+
+    it('should redirect back to Hearing Preferences if ET3 data update fails', async () => {
+      // Simulate validation errors
+      const mockFormError: FormError = {
+        propertyName: 'hearingPreferencesSection',
+        errorType: 'required',
+      };
+
+      request.body = {
+        hearingPreferencesSection: '', // Simulate invalid input
+      };
+
+      // Simulate an error during ET3 update
+      (ET3Util.updateET3Data as jest.Mock).mockRejectedValue(mockFormError);
+
+      await controller.post(request, response);
+
+      expect(response.redirect).toHaveBeenCalledWith(request.url);
+      expect(request.session.errors).toEqual([mockFormError]); // Ensure the errors are still present
     });
   });
 });
