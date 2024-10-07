@@ -17,7 +17,6 @@ import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 export default class CheckYourAnswersET3Controller {
   // todo: handle the submission of cya screen and set form complete to yes or no depending on value selected,
   //  also handle duplication of this block
-  //NOSONAR: duplication between CheckYourAnswers controllers
 
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);

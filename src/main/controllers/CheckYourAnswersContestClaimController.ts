@@ -63,7 +63,6 @@ export default class CheckYourAnswersContestClaimController {
 
     // todo: handle the submission of CheckYourAnswersContestClaimController screen and set to yes or no depending on value,
     //  also handle duplication of this block
-    //NOSONAR: duplication between CheckYourAnswers controllers
 
     const userCase: CaseWithId = await ET3Util.updateET3Data(req);
     if (req.session.errors?.length > 0) {
