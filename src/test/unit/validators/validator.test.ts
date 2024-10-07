@@ -21,10 +21,8 @@ import {
   isValidCurrency,
   isValidNoticeLength,
   isValidPay,
-  isValidPension,
   isValidTwoDigitInteger,
   isValidUKTelNumber,
-  validateTitlePreference,
 } from '../../../main/validators/validator';
 import { mockFile } from '../mocks/mockFile';
 
@@ -117,19 +115,6 @@ describe('Validation', () => {
     });
   });
 
-  describe('validateTitlePreference()', () => {
-    it.each([
-      { title: '', expectedError: undefined },
-      { title: 'ab', expectedError: undefined },
-      { title: 'a', expectedError: 'lengthError' },
-      { title: 'a1', expectedError: 'numberError' },
-      { title: ' 12', expectedError: 'numberError' },
-      { title: '1a', expectedError: 'numberError' },
-    ])('Should check if other title preference is valid: %o', ({ title, expectedError }) => {
-      const isValid = validateTitlePreference(title);
-      expect(isValid).toStrictEqual(expectedError);
-    });
-  });
   describe('isValidUKTelNumber()', () => {
     it.each([
       { mockRef: '', expected: undefined },
@@ -158,11 +143,11 @@ describe('Validation', () => {
     it.each([
       { mockRef: '', expected: undefined },
       { mockRef: null, expected: undefined },
-      { mockRef: 'a', expected: 'invalid-length' },
+      { mockRef: 'a', expected: 'invalidLength' },
       {
         mockRef:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et al.',
-        expected: 'invalid-length',
+        expected: 'invalidLength',
       },
       { mockRef: 'CEO', expected: undefined },
       { mockRef: 'Developer', expected: undefined },
@@ -253,22 +238,6 @@ describe('Validation', () => {
       { mockRef: null, expected: undefined },
     ])('check integer input is valid', ({ mockRef, expected }) => {
       expect(isValidAvgWeeklyHours(mockRef)).toEqual(expected);
-    });
-  });
-
-  describe('isValidPension()', () => {
-    it.each([
-      { mockRef: '1', expected: 'invalid' },
-      { mockRef: 'a', expected: 'notANumber' },
-      { mockRef: '%', expected: 'notANumber' },
-      { mockRef: '25a', expected: 'notANumber' },
-      { mockRef: '20.', expected: 'invalid' },
-      { mockRef: '100', expected: undefined },
-      { mockRef: '20.00', expected: undefined },
-      { mockRef: undefined, expected: undefined },
-      { mockRef: '', expected: undefined },
-    ])('check integer input is valid', ({ mockRef, expected }) => {
-      expect(isValidPension(mockRef)).toEqual(expected);
     });
   });
 
