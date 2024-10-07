@@ -1,0 +1,21 @@
+{
+  "title": "[W]Employer’s Contract Claim",
+  "p1": "[W]Consider in your answer:",
+  "li1": "[W]the background and details of the claim",
+  "li2": "[W]all important dates",
+  "li3": "[W]the value of the claim and how you calculated it",
+  "provideDetailsOfECC": {
+    "label": "[W]Provide the background and details of the Employer’s Contract Claim"
+  },
+  "files": {
+    "title": "[W]Upload a file",
+    "button": "[W]Upload file",
+    "uploaded": "[W]Files uploaded"
+  },
+  "errors": {
+    "provideDetailsOfECC": {
+      "required": "[W]Give details of the Employer's Contract Claim",
+      "tooLong": "[W]Free text details must be 2500 characters or less"
+    }
+  }
+}
