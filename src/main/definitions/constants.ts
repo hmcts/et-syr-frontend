@@ -77,6 +77,10 @@ export const TranslationKeys = {
   RESPONDENT_CONTEST_CLAIM: 'respondent-contest-claim',
   RESPONDENT_CONTEST_CLAIM_REASON: 'respondent-contest-claim-reason',
   CHECK_YOUR_ANSWERS_CONTEST_CLAIM: 'check-your-answers-contest-claim',
+  // 3. Give us your response
+  EMPLOYERS_CONTRACT_CLAIM: 'employers-contract-claim',
+  EMPLOYERS_CONTRACT_CLAIM_DETAILS: 'employers-contract-claim-details',
+  CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: 'check-your-answers-employers-contract-claim',
 } as const;
 
 // Sonar: These objects are intentionally similar to TranslationKeys but serve different purposes.
@@ -135,6 +139,9 @@ export const PageUrls = {
   RESPONDENT_CONTEST_CLAIM: '/respondent-contest-claim',
   RESPONDENT_CONTEST_CLAIM_REASON: '/respondent-contest-claim-reason',
   CHECK_YOUR_ANSWERS_CONTEST_CLAIM: '/check-your-answers-contest-claim',
+  EMPLOYERS_CONTRACT_CLAIM: '/employers-contract-claim',
+  EMPLOYERS_CONTRACT_CLAIM_DETAILS: '/employers-contract-claim-details',
+  CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: '/check-your-answers-employers-contract-claim',
 } as const;
 
 export const InterceptPaths = {

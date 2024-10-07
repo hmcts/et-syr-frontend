@@ -28,6 +28,7 @@ import ClaimantPayDetailsEnterController from '../../controllers/ClaimantPayDeta
 import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPensionAndBenefitsController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import ET3ResponseController from '../../controllers/ET3ResponseController';
+import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
 import InterruptionCardController from '../../controllers/InterruptionCardController';
@@ -171,6 +172,8 @@ export class Routes {
     app.post(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, new RespondentContestClaimReasonController().post);
     app.get(PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, new CheckYourAnswersContestClaimController().get);
     app.post(PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, new CheckYourAnswersContestClaimController().post);
+    app.get(PageUrls.EMPLOYERS_CONTRACT_CLAIM, new EmployersContractClaimController().get);
+    app.post(PageUrls.EMPLOYERS_CONTRACT_CLAIM, new EmployersContractClaimController().post);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,

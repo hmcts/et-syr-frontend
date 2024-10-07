@@ -114,6 +114,7 @@ describe('getET3HubLinksUrlMap', () => {
     ],
     [ET3HubLinkNames.PayPensionBenefitDetails, PageUrls.NOT_IMPLEMENTED + languages.WELSH_URL_PARAMETER],
     [ET3HubLinkNames.ContestClaim, PageUrls.RESPONDENT_CONTEST_CLAIM + languages.WELSH_URL_PARAMETER],
+    [ET3HubLinkNames.EmployersContractClaim, PageUrls.EMPLOYERS_CONTRACT_CLAIM + languages.WELSH_URL_PARAMETER],
     [ET3HubLinkNames.CheckYorAnswers, PageUrls.NOT_IMPLEMENTED + languages.WELSH_URL_PARAMETER],
   ]);
   const et3HubLinksMapEnglish: Map<string, string> = new Map<string, string>([
@@ -122,6 +123,7 @@ describe('getET3HubLinksUrlMap', () => {
     [ET3HubLinkNames.ConciliationAndEmployeeDetails, PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE],
     [ET3HubLinkNames.PayPensionBenefitDetails, PageUrls.NOT_IMPLEMENTED],
     [ET3HubLinkNames.ContestClaim, PageUrls.RESPONDENT_CONTEST_CLAIM],
+    [ET3HubLinkNames.EmployersContractClaim, PageUrls.EMPLOYERS_CONTRACT_CLAIM],
     [ET3HubLinkNames.CheckYorAnswers, PageUrls.NOT_IMPLEMENTED],
   ]);
   it('returns correct links when respondent is system user in English', () => {
