@@ -10,7 +10,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { postLogic } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
-import { isOptionSelected } from '../validators/validator';
+import { isOptionSelected, isValidAvgWeeklyHours } from '../validators/validator';
 
 const logger = getLogger('ClaimantAverageWeeklyWorkHoursController');
 
@@ -36,9 +36,7 @@ export default class ClaimantAverageWeeklyWorkHoursController {
                 label: (l: AnyRecord): string => l.whatAreClaimantCorrectWorkHour.label,
                 labelSize: 's',
                 hint: (l: AnyRecord): string => l.whatAreClaimantCorrectWorkHour.hint,
-                attributes: {
-                  maxLength: 100,
-                },
+                validator: isValidAvgWeeklyHours,
               },
             },
           },
