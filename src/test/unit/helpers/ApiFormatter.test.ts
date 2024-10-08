@@ -340,6 +340,7 @@ describe('Format Case Data to Frontend Model', () => {
     const result = formatApiCaseDataToCaseWithId(mockedApiDataEmpty);
     expect(result).toStrictEqual({
       id: '1234',
+      ccdId: '1234',
       feeGroupReference: undefined,
       ethosCaseReference: undefined,
       createdDate: '19 August 2022',
@@ -487,6 +488,7 @@ describe('Format Case Data to Frontend Model', () => {
     };
     const result = formatApiCaseDataToCaseWithId(mockedApiDataWelsh);
     expect(result).toEqual({
+      ccdId: '1234',
       feeGroupReference: undefined,
       ethosCaseReference: undefined,
       createdDate: '19 August 2022',

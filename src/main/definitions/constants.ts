@@ -520,6 +520,7 @@ export const LoggerConstants = {
   ERROR_SESSION_INVALID_USER_ID: 'Session user does not have a valid user id',
   ERROR_SESSION_INVALID_RESPONDENT_LIST: 'Session case does not have respondent list',
   ERROR_SESSION_INVALID_RESPONDENT: 'There is no matching respondent with the session user',
+  ERROR_FORM_INVALID_DATA: 'Form inputs are invalid',
   ERROR_API: 'An error occurred while calling API, ',
   ERROR_SYSTEM: 'System error. ',
 };

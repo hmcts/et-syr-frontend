@@ -32,7 +32,8 @@ export default class CaseDetailsController {
 
     try {
       req.session.userCase = formatApiCaseDataToCaseWithId(
-        (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseSubmissionReference)).data
+        (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseSubmissionReference)).data,
+        req
       );
       // Check if Respond to claim acknowledgment needs to be shown or not
       req.session.userCase?.respondents.forEach(respondent => {

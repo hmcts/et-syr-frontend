@@ -85,6 +85,7 @@ export const selectedRequestOrOrder: SendNotificationTypeItem = {
 
 export default {
   id: '1234',
+  ccdId: '1234',
   createdDate: '19 August 2022',
   lastModified: '19 August 2022',
   typeOfClaim: ['discrimination', 'payRelated'],

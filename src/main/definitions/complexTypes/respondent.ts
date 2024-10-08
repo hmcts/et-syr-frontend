@@ -57,7 +57,7 @@ export interface RespondentType {
   et3ResponseRespondentEmployerType?: string;
   et3ResponseRespondentPreferredTitle?: string;
   et3ResponseRespondentContactName?: string;
-  et3ResponseDXAddress?: Et1Address;
+  et3ResponseDXAddress?: string;
   et3ResponseContactReason?: string;
   et3ResponseHearingRepresentative?: string[];
   et3ResponseHearingRespondent?: string[];
