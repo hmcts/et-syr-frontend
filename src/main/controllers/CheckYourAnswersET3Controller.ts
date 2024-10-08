@@ -11,25 +11,28 @@ import {
   getEt3Section3,
   getEt3Section4,
   getEt3Section5,
-} from '../helpers/controller/ET3CYAHelper';
+} from '../helpers/controller/CheckYourAnswersET3Helper';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 
-export default class ET3CYAController {
+export default class CheckYourAnswersET3Controller {
+  // todo: handle the submission of cya screen and set form complete to yes or no depending on value selected,
+  //  also handle duplication of this block
+
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
-    const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ET3_CYA);
+    const redirectUrl = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3);
     const userCase = req.session.userCase;
 
     const sectionTranslations: AnyRecord = {
-      ...req.t(TranslationKeys.RESPONDENT_ET3_COMMON as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
     };
 
     // TODO: ET3 cya data needs to be populated AND Submit & Save for Later buttons
-    res.render(TranslationKeys.RESPONDENT_ET3_CYA, {
+    res.render(TranslationKeys.CHECK_YOUR_ANSWERS_ET3, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.RESPONDENT_ET3_CYA as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.RESPONDENT_ET3_COMMON as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3 as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       InterceptPaths,
       PageUrls,

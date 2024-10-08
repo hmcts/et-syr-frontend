@@ -118,7 +118,7 @@ describe('RespondentContestClaimReasonController', () => {
         response,
         expect.anything(),
         expect.anything(),
-        PageUrls.NOT_IMPLEMENTED // Adjust this URL based on your flow
+        PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM // Adjust this URL based on your flow
       );
     });
 
@@ -135,7 +135,7 @@ describe('RespondentContestClaimReasonController', () => {
         response,
         expect.anything(),
         expect.anything(),
-        PageUrls.NOT_IMPLEMENTED // Adjust this URL based on your flow
+        PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM // Adjust this URL based on your flow
       );
     });
   });

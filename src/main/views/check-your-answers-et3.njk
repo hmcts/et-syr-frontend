@@ -9,26 +9,6 @@
   {% include "back-link.njk" %}
 {% endblock %}
 
-{% macro summaryRow(key, url, exampleData) %}
-  {
-    key: {
-      text: section1[key]
-    },
-    value: {
-      text: exampleData
-    },
-    actions: {
-      items: [
-      {
-          href: url + InterceptPaths.ANSWERS_CHANGE,
-          text: change,
-          visuallyHiddenText: exampleData
-          }
-      ]
-    }
-  }
-{% endmacro %}
-
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">

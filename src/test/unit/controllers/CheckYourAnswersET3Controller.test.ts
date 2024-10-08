@@ -1,4 +1,4 @@
-import ET3CYAController from '../../../main/controllers/ET3CYAController';
+import CheckYourAnswersET3Controller from '../../../main/controllers/CheckYourAnswersET3Controller';
 import { TranslationKeys } from '../../../main/definitions/constants';
 import {
   getEt3Section1,
@@ -6,22 +6,22 @@ import {
   getEt3Section3,
   getEt3Section4,
   getEt3Section5,
-} from '../../../main/helpers/controller/ET3CYAHelper';
+} from '../../../main/helpers/controller/CheckYourAnswersET3Helper';
 import { getFlagValue } from '../../../main/modules/featureFlag/launchDarkly';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
-jest.mock('../../../main/helpers/controller/ET3CYAHelper');
+jest.mock('../../../main/helpers/controller/CheckYourAnswersET3Helper');
 jest.mock('../../../main/modules/featureFlag/launchDarkly');
 
 describe('ET3CYAController', () => {
-  let controller: ET3CYAController;
+  let controller: CheckYourAnswersET3Controller;
   let request: ReturnType<typeof mockRequest>;
   let response: ReturnType<typeof mockResponse>;
   const userCase = {}; // mock userCase object as needed
 
   beforeEach(() => {
-    controller = new ET3CYAController();
+    controller = new CheckYourAnswersET3Controller();
     request = mockRequest({
       session: {
         userCase,
@@ -47,7 +47,7 @@ describe('ET3CYAController', () => {
       await controller.get(request, response);
 
       expect(response.render).toHaveBeenCalledWith(
-        TranslationKeys.RESPONDENT_ET3_CYA,
+        TranslationKeys.CHECK_YOUR_ANSWERS_ET3,
         expect.objectContaining({
           et3ResponseSection1: 'mocked section 1 data',
           et3ResponseSection2: 'mocked section 2 data',

@@ -91,7 +91,7 @@ describe('RespondentSiteEmployeesController', () => {
         response,
         expect.any(Object), // The form object
         expect.any(Object), // Logger
-        PageUrls.NOT_IMPLEMENTED
+        PageUrls.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES
       );
     });
   });
