@@ -171,7 +171,6 @@
     "jsdom": "^25.0.0",
     "shelljs": "^0.8.5",
     "ws": "^8.17.1",
-    "ip": "^2.0.1",
     "cookie": "^0.7.0"
   },
   "packageManager": "yarn@3.8.5"
