@@ -10,7 +10,9 @@
   },
   "errors": {
     "isClaimantJobTitleCorrect": {
-      "required": "[W]Make a selection",
+      "required": "[W]Make a selection"
+    },
+    "whatIsClaimantJobTitle": {
       "tooLong": "[W]The job title entered must be less than 100 characters"
     }
   }

@@ -120,6 +120,11 @@ export const arePayValuesNull: Validator = (value: string[]) => {
   }
 };
 
+const isValidNumber = (value: string): boolean => {
+  const numberPattern = /^[+]?(\d+(\.\d*)?|\.\d+)$/;
+  return numberPattern.test(value);
+};
+
 export const isValidAvgWeeklyHours: Validator = value => {
   const valueAsString: string = value as string;
 
@@ -127,25 +132,12 @@ export const isValidAvgWeeklyHours: Validator = value => {
     return;
   }
 
-  if (valueAsString.trim().startsWith('0') && valueAsString.length > 1 && valueAsString.charAt(1) !== '.') {
+  if (!isValidNumber(valueAsString)) {
     return ValidationErrors.INVALID_VALUE;
-  }
-
-  if (valueAsString.trim().startsWith('.')) {
-    return ValidationErrors.INVALID_VALUE;
-  }
-
-  if (!/^-?\d{0,3}\.?\d{1,3}$/.test(valueAsString)) {
-    return ValidationErrors.NOT_A_NUMBER;
-  }
-
-  if (valueAsString.trim().startsWith('-')) {
-    return ValidationErrors.NEGATIVE_NUMBER;
   }
 
   const maxValue = 168;
   const hours = parseFloat(value as string);
-
   if (hours > maxValue) {
     return ValidationErrors.EXCEEDED;
   }
