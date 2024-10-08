@@ -1,54 +1,54 @@
-import { ALLOWED_FILE_FORMATS } from '../definitions/constants';
+import { ALLOWED_FILE_FORMATS, ValidationErrors } from '../definitions/constants';
 import { Logger } from '../logger';
 
 export type Validator = (value: string | string[] | undefined) => void | string;
 
 export const isFieldFilledIn: Validator = value => {
   if (!value || (value as string).trim().length === 0) {
-    return 'required';
+    return ValidationErrors.REQUIRED;
   }
 };
 
 export const isRespondentNameValid: Validator = value => {
   if (!value || (value as string).trim().length === 0) {
-    return 'required';
+    return ValidationErrors.REQUIRED;
   } else if (!/(=?^.{1,100}$)/.test(value as string)) {
-    return 'invalidLength';
+    return ValidationErrors.INVALID_LENGTH;
   }
 };
 
 export const isContent2500CharsOrLess: Validator = value => {
   if (value && (value as string).trim().length > 2500) {
-    return 'tooLong';
+    return ValidationErrors.TOO_LONG;
   }
 };
 
 export const isContent100CharsOrLess: Validator = value => {
   if (value && (value as string).trim().length > 100) {
-    return 'tooLong';
+    return ValidationErrors.TOO_LONG;
   }
 };
 
 export const isContentBetween3And100Chars: Validator = value => {
   if (!value) {
-    return 'required';
+    return ValidationErrors.REQUIRED;
   }
 
   const nameLength = (value as string).trim().length;
   if (nameLength < 3 || nameLength > 100) {
-    return 'invalidLength';
+    return ValidationErrors.INVALID_LENGTH;
   }
 };
 
 export const isOptionSelected: Validator = value => {
   if (!value || (value as string).trim() === 'notSelected') {
-    return 'required';
+    return ValidationErrors.REQUIRED;
   }
 };
 
 export const atLeastOneFieldIsChecked: Validator = (fields: string[]) => {
   if (!fields || (fields as []).length === 0) {
-    return 'required';
+    return ValidationErrors.REQUIRED;
   }
 };
 
@@ -58,17 +58,17 @@ export const isValidUKTelNumber: Validator = value => {
   }
   try {
     if (!/^[+()\- \d]+$/.test(value as string)) {
-      return 'nonnumeric';
+      return ValidationErrors.NON_NUMERIC;
     }
     if (
       !/^(((\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3})|((\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?\d{4})|((\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}))(\s?#(\d{4}|\d{3}))?$/.test(
         value as string
       )
     ) {
-      return 'invalid';
+      return ValidationErrors.INVALID_VALUE;
     }
   } catch (e) {
-    return 'invalid';
+    return ValidationErrors.INVALID_VALUE;
   }
 };
 
@@ -80,18 +80,18 @@ export const isJobTitleValid: Validator = value => {
     }
 
     if (inputStrLength === 1 || inputStrLength > 100) {
-      return 'invalid-length';
+      return ValidationErrors.INVALID_LENGTH;
     }
   }
 };
 
 export const isValidTwoDigitInteger: Validator = value => {
   if (!value || (value as string).trim().length === 0) {
-    return 'invalid';
+    return ValidationErrors.INVALID_VALUE;
   }
 
   if (!/^\d{1,2}$/.test(value as string)) {
-    return 'notANumber';
+    return ValidationErrors.NOT_A_NUMBER;
   }
 };
 
@@ -103,7 +103,7 @@ export const isValidCompanyRegistrationNumber: Validator = value => {
 
   // Ensure the value is alphanumeric and does not exceed 8 characters
   if (!/^[a-zA-Z0-9]{1,8}$/.test(value as string)) {
-    return 'invalidCompanyRegistrationNumber';
+    return ValidationErrors.INVALID_COMPANY_REGISTRATION_NUMBER;
   }
 };
 
@@ -113,7 +113,7 @@ export const isValidNoticeLength: Validator = value => {
   }
 
   if (!/^\d{1,2}$/.test(value as string)) {
-    return 'notANumber';
+    return ValidationErrors.NOT_A_NUMBER;
   }
 };
 
@@ -123,13 +123,13 @@ export const areBenefitsValid: Validator = value => {
 
 export const isPayIntervalNull: Validator = (value: string) => {
   if (!value) {
-    return 'required';
+    return ValidationErrors.REQUIRED;
   }
 };
 
 export const arePayValuesNull: Validator = (value: string[]) => {
   if (value && value.every(element => !element)) {
-    return 'required';
+    return ValidationErrors.REQUIRED;
   }
 };
 
@@ -141,46 +141,26 @@ export const isValidAvgWeeklyHours: Validator = value => {
   }
 
   if (valueAsString.trim().startsWith('0') && valueAsString.length > 1 && valueAsString.charAt(1) !== '.') {
-    return 'invalid';
+    return ValidationErrors.INVALID_VALUE;
   }
 
   if (valueAsString.trim().startsWith('.')) {
-    return 'invalid';
+    return ValidationErrors.INVALID_VALUE;
   }
 
   if (!/^-?\d{0,3}\.?\d{1,3}$/.test(valueAsString)) {
-    return 'notANumber';
+    return ValidationErrors.NOT_A_NUMBER;
   }
 
   if (valueAsString.trim().startsWith('-')) {
-    return 'negativeNumber';
+    return ValidationErrors.NEGATIVE_NUMBER;
   }
 
   const maxValue = 168;
   const hours = parseFloat(value as string);
 
   if (hours > maxValue) {
-    return 'exceeded';
-  }
-};
-
-export const isValidPension: Validator = value => {
-  if (!value || (value as string).trim().length === 0) {
-    return;
-  }
-
-  if (/^\D+$/.test(value as string) || /^\d+[^\d.]+$/.test(value as string)) {
-    return 'notANumber';
-  }
-
-  if ((value as string).trim().length < 2) {
-    return 'invalid';
-  }
-
-  if (/^\d{2,}$/.test(value as string) || /^\d{2,}\.\d+$/.test(value as string)) {
-    return;
-  } else {
-    return 'invalid';
+    return ValidationErrors.EXCEEDED;
   }
 };
 
@@ -192,17 +172,7 @@ export const isValidCurrency: Validator = value => {
   if (validatedValues[0] <= 12 && validatedValues[1]) {
     return;
   }
-  return 'invalidCurrency';
-};
-
-export const validateTitlePreference: Validator = (value: string) => {
-  if (!value) {
-    return;
-  } else if (value.trim().length < 2) {
-    return 'lengthError';
-  } else if (/^\d+$/.test(value) || /^\D*\d/.test(value)) {
-    return 'numberError';
-  }
+  return ValidationErrors.INVALID_CURRENCY;
 };
 
 export const isValidPay: Validator = value => {
@@ -211,10 +181,10 @@ export const isValidPay: Validator = value => {
   }
   const validatedValues: [digitCount: number, correctFormat: boolean] = currencyValidation(value);
   if (!validatedValues[1]) {
-    return 'notANumber';
+    return ValidationErrors.NOT_A_NUMBER;
   }
   if (validatedValues[0] < 2 || validatedValues[0] > 12) {
-    return 'minLengthRequired';
+    return ValidationErrors.MIN_LENGTH_REQUIRED;
   }
 };
 
@@ -235,7 +205,7 @@ export const hasInvalidName = (fileName: string): string => {
   if (fileNameRegExPattern.test(fileName)) {
     return;
   } else {
-    return 'invalidFileName';
+    return ValidationErrors.INVALID_FILE_NAME;
   }
 };
 
@@ -252,23 +222,13 @@ export const hasInvalidFileFormat = (value: Express.Multer.File, logger: Logger)
   if (logger) {
     logger.info('Invalid file name:' + value.originalname);
   }
-  return 'invalidFileFormat';
-};
-
-export const isNotPdfFileType = (value: Express.Multer.File): string => {
-  if (!value || !value.originalname) {
-    return;
-  }
-  if (value.originalname.toLowerCase().endsWith('.pdf')) {
-    return;
-  }
-  return 'invalidFileFormat';
+  return ValidationErrors.INVALID_FILE_FORMAT;
 };
 
 export const isAcasNumberValid: Validator = value => {
   const valueAsString = value as string;
   if (!/^[rR]\d{6}\/\d{2}\/\d{2}$/.test(valueAsString)) {
-    return 'invalidAcasNumber';
+    return ValidationErrors.INVALID_ACAS_NUMBER;
   }
 };
 
@@ -282,7 +242,7 @@ export const isNameValid: Validator = value => {
 
   // Test the name against the regular expression above
   if (!namePattern.test(value as string)) {
-    return 'invalidName';
+    return ValidationErrors.INVALID_NAME;
   }
 };
 
@@ -296,6 +256,6 @@ export const isPhoneNumberValid: Validator = value => {
 
   // Test the value against the regular expression
   if (!phonePattern.test(value as string)) {
-    return 'invalidPhoneNumber';
+    return ValidationErrors.INVALID_PHONE_NUMBER;
   }
 };
