@@ -71,7 +71,7 @@ describe('Claimant job title Controller', () => {
         PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'whatIsClaimantJobTitle', errorType: 'invalid-length' }];
+      const errors = [{ propertyName: 'whatIsClaimantJobTitle', errorType: 'invalidLength' }];
       expect(request.session.errors).toEqual(errors);
     });
 
