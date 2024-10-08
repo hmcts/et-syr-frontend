@@ -8,7 +8,7 @@ import {
   getEt3Section3,
   getEt3Section4,
   getEt3Section5,
-} from '../../../../main/helpers/controller/ET3CYAHelper';
+} from '../../../../main/helpers/controller/CheckYourAnswersET3Helper';
 
 describe('getEt3Section1', () => {
   const userCase: CaseWithId = {
@@ -23,11 +23,11 @@ describe('getEt3Section1', () => {
   const translationsMock: AnyRecord = {
     section1: {
       respondentName: 'Respondent Name',
-      contactName: 'Contact Name',
       organisationType: 'Organisation Type',
       preferredTitleOptional: 'Preferred Title (Optional)',
       companyRegistrationNumberOptional: 'Company Registration Number (Optional)',
       address: 'Address',
+      contactName: 'Contact Name',
       dxAddressOptional: 'DX Address (Optional)',
       contactFormat: 'Preferred Contact Format',
       reasonForPost: 'Reason for Postal Communication',
@@ -84,24 +84,24 @@ describe('getEt3Section1', () => {
 
   const section1Urls = [
     PageUrls.RESPONDENT_NAME,
-    PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME,
-    PageUrls.TYPE_OF_ORGANISATION,
     PageUrls.TYPE_OF_ORGANISATION, // for preferredTitleOptional
     PageUrls.TYPE_OF_ORGANISATION, // for companyRegistrationNumberOptional
+    PageUrls.TYPE_OF_ORGANISATION, // for companyRegistrationNumberOptional
     PageUrls.RESPONDENT_ADDRESS,
+    PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME,
     PageUrls.RESPONDENT_DX_ADDRESS,
+    PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER,
     PageUrls.RESPONDENT_CONTACT_PREFERENCES,
     PageUrls.RESPONDENT_CONTACT_PREFERENCES, // for reasonForPost
     PageUrls.RESPONDENT_CONTACT_PREFERENCES, // for contactLanguage
-    PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER,
   ];
 
   // Define URLs for sections 2
   const section2Urls = [
     PageUrls.HEARING_PREFERENCES,
-    PageUrls.HEARING_PREFERENCES,
+    PageUrls.HEARING_PREFERENCES, // for part of the hearing preferences
     PageUrls.REASONABLE_ADJUSTMENTS,
-    PageUrls.REASONABLE_ADJUSTMENTS,
+    PageUrls.REASONABLE_ADJUSTMENTS, // for support requests
     PageUrls.RESPONDENT_EMPLOYEES,
     PageUrls.RESPONDENT_SITES,
     PageUrls.RESPONDENT_SITE_EMPLOYEES,
@@ -109,33 +109,33 @@ describe('getEt3Section1', () => {
 
   const section3Urls = [
     PageUrls.CLAIMANT_ET1_FORM_DETAILS,
-    PageUrls.CLAIMANT_ET1_FORM_DETAILS,
+    PageUrls.CLAIMANT_ET1_FORM_DETAILS, // for details verification
     PageUrls.CLAIMANT_EMPLOYMENT_DATES,
-    PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
-    PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
-    PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
+    PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, // for entering employment dates
+    PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, // for end date entry
+    PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, // for further info
     PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING,
     PageUrls.CLAIMANT_JOB_TITLE,
-    PageUrls.CLAIMANT_JOB_TITLE,
+    PageUrls.CLAIMANT_JOB_TITLE, // for job title verification
     PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS,
-    PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS,
+    PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS, // for average hours verification
   ];
 
   const section4Urls = [
     PageUrls.CLAIMANT_PAY_DETAILS,
+    PageUrls.CLAIMANT_PAY_DETAILS, // for pay details confirmation
     PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
-    PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
-    PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
+    PageUrls.CLAIMANT_PAY_DETAILS_ENTER, // for payment frequency
+    PageUrls.CLAIMANT_PAY_DETAILS_ENTER, // for before tax payment
     PageUrls.CLAIMANT_NOTICE_PERIOD,
-    PageUrls.CLAIMANT_PAY_DETAILS,
-    PageUrls.NOT_IMPLEMENTED,
+    PageUrls.NOT_IMPLEMENTED, // for pension and benefits
     PageUrls.NOT_IMPLEMENTED, // CLAIMANT_PENSION_AND_BENEFITS_DETAILS??
   ];
 
   const section5Urls = [
     PageUrls.RESPONDENT_CONTEST_CLAIM,
     PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
-    PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
+    PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, // for supporting materials
   ];
 
   // Test for section 1
