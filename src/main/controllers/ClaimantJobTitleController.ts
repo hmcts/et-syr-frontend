@@ -10,7 +10,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { postLogic } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
-import { isJobTitleValid, isOptionSelected } from '../validators/validator';
+import { isContent100CharsOrLess, isOptionSelected } from '../validators/validator';
 
 const logger = getLogger('ClaimantJobTitleController');
 
@@ -35,7 +35,7 @@ export default class ClaimantJobTitleController {
                 id: 'whatIsClaimantJobTitle',
                 label: (l: AnyRecord): string => l.whatIsClaimantJobTitle.label,
                 labelSize: 's',
-                validator: isJobTitleValid,
+                validator: isContent100CharsOrLess,
               },
             },
           },

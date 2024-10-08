@@ -10,7 +10,6 @@ import {
   isContent2500CharsOrLess,
   isContentBetween3And100Chars,
   isFieldFilledIn,
-  isJobTitleValid,
   isNameValid,
   isOptionSelected,
   isPayIntervalNull,
@@ -136,27 +135,6 @@ describe('Validation', () => {
       { mockRef: '01234567B90', expected: 'nonnumeric' },
     ])('check telephone number validity when %o', ({ mockRef, expected }) => {
       expect(isValidUKTelNumber(mockRef)).toEqual(expected);
-    });
-  });
-
-  describe('isJobTitleValid()', () => {
-    it.each([
-      { mockRef: '', expected: undefined },
-      { mockRef: null, expected: undefined },
-      { mockRef: 'a', expected: 'invalidLength' },
-      {
-        mockRef:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et al.',
-        expected: 'invalidLength',
-      },
-      { mockRef: 'CEO', expected: undefined },
-      { mockRef: 'Developer', expected: undefined },
-      { mockRef: 'ex-mayor', expected: undefined },
-      { mockRef: 'Lorry Driver', expected: undefined },
-      { mockRef: 'I.T. technician', expected: undefined },
-      { mockRef: 'Manager', expected: undefined },
-    ])('check job title is valid', ({ mockRef, expected }) => {
-      expect(isJobTitleValid(mockRef)).toEqual(expected);
     });
   });
 
