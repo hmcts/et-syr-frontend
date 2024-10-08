@@ -8,8 +8,8 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { postLogic } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
-import { isFilledInAnd2500CharsOrLess } from '../helpers/controller/EmployersContractClaimDetailsHelper';
 import { getLogger } from '../logger';
+import { isFilledInAndIs2500CharsOrLess } from '../validators/validator';
 
 const logger = getLogger('EmployersContractClaimDetailsController');
 
@@ -21,7 +21,7 @@ export default class EmployersContractClaimDetailsController {
         type: 'textarea',
         id: 'provideDetailsOfECC',
         label: (l: AnyRecord): string => l.provideDetailsOfECC.label,
-        validator: isFilledInAnd2500CharsOrLess,
+        validator: isFilledInAndIs2500CharsOrLess,
       },
       inset: {
         type: 'insetFields',
