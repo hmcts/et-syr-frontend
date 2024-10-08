@@ -2,14 +2,14 @@
   "section1": {
     "header": "[W]Contact details",
     "respondentName": "[W]Respondent name",
-    "contactName": "[W]Name of contact",
     "organisationType": "[W]What type of organisation is the respondent?",
     "preferredTitleOptional": "[W]Preferred title (optional)",
     "companyRegistrationNumberOptional": "[W]Company registration number (optional)",
     "address": "[W]Address",
+    "contactName": "[W]Name of preferred contact at the respondent’s address (optional)",
     "dxAddressOptional": "[W]DX address (optional)",
-    "contactNumberOptional": "[W]Contact number (optional)",
-    "contactFormat": "[W]What format would you like to be contacted in?",
+    "contactNumberOptional": "[W]Contact phone number (optional)",
+    "contactFormat": "[W]How would you prefer to be contacted?",
     "reasonForPost": "[W]Provide a reason why you have selected post",
     "contactLanguage": "[W]What language would you like to be contacted in?",
     "exampleData": "[W][example data]"
@@ -20,7 +20,7 @@
     "explainReason": "[W]Explain why you are unable to take part in video or phone hearings",
     "disabilitySupport": "[W]Do you have a physical, mental or learning disability or health condition that means you need support during your case?",
     "supportRequest": "[W]Tell us what support you need to request",
-    "employeesInGreatBritain": "[W]How many people does Redde Ltd employ in Great Britain? (optional)",
+    "employeesInGreatBritain": "[W]How many people does the respondent employ in Great Britain? (optional)",
     "multipleSites": "[W]Does the respondent have more than one site in Great Britain?",
     "employeesAtSite": "[W]How many employed at the site the claimant worked at? (optional)",
     "exampleData": "[W][example data]"
@@ -44,10 +44,10 @@
     "header": "[W]Pay, pension and benefits details",
     "payDetailsCorrect": "[W]Are the pay details given by the claimant correct?",
     "paymentFrequency": "[W]How often was the claimant paid?",
-    "claimantsPayBeforeTax": "[W]Enter the claimant’s pay BEFORE tax (optional)",
-    "claimantsPayAfterTax": "[W]Enter the claimant’s pay AFTER tax (optional)",
+    "claimantsPayBeforeTax": "[W]Claimant’s pay BEFORE tax (optional)",
+    "claimantsPayAfterTax": "[W]Claimant’s pay AFTER tax (optional)",
     "noticePeriodDetailsCorrect": "[W]Are the claimant’s notice period details correct?",
-    "correctPayDetails": "[W]What are the claimant’s correct pay details? (optional)",
+    "correctPayDetails": "[W]What are the claimant’s correct notice details? (optional)",
     "pensionAndBenefitsDetailsCorrect": "[W]Are the claimants pension and benefits details correct?",
     "correctPensionAndBenefitsDetails": "[W]What are the claimant’s correct pension and benefits details? (optional)",
     "exampleData": "[W][example data]"
@@ -55,8 +55,8 @@
   "section5": {
     "header": "[W]Contest the claim",
     "contestClaim": "[W]Does [respondent name] contest the claim?",
-    "contestExplanation": "[W]Explain why [respondent name] contests the claim (text box label)",
-    "supportingMaterials": "[W]Supporting materials",
+    "contestExplanation": "[W]Explain why [respondent name] contests the claim",
+    "supportingMaterials": "[W]Supporting material",
     "exampleData": "[W][example data]"
   }
 }

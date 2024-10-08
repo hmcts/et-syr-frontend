@@ -11,6 +11,9 @@
   "errors": {
     "isClaimantJobTitleCorrect": {
       "required": "Make a selection"
+    },
+    "whatIsClaimantJobTitle": {
+      "tooLong": "The job title entered must be less than 100 characters"
     }
   }
 }

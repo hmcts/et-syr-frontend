@@ -13,7 +13,7 @@ describe('Change Details Controller', () => {
       redirect: 'answers',
     };
     controller.get(request, response);
-    expect(request.session.returnUrl).toStrictEqual(PageUrls.RESPONDENT_ET3_CYA + languages.ENGLISH_URL_PARAMETER);
+    expect(request.session.returnUrl).toStrictEqual(PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER);
     expect(response.redirect).toHaveBeenCalledWith(
       '/respondent/1' + PageUrls.RESPONDENT_ADDRESS + languages.ENGLISH_URL_PARAMETER
     );

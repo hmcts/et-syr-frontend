@@ -240,7 +240,7 @@ describe('RespondentContactPreferencesController', () => {
         response,
         expect.any(Object), // The form fields object
         expect.any(Object), // The logger
-        PageUrls.NOT_IMPLEMENTED
+        PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS
       );
     });
   });

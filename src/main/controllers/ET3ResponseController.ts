@@ -14,7 +14,7 @@ export default class ET3ResponseController {
     res.render(TranslationKeys.RESPONDENT_ET3_RESPONSE, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.RESPONDENT_ET3_RESPONSE as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.RESPONDENT_ET3_COMMON as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,
       hideContactUs: true,

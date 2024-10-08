@@ -10,7 +10,6 @@ import {
   isContent2500CharsOrLess,
   isContentBetween3And100Chars,
   isFieldFilledIn,
-  isJobTitleValid,
   isNameValid,
   isOptionSelected,
   isPayIntervalNull,
@@ -21,10 +20,8 @@ import {
   isValidCurrency,
   isValidNoticeLength,
   isValidPay,
-  isValidPension,
   isValidTwoDigitInteger,
   isValidUKTelNumber,
-  validateTitlePreference,
 } from '../../../main/validators/validator';
 import { mockFile } from '../mocks/mockFile';
 
@@ -117,19 +114,6 @@ describe('Validation', () => {
     });
   });
 
-  describe('validateTitlePreference()', () => {
-    it.each([
-      { title: '', expectedError: undefined },
-      { title: 'ab', expectedError: undefined },
-      { title: 'a', expectedError: 'lengthError' },
-      { title: 'a1', expectedError: 'numberError' },
-      { title: ' 12', expectedError: 'numberError' },
-      { title: '1a', expectedError: 'numberError' },
-    ])('Should check if other title preference is valid: %o', ({ title, expectedError }) => {
-      const isValid = validateTitlePreference(title);
-      expect(isValid).toStrictEqual(expectedError);
-    });
-  });
   describe('isValidUKTelNumber()', () => {
     it.each([
       { mockRef: '', expected: undefined },
@@ -151,27 +135,6 @@ describe('Validation', () => {
       { mockRef: '01234567B90', expected: 'nonnumeric' },
     ])('check telephone number validity when %o', ({ mockRef, expected }) => {
       expect(isValidUKTelNumber(mockRef)).toEqual(expected);
-    });
-  });
-
-  describe('isJobTitleValid()', () => {
-    it.each([
-      { mockRef: '', expected: undefined },
-      { mockRef: null, expected: undefined },
-      { mockRef: 'a', expected: 'invalid-length' },
-      {
-        mockRef:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et al.',
-        expected: 'invalid-length',
-      },
-      { mockRef: 'CEO', expected: undefined },
-      { mockRef: 'Developer', expected: undefined },
-      { mockRef: 'ex-mayor', expected: undefined },
-      { mockRef: 'Lorry Driver', expected: undefined },
-      { mockRef: 'I.T. technician', expected: undefined },
-      { mockRef: 'Manager', expected: undefined },
-    ])('check job title is valid', ({ mockRef, expected }) => {
-      expect(isJobTitleValid(mockRef)).toEqual(expected);
     });
   });
 
@@ -239,36 +202,16 @@ describe('Validation', () => {
 
   describe('isValidAvgWeeklyHours()', () => {
     it.each([
-      { mockRef: '00', expected: 'invalid' },
-      { mockRef: 'a', expected: 'notANumber' },
-      { mockRef: '%', expected: 'notANumber' },
-      { mockRef: '25a', expected: 'notANumber' },
-      { mockRef: '20.00', expected: undefined },
+      { mockRef: 'a', expected: 'invalid' },
+      { mockRef: '%', expected: 'invalid' },
+      { mockRef: '25a', expected: 'invalid' },
+      { mockRef: '-4', expected: 'invalid' },
       { mockRef: '169', expected: 'exceeded' },
-      { mockRef: '-4', expected: 'negativeNumber' },
-      { mockRef: '35', expected: undefined },
-      { mockRef: '2', expected: undefined },
-      { mockRef: '.25', expected: 'invalid' },
-      { mockRef: '-1', expected: 'negativeNumber' },
+      { mockRef: '168', expected: undefined },
+      { mockRef: '20.00', expected: undefined },
       { mockRef: null, expected: undefined },
     ])('check integer input is valid', ({ mockRef, expected }) => {
       expect(isValidAvgWeeklyHours(mockRef)).toEqual(expected);
-    });
-  });
-
-  describe('isValidPension()', () => {
-    it.each([
-      { mockRef: '1', expected: 'invalid' },
-      { mockRef: 'a', expected: 'notANumber' },
-      { mockRef: '%', expected: 'notANumber' },
-      { mockRef: '25a', expected: 'notANumber' },
-      { mockRef: '20.', expected: 'invalid' },
-      { mockRef: '100', expected: undefined },
-      { mockRef: '20.00', expected: undefined },
-      { mockRef: undefined, expected: undefined },
-      { mockRef: '', expected: undefined },
-    ])('check integer input is valid', ({ mockRef, expected }) => {
-      expect(isValidPension(mockRef)).toEqual(expected);
     });
   });
 

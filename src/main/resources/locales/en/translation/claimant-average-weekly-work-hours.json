@@ -12,6 +12,10 @@
   "errors": {
     "areClaimantWorkHourCorrect": {
       "required": "Make a selection"
+    },
+    "whatAreClaimantCorrectWorkHour": {
+      "invalid": "The average weekly work hours’ entered must be less than 168 hours",
+      "exceeded": "The average weekly work hours’ entered must be less than 168 hours"
     }
   }
 }

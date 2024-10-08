@@ -138,5 +138,11 @@
     "s1": "1. Tell us about the respondent",
     "s2": "2. Tell us about the claimant",
     "s3": "3. Give us your response"
+  },
+  "cya": {
+    "label": "Have you completed this section?",
+    "hint": "You can change your answers later.",
+    "yes": "Yes, I’ve completed this section",
+    "no": "No, I’ll come back later"
   }
 }

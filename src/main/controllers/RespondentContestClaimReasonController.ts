@@ -59,7 +59,7 @@ export default class RespondentContestClaimReasonController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.NOT_IMPLEMENTED);
+    await postLogic(req, res, this.form, logger, PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM);
   };
 
   public get = (req: AppRequest, res: Response): void => {

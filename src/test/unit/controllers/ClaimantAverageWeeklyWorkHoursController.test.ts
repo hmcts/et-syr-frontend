@@ -49,7 +49,7 @@ describe('Claimant average weekly work hours Controller', () => {
       request = mockRequest({
         body: {
           areClaimantWorkHourCorrect: YesOrNoOrNotSure.NO,
-          whatAreClaimantCorrectWorkHour: 'Test',
+          whatAreClaimantCorrectWorkHour: '168',
         },
       });
       request.url = PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER;
@@ -58,6 +58,42 @@ describe('Claimant average weekly work hours Controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(
         PageUrls.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS + languages.ENGLISH_URL_PARAMETER
       );
+    });
+
+    it('should redirect to next page when no is selected but hour invalid', () => {
+      request = mockRequest({
+        body: {
+          areClaimantWorkHourCorrect: YesOrNoOrNotSure.NO,
+          whatAreClaimantCorrectWorkHour: 'Test',
+        },
+      });
+      request.url = PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER;
+      controller.post(request, response);
+
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER
+      );
+
+      const errors = [{ propertyName: 'whatAreClaimantCorrectWorkHour', errorType: 'invalid' }];
+      expect(request.session.errors).toEqual(errors);
+    });
+
+    it('should redirect to next page when no is selected but hour exceeded', () => {
+      request = mockRequest({
+        body: {
+          areClaimantWorkHourCorrect: YesOrNoOrNotSure.NO,
+          whatAreClaimantCorrectWorkHour: '169',
+        },
+      });
+      request.url = PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER;
+      controller.post(request, response);
+
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER
+      );
+
+      const errors = [{ propertyName: 'whatAreClaimantCorrectWorkHour', errorType: 'exceeded' }];
+      expect(request.session.errors).toEqual(errors);
     });
 
     it('should redirect to next page when Not Sure is selected', () => {
