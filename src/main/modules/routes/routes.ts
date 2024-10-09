@@ -13,6 +13,7 @@ import CheckYourAnswersContactDetailsController from '../../controllers/CheckYou
 import CheckYourAnswersContestClaimController from '../../controllers/CheckYourAnswersContestClaimController';
 import CheckYourAnswersET3Controller from '../../controllers/CheckYourAnswersET3Controller';
 import CheckYourAnswersEarlyConciliationAndEmployeeDetailsController from '../../controllers/CheckYourAnswersEarlyConciliationAndEmployeeDetailsController';
+import CheckYourAnswersEmployersContractClaimController from '../../controllers/CheckYourAnswersEmployersContractClaimController';
 import CheckYourAnswersHearingPreferencesController from '../../controllers/CheckYourAnswersHearingPreferencesController';
 import CheckYourAnswersPayPensionAndBenefitsController from '../../controllers/CheckYourAnswersPayPensionAndBenefitsController';
 import ClaimantAcasCertificateDetailsController from '../../controllers/ClaimantAcasCertificateDetailsController';
@@ -174,6 +175,14 @@ export class Routes {
     app.post(PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, new CheckYourAnswersContestClaimController().post);
     app.get(PageUrls.EMPLOYERS_CONTRACT_CLAIM, new EmployersContractClaimController().get);
     app.post(PageUrls.EMPLOYERS_CONTRACT_CLAIM, new EmployersContractClaimController().post);
+    app.get(
+      PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM,
+      new CheckYourAnswersEmployersContractClaimController().get
+    );
+    app.post(
+      PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM,
+      new CheckYourAnswersEmployersContractClaimController().post
+    );
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(
       Urls.INFO,

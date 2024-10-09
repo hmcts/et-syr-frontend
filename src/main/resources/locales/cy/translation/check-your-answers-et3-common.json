@@ -58,5 +58,12 @@
     "contestExplanation": "[W]Explain why [respondent name] contests the claim",
     "supportingMaterials": "[W]Supporting material",
     "exampleData": "[W][example data]"
+  },
+  "section6": {
+    "header": "[W]Employer’s contract claim",
+    "respondentWantToMakeECC": "[W]Does the respondent wish to make an Employer’s Contract Claim?",
+    "employerContractClaimDetails": "[W]Provide the background and details of your Employer’s Contract Claim",
+    "supportingMaterials": "[W]Supporting material",
+    "exampleData": "[W][example data]"
   }
 }
