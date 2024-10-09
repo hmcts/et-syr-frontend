@@ -9,9 +9,9 @@ import {
   ET3ModificationTypes,
   FormFieldNames,
   LoggerConstants,
-  PageUrls,
   ValidationErrors,
 } from '../definitions/constants';
+import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { setUserCase } from '../helpers/CaseHelpers';
 import { getLogger } from '../logger';
@@ -129,8 +129,6 @@ export default class ET3Util {
 
   public static async updateET3Data(
     req: AppRequest,
-    caseDetailsLinksSectionId: string,
-    caseDetailsLinksSectionStatus: string,
     responseHubLinksSectionId: string,
     responseHubLinksSectionStatus: string
   ): Promise<CaseWithId> {
@@ -142,8 +140,8 @@ export default class ET3Util {
             req.session?.userCase,
             req.session?.user?.id,
             ET3ModificationTypes.MODIFICATION_TYPE_UPDATE,
-            caseDetailsLinksSectionId,
-            caseDetailsLinksSectionStatus,
+            ET3CaseDetailsLinkNames.RespondentResponse,
+            LinkStatus.IN_PROGRESS,
             responseHubLinksSectionId,
             responseHubLinksSectionStatus
           )
@@ -166,10 +164,9 @@ export default class ET3Util {
     req: AppRequest,
     res: Response,
     form: Form,
-    et3CaseDetailsLinkName: string,
-    et3CaseDetailsLinkStatus: string,
     et3HubLinkName: string,
-    et3HubLinkStatus: string
+    et3HubLinkStatus: string,
+    redirectUrl: string
   ): Promise<void> {
     const formData = form.getParsedBody<ET3FormModel>(req.body, form.getFormFields());
     req.session.errors = form.getValidatorErrors(formData);
@@ -178,19 +175,13 @@ export default class ET3Util {
       return res.redirect(req.url);
     }
     setUserCase(req, form);
-    const userCase: CaseWithId = await ET3Util.updateET3Data(
-      req,
-      et3CaseDetailsLinkName,
-      et3CaseDetailsLinkStatus,
-      et3HubLinkName,
-      et3HubLinkStatus
-    );
+    const userCase: CaseWithId = await ET3Util.updateET3Data(req, et3HubLinkName, et3HubLinkStatus);
     if (req.session.errors?.length > 0) {
       logger.error(LoggerConstants.ERROR_API);
       return res.redirect(req.url);
     } else {
       req.session.userCase = userCase;
-      res.redirect(PageUrls.TYPE_OF_ORGANISATION);
+      res.redirect(redirectUrl);
     }
   }
 }

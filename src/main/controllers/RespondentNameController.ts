@@ -5,7 +5,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
 import { FormFieldNames, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
-import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../definitions/links';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
@@ -68,10 +68,9 @@ export default class RespondentNameController {
       req,
       res,
       this.form,
-      ET3CaseDetailsLinkNames.RespondentResponse,
-      LinkStatus.IN_PROGRESS,
       ET3HubLinkNames.ContactDetails,
-      LinkStatus.IN_PROGRESS
+      LinkStatus.IN_PROGRESS,
+      PageUrls.TYPE_OF_ORGANISATION
     );
   };
 

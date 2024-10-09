@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { DefaultValues, ServiceErrors, ValidationErrors } from '../../../main/definitions/constants';
-import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
+import { ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
 import { formatApiCaseDataToCaseWithId } from '../../../main/helpers/ApiFormatter';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
@@ -85,13 +85,7 @@ describe('ET3lUtil tests', () => {
       api.modifyEt3Data = jest
         .fn()
         .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse));
-      const caseWithId = await ET3Util.updateET3Data(
-        request,
-        ET3CaseDetailsLinkNames.RespondentResponse,
-        LinkStatus.IN_PROGRESS,
-        ET3HubLinkNames.ContactDetails,
-        LinkStatus.IN_PROGRESS
-      );
+      const caseWithId = await ET3Util.updateET3Data(request, ET3HubLinkNames.ContactDetails, LinkStatus.IN_PROGRESS);
       expect(caseWithId).toEqual(formatApiCaseDataToCaseWithId(mockCaseApiDataResponse));
     });
 
@@ -103,13 +97,7 @@ describe('ET3lUtil tests', () => {
       api.modifyEt3Data = jest.fn().mockImplementation(() => {
         throw new Error(ServiceErrors.ERROR_MODIFYING_SUBMITTED_CASE);
       });
-      await ET3Util.updateET3Data(
-        request,
-        ET3CaseDetailsLinkNames.RespondentResponse,
-        LinkStatus.IN_PROGRESS,
-        ET3HubLinkNames.ContactDetails,
-        LinkStatus.IN_PROGRESS
-      );
+      await ET3Util.updateET3Data(request, ET3HubLinkNames.ContactDetails, LinkStatus.IN_PROGRESS);
       expect(request.session.errors[0].errorType).toEqual(ValidationErrors.API);
     });
   });

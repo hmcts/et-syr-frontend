@@ -5,34 +5,32 @@ import { AppRequest } from '../definitions/appRequest';
 import { TypeOfOrganisation } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLogger } from '../logger';
+import ET3Util from '../utils/ET3Util';
 import { isOptionSelected, isValidCompanyRegistrationNumber } from '../validators/validator';
-
-const logger = getLogger('TypeOfOrganisationController');
 
 export default class TypeOfOrganisationController {
   private readonly form: Form;
   private readonly typeOfOrgContent: FormContent = {
     fields: {
-      typeOfOrg: {
+      et3ResponseRespondentEmployerType: {
         classes: 'govuk-radios',
-        id: 'typeOfOrg',
+        id: 'et3ResponseRespondentEmployerType',
         type: 'radios',
         labelHidden: false,
         values: [
           {
-            name: 'typeOfOrg',
+            name: 'et3ResponseRespondentEmployerType',
             label: (l: AnyRecord): string => l.individual,
             value: TypeOfOrganisation.INDIVIDUAL,
             subFields: {
-              typeOfOrgIndividualDetail: {
-                id: 'typeOfOrgIndividualDetail',
-                name: 'typeOfOrgIndividualDetail',
+              et3ResponseRespondentPreferredTitle: {
+                id: 'et3ResponseRespondentPreferredTitle',
+                name: 'et3ResponseRespondentPreferredTitle',
                 type: 'text',
                 labelSize: 'normal',
                 label: (l: AnyRecord): string => l.individualTextLabel,
@@ -42,13 +40,13 @@ export default class TypeOfOrganisationController {
             },
           },
           {
-            name: 'typeOfOrg',
+            name: 'et3ResponseRespondentEmployerType',
             label: (l: AnyRecord): string => l.limitedCompany,
             value: TypeOfOrganisation.LIMITED_COMPANY,
             subFields: {
-              typeOfOrgCRNDetail: {
-                id: 'typeOfOrgCRNDetail',
-                name: 'typeOfOrgCRNDetail',
+              et3ResponseRespondentCompanyNumber: {
+                id: 'et3ResponseRespondentCompanyNumber',
+                name: 'et3ResponseRespondentCompanyNumber',
                 type: 'text',
                 labelSize: 'normal',
                 label: (l: AnyRecord): string => l.limitedCompanyTextLabel,
@@ -59,17 +57,17 @@ export default class TypeOfOrganisationController {
             },
           },
           {
-            name: 'typeOfOrg',
+            name: 'et3ResponseRespondentEmployerType',
             label: (l: AnyRecord): string => l.partnership,
             value: TypeOfOrganisation.PARTNERSHIP,
           },
           {
-            name: 'typeOfOrg',
+            name: 'et3ResponseRespondentEmployerType',
             label: (l: AnyRecord): string => l.unincorporatedAssociation,
             value: TypeOfOrganisation.UNINCORPORATED_ASSOCIATION,
           },
           {
-            name: 'typeOfOrg',
+            name: 'et3ResponseRespondentEmployerType',
             label: (l: AnyRecord): string => l.other,
             value: TypeOfOrganisation.OTHER,
           },
@@ -86,7 +84,14 @@ export default class TypeOfOrganisationController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.RESPONDENT_ADDRESS);
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.ContactDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.RESPONDENT_ADDRESS
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
