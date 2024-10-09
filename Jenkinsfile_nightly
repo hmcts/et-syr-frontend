@@ -35,5 +35,5 @@ withNightlyPipeline(type, product, component) {
     env.TEST_URL = params.TEST_URL
     env.RUNNING_ENV = params.ENVIRONMENT
 
-    enableSlackNotification('#et-builds')
+    enableSlackNotifications('#et-builds')
 }
