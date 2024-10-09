@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
-import { FormFieldNames, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
+import { InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
@@ -37,11 +37,6 @@ export default class CheckYourAnswersPayPensionAndBenefitsController {
           },
         ],
         validator: isOptionSelected,
-      },
-      hiddenErrorField: {
-        id: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
-        type: 'text',
-        hidden: true,
       },
     },
     submit: submitButton,

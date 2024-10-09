@@ -52,11 +52,6 @@ export default class SelfAssignmentFormController {
         validator: isFieldFilledIn,
         label: (l: AnyRecord): string => l.claimantLastName,
       },
-      hiddenErrorField: {
-        id: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
-        type: 'text',
-        hidden: true,
-      },
     },
     submit: {
       text: (l: AnyRecord): string => l.continue,

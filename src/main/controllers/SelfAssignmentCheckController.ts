@@ -34,11 +34,6 @@ export default class SelfAssignmentCheckController {
           },
         ],
       },
-      hiddenErrorField: {
-        id: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
-        type: 'text',
-        hidden: true,
-      },
     },
     submit: {
       text: (l: AnyRecord): string => l.continue,
