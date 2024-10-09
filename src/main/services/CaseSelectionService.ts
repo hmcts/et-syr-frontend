@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, Respondent, YesOrNo } from '../definitions/case';
+import { CaseWithId, RespondentET3Model, YesOrNo } from '../definitions/case';
 import { LoggingConstants, PageUrls } from '../definitions/constants';
 import { ApplicationTableRecord, CaseState } from '../definitions/definition';
 import { AnyRecord } from '../definitions/util-types';
@@ -69,7 +69,7 @@ export const getUserApplications = (
   return apps;
 };
 
-export const formatRespondents = (respondents?: Respondent[]): string => {
+export const formatRespondents = (respondents?: RespondentET3Model[]): string => {
   if (respondents === undefined) {
     return 'undefined';
   }

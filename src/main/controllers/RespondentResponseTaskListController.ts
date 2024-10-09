@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { Respondent } from '../definitions/case';
+import { RespondentET3Model } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { ET3HubLinksStatuses, SectionIndexToEt3HubLinkNames, linkStatusColorMap } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
@@ -19,7 +19,7 @@ export default class RespondentResponseTaskListController {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const redirectUrl = setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED);
 
-    let selectedRespondent: Respondent;
+    let selectedRespondent: RespondentET3Model;
     for (const respondent of req.session.userCase.respondents) {
       if (respondent.idamId === req.session.user.id) {
         selectedRespondent = respondent;

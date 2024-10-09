@@ -167,6 +167,7 @@ export interface RespondentET3Model {
   claimantWorkAddressPostCode?: string;
   claimantWorkAddressCounty?: string;
   claimantWorkAddressPostTown?: string;
+  claimantWorkAddress?: Et1Address;
   responseReceived?: YesOrNo;
   responseStatus?: string;
   responseToClaim?: string;
@@ -178,6 +179,9 @@ export interface RespondentET3Model {
   respondentAddressPostCode?: string;
   respondentAddressCounty?: string;
   respondentAddressPostTown?: string;
+  respondentAddress?: Et1Address;
+  responseRespondentAddress?: Et1Address;
+  et3Vetting?: ET3VettingType;
   respondentACASQuestion?: YesOrNo;
   respondentACAS?: string;
   rejectionReasonOther?: string;
@@ -190,9 +194,12 @@ export interface RespondentET3Model {
   et3ResponseClaimantWeeklyHours?: YesOrNo;
   et3ResponseClaimantCorrectHours?: string;
   et3ResponseEarningDetailsCorrect?: YesOrNo;
+  et3ResponseEmployerClaimDocument?: UploadedDocumentType;
+  et3ResponseRespondentSupportDocument?: UploadedDocumentType;
   et3ResponsePayFrequency?: string;
   et3ResponsePayBeforeTax?: string;
   et3ResponsePayTakehome?: string;
+  et3Form?: UploadedDocumentType;
   respondentEmail?: string;
   responseStruckOut?: YesOrNo;
   respondentContactPreference?: string;
@@ -433,7 +440,7 @@ export interface Case {
   personalDetailsCheck?: YesOrNo;
   claimDetailsCheck?: YesOrNo;
   claimantWorkAddressQuestion?: YesOrNo;
-  respondents?: Respondent[];
+  respondents?: RespondentET3Model[];
   addressAddressTypes?: AddressType[];
   addressAddresses?: Record<string, string>[];
   respondentAddressTypes?: AddressType[];

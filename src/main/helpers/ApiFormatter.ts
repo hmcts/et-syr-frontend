@@ -16,7 +16,7 @@ import {
   Document,
   EnglishOrWelsh,
   Representative,
-  Respondent,
+  RespondentET3Model,
   YesOrNo,
   ccdPreferredTitle,
 } from '../definitions/case';
@@ -670,7 +670,7 @@ export const getDueDate = (date: string, daysUntilDue: number): string => {
   }
 };
 
-export const mapRespondents = (respondents: RespondentApiModel[]): Respondent[] => {
+export const mapRespondents = (respondents: RespondentApiModel[]): RespondentET3Model[] => {
   if (respondents === undefined) {
     return;
   }
@@ -681,14 +681,14 @@ export const mapRespondents = (respondents: RespondentApiModel[]): Respondent[] 
   });
 };
 
-export const mapRespondent = (respondent: RespondentType): Respondent => {
+export const mapRespondent = (respondent: RespondentType): RespondentET3Model => {
   return {
     respondentName: respondent?.respondent_name,
-    respondentAddress1: respondent?.respondent_address?.AddressLine1,
-    respondentAddress2: respondent?.respondent_address?.AddressLine2,
-    respondentAddressTown: respondent?.respondent_address?.PostTown,
+    respondentAddressLine1: respondent?.respondent_address?.AddressLine1,
+    respondentAddressLine2: respondent?.respondent_address?.AddressLine2,
+    respondentAddressPostTown: respondent?.respondent_address?.PostTown,
     respondentAddressCountry: respondent?.respondent_address?.Country,
-    respondentAddressPostcode: respondent?.respondent_address?.PostCode,
+    respondentAddressPostCode: respondent?.respondent_address?.PostCode,
     respondentEnterPostcode: respondent?.respondent_address?.PostCode,
     acasCert: respondent?.respondent_ACAS_question,
     acasCertNum: respondent?.respondent_ACAS,
@@ -784,8 +784,8 @@ export const mapRespondent = (respondent: RespondentType): Respondent => {
     personalDetailsSection: respondent?.personalDetailsSection,
     employmentDetailsSection: respondent?.employmentDetailsSection,
     claimDetailsSection: respondent?.claimDetailsSection,
-    workAddress1: respondent?.workAddress1,
-    workAddress2: respondent?.workAddress2,
+    workAddressLine1: respondent?.workAddress1,
+    workAddressLine2: respondent?.workAddress2,
     workAddressTown: respondent?.workAddressTown,
     workAddressCountry: respondent?.workAddressCountry,
     workAddressPostcode: respondent?.workAddressPostcode,
@@ -804,7 +804,7 @@ export const mapRepresentatives = (representatives: RepresentativeApiModel[]): R
   });
 };
 
-export const setRespondentApiFormat = (respondents: Respondent[]): RespondentRequestBody[] => {
+export const setRespondentApiFormat = (respondents: RespondentET3Model[]): RespondentRequestBody[] => {
   if (respondents === undefined) {
     return;
   }
@@ -813,11 +813,11 @@ export const setRespondentApiFormat = (respondents: Respondent[]): RespondentReq
       value: {
         respondent_name: respondent.respondentName,
         respondent_address: {
-          AddressLine1: respondent.respondentAddress1,
-          AddressLine2: respondent.respondentAddress2,
-          PostTown: respondent.respondentAddressTown,
+          AddressLine1: respondent.respondentAddressLine1,
+          AddressLine2: respondent.respondentAddressLine2,
+          PostTown: respondent.respondentAddressPostTown,
           Country: respondent.respondentAddressCountry,
-          PostCode: respondent.respondentAddressPostcode,
+          PostCode: respondent.respondentAddressPostCode,
         },
         respondent_ACAS_question: respondent.acasCert,
         respondent_ACAS: respondent.acasCertNum,

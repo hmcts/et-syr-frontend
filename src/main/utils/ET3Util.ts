@@ -1,7 +1,6 @@
 import { Response } from 'express';
 
 import { Form } from '../components/form';
-import { ET3FormModel } from '../definitions/ET3FormModel';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import {
@@ -168,7 +167,7 @@ export default class ET3Util {
     et3HubLinkStatus: string,
     redirectUrl: string
   ): Promise<void> {
-    const formData = form.getParsedBody<ET3FormModel>(req.body, form.getFormFields());
+    const formData = form.getParsedBody<CaseWithId>(req.body, form.getFormFields());
     req.session.errors = form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
       logger.error(LoggerConstants.ERROR_FORM_INVALID_DATA + 'Form: ' + form);

@@ -1,5 +1,5 @@
 import { ET3RequestModel } from '../definitions/ET3RequestModel';
-import { CaseWithId, Respondent } from '../definitions/case';
+import { CaseWithId, RespondentET3Model } from '../definitions/case';
 import { RespondentType } from '../definitions/complexTypes/respondent';
 import { ServiceErrors } from '../definitions/constants';
 
@@ -21,7 +21,7 @@ export default class ET3DataModelUtil {
     if (StringUtils.isBlank(requestType)) {
       throw new Error(ServiceErrors.ERROR_MODIFYING_SUBMITTED_CASE_REQUEST_TYPE_NOT_FOUND);
     }
-    let selectedRespondent: Respondent;
+    let selectedRespondent: RespondentET3Model;
     for (const respondent of caseWithId.respondents) {
       if (respondent.idamId === idamId) {
         selectedRespondent = respondent;
@@ -45,7 +45,7 @@ export default class ET3DataModelUtil {
 
   public static convertSelectedRespondentToRespondentType(
     caseWithId: CaseWithId,
-    selectedRespondent: Respondent
+    selectedRespondent: RespondentET3Model
   ): RespondentType {
     const respondentType: RespondentType = {
       response_status: caseWithId.responseStatus,
