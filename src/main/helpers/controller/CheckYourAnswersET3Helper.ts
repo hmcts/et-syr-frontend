@@ -287,3 +287,30 @@ export const getEt3Section5 = (userCase: CaseWithId, translations: AnyRecord): S
 
   return et3ResponseSection5;
 };
+
+export const getEt3Section6 = (userCase: CaseWithId, translations: AnyRecord): SummaryListRow[] => {
+  const et3ResponseSection6: SummaryListRow[] = [];
+
+  et3ResponseSection6.push(
+    addSummaryRowWithAction(
+      translations.section6.respondentWantToMakeECC,
+      translations.section6.exampleData, // todo: populate with the correct field from userCase
+      PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+      translations.change
+    ),
+    addSummaryRowWithAction(
+      translations.section6.employerContractClaimDetails,
+      translations.section6.exampleData, // todo: populate with the correct field from userCase
+      PageUrls.NOT_IMPLEMENTED,
+      translations.change
+    ),
+    addSummaryRowWithAction(
+      translations.section6.supportingMaterials,
+      translations.section6.exampleData, // todo: populate with the correct field from userCase
+      PageUrls.NOT_IMPLEMENTED,
+      translations.change
+    )
+  );
+
+  return et3ResponseSection6;
+};

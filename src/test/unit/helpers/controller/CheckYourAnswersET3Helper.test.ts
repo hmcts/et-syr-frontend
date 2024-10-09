@@ -8,9 +8,10 @@ import {
   getEt3Section3,
   getEt3Section4,
   getEt3Section5,
+  getEt3Section6,
 } from '../../../../main/helpers/controller/CheckYourAnswersET3Helper';
 
-describe('getEt3Section1', () => {
+describe('CheckYourAnswersET3Helper', () => {
   const userCase: CaseWithId = {
     createdDate: '',
     lastModified: '',
@@ -79,6 +80,13 @@ describe('getEt3Section1', () => {
       supportingMaterials: 'Supporting materials',
       exampleData: '[example data]',
     },
+    section6: {
+      header: 'Employer’s contract claim',
+      respondentWantToMakeECC: 'Does the respondent wish to make an Employer’s Contract Claim?',
+      employerContractClaimDetails: 'Provide the background and details of your Employer’s Contract Claim',
+      supportingMaterials: 'Supporting material',
+      exampleData: '[example data]',
+    },
     change: 'Change',
   };
 
@@ -136,6 +144,12 @@ describe('getEt3Section1', () => {
     PageUrls.RESPONDENT_CONTEST_CLAIM,
     PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
     PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, // for supporting materials
+  ];
+
+  const section6Urls = [
+    PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+    PageUrls.NOT_IMPLEMENTED,
+    PageUrls.NOT_IMPLEMENTED, // for supporting materials
   ];
 
   // Test for section 1
@@ -234,6 +248,26 @@ describe('getEt3Section1', () => {
     }
 
     const result = getEt3Section5(userCase, translationsMock);
+
+    expect(result).toEqual(expectedRows);
+  });
+
+  // Tests for section 6
+  it('should return correct summary list rows for section 6 when all fields are populated', () => {
+    const expectedRows: SummaryListRow[] = [];
+
+    for (const pageUrl of section6Urls) {
+      expectedRows.push(
+        addSummaryRowWithAction(
+          expect.any(String), // field1
+          expect.any(String), // exampleData
+          pageUrl, // URL
+          expect.any(String) // change label
+        )
+      );
+    }
+
+    const result = getEt3Section6(userCase, translationsMock);
 
     expect(result).toEqual(expectedRows);
   });

@@ -140,6 +140,7 @@
     "s3": "3. Give us your response"
   },
   "cya": {
+    "title": "Check your answers",
     "label": "Have you completed this section?",
     "hint": "You can change your answers later.",
     "yes": "Yes, I’ve completed this section",

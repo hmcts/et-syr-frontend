@@ -1,0 +1,8 @@
+{
+  "header": "Employer’s contract claim",
+  "errors": {
+    "employersContractClaimSection": {
+      "required": "Make a selection"
+    }
+  }
+}
