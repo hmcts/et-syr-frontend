@@ -6,7 +6,6 @@ import {
   getEt3Section3,
   getEt3Section4,
   getEt3Section5,
-  getEt3Section6,
 } from '../../../main/helpers/controller/CheckYourAnswersET3Helper';
 import { getFlagValue } from '../../../main/modules/featureFlag/launchDarkly';
 import { mockRequest } from '../mocks/mockRequest';
@@ -44,7 +43,6 @@ describe('ET3CYAController', () => {
       (getEt3Section3 as jest.Mock).mockReturnValue('mocked section 3 data');
       (getEt3Section4 as jest.Mock).mockReturnValue('mocked section 4 data');
       (getEt3Section5 as jest.Mock).mockReturnValue('mocked section 5 data');
-      (getEt3Section6 as jest.Mock).mockReturnValue('mocked section 6 data');
 
       await controller.get(request, response);
 
@@ -56,7 +54,6 @@ describe('ET3CYAController', () => {
           et3ResponseSection3: 'mocked section 3 data',
           et3ResponseSection4: 'mocked section 4 data',
           et3ResponseSection5: 'mocked section 5 data',
-          et3ResponseSection6: 'mocked section 6 data',
           redirectUrl: expect.any(String), // Check that a redirect URL is set
           welshEnabled: true, // Check if the Welsh feature flag is true
         })
