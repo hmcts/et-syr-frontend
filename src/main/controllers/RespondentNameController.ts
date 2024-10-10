@@ -4,7 +4,7 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
-import { FormContent, FormFields } from '../definitions/form';
+import { FormContent, FormFields, FormInput } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
@@ -71,11 +71,16 @@ export default class RespondentNameController {
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_NAME);
+    const userCase = req.session.userCase;
     const content = getPageContent(req, this.respondentNameContent, [
       TranslationKeys.COMMON,
       TranslationKeys.RESPONDENT_NAME,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
+
+    const respondentNameQuestion = Object.entries(this.form.getFormFields())[0][1] as FormInput;
+    respondentNameQuestion.label = (l: AnyRecord): string => l.label1 + userCase.respondentName + l.label2;
+
     res.render(TranslationKeys.RESPONDENT_NAME, {
       ...content,
       redirectUrl,

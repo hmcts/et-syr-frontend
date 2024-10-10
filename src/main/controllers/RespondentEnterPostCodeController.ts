@@ -4,22 +4,20 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLogger } from '../logger';
+import ET3Util from '../utils/ET3Util';
 import { isValidUKPostcode } from '../validators/address_validator';
-
-const logger = getLogger('RespondentEnterPostCodeController');
 
 export default class RespondentEnterPostCodeController {
   private readonly form: Form;
   private readonly respondentEnterPostCodeContent: FormContent = {
     fields: {
-      respondentEnterPostcode: {
-        id: 'respondentEnterPostcode',
+      respondentAddressPostCode: {
+        id: 'respondentAddressPostCode',
         type: 'text',
         label: (l: AnyRecord): string => l.enterPostcode,
         classes: 'govuk-label govuk-!-width-one-half',
@@ -42,7 +40,14 @@ export default class RespondentEnterPostCodeController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.RESPONDENT_SELECT_POST_CODE);
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.ContactDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.RESPONDENT_SELECT_POST_CODE
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
