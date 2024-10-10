@@ -1,19 +1,19 @@
 {
   "title": "Claimant employment dates",
   "p1": "It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
-  "employmentStartDate": {
+  "et3ResponseEmploymentStartDate": {
     "label": "Employment start date (optional)",
     "hint": "For example, 23 4 2011"
   },
-  "employmentEndDate": {
+  "et3ResponseEmploymentEndDate": {
     "label": "Employment end date (optional)",
     "hint": "For example, 23 4 2022"
   },
-  "provideInfoAboutEmploymentDates": {
+  "et3ResponseEmploymentInformation": {
     "label": "Do you want to provide any further information about the claimant's employment dates? (optional)"
   },
   "errors": {
-    "employmentStartDate": {
+    "et3ResponseEmploymentStartDate": {
       "dayNotANumber": "Enter a date in the correct format",
       "monthNotANumber": "Enter a date in the correct format",
       "yearNotANumber": "Enter a date in the correct format",
@@ -27,7 +27,7 @@
       "invalidDate": "Enter a date in the correct format",
       "invalidDateInFuture": "Enter a date in the past"
     },
-    "employmentEndDate": {
+    "et3ResponseEmploymentEndDate": {
       "dayNotANumber": "Enter a date in the correct format",
       "monthNotANumber": "Enter a date in the correct format",
       "yearNotANumber": "Enter a date in the correct format",

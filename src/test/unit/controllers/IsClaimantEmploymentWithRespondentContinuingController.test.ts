@@ -1,10 +1,15 @@
 import IsClaimantEmploymentWithRespondentContinuingController from '../../../main/controllers/IsClaimantEmploymentWithRespondentContinuingController';
 import { YesOrNoOrNotSure } from '../../../main/definitions/case';
-import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
+import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
+import ET3Util from '../../../main/utils/ET3Util';
+import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+
+jest.mock('../../../main/helpers/CaseHelpers');
+const updateET3DataMock = jest.spyOn(ET3Util, 'updateET3Data');
 
 describe('Is the claimant’s employment with the respondent continuing? Controller', () => {
   const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
@@ -31,52 +36,49 @@ describe('Is the claimant’s employment with the respondent continuing? Control
   });
 
   describe('POST method', () => {
-    it('should redirect to next page when yes is selected', () => {
+    it('should redirect to next page when yes is selected', async () => {
       request = mockRequest({
         body: {
-          isEmploymentContinuing: YesOrNoOrNotSure.YES,
+          et3ResponseContinuingEmployment: YesOrNoOrNotSure.YES,
         },
       });
-      request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING + languages.ENGLISH_URL_PARAMETER;
-      controller.post(request, response);
-
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER);
+      request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_JOB_TITLE);
     });
 
-    it('should redirect to next page when no is selected', () => {
+    it('should redirect to next page when no is selected', async () => {
       request = mockRequest({
         body: {
-          isEmploymentContinuing: YesOrNoOrNotSure.NO,
+          et3ResponseContinuingEmployment: YesOrNoOrNotSure.NO,
         },
       });
-      request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING + languages.ENGLISH_URL_PARAMETER;
-      controller.post(request, response);
-
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER);
+      request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_JOB_TITLE);
     });
 
-    it('should redirect to next page when Not Sure is selected', () => {
+    it('should redirect to next page when Not Sure is selected', async () => {
       request = mockRequest({
         body: {
-          isEmploymentContinuing: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseContinuingEmployment: YesOrNoOrNotSure.NOT_SURE,
         },
       });
-      request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING + languages.ENGLISH_URL_PARAMETER;
-      controller.post(request, response);
-
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER);
+      request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_JOB_TITLE);
     });
 
-    it('should render the same page when nothing is selected', () => {
+    it('should render the same page when nothing is selected', async () => {
       request = mockRequest({ body: {} });
-      request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING + languages.ENGLISH_URL_PARAMETER;
-      controller.post(request, response);
-
-      expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING + languages.ENGLISH_URL_PARAMETER
-      );
-
-      const errors = [{ propertyName: 'isEmploymentContinuing', errorType: 'required' }];
+      request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
+      const errors = [{ propertyName: 'et3ResponseContinuingEmployment', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
   });
