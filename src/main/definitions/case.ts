@@ -2,7 +2,7 @@ import { HearingModel } from './api/caseApiResponse';
 import { DocumentTypeItem } from './complexTypes/documentTypeItem';
 import { Et1Address } from './complexTypes/et1Address';
 import { GenericTseApplicationTypeItem, TseRespondTypeItem } from './complexTypes/genericTseApplicationTypeItem';
-import { ET3VettingType } from './complexTypes/respondent';
+import { ET3VettingCommonTypes, ET3VettingType } from './complexTypes/respondent';
 import { PseResponseType, SendNotificationTypeItem } from './complexTypes/sendNotificationTypeItem';
 import {
   CaseState,
@@ -33,7 +33,7 @@ export interface AddressType {
   label?: string;
 }
 
-export interface RespondentET3Model {
+export interface RespondentET3Model extends ET3VettingCommonTypes {
   respondentName?: string;
   workAddressLine1?: string;
   workAddressLine2?: string;
@@ -119,62 +119,16 @@ export interface RespondentET3Model {
   responseRespondentAddressCountry?: string;
   responseRespondentPhone1?: string;
   responseRespondentPhone2?: string;
-  et3IsThereAnEt3Response?: YesOrNo;
-  et3NoEt3Response?: string;
-  et3GeneralNotes?: string;
-  et3IsThereACompaniesHouseSearchDocument?: YesOrNo;
   et3CompanyHouseDocumentBinaryUrl?: string;
   et3CompanyHouseDocumentFileName?: string;
   et3CompanyHouseDocumentUrl?: string;
   et3CompanyHouseDocumentCategoryId?: string;
   et3CompanyHouseDocumentUploadTimestamp?: string;
-  et3GeneralNotesCompanyHouse?: string;
-  et3IsThereAnIndividualSearchDocument?: YesOrNo;
   et3IndividualInsolvencyDocumentBinaryUrl?: string;
   et3IndividualInsolvencyDocumentFileName?: string;
   et3IndividualInsolvencyDocumentUrl?: string;
   et3IndividualInsolvencyDocumentCategoryId?: string;
   et3IndividualInsolvencyDocumentUploadTimestamp?: string;
-  et3GeneralNotesIndividualInsolvency?: string;
-  et3LegalIssue?: YesOrNo;
-  et3LegalIssueGiveDetails?: string;
-  et3GeneralNotesLegalEntity?: string;
-  et3ResponseInTime?: YesOrNo;
-  et3ResponseInTimeDetails?: string;
-  et3DoWeHaveRespondentsName?: YesOrNo;
-  et3GeneralNotesRespondentName?: string;
-  et3DoesRespondentsNameMatch?: YesOrNo;
-  et3RespondentNameMismatchDetails?: string;
-  et3GeneralNotesRespondentNameMatch?: string;
-  et3DoWeHaveRespondentsAddress?: YesOrNo;
-  et3DoesRespondentsAddressMatch?: YesOrNo;
-  et3RespondentAddressMismatchDetails?: string;
-  et3GeneralNotesRespondentAddress?: string;
-  et3GeneralNotesAddressMatch?: string;
-  et3IsCaseListedForHearing?: YesOrNo;
-  et3IsCaseListedForHearingDetails?: YesOrNo;
-  et3GeneralNotesCaseListed?: string;
-  et3IsThisLocationCorrect?: YesOrNo;
-  et3GeneralNotesTransferApplication?: string;
-  et3RegionalOffice?: string;
-  et3WhyWeShouldChangeTheOffice?: string;
-  et3ContestClaim?: YesOrNo;
-  et3ContestClaimGiveDetails?: string;
-  et3GeneralNotesContestClaim?: string;
-  et3ContractClaimSection7?: YesOrNo;
-  et3ContractClaimSection7Details?: string;
-  et3GeneralNotesContractClaimSection7?: string;
-  et3Rule26?: YesOrNo;
-  et3Rule26Details?: string;
-  et3SuggestedIssues?: string[];
-  et3SuggestedIssuesStrikeOut?: string;
-  et3SuggestedIssueInterpreters?: string;
-  et3SuggestedIssueJurisdictional?: string;
-  et3SuggestedIssueAdjustments?: string;
-  et3SuggestedIssueRule50?: string;
-  et3SuggestedIssueTimePoints?: string;
-  et3GeneralNotesRule26?: string;
-  et3AdditionalInformation?: string;
   et3VettingDocumentBinaryUrl?: string;
   et3VettingDocumentFileName?: string;
   et3VettingDocumentUrl?: string;

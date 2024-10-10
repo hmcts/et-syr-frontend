@@ -107,16 +107,20 @@ export interface RespondentType {
   workAddressPostcode?: string;
 }
 
-export interface ET3VettingType {
+export interface ET3VettingType extends ET3VettingCommonTypes {
   et3ChooseRespondent?: DynamicFixedListType;
+  et3VettingDocument?: UploadedDocumentType;
+  et3CompanyHouseDocument?: UploadedDocumentType;
+  et3IndividualInsolvencyDocument?: UploadedDocumentType;
+}
+
+export interface ET3VettingCommonTypes {
   et3IsThereAnEt3Response?: YesOrNo;
   et3NoEt3Response?: string;
   et3GeneralNotes?: string;
   et3IsThereACompaniesHouseSearchDocument?: YesOrNo;
-  et3CompanyHouseDocument?: UploadedDocumentType;
   et3GeneralNotesCompanyHouse?: string;
   et3IsThereAnIndividualSearchDocument?: YesOrNo;
-  et3IndividualInsolvencyDocument?: UploadedDocumentType;
   et3GeneralNotesIndividualInsolvency?: string;
   et3LegalIssue?: YesOrNo;
   et3LegalIssueGiveDetails?: string;
@@ -157,7 +161,6 @@ export interface ET3VettingType {
   et3SuggestedIssueTimePoints?: string;
   et3GeneralNotesRule26?: string;
   et3AdditionalInformation?: string;
-  et3VettingDocument?: UploadedDocumentType;
 }
 
 export interface DynamicFixedListType {
