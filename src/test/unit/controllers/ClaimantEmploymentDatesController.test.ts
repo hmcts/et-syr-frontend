@@ -31,7 +31,7 @@ describe('Claimant employment dates Controller', () => {
     it('should redirect to next page when yes is selected', () => {
       request = mockRequest({
         body: {
-          areDatesOfEmploymentCorrect: YesOrNoOrNotSure.YES,
+          et3ResponseAreDatesCorrect: YesOrNoOrNotSure.YES,
         },
       });
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES + languages.ENGLISH_URL_PARAMETER;
@@ -45,7 +45,7 @@ describe('Claimant employment dates Controller', () => {
     it('should redirect to next page when no is selected', () => {
       request = mockRequest({
         body: {
-          areDatesOfEmploymentCorrect: YesOrNoOrNotSure.NO,
+          et3ResponseAreDatesCorrect: YesOrNoOrNotSure.NO,
         },
       });
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES + languages.ENGLISH_URL_PARAMETER;
@@ -59,7 +59,7 @@ describe('Claimant employment dates Controller', () => {
     it('should redirect to next page when Not Sure is selected', () => {
       request = mockRequest({
         body: {
-          areDatesOfEmploymentCorrect: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseAreDatesCorrect: YesOrNoOrNotSure.NOT_SURE,
         },
       });
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES + languages.ENGLISH_URL_PARAMETER;
@@ -79,7 +79,7 @@ describe('Claimant employment dates Controller', () => {
         PageUrls.CLAIMANT_EMPLOYMENT_DATES + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'areDatesOfEmploymentCorrect', errorType: 'required' }];
+      const errors = [{ propertyName: 'et3ResponseAreDatesCorrect', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
   });
