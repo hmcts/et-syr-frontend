@@ -13,7 +13,7 @@ import ET3Util from '../utils/ET3Util';
 import { isContent100CharsOrLess, isOptionSelected } from '../validators/validator';
 
 export default class ClaimantJobTitleController {
-  form: Form;
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
       et3ResponseIsJobTitleCorrect: {

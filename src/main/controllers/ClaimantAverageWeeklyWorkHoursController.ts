@@ -13,7 +13,7 @@ import ET3Util from '../utils/ET3Util';
 import { isOptionSelected, isValidAvgWeeklyHours } from '../validators/validator';
 
 export default class ClaimantAverageWeeklyWorkHoursController {
-  form: Form;
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
       et3ResponseClaimantWeeklyHours: {

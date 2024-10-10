@@ -13,7 +13,7 @@ import ET3Util from '../utils/ET3Util';
 import { isContent2500CharsOrLess, isOptionSelected } from '../validators/validator';
 
 export default class AcasEarlyConciliationCertificateController {
-  form: Form;
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
       et3ResponseAcasAgree: {

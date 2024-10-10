@@ -13,7 +13,7 @@ import ET3Util from '../utils/ET3Util';
 import { isOptionSelected } from '../validators/validator';
 
 export default class IsClaimantEmploymentWithRespondentContinuingController {
-  form: Form;
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
       et3ResponseContinuingEmployment: {

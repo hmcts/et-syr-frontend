@@ -1,9 +1,14 @@
 import ClaimantEmploymentDatesEnterController from '../../../main/controllers/ClaimantEmploymentDatesEnterController';
-import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
+import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
+import ET3Util from '../../../main/utils/ET3Util';
+import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+
+jest.mock('../../../main/helpers/CaseHelpers');
+const updateET3DataMock = jest.spyOn(ET3Util, 'updateET3Data');
 
 describe('Claimant employment dates enter Controller', () => {
   const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
@@ -21,13 +26,12 @@ describe('Claimant employment dates enter Controller', () => {
     it('should render the page', () => {
       request = mockRequestWithTranslation({}, translationJsons);
       controller.get(request, response);
-
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.CLAIMANT_EMPLOYMENT_DATES_ENTER, expect.anything());
     });
   });
 
   describe('POST method', () => {
-    it('should redirect to the next page when input empty', () => {
+    it('should redirect to the next page when input empty', async () => {
       request = mockRequest({
         body: {
           'et3ResponseEmploymentStartDate-day': '',
@@ -38,12 +42,10 @@ describe('Claimant employment dates enter Controller', () => {
           'et3ResponseEmploymentEndDate-year': '',
         },
       });
-      request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER + languages.ENGLISH_URL_PARAMETER;
-      controller.post(request, response);
-
-      expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING + languages.ENGLISH_URL_PARAMETER
-      );
+      request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
     });
 
     it.each([
@@ -106,15 +108,12 @@ describe('Claimant employment dates enter Controller', () => {
           { propertyName: 'et3ResponseEmploymentStartDate', fieldName: 'day', errorType: 'invalidDateInFuture' },
         ],
       },
-    ])('should return appropriate errors for invalid employment dates', ({ length, body, errors }) => {
+    ])('should return appropriate errors for invalid employment dates', async ({ length, body, errors }) => {
       request = mockRequest({ body });
-      request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER + languages.ENGLISH_URL_PARAMETER;
-      controller.post(request, response);
-
-      expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER + languages.ENGLISH_URL_PARAMETER
-      );
-
+      request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
       expect(request.session.errors).toHaveLength(length);
       expect(request.session.errors).toEqual(errors);
     });
