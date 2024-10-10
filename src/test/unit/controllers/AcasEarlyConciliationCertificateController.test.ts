@@ -34,7 +34,7 @@ describe('Acas early conciliation certificate Controller', () => {
     it('should redirect to next page when no is selected', () => {
       request = mockRequest({
         body: {
-          doYouDisagreeAboutAcas: YesOrNo.NO,
+          et3ResponseAcasAgree: YesOrNo.NO,
         },
       });
       request.url = PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + languages.ENGLISH_URL_PARAMETER;
@@ -48,7 +48,7 @@ describe('Acas early conciliation certificate Controller', () => {
     it('should redirect to next page when yes is selected', () => {
       request = mockRequest({
         body: {
-          doYouDisagreeAboutAcas: YesOrNo.YES,
+          et3ResponseAcasAgree: YesOrNo.YES,
         },
       });
       request.url = PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + languages.ENGLISH_URL_PARAMETER;
@@ -62,8 +62,8 @@ describe('Acas early conciliation certificate Controller', () => {
     it('should redirect to next page when yes is selected and textarea filled', () => {
       request = mockRequest({
         body: {
-          doYouDisagreeAboutAcas: YesOrNo.YES,
-          whyDoYouDisagreeAcas: 'Test',
+          et3ResponseAcasAgree: YesOrNo.YES,
+          et3ResponseAcasAgreeReason: 'Test',
         },
       });
       request.url = PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + languages.ENGLISH_URL_PARAMETER;
@@ -83,15 +83,15 @@ describe('Acas early conciliation certificate Controller', () => {
         PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'doYouDisagreeAboutAcas', errorType: 'required' }];
+      const errors = [{ propertyName: 'et3ResponseAcasAgree', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
 
     it('should render the same page when No is selected but summary text exceeds 2500 characters', () => {
       request = mockRequest({
         body: {
-          doYouDisagreeAboutAcas: YesOrNo.YES,
-          whyDoYouDisagreeAcas: '1'.repeat(2501),
+          et3ResponseAcasAgree: YesOrNo.YES,
+          et3ResponseAcasAgreeReason: '1'.repeat(2501),
         },
       });
       request.url = PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + languages.ENGLISH_URL_PARAMETER;
@@ -101,7 +101,7 @@ describe('Acas early conciliation certificate Controller', () => {
         PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'whyDoYouDisagreeAcas', errorType: 'tooLong' }];
+      const errors = [{ propertyName: 'et3ResponseAcasAgreeReason', errorType: 'tooLong' }];
       expect(request.session.errors).toEqual(errors);
     });
   });
