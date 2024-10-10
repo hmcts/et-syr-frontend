@@ -34,7 +34,7 @@ describe('Is the claimant’s employment with the respondent continuing? Control
     it('should redirect to next page when yes is selected', () => {
       request = mockRequest({
         body: {
-          isEmploymentContinuing: YesOrNoOrNotSure.YES,
+          et3ResponseContinuingEmployment: YesOrNoOrNotSure.YES,
         },
       });
       request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING + languages.ENGLISH_URL_PARAMETER;
@@ -46,7 +46,7 @@ describe('Is the claimant’s employment with the respondent continuing? Control
     it('should redirect to next page when no is selected', () => {
       request = mockRequest({
         body: {
-          isEmploymentContinuing: YesOrNoOrNotSure.NO,
+          et3ResponseContinuingEmployment: YesOrNoOrNotSure.NO,
         },
       });
       request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING + languages.ENGLISH_URL_PARAMETER;
@@ -58,7 +58,7 @@ describe('Is the claimant’s employment with the respondent continuing? Control
     it('should redirect to next page when Not Sure is selected', () => {
       request = mockRequest({
         body: {
-          isEmploymentContinuing: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseContinuingEmployment: YesOrNoOrNotSure.NOT_SURE,
         },
       });
       request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING + languages.ENGLISH_URL_PARAMETER;
@@ -76,7 +76,7 @@ describe('Is the claimant’s employment with the respondent continuing? Control
         PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'isEmploymentContinuing', errorType: 'required' }];
+      const errors = [{ propertyName: 'et3ResponseContinuingEmployment', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
   });
