@@ -134,19 +134,19 @@ export const getEt3Section3 = (userCase: CaseWithId, translations: AnyRecord): S
 
   et3ResponseSection3.push(
     addSummaryRowWithAction(
-      translations.section3.agreeWithClaimantDetails,
+      translations.section3.et3ResponseAcasAgree,
       translations.section3.exampleData, // todo: populate with the correct field from userCase
       PageUrls.CLAIMANT_ET1_FORM_DETAILS,
       translations.change
     ),
     addSummaryRowWithAction(
-      translations.section3.disagreeReason,
+      translations.section3.et3ResponseAcasAgreeReason,
       translations.section3.exampleData, // todo: populate with the correct field from userCase
       PageUrls.CLAIMANT_ET1_FORM_DETAILS,
       translations.change
     ),
     addSummaryRowWithAction(
-      translations.section3.employmentDatesCorrect,
+      translations.section3.et3ResponseAreDatesCorrect,
       translations.section3.exampleData, // todo: populate with the correct field from userCase
       PageUrls.CLAIMANT_EMPLOYMENT_DATES,
       translations.change
@@ -164,37 +164,37 @@ export const getEt3Section3 = (userCase: CaseWithId, translations: AnyRecord): S
       translations.change
     ),
     addSummaryRowWithAction(
-      translations.section3.furtherInfoEmploymentDates,
+      translations.section3.et3ResponseEmploymentInformation,
       translations.section3.exampleData, // todo: populate with the correct field from userCase
       PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
       translations.change
     ),
     addSummaryRowWithAction(
-      translations.section3.continuingEmployment,
+      translations.section3.et3ResponseContinuingEmployment,
       translations.section3.exampleData, // todo: populate with the correct field from userCase
       PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING,
       translations.change
     ),
     addSummaryRowWithAction(
-      translations.section3.jobTitleCorrect,
+      translations.section3.et3ResponseIsJobTitleCorrect,
       translations.section3.exampleData, // todo: populate with the correct field from userCase
       PageUrls.CLAIMANT_JOB_TITLE,
       translations.change
     ),
     addSummaryRowWithAction(
-      translations.section3.correctJobTitle,
+      translations.section3.et3ResponseCorrectJobTitle,
       translations.section3.exampleData, // todo: populate with the correct field from userCase
       PageUrls.CLAIMANT_JOB_TITLE,
       translations.change
     ),
     addSummaryRowWithAction(
-      translations.section3.averageWeeklyHoursCorrect,
+      translations.section3.et3ResponseClaimantWeeklyHours,
       translations.section3.exampleData, // todo: populate with the correct field from userCase
       PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS,
       translations.change
     ),
     addSummaryRowWithAction(
-      translations.section3.correctAverageWeeklyHours,
+      translations.section3.et3ResponseClaimantCorrectHours,
       translations.section3.exampleData, // todo: populate with the correct field from userCase
       PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS,
       translations.change
