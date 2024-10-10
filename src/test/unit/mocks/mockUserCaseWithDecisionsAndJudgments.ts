@@ -99,10 +99,10 @@ export const caseWithDecisionsAndJudgments: CaseWithId = {
   respondents: [
     {
       respondentName: 'Another Person',
-      respondentAddress1: '35 Bridge Road',
-      respondentAddressTown: 'Erith',
+      respondentAddressLine1: '35 Bridge Road',
+      respondentAddressPostTown: 'Erith',
       respondentAddressCountry: 'United Kingdom',
-      respondentAddressPostcode: 'DA8 2DE',
+      respondentAddressPostCode: 'DA8 2DE',
       acasCert: YesOrNo.YES,
       acasCertNum: '123',
       ccdId: '5f69a174-fce3-4286-a13c-58832514be9e',

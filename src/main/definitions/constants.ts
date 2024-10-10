@@ -93,7 +93,7 @@ export const PageUrls = {
   CASE_LIST_CHECK: '/case-list-check',
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
   CASE_LIST: '/case-list',
-  CASE_DETAILS_WITH_CASE_ID_PARAMETER: '/case-details/:caseId',
+  CASE_DETAILS_WITH_CASE_ID_PARAMETER: '/case-details/:caseSubmissionReference',
   CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER: '/case-details',
   COOKIE_PREFERENCES: '/cookies',
   APPLICATION_SUBMITTED: '/application-submitted',
@@ -530,6 +530,7 @@ export const LoggerConstants = {
   ERROR_SESSION_INVALID_USER_ID: 'Session user does not have a valid user id',
   ERROR_SESSION_INVALID_RESPONDENT_LIST: 'Session case does not have respondent list',
   ERROR_SESSION_INVALID_RESPONDENT: 'There is no matching respondent with the session user',
+  ERROR_FORM_INVALID_DATA: 'Form inputs are invalid',
   ERROR_API: 'An error occurred while calling API, ',
   ERROR_SYSTEM: 'System error. ',
 };

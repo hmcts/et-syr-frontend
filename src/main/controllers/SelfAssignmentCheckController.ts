@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNo } from '../definitions/case';
+import { CaseWithId, YesOrNo } from '../definitions/case';
 import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
@@ -34,11 +34,6 @@ export default class SelfAssignmentCheckController {
           },
         ],
       },
-      hiddenErrorField: {
-        id: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
-        type: 'text',
-        hidden: true,
-      },
     },
     submit: {
       text: (l: AnyRecord): string => l.continue,
@@ -50,7 +45,7 @@ export default class SelfAssignmentCheckController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const errors = this.form.getValidatorErrors(formData);
     if (errors.length !== 0) {
       req.session.errors = errors;

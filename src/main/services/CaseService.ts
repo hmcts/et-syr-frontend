@@ -129,10 +129,22 @@ export class CaseApi {
   modifyEt3Data = async (
     caseDetails: CaseWithId,
     idamId: string,
-    requestType: string
+    requestType: string,
+    caseDetailsLinksSectionId: string,
+    caseDetailsLinksSectionStatus: string,
+    responseHubLinksSectionId: string,
+    responseHubLinksSectionStatus: string
   ): Promise<AxiosResponse<CaseApiDataResponse>> => {
     try {
-      const et3Request = ET3DataModelUtil.convertCaseWithIdToET3Request(caseDetails, idamId, requestType);
+      const et3Request = ET3DataModelUtil.convertCaseWithIdToET3Request(
+        caseDetails,
+        idamId,
+        requestType,
+        caseDetailsLinksSectionId,
+        caseDetailsLinksSectionStatus,
+        responseHubLinksSectionId,
+        responseHubLinksSectionStatus
+      );
       return await this.axios.post(JavaApiUrls.MODIFY_ET3_DATA, et3Request);
     } catch (error) {
       throw new Error(ServiceErrors.ERROR_MODIFYING_SUBMITTED_CASE + axiosErrorDetails(error));

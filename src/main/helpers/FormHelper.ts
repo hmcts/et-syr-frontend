@@ -49,3 +49,12 @@ export const assignFormData = (userCase: CaseWithId | undefined, fields: FormFie
     }
   });
 };
+
+export const trimFormData = (formData: Partial<CaseWithId>): void => {
+  (Object.keys(formData) as (keyof typeof formData)[]).forEach(key => {
+    const value = formData[key];
+    if (typeof value === 'string') {
+      (formData as AnyRecord)[key] = value.trim();
+    }
+  });
+};

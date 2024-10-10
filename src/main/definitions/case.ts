@@ -2,7 +2,7 @@ import { HearingModel } from './api/caseApiResponse';
 import { DocumentTypeItem } from './complexTypes/documentTypeItem';
 import { Et1Address } from './complexTypes/et1Address';
 import { GenericTseApplicationTypeItem, TseRespondTypeItem } from './complexTypes/genericTseApplicationTypeItem';
-import { ET3VettingType } from './complexTypes/respondent';
+import { ET3VettingCommonTypes, ET3VettingType } from './complexTypes/respondent';
 import { PseResponseType, SendNotificationTypeItem } from './complexTypes/sendNotificationTypeItem';
 import {
   CaseState,
@@ -33,29 +33,43 @@ export interface AddressType {
   label?: string;
 }
 
-export interface Respondent {
+export interface RespondentET3Model extends ET3VettingCommonTypes {
   respondentName?: string;
-  respondentAddress1?: string;
-  respondentAddress2?: string;
-  respondentAddressTown?: string;
-  respondentAddressCountry?: string;
-  respondentAddressPostcode?: string;
-  workAddress1?: string;
-  workAddress2?: string;
+  workAddressLine1?: string;
+  workAddressLine2?: string;
+  workAddressLine3?: string;
   workAddressTown?: string;
   workAddressCountry?: string;
   workAddressPostcode?: string;
+  workAddressCounty?: string;
   acasCert?: YesOrNo;
   acasCertNum?: string;
   noAcasReason?: NoAcasNumberReason;
   ccdId?: string;
   respondentACASNo?: NoAcasNumberReason;
+  claimantWorkAddressLine1?: string;
+  claimantWorkAddressLine2?: string;
+  claimantWorkAddressLine3?: string;
+  claimantWorkAddressCountry?: string;
+  claimantWorkAddressPostCode?: string;
+  claimantWorkAddressCounty?: string;
+  claimantWorkAddressPostTown?: string;
   claimantWorkAddress?: Et1Address;
+  et3Vetting?: ET3VettingType;
+  // All ET3 fields
   responseReceived?: YesOrNo;
   responseStatus?: string;
   responseToClaim?: string;
   rejectionReason?: string;
+  respondentAddressLine1?: string;
+  respondentAddressLine2?: string;
+  respondentAddressLine3?: string;
+  respondentAddressCountry?: string;
+  respondentAddressPostCode?: string;
+  respondentAddressCounty?: string;
+  respondentAddressPostTown?: string;
   respondentAddress?: Et1Address;
+  responseRespondentAddress?: Et1Address;
   respondentACASQuestion?: YesOrNo;
   respondentACAS?: string;
   rejectionReasonOther?: string;
@@ -68,9 +82,12 @@ export interface Respondent {
   et3ResponseClaimantWeeklyHours?: YesOrNo;
   et3ResponseClaimantCorrectHours?: string;
   et3ResponseEarningDetailsCorrect?: YesOrNo;
+  et3ResponseEmployerClaimDocument?: UploadedDocumentType;
+  et3ResponseRespondentSupportDocument?: UploadedDocumentType;
   et3ResponsePayFrequency?: string;
   et3ResponsePayBeforeTax?: string;
   et3ResponsePayTakehome?: string;
+  et3Form?: UploadedDocumentType;
   respondentEmail?: string;
   responseStruckOut?: YesOrNo;
   respondentContactPreference?: string;
@@ -90,13 +107,33 @@ export interface Respondent {
   et3ResponseRespondentEmployerType?: string;
   et3ResponseRespondentPreferredTitle?: string;
   et3ResponseRespondentContactName?: string;
-  et3ResponseDXAddress?: Et1Address;
+  et3ResponseDXAddress?: string;
   et3ResponseContactReason?: string;
   responseStruckOutReason?: string;
-  responseRespondentAddress?: Et1Address;
+  responseRespondentAddressLine1?: string;
+  responseRespondentAddressLine2?: string;
+  responseRespondentAddressLine3?: string;
+  responseRespondentAddressPostTown?: string;
+  responseRespondentAddressCounty?: string;
+  responseRespondentAddressPostCode?: string;
+  responseRespondentAddressCountry?: string;
   responseRespondentPhone1?: string;
   responseRespondentPhone2?: string;
-  et3Vetting?: ET3VettingType;
+  et3CompanyHouseDocumentBinaryUrl?: string;
+  et3CompanyHouseDocumentFileName?: string;
+  et3CompanyHouseDocumentUrl?: string;
+  et3CompanyHouseDocumentCategoryId?: string;
+  et3CompanyHouseDocumentUploadTimestamp?: string;
+  et3IndividualInsolvencyDocumentBinaryUrl?: string;
+  et3IndividualInsolvencyDocumentFileName?: string;
+  et3IndividualInsolvencyDocumentUrl?: string;
+  et3IndividualInsolvencyDocumentCategoryId?: string;
+  et3IndividualInsolvencyDocumentUploadTimestamp?: string;
+  et3VettingDocumentBinaryUrl?: string;
+  et3VettingDocumentFileName?: string;
+  et3VettingDocumentUrl?: string;
+  et3VettingDocumentCategoryId?: string;
+  et3VettingDocumentUploadTimestamp?: string;
   et3VettingCompleted?: YesOrNo;
   et3ResponseIsClaimantNameCorrect?: YesOrNo;
   et3ResponseClaimantNameCorrection?: string;
@@ -108,7 +145,11 @@ export interface Respondent {
   et3ResponseSiteEmploymentCount?: string;
   et3ResponseEmployerClaim?: YesOrNo;
   et3ResponseEmployerClaimDetails?: string;
-  et3ResponseEmployerClaimDocument?: UploadedDocumentType;
+  et3ResponseEmployerClaimDocumentBinaryUrl?: string;
+  et3ResponseEmployerClaimDocumentFileName?: string;
+  et3ResponseEmployerClaimDocumentUrl?: string;
+  et3ResponseEmployerClaimDocumentCategoryId?: string;
+  et3ResponseEmployerClaimDocumentUploadTimestamp?: string;
   et3ResponseRespondentSupportNeeded?: YesOrNo;
   et3ResponseAcasAgree?: YesOrNo;
   et3ResponseAcasAgreeReason?: string;
@@ -122,8 +163,16 @@ export interface Respondent {
   et3ResponseContestClaimDocument?: DocumentTypeItem[];
   et3ResponseContestClaimDetails?: string;
   et3ResponseRespondentSupportDetails?: string;
-  et3ResponseRespondentSupportDocument?: UploadedDocumentType;
-  et3Form?: UploadedDocumentType;
+  et3ResponseRespondentSupportDocumentBinaryUrl?: string;
+  et3ResponseRespondentSupportDocumentFileName?: string;
+  et3ResponseRespondentSupportDocumentUrl?: string;
+  et3ResponseRespondentSupportDocumentCategoryId?: string;
+  et3ResponseRespondentSupportDocumentUploadTimestamp?: string;
+  et3FormBinaryUrl?: string;
+  et3FormFileName?: string;
+  et3FormUrl?: string;
+  et3FormCategoryId?: string;
+  et3FormUploadTimestamp?: string;
   personalDetailsSection?: string;
   employmentDetailsSection?: string;
   claimDetailsSection?: string;
@@ -233,7 +282,7 @@ export interface Case {
   personalDetailsCheck?: YesOrNo;
   claimDetailsCheck?: YesOrNo;
   claimantWorkAddressQuestion?: YesOrNo;
-  respondents?: Respondent[];
+  respondents?: RespondentET3Model[];
   addressAddressTypes?: AddressType[];
   addressAddresses?: Record<string, string>[];
   respondentAddressTypes?: AddressType[];
@@ -252,11 +301,6 @@ export interface Case {
   respondentName?: string;
   claimantSex?: Sex;
   preferredTitle?: string;
-  respondentAddress1?: string;
-  respondentAddress2?: string;
-  respondentAddressTown?: string;
-  respondentAddressCountry?: string;
-  respondentAddressPostcode?: string;
   acasCert?: YesOrNo;
   acasCertNum?: string;
   noAcasReason?: NoAcasNumberReason;
@@ -341,7 +385,7 @@ export const enum NoAcasNumberReason {
   UNFAIR_DISMISSAL = 'Unfair Dismissal',
 }
 
-export interface CaseWithId extends Case {
+export interface CaseWithId extends Case, RespondentET3Model {
   id: string;
   state: CaseState;
 }

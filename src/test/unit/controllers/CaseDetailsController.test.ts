@@ -27,6 +27,8 @@ describe('Case list controller', () => {
       .fn()
       .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse));
     request.session.user = mockUserDetails;
+    request.session.user.id = 'dda9d1c3-1a11-3c3a-819e-74174fbec26b';
+    request.session.selectedRespondentIndex = 0;
     await caseDetailsController.get(request, response);
 
     expect(response.render).toHaveBeenCalledWith(

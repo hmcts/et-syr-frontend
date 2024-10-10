@@ -152,11 +152,11 @@ describe('Should return data in api format', () => {
           acasCert: YesOrNo.YES,
           acasCertNum: 'R111111111111',
           noAcasReason: NoAcasNumberReason.ANOTHER,
-          respondentAddress1: 'Respondent Address',
-          respondentAddress2: 'That Road',
-          respondentAddressTown: 'Anytown',
+          respondentAddressLine1: 'Respondent Address',
+          respondentAddressLine2: 'That Road',
+          respondentAddressPostTown: 'Anytown',
           respondentAddressCountry: 'England',
-          respondentAddressPostcode: 'SW1H 9AQ',
+          respondentAddressPostCode: 'SW1H 9AQ',
           ccdId: '3453xaa',
           respondentEnterPostcode: undefined,
           respondentAddress: undefined,
@@ -324,7 +324,7 @@ describe('Format Case Data to Frontend Model', () => {
 
     const result = formatApiCaseDataToCaseWithId(mock);
 
-    expect(result).toStrictEqual(complete);
+    expect(complete).toStrictEqual(result);
   });
 
   it('should return undefined for empty field`', () => {
@@ -340,6 +340,7 @@ describe('Format Case Data to Frontend Model', () => {
     const result = formatApiCaseDataToCaseWithId(mockedApiDataEmpty);
     expect(result).toStrictEqual({
       id: '1234',
+      ccdId: '1234',
       feeGroupReference: undefined,
       ethosCaseReference: undefined,
       createdDate: '19 August 2022',
@@ -487,6 +488,7 @@ describe('Format Case Data to Frontend Model', () => {
     };
     const result = formatApiCaseDataToCaseWithId(mockedApiDataWelsh);
     expect(result).toEqual({
+      ccdId: '1234',
       feeGroupReference: undefined,
       ethosCaseReference: undefined,
       createdDate: '19 August 2022',

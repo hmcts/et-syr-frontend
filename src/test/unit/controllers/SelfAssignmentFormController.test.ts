@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import SelfAssignmentFormController from '../../../main/controllers/SelfAssignmentFormController';
+import { FormFieldNames } from '../../../main/definitions/constants';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
 import {
@@ -83,7 +84,7 @@ describe('Self assignment form controller', () => {
     request.body = mockValidCaseWithId;
     getCaseApiMock.mockReturnValue(api);
     api.getCaseByApplicationRequest = jest.fn().mockResolvedValueOnce(null);
-    const errors = [{ propertyName: 'hiddenErrorField', errorType: 'api' }];
+    const errors = [{ propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD, errorType: 'api' }];
     await new SelfAssignmentFormController().post(request, response);
     expect(request.session.errors).toEqual(errors);
   });
