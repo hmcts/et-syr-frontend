@@ -7,41 +7,39 @@ import { CaseDate } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { DateValues } from '../definitions/dates';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord, UnknownRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
-import { getLogger } from '../logger';
+import ET3Util from '../utils/ET3Util';
 import { isDateInPast, isDateInputInvalid } from '../validators/dateValidators';
-
-const logger = getLogger('ClaimantEmploymentDatesEnterController');
 
 export default class ClaimantEmploymentDatesEnterController {
   form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      employmentStartDate: {
+      et3ResponseEmploymentStartDate: {
         type: 'date',
-        id: 'employmentStartDate',
-        label: (l: AnyRecord): string => l.employmentStartDate.label,
-        hint: (l: AnyRecord): string => l.employmentStartDate.hint,
+        id: 'et3ResponseEmploymentStartDate',
+        label: (l: AnyRecord): string => l.et3ResponseEmploymentStartDate.label,
+        hint: (l: AnyRecord): string => l.et3ResponseEmploymentStartDate.hint,
         values: DateValues,
         validator: (value: CaseDate) => isDateInputInvalid(value) || isDateInPast(value),
-        parser: (body: UnknownRecord): CaseDate => convertToDateObject('employmentStartDate', body),
+        parser: (body: UnknownRecord): CaseDate => convertToDateObject('et3ResponseEmploymentStartDate', body),
       },
-      employmentEndDate: {
+      et3ResponseEmploymentEndDate: {
         type: 'date',
-        id: 'employmentEndDate',
-        label: (l: AnyRecord): string => l.employmentEndDate.label,
-        hint: (l: AnyRecord): string => l.employmentEndDate.hint,
+        id: 'et3ResponseEmploymentEndDate',
+        label: (l: AnyRecord): string => l.et3ResponseEmploymentEndDate.label,
+        hint: (l: AnyRecord): string => l.et3ResponseEmploymentEndDate.hint,
         values: DateValues,
         validator: (value: CaseDate) => isDateInputInvalid(value),
-        parser: (body: UnknownRecord): CaseDate => convertToDateObject('employmentEndDate', body),
+        parser: (body: UnknownRecord): CaseDate => convertToDateObject('et3ResponseEmploymentEndDate', body),
       },
-      provideInfoAboutEmploymentDates: {
+      et3ResponseEmploymentInformation: {
         type: 'textarea',
-        id: 'provideInfoAboutEmploymentDates',
-        label: (l: AnyRecord): string => l.provideInfoAboutEmploymentDates.label,
+        id: 'et3ResponseEmploymentInformation',
+        label: (l: AnyRecord): string => l.et3ResponseEmploymentInformation.label,
         attributes: {
           maxLength: 2500,
         },
@@ -56,7 +54,14 @@ export default class ClaimantEmploymentDatesEnterController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.ConciliationAndEmployeeDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {

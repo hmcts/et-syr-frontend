@@ -52,8 +52,8 @@ describe('CheckYourAnswersET3Helper', () => {
         'Do you agree with the details given by the claimant about early conciliation with Acas?',
       disagreeReason: 'Why do you disagree with the Acas conciliation details given? (optional)',
       employmentDatesCorrect: 'Are the dates of employment given by the claimant correct?',
-      employmentStartDate: 'Employment start date (optional)',
-      employmentEndDate: 'Employment end date (optional)',
+      et3ResponseEmploymentStartDate: 'Employment start date (optional)',
+      et3ResponseEmploymentEndDate: 'Employment end date (optional)',
       furtherInfoEmploymentDates:
         "Do you want to provide any further information about the claimant's employment dates? (optional)",
       continuingEmployment: 'Is the claimant’s employment with the respondent continuing?',

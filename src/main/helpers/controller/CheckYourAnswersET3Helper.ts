@@ -152,13 +152,13 @@ export const getEt3Section3 = (userCase: CaseWithId, translations: AnyRecord): S
       translations.change
     ),
     addSummaryRowWithAction(
-      translations.section3.employmentStartDate,
+      translations.section3.et3ResponseEmploymentStartDate,
       translations.section3.exampleData, // todo: populate with the correct field from userCase
       PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
       translations.change
     ),
     addSummaryRowWithAction(
-      translations.section3.employmentEndDate,
+      translations.section3.et3ResponseEmploymentEndDate,
       translations.section3.exampleData, // todo: populate with the correct field from userCase
       PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
       translations.change
