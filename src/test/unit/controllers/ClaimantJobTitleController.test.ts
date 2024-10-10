@@ -31,7 +31,7 @@ describe('Claimant job title Controller', () => {
     it('should redirect to next page when yes is selected', () => {
       request = mockRequest({
         body: {
-          isClaimantJobTitleCorrect: YesOrNoOrNotSure.YES,
+          et3ResponseIsJobTitleCorrect: YesOrNoOrNotSure.YES,
         },
       });
       request.url = PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER;
@@ -45,8 +45,8 @@ describe('Claimant job title Controller', () => {
     it('should redirect to next page when no is selected', () => {
       request = mockRequest({
         body: {
-          isClaimantJobTitleCorrect: YesOrNoOrNotSure.NO,
-          whatIsClaimantJobTitle: 'Test',
+          et3ResponseIsJobTitleCorrect: YesOrNoOrNotSure.NO,
+          et3ResponseCorrectJobTitle: 'Test',
         },
       });
       request.url = PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER;
@@ -60,8 +60,8 @@ describe('Claimant job title Controller', () => {
     it('should render the same page when No is selected but text exceeds 100 characters', () => {
       request = mockRequest({
         body: {
-          isClaimantJobTitleCorrect: YesOrNoOrNotSure.NO,
-          whatIsClaimantJobTitle: '1'.repeat(101),
+          et3ResponseIsJobTitleCorrect: YesOrNoOrNotSure.NO,
+          et3ResponseCorrectJobTitle: '1'.repeat(101),
         },
       });
       request.url = PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + languages.ENGLISH_URL_PARAMETER;
@@ -71,14 +71,14 @@ describe('Claimant job title Controller', () => {
         PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'whatIsClaimantJobTitle', errorType: 'tooLong' }];
+      const errors = [{ propertyName: 'et3ResponseCorrectJobTitle', errorType: 'tooLong' }];
       expect(request.session.errors).toEqual(errors);
     });
 
     it('should redirect to next page when Not Sure is selected', () => {
       request = mockRequest({
         body: {
-          isClaimantJobTitleCorrect: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseIsJobTitleCorrect: YesOrNoOrNotSure.NOT_SURE,
         },
       });
       request.url = PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER;
@@ -96,7 +96,7 @@ describe('Claimant job title Controller', () => {
 
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_JOB_TITLE + languages.ENGLISH_URL_PARAMETER);
 
-      const errors = [{ propertyName: 'isClaimantJobTitleCorrect', errorType: 'required' }];
+      const errors = [{ propertyName: 'et3ResponseIsJobTitleCorrect', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
   });

@@ -8,7 +8,7 @@ import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
+import { getPageContent } from '../helpers/FormHelper';
 import ET3Util from '../utils/ET3Util';
 import { isOptionSelected } from '../validators/validator';
 
@@ -67,7 +67,6 @@ export default class ClaimantEmploymentDatesController {
       TranslationKeys.CLAIMANT_EMPLOYMENT_DATES,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.CLAIMANT_EMPLOYMENT_DATES, {
       ...content,
       startDate: '[Date entered by Claimant / Not provided]', // TODO: Update start date

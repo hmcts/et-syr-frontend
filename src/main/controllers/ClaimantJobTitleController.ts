@@ -5,22 +5,20 @@ import { AppRequest } from '../definitions/appRequest';
 import { YesOrNoOrNotSure } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
-import { getLogger } from '../logger';
+import { getPageContent } from '../helpers/FormHelper';
+import ET3Util from '../utils/ET3Util';
 import { isContent100CharsOrLess, isOptionSelected } from '../validators/validator';
-
-const logger = getLogger('ClaimantJobTitleController');
 
 export default class ClaimantJobTitleController {
   form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      isClaimantJobTitleCorrect: {
+      et3ResponseIsJobTitleCorrect: {
         type: 'radios',
-        label: (l: AnyRecord): string => l.isClaimantJobTitleCorrect.label,
+        label: (l: AnyRecord): string => l.et3ResponseIsJobTitleCorrect.label,
         values: [
           {
             label: (l: AnyRecord): string => l.yes,
@@ -30,10 +28,10 @@ export default class ClaimantJobTitleController {
             label: (l: AnyRecord): string => l.no,
             value: YesOrNoOrNotSure.NO,
             subFields: {
-              whatIsClaimantJobTitle: {
+              et3ResponseCorrectJobTitle: {
                 type: 'text',
-                id: 'whatIsClaimantJobTitle',
-                label: (l: AnyRecord): string => l.whatIsClaimantJobTitle.label,
+                id: 'et3ResponseCorrectJobTitle',
+                label: (l: AnyRecord): string => l.et3ResponseCorrectJobTitle.label,
                 labelSize: 's',
                 validator: isContent100CharsOrLess,
               },
@@ -56,7 +54,14 @@ export default class ClaimantJobTitleController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS);
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.ConciliationAndEmployeeDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -65,7 +70,6 @@ export default class ClaimantJobTitleController {
       TranslationKeys.CLAIMANT_JOB_TITLE,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.CLAIMANT_JOB_TITLE, {
       ...content,
       jobTitle: '[Job title / Not provided]', // TODO: Update job title
