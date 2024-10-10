@@ -34,7 +34,7 @@ describe('Claimant average weekly work hours Controller', () => {
     it('should redirect to next page when yes is selected', () => {
       request = mockRequest({
         body: {
-          areClaimantWorkHourCorrect: YesOrNoOrNotSure.YES,
+          et3ResponseClaimantWeeklyHours: YesOrNoOrNotSure.YES,
         },
       });
       request.url = PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER;
@@ -48,8 +48,8 @@ describe('Claimant average weekly work hours Controller', () => {
     it('should redirect to next page when no is selected', () => {
       request = mockRequest({
         body: {
-          areClaimantWorkHourCorrect: YesOrNoOrNotSure.NO,
-          whatAreClaimantCorrectWorkHour: '168',
+          et3ResponseClaimantWeeklyHours: YesOrNoOrNotSure.NO,
+          et3ResponseClaimantCorrectHours: '168',
         },
       });
       request.url = PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER;
@@ -63,8 +63,8 @@ describe('Claimant average weekly work hours Controller', () => {
     it('should redirect to next page when no is selected but hour invalid', () => {
       request = mockRequest({
         body: {
-          areClaimantWorkHourCorrect: YesOrNoOrNotSure.NO,
-          whatAreClaimantCorrectWorkHour: 'Test',
+          et3ResponseClaimantWeeklyHours: YesOrNoOrNotSure.NO,
+          et3ResponseClaimantCorrectHours: 'Test',
         },
       });
       request.url = PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER;
@@ -74,15 +74,15 @@ describe('Claimant average weekly work hours Controller', () => {
         PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'whatAreClaimantCorrectWorkHour', errorType: 'invalid' }];
+      const errors = [{ propertyName: 'et3ResponseClaimantCorrectHours', errorType: 'invalid' }];
       expect(request.session.errors).toEqual(errors);
     });
 
     it('should redirect to next page when no is selected but hour exceeded', () => {
       request = mockRequest({
         body: {
-          areClaimantWorkHourCorrect: YesOrNoOrNotSure.NO,
-          whatAreClaimantCorrectWorkHour: '169',
+          et3ResponseClaimantWeeklyHours: YesOrNoOrNotSure.NO,
+          et3ResponseClaimantCorrectHours: '169',
         },
       });
       request.url = PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER;
@@ -92,14 +92,14 @@ describe('Claimant average weekly work hours Controller', () => {
         PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'whatAreClaimantCorrectWorkHour', errorType: 'exceeded' }];
+      const errors = [{ propertyName: 'et3ResponseClaimantCorrectHours', errorType: 'exceeded' }];
       expect(request.session.errors).toEqual(errors);
     });
 
     it('should redirect to next page when Not Sure is selected', () => {
       request = mockRequest({
         body: {
-          areClaimantWorkHourCorrect: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseClaimantWeeklyHours: YesOrNoOrNotSure.NOT_SURE,
         },
       });
       request.url = PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER;
@@ -119,7 +119,7 @@ describe('Claimant average weekly work hours Controller', () => {
         PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'areClaimantWorkHourCorrect', errorType: 'required' }];
+      const errors = [{ propertyName: 'et3ResponseClaimantWeeklyHours', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
   });
