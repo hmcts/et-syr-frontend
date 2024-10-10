@@ -4,26 +4,24 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLogger } from '../logger';
+import ET3Util from '../utils/ET3Util';
 import { isOptionSelected } from '../validators/validator';
-
-const logger = getLogger('RespondentSelectPostCodeController');
 
 export default class RespondentSelectPostCodeController {
   private readonly form: Form;
-  // TODO: text, will need to be changed to option when addresses are loaded based on postcode
+  // TODO: text, will need to be changed to option when addresses are loaded based on postcode, for now I've put it as the postCode value
   private readonly respondentSelectPostCodeContent: FormContent = {
     fields: {
-      addressEnterPostcode: {
+      respondentAddressPostCode: {
         type: 'text',
         classes: 'govuk-select',
         label: (l: AnyRecord): string => l.selectAddress,
-        id: 'addressAddressTypes',
+        id: 'respondentAddressPostCode',
         validator: isOptionSelected,
       },
     },
@@ -36,10 +34,17 @@ export default class RespondentSelectPostCodeController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME);
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.ContactDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME
+    );
   };
 
-  public get = (req: AppRequest, res: Response): void => {
+  public get = async (req: AppRequest, res: Response): Promise<void> => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_SELECT_POST_CODE);
 
     const content = getPageContent(req, this.respondentSelectPostCodeContent, [
