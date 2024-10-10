@@ -1,6 +1,8 @@
 {% extends "form/main/template.njk" %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block beforeContent %}
   {{ super() }}
@@ -8,15 +10,16 @@
 {% endblock %}
 
 {% block content %}
-  {% block errorSummary %}
-    {% include "./form/main/error-summary.njk" %}
-  {% endblock %}
-
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-      <span class="govuk-caption-xl">{{ sectionTitle.s2 }}</span>
-      <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ title }}</h1>
-      <h2 class="govuk-heading-m">{{ subtitle }}</h2>
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ cya.title }}</h1>
+
+      {# Todo: populate ET3 response data #}
+      <h2 class="govuk-heading-m">{{ header }}</h2>
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-9",
+        rows: et3ResponseSection3
+      }) }}
 
       {% block form %}
         {% include "form/form.njk" %}

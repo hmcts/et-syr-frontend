@@ -14,12 +14,6 @@ export const getEt3Section1 = (userCase: CaseWithId, translations: AnyRecord): S
       translations.change
     ),
     addSummaryRowWithAction(
-      translations.section1.contactName,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated
-      PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME,
-      translations.change
-    ),
-    addSummaryRowWithAction(
       translations.section1.organisationType,
       translations.section1.exampleData, // todo: this is the data field that needs to be populated
       PageUrls.TYPE_OF_ORGANISATION,
@@ -44,9 +38,21 @@ export const getEt3Section1 = (userCase: CaseWithId, translations: AnyRecord): S
       translations.change
     ),
     addSummaryRowWithAction(
+      translations.section1.contactName,
+      translations.section1.exampleData, // todo: this is the data field that needs to be populated
+      PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME,
+      translations.change
+    ),
+    addSummaryRowWithAction(
       translations.section1.dxAddressOptional,
       translations.section1.exampleData, // todo: this is the data field that needs to be populated
       PageUrls.RESPONDENT_DX_ADDRESS,
+      translations.change
+    ),
+    addSummaryRowWithAction(
+      translations.section1.contactNumberOptional,
+      translations.section1.exampleData, // todo: this is the data field that needs to be populated
+      PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER,
       translations.change
     ),
     addSummaryRowWithAction(
@@ -65,12 +71,6 @@ export const getEt3Section1 = (userCase: CaseWithId, translations: AnyRecord): S
       translations.section1.contactLanguage,
       translations.section1.exampleData, // todo: this is the data field that needs to be populated
       PageUrls.RESPONDENT_CONTACT_PREFERENCES,
-      translations.change
-    ),
-    addSummaryRowWithAction(
-      translations.section1.contactNumberOptional,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated
-      PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER,
       translations.change
     )
   );
@@ -215,6 +215,12 @@ export const getEt3Section4 = (userCase: CaseWithId, translations: AnyRecord): S
       translations.change
     ),
     addSummaryRowWithAction(
+      translations.section4.correctPayDetails,
+      translations.section4.exampleData, // todo: populate with the correct field from userCase
+      PageUrls.CLAIMANT_PAY_DETAILS,
+      translations.change
+    ),
+    addSummaryRowWithAction(
       translations.section4.paymentFrequency,
       translations.section4.exampleData, // todo: populate with the correct field from userCase
       PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
@@ -239,15 +245,9 @@ export const getEt3Section4 = (userCase: CaseWithId, translations: AnyRecord): S
       translations.change
     ),
     addSummaryRowWithAction(
-      translations.section4.correctPayDetails,
-      translations.section4.exampleData, // todo: populate with the correct field from userCase
-      PageUrls.CLAIMANT_PAY_DETAILS,
-      translations.change
-    ),
-    addSummaryRowWithAction(
       translations.section4.pensionAndBenefitsDetailsCorrect,
       translations.section4.exampleData, // todo: populate with the correct field from userCase
-      PageUrls.NOT_IMPLEMENTED,
+      PageUrls.NOT_IMPLEMENTED, // todo: update with the correct URL
       translations.change
     ),
     addSummaryRowWithAction(
@@ -286,4 +286,31 @@ export const getEt3Section5 = (userCase: CaseWithId, translations: AnyRecord): S
   );
 
   return et3ResponseSection5;
+};
+
+export const getEt3Section6 = (userCase: CaseWithId, translations: AnyRecord): SummaryListRow[] => {
+  const et3ResponseSection6: SummaryListRow[] = [];
+
+  et3ResponseSection6.push(
+    addSummaryRowWithAction(
+      translations.section6.respondentWantToMakeECC,
+      translations.section6.exampleData, // todo: populate with the correct field from userCase
+      PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+      translations.change
+    ),
+    addSummaryRowWithAction(
+      translations.section6.employerContractClaimDetails,
+      translations.section6.exampleData, // todo: populate with the correct field from userCase
+      PageUrls.NOT_IMPLEMENTED,
+      translations.change
+    ),
+    addSummaryRowWithAction(
+      translations.section6.supportingMaterials,
+      translations.section6.exampleData, // todo: populate with the correct field from userCase
+      PageUrls.NOT_IMPLEMENTED,
+      translations.change
+    )
+  );
+
+  return et3ResponseSection6;
 };

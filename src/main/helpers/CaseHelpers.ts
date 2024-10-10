@@ -1,8 +1,10 @@
 import { Response } from 'express';
+import { cloneDeep } from 'lodash';
 import { LoggerInstance } from 'winston';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
+import { CaseWithId } from '../definitions/case';
 import { PageUrls } from '../definitions/constants';
 import { Logger } from '../logger';
 import localesCy from '../resources/locales/cy/translation/common.json';
@@ -11,6 +13,7 @@ import { getCaseApi } from '../services/CaseService';
 
 import { formatApiCaseDataToCaseWithId } from './ApiFormatter';
 import { handleErrors, returnSessionErrors } from './ErrorHelpers';
+import { trimFormData } from './FormHelper';
 import { setUrlLanguage } from './LanguageHelper';
 import { returnNextPage } from './RouterHelpers';
 
@@ -121,4 +124,13 @@ export const handleUpdateHubLinksStatuses = async (req: AppRequest, logger: Logg
   } catch (error) {
     logger.error(error.message);
   }
+};
+
+export const setUserCase = (req: AppRequest, form: Form): void => {
+  const formData = form.getParsedBody(cloneDeep(req.body), form.getFormFields());
+  if (!req.session.userCase) {
+    req.session.userCase = {} as CaseWithId;
+  }
+  trimFormData(formData);
+  Object.assign(req.session.userCase, formData);
 };

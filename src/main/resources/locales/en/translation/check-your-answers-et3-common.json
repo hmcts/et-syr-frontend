@@ -2,14 +2,14 @@
   "section1": {
     "header": "Contact details",
     "respondentName": "Respondent name",
-    "contactName": "Name of contact",
     "organisationType": "What type of organisation is the respondent?",
     "preferredTitleOptional": "Preferred title (optional)",
     "companyRegistrationNumberOptional": "Company registration number (optional)",
     "address": "Address",
+    "contactName": "Name of preferred contact at the respondent’s address (optional)",
     "dxAddressOptional": "DX address (optional)",
-    "contactNumberOptional": "Contact number (optional)",
-    "contactFormat": "What format would you like to be contacted in?",
+    "contactNumberOptional": "Contact phone number (optional)",
+    "contactFormat": "How would you prefer to be contacted?",
     "reasonForPost": "Provide a reason why you have selected post",
     "contactLanguage": "What language would you like to be contacted in?",
     "exampleData": "[example data]"
@@ -20,7 +20,7 @@
     "explainReason": "Explain why you are unable to take part in video or phone hearings",
     "disabilitySupport": "Do you have a physical, mental or learning disability or health condition that means you need support during your case?",
     "supportRequest": "Tell us what support you need to request",
-    "employeesInGreatBritain": "How many people does Redde Ltd employ in Great Britain? (optional)",
+    "employeesInGreatBritain": "How many people does the respondent employ in Great Britain? (optional)",
     "multipleSites": "Does the respondent have more than one site in Great Britain?",
     "employeesAtSite": "How many employed at the site the claimant worked at? (optional)",
     "exampleData": "[example data]"
@@ -44,10 +44,10 @@
     "header": "Pay, pension and benefits details",
     "payDetailsCorrect": "Are the pay details given by the claimant correct?",
     "paymentFrequency": "How often was the claimant paid?",
-    "claimantsPayBeforeTax": "Enter the claimant’s pay BEFORE tax (optional)",
-    "claimantsPayAfterTax": "Enter the claimant’s pay AFTER tax (optional)",
+    "claimantsPayBeforeTax": "Claimant’s pay BEFORE tax (optional)",
+    "claimantsPayAfterTax": "Claimant’s pay AFTER tax (optional)",
     "noticePeriodDetailsCorrect": "Are the claimant’s notice period details correct?",
-    "correctPayDetails": "What are the claimant’s correct pay details? (optional)",
+    "correctPayDetails": "What are the claimant’s correct notice details? (optional)",
     "pensionAndBenefitsDetailsCorrect": "Are the claimants pension and benefits details correct?",
     "correctPensionAndBenefitsDetails": "What are the claimant’s correct pension and benefits details? (optional)",
     "exampleData": "[example data]"
@@ -55,8 +55,15 @@
   "section5": {
     "header": "Contest the claim",
     "contestClaim": "Does [respondent name] contest the claim?",
-    "contestExplanation": "Explain why [respondent name] contests the claim (text box label)",
-    "supportingMaterials": "Supporting materials",
+    "contestExplanation": "Explain why [respondent name] contests the claim",
+    "supportingMaterials": "Supporting material",
+    "exampleData": "[example data]"
+  },
+  "section6": {
+    "header": "Employer’s contract claim",
+    "respondentWantToMakeECC": "Does the respondent wish to make an Employer’s Contract Claim?",
+    "employerContractClaimDetails": "Provide the background and details of your Employer’s Contract Claim",
+    "supportingMaterials": "Supporting material",
     "exampleData": "[example data]"
   }
 }

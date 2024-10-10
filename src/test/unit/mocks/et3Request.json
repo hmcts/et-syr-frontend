@@ -64,13 +64,6 @@
     "extensionDate": "01/01/2025",
     "extensionResubmitted": "Yes",
     "et3Vetting": {
-      "et3ChooseRespondent": {
-        "value": { "code": "et3VettingCodeValue", "label": "et3VettingLabelValue" },
-        "list_items": [
-          { "code": "et3VettingCode1", "label": "et3VettingLabel1" },
-          { "code": "et3VettingCode2", "label": "et3VettingLabel2" }
-        ]
-      },
       "et3IsThereAnEt3Response": "No",
       "et3NoEt3Response": "Respondent doesn't want to give any response",
       "et3GeneralNotes": "Test ET3 General Notes",
@@ -98,7 +91,7 @@
       "et3ResponseInTime": "No",
       "et3ResponseInTimeDetails": "Respondent didn't send the response in time",
       "et3DoWeHaveRespondentsName": "Yes",
-      "et3GeneralNotesRespondentName": "Real Company Name is the real name of the company",
+      "et3GeneralNotesRespondentName": "Yes",
       "et3DoesRespondentsNameMatch": "No",
       "et3RespondentNameMismatchDetails": "Company name should not be Test Company. It should be Real Company Name",
       "et3GeneralNotesRespondentNameMatch": "Respondent gave invalid company name",
@@ -244,6 +237,6 @@
     "workAddressCountry": "undefined",
     "workAddressPostcode": "undefined",
     "workAddressTown": "undefined",
-    "claimant_work_address": "undefined"
+    "claimant_work_address": {}
   }
 }

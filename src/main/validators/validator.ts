@@ -72,19 +72,6 @@ export const isValidUKTelNumber: Validator = value => {
   }
 };
 
-export const isJobTitleValid: Validator = value => {
-  if (typeof value === 'string') {
-    const inputStrLength = (value as string).trim().length;
-    if (inputStrLength === 0) {
-      return;
-    }
-
-    if (inputStrLength === 1 || inputStrLength > 100) {
-      return ValidationErrors.INVALID_LENGTH;
-    }
-  }
-};
-
 export const isValidTwoDigitInteger: Validator = value => {
   if (!value || (value as string).trim().length === 0) {
     return ValidationErrors.INVALID_VALUE;
@@ -133,6 +120,11 @@ export const arePayValuesNull: Validator = (value: string[]) => {
   }
 };
 
+const isValidNumber = (value: string): boolean => {
+  const numberPattern = /^[+]?(\d+(\.\d*)?|\.\d+)$/;
+  return numberPattern.test(value);
+};
+
 export const isValidAvgWeeklyHours: Validator = value => {
   const valueAsString: string = value as string;
 
@@ -140,25 +132,12 @@ export const isValidAvgWeeklyHours: Validator = value => {
     return;
   }
 
-  if (valueAsString.trim().startsWith('0') && valueAsString.length > 1 && valueAsString.charAt(1) !== '.') {
+  if (!isValidNumber(valueAsString)) {
     return ValidationErrors.INVALID_VALUE;
-  }
-
-  if (valueAsString.trim().startsWith('.')) {
-    return ValidationErrors.INVALID_VALUE;
-  }
-
-  if (!/^-?\d{0,3}\.?\d{1,3}$/.test(valueAsString)) {
-    return ValidationErrors.NOT_A_NUMBER;
-  }
-
-  if (valueAsString.trim().startsWith('-')) {
-    return ValidationErrors.NEGATIVE_NUMBER;
   }
 
   const maxValue = 168;
   const hours = parseFloat(value as string);
-
   if (hours > maxValue) {
     return ValidationErrors.EXCEEDED;
   }

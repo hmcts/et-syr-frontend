@@ -138,5 +138,12 @@
     "s1": "[W]1. Tell us about the respondent",
     "s2": "[W]2. Tell us about the claimant",
     "s3": "[W]3. Give us your response"
+  },
+  "cya": {
+    "title": "[W]Check your answers",
+    "label": "[W]Have you completed this section?",
+    "hint": "[W]You can change your answers later.",
+    "yes": "[W]Yes, I’ve completed this section",
+    "no": "[W]No, I’ll come back later"
   }
 }

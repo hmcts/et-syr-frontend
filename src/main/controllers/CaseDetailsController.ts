@@ -32,7 +32,8 @@ export default class CaseDetailsController {
 
     try {
       req.session.userCase = formatApiCaseDataToCaseWithId(
-        (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseId)).data
+        (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseSubmissionReference)).data,
+        req
       );
       // Check if Respond to claim acknowledgment needs to be shown or not
       req.session.userCase?.respondents.forEach(respondent => {
@@ -47,15 +48,16 @@ export default class CaseDetailsController {
       return res.redirect('/not-found');
     }
     const userCase = req.session.userCase;
-    req.session.selectedRespondent = ET3Util.findSelectedRespondent(req);
-    if (!req.session.selectedRespondent.et3CaseDetailsLinksStatuses) {
-      req.session.selectedRespondent.et3CaseDetailsLinksStatuses = new ET3CaseDetailsLinksStatuses();
+    req.session.selectedRespondentIndex = ET3Util.findSelectedRespondent(req);
+    if (!req.session.userCase.respondents[req.session.selectedRespondentIndex].et3CaseDetailsLinksStatuses) {
+      req.session.userCase.respondents[req.session.selectedRespondentIndex].et3CaseDetailsLinksStatuses =
+        new ET3CaseDetailsLinksStatuses();
       await handleUpdateHubLinksStatuses(req, logger);
     }
     const currentState = currentStateFn(userCase);
-    const et3CaseDetailsLinksStatuses = req.session.selectedRespondent.et3CaseDetailsLinksStatuses;
+    const et3CaseDetailsLinksStatuses =
+      req.session.userCase.respondents[req.session.selectedRespondentIndex].et3CaseDetailsLinksStatuses;
     const languageParam = getLanguageParam(req.url);
-
     const sections = Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
       return {
         title: (l: AnyRecord): string => l[`section${index + 1}`],
@@ -82,7 +84,7 @@ export default class CaseDetailsController {
       sections,
       et1FormUrl,
       respondToClaimUrl,
-      selectedRespondent: req.session.selectedRespondent,
+      selectedRespondent: req.session.userCase.respondents[req.session.selectedRespondentIndex],
       et3Response,
       hideContactUs: true,
       processingDueDate: getDueDate(formatDate(userCase.submittedDate), DAYS_FOR_PROCESSING),

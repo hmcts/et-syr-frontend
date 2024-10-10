@@ -2,6 +2,8 @@ import { CaseApiDataResponse } from '../../../main/definitions/api/caseApiRespon
 import { CaseTypeId } from '../../../main/definitions/case';
 import { HubLinkStatus } from '../../../main/definitions/hub';
 
+import { mockEt3RespondentType } from './mockEt3Respondent';
+
 export const MockCaseApiDataResponseConstants = {
   TEST_SUBMISSION_REFERENCE_NUMBER: '1234567890123456',
   TEST_RESPONDENT_NAME: 'Test Respondent Name',
@@ -41,10 +43,7 @@ export const mockCaseApiDataResponse = <CaseApiDataResponse>{
     respondentCollection: [
       {
         id: 'test',
-        value: {
-          respondent_name: MockCaseApiDataResponseConstants.TEST_RESPONDENT_NAME,
-          idamId: '1234',
-        },
+        value: mockEt3RespondentType,
       },
     ],
     claimantIndType: {

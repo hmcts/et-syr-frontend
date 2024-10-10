@@ -18,6 +18,8 @@ export const LegacyUrls = {
   ACAS_EC_URL: 'https://www.acas.org.uk/early-conciliation',
 } as const;
 
+// Sonar: These objects are intentionally similar to PageUrls but serve different purposes.
+// Suppress duplication warning here.
 export const TranslationKeys = {
   COMMON: 'common',
   WELSH_ENABLED: 'welsh-language',
@@ -26,20 +28,22 @@ export const TranslationKeys = {
   COOKIE_PREFERENCES: 'cookie-preferences',
   RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
   CASE_DETAILS_WITH_CASE_ID_PARAMETER: 'case-details',
+  YOUR_APPLICATIONS: 'your-applications',
+  SIDEBAR_CONTACT_US: 'sidebar-contact-us',
+  SELF_ASSIGNMENT_FORM: 'self-assignment-form',
+  SELF_ASSIGNMENT_CHECK: 'self-assignment-check',
+  CASE_LIST: 'case-list',
+  CHECK_YOUR_ANSWERS_ET3_COMMON: 'check-your-answers-et3-common',
   APPLICATION_SUBMITTED: 'application-submitted',
   RESPONSE_SAVED: 'response-saved',
   RESPONDENT_ET3_COMMON: 'et3-common',
   RESPONDENT_ET3_RESPONSE: 'et3-response',
-  RESPONDENT_ET3_CYA: 'et3-check-your-answers',
-  // hub links
+  CHECK_YOUR_ANSWERS_ET3: 'check-your-answers-et3',
   CLAIMANT_ET1_FORM: 'claimant-et1-form',
   RESPONDENT_RESPONSE_LANDING: 'respondent-response-landing',
-  //Claimant Form and Certs
   CLAIMANT_ET1_FORM_DETAILS: 'claimant-et1-form-details',
   CLAIMANT_ACAS_CERTIFICATE_DETAILS: 'claimant-acas-certificate-details',
-  // ET3 task list
   RESPONDENT_RESPONSE_TASK_LIST: 'respondent-response-task-list',
-  // 1. Tell us about the respondent (contact details)
   RESPONDENT_NAME: 'respondent-name',
   TYPE_OF_ORGANISATION: 'type-of-organisation',
   RESPONDENT_ADDRESS: 'respondent-address',
@@ -50,21 +54,13 @@ export const TranslationKeys = {
   RESPONDENT_DX_ADDRESS: 'respondent-dx-address',
   RESPONDENT_CONTACT_PHONE_NUMBER: 'respondent-contact-phone-number',
   RESPONDENT_CONTACT_PREFERENCES: 'respondent-contact-preferences',
-  CONTACT_DETAILS_CYA: 'contact-details-check-your-answers',
-  // 1. Tell us about the respondent (hearing preferences)
+  CHECK_YOUR_ANSWERS_CONTACT_DETAILS: 'check-your-answers-contact-details',
   HEARING_PREFERENCES: 'hearing-preferences',
   REASONABLE_ADJUSTMENTS: 'reasonable-adjustments',
   RESPONDENT_EMPLOYEES: 'respondent-employees',
   RESPONDENT_SITES: 'respondent-sites',
   RESPONDENT_SITE_EMPLOYEES: 'respondent-site-employees',
-  RESPONDENT_CONTEST_CLAIM: 'respondent-contest-claim',
-  RESPONDENT_CONTEST_CLAIM_REASON: 'respondent-contest-claim-reason',
-  YOUR_APPLICATIONS: 'your-applications',
-  SIDEBAR_CONTACT_US: 'sidebar-contact-us',
-  SELF_ASSIGNMENT_FORM: 'self-assignment-form',
-  SELF_ASSIGNMENT_CHECK: 'self-assignment-check',
-  CASE_LIST: 'case-list',
-  // 2. Tell us about the claimant
+  CHECK_YOUR_ANSWERS_HEARING_PREFERENCES: 'check-your-answers-hearing-preferences',
   ACAS_EARLY_CONCILIATION_CERTIFICATE: 'acas-early-conciliation-certificate',
   CLAIMANT_EMPLOYMENT_DATES: 'claimant-employment-dates',
   CLAIMANT_EMPLOYMENT_DATES_ENTER: 'claimant-employment-dates-enter',
@@ -78,12 +74,17 @@ export const TranslationKeys = {
   CLAIMANT_NOTICE_PERIOD: 'claimant-notice-period',
   CLAIMANT_PENSION_AND_BENEFITS: 'claimant-pension-and-benefits',
   CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS: 'check-your-answers-pay-pension-and-benefits',
+  RESPONDENT_CONTEST_CLAIM: 'respondent-contest-claim',
+  RESPONDENT_CONTEST_CLAIM_REASON: 'respondent-contest-claim-reason',
+  CHECK_YOUR_ANSWERS_CONTEST_CLAIM: 'check-your-answers-contest-claim',
   // 3. Give us your response
   EMPLOYERS_CONTRACT_CLAIM: 'employers-contract-claim',
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: 'employers-contract-claim-details',
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: 'check-your-answers-employers-contract-claim',
 } as const;
 
+// Sonar: These objects are intentionally similar to TranslationKeys but serve different purposes.
+// Suppress duplication warning here.
 export const PageUrls = {
   NOT_IMPLEMENTED: '#',
   HOME: '/',
@@ -92,22 +93,19 @@ export const PageUrls = {
   CASE_LIST_CHECK: '/case-list-check',
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
   CASE_LIST: '/case-list',
-  CASE_DETAILS_WITH_CASE_ID_PARAMETER: '/case-details/:caseId',
+  CASE_DETAILS_WITH_CASE_ID_PARAMETER: '/case-details/:caseSubmissionReference',
   CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER: '/case-details',
   COOKIE_PREFERENCES: '/cookies',
   APPLICATION_SUBMITTED: '/application-submitted',
   RESPONSE_SAVED: '/response-saved',
   RESPONDENT_ET3_RESPONSE: '/et3-response',
-  RESPONDENT_ET3_CYA: '/et3-check-your-answers',
-  // hub links
+  CHECK_YOUR_ANSWERS_ET3: '/check-your-answers-et3',
+  NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
   CLAIMANT_ET1_FORM: '/claimant-et1-form',
   RESPONDENT_RESPONSE_LANDING: '/respondent-response-landing',
-  //Claimant Form and Certs
   CLAIMANT_ET1_FORM_DETAILS: '/claimant-et1-form-details',
   CLAIMANT_ACAS_CERTIFICATE_DETAILS: '/claimant-acas-certificate-details',
-  // ET3 task list
   RESPONDENT_RESPONSE_TASK_LIST: '/respondent-response-task-list',
-  // 1. Tell us about the respondent (contact details)
   RESPONDENT_NAME: '/respondent-name',
   TYPE_OF_ORGANISATION: '/type-of-organisation',
   RESPONDENT_ADDRESS: '/respondent-address',
@@ -118,17 +116,13 @@ export const PageUrls = {
   RESPONDENT_DX_ADDRESS: '/respondent-dx-address',
   RESPONDENT_CONTACT_PHONE_NUMBER: '/respondent-contact-phone-number',
   RESPONDENT_CONTACT_PREFERENCES: '/respondent-contact-preferences',
-  CONTACT_DETAILS_CYA: '/contact-details-check-your-answers',
-  // 1. Tell us about the respondent (hearing preferences)
+  CHECK_YOUR_ANSWERS_CONTACT_DETAILS: '/check-your-answers-contact-details',
   HEARING_PREFERENCES: '/hearing-preferences',
   REASONABLE_ADJUSTMENTS: '/reasonable-adjustments',
   RESPONDENT_EMPLOYEES: '/respondent-employees',
   RESPONDENT_SITES: '/respondent-sites',
   RESPONDENT_SITE_EMPLOYEES: '/respondent-site-employees',
-  RESPONDENT_CONTEST_CLAIM: '/respondent-contest-claim',
-  RESPONDENT_CONTEST_CLAIM_REASON: '/respondent-contest-claim-reason',
-  NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
-  // 2. Tell us about the claimant
+  CHECK_YOUR_ANSWERS_HEARING_PREFERENCES: '/check-your-answers-hearing-preferences',
   ACAS_EARLY_CONCILIATION_CERTIFICATE: '/acas-early-conciliation-certificate',
   CLAIMANT_EMPLOYMENT_DATES: '/claimant-employment-dates',
   CLAIMANT_EMPLOYMENT_DATES_ENTER: '/claimant-employment-dates-enter',
@@ -142,7 +136,9 @@ export const PageUrls = {
   CLAIMANT_NOTICE_PERIOD: '/claimant-notice-period',
   CLAIMANT_PENSION_AND_BENEFITS: '/claimant-pension-and-benefits',
   CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS: '/check-your-answers-pay-pension-and-benefits',
-  // 3. Give us your response
+  RESPONDENT_CONTEST_CLAIM: '/respondent-contest-claim',
+  RESPONDENT_CONTEST_CLAIM_REASON: '/respondent-contest-claim-reason',
+  CHECK_YOUR_ANSWERS_CONTEST_CLAIM: '/check-your-answers-contest-claim',
   EMPLOYERS_CONTRACT_CLAIM: '/employers-contract-claim',
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: '/employers-contract-claim-details',
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: '/check-your-answers-employers-contract-claim',
@@ -534,6 +530,7 @@ export const LoggerConstants = {
   ERROR_SESSION_INVALID_USER_ID: 'Session user does not have a valid user id',
   ERROR_SESSION_INVALID_RESPONDENT_LIST: 'Session case does not have respondent list',
   ERROR_SESSION_INVALID_RESPONDENT: 'There is no matching respondent with the session user',
+  ERROR_FORM_INVALID_DATA: 'Form inputs are invalid',
   ERROR_API: 'An error occurred while calling API, ',
   ERROR_SYSTEM: 'System error. ',
 };

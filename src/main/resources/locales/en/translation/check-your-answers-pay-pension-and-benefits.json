@@ -1,0 +1,8 @@
+{
+  "header": "Pay, pension and benefits details",
+  "errors": {
+    "haveYouCompleted": {
+      "required": "Make a selection"
+    }
+  }
+}

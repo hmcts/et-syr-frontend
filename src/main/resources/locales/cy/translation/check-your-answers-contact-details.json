@@ -1,0 +1,8 @@
+{
+  "header": "[W]Contact details",
+  "errors": {
+    "haveYouCompleted": {
+      "required": "[W]Make a selection"
+    }
+  }
+}

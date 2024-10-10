@@ -1,0 +1,8 @@
+{
+  "header": "Contest the claim",
+  "errors": {
+    "haveYouCompleted": {
+      "required": "Make a selection"
+    }
+  }
+}

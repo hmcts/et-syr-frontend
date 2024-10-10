@@ -10,7 +10,6 @@ import {
   isContent2500CharsOrLess,
   isContentBetween3And100Chars,
   isFieldFilledIn,
-  isJobTitleValid,
   isNameValid,
   isOptionSelected,
   isPayIntervalNull,
@@ -139,27 +138,6 @@ describe('Validation', () => {
     });
   });
 
-  describe('isJobTitleValid()', () => {
-    it.each([
-      { mockRef: '', expected: undefined },
-      { mockRef: null, expected: undefined },
-      { mockRef: 'a', expected: 'invalidLength' },
-      {
-        mockRef:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et al.',
-        expected: 'invalidLength',
-      },
-      { mockRef: 'CEO', expected: undefined },
-      { mockRef: 'Developer', expected: undefined },
-      { mockRef: 'ex-mayor', expected: undefined },
-      { mockRef: 'Lorry Driver', expected: undefined },
-      { mockRef: 'I.T. technician', expected: undefined },
-      { mockRef: 'Manager', expected: undefined },
-    ])('check job title is valid', ({ mockRef, expected }) => {
-      expect(isJobTitleValid(mockRef)).toEqual(expected);
-    });
-  });
-
   describe('isValidTwoDigitInteger()', () => {
     it.each([
       { mockRef: '', expected: 'invalid' },
@@ -224,17 +202,13 @@ describe('Validation', () => {
 
   describe('isValidAvgWeeklyHours()', () => {
     it.each([
-      { mockRef: '00', expected: 'invalid' },
-      { mockRef: 'a', expected: 'notANumber' },
-      { mockRef: '%', expected: 'notANumber' },
-      { mockRef: '25a', expected: 'notANumber' },
-      { mockRef: '20.00', expected: undefined },
+      { mockRef: 'a', expected: 'invalid' },
+      { mockRef: '%', expected: 'invalid' },
+      { mockRef: '25a', expected: 'invalid' },
+      { mockRef: '-4', expected: 'invalid' },
       { mockRef: '169', expected: 'exceeded' },
-      { mockRef: '-4', expected: 'negativeNumber' },
-      { mockRef: '35', expected: undefined },
-      { mockRef: '2', expected: undefined },
-      { mockRef: '.25', expected: 'invalid' },
-      { mockRef: '-1', expected: 'negativeNumber' },
+      { mockRef: '168', expected: undefined },
+      { mockRef: '20.00', expected: undefined },
       { mockRef: null, expected: undefined },
     ])('check integer input is valid', ({ mockRef, expected }) => {
       expect(isValidAvgWeeklyHours(mockRef)).toEqual(expected);

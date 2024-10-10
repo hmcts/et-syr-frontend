@@ -1,0 +1,8 @@
+{
+  "header": "Hearing format and employer details",
+  "errors": {
+    "haveYouCompleted": {
+      "required": "Make a selection"
+    }
+  }
+}
