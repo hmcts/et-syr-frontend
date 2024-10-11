@@ -4,6 +4,10 @@
   "tableHeader": "Pension and benefits details provided in ET1",
   "anyContributionsLabel": "Did the respondent make any contributions to pension?",
   "receiveBenefitsLabel": "Receive any employee benefits?",
+  "yes": "Yes",
+  "no": "No",
+  "notSure": "Not sure",
+  "weekly": "Weekly",
   "areClaimantPensionBenefitsCorrect": {
     "label": "Are the claimant’s pension and benefits details correct?"
   },

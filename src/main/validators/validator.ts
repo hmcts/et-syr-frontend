@@ -1,5 +1,6 @@
 import { ALLOWED_FILE_FORMATS, ValidationErrors } from '../definitions/constants';
 import { Logger } from '../logger';
+import StringUtils from '../utils/StringUtils';
 
 export type Validator = (value: string | string[] | undefined) => void | string;
 
@@ -19,6 +20,15 @@ export const isRespondentNameValid: Validator = value => {
 
 export const isContent2500CharsOrLess: Validator = value => {
   if (value && (value as string).trim().length > 2500) {
+    return ValidationErrors.TOO_LONG;
+  }
+};
+
+export const isContent3000CharsOrLessOrEmpty: Validator = value => {
+  if (!value || StringUtils.isBlank(value as string)) {
+    return ValidationErrors.REQUIRED;
+  }
+  if (value && (value as string).trim().length > 3000) {
     return ValidationErrors.TOO_LONG;
   }
 };
