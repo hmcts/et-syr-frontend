@@ -15,11 +15,12 @@
     "label": "[W]What are the claimant’s correct pension and benefits details? (optional)"
   },
   "errors": {
-    "areClaimantPensionBenefitsCorrect": {
+    "et3ResponseIsPensionCorrect": {
       "required": "[W]Make a selection"
     },
-    "whatAreClaimantCorrectPensionBenefits": {
-      "tooLong": "[W]The claimant pension and benefits entered must be less than 2500 characters"
+    "et3ResponsePensionCorrectDetails": {
+      "tooLong": "[W]The claimant pension and benefits entered must be less than 2500 characters",
+      "required": "[W]The claimant pension and benefits can not be empty"
     }
   }
 }

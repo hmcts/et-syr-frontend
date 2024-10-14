@@ -24,6 +24,15 @@ export const isContent2500CharsOrLess: Validator = value => {
   }
 };
 
+export const isContent2500CharsOrLessOrEmpty: Validator = value => {
+  if (!value || StringUtils.isBlank(value as string)) {
+    return ValidationErrors.REQUIRED;
+  }
+  if (value && (value as string).trim().length > 2500) {
+    return ValidationErrors.TOO_LONG;
+  }
+};
+
 export const isContent3000CharsOrLessOrEmpty: Validator = value => {
   if (!value || StringUtils.isBlank(value as string)) {
     return ValidationErrors.REQUIRED;
