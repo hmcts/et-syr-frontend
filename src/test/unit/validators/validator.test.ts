@@ -1,3 +1,4 @@
+import { ValidationErrors } from '../../../main/definitions/constants';
 import { getLogger } from '../../../main/logger';
 import {
   areBenefitsValid,
@@ -8,6 +9,8 @@ import {
   isAcasNumberValid,
   isContent100CharsOrLess,
   isContent2500CharsOrLess,
+  isContent2500CharsOrLessOrEmpty,
+  isContent3000CharsOrLessOrEmpty,
   isContentBetween3And100Chars,
   isFieldFilledIn,
   isNameValid,
@@ -68,6 +71,32 @@ describe('Validation', () => {
 
     it('should warn when content longer than 2500 characters', () => {
       expect(isContent2500CharsOrLess('1'.repeat(2501))).toStrictEqual('tooLong');
+    });
+  });
+
+  describe('isContent2500CharsOrLessOrEmpty()', () => {
+    it('should not warn when content is 2500 characters or less', () => {
+      expect(isContent2500CharsOrLessOrEmpty('1'.repeat(2500))).toStrictEqual(undefined);
+    });
+    it('should warn when content is empty', () => {
+      expect(isContent2500CharsOrLessOrEmpty(undefined)).toStrictEqual(ValidationErrors.REQUIRED);
+      expect(isContent2500CharsOrLessOrEmpty('')).toStrictEqual(ValidationErrors.REQUIRED);
+    });
+    it('should warn when content longer than 2500 characters', () => {
+      expect(isContent2500CharsOrLessOrEmpty('1'.repeat(2501))).toStrictEqual(ValidationErrors.TOO_LONG);
+    });
+  });
+
+  describe('isContent3000CharsOrLessOrEmpty()', () => {
+    it('should not warn when content is 3000 characters or less', () => {
+      expect(isContent3000CharsOrLessOrEmpty('1'.repeat(3000))).toStrictEqual(undefined);
+    });
+    it('should warn when content is empty', () => {
+      expect(isContent3000CharsOrLessOrEmpty(undefined)).toStrictEqual(ValidationErrors.REQUIRED);
+      expect(isContent3000CharsOrLessOrEmpty('')).toStrictEqual(ValidationErrors.REQUIRED);
+    });
+    it('should warn when content longer than 2500 characters', () => {
+      expect(isContent3000CharsOrLessOrEmpty('1'.repeat(3001))).toStrictEqual(ValidationErrors.TOO_LONG);
     });
   });
 
