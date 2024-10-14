@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, RespondentET3Model, YesOrNo } from '../definitions/case';
-import { LoggingConstants, PageUrls } from '../definitions/constants';
+import { LoggerConstants, PageUrls } from '../definitions/constants';
 import { ApplicationTableRecord, CaseState } from '../definitions/definition';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
@@ -30,10 +30,10 @@ export const getUserCasesByLastModified = async (req: AppRequest): Promise<CaseW
     return [];
   } else {
     logger.info(
-      `${LoggingConstants.INFO_LOG_RETRIEVING_CASES} ${
+      `${LoggerConstants.INFO_LOG_RETRIEVING_CASES} ${
         StringUtils.isNotBlank(req.session.user?.id)
           ? req.session.user?.id
-          : LoggingConstants.INFO_LOG_USER_ID_NOT_EXISTS
+          : LoggerConstants.INFO_LOG_USER_ID_NOT_EXISTS
       }`
     );
     const casesByLastModified: CaseApiDataResponse[] = sortCasesByLastModified(cases);
