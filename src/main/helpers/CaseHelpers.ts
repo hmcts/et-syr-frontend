@@ -1,5 +1,3 @@
-import * as Console from 'node:console';
-
 import { Response } from 'express';
 import { LoggerInstance } from 'winston';
 
@@ -146,7 +144,6 @@ export const resetFields = (formData: Partial<CaseWithId>, fieldsToReset: string
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
       formData[propertyName] = DefaultValues.STRING_EMPTY;
-      Console.log(formData);
     }
   }
 };
