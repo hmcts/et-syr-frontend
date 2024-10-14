@@ -92,7 +92,6 @@ export const postLogic = async (
 ): Promise<void> => {
   const errors = returnSessionErrors(req, form);
   const { saveForLater } = req.body;
-  logger.info('test');
   if (errors.length === 0) {
     req.session.errors = [];
     if (saveForLater) {
