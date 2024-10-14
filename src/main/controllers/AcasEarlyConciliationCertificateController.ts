@@ -29,10 +29,10 @@ export default class AcasEarlyConciliationCertificateController {
             value: YesOrNo.YES,
             subFields: {
               et3ResponseAcasAgreeReason: {
-                type: 'textarea',
-                id: 'et3ResponseAcasAgreeReason',
+                type: 'charactercount',
                 label: (l: AnyRecord): string => l.et3ResponseAcasAgreeReason.label,
                 labelSize: 's',
+                maxlength: 200,
                 validator: isContent2500CharsOrLess,
               },
             },
