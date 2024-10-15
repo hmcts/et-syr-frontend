@@ -2,7 +2,7 @@
   "title": "[W]Claimant employment dates",
   "startDateLabel": "[W]Start date provided on ET1",
   "endDateLabel": "[W]End date provided on ET1",
-  "areDatesOfEmploymentCorrect": {
+  "et3ResponseAreDatesCorrect": {
     "label": "[W]Are the dates of employment given by the claimant correct?",
     "no": {
       "hint": "[W]You will be able to enter correct employment dates at the next step."
@@ -12,7 +12,7 @@
     }
   },
   "errors": {
-    "areDatesOfEmploymentCorrect": {
+    "et3ResponseAreDatesCorrect": {
       "required": "[W]Make a selection"
     }
   }

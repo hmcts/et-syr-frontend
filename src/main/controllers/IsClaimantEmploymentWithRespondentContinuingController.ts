@@ -5,20 +5,18 @@ import { AppRequest } from '../definitions/appRequest';
 import { YesOrNoOrNotSure } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
-import { getLogger } from '../logger';
+import { getPageContent } from '../helpers/FormHelper';
+import ET3Util from '../utils/ET3Util';
 import { isOptionSelected } from '../validators/validator';
 
-const logger = getLogger('IsClaimantEmploymentWithRespondentContinuingController');
-
 export default class IsClaimantEmploymentWithRespondentContinuingController {
-  form: Form;
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      isEmploymentContinuing: {
+      et3ResponseContinuingEmployment: {
         type: 'radios',
         hint: (l: AnyRecord): string => l.hint,
         values: [
@@ -47,7 +45,14 @@ export default class IsClaimantEmploymentWithRespondentContinuingController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_JOB_TITLE);
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.ConciliationAndEmployeeDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.CLAIMANT_JOB_TITLE
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -56,7 +61,6 @@ export default class IsClaimantEmploymentWithRespondentContinuingController {
       TranslationKeys.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING, {
       ...content,
       hideContactUs: true,
