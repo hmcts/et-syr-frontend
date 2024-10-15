@@ -4,41 +4,39 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
-import { getLogger } from '../logger';
+import { getPageContent } from '../helpers/FormHelper';
+import ET3Util from '../utils/ET3Util';
 import { isFilledInAndIs2500CharsOrLess } from '../validators/validator';
-
-const logger = getLogger('EmployersContractClaimDetailsController');
 
 export default class EmployersContractClaimDetailsController {
   form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      provideDetailsOfECC: {
+      et3ResponseContestClaimDetails: {
         type: 'textarea',
-        id: 'provideDetailsOfECC',
-        label: (l: AnyRecord): string => l.provideDetailsOfECC.label,
+        id: 'et3ResponseContestClaimDetails',
+        label: (l: AnyRecord): string => l.et3ResponseContestClaimDetails.label,
         validator: isFilledInAndIs2500CharsOrLess,
       },
       inset: {
         type: 'insetFields',
         id: 'inset',
         classes: 'govuk-heading-m',
-        label: (l: AnyRecord): string => l.files.title,
+        label: (l: AnyRecord): string => l.et3ResponseContestClaimDocument.title,
         subFields: {
-          provideDetailsOfECCDoc: {
+          et3ResponseContestClaimDocument: {
             type: 'upload',
-            id: 'provideDetailsOfECCDoc',
+            id: 'et3ResponseContestClaimDocument',
             classes: 'govuk-label',
             labelHidden: false,
             labelSize: 'm',
           },
           upload: {
             type: 'button',
-            label: (l: AnyRecord): string => l.files.button,
+            label: (l: AnyRecord): string => l.et3ResponseContestClaimDocument.button,
             classes: 'govuk-button--secondary',
             id: 'upload',
             name: 'upload',
@@ -48,7 +46,7 @@ export default class EmployersContractClaimDetailsController {
       },
       filesUploaded: {
         type: 'summaryList',
-        label: (l: AnyRecord): string => l.files.uploaded,
+        label: (l: AnyRecord): string => l.et3ResponseContestClaimDocument.uploaded,
       },
     },
     submit: submitButton,
@@ -60,7 +58,14 @@ export default class EmployersContractClaimDetailsController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.EmployersContractClaim,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -69,7 +74,6 @@ export default class EmployersContractClaimDetailsController {
       TranslationKeys.EMPLOYERS_CONTRACT_CLAIM_DETAILS,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.EMPLOYERS_CONTRACT_CLAIM_DETAILS, {
       ...content,
       hideContactUs: true,

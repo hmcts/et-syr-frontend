@@ -31,7 +31,7 @@ describe('Employer’s contract claim Controller', () => {
     it('should redirect to next page when yes is selected', () => {
       request = mockRequest({
         body: {
-          doesRespondentWantToMakeECC: YesOrNo.YES,
+          et3ResponseRespondentContestClaim: YesOrNo.YES,
         },
       });
       request.url = PageUrls.EMPLOYERS_CONTRACT_CLAIM + languages.ENGLISH_URL_PARAMETER;
@@ -45,7 +45,7 @@ describe('Employer’s contract claim Controller', () => {
     it('should redirect to next page when no is selected', () => {
       request = mockRequest({
         body: {
-          doesRespondentWantToMakeECC: YesOrNo.NO,
+          et3ResponseRespondentContestClaim: YesOrNo.NO,
         },
       });
       request.url = PageUrls.EMPLOYERS_CONTRACT_CLAIM + languages.ENGLISH_URL_PARAMETER;
@@ -65,7 +65,7 @@ describe('Employer’s contract claim Controller', () => {
         PageUrls.EMPLOYERS_CONTRACT_CLAIM + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'doesRespondentWantToMakeECC', errorType: 'required' }];
+      const errors = [{ propertyName: 'et3ResponseRespondentContestClaim', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
   });

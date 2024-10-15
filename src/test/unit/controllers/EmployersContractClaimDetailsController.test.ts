@@ -30,7 +30,7 @@ describe('Employer’s contract claim details Controller', () => {
     it('should redirect to next page when details is inputted', () => {
       request = mockRequest({
         body: {
-          provideDetailsOfECC: 'Test',
+          et3ResponseContestClaimDetails: 'Test',
         },
       });
       request.url = PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS + languages.ENGLISH_URL_PARAMETER;
@@ -44,7 +44,7 @@ describe('Employer’s contract claim details Controller', () => {
     it('should render the same page when text exceeds 2500 characters', () => {
       request = mockRequest({
         body: {
-          provideDetailsOfECC: '1'.repeat(2501),
+          et3ResponseContestClaimDetails: '1'.repeat(2501),
         },
       });
       request.url = PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS + languages.ENGLISH_URL_PARAMETER;
@@ -54,7 +54,7 @@ describe('Employer’s contract claim details Controller', () => {
         PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'provideDetailsOfECC', errorType: 'tooLong' }];
+      const errors = [{ propertyName: 'et3ResponseContestClaimDetails', errorType: 'tooLong' }];
       expect(request.session.errors).toEqual(errors);
     });
 
@@ -67,7 +67,7 @@ describe('Employer’s contract claim details Controller', () => {
         PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'provideDetailsOfECC', errorType: 'required' }];
+      const errors = [{ propertyName: 'et3ResponseContestClaimDetails', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
   });

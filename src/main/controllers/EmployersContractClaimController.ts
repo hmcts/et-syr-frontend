@@ -5,20 +5,18 @@ import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
-import { getLogger } from '../logger';
+import { getPageContent } from '../helpers/FormHelper';
+import ET3Util from '../utils/ET3Util';
 import { isOptionSelected } from '../validators/validator';
 
-const logger = getLogger('EmployersContractClaimController');
-
 export default class EmployersContractClaimController {
-  form: Form;
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      doesRespondentWantToMakeECC: {
+      et3ResponseRespondentContestClaim: {
         type: 'radios',
         classes: 'govuk-radios--inline',
         label: (l: AnyRecord): string => l.label,
@@ -44,11 +42,18 @@ export default class EmployersContractClaimController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    if (req.body.doesRespondentWantToMakeECC === YesOrNo.YES) {
-      await postLogic(req, res, this.form, logger, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS);
-    } else {
-      await postLogic(req, res, this.form, logger, PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
-    }
+    const nextPagae =
+      req.body.et3ResponseRespondentContestClaim === YesOrNo.YES
+        ? PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS
+        : PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM;
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.EmployersContractClaim,
+      LinkStatus.IN_PROGRESS,
+      nextPagae
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -57,7 +62,6 @@ export default class EmployersContractClaimController {
       TranslationKeys.EMPLOYERS_CONTRACT_CLAIM,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.EMPLOYERS_CONTRACT_CLAIM, {
       ...content,
       hideContactUs: true,
