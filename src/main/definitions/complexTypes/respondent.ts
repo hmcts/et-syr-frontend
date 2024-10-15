@@ -1,4 +1,4 @@
-import { NoAcasNumberReason, UploadedDocumentType, YesOrNo } from '../case';
+import { NoAcasNumberReason, UploadedDocumentType, YesOrNo, YesOrNoOrNotSure } from '../case';
 import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from '../links';
 
 import { DocumentTypeItem } from './documentTypeItem';
@@ -70,10 +70,10 @@ export interface RespondentType {
   et3ResponseEmploymentStartDate?: string;
   et3ResponseEmploymentEndDate?: string;
   et3ResponseEmploymentInformation?: string;
-  et3ResponseContinuingEmployment?: YesOrNo;
-  et3ResponseIsJobTitleCorrect?: YesOrNo;
+  et3ResponseContinuingEmployment?: YesOrNoOrNotSure;
+  et3ResponseIsJobTitleCorrect?: YesOrNoOrNotSure;
   et3ResponseCorrectJobTitle?: string;
-  et3ResponseClaimantWeeklyHours?: YesOrNo;
+  et3ResponseClaimantWeeklyHours?: YesOrNoOrNotSure;
   et3ResponseClaimantCorrectHours?: string;
   et3ResponseEarningDetailsCorrect?: YesOrNo;
   et3ResponsePayFrequency?: string;
@@ -81,7 +81,7 @@ export interface RespondentType {
   et3ResponsePayTakehome?: string;
   et3ResponseIsNoticeCorrect?: YesOrNo;
   et3ResponseCorrectNoticeDetails?: string;
-  et3ResponseIsPensionCorrect?: YesOrNo;
+  et3ResponseIsPensionCorrect?: YesOrNoOrNotSure;
   et3ResponsePensionCorrectDetails?: string;
   et3ResponseRespondentContestClaim?: YesOrNo;
   et3ResponseContestClaimDocument?: DocumentTypeItem[];

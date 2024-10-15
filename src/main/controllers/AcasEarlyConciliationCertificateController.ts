@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNo } from '../definitions/case';
+import { CaseWithId, YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
@@ -32,7 +32,7 @@ export default class AcasEarlyConciliationCertificateController {
                 type: 'charactercount',
                 label: (l: AnyRecord): string => l.et3ResponseAcasAgreeReason.label,
                 labelSize: 's',
-                maxlength: 200,
+                maxlength: 2500,
                 validator: isContent2500CharsOrLess,
               },
             },
@@ -50,13 +50,19 @@ export default class AcasEarlyConciliationCertificateController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    const fieldsToReset: string[] = [];
+    if (YesOrNo.YES !== formData.et3ResponseAcasAgree) {
+      fieldsToReset.push(formData.et3ResponseAcasAgreeReason);
+    }
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.ConciliationAndEmployeeDetails,
       LinkStatus.IN_PROGRESS,
-      PageUrls.CLAIMANT_EMPLOYMENT_DATES
+      PageUrls.CLAIMANT_EMPLOYMENT_DATES,
+      fieldsToReset
     );
   };
 

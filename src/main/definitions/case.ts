@@ -76,10 +76,10 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   responseOutOfTime?: string;
   responseNotOnPrescribedForm?: string;
   et3ResponseEmploymentInformation?: string;
-  et3ResponseContinuingEmployment?: YesOrNo;
-  et3ResponseIsJobTitleCorrect?: YesOrNo;
+  et3ResponseContinuingEmployment?: YesOrNoOrNotSure;
+  et3ResponseIsJobTitleCorrect?: YesOrNoOrNotSure;
   et3ResponseCorrectJobTitle?: string;
-  et3ResponseClaimantWeeklyHours?: YesOrNo;
+  et3ResponseClaimantWeeklyHours?: YesOrNoOrNotSure;
   et3ResponseClaimantCorrectHours?: string;
   et3ResponseEarningDetailsCorrect?: YesOrNo;
   et3ResponseEmployerClaimDocument?: UploadedDocumentType;
@@ -157,7 +157,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponseEmploymentStartDate?: string;
   et3ResponseEmploymentEndDate?: string;
   et3ResponseCorrectNoticeDetails?: string;
-  et3ResponseIsPensionCorrect?: YesOrNo;
+  et3ResponseIsPensionCorrect?: YesOrNoOrNotSure;
   et3ResponsePensionCorrectDetails?: string;
   et3ResponseRespondentContestClaim?: YesOrNo;
   et3ResponseContestClaimDocument?: DocumentTypeItem[];
