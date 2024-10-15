@@ -3,8 +3,11 @@ import { YesOrNoOrNotSure } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
+import ET3Util from '../../../main/utils/ET3Util';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+
+const updateET3ResponseWithET3FormMock = jest.spyOn(ET3Util, 'updateET3ResponseWithET3Form');
 
 describe('Claimant pension and benefits Controller', () => {
   const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
@@ -31,12 +34,13 @@ describe('Claimant pension and benefits Controller', () => {
     it('should redirect to next page when yes is selected', () => {
       request = mockRequest({
         body: {
-          areClaimantPensionBenefitsCorrect: YesOrNoOrNotSure.YES,
+          et3ResponseIsPensionCorrect: YesOrNoOrNotSure.YES,
         },
       });
-      request.url = PageUrls.CLAIMANT_PENSION_AND_BENEFITS + languages.ENGLISH_URL_PARAMETER;
+      updateET3ResponseWithET3FormMock.mockImplementationOnce(async () => {
+        response.redirect(PageUrls.CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS + languages.ENGLISH_URL_PARAMETER);
+      });
       controller.post(request, response);
-
       expect(response.redirect).toHaveBeenCalledWith(
         PageUrls.CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS + languages.ENGLISH_URL_PARAMETER
       );
@@ -45,13 +49,14 @@ describe('Claimant pension and benefits Controller', () => {
     it('should redirect to next page when no is selected', () => {
       request = mockRequest({
         body: {
-          areClaimantPensionBenefitsCorrect: YesOrNoOrNotSure.NO,
-          whatAreClaimantCorrectPensionBenefits: 'Test',
+          et3ResponseIsPensionCorrect: YesOrNoOrNotSure.NO,
+          et3ResponsePensionCorrectDetails: 'Test',
         },
       });
-      request.url = PageUrls.CLAIMANT_PENSION_AND_BENEFITS + languages.ENGLISH_URL_PARAMETER;
+      updateET3ResponseWithET3FormMock.mockImplementationOnce(async () => {
+        response.redirect(PageUrls.CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS + languages.ENGLISH_URL_PARAMETER);
+      });
       controller.post(request, response);
-
       expect(response.redirect).toHaveBeenCalledWith(
         PageUrls.CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS + languages.ENGLISH_URL_PARAMETER
       );
@@ -60,12 +65,13 @@ describe('Claimant pension and benefits Controller', () => {
     it('should redirect to next page when Not Sure is selected', () => {
       request = mockRequest({
         body: {
-          areClaimantPensionBenefitsCorrect: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseIsPensionCorrect: YesOrNoOrNotSure.NOT_SURE,
         },
       });
-      request.url = PageUrls.CLAIMANT_PENSION_AND_BENEFITS + languages.ENGLISH_URL_PARAMETER;
+      updateET3ResponseWithET3FormMock.mockImplementationOnce(async () => {
+        response.redirect(PageUrls.CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS + languages.ENGLISH_URL_PARAMETER);
+      });
       controller.post(request, response);
-
       expect(response.redirect).toHaveBeenCalledWith(
         PageUrls.CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS + languages.ENGLISH_URL_PARAMETER
       );
@@ -80,15 +86,15 @@ describe('Claimant pension and benefits Controller', () => {
         PageUrls.CLAIMANT_PENSION_AND_BENEFITS + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'areClaimantPensionBenefitsCorrect', errorType: 'required' }];
+      const errors = [{ propertyName: 'et3ResponseIsPensionCorrect', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
 
     it('should render the same page when No is selected but summary text exceeds 2500 characters', () => {
       request = mockRequest({
         body: {
-          areClaimantPensionBenefitsCorrect: YesOrNoOrNotSure.NO,
-          whatAreClaimantCorrectPensionBenefits: '1'.repeat(2501),
+          et3ResponseIsPensionCorrect: YesOrNoOrNotSure.NO,
+          et3ResponsePensionCorrectDetails: '1'.repeat(2501),
         },
       });
       request.url = PageUrls.CLAIMANT_PENSION_AND_BENEFITS + languages.ENGLISH_URL_PARAMETER;
@@ -98,7 +104,7 @@ describe('Claimant pension and benefits Controller', () => {
         PageUrls.CLAIMANT_PENSION_AND_BENEFITS + languages.ENGLISH_URL_PARAMETER
       );
 
-      const errors = [{ propertyName: 'whatAreClaimantCorrectPensionBenefits', errorType: 'tooLong' }];
+      const errors = [{ propertyName: 'et3ResponsePensionCorrectDetails', errorType: 'tooLong' }];
       expect(request.session.errors).toEqual(errors);
     });
   });

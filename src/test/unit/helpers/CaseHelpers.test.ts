@@ -2,12 +2,18 @@ import { nextTick } from 'process';
 
 import axios, { AxiosResponse } from 'axios';
 
+import { Form } from '../../../main/components/form';
 import { CaseApiDataResponse } from '../../../main/definitions/api/caseApiResponse';
+import { CaseWithId } from '../../../main/definitions/case';
+import { DefaultValues, FieldsToReset, GenericTestConstants } from '../../../main/definitions/constants';
 import { CaseState } from '../../../main/definitions/definition';
-import { handleUpdateDraftCase, handleUpdateHubLinksStatuses } from '../../../main/helpers/CaseHelpers';
+import { FormContent, FormFields } from '../../../main/definitions/form';
+import { handleUpdateDraftCase, handleUpdateHubLinksStatuses, resetFields } from '../../../main/helpers/CaseHelpers';
 import * as CaseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
+import { isFieldFilledIn } from '../../../main/validators/validator';
 import { mockSession } from '../mocks/mockApp';
+import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockLogger } from '../mocks/mockLogger';
 import { mockRequest } from '../mocks/mockRequest';
 
@@ -70,5 +76,52 @@ describe('handle update hub links statuses', () => {
     await new Promise(nextTick);
 
     expect(mockLogger.error).toHaveBeenCalledWith('test error');
+  });
+});
+
+describe('reset fields', () => {
+  const mockedFormContents: FormContent = {
+    fields: {
+      textField1: {
+        type: 'text1',
+        value: 'Test text value 1',
+        validator: jest.fn().mockImplementation(isFieldFilledIn),
+      },
+      textField2: {
+        type: 'text2',
+        value: 'Test text value 2',
+        validator: jest.fn().mockImplementation(isFieldFilledIn),
+      },
+    },
+    submit: {
+      text: l => l.continue,
+    },
+  };
+  const form: Form = new Form(<FormFields>mockedFormContents.fields);
+  const req = mockRequest({ userCase: undefined, session: mockSession([], [], []) });
+  req.body = mockCaseWithIdWithRespondents;
+  it('should reset fields when form data field name matches with fields to reset', async () => {
+    const formData = form.getParsedBody<CaseWithId>(req.body, form.getFormFields());
+    formData.et3ResponsePensionCorrectDetails = GenericTestConstants.TEST_FIELD_VALUE;
+    resetFields(formData, [FieldsToReset.ET3_RESPONSE_PENSION_CORRECT_DETAILS]);
+    expect(formData.et3ResponsePensionCorrectDetails).toEqual(DefaultValues.STRING_EMPTY);
+  });
+  it('should not reset fields when form data field name not matches with fields to reset', async () => {
+    const formData = form.getParsedBody<CaseWithId>(req.body, form.getFormFields());
+    formData.et3ResponsePensionCorrectDetails = GenericTestConstants.TEST_FIELD_VALUE;
+    resetFields(formData, [FieldsToReset.TEST_DUMMY_FIELD_NAME]);
+    expect(formData.et3ResponsePensionCorrectDetails).toEqual(GenericTestConstants.TEST_FIELD_VALUE);
+  });
+  it('should not reset fields when fields to reset is empty', async () => {
+    const formData = form.getParsedBody<CaseWithId>(req.body, form.getFormFields());
+    formData.et3ResponsePensionCorrectDetails = GenericTestConstants.TEST_FIELD_VALUE;
+    resetFields(formData, []);
+    expect(formData.et3ResponsePensionCorrectDetails).toEqual(GenericTestConstants.TEST_FIELD_VALUE);
+  });
+  it('should not reset fields when fields to reset is undefined', async () => {
+    const formData = form.getParsedBody<CaseWithId>(req.body, form.getFormFields());
+    formData.et3ResponsePensionCorrectDetails = GenericTestConstants.TEST_FIELD_VALUE;
+    resetFields(formData, undefined);
+    expect(formData.et3ResponsePensionCorrectDetails).toEqual(GenericTestConstants.TEST_FIELD_VALUE);
   });
 });
