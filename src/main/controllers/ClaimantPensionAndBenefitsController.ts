@@ -3,14 +3,7 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, YesOrNoOrNotSure } from '../definitions/case';
-import {
-  ControllerNames,
-  FieldsToReset,
-  LoggerConstants,
-  NO,
-  PageUrls,
-  TranslationKeys,
-} from '../definitions/constants';
+import { ControllerNames, FieldsToReset, LoggerConstants, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
@@ -66,7 +59,7 @@ export default class ClaimantPensionAndBenefitsController {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const fieldsToReset: string[] = [];
-    if (NO !== formData.et3ResponseIsPensionCorrect) {
+    if (YesOrNoOrNotSure.NO !== formData.et3ResponseIsPensionCorrect) {
       fieldsToReset.push(FieldsToReset.ET3_RESPONSE_PENSION_CORRECT_DETAILS);
     }
     logger.info(
