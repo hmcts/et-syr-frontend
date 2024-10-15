@@ -1,15 +1,15 @@
 import { Response } from 'express';
-import { cloneDeep } from 'lodash';
 import { LoggerInstance } from 'winston';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { PageUrls } from '../definitions/constants';
+import { DefaultValues, PageUrls } from '../definitions/constants';
 import { Logger } from '../logger';
 import localesCy from '../resources/locales/cy/translation/common.json';
 import locales from '../resources/locales/en/translation/common.json';
 import { getCaseApi } from '../services/CaseService';
+import CollectionUtils from '../utils/CollectionUtils';
 
 import { formatApiCaseDataToCaseWithId } from './ApiFormatter';
 import { handleErrors, returnSessionErrors } from './ErrorHelpers';
@@ -92,7 +92,6 @@ export const postLogic = async (
 ): Promise<void> => {
   const errors = returnSessionErrors(req, form);
   const { saveForLater } = req.body;
-
   if (errors.length === 0) {
     req.session.errors = [];
     if (saveForLater) {
@@ -126,11 +125,11 @@ export const handleUpdateHubLinksStatuses = async (req: AppRequest, logger: Logg
   }
 };
 
-export const setUserCase = (req: AppRequest, form: Form): void => {
-  const formData = form.getParsedBody(cloneDeep(req.body), form.getFormFields());
+export const setUserCase = (req: AppRequest, formData: Partial<CaseWithId>, fieldsToReset: string[]): void => {
   if (!req.session.userCase) {
     req.session.userCase = {} as CaseWithId;
   }
+  resetFields(formData, fieldsToReset);
   trimFormData(formData);
   Object.assign(req.session.userCase, formData);
 };
@@ -159,4 +158,17 @@ export const convertJsonArrayToTitleCase = (jsonArray: Record<string, string>[])
     }
     return newObj;
   });
+
+export const resetFields = (formData: Partial<CaseWithId>, fieldsToReset: string[]): void => {
+  if (CollectionUtils.isEmpty(fieldsToReset)) {
+    return;
+  }
+  for (const propertyName of Object.getOwnPropertyNames(formData)) {
+    if (fieldsToReset.includes(propertyName)) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      formData[propertyName] = DefaultValues.STRING_EMPTY;
+    }
+  }
+
 };
