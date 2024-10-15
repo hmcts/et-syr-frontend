@@ -135,9 +135,9 @@
   "Case management order": "Case management order",
   "Request": "Request",
   "sectionTitle": {
-    "s1": "1. Tell us about the respondent",
-    "s2": "2. Tell us about the claimant",
-    "s3": "3. Give us your response"
+    "s1": "Section 1. Tell us about the respondent",
+    "s2": "Section 2. Tell us about the claimant",
+    "s3": "Section 3. Give us your response"
   },
   "cya": {
     "title": "Check your answers",
