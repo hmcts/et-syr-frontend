@@ -1,4 +1,4 @@
-import { CaseWithId } from '../../../../main/definitions/case';
+import { CaseWithId, YesOrNo, YesOrNoOrNotSure } from '../../../../main/definitions/case';
 import { PageUrls } from '../../../../main/definitions/constants';
 import { SummaryListRow, addSummaryRowWithAction } from '../../../../main/definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../../../main/definitions/util-types';
@@ -48,19 +48,18 @@ describe('CheckYourAnswersET3Helper', () => {
       exampleData: '[example data]',
     },
     section3: {
-      agreeWithClaimantDetails:
-        'Do you agree with the details given by the claimant about early conciliation with Acas?',
-      disagreeReason: 'Why do you disagree with the Acas conciliation details given? (optional)',
-      employmentDatesCorrect: 'Are the dates of employment given by the claimant correct?',
-      employmentStartDate: 'Employment start date (optional)',
-      employmentEndDate: 'Employment end date (optional)',
-      furtherInfoEmploymentDates:
+      et3ResponseAcasAgree: 'Do you agree with the details given by the claimant about early conciliation with Acas?',
+      et3ResponseAcasAgreeReason: 'Why do you disagree with the Acas conciliation details given? (optional)',
+      et3ResponseAreDatesCorrect: 'Are the dates of employment given by the claimant correct?',
+      et3ResponseEmploymentStartDate: 'Employment start date (optional)',
+      et3ResponseEmploymentEndDate: 'Employment end date (optional)',
+      et3ResponseEmploymentInformation:
         "Do you want to provide any further information about the claimant's employment dates? (optional)",
-      continuingEmployment: 'Is the claimant’s employment with the respondent continuing?',
-      jobTitleCorrect: 'Is the claimant’s job title correct?',
-      correctJobTitle: 'What is or was the claimant’s correct job title? (optional)',
-      averageWeeklyHoursCorrect: 'Are the claimant’s average weekly work hours correct?',
-      correctAverageWeeklyHours: 'What are the claimant’s correct average weekly work hours? (optional)',
+      et3ResponseContinuingEmployment: 'Is the claimant’s employment with the respondent continuing?',
+      et3ResponseIsJobTitleCorrect: 'Is the claimant’s job title correct?',
+      et3ResponseCorrectJobTitle: 'What is or was the claimant’s correct job title? (optional)',
+      et3ResponseClaimantWeeklyHours: 'Are the claimant’s average weekly work hours correct?',
+      et3ResponseClaimantCorrectHours: 'What are the claimant’s correct average weekly work hours? (optional)',
       exampleData: '[example data]',
     },
     section4: {
@@ -116,8 +115,8 @@ describe('CheckYourAnswersET3Helper', () => {
   ];
 
   const section3Urls = [
-    PageUrls.CLAIMANT_ET1_FORM_DETAILS,
-    PageUrls.CLAIMANT_ET1_FORM_DETAILS, // for details verification
+    PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE,
+    PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE, // for details verification
     PageUrls.CLAIMANT_EMPLOYMENT_DATES,
     PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, // for entering employment dates
     PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, // for end date entry
@@ -206,6 +205,11 @@ describe('CheckYourAnswersET3Helper', () => {
         )
       );
     }
+
+    userCase.et3ResponseAcasAgree = YesOrNo.YES;
+    userCase.et3ResponseAreDatesCorrect = YesOrNoOrNotSure.NO;
+    userCase.et3ResponseIsJobTitleCorrect = YesOrNoOrNotSure.NO;
+    userCase.et3ResponseClaimantWeeklyHours = YesOrNoOrNotSure.NO;
 
     const result = getEt3Section3(userCase, translationsMock);
 

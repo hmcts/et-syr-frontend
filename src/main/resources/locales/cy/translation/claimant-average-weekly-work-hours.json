@@ -1,19 +1,19 @@
 {
   "title": "[W]Claimant average weekly work hours",
-  "workHourLabel": "[W]Average weekly work hours provided on ET1",
+  "avgWeeklyHrsLabel": "[W]Average weekly work hours provided on ET1",
   "p1": "[W]It may help the tribunal if you can provide these detail. You will not be penalised for not providing it.",
-  "areClaimantWorkHourCorrect": {
+  "et3ResponseClaimantWeeklyHours": {
     "label": "[W]Are the claimant’s average weekly work hours correct? "
   },
-  "whatAreClaimantCorrectWorkHour": {
+  "et3ResponseClaimantCorrectHours": {
     "label": "[W]What are the claimant’s correct average weekly work hours? (optional)",
     "hint": "[W]Enter the claimant’s average hours worked each week in digits."
   },
   "errors": {
-    "areClaimantWorkHourCorrect": {
+    "et3ResponseClaimantWeeklyHours": {
       "required": "[W]Make a selection"
     },
-    "whatAreClaimantCorrectWorkHour": {
+    "et3ResponseClaimantCorrectHours": {
       "invalid": "[W]The average weekly work hours’ entered must be less than 168 hours",
       "exceeded": "[W]The average weekly work hours’ entered must be less than 168 hours"
     }
