@@ -2,11 +2,11 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { CaseWithId } from '../definitions/case';
+import { LoggerConstants, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLogger } from '../logger';
@@ -18,8 +18,9 @@ export default class RespondentEnterPostCodeController {
   private readonly form: Form;
   private readonly respondentEnterPostCodeContent: FormContent = {
     fields: {
-      respondentEnterPostcode: {
-        id: 'respondentEnterPostcode',
+      responseRespondentAddressPostCode: {
+        id: 'responseRespondentAddressPostCode',
+        name: 'responseRespondentAddressPostCode',
         type: 'text',
         label: (l: AnyRecord): string => l.enterPostcode,
         classes: 'govuk-label govuk-!-width-one-half',
@@ -42,12 +43,20 @@ export default class RespondentEnterPostCodeController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.RESPONDENT_SELECT_POST_CODE);
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    req.session.errors = this.form.getValidatorErrors(formData);
+    if (req.session.errors.length > 0) {
+      logger.error(LoggerConstants.ERROR_FORM_INVALID_DATA + 'Form: ' + this.form);
+      const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ENTER_POST_CODE);
+      return res.redirect(redirectUrl);
+    }
+    const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_SELECT_POST_CODE);
+    req.session.userCase.responseRespondentAddressPostCode = formData.responseRespondentAddressPostCode;
+    return res.redirect(redirectUrl);
   };
 
   public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ENTER_POST_CODE);
-
     const content = getPageContent(req, this.respondentEnterPostCodeContent, [
       TranslationKeys.COMMON,
       TranslationKeys.RESPONDENT_ENTER_POST_CODE,
