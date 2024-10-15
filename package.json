@@ -171,7 +171,7 @@
     "merge": "^2.1.1",
     "follow-redirects": "^1.15.4",
     "ws": "^8.17.1",
-    "cookie": "^0.7.0"
+    "cookie": "^1.0.0"
   },
   "packageManager": "yarn@3.8.5"
 }

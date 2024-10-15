@@ -442,6 +442,7 @@ export const SessionErrors = {
 export const GenericTestConstants = {
   TRUE: true,
   FALSE: false,
+  TEST_FIELD_VALUE: 'Test pension correct details',
 } as const;
 
 export const AuthorisationTestConstants = {
@@ -513,17 +514,11 @@ export const CacheErrors = {
   ERROR_URL_NOT_FOUND_FOR_PRE_LOGIN_URL: 'Url not found for pre login url',
 } as const;
 
-export const LoggingConstants = {
+export const LoggerConstants = {
   INFO_LOG_RETRIEVING_CASES: 'Retrieving cases for',
   INFO_LOG_USER_ID_NOT_EXISTS: 'undefined user id',
-} as const;
-
-export const ET3ModificationTypes = {
-  MODIFICATION_TYPE_UPDATE: 'update',
-  MODIFICATION_TYPE_SUBMIT: 'submit',
-} as const;
-
-export const LoggerConstants = {
+  INFO_LOG_UPDATE_ET3_RESPONSE_WITH_ET3_FORM: 'Calling update et3 response with et3 form service for ',
+  INFO_LOG_UPDATED_ET3_RESPONSE_WITH_ET3_FORM: 'Updated et3 response with et3 form for ',
   ERROR_SESSION_USER_CASE_NOT_FOUND: 'User case not found in session',
   ERROR_SESSION_USER_NOT_FOUND: 'User not found in session',
   ERROR_SESSION_SELECTED_USER_NOT_FOUND: 'Selected user not found in session',
@@ -533,4 +528,18 @@ export const LoggerConstants = {
   ERROR_FORM_INVALID_DATA: 'Form inputs are invalid',
   ERROR_API: 'An error occurred while calling API, ',
   ERROR_SYSTEM: 'System error. ',
+};
+
+export const ControllerNames = {
+  CLAIMANT_PENSION_AND_BENEFITS_CONTROLLER: 'ClaimantPensionAndBenefitsController',
+};
+
+export const ET3ModificationTypes = {
+  MODIFICATION_TYPE_UPDATE: 'update',
+  MODIFICATION_TYPE_SUBMIT: 'submit',
+};
+
+export const FieldsToReset = {
+  ET3_RESPONSE_PENSION_CORRECT_DETAILS: 'et3ResponsePensionCorrectDetails',
+  TEST_DUMMY_FIELD_NAME: 'dummyFieldName',
 };

@@ -2,15 +2,23 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNoOrNotSure } from '../definitions/case';
-import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { CaseWithId, YesOrNoOrNotSure } from '../definitions/case';
+import {
+  ControllerNames,
+  FieldsToReset,
+  LoggerConstants,
+  NO,
+  PageUrls,
+  TranslationKeys,
+} from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
+import { getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
-import { isContent2500CharsOrLess, isOptionSelected } from '../validators/validator';
+import ET3Util from '../utils/ET3Util';
+import { isContent2500CharsOrLessOrEmpty, isOptionSelected } from '../validators/validator';
 
 const logger = getLogger('ClaimantPensionAndBenefitsController');
 
@@ -18,7 +26,7 @@ export default class ClaimantPensionAndBenefitsController {
   form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      areClaimantPensionBenefitsCorrect: {
+      et3ResponseIsPensionCorrect: {
         type: 'radios',
         label: (l: AnyRecord): string => l.areClaimantPensionBenefitsCorrect.label,
         values: [
@@ -30,12 +38,12 @@ export default class ClaimantPensionAndBenefitsController {
             label: (l: AnyRecord): string => l.no,
             value: YesOrNoOrNotSure.NO,
             subFields: {
-              whatAreClaimantCorrectPensionBenefits: {
-                type: 'textarea',
-                id: 'whatAreClaimantCorrectPensionBenefits',
+              et3ResponsePensionCorrectDetails: {
+                type: 'charactercount',
+                id: 'et3ResponsePensionCorrectDetails',
                 label: (l: AnyRecord): string => l.whatAreClaimantCorrectPensionBenefits.label,
                 labelSize: 's',
-                validator: isContent2500CharsOrLess,
+                validator: isContent2500CharsOrLessOrEmpty,
               },
             },
           },
@@ -56,7 +64,28 @@ export default class ClaimantPensionAndBenefitsController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS);
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    const fieldsToReset: string[] = [];
+    if (NO !== formData.et3ResponseIsPensionCorrect) {
+      fieldsToReset.push(FieldsToReset.ET3_RESPONSE_PENSION_CORRECT_DETAILS);
+    }
+    logger.info(
+      LoggerConstants.INFO_LOG_UPDATE_ET3_RESPONSE_WITH_ET3_FORM +
+        ControllerNames.CLAIMANT_PENSION_AND_BENEFITS_CONTROLLER
+    );
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.PayPensionBenefitDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS,
+      fieldsToReset
+    );
+    logger.info(
+      LoggerConstants.INFO_LOG_UPDATED_ET3_RESPONSE_WITH_ET3_FORM +
+        ControllerNames.CLAIMANT_PENSION_AND_BENEFITS_CONTROLLER
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -65,12 +94,10 @@ export default class ClaimantPensionAndBenefitsController {
       TranslationKeys.CLAIMANT_PENSION_AND_BENEFITS,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.CLAIMANT_PENSION_AND_BENEFITS, {
       ...content,
-      anyContributions: '[selection and entered text if Yes]', // TODO: Update value
-      receiveBenefits: '[selection and entered text if Yes]', // TODO: Update value
       hideContactUs: true,
+      userCase: req.session.userCase,
     });
   };
 }
