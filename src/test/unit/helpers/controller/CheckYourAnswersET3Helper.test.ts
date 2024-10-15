@@ -1,4 +1,4 @@
-import { CaseWithId } from '../../../../main/definitions/case';
+import { CaseWithId, YesOrNo, YesOrNoOrNotSure } from '../../../../main/definitions/case';
 import { PageUrls } from '../../../../main/definitions/constants';
 import { SummaryListRow, addSummaryRowWithAction } from '../../../../main/definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../../../main/definitions/util-types';
@@ -115,8 +115,8 @@ describe('CheckYourAnswersET3Helper', () => {
   ];
 
   const section3Urls = [
-    PageUrls.CLAIMANT_ET1_FORM_DETAILS,
-    PageUrls.CLAIMANT_ET1_FORM_DETAILS, // for details verification
+    PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE,
+    PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE, // for details verification
     PageUrls.CLAIMANT_EMPLOYMENT_DATES,
     PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, // for entering employment dates
     PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER, // for end date entry
@@ -205,6 +205,11 @@ describe('CheckYourAnswersET3Helper', () => {
         )
       );
     }
+
+    userCase.et3ResponseAcasAgree = YesOrNo.YES;
+    userCase.et3ResponseAreDatesCorrect = YesOrNoOrNotSure.NO;
+    userCase.et3ResponseIsJobTitleCorrect = YesOrNoOrNotSure.NO;
+    userCase.et3ResponseClaimantWeeklyHours = YesOrNoOrNotSure.NO;
 
     const result = getEt3Section3(userCase, translationsMock);
 
