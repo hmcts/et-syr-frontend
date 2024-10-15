@@ -66,7 +66,7 @@ export interface RespondentType {
   et3ResponseSiteEmploymentCount?: string;
   et3ResponseAcasAgree?: YesOrNo;
   et3ResponseAcasAgreeReason?: string;
-  et3ResponseAreDatesCorrect?: YesOrNo;
+  et3ResponseAreDatesCorrect?: YesOrNoOrNotSure;
   et3ResponseEmploymentStartDate?: string;
   et3ResponseEmploymentEndDate?: string;
   et3ResponseEmploymentInformation?: string;

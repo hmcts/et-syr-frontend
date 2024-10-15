@@ -153,7 +153,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponseRespondentSupportNeeded?: YesOrNo;
   et3ResponseAcasAgree?: YesOrNo;
   et3ResponseAcasAgreeReason?: string;
-  et3ResponseAreDatesCorrect?: YesOrNo;
+  et3ResponseAreDatesCorrect?: YesOrNoOrNotSure;
   et3ResponseEmploymentStartDate?: string;
   et3ResponseEmploymentEndDate?: string;
   et3ResponseCorrectNoticeDetails?: string;
