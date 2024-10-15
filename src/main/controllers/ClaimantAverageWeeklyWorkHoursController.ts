@@ -2,25 +2,23 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNoOrNotSure } from '../definitions/case';
+import { CaseWithId, YesOrNoOrNotSure } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
-import { getLogger } from '../logger';
+import { getPageContent } from '../helpers/FormHelper';
+import ET3Util from '../utils/ET3Util';
 import { isOptionSelected, isValidAvgWeeklyHours } from '../validators/validator';
 
-const logger = getLogger('ClaimantAverageWeeklyWorkHoursController');
-
 export default class ClaimantAverageWeeklyWorkHoursController {
-  form: Form;
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      areClaimantWorkHourCorrect: {
+      et3ResponseClaimantWeeklyHours: {
         type: 'radios',
-        label: (l: AnyRecord): string => l.areClaimantWorkHourCorrect.label,
+        label: (l: AnyRecord): string => l.et3ResponseClaimantWeeklyHours.label,
         values: [
           {
             label: (l: AnyRecord): string => l.yes,
@@ -30,12 +28,12 @@ export default class ClaimantAverageWeeklyWorkHoursController {
             label: (l: AnyRecord): string => l.no,
             value: YesOrNoOrNotSure.NO,
             subFields: {
-              whatAreClaimantCorrectWorkHour: {
+              et3ResponseClaimantCorrectHours: {
                 type: 'text',
-                id: 'whatAreClaimantCorrectWorkHour',
-                label: (l: AnyRecord): string => l.whatAreClaimantCorrectWorkHour.label,
+                id: 'et3ResponseClaimantCorrectHours',
+                label: (l: AnyRecord): string => l.et3ResponseClaimantCorrectHours.label,
                 labelSize: 's',
-                hint: (l: AnyRecord): string => l.whatAreClaimantCorrectWorkHour.hint,
+                hint: (l: AnyRecord): string => l.et3ResponseClaimantCorrectHours.hint,
                 validator: isValidAvgWeeklyHours,
               },
             },
@@ -57,7 +55,20 @@ export default class ClaimantAverageWeeklyWorkHoursController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS);
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    const fieldsToReset: string[] = [];
+    if (YesOrNoOrNotSure.NO !== formData.et3ResponseClaimantWeeklyHours) {
+      fieldsToReset.push(formData.et3ResponseClaimantCorrectHours);
+    }
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.ConciliationAndEmployeeDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS,
+      fieldsToReset
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -66,11 +77,10 @@ export default class ClaimantAverageWeeklyWorkHoursController {
       TranslationKeys.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS, {
       ...content,
-      workHour: '[Average weekly work hours]', // TODO: Update work hour
       hideContactUs: true,
+      userCase: req.session.userCase,
     });
   };
 }
