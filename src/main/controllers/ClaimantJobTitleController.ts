@@ -72,8 +72,8 @@ export default class ClaimantJobTitleController {
     ]);
     res.render(TranslationKeys.CLAIMANT_JOB_TITLE, {
       ...content,
-      jobTitle: '[Job title / Not provided]', // TODO: Update job title
       hideContactUs: true,
+      userCase: req.session.userCase,
     });
   };
 }

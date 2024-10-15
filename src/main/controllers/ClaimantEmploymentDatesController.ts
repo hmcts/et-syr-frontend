@@ -69,9 +69,8 @@ export default class ClaimantEmploymentDatesController {
     ]);
     res.render(TranslationKeys.CLAIMANT_EMPLOYMENT_DATES, {
       ...content,
-      startDate: '[Date entered by Claimant / Not provided]', // TODO: Update start date
-      endDate: '[Date entered by Claimant / Not provided]', // TODO: Update end date
       hideContactUs: true,
+      userCase: req.session.userCase,
     });
   };
 }
