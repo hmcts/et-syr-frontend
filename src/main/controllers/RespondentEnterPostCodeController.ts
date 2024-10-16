@@ -46,7 +46,7 @@ export default class RespondentEnterPostCodeController {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     req.session.errors = this.form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
-      logger.error(LoggerConstants.ERROR_FORM_INVALID_DATA + 'Form: ' + this.form);
+      logger.error(LoggerConstants.ERROR_FORM_INVALID_DATA + 'CaseId: ' + req.session?.userCase?.id);
       const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ENTER_POST_CODE);
       return res.redirect(redirectUrl);
     }

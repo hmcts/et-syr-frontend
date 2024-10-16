@@ -54,7 +54,7 @@ export default class RespondentAddressController {
     req.session.errors = this.form.getValidatorErrors(formData);
     const errorRedirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ADDRESS);
     if (req.session.errors.length > 0) {
-      logger.error(LoggerConstants.ERROR_FORM_INVALID_DATA + 'Form: ' + this.form);
+      logger.error(LoggerConstants.ERROR_FORM_INVALID_DATA + 'Case Id: ' + req.session?.userCase?.id);
       return res.redirect(errorRedirectUrl);
     }
     let redirectUrl: string = setUrlLanguage(req, PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME);
