@@ -68,14 +68,12 @@ describe('Claimant employment dates Controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
     });
 
-    it('should render the same page when nothing is selected', async () => {
+    it('should redirect to next page when nothing is selected', async () => {
       request = mockRequest({ body: {} });
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_EMPLOYMENT_DATES);
-      const errors = [{ propertyName: 'et3ResponseAreDatesCorrect', errorType: 'required' }];
-      expect(request.session.errors).toEqual(errors);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
     });
   });
 });
