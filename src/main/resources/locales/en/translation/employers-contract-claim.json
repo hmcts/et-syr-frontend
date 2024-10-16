@@ -6,7 +6,7 @@
   },
   "label": "Does the respondent want to make an Employer’s Contract Claim?",
   "errors": {
-    "doesRespondentWantToMakeECC": {
+    "et3ResponseRespondentContestClaim": {
       "required": "Make a selection"
     }
   }

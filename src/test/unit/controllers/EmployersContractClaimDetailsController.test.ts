@@ -1,5 +1,4 @@
-import EmployersContractClaimController from '../../../main/controllers/EmployersContractClaimController';
-import { YesOrNo } from '../../../main/definitions/case';
+import EmployersContractClaimDetailsController from '../../../main/controllers/EmployersContractClaimDetailsController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
@@ -11,14 +10,14 @@ import { mockResponse } from '../mocks/mockResponse';
 jest.mock('../../../main/helpers/CaseHelpers');
 const updateET3DataMock = jest.spyOn(ET3Util, 'updateET3Data');
 
-describe('Employer’s contract claim Controller', () => {
+describe('Employer’s contract claim details Controller', () => {
   const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
-  let controller: EmployersContractClaimController;
+  let controller: EmployersContractClaimDetailsController;
   let request: ReturnType<typeof mockRequest>;
   let response: ReturnType<typeof mockResponse>;
 
   beforeEach(() => {
-    controller = new EmployersContractClaimController();
+    controller = new EmployersContractClaimDetailsController();
     request = mockRequest({});
     response = mockResponse();
   });
@@ -27,42 +26,45 @@ describe('Employer’s contract claim Controller', () => {
     it('should render the page', () => {
       request = mockRequestWithTranslation({}, translationJsons);
       controller.get(request, response);
-      expect(response.render).toHaveBeenCalledWith(TranslationKeys.EMPLOYERS_CONTRACT_CLAIM, expect.anything());
+      expect(response.render).toHaveBeenCalledWith(TranslationKeys.EMPLOYERS_CONTRACT_CLAIM_DETAILS, expect.anything());
     });
   });
 
   describe('POST method', () => {
-    it('should redirect to next page when yes is selected', async () => {
+    it('should redirect to next page when details is inputted', async () => {
       request = mockRequest({
         body: {
-          et3ResponseRespondentContestClaim: YesOrNo.YES,
+          et3ResponseContestClaimDetails: 'Test',
         },
       });
-      request.url = PageUrls.EMPLOYERS_CONTRACT_CLAIM;
-      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
-      await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS);
-    });
-
-    it('should redirect to next page when no is selected', async () => {
-      request = mockRequest({
-        body: {
-          et3ResponseRespondentContestClaim: YesOrNo.NO,
-        },
-      });
-      request.url = PageUrls.EMPLOYERS_CONTRACT_CLAIM;
+      request.url = PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
     });
 
-    it('should render the same page when nothing is selected', async () => {
-      request = mockRequest({ body: {} });
-      request.url = PageUrls.EMPLOYERS_CONTRACT_CLAIM;
+    it('should render the same page when text exceeds 2500 characters', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseContestClaimDetails: '1'.repeat(2501),
+        },
+      });
+      request.url = PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.EMPLOYERS_CONTRACT_CLAIM);
-      const errors = [{ propertyName: 'et3ResponseRespondentContestClaim', errorType: 'required' }];
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS);
+
+      const errors = [{ propertyName: 'et3ResponseContestClaimDetails', errorType: 'tooLong' }];
+      expect(request.session.errors).toEqual(errors);
+    });
+
+    it('should render the same page when nothing is selected', async () => {
+      request = mockRequest({ body: {} });
+      request.url = PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS);
+      const errors = [{ propertyName: 'et3ResponseContestClaimDetails', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
   });

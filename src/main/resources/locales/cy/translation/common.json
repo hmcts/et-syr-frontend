@@ -135,9 +135,9 @@
   "Case management order": "Gorchymyn rheoli achos",
   "Request": "Cais",
   "sectionTitle": {
-    "s1": "[W]1. Tell us about the respondent",
-    "s2": "[W]2. Tell us about the claimant",
-    "s3": "[W]3. Give us your response"
+    "s1": "[W]Section 1. Tell us about the respondent",
+    "s2": "[W]Section 2. Tell us about the claimant",
+    "s3": "[W]Section 3. Give us your response"
   },
   "cya": {
     "title": "[W]Check your answers",
