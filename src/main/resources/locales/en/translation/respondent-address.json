@@ -6,6 +6,9 @@
   "errors": {
     "respondentAddress": {
       "required": "Make a selection"
+    },
+    "hiddenErrorField": {
+      "sessionRespondent": "Unable to find selected respondent in session"
     }
   }
 }

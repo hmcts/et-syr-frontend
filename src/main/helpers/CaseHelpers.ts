@@ -172,3 +172,29 @@ export const resetFields = (formData: Partial<CaseWithId>, fieldsToReset: string
   }
 
 };
+
+export const convertJsonArrayToTitleCase = (jsonArray: Record<string, string>[]): Record<string, string>[] => {
+  return jsonArray.map(addressObj => {
+    const newObj: Record<string, string> = {};
+
+    for (const [key, value] of Object.entries(addressObj)) {
+      if (key === 'postcode') {
+        newObj[key] = value;
+      } else if (key === 'fullAddress') {
+        const postcode = addressObj.postcode;
+        const addressWithoutPostcode = value.replace(postcode, '').trim();
+        newObj[key] =
+          toTitleCase(addressWithoutPostcode) + (addressWithoutPostcode.endsWith(',') ? '' : ',') + ' ' + postcode;
+      } else {
+        newObj[key] = toTitleCase(value);
+      }
+    }
+    return newObj;
+  });
+};
+
+function toTitleCase(str: string): string {
+  return str.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
+  });
+}
