@@ -7,7 +7,7 @@
   "et3ResponseContestClaimDetails": {
     "label": "[W]Provide the background and details of the Employer’s Contract Claim"
   },
-  "files": {
+  "et3ResponseContestClaimDocument": {
     "title": "[W]Upload a file",
     "button": "[W]Upload file",
     "uploaded": "[W]Files uploaded"
