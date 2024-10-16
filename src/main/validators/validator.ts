@@ -257,3 +257,12 @@ export const isPhoneNumberValid: Validator = value => {
     return ValidationErrors.INVALID_PHONE_NUMBER;
   }
 };
+
+export const isFilledInAndIs2500CharsOrLess: Validator = value => {
+  if (isFieldFilledIn(value)) {
+    return ValidationErrors.REQUIRED;
+  }
+  if (isContent2500CharsOrLess(value)) {
+    return ValidationErrors.TOO_LONG;
+  }
+};
