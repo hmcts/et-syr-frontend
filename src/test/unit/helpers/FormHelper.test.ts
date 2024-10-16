@@ -1,7 +1,7 @@
 import { CaseWithId } from '../../../main/definitions/case';
 import { DefaultValues } from '../../../main/definitions/constants';
 import { FormField, FormFields } from '../../../main/definitions/form';
-import { assignFormData } from '../../../main/helpers/FormHelper';
+import { assignAddresses, assignFormData, trimFormData } from '../../../main/helpers/FormHelper';
 import { MockCaseWithIdConstants, mockValidCaseWithId } from '../mocks/mockCaseWithId';
 import { mockFormField } from '../mocks/mockForm';
 
@@ -94,5 +94,17 @@ describe('Form Helper Test', () => {
     const userCase: CaseWithId = <CaseWithId>{};
     assignFormData(userCase, <FormFields>{});
     expect(userCase).toEqual(<CaseWithId>{});
+  });
+  it('should not trim form data', async () => {
+    const userCase: CaseWithId = mockValidCaseWithId;
+    userCase.respondentName = 'Dummy respondent name        ';
+    const expectedRespondentName = 'Dummy respondent name';
+    trimFormData(userCase);
+    expect(userCase.respondentName).toEqual(expectedRespondentName);
+  });
+  it('should assign form fields even if user case is empty', async () => {
+    const userCase: CaseWithId = undefined;
+    assignAddresses(userCase, formFields);
+    expect(userCase).toEqual(undefined);
   });
 });

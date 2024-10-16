@@ -77,4 +77,34 @@ describe('RespondentAddressController', () => {
     // Assert that page is redirected to preferred contact name is called with the correct parameters
     expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_ENTER_POST_CODE);
   });
+
+  it('should redirect to RESPONDENT_ADDRESS when selected user not found', async () => {
+    // Change the request body to reflect No selection
+    req.body.respondentAddress = YesOrNo.NO;
+    req.session.selectedRespondentIndex = undefined;
+    req.session.userCase = mockCaseWithIdWithRespondents;
+
+    // Mock conditionalRedirect to return true for YesOrNo.NO
+    (conditionalRedirect as jest.Mock).mockReturnValueOnce(false);
+
+    await controller.post(req, res);
+
+    // Assert that page is redirected to preferred contact name is called with the correct parameters
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_ADDRESS);
+  });
+
+  it('should redirect to RESPONDENT_ADDRESS when session error occurs', async () => {
+    // Change the request body to reflect No selection
+    req.body.respondentAddress = undefined;
+    req.session.selectedRespondentIndex = undefined;
+    req.session.userCase = mockCaseWithIdWithRespondents;
+
+    // Mock conditionalRedirect to return true for YesOrNo.NO
+    (conditionalRedirect as jest.Mock).mockReturnValueOnce(false);
+
+    await controller.post(req, res);
+
+    // Assert that page is redirected to preferred contact name is called with the correct parameters
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_ADDRESS);
+  });
 });
