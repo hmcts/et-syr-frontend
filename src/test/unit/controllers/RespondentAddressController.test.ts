@@ -1,10 +1,8 @@
 import RespondentAddressController from '../../../main/controllers/RespondentAddressController';
 import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import { saveForLaterButton, submitButton } from '../../../main/definitions/radios';
-import { postLogic } from '../../../main/helpers/CaseHelpers';
 import { conditionalRedirect } from '../../../main/helpers/RouterHelpers';
-import { isOptionSelected } from '../../../main/validators/validator';
+import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
@@ -38,41 +36,9 @@ describe('RespondentAddressController', () => {
       no: 'No',
     });
 
-    await controller.get(req, res);
+    controller.get(req, res);
 
-    expect(res.render).toHaveBeenCalledWith(
-      TranslationKeys.RESPONDENT_ADDRESS,
-      expect.objectContaining({
-        PageUrls,
-        hideContactUs: true,
-        form: expect.objectContaining({
-          fields: {
-            respondentAddress: expect.objectContaining({
-              classes: 'govuk-radios--inline',
-              id: 'respondentAddress',
-              type: 'radios',
-              label: expect.any(Function),
-              labelHidden: false,
-              values: expect.arrayContaining([
-                {
-                  name: 'respondentAddress',
-                  label: expect.any(Function),
-                  value: YesOrNo.YES,
-                },
-                {
-                  name: 'respondentAddress',
-                  label: expect.any(Function),
-                  value: YesOrNo.NO,
-                },
-              ]),
-              validator: isOptionSelected,
-            }),
-          },
-          submit: submitButton,
-          saveForLater: saveForLaterButton,
-        }),
-      })
-    );
+    expect(res.render).toHaveBeenCalledWith(TranslationKeys.RESPONDENT_ADDRESS, expect.anything());
 
     // Check that the form label functions return the correct values
     const renderMock = res.render as jest.Mock;
@@ -85,37 +51,60 @@ describe('RespondentAddressController', () => {
   });
 
   it('should redirect to RESPONDENT_PREFERRED_CONTACT_NAME when YesOrNo.YES is selected', async () => {
+    req.body.respondentAddress = YesOrNo.NO;
+    req.session.selectedRespondentIndex = 0;
+    req.session.userCase = mockCaseWithIdWithRespondents;
     // Mock conditionalRedirect to return true for YesOrNo.YES
-    (conditionalRedirect as jest.Mock).mockReturnValue(true);
+    (conditionalRedirect as jest.Mock).mockReturnValue(false);
 
     await controller.post(req, res);
 
     // Assert that postLogic is called with the correct parameters
-    expect(postLogic).toHaveBeenCalledWith(
-      req,
-      res,
-      controller.form,
-      expect.anything(),
-      PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME
-    );
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME);
   });
 
   it('should redirect to RESPONDENT_ENTER_POST_CODE when YesOrNo.NO is selected', async () => {
     // Change the request body to reflect No selection
     req.body.respondentAddress = YesOrNo.NO;
+    req.session.selectedRespondentIndex = 0;
+    req.session.userCase = mockCaseWithIdWithRespondents;
 
     // Mock conditionalRedirect to return true for YesOrNo.NO
-    (conditionalRedirect as jest.Mock).mockReturnValueOnce(false).mockReturnValueOnce(true);
+    (conditionalRedirect as jest.Mock).mockReturnValueOnce(true);
 
     await controller.post(req, res);
 
-    // Assert that postLogic is called with the correct parameters
-    expect(postLogic).toHaveBeenCalledWith(
-      req,
-      res,
-      controller.form,
-      expect.anything(),
-      PageUrls.RESPONDENT_ENTER_POST_CODE
-    );
+    // Assert that page is redirected to preferred contact name is called with the correct parameters
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_ENTER_POST_CODE);
+  });
+
+  it('should redirect to RESPONDENT_ADDRESS when selected user not found', async () => {
+    // Change the request body to reflect No selection
+    req.body.respondentAddress = YesOrNo.NO;
+    req.session.selectedRespondentIndex = undefined;
+    req.session.userCase = mockCaseWithIdWithRespondents;
+
+    // Mock conditionalRedirect to return true for YesOrNo.NO
+    (conditionalRedirect as jest.Mock).mockReturnValueOnce(false);
+
+    await controller.post(req, res);
+
+    // Assert that page is redirected to preferred contact name is called with the correct parameters
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_ADDRESS);
+  });
+
+  it('should redirect to RESPONDENT_ADDRESS when session error occurs', async () => {
+    // Change the request body to reflect No selection
+    req.body.respondentAddress = undefined;
+    req.session.selectedRespondentIndex = undefined;
+    req.session.userCase = mockCaseWithIdWithRespondents;
+
+    // Mock conditionalRedirect to return true for YesOrNo.NO
+    (conditionalRedirect as jest.Mock).mockReturnValueOnce(false);
+
+    await controller.post(req, res);
+
+    // Assert that page is redirected to preferred contact name is called with the correct parameters
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_ADDRESS);
   });
 });

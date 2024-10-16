@@ -6,7 +6,7 @@
   "findAddress": "[W]Find address",
   "manualAddressLink": "/respondent-enter-address",
   "errors": {
-    "respondentEnterPostcode": {
+    "responseRespondentAddressPostCode": {
       "required": "Enter a UK postcode",
       "invalid": "Enter a UK postcode, like AA1 1AA"
     }

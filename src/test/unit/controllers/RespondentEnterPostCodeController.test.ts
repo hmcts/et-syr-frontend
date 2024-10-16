@@ -1,7 +1,6 @@
 import RespondentEnterPostCodeController from '../../../main/controllers/RespondentEnterPostCodeController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { saveForLaterButton, submitButton } from '../../../main/definitions/radios';
-import { postLogic } from '../../../main/helpers/CaseHelpers';
 import { isValidUKPostcode } from '../../../main/validators/address_validator';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -47,8 +46,8 @@ describe('RespondentEnterPostCodeController', () => {
           hideContactUs: true,
           form: expect.objectContaining({
             fields: expect.objectContaining({
-              respondentEnterPostcode: expect.objectContaining({
-                id: 'respondentEnterPostcode',
+              responseRespondentAddressPostCode: expect.objectContaining({
+                id: 'responseRespondentAddressPostCode',
                 type: 'text',
                 label: expect.any(Function), // Label is a function
                 classes: 'govuk-label govuk-!-width-one-half',
@@ -72,41 +71,33 @@ describe('RespondentEnterPostCodeController', () => {
       const renderMock = response.render as jest.Mock;
       const form = renderMock.mock.calls[0][1].form;
 
-      expect(form.fields.respondentEnterPostcode.label(translationMock)).toBe('Enter postcode');
+      expect(form.fields.responseRespondentAddressPostCode.label(translationMock)).toBe('Enter postcode');
       expect(form.submit.text(translationMock)).toBe('Find address');
     });
   });
 
   describe('POST method', () => {
-    it('should handle the post method with valid postcode data', async () => {
+    it('should redirect to select post code page', async () => {
+      (isValidUKPostcode as jest.Mock).mockReturnValue(false);
       request.body = {
-        respondentEnterPostcode: 'SW1A 1AA',
+        responseRespondentAddressPostCode: 'SW1A 1AA',
       };
 
       await controller.post(request, response);
 
-      // Ensure postLogic is called correctly
-      expect(postLogic).toHaveBeenCalledWith(
-        request,
-        response,
-        expect.anything(),
-        expect.anything(),
-        PageUrls.RESPONDENT_SELECT_POST_CODE
-      );
+      // Ensure response is redirected to the right url
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_SELECT_POST_CODE);
     });
 
     it('should handle invalid postcode data by calling the validator', async () => {
-      // Set the validator to return false
-      (isValidUKPostcode as jest.Mock).mockReturnValue(false);
-
       request.body = {
-        respondentEnterPostcode: '123456789009876543211234567890',
+        responseRespondentAddressPostCode: '123456789009876543211234567890',
       };
 
       await controller.post(request, response);
 
-      // Ensure postLogic is not called if validation fails
-      expect(postLogic).toHaveBeenCalled();
+      // Ensure session has at least 1 error
+      expect(request.session.errors).toHaveLength(1);
     });
   });
 });
