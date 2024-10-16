@@ -35,7 +35,7 @@ export const getUserDetails = async (
   const env = process.env.NODE_ENV || 'development';
   const data =
     env === 'development'
-      ? `client_id=${id}&client_secret=${secret}&grant_type=authorization_code&redirect_uri=${callbackUrl}&code=${code}&scope=roles&username=citizen@gmail.com&password=password`
+      ? `client_id=${id}&client_secret=${secret}&grant_type=authorization_code&redirect_uri=${callbackUrl}&code=${code}&scope=roles&username=respondent@gmail.com&password=password`
       : `client_id=${id}&client_secret=${secret}&grant_type=authorization_code&redirect_uri=${callbackUrl}&code=${code}`;
   const headers = {
     Accept: 'application/json',
