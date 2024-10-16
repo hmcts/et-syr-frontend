@@ -11,6 +11,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord, UnknownRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
+import { getDateCompareError } from '../helpers/controller/ClaimantEmploymentDatesEnterHelper';
 import ET3Util from '../utils/ET3Util';
 import { isDateInPast, isDateInputInvalid } from '../validators/dateValidators';
 
@@ -54,6 +55,11 @@ export default class ClaimantEmploymentDatesEnterController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    req.session.errors = getDateCompareError(req, this.form);
+    if (req.session.errors.length > 0) {
+      return res.redirect(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
+    }
+
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,

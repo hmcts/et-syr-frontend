@@ -108,6 +108,24 @@ describe('Claimant employment dates enter Controller', () => {
           { propertyName: 'et3ResponseEmploymentStartDate', fieldName: 'day', errorType: 'invalidDateInFuture' },
         ],
       },
+      {
+        length: 1,
+        body: {
+          'et3ResponseEmploymentStartDate-day': '2',
+          'et3ResponseEmploymentStartDate-month': '1',
+          'et3ResponseEmploymentStartDate-year': '2024',
+          'et3ResponseEmploymentEndDate-day': '1',
+          'et3ResponseEmploymentEndDate-month': '1',
+          'et3ResponseEmploymentEndDate-year': '2024',
+        },
+        errors: [
+          {
+            propertyName: 'et3ResponseEmploymentEndDate',
+            fieldName: 'day',
+            errorType: 'invalidEndDateBeforeStartDate',
+          },
+        ],
+      },
     ])('should return appropriate errors for invalid employment dates', async ({ length, body, errors }) => {
       request = mockRequest({ body });
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER;
