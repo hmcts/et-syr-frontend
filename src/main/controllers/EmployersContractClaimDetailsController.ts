@@ -12,7 +12,7 @@ import ET3Util from '../utils/ET3Util';
 import { isFilledInAndIs2500CharsOrLess } from '../validators/validator';
 
 export default class EmployersContractClaimDetailsController {
-  form: Form;
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
       et3ResponseContestClaimDetails: {
