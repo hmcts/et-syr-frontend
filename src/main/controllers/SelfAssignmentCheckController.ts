@@ -35,11 +35,6 @@ export default class SelfAssignmentCheckController {
           },
         ],
       },
-      hiddenErrorField: {
-        id: 'hiddenErrorField',
-        type: 'textarea',
-        hidden: true,
-      },
     },
     submit: {
       text: (l: AnyRecord): string => l.continue,
