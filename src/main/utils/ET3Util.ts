@@ -13,6 +13,7 @@ import {
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { setUserCase } from '../helpers/CaseHelpers';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 
@@ -181,6 +182,7 @@ export default class ET3Util {
       return res.redirect(req.url);
     } else {
       req.session.userCase = userCase;
+      redirectUrl = setUrlLanguage(req, redirectUrl);
       res.redirect(redirectUrl);
     }
   }

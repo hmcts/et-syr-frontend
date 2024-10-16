@@ -186,6 +186,7 @@ export const ValidationErrors = {
   TOO_LONG: 'tooLong',
   USER_ID: 'userId',
   RESPONDENT_NOT_FOUND: 'respondentNotFound',
+  SELECTED_ADDRESS_NOT_FOUND: 'selectedAddressNotFound',
 } as const;
 
 export const AuthUrls = {
@@ -323,6 +324,8 @@ export const languages = {
   ENGLISH: 'en',
   WELSH_LOCALE: '&ui_locales=cy',
   ENGLISH_LOCALE: '&ui_locales=en',
+  WELSH_URL_POSTFIX: 'lng=cy',
+  ENGLISH_URL_POSTFIX: 'lng=en',
   WELSH_URL_PARAMETER: '?lng=cy',
   ENGLISH_URL_PARAMETER: '?lng=en',
 };
@@ -519,6 +522,11 @@ export const LoggerConstants = {
   INFO_LOG_USER_ID_NOT_EXISTS: 'undefined user id',
   INFO_LOG_UPDATE_ET3_RESPONSE_WITH_ET3_FORM: 'Calling update et3 response with et3 form service for ',
   INFO_LOG_UPDATED_ET3_RESPONSE_WITH_ET3_FORM: 'Updated et3 response with et3 form for ',
+  INFO_LOG_UPDATING_RESPONSE_RESPONDENT_ADDRESS: 'Updating response respondent address for the case ',
+  INFO_LOG_UPDATED_RESPONSE_RESPONDENT_ADDRESS: 'Response respondent address updated for the case ',
+  INFO_LOG_UPDATING_RESPONSE_RESPONDENT_ADDRESS_SELECTION:
+    'Updating response respondent address selection updated for the case',
+  INFO_LOG_UPDATED_RESPONSE_RESPONDENT_ADDRESS_SELECTION: 'Response respondent address selection updated for the case ',
   ERROR_SESSION_USER_CASE_NOT_FOUND: 'User case not found in session',
   ERROR_SESSION_USER_NOT_FOUND: 'User not found in session',
   ERROR_SESSION_SELECTED_USER_NOT_FOUND: 'Selected user not found in session',

@@ -5,8 +5,9 @@
   "cannotEnterPostcode": "[W]I cannot find the address in the list",
   "manualAddressLink": "/respondent-enter-address",
   "errors": {
-    "addressEnterPostcode": {
-      "required": "[W]Make a selection"
+    "respondentAddressTypes": {
+      "required": "[W]Make a selection",
+      "selectedAddressNotFound": "[W]Selected address not found"
     }
   }
 }
