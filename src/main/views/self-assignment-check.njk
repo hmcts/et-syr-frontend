@@ -22,14 +22,6 @@
       <div class="govuk-summary-list govuk-!-margin-bottom-9">
         <div class = "govuk-summary-list__row">
           <div class = "govuk-summary-list__key">
-            {{ request }}
-          </div>
-          <div class = "govuk-summary-list__value">
-            {{ caseAssignment }}
-          </div>
-        </div>
-        <div class = "govuk-summary-list__row">
-          <div class = "govuk-summary-list__key">
             {{ caseNumber }}
           </div>
           <div class = "govuk-summary-list__value">
@@ -61,10 +53,6 @@
           </div>
         </div>
       </div>
-      <p class="govuk-body">{{ tick }}</p>
-      <ul class="govuk-list govuk-list--bullet">
-        <li>{{ satisfied }}</li>
-      </ul>
       {% block form %}
         {% include "form/form.njk" %}
       {% endblock %}
