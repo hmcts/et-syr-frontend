@@ -97,12 +97,12 @@ describe('Claimant employment dates enter Controller', () => {
       {
         length: 1,
         body: {
-          'et3ResponseEmploymentStartDate-day': '31',
-          'et3ResponseEmploymentStartDate-month': '12',
+          'et3ResponseEmploymentStartDate-day': '1',
+          'et3ResponseEmploymentStartDate-month': '1',
           'et3ResponseEmploymentStartDate-year': `${new Date().getFullYear() + 1}`,
-          'et3ResponseEmploymentEndDate-day': '',
-          'et3ResponseEmploymentEndDate-month': '',
-          'et3ResponseEmploymentEndDate-year': '',
+          'et3ResponseEmploymentEndDate-day': '2',
+          'et3ResponseEmploymentEndDate-month': '2',
+          'et3ResponseEmploymentEndDate-year': `${new Date().getFullYear() + 1}`,
         },
         errors: [
           { propertyName: 'et3ResponseEmploymentStartDate', fieldName: 'day', errorType: 'invalidDateInFuture' },

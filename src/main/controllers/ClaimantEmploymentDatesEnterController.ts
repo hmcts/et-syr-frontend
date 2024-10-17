@@ -55,7 +55,7 @@ export default class ClaimantEmploymentDatesEnterController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    req.session.errors = getDateCompareError(req, this.form);
+    req.session.errors = getDateCompareError(req);
     if (req.session.errors.length > 0) {
       return res.redirect(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
     }
