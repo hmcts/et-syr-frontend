@@ -5,22 +5,19 @@ import { AppRequest } from '../definitions/appRequest';
 import { YesOrNoOrNotSure } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
-import { getLogger } from '../logger';
-import { isOptionSelected } from '../validators/validator';
-
-const logger = getLogger('ClaimantPayDetailsController');
+import { getPageContent } from '../helpers/FormHelper';
+import ET3Util from '../utils/ET3Util';
 
 export default class ClaimantPayDetailsController {
-  form: Form;
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      arePayDetailsGivenCorrect: {
+      et3ResponseEarningDetailsCorrect: {
         type: 'radios',
-        label: (l: AnyRecord): string => l.arePayDetailsGivenCorrect.label,
+        label: (l: AnyRecord): string => l.et3ResponseEarningDetailsCorrect.label,
         values: [
           {
             label: (l: AnyRecord): string => l.yes,
@@ -29,15 +26,14 @@ export default class ClaimantPayDetailsController {
           {
             label: (l: AnyRecord): string => l.no,
             value: YesOrNoOrNotSure.NO,
-            hint: (l: AnyRecord): string => l.arePayDetailsGivenCorrect.no.hint,
+            hint: (l: AnyRecord): string => l.et3ResponseEarningDetailsCorrect.no.hint,
           },
           {
             label: (l: AnyRecord): string => l.notSure,
             value: YesOrNoOrNotSure.NOT_SURE,
-            hint: (l: AnyRecord): string => l.arePayDetailsGivenCorrect.notSure.hint,
+            hint: (l: AnyRecord): string => l.et3ResponseEarningDetailsCorrect.notSure.hint,
           },
         ],
-        validator: isOptionSelected,
       },
     },
     submit: submitButton,
@@ -49,11 +45,18 @@ export default class ClaimantPayDetailsController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    if (req.body.arePayDetailsGivenCorrect === YesOrNoOrNotSure.NO) {
-      await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_PAY_DETAILS_ENTER);
-    } else {
-      await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_NOTICE_PERIOD);
-    }
+    const nextPage =
+      req.body.et3ResponseEarningDetailsCorrect === YesOrNoOrNotSure.NO
+        ? PageUrls.CLAIMANT_PAY_DETAILS_ENTER
+        : PageUrls.CLAIMANT_NOTICE_PERIOD;
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.PayPensionBenefitDetails,
+      LinkStatus.IN_PROGRESS,
+      nextPage
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -62,7 +65,6 @@ export default class ClaimantPayDetailsController {
       TranslationKeys.CLAIMANT_PAY_DETAILS,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.CLAIMANT_PAY_DETAILS, {
       ...content,
       periodPay: '[Weekly / Monthly / Annual / Not provided]', // TODO: Update value

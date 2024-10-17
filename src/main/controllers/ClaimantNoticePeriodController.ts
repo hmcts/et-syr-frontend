@@ -5,22 +5,20 @@ import { AppRequest } from '../definitions/appRequest';
 import { YesOrNoOrNotSure } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
-import { getLogger } from '../logger';
-import { isContent2500CharsOrLess, isOptionSelected } from '../validators/validator';
-
-const logger = getLogger('ClaimantNoticePeriodController');
+import { getPageContent } from '../helpers/FormHelper';
+import ET3Util from '../utils/ET3Util';
+import { isContent2500CharsOrLess } from '../validators/validator';
 
 export default class ClaimantNoticePeriodController {
-  form: Form;
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      areClaimantNoticePeriodDetailsCorrect: {
+      et3ResponseIsNoticeCorrect: {
         type: 'radios',
-        label: (l: AnyRecord): string => l.areClaimantNoticePeriodDetailsCorrect.label,
+        label: (l: AnyRecord): string => l.et3ResponseIsNoticeCorrect.label,
         values: [
           {
             label: (l: AnyRecord): string => l.yes,
@@ -30,12 +28,12 @@ export default class ClaimantNoticePeriodController {
             label: (l: AnyRecord): string => l.no,
             value: YesOrNoOrNotSure.NO,
             subFields: {
-              whatAreClaimantCorrectNoticeDetails: {
+              et3ResponseCorrectNoticeDetails: {
                 type: 'textarea',
-                id: 'whatAreClaimantCorrectNoticeDetails',
-                label: (l: AnyRecord): string => l.whatAreClaimantCorrectNoticeDetails.label,
+                id: 'et3ResponseCorrectNoticeDetails',
+                label: (l: AnyRecord): string => l.et3ResponseCorrectNoticeDetails.label,
                 labelSize: 's',
-                hint: (l: AnyRecord): string => l.whatAreClaimantCorrectNoticeDetails.hint,
+                hint: (l: AnyRecord): string => l.et3ResponseCorrectNoticeDetails.hint,
                 validator: isContent2500CharsOrLess,
               },
             },
@@ -45,7 +43,6 @@ export default class ClaimantNoticePeriodController {
             value: YesOrNoOrNotSure.NOT_SURE,
           },
         ],
-        validator: isOptionSelected,
       },
     },
     submit: submitButton,
@@ -57,7 +54,14 @@ export default class ClaimantNoticePeriodController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_PENSION_AND_BENEFITS);
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.PayPensionBenefitDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.CLAIMANT_PENSION_AND_BENEFITS
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -66,7 +70,6 @@ export default class ClaimantNoticePeriodController {
       TranslationKeys.CLAIMANT_NOTICE_PERIOD,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.CLAIMANT_NOTICE_PERIOD, {
       ...content,
       writtenContract: '[entry]', // TODO: Update value

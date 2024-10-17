@@ -10,9 +10,6 @@
     "hint": "Enter the claimant’s average hours worked each week in digits."
   },
   "errors": {
-    "et3ResponseClaimantWeeklyHours": {
-      "required": "Make a selection"
-    },
     "et3ResponseClaimantCorrectHours": {
       "invalid": "The average weekly work hours’ entered must be less than 168 hours",
       "exceeded": "The average weekly work hours’ entered must be less than 168 hours"

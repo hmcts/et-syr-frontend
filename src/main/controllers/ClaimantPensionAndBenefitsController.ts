@@ -11,12 +11,12 @@ import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
-import { isContent2500CharsOrLessOrEmpty, isOptionSelected } from '../validators/validator';
+import { isContent2500CharsOrLessOrEmpty } from '../validators/validator';
 
 const logger = getLogger('ClaimantPensionAndBenefitsController');
 
 export default class ClaimantPensionAndBenefitsController {
-  form: Form;
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
       et3ResponseIsPensionCorrect: {
@@ -45,7 +45,6 @@ export default class ClaimantPensionAndBenefitsController {
             value: YesOrNoOrNotSure.NOT_SURE,
           },
         ],
-        validator: isOptionSelected,
       },
     },
     submit: submitButton,
