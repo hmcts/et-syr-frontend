@@ -3,14 +3,13 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, YesOrNo } from '../definitions/case';
-import { FormFieldNames, PageUrls, ServiceErrors, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getCaseApi } from '../services/CaseService';
 import ErrorUtils from '../utils/ErrorUtils';
-import StringUtils from '../utils/StringUtils';
 import { atLeastOneFieldIsChecked } from '../validators/validator';
 
 export default class SelfAssignmentCheckController {
@@ -56,41 +55,13 @@ export default class SelfAssignmentCheckController {
     try {
       caseAssignmentResponse = await getCaseApi(req.session.user?.accessToken)?.assignCaseUserRole(req);
     } catch (error) {
-      if (
-        StringUtils.isNotBlank(error?.message) &&
-        error.message
-          .toString()
-          .includes(ServiceErrors.ERROR_ASSIGNING_USER_ROLE_USER_ALREADY_HAS_ROLE_EXCEPTION_CHECK_VALUE)
-      ) {
-        ErrorUtils.setManualErrorToRequestSession(
-          req,
-          ValidationErrors.CASE_ALREADY_ASSIGNED_TO_SAME_USER,
-          FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-        );
-      } else if (
-        StringUtils.isNotBlank(error?.message) &&
-        error.message.toString().includes(ServiceErrors.ERROR_ASSIGNING_USER_ROLE_ALREADY_ASSIGNED_CHECK_VALUE)
-      ) {
-        ErrorUtils.setManualErrorToRequestSession(
-          req,
-          ValidationErrors.CASE_ALREADY_ASSIGNED,
-          FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-        );
-      } else {
-        ErrorUtils.setManualErrorToRequestSession(
-          req,
-          ValidationErrors.API,
-          FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-        );
-      }
-      return res.redirect(req.url);
-    }
-    if (!caseAssignmentResponse) {
       ErrorUtils.setManualErrorToRequestSession(
         req,
         ValidationErrors.API,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
       );
+    }
+    if (!caseAssignmentResponse) {
       return res.redirect(req.url);
     }
     return res.redirect(PageUrls.CASE_LIST);

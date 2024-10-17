@@ -1,28 +1,26 @@
 {
-  "title": "[W]Self Assignment - Check",
-  "pageTitle": "[W]Self Assignment",
-  "respondentSelfAssignmentInfo": "[W]You must enter the claimant and respondent details exactly as they're written on the case, including any mistakes. For example, if the client's last name is Smyth but it has been spelled 'Smith', you should enter Smith.",
-  "respondentName": "[W]Respondent Name",
-  "claimantFirstName": "[W]Claimant First Name",
-  "claimantLastName": "[W]Claimant Last Name",
+  "title": "Self Assignment - Check",
+  "pageTitle": "Self Assignment",
+  "respondentSelfAssignmentInfo": "You must enter the claimant and respondent details exactly as they're written on the case, including any mistakes. For example, if the client's last name is Smyth but it has been spelled 'Smith', you should enter Smith.",
+  "respondentName": "Respondent Name",
+  "claimantFirstName": "Claimant First Name",
+  "claimantLastName": "Claimant Last Name",
   "confirmation": {
-    "title": "[W]I confirm all these details are accurate and match what is written on the case.",
-    "checkbox": "[W]I confirm all these details are accurate and match what is written on the case.",
-    "hint": "[W]"
+    "title": "I confirm all these details are accurate and match what is written on the case.",
+    "checkbox": "I confirm all these details are accurate and match what is written on the case.",
+    "hint": ""
   },
-  "request": "[W]Request",
-  "caseNumber": "[W]Case Number",
-  "caseAssignment": "[W]Case assignment",
-  "tick": "[W]You should tick to 'sign' when:",
-  "satisfied": "[W]You're satisfied that all these details are accurate and match what is written on the case",
+  "request": "Request",
+  "caseNumber": "Case Number",
+  "caseAssignment": "Case assignment",
+  "tick": "You should tick to 'sign' when:",
+  "satisfied": "You're satisfied that all these details are accurate and match what is written on the case",
   "errors": {
     "selfAssignmentCheck": {
-      "required": "[W]Please confirm case assignment."
+      "required": "Please confirm case assignment."
     },
     "hiddenErrorField": {
-      "api": "[W]Unable to assign role. Please check your name recorded in the system",
-      "caseAlreadyAssignedToSameUser": "[W]You have already assigned to this case",
-      "caseAlreadyAssigned": "[W]Case has already assigned to a respondent"
+      "api": "Unable to assign role. Please check your name recorded in the system"
     }
   }
 }
