@@ -1,11 +1,10 @@
 import { AppRequest } from '../../definitions/appRequest';
 import { CaseDate } from '../../definitions/case';
+import { ValidationErrors } from '../../definitions/constants';
 import { FormError } from '../../definitions/form';
 import { isDateEmpty, isDateInputInvalid, isFirstDateBeforeSecond } from '../../validators/dateValidators';
 
-export const getDateCompareError = (req: AppRequest): FormError[] => {
-  const errors: FormError[] = [];
-
+export const isEndDateBeforeStartDate = (req: AppRequest): boolean => {
   const startDate: CaseDate = {
     day: req.body['et3ResponseEmploymentStartDate-day'],
     month: req.body['et3ResponseEmploymentStartDate-month'],
@@ -19,20 +18,22 @@ export const getDateCompareError = (req: AppRequest): FormError[] => {
   };
 
   if (isDateEmpty(startDate) && isDateEmpty(endDate)) {
-    return errors;
+    return false;
   }
 
   if (isDateInputInvalid(startDate) || isDateInputInvalid(endDate)) {
-    return errors;
+    return false;
   }
 
-  if (isFirstDateBeforeSecond(endDate, startDate)) {
-    errors.push({
-      propertyName: 'et3ResponseEmploymentEndDate',
-      errorType: 'invalidEndDateBeforeStartDate',
-      fieldName: 'day',
-    });
-  }
+  return isFirstDateBeforeSecond(endDate, startDate);
+};
 
+export const getEndDateBeforeStartDateErrorMessage = (): FormError[] => {
+  const errors: FormError[] = [];
+  errors.push({
+    propertyName: 'et3ResponseEmploymentEndDate',
+    errorType: ValidationErrors.INVALID_END_DATE_BEFORE_START_DATE,
+    fieldName: 'day',
+  });
   return errors;
 };

@@ -169,6 +169,7 @@ export const ValidationErrors = {
   INVALID_ACAS_NUMBER: 'invalidAcasNumber',
   INVALID_COMPANY_REGISTRATION_NUMBER: 'invalidCompanyRegistrationNumber',
   INVALID_CURRENCY: 'invalidCurrency',
+  INVALID_END_DATE_BEFORE_START_DATE: 'invalidEndDateBeforeStartDate',
   INVALID_FILE_FORMAT: 'invalidFileFormat',
   INVALID_FILE_NAME: 'invalidFileName',
   INVALID_LENGTH: 'invalidLength',
