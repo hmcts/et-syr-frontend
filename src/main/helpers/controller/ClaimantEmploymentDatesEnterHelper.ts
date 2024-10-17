@@ -1,6 +1,11 @@
+import { Response } from 'express';
+
 import { AppRequest } from '../../definitions/appRequest';
 import { CaseDate } from '../../definitions/case';
+import { PageUrls, ValidationErrors } from '../../definitions/constants';
+import ErrorUtils from '../../utils/ErrorUtils';
 import { isDateEmpty, isDateInputInvalid, isFirstDateBeforeSecond } from '../../validators/dateValidators';
+import { setUrlLanguage } from '../LanguageHelper';
 
 export const isEndDateBeforeStartDate = (req: AppRequest): boolean => {
   const startDate: CaseDate = {
@@ -24,4 +29,15 @@ export const isEndDateBeforeStartDate = (req: AppRequest): boolean => {
   }
 
   return isFirstDateBeforeSecond(endDate, startDate);
+};
+
+export const handleEndDateBeforeStartDate = (req: AppRequest, res: Response): void => {
+  ErrorUtils.setManualErrorWithFieldToRequestSession(
+    req,
+    ValidationErrors.INVALID_END_DATE_BEFORE_START_DATE,
+    'et3ResponseEmploymentEndDate',
+    'day'
+  );
+  const redirectUrl = setUrlLanguage(req, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
+  return res.redirect(redirectUrl);
 };

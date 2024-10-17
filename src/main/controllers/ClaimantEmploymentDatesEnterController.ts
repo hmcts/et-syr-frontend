@@ -4,17 +4,18 @@ import { Form } from '../components/form';
 import { convertToDateObject } from '../components/parser';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseDate } from '../definitions/case';
-import { PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { DateValues } from '../definitions/dates';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord, UnknownRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
-import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { isEndDateBeforeStartDate } from '../helpers/controller/ClaimantEmploymentDatesEnterHelper';
+import {
+  handleEndDateBeforeStartDate,
+  isEndDateBeforeStartDate,
+} from '../helpers/controller/ClaimantEmploymentDatesEnterHelper';
 import ET3Util from '../utils/ET3Util';
-import ErrorUtils from '../utils/ErrorUtils';
 import { isDateInPast, isDateInputInvalid } from '../validators/dateValidators';
 
 export default class ClaimantEmploymentDatesEnterController {
@@ -58,13 +59,7 @@ export default class ClaimantEmploymentDatesEnterController {
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     if (isEndDateBeforeStartDate(req)) {
-      ErrorUtils.setManualErrorWithFieldToRequestSession(
-        req,
-        ValidationErrors.INVALID_END_DATE_BEFORE_START_DATE,
-        'et3ResponseEmploymentEndDate',
-        'day'
-      );
-      return res.redirect(setUrlLanguage(req, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER));
+      return handleEndDateBeforeStartDate(req, res);
     }
 
     await ET3Util.updateET3ResponseWithET3Form(
