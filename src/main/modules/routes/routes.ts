@@ -16,6 +16,7 @@ import CheckYourAnswersEarlyConciliationAndEmployeeDetailsController from '../..
 import CheckYourAnswersEmployersContractClaimController from '../../controllers/CheckYourAnswersEmployersContractClaimController';
 import CheckYourAnswersHearingPreferencesController from '../../controllers/CheckYourAnswersHearingPreferencesController';
 import CheckYourAnswersPayPensionAndBenefitsController from '../../controllers/CheckYourAnswersPayPensionAndBenefitsController';
+import ChecklistController from '../../controllers/ChecklistController';
 import ClaimantAcasCertificateDetailsController from '../../controllers/ClaimantAcasCertificateDetailsController';
 import ClaimantAverageWeeklyWorkHoursController from '../../controllers/ClaimantAverageWeeklyWorkHoursController';
 import ClaimantET1FormController from '../../controllers/ClaimantET1FormController';
@@ -33,7 +34,6 @@ import EmployersContractClaimController from '../../controllers/EmployersContrac
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HomeController from '../../controllers/HomeController';
-import InterruptionCardController from '../../controllers/InterruptionCardController';
 import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
@@ -65,7 +65,7 @@ export class Routes {
     app.get(InterceptPaths.CHANGE_DETAILS, new ChangeDetailsController().get);
     // Page URLs
     app.get(PageUrls.HOME, new HomeController().get);
-    app.get(PageUrls.INTERRUPTION_CARD, new InterruptionCardController().get);
+    app.get(PageUrls.CHECKLIST, new ChecklistController().get);
     app.get(PageUrls.CASE_LIST_CHECK, new CaseListCheckController().get);
     app.get(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().get);
     app.post(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().post);

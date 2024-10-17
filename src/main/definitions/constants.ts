@@ -24,7 +24,7 @@ export const TranslationKeys = {
   COMMON: 'common',
   WELSH_ENABLED: 'welsh-language',
   HOME: 'home',
-  INTERRUPTION_CARD: 'interruption-card',
+  CHECKLIST: 'checklist',
   COOKIE_PREFERENCES: 'cookie-preferences',
   RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
   CASE_DETAILS_WITH_CASE_ID_PARAMETER: 'case-details',
@@ -88,7 +88,7 @@ export const TranslationKeys = {
 export const PageUrls = {
   NOT_IMPLEMENTED: '#',
   HOME: '/',
-  INTERRUPTION_CARD: '/interruption-card',
+  CHECKLIST: '/checklist',
   SELF_ASSIGNMENT_FORM: '/self-assignment-form',
   CASE_LIST_CHECK: '/case-list-check',
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
