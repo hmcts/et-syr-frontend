@@ -3,15 +3,12 @@
   "p1": "You should check the Acas certificate number and date, or whether the claimant was correct to say they were exempt from early conciliation.",
   "link": "View Acas certificate (opens in new tab)",
   "et3ResponseAcasAgree": {
-    "label": "Do you disagree with any details given by the claimant about early conciliation with Acas?"
+    "label": "Do you agree with the details given by the claimant about early conciliation with Acas?"
   },
   "et3ResponseAcasAgreeReason": {
     "label": "Why do you disagree with the Acas conciliation details given? (optional)"
   },
   "errors": {
-    "et3ResponseAcasAgree": {
-      "required": "Make a selection"
-    },
     "et3ResponseAcasAgreeReason": {
       "tooLong": "The details of why you disagree must be less than 2500 characters"
     }

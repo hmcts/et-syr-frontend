@@ -10,7 +10,7 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import ET3Util from '../utils/ET3Util';
-import { isContent2500CharsOrLess, isOptionSelected } from '../validators/validator';
+import { isContent2500CharsOrLess } from '../validators/validator';
 
 export default class AcasEarlyConciliationCertificateController {
   private readonly form: Form;
@@ -21,12 +21,12 @@ export default class AcasEarlyConciliationCertificateController {
         label: (l: AnyRecord): string => l.et3ResponseAcasAgree.label,
         values: [
           {
-            label: (l: AnyRecord): string => l.no,
-            value: YesOrNo.NO,
-          },
-          {
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNo.YES,
+          },
+          {
+            label: (l: AnyRecord): string => l.no,
+            value: YesOrNo.NO,
             subFields: {
               et3ResponseAcasAgreeReason: {
                 type: 'charactercount',
@@ -38,7 +38,6 @@ export default class AcasEarlyConciliationCertificateController {
             },
           },
         ],
-        validator: isOptionSelected,
       },
     },
     submit: submitButton,
@@ -52,7 +51,7 @@ export default class AcasEarlyConciliationCertificateController {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const fieldsToReset: string[] = [];
-    if (YesOrNo.YES !== formData.et3ResponseAcasAgree) {
+    if (YesOrNo.NO !== formData.et3ResponseAcasAgree) {
       fieldsToReset.push(formData.et3ResponseAcasAgreeReason);
     }
     await ET3Util.updateET3ResponseWithET3Form(

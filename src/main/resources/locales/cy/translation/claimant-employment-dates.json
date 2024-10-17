@@ -10,10 +10,5 @@
     "notSure": {
       "hint": "[W]If you select Not sure, you will not be able to enter employment dates."
     }
-  },
-  "errors": {
-    "et3ResponseAreDatesCorrect": {
-      "required": "[W]Make a selection"
-    }
   }
 }
