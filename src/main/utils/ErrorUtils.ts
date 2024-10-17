@@ -26,4 +26,15 @@ export default class ErrorUtils {
     errors.push({ errorType, propertyName });
     request.session.errors = errors;
   };
+
+  public static readonly setManualErrorWithFieldToRequestSession = (
+    request: AppRequest,
+    errorType: string,
+    propertyName: string,
+    fieldName: string
+  ): void => {
+    const errors: FormError[] = [];
+    errors.push({ errorType, propertyName, fieldName });
+    request.session.errors = errors;
+  };
 }
