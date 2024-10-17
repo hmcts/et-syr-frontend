@@ -1,5 +1,5 @@
 {
-  "title": "Is the claimant’s employment with the respondent continuing?",
+  "title": "Is the claimant’s employment with the respondent continuing? (optional)",
   "hint": "It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
   "errors": {
     "et3ResponseContinuingEmployment": {
