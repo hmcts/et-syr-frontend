@@ -1,4 +1,4 @@
-import { NoAcasNumberReason, UploadedDocumentType, YesOrNo, YesOrNoOrNotSure } from '../case';
+import { NoAcasNumberReason, UploadedDocumentType, YesOrNo } from '../case';
 import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from '../links';
 
 import { DocumentTypeItem } from './documentTypeItem';
@@ -36,7 +36,7 @@ export interface RespondentType {
   responseRespondentPhone1?: string;
   responseRespondentPhone2?: string;
   responseRespondentEmail?: string;
-  responseRespondentContactPreference?: string;
+  responseRespondentContactPreference?: EmailOrPost;
   responseReceived?: YesOrNo;
   responseReceivedDate?: string;
   responseReceivedCount?: string;
@@ -62,7 +62,7 @@ export interface RespondentType {
   et3ResponseHearingRepresentative?: string[];
   et3ResponseHearingRespondent?: string[];
   et3ResponseEmploymentCount?: string;
-  et3ResponseMultipleSites?: YesOrNo;
+  et3ResponseMultipleSites?: YesOrNoOrNotSure;
   et3ResponseSiteEmploymentCount?: string;
   et3ResponseAcasAgree?: YesOrNo;
   et3ResponseAcasAgreeReason?: string;

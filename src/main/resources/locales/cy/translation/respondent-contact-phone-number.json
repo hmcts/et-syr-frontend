@@ -3,7 +3,7 @@
   "h1": "[W]What is your contact phone number? (optional)",
   "respondentContactPhoneNumber": "[W]Where we can contact you during the day. For international numbers include the country code.",
   "errors": {
-    "respondentContactPhoneNumber": {
+    "responseRespondentPhone1": {
       "invalidPhoneNumber": "[W][If Telephone Number contains alpha- numeric chars] Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192"
     }
   }

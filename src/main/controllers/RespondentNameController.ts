@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNo } from '../definitions/case';
+import { CaseWithId, YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields, FormInput } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
@@ -59,13 +59,19 @@ export default class RespondentNameController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    const fieldsToReset: string[] = [];
+    if (YesOrNo.NO !== formData.responseRespondentNameQuestion) {
+      fieldsToReset.push(formData.responseRespondentName);
+    }
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.ContactDetails,
       LinkStatus.IN_PROGRESS,
-      PageUrls.TYPE_OF_ORGANISATION
+      PageUrls.TYPE_OF_ORGANISATION,
+      fieldsToReset
     );
   };
 

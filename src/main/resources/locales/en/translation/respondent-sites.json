@@ -3,7 +3,7 @@
   "h1": "Does the respondent have more than one site in Great Britain?",
   "hint": "It can help the tribunal to have an indication of the employer’s size.",
   "errors": {
-    "respondentSites": {
+    "et3ResponseMultipleSites": {
       "required": "Make a selection"
     }
   }

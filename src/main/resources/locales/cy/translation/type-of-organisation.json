@@ -9,10 +9,10 @@
   "individualTextLabel": "[W]Preferred title (optional)",
   "limitedCompanyTextLabel": "[W]Company registration number (optional)",
   "errors": {
-    "typeOfOrg": {
+    "et3ResponseRespondentEmployerType": {
       "required": "[W]Select an organisation type"
     },
-    "typeOfOrgCRNDetail": {
+    "et3ResponseRespondentCompanyNumber": {
       "invalidCompanyRegistrationNumber": "[W]Enter a valid Company Registration number"
     }
   }

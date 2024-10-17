@@ -4,23 +4,21 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
+import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLogger } from '../logger';
+import ET3Util from '../utils/ET3Util';
 import { isNameValid } from '../validators/validator';
-
-const logger = getLogger('RespondentPreferredContactNameController');
 
 export default class RespondentPreferredContactNameController {
   private readonly form: Form;
   private readonly respondentPreferredContactNameContent: FormContent = {
     fields: {
-      respondentPreferredContactName: {
-        id: 'respondentPreferredContactName',
-        name: 'respondentPreferredContactName',
+      et3ResponseRespondentContactName: {
+        id: 'et3ResponseRespondentContactName',
+        name: 'et3ResponseRespondentContactName',
         type: 'text',
         hint: (l: AnyRecord): string => l.respondentPreferredContactName,
         classes: 'govuk-text',
@@ -37,18 +35,23 @@ export default class RespondentPreferredContactNameController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.RESPONDENT_DX_ADDRESS);
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.ContactDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.RESPONDENT_DX_ADDRESS
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME);
-
     const content = getPageContent(req, this.respondentPreferredContactNameContent, [
       TranslationKeys.COMMON,
       TranslationKeys.RESPONDENT_PREFERRED_CONTACT_NAME,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.RESPONDENT_PREFERRED_CONTACT_NAME, {
       ...content,
       redirectUrl,

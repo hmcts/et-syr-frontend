@@ -12,13 +12,13 @@
   "postHintText": "[W]Explain why you have selected post.",
   "tribunalContactYouQuestion": "[W]Which language should the tribunal use to contact you?",
   "errors": {
-    "respondentContactPreference": {
+    "responseRespondentContactPreference": {
       "required": "[W]Select a contact method"
     },
     "respondentLanguagePreference": {
       "required": "[W]Select language"
     },
-    "respondentContactPreferenceDetail": {
+    "responseRespondentLanguagePreference": {
       "required": "[W]Explain why you selected post"
     }
   }

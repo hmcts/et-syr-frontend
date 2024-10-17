@@ -3,7 +3,11 @@ import { InterceptPaths, PageUrls } from '../../definitions/constants';
 import { SummaryListRow, addSummaryRow, createChangeAction } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 
-export const getContactPreferencesDetails = (userCase: CaseWithId, translations: AnyRecord): SummaryListRow[] => {
+export const getContactPreferencesDetails = (
+  userCase: CaseWithId,
+  email: string,
+  translations: AnyRecord
+): SummaryListRow[] => {
   const rows: SummaryListRow[] = [];
 
   rows.push(
@@ -18,7 +22,7 @@ export const getContactPreferencesDetails = (userCase: CaseWithId, translations:
     ),
     addSummaryRow(
       translations.dxAddress,
-      '',
+      userCase.et3ResponseDXAddress,
       createChangeAction(
         PageUrls.RESPONDENT_DX_ADDRESS + InterceptPaths.ANSWERS_CHANGE,
         translations.change,
@@ -27,14 +31,14 @@ export const getContactPreferencesDetails = (userCase: CaseWithId, translations:
     ),
     addSummaryRow(
       translations.contactPhoneNumber,
-      '',
+      userCase.responseRespondentPhone1,
       createChangeAction(
         PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER + InterceptPaths.ANSWERS_CHANGE,
         translations.change,
         translations.contactPhoneNumber
       )
     ),
-    addSummaryRow(translations.emailAddress, '')
+    addSummaryRow(translations.emailAddress, email)
   );
 
   return rows;
