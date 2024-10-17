@@ -20,7 +20,7 @@ export const isEndDateBeforeStartDate = (req: AppRequest): boolean => {
     year: req.body['et3ResponseEmploymentEndDate-year'],
   };
 
-  if (isDateEmpty(startDate) && isDateEmpty(endDate)) {
+  if (isDateEmpty(startDate) || isDateEmpty(endDate)) {
     return false;
   }
 

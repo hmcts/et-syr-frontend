@@ -31,8 +31,8 @@ describe('Claimant employment dates enter Controller', () => {
   });
 
   describe('POST method', () => {
-    it('should redirect to the next page when input empty', async () => {
-      request = mockRequest({
+    it.each([
+      {
         body: {
           'et3ResponseEmploymentStartDate-day': '',
           'et3ResponseEmploymentStartDate-month': '',
@@ -41,7 +41,39 @@ describe('Claimant employment dates enter Controller', () => {
           'et3ResponseEmploymentEndDate-month': '',
           'et3ResponseEmploymentEndDate-year': '',
         },
-      });
+      },
+      {
+        body: {
+          'et3ResponseEmploymentStartDate-day': '1',
+          'et3ResponseEmploymentStartDate-month': '1',
+          'et3ResponseEmploymentStartDate-year': '2024',
+          'et3ResponseEmploymentEndDate-day': '',
+          'et3ResponseEmploymentEndDate-month': '',
+          'et3ResponseEmploymentEndDate-year': '',
+        },
+      },
+      {
+        body: {
+          'et3ResponseEmploymentStartDate-day': '',
+          'et3ResponseEmploymentStartDate-month': '',
+          'et3ResponseEmploymentStartDate-year': '',
+          'et3ResponseEmploymentEndDate-day': '2',
+          'et3ResponseEmploymentEndDate-month': '2',
+          'et3ResponseEmploymentEndDate-year': '2024',
+        },
+      },
+      {
+        body: {
+          'et3ResponseEmploymentStartDate-day': '1',
+          'et3ResponseEmploymentStartDate-month': '1',
+          'et3ResponseEmploymentStartDate-year': '2024',
+          'et3ResponseEmploymentEndDate-day': '2',
+          'et3ResponseEmploymentEndDate-month': '2',
+          'et3ResponseEmploymentEndDate-year': '2024',
+        },
+      },
+    ])('should redirect to the next page when input valid', async ({ body }) => {
+      request = mockRequest({ body });
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
