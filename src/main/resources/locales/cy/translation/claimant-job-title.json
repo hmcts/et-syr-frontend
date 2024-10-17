@@ -9,9 +9,6 @@
     "label": "[W]What is or was the claimant’s correct job title? (optional)"
   },
   "errors": {
-    "et3ResponseIsJobTitleCorrect": {
-      "required": "[W]Make a selection"
-    },
     "et3ResponseCorrectJobTitle": {
       "tooLong": "[W]The job title entered must be less than 100 characters"
     }

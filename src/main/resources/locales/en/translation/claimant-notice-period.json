@@ -4,18 +4,15 @@
   "tableHeader": "Notice period details provided in ET1",
   "writtenContractLabel": "Written contract with a notice period?",
   "noticePeriodLabel": "Notice period",
-  "areClaimantNoticePeriodDetailsCorrect": {
+  "et3ResponseIsNoticeCorrect": {
     "label": "Are the claimant’s notice period details correct?"
   },
-  "whatAreClaimantCorrectNoticeDetails": {
+  "et3ResponseCorrectNoticeDetails": {
     "label": "What are the claimant’s correct notice details? (optional)",
     "hint": "For example, you may wish to clarify that the claimant was dismissed without notice or paid them a sum in lieu of notice."
   },
   "errors": {
-    "areClaimantNoticePeriodDetailsCorrect": {
-      "required": "Make a selection"
-    },
-    "whatAreClaimantCorrectNoticeDetails": {
+    "et3ResponseCorrectNoticeDetails": {
       "tooLong": "The claimant notice period entered must be less than 2500 characters"
     }
   }
