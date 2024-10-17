@@ -20,7 +20,9 @@
       "required": "Please confirm case assignment."
     },
     "hiddenErrorField": {
-      "api": "Unable to assign role. Please check your name recorded in the system"
+      "api": "Unable to assign role. Please try again later",
+      "caseAlreadyAssignedToSameUser": "You have already assigned to this case",
+      "caseAlreadyAssigned": "Case has already assigned to a respondent"
     }
   }
 }

@@ -1,4 +1,4 @@
-import { NoAcasNumberReason, UploadedDocumentType, YesOrNo } from '../case';
+import { NoAcasNumberReason, UploadedDocumentType, YesOrNo, YesOrNoOrNotSure } from '../case';
 import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from '../links';
 
 import { DocumentTypeItem } from './documentTypeItem';

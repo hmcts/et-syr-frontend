@@ -73,7 +73,7 @@ describe('Case Service Tests', () => {
           ServiceErrors.ERROR_UPDATING_HUB_LINKS_STATUSES +
             ServiceErrors.ERROR_CASE_NOT_FOUND +
             ', ' +
-            ServiceErrors.ERROR_DUMMY_DATA
+            ServiceErrors.ERROR_CASE_NOT_FOUND
         )
       );
     });
