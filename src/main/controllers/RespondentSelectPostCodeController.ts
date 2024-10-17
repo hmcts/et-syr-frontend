@@ -27,8 +27,6 @@ import ErrorUtils from '../utils/ErrorUtils';
 import StringUtils from '../utils/StringUtils';
 import { isOptionSelected } from '../validators/validator';
 
-const logger = getLogger('RespondentSelectPostCodeController');
-
 export default class RespondentSelectPostCodeController {
   private readonly form: Form;
   private readonly respondentSelectPostCodeContent: FormContent = {

@@ -5,21 +5,19 @@ import { AppRequest } from '../definitions/appRequest';
 import { YesOrNoOrNotSure } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
+import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLogger } from '../logger';
+import ET3Util from '../utils/ET3Util';
 import { isOptionSelected } from '../validators/validator';
-
-const logger = getLogger('RespondentSitesController');
 
 export default class RespondentSitesController {
   private readonly form: Form;
   private readonly respondentSites: FormContent = {
     fields: {
-      respondentSites: {
+      et3ResponseMultipleSites: {
         classes: 'govuk-radios',
         id: 'respondentSites',
         type: 'radios',
@@ -54,7 +52,14 @@ export default class RespondentSitesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.RESPONDENT_SITE_EMPLOYEES);
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.EmployerDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.RESPONDENT_SITE_EMPLOYEES
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -64,7 +69,6 @@ export default class RespondentSitesController {
       TranslationKeys.RESPONDENT_SITES,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.RESPONDENT_SITES, {
       ...content,
       redirectUrl,

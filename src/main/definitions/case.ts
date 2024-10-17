@@ -141,7 +141,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponseHearingRepresentative?: string[];
   et3ResponseHearingRespondent?: string[];
   et3ResponseEmploymentCount?: string;
-  et3ResponseMultipleSites?: YesOrNo;
+  et3ResponseMultipleSites?: YesOrNoOrNotSure;
   et3ResponseSiteEmploymentCount?: string;
   et3ResponseEmployerClaim?: YesOrNo;
   et3ResponseEmployerClaimDetails?: string;
@@ -178,7 +178,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   claimDetailsSection?: string;
   respondentEnterPostcode?: string;
   responseRespondentEmail?: string;
-  responseRespondentContactPreference?: string;
+  responseRespondentContactPreference?: EmailOrPost;
   responseReceivedDate?: string;
   responseReceivedCount?: string;
   responseRespondentNameQuestion?: YesOrNo;

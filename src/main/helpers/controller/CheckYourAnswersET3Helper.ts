@@ -9,67 +9,67 @@ export const getEt3Section1 = (userCase: CaseWithId, translations: AnyRecord): S
   et3ResponseSection1.push(
     addSummaryRowWithAction(
       translations.section1.respondentName,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated
+      userCase.responseRespondentName,
       PageUrls.RESPONDENT_NAME,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.organisationType,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated
+      userCase.et3ResponseRespondentEmployerType,
       PageUrls.TYPE_OF_ORGANISATION,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.preferredTitleOptional,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated
+      userCase.et3ResponseRespondentPreferredTitle,
       PageUrls.TYPE_OF_ORGANISATION,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.companyRegistrationNumberOptional,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated
+      userCase.et3ResponseRespondentCompanyNumber,
       PageUrls.TYPE_OF_ORGANISATION,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.address,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated
+      translations.section1.exampleData, // todo: this is the data field that needs to be populated with address
       PageUrls.RESPONDENT_ADDRESS,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.contactName,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated
+      userCase.et3ResponseRespondentContactName,
       PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.dxAddressOptional,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated
+      userCase.et3ResponseDXAddress,
       PageUrls.RESPONDENT_DX_ADDRESS,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.contactNumberOptional,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated
+      userCase.responseRespondentPhone1,
       PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.contactFormat,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated
+      userCase.responseRespondentContactPreference,
       PageUrls.RESPONDENT_CONTACT_PREFERENCES,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.reasonForPost,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated
+      userCase.respondentContactPreference,
       PageUrls.RESPONDENT_CONTACT_PREFERENCES,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.contactLanguage,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated
+      translations.section1.exampleData, // todo: this is the data field that needs to be populated with responseRespondentLanguagePreference
       PageUrls.RESPONDENT_CONTACT_PREFERENCES,
       translations.change
     )
@@ -84,43 +84,43 @@ export const getEt3Section2 = (userCase: CaseWithId, translations: AnyRecord): S
   et3ResponseSection2.push(
     addSummaryRowWithAction(
       translations.section2.participateInHearings,
-      translations.section2.exampleData, // todo: populate with the correct field from userCase
+      translations.section2.exampleData, // todo: populate with the correct field from userCase with hearing preferences
       PageUrls.HEARING_PREFERENCES,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section2.explainReason,
-      translations.section2.exampleData, // todo: populate with the correct field from userCase
+      translations.section2.exampleData, // todo: populate with the correct field from userCase with hearing preference detail
       PageUrls.HEARING_PREFERENCES,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section2.disabilitySupport,
-      translations.section2.exampleData, // todo: populate with the correct field from userCase
+      translations.section2.exampleData, // todo: populate with the correct field for reasonableAdjustment
       PageUrls.REASONABLE_ADJUSTMENTS,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section2.supportRequest,
-      translations.section2.exampleData, // todo: populate with the correct field from userCase
+      translations.section2.exampleData, // todo: populate with the correct field for reasonableAdjustmentDetail
       PageUrls.REASONABLE_ADJUSTMENTS,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section2.employeesInGreatBritain,
-      translations.section2.exampleData, // todo: populate with the correct field from userCase
+      userCase.et3ResponseEmploymentCount,
       PageUrls.RESPONDENT_EMPLOYEES,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section2.multipleSites,
-      translations.section2.exampleData, // todo: populate with the correct field from userCase
+      userCase.et3ResponseMultipleSites,
       PageUrls.RESPONDENT_SITES,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section2.employeesAtSite,
-      translations.section2.exampleData, // todo: populate with the correct field from userCase
+      userCase.et3ResponseSiteEmploymentCount,
       PageUrls.RESPONDENT_SITE_EMPLOYEES,
       translations.change
     )

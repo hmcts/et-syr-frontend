@@ -5,6 +5,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, YesOrNo } from '../definitions/case';
 import { FormFieldNames, LoggerConstants, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
@@ -14,26 +15,24 @@ import { getLogger } from '../logger';
 import ErrorUtils from '../utils/ErrorUtils';
 import { isOptionSelected } from '../validators/validator';
 
-const logger = getLogger('RespondentAddressController');
-
 export default class RespondentAddressController {
   form: Form;
   private readonly respondentAddressContent: FormContent = {
     fields: {
-      respondentAddress: {
+      respondentAddressQuestion: {
         classes: 'govuk-radios--inline',
-        id: 'respondentAddress',
+        id: 'respondentAddressQuestion',
         type: 'radios',
         label: (l: AnyRecord): string => l.correctAddressQuestion,
         labelHidden: false,
         values: [
           {
-            name: 'respondentAddress',
+            name: 'respondentAddressQuestionYes',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNo.YES,
           },
           {
-            name: 'respondentAddress',
+            name: 'respondentAddressQuestionNo',
             label: (l: AnyRecord): string => l.no,
             value: YesOrNo.NO,
           },
@@ -88,16 +87,29 @@ export default class RespondentAddressController {
 
   public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ADDRESS);
+    const userCase = req.session.userCase;
 
     const content = getPageContent(req, this.respondentAddressContent, [
       TranslationKeys.COMMON,
       TranslationKeys.RESPONDENT_ADDRESS,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
+
+    const respondentAddress = answersAddressFormatter(
+      userCase.workAddressLine1,
+      userCase.workAddressLine2,
+      userCase.workAddressLine3,
+      userCase.workAddressTown,
+      userCase.workAddressCounty,
+      userCase.workAddressCountry,
+      userCase.workAddressPostcode
+    );
+
     assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.RESPONDENT_ADDRESS, {
       ...content,
       redirectUrl,
+      respondentAddress,
       hideContactUs: true,
     });
   };
