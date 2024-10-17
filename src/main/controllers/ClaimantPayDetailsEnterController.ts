@@ -58,7 +58,7 @@ export default class ClaimantPayDetailsEnterController {
       },
       furtherInfoAboutClaimantPayDetails: {
         type: 'textarea',
-        id: 'et3ResponseAcasAgreeReason',
+        id: 'furtherInfoAboutClaimantPayDetails',
         label: (l: AnyRecord): string => l.furtherInfoAboutClaimantPayDetails.label,
         attributes: {
           maxLength: 2500,

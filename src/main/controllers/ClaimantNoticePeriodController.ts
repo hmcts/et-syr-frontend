@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNoOrNotSure } from '../definitions/case';
+import { CaseWithId, YesOrNoOrNotSure } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
@@ -54,13 +54,19 @@ export default class ClaimantNoticePeriodController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    const fieldsToReset: string[] = [];
+    if (YesOrNoOrNotSure.NO !== formData.et3ResponseIsNoticeCorrect) {
+      fieldsToReset.push(formData.et3ResponseCorrectNoticeDetails);
+    }
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.PayPensionBenefitDetails,
       LinkStatus.IN_PROGRESS,
-      PageUrls.CLAIMANT_PENSION_AND_BENEFITS
+      PageUrls.CLAIMANT_PENSION_AND_BENEFITS,
+      fieldsToReset
     );
   };
 
