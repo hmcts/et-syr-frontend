@@ -37,7 +37,7 @@ export default class SelfAssignmentCheckController {
       },
     },
     submit: {
-      text: (l: AnyRecord): string => l.continue,
+      text: (l: AnyRecord): string => l.submit,
     },
   } as never;
 
