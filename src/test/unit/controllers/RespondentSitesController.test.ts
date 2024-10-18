@@ -26,7 +26,6 @@ describe('RespondentSitesController', () => {
     translationMock = {
       yes: 'Yes',
       no: 'No',
-      notSure: 'Not sure',
       hint: 'Does the respondent operate on multiple sites?',
     };
   });
@@ -43,7 +42,6 @@ describe('RespondentSitesController', () => {
       // Test the radio button options and labels
       expect(form.fields.et3ResponseMultipleSites.values[0].label(translationMock)).toBe('Yes');
       expect(form.fields.et3ResponseMultipleSites.values[1].label(translationMock)).toBe('No');
-      expect(form.fields.et3ResponseMultipleSites.values[2].label(translationMock)).toBe('Not sure');
       expect(form.fields.et3ResponseMultipleSites.hint(translationMock)).toBe(
         'Does the respondent operate on multiple sites?'
       );
@@ -95,10 +93,10 @@ describe('RespondentSitesController', () => {
       );
     });
 
-    it('should redirect to the next page when "not sure" is selected', async () => {
+    it('should redirect to the next page when nothing is selected - optional field', async () => {
       request = mockRequest({
         body: {
-          et3ResponseMultipleSites: YesOrNoOrNotApplicable.NOT_APPLICABLE,
+          et3ResponseMultipleSites: '',
         },
       });
       request.url = PageUrls.RESPONDENT_SITES;

@@ -41,9 +41,9 @@ describe('Acas early conciliation certificate page', () => {
     expect(title[0].innerHTML).contains(expectedTitle, 'Page title does not exist');
   });
 
-  it('should display 4 input fields', () => {
+  it('should display 3 input fields', () => {
     const radioButtons = htmlRes.getElementsByClassName(radioClass);
-    expect(radioButtons.length).equal(4, `only ${radioButtons.length} found`);
+    expect(radioButtons.length).equal(3, `only ${radioButtons.length} found`);
   });
 
   it('should display inputs with valid labels', () => {

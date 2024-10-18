@@ -19,8 +19,8 @@ describe('getContactPreferencesDetails', () => {
       lastModified: '',
       state: undefined,
       id: '1',
-      address1: '123 Test St',
-      addressPostcode: 'AB12 3CD',
+      responseRespondentAddressLine1: '123 Test St',
+      responseRespondentAddressPostCode: 'AB12 3CD',
       et3ResponseDXAddress: '123 DX',
       responseRespondentPhone1: '0123456789',
     };

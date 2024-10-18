@@ -11,7 +11,6 @@ import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import ET3Util from '../utils/ET3Util';
-import { isOptionSelected } from '../validators/validator';
 
 export default class RespondentSitesController {
   private readonly form: Form;
@@ -35,7 +34,6 @@ export default class RespondentSitesController {
             value: YesOrNoOrNotApplicable.NO,
           },
         ],
-        validator: isOptionSelected,
       },
     },
     submit: submitButton,

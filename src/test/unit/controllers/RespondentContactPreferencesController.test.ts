@@ -36,7 +36,7 @@ describe('Respondent Contact Preferences Controller', () => {
       request = mockRequest({
         body: {
           responseRespondentContactPreference: EmailOrPost.POST,
-          responseRespondentLanguagePreference: EnglishOrWelsh.ENGLISH,
+          et3ResponseLanguagePreference: EnglishOrWelsh.ENGLISH,
         },
       });
       request.url = PageUrls.RESPONDENT_CONTACT_PREFERENCES;
@@ -49,7 +49,7 @@ describe('Respondent Contact Preferences Controller', () => {
       request = mockRequest({
         body: {
           responseRespondentContactPreference: '',
-          responseRespondentLanguagePreference: EnglishOrWelsh.ENGLISH,
+          et3ResponseLanguagePreference: EnglishOrWelsh.ENGLISH,
         },
       });
       request.url = PageUrls.RESPONDENT_CONTACT_PREFERENCES;
@@ -64,14 +64,14 @@ describe('Respondent Contact Preferences Controller', () => {
       request = mockRequest({
         body: {
           responseRespondentContactPreference: EmailOrPost.POST,
-          responseRespondentLanguagePreference: '',
+          et3ResponseLanguagePreference: '',
         },
       });
       request.url = PageUrls.RESPONDENT_CONTACT_PREFERENCES;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTACT_PREFERENCES);
-      const errors = [{ propertyName: 'responseRespondentLanguagePreference', errorType: 'required' }];
+      const errors = [{ propertyName: 'et3ResponseLanguagePreference', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
   });
