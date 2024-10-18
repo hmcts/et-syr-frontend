@@ -10,7 +10,7 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import ET3Util from '../utils/ET3Util';
-import { isContent100CharsOrLess, isOptionSelected } from '../validators/validator';
+import { isContent100CharsOrLess } from '../validators/validator';
 
 export default class ClaimantJobTitleController {
   private readonly form: Form;
@@ -42,7 +42,6 @@ export default class ClaimantJobTitleController {
             value: YesOrNoOrNotSure.NOT_SURE,
           },
         ],
-        validator: isOptionSelected,
       },
     },
     submit: submitButton,

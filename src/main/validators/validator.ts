@@ -173,19 +173,6 @@ export const isValidCurrency: Validator = value => {
   return ValidationErrors.INVALID_CURRENCY;
 };
 
-export const isValidPay: Validator = value => {
-  if (!value) {
-    return;
-  }
-  const validatedValues: [digitCount: number, correctFormat: boolean] = currencyValidation(value);
-  if (!validatedValues[1]) {
-    return ValidationErrors.NOT_A_NUMBER;
-  }
-  if (validatedValues[0] < 2 || validatedValues[0] > 12) {
-    return ValidationErrors.MIN_LENGTH_REQUIRED;
-  }
-};
-
 export const currencyValidation = (value: string | string[]): [digitCount: number, correctFormat: boolean] => {
   value = (value as string).trim();
   const digitCount = value.replace(/\D/g, '').length;

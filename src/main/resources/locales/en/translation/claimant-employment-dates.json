@@ -1,5 +1,5 @@
 {
-  "title": "Claimant employment dates",
+  "title": "Claimant employment dates (optional)",
   "startDateLabel": "Start date provided on ET1",
   "endDateLabel": "End date provided on ET1",
   "et3ResponseAreDatesCorrect": {
