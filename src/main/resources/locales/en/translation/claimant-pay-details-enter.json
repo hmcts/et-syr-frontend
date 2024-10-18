@@ -12,8 +12,5 @@
   "et3ResponsePayTakehome": {
     "label": "Enter the claimant’s normal take-home pay (optional)",
     "hintLabel": "Take-home pay is the pay after tax and insurance deductions.<br><br>Include overtime, commission and bonuses."
-  },
-  "furtherInfoAboutClaimantPayDetails": {
-    "label": "Do you want to provide any further information about the claimant's pay details? (optional)"
   }
 }

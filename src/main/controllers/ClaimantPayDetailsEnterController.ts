@@ -56,14 +56,6 @@ export default class ClaimantPayDetailsEnterController {
           maxLength: 16,
         },
       },
-      furtherInfoAboutClaimantPayDetails: {
-        type: 'textarea',
-        id: 'furtherInfoAboutClaimantPayDetails',
-        label: (l: AnyRecord): string => l.furtherInfoAboutClaimantPayDetails.label,
-        attributes: {
-          maxLength: 2500,
-        },
-      },
     },
     submit: submitButton,
     saveForLater: saveForLaterButton,
