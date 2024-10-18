@@ -2,7 +2,7 @@
   "title": "Claimant pay details",
   "p1": "It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
   "et3ResponsePayFrequency": {
-    "label": "How often was the claimant paid?",
+    "label": "How often was the claimant paid? (optional)",
     "hintLabel": "Use the same time period (weekly, monthly or annual) that the claimant used on the ET1 form."
   },
   "et3ResponsePayBeforeTax": {

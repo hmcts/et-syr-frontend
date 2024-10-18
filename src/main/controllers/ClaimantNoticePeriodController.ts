@@ -78,8 +78,6 @@ export default class ClaimantNoticePeriodController {
     ]);
     res.render(TranslationKeys.CLAIMANT_NOTICE_PERIOD, {
       ...content,
-      writtenContract: '[entry]', // TODO: Update value
-      noticePeriod: '[Notice period digit] [Weeks / Months]', // TODO: Update value
       hideContactUs: true,
     });
   };

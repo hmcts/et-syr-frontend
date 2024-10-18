@@ -67,9 +67,6 @@ export default class ClaimantPayDetailsController {
     ]);
     res.render(TranslationKeys.CLAIMANT_PAY_DETAILS, {
       ...content,
-      periodPay: '[Weekly / Monthly / Annual / Not provided]', // TODO: Update value
-      payBeforeTax: '[Pay BEFORE tax and National Insurance / Not provided]', // TODO: Update value
-      payAfterTax: '[Pay AFTER tax and National Insurance / Not provided]', // TODO: Update value
       hideContactUs: true,
     });
   };
