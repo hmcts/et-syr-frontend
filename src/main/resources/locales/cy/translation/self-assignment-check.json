@@ -1,20 +1,21 @@
 {
-  "title": "Self Assignment - Check",
-  "pageTitle": "Self Assignment",
-  "respondentSelfAssignmentInfo": "You must enter the claimant and respondent details exactly as they're written on the case, including any mistakes. For example, if the client's last name is Smyth but it has been spelled 'Smith', you should enter Smith.",
-  "respondentName": "Respondent Name",
-  "claimantFirstName": "Claimant First Name",
-  "claimantLastName": "Claimant Last Name",
+  "title": "[W]Check and submit",
+  "pageTitle": "[W]Check and submit",
+  "respondentSelfAssignmentInfo": "[W]You must enter the claimant and respondent details exactly as they're written on the case, including any mistakes. For example, if the client's last name is Smyth but it has been spelled 'Smith', you should enter Smith.",
+  "respondentName": "[W]Respondent's Name",
+  "claimantFirstName": "[W]Claimant's First Name",
+  "claimantLastName": "[W]Claimant's Last Name",
   "confirmation": {
-    "title": "I confirm all these details are accurate and match what is written on the case.",
-    "checkbox": "I confirm all these details are accurate and match what is written on the case.",
-    "hint": ""
+    "title": "[W]I confirm all these details are accurate and match what is written on the case.",
+    "checkbox": "[W]",
+    "hint": "[W]"
   },
-  "request": "Request",
-  "caseNumber": "Case Number",
-  "caseAssignment": "Case assignment",
-  "tick": "You should tick to 'sign' when:",
-  "satisfied": "You're satisfied that all these details are accurate and match what is written on the case",
+  "request": "[W]Request",
+  "submit": "[W]Submit",
+  "caseNumber": "[W]Case Number",
+  "caseAssignment": "[W]Case assignment",
+  "tick": "[W]You should tick to 'sign' when:",
+  "satisfied": "[W]You're satisfied that all these details are accurate and match what is written on the case",
   "errors": {
     "selfAssignmentCheck": {
       "required": "Please confirm case assignment."

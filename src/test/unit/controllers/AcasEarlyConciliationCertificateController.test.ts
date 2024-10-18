@@ -35,7 +35,19 @@ describe('Acas early conciliation certificate Controller', () => {
   });
 
   describe('POST method', () => {
-    it('should redirect to next page when no is selected', async () => {
+    it('should redirect to next page when Yes is selected', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseAcasAgree: YesOrNo.YES,
+        },
+      });
+      request.url = PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_EMPLOYMENT_DATES);
+    });
+
+    it('should redirect to next page when No is selected', async () => {
       request = mockRequest({
         body: {
           et3ResponseAcasAgree: YesOrNo.NO,
@@ -47,22 +59,10 @@ describe('Acas early conciliation certificate Controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_EMPLOYMENT_DATES);
     });
 
-    it('should redirect to next page when yes is selected', async () => {
+    it('should redirect to next page when No is selected and textarea filled', async () => {
       request = mockRequest({
         body: {
-          et3ResponseAcasAgree: YesOrNo.YES,
-        },
-      });
-      request.url = PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE;
-      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
-      await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_EMPLOYMENT_DATES);
-    });
-
-    it('should redirect to next page when yes is selected and textarea filled', async () => {
-      request = mockRequest({
-        body: {
-          et3ResponseAcasAgree: YesOrNo.YES,
+          et3ResponseAcasAgree: YesOrNo.NO,
           et3ResponseAcasAgreeReason: 'Test',
         },
       });
@@ -72,20 +72,18 @@ describe('Acas early conciliation certificate Controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_EMPLOYMENT_DATES);
     });
 
-    it('should render the same page when nothing is selected', async () => {
+    it('should redirect to next page when nothing is selected', async () => {
       request = mockRequest({ body: {} });
       request.url = PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE);
-      const errors = [{ propertyName: 'et3ResponseAcasAgree', errorType: 'required' }];
-      expect(request.session.errors).toEqual(errors);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_EMPLOYMENT_DATES);
     });
 
     it('should render the same page when No is selected but summary text exceeds 2500 characters', async () => {
       request = mockRequest({
         body: {
-          et3ResponseAcasAgree: YesOrNo.YES,
+          et3ResponseAcasAgree: YesOrNo.NO,
           et3ResponseAcasAgreeReason: '1'.repeat(2501),
         },
       });

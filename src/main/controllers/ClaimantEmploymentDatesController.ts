@@ -10,7 +10,6 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import ET3Util from '../utils/ET3Util';
-import { isOptionSelected } from '../validators/validator';
 
 export default class ClaimantEmploymentDatesController {
   private readonly form: Form;
@@ -35,7 +34,6 @@ export default class ClaimantEmploymentDatesController {
             hint: (l: AnyRecord): string => l.et3ResponseAreDatesCorrect.notSure.hint,
           },
         ],
-        validator: isOptionSelected,
       },
     },
     submit: submitButton,

@@ -38,7 +38,8 @@
       "monthInvalid": "[W]Enter a date in the correct format",
       "yearInvalid": "[W]Enter a date in the correct format",
       "invalidDateTooFarInPast": "[W]Enter a date in the correct format",
-      "invalidDate": "[W]Enter a date in the correct format"
+      "invalidDate": "[W]Enter a date in the correct format",
+      "invalidEndDateBeforeStartDate": "[W]This date must be later than the start date"
     }
   }
 }

@@ -38,7 +38,8 @@
       "monthInvalid": "Enter a date in the correct format",
       "yearInvalid": "Enter a date in the correct format",
       "invalidDateTooFarInPast": "Enter a date in the correct format",
-      "invalidDate": "Enter a date in the correct format"
+      "invalidDate": "Enter a date in the correct format",
+      "invalidEndDateBeforeStartDate": "This date must be later than the start date"
     }
   }
 }
