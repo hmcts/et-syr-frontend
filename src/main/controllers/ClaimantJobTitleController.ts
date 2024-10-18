@@ -9,6 +9,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
+import { isClearSelection } from '../helpers/RouterHelpers';
 import ET3Util from '../utils/ET3Util';
 import { isContent100CharsOrLess, isOptionSelected } from '../validators/validator';
 
@@ -44,6 +45,10 @@ export default class ClaimantJobTitleController {
         ],
         validator: isOptionSelected,
       },
+      clearSelection: {
+        type: 'clearSelection',
+        targetUrl: PageUrls.CLAIMANT_JOB_TITLE,
+      },
     },
     submit: submitButton,
     saveForLater: saveForLaterButton,
@@ -71,6 +76,9 @@ export default class ClaimantJobTitleController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    if (isClearSelection(req)) {
+      req.session.userCase.et3ResponseIsJobTitleCorrect = undefined;
+    }
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.CLAIMANT_JOB_TITLE,
