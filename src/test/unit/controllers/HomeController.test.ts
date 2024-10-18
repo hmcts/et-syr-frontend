@@ -15,7 +15,7 @@ describe('Home controller', () => {
   it('should render the introduction (home) page', () => {
     const response = mockResponse();
     const request = mockRequest({ t });
-    const redirectUrl = setUrlLanguage(request, PageUrls.INTERRUPTION_CARD);
+    const redirectUrl = setUrlLanguage(request, PageUrls.CHECKLIST);
     homeController.get(request, response);
 
     expect(response.render).toHaveBeenCalledWith('home', {
