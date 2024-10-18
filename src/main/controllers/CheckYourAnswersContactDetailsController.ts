@@ -42,7 +42,7 @@ export default class CheckYourAnswersContactDetailsController {
     },
     submit: submitButton,
     saveForLater: saveForLaterButton,
-  } as never;
+  };
 
   constructor() {
     this.form = new Form(<FormFields>this.formContent.fields);

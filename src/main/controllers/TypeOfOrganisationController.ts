@@ -87,10 +87,10 @@ export default class TypeOfOrganisationController {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const fieldsToReset: string[] = [];
     if (TypeOfOrganisation.INDIVIDUAL !== formData.et3ResponseRespondentEmployerType) {
-      fieldsToReset.push(formData.et3ResponseRespondentPreferredTitle);
+      fieldsToReset.push('et3ResponseRespondentPreferredTitle');
     }
     if (TypeOfOrganisation.LIMITED_COMPANY !== formData.et3ResponseRespondentEmployerType) {
-      fieldsToReset.push(formData.et3ResponseRespondentCompanyNumber);
+      fieldsToReset.push('et3ResponseRespondentCompanyNumber');
     }
     await ET3Util.updateET3ResponseWithET3Form(
       req,

@@ -10,7 +10,7 @@ import {
   StillWorking,
   WeeksOrMonths,
   YesOrNo,
-  YesOrNoOrNotSure,
+  YesOrNoOrNotApplicable,
 } from '../../../main/definitions/case';
 import {
   CaseState,
@@ -49,7 +49,7 @@ export default {
   caseTypeId: CaseTypeId.ENGLAND_WALES,
   claimantRepresentedQuestion: YesOrNo.YES,
   avgWeeklyHrs: 5,
-  claimantPensionContribution: YesOrNoOrNotSure.YES,
+  claimantPensionContribution: YesOrNoOrNotApplicable.YES,
   claimantPensionWeeklyContribution: 15,
   employeeBenefits: YesOrNo.YES,
   jobTitle: 'Developer',

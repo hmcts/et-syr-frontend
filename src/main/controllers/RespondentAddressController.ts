@@ -5,34 +5,36 @@ import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, YesOrNo } from '../definitions/case';
 import { FormFieldNames, LoggerConstants, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
-import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
+import { answersAddressFormatter } from '../helpers/AddressHelper';
+import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { conditionalRedirect } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import ErrorUtils from '../utils/ErrorUtils';
 import { isOptionSelected } from '../validators/validator';
 
+const logger = getLogger('RespondentAddressController');
+
 export default class RespondentAddressController {
   form: Form;
   private readonly respondentAddressContent: FormContent = {
     fields: {
-      respondentAddressQuestion: {
+      respondentAddress: {
         classes: 'govuk-radios--inline',
-        id: 'respondentAddressQuestion',
+        id: 'respondentAddress',
         type: 'radios',
         label: (l: AnyRecord): string => l.correctAddressQuestion,
         labelHidden: false,
         values: [
           {
-            name: 'respondentAddressQuestionYes',
+            name: 'respondentAddress',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNo.YES,
           },
           {
-            name: 'respondentAddressQuestionNo',
+            name: 'respondentAddress',
             label: (l: AnyRecord): string => l.no,
             value: YesOrNo.NO,
           },
@@ -96,16 +98,15 @@ export default class RespondentAddressController {
     ]);
 
     const respondentAddress = answersAddressFormatter(
-      userCase.workAddressLine1,
-      userCase.workAddressLine2,
-      userCase.workAddressLine3,
-      userCase.workAddressTown,
-      userCase.workAddressCounty,
-      userCase.workAddressCountry,
-      userCase.workAddressPostcode
+      userCase.respondents[0].respondentAddress.AddressLine1,
+      userCase.respondents[0].respondentAddress.AddressLine2,
+      userCase.respondents[0].respondentAddress.AddressLine3,
+      userCase.respondents[0].respondentAddress.PostTown,
+      userCase.respondents[0].respondentAddress.County,
+      userCase.respondents[0].respondentAddress.Country,
+      userCase.respondents[0].respondentAddress.PostCode
     );
 
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.RESPONDENT_ADDRESS, {
       ...content,
       redirectUrl,

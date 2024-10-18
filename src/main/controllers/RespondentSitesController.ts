@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNoOrNotSure } from '../definitions/case';
+import { YesOrNoOrNotApplicable } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
@@ -27,17 +27,12 @@ export default class RespondentSitesController {
           {
             name: 'respondentSites',
             label: (l: AnyRecord): string => l.yes,
-            value: YesOrNoOrNotSure.YES,
+            value: YesOrNoOrNotApplicable.YES,
           },
           {
             name: 'respondentSites',
             label: (l: AnyRecord): string => l.no,
-            value: YesOrNoOrNotSure.NO,
-          },
-          {
-            name: 'respondentSites',
-            label: (l: AnyRecord): string => l.notSure,
-            value: YesOrNoOrNotSure.NOT_SURE,
+            value: YesOrNoOrNotApplicable.NO,
           },
         ],
         validator: isOptionSelected,

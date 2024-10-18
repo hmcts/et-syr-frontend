@@ -1,5 +1,5 @@
 import ClaimantNoticePeriodController from '../../../main/controllers/ClaimantNoticePeriodController';
-import { YesOrNoOrNotSure } from '../../../main/definitions/case';
+import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
@@ -31,7 +31,7 @@ describe('Claimant notice period Controller', () => {
     it('should redirect to next page when yes is selected', () => {
       request = mockRequest({
         body: {
-          areClaimantNoticePeriodDetailsCorrect: YesOrNoOrNotSure.YES,
+          areClaimantNoticePeriodDetailsCorrect: YesOrNoOrNotApplicable.YES,
         },
       });
       request.url = PageUrls.CLAIMANT_NOTICE_PERIOD + languages.ENGLISH_URL_PARAMETER;
@@ -45,7 +45,7 @@ describe('Claimant notice period Controller', () => {
     it('should redirect to next page when no is selected', () => {
       request = mockRequest({
         body: {
-          areClaimantNoticePeriodDetailsCorrect: YesOrNoOrNotSure.NO,
+          areClaimantNoticePeriodDetailsCorrect: YesOrNoOrNotApplicable.NO,
           whatAreClaimantCorrectNoticeDetails: 'Test',
         },
       });
@@ -60,7 +60,7 @@ describe('Claimant notice period Controller', () => {
     it('should redirect to next page when Not Sure is selected', () => {
       request = mockRequest({
         body: {
-          areClaimantNoticePeriodDetailsCorrect: YesOrNoOrNotSure.NOT_SURE,
+          areClaimantNoticePeriodDetailsCorrect: YesOrNoOrNotApplicable.NOT_APPLICABLE,
         },
       });
       request.url = PageUrls.CLAIMANT_NOTICE_PERIOD + languages.ENGLISH_URL_PARAMETER;
@@ -85,7 +85,7 @@ describe('Claimant notice period Controller', () => {
     it('should render the same page when No is selected but summary text exceeds 2500 characters', () => {
       request = mockRequest({
         body: {
-          areClaimantNoticePeriodDetailsCorrect: YesOrNoOrNotSure.NO,
+          areClaimantNoticePeriodDetailsCorrect: YesOrNoOrNotApplicable.NO,
           whatAreClaimantCorrectNoticeDetails: '1'.repeat(2501),
         },
       });

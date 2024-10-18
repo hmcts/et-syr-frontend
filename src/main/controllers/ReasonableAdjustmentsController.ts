@@ -34,7 +34,7 @@ export default class ReasonableAdjustmentsController {
                 name: 'reasonableAdjustmentsDetail',
                 type: 'text',
                 labelSize: 'normal',
-                label: (l: AnyRecord): string => l.yesLabelText,
+                label: (l: AnyRecord): string => l.yesDetail,
                 classes: 'govuk-text',
                 validator: isFieldFilledIn,
               },

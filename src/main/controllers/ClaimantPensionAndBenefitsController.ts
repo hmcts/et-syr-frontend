@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, YesOrNoOrNotSure } from '../definitions/case';
+import { CaseWithId, YesOrNoOrNotApplicable } from '../definitions/case';
 import { ControllerNames, FieldsToReset, LoggerConstants, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
@@ -25,11 +25,11 @@ export default class ClaimantPensionAndBenefitsController {
         values: [
           {
             label: (l: AnyRecord): string => l.yes,
-            value: YesOrNoOrNotSure.YES,
+            value: YesOrNoOrNotApplicable.YES,
           },
           {
             label: (l: AnyRecord): string => l.no,
-            value: YesOrNoOrNotSure.NO,
+            value: YesOrNoOrNotApplicable.NO,
             subFields: {
               et3ResponsePensionCorrectDetails: {
                 type: 'charactercount',
@@ -42,7 +42,7 @@ export default class ClaimantPensionAndBenefitsController {
           },
           {
             label: (l: AnyRecord): string => l.notSure,
-            value: YesOrNoOrNotSure.NOT_SURE,
+            value: YesOrNoOrNotApplicable.NOT_APPLICABLE,
           },
         ],
         validator: isOptionSelected,
@@ -59,7 +59,7 @@ export default class ClaimantPensionAndBenefitsController {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const fieldsToReset: string[] = [];
-    if (YesOrNoOrNotSure.NO !== formData.et3ResponseIsPensionCorrect) {
+    if (YesOrNoOrNotApplicable.NO !== formData.et3ResponseIsPensionCorrect) {
       fieldsToReset.push(FieldsToReset.ET3_RESPONSE_PENSION_CORRECT_DETAILS);
     }
     logger.info(

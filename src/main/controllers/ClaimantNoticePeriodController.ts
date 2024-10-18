@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNoOrNotSure } from '../definitions/case';
+import { YesOrNoOrNotApplicable } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
@@ -24,11 +24,11 @@ export default class ClaimantNoticePeriodController {
         values: [
           {
             label: (l: AnyRecord): string => l.yes,
-            value: YesOrNoOrNotSure.YES,
+            value: YesOrNoOrNotApplicable.YES,
           },
           {
             label: (l: AnyRecord): string => l.no,
-            value: YesOrNoOrNotSure.NO,
+            value: YesOrNoOrNotApplicable.NO,
             subFields: {
               whatAreClaimantCorrectNoticeDetails: {
                 type: 'textarea',
@@ -42,7 +42,7 @@ export default class ClaimantNoticePeriodController {
           },
           {
             label: (l: AnyRecord): string => l.notSure,
-            value: YesOrNoOrNotSure.NOT_SURE,
+            value: YesOrNoOrNotApplicable.NOT_APPLICABLE,
           },
         ],
         validator: isOptionSelected,

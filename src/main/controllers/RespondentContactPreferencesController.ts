@@ -35,9 +35,9 @@ export default class RespondentContactPreferencesController {
             label: (l: AnyRecord): string => l.post,
             value: EmailOrPost.POST,
             subFields: {
-              respondentContactPreference: {
-                id: 'respondentContactPreference',
-                name: 'respondentContactPreference',
+              et3ResponseContactReason: {
+                id: 'et3ResponseContactReason',
+                name: 'et3ResponseContactReason',
                 type: 'text',
                 labelSize: 'normal',
                 hint: (l: AnyRecord): string => l.postHintText,
@@ -50,20 +50,20 @@ export default class RespondentContactPreferencesController {
         validator: isOptionSelected,
       },
       //need to show ONLY if user is completing WELSH form
-      responseRespondentLanguagePreference: {
+      et3ResponseLanguagePreference: {
         classes: 'govuk-radios--inline',
-        id: 'responseRespondentLanguagePreference',
+        id: 'et3ResponseLanguagePreference',
         type: 'radios',
         label: (l: AnyRecord): string => l.tribunalContactYouQuestion,
         labelHidden: false,
         values: [
           {
-            name: 'responseRespondentLanguagePreferenceEnglish',
+            name: 'et3ResponseLanguagePreferenceEnglish',
             label: (l: AnyRecord): string => l.english,
             value: EnglishOrWelsh.ENGLISH,
           },
           {
-            name: 'responseRespondentLanguagePreferenceWelsh',
+            name: 'et3ResponseLanguagePreferenceWelsh',
             label: (l: AnyRecord): string => l.cymraeg,
             value: EnglishOrWelsh.WELSH,
           },
@@ -81,10 +81,17 @@ export default class RespondentContactPreferencesController {
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    const userCase = req.session.userCase;
     const fieldsToReset: string[] = [];
     if (EmailOrPost.POST !== formData.responseRespondentContactPreference) {
-      fieldsToReset.push(formData.respondentContactPreference);
+      fieldsToReset.push('et3ResponseContactReason');
     }
+
+    //hide the language preference if it's a Scottish office
+    if (userCase.managingOffice === 'Scotland') {
+      delete this.form.getFormFields().et3ResponseLanguagePreference;
+    }
+
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,

@@ -1,5 +1,5 @@
 import ClaimantJobTitleController from '../../../main/controllers/ClaimantJobTitleController';
-import { YesOrNoOrNotSure } from '../../../main/definitions/case';
+import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
@@ -35,7 +35,7 @@ describe('Claimant job title Controller', () => {
     it('should redirect to next page when yes is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseIsJobTitleCorrect: YesOrNoOrNotSure.YES,
+          et3ResponseIsJobTitleCorrect: YesOrNoOrNotApplicable.YES,
         },
       });
       request.url = PageUrls.CLAIMANT_JOB_TITLE;
@@ -47,7 +47,7 @@ describe('Claimant job title Controller', () => {
     it('should redirect to next page when no is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseIsJobTitleCorrect: YesOrNoOrNotSure.NO,
+          et3ResponseIsJobTitleCorrect: YesOrNoOrNotApplicable.NO,
           et3ResponseCorrectJobTitle: 'Test',
         },
       });
@@ -60,7 +60,7 @@ describe('Claimant job title Controller', () => {
     it('should render the same page when No is selected but text exceeds 100 characters', async () => {
       request = mockRequest({
         body: {
-          et3ResponseIsJobTitleCorrect: YesOrNoOrNotSure.NO,
+          et3ResponseIsJobTitleCorrect: YesOrNoOrNotApplicable.NO,
           et3ResponseCorrectJobTitle: '1'.repeat(101),
         },
       });
@@ -75,7 +75,7 @@ describe('Claimant job title Controller', () => {
     it('should redirect to next page when Not Sure is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseIsJobTitleCorrect: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseIsJobTitleCorrect: YesOrNoOrNotApplicable.NOT_APPLICABLE,
         },
       });
       request.url = PageUrls.CLAIMANT_JOB_TITLE;

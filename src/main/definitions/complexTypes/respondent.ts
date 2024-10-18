@@ -1,4 +1,12 @@
-import { NoAcasNumberReason, UploadedDocumentType, YesOrNo, YesOrNoOrNotSure } from '../case';
+import {
+  EmailOrPost,
+  EnglishOrWelsh,
+  HowOften,
+  NoAcasNumberReason,
+  UploadedDocumentType,
+  YesOrNo,
+  YesOrNoOrNotApplicable,
+} from '../case';
 import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from '../links';
 
 import { DocumentTypeItem } from './documentTypeItem';
@@ -59,29 +67,30 @@ export interface RespondentType {
   et3ResponseRespondentContactName?: string;
   et3ResponseDXAddress?: string;
   et3ResponseContactReason?: string;
+  et3ResponseLanguagePreference?: EnglishOrWelsh;
   et3ResponseHearingRepresentative?: string[];
   et3ResponseHearingRespondent?: string[];
   et3ResponseEmploymentCount?: string;
-  et3ResponseMultipleSites?: YesOrNoOrNotSure;
+  et3ResponseMultipleSites?: YesOrNo;
   et3ResponseSiteEmploymentCount?: string;
   et3ResponseAcasAgree?: YesOrNo;
   et3ResponseAcasAgreeReason?: string;
-  et3ResponseAreDatesCorrect?: YesOrNoOrNotSure;
+  et3ResponseAreDatesCorrect?: YesOrNoOrNotApplicable;
   et3ResponseEmploymentStartDate?: string;
   et3ResponseEmploymentEndDate?: string;
   et3ResponseEmploymentInformation?: string;
-  et3ResponseContinuingEmployment?: YesOrNoOrNotSure;
-  et3ResponseIsJobTitleCorrect?: YesOrNoOrNotSure;
+  et3ResponseContinuingEmployment?: YesOrNoOrNotApplicable;
+  et3ResponseIsJobTitleCorrect?: YesOrNoOrNotApplicable;
   et3ResponseCorrectJobTitle?: string;
-  et3ResponseClaimantWeeklyHours?: YesOrNoOrNotSure;
+  et3ResponseClaimantWeeklyHours?: YesOrNoOrNotApplicable;
   et3ResponseClaimantCorrectHours?: string;
-  et3ResponseEarningDetailsCorrect?: YesOrNo;
-  et3ResponsePayFrequency?: string;
+  et3ResponseEarningDetailsCorrect?: YesOrNoOrNotApplicable;
+  et3ResponsePayFrequency?: HowOften;
   et3ResponsePayBeforeTax?: string;
   et3ResponsePayTakehome?: string;
-  et3ResponseIsNoticeCorrect?: YesOrNo;
+  et3ResponseIsNoticeCorrect?: YesOrNoOrNotApplicable;
   et3ResponseCorrectNoticeDetails?: string;
-  et3ResponseIsPensionCorrect?: YesOrNoOrNotSure;
+  et3ResponseIsPensionCorrect?: YesOrNoOrNotApplicable;
   et3ResponsePensionCorrectDetails?: string;
   et3ResponseRespondentContestClaim?: YesOrNo;
   et3ResponseContestClaimDocument?: DocumentTypeItem[];
@@ -89,13 +98,16 @@ export interface RespondentType {
   et3ResponseEmployerClaim?: YesOrNo;
   et3ResponseEmployerClaimDetails?: string;
   et3ResponseEmployerClaimDocument?: UploadedDocumentType;
-  et3ResponseRespondentSupportNeeded?: YesOrNo;
+  et3ResponseRespondentSupportNeeded?: YesOrNo; //Reasonable Adjustments
   et3ResponseRespondentSupportDetails?: string;
   et3ResponseRespondentSupportDocument?: UploadedDocumentType;
   et3Form?: UploadedDocumentType;
-  personalDetailsSection?: string;
-  employmentDetailsSection?: string;
-  claimDetailsSection?: string;
+  contactDetailsSection?: string;
+  employerDetailsSection?: string;
+  conciliationAndEmployeeDetailsSection?: string;
+  payPensionBenefitDetailsSection?: string;
+  contestClaimSection?: string;
+  employersContractClaimSection?: string;
   idamId?: string;
   et3CaseDetailsLinksStatuses?: ET3CaseDetailsLinksStatuses;
   et3HubLinksStatuses?: ET3HubLinksStatuses;

@@ -14,6 +14,9 @@
     },
     "et3ResponseRespondentCompanyNumber": {
       "invalidCompanyRegistrationNumber": "Enter a valid Company Registration number"
+    },
+    "hiddenErrorField": {
+      "api": "A system error occurred, Please try again later"
     }
   }
 }

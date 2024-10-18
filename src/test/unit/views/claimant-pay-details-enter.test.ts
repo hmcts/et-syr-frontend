@@ -24,7 +24,6 @@ const radioClass = 'govuk-radios__item';
 const expectedRadioLabel1 = commonJson.weekly;
 const expectedRadioLabel2 = commonJson.monthly;
 const expectedRadioLabel3 = commonJson.annually;
-const expectedRadioLabel4 = commonJson.notSure;
 const buttonClass = 'govuk-button';
 
 let htmlRes: Document;
@@ -60,10 +59,6 @@ describe('Acas early conciliation certificate page', () => {
     expect(radioButtons[2].innerHTML).contains(
       expectedRadioLabel3,
       'Could not find the radio button with label ' + expectedRadioLabel3
-    );
-    expect(radioButtons[3].innerHTML).contains(
-      expectedRadioLabel4,
-      'Could not find the radio button with label ' + expectedRadioLabel4
     );
   });
 

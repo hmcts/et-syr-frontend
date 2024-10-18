@@ -62,7 +62,7 @@ export default class RespondentNameController {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const fieldsToReset: string[] = [];
     if (YesOrNo.NO !== formData.responseRespondentNameQuestion) {
-      fieldsToReset.push(formData.responseRespondentName);
+      fieldsToReset.push('responseRespondentName');
     }
     await ET3Util.updateET3ResponseWithET3Form(
       req,

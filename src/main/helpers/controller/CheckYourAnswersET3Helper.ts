@@ -1,7 +1,8 @@
-import { CaseWithId, YesOrNo, YesOrNoOrNotSure } from '../../definitions/case';
+import { CaseWithId, TypeOfOrganisation, YesOrNo, YesOrNoOrNotApplicable } from '../../definitions/case';
 import { PageUrls } from '../../definitions/constants';
 import { SummaryListRow, addSummaryRowWithAction } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
+import { answersAddressFormatter } from '../AddressHelper';
 
 export const getEt3Section1 = (userCase: CaseWithId, translations: AnyRecord): SummaryListRow[] => {
   const et3ResponseSection1: SummaryListRow[] = [];
@@ -9,7 +10,7 @@ export const getEt3Section1 = (userCase: CaseWithId, translations: AnyRecord): S
   et3ResponseSection1.push(
     addSummaryRowWithAction(
       translations.section1.respondentName,
-      userCase.responseRespondentName,
+      userCase.responseRespondentName !== undefined ? userCase.responseRespondentName : userCase.respondentName,
       PageUrls.RESPONDENT_NAME,
       translations.change
     ),
@@ -21,37 +22,55 @@ export const getEt3Section1 = (userCase: CaseWithId, translations: AnyRecord): S
     ),
     addSummaryRowWithAction(
       translations.section1.preferredTitleOptional,
-      userCase.et3ResponseRespondentPreferredTitle,
+      TypeOfOrganisation.INDIVIDUAL === userCase.et3ResponseRespondentEmployerType
+        ? userCase.et3ResponseRespondentPreferredTitle === undefined
+          ? translations.notProvided
+          : userCase.et3ResponseRespondentPreferredTitle
+        : translations.notApplicable,
       PageUrls.TYPE_OF_ORGANISATION,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.companyRegistrationNumberOptional,
-      userCase.et3ResponseRespondentCompanyNumber,
+      TypeOfOrganisation.LIMITED_COMPANY === userCase.et3ResponseRespondentEmployerType
+        ? userCase.et3ResponseRespondentCompanyNumber === undefined
+          ? translations.notProvided
+          : userCase.et3ResponseRespondentCompanyNumber
+        : translations.notApplicable,
       PageUrls.TYPE_OF_ORGANISATION,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.address,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated with address
+      answersAddressFormatter(
+        userCase.responseRespondentAddressLine1,
+        userCase.responseRespondentAddressLine2,
+        userCase.responseRespondentAddressLine3,
+        userCase.responseRespondentAddressPostTown,
+        userCase.responseRespondentAddressCounty,
+        userCase.responseRespondentAddressCountry,
+        userCase.responseRespondentAddressPostCode
+      ),
       PageUrls.RESPONDENT_ADDRESS,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.contactName,
-      userCase.et3ResponseRespondentContactName,
+      userCase.et3ResponseRespondentContactName !== undefined
+        ? userCase.et3ResponseRespondentContactName
+        : translations.notProvided,
       PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.dxAddressOptional,
-      userCase.et3ResponseDXAddress,
+      userCase.et3ResponseDXAddress !== undefined ? userCase.et3ResponseDXAddress : translations.notProvided,
       PageUrls.RESPONDENT_DX_ADDRESS,
       translations.change
     ),
     addSummaryRowWithAction(
       translations.section1.contactNumberOptional,
-      userCase.responseRespondentPhone1,
+      userCase.responseRespondentPhone1 !== undefined ? userCase.responseRespondentPhone1 : translations.notProvided,
       PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER,
       translations.change
     ),
@@ -63,17 +82,22 @@ export const getEt3Section1 = (userCase: CaseWithId, translations: AnyRecord): S
     ),
     addSummaryRowWithAction(
       translations.section1.reasonForPost,
-      userCase.respondentContactPreference,
-      PageUrls.RESPONDENT_CONTACT_PREFERENCES,
-      translations.change
-    ),
-    addSummaryRowWithAction(
-      translations.section1.contactLanguage,
-      translations.section1.exampleData, // todo: this is the data field that needs to be populated with responseRespondentLanguagePreference
+      userCase.et3ResponseContactReason !== undefined ? userCase.et3ResponseContactReason : translations.notApplicable,
       PageUrls.RESPONDENT_CONTACT_PREFERENCES,
       translations.change
     )
   );
+
+  if (userCase.managingOffice !== 'Scotland') {
+    et3ResponseSection1.push(
+      addSummaryRowWithAction(
+        translations.section1.contactLanguage,
+        userCase.et3ResponseLanguagePreference,
+        PageUrls.RESPONDENT_CONTACT_PREFERENCES,
+        translations.change
+      )
+    );
+  }
 
   return et3ResponseSection1;
 };
@@ -161,7 +185,7 @@ export const getEt3Section3 = (userCase: CaseWithId, translations: AnyRecord): S
     )
   );
 
-  if (YesOrNoOrNotSure.NO === userCase.et3ResponseAreDatesCorrect) {
+  if (YesOrNoOrNotApplicable.NO === userCase.et3ResponseAreDatesCorrect) {
     et3ResponseSection3.push(
       addSummaryRowWithAction(
         translations.section3.et3ResponseEmploymentStartDate,
@@ -199,7 +223,7 @@ export const getEt3Section3 = (userCase: CaseWithId, translations: AnyRecord): S
     )
   );
 
-  if (YesOrNoOrNotSure.NO === userCase.et3ResponseIsJobTitleCorrect) {
+  if (YesOrNoOrNotApplicable.NO === userCase.et3ResponseIsJobTitleCorrect) {
     et3ResponseSection3.push(
       addSummaryRowWithAction(
         translations.section3.et3ResponseCorrectJobTitle,
@@ -219,7 +243,7 @@ export const getEt3Section3 = (userCase: CaseWithId, translations: AnyRecord): S
     )
   );
 
-  if (YesOrNoOrNotSure.NO === userCase.et3ResponseClaimantWeeklyHours) {
+  if (YesOrNoOrNotApplicable.NO === userCase.et3ResponseClaimantWeeklyHours) {
     et3ResponseSection3.push(
       addSummaryRowWithAction(
         translations.section3.et3ResponseClaimantCorrectHours,

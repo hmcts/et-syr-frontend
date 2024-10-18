@@ -146,5 +146,6 @@
     "yes": "[W]Yes, I’ve completed this section",
     "no": "[W]No, I’ll come back later"
   },
-  "notProvided": "[W]Not provided"
+  "notProvided": "[W]Not provided",
+  "notApplicable": "[W]Not applicable"
 }

@@ -1,5 +1,5 @@
 import IsClaimantEmploymentWithRespondentContinuingController from '../../../main/controllers/IsClaimantEmploymentWithRespondentContinuingController';
-import { YesOrNoOrNotSure } from '../../../main/definitions/case';
+import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
@@ -39,7 +39,7 @@ describe('Is the claimant’s employment with the respondent continuing? Control
     it('should redirect to next page when yes is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseContinuingEmployment: YesOrNoOrNotSure.YES,
+          et3ResponseContinuingEmployment: YesOrNoOrNotApplicable.YES,
         },
       });
       request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING;
@@ -51,7 +51,7 @@ describe('Is the claimant’s employment with the respondent continuing? Control
     it('should redirect to next page when no is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseContinuingEmployment: YesOrNoOrNotSure.NO,
+          et3ResponseContinuingEmployment: YesOrNoOrNotApplicable.NO,
         },
       });
       request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING;
@@ -63,7 +63,7 @@ describe('Is the claimant’s employment with the respondent continuing? Control
     it('should redirect to next page when Not Sure is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseContinuingEmployment: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseContinuingEmployment: YesOrNoOrNotApplicable.NOT_APPLICABLE,
         },
       });
       request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING;

@@ -1,5 +1,5 @@
 import RespondentSitesController from '../../../main/controllers/RespondentSitesController';
-import { YesOrNoOrNotSure } from '../../../main/definitions/case';
+import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
@@ -60,7 +60,7 @@ describe('RespondentSitesController', () => {
     it('should redirect to the next page when "yes" is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseMultipleSites: YesOrNoOrNotSure.YES,
+          et3ResponseMultipleSites: YesOrNoOrNotApplicable.YES,
         },
       });
       request.url = PageUrls.RESPONDENT_SITES;
@@ -79,7 +79,7 @@ describe('RespondentSitesController', () => {
     it('should redirect to the next page when "no" is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseMultipleSites: YesOrNoOrNotSure.NO,
+          et3ResponseMultipleSites: YesOrNoOrNotApplicable.NO,
         },
       });
       request.url = PageUrls.RESPONDENT_SITES;
@@ -98,7 +98,7 @@ describe('RespondentSitesController', () => {
     it('should redirect to the next page when "not sure" is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseMultipleSites: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseMultipleSites: YesOrNoOrNotApplicable.NOT_APPLICABLE,
         },
       });
       request.url = PageUrls.RESPONDENT_SITES;
