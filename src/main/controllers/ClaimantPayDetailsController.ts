@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNoOrNotSure } from '../definitions/case';
+import { YesOrNoOrNotApplicable } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
@@ -24,16 +24,16 @@ export default class ClaimantPayDetailsController {
         values: [
           {
             label: (l: AnyRecord): string => l.yes,
-            value: YesOrNoOrNotSure.YES,
+            value: YesOrNoOrNotApplicable.YES,
           },
           {
             label: (l: AnyRecord): string => l.no,
-            value: YesOrNoOrNotSure.NO,
+            value: YesOrNoOrNotApplicable.NO,
             hint: (l: AnyRecord): string => l.arePayDetailsGivenCorrect.no.hint,
           },
           {
             label: (l: AnyRecord): string => l.notSure,
-            value: YesOrNoOrNotSure.NOT_SURE,
+            value: YesOrNoOrNotApplicable.NOT_APPLICABLE,
             hint: (l: AnyRecord): string => l.arePayDetailsGivenCorrect.notSure.hint,
           },
         ],
@@ -49,7 +49,7 @@ export default class ClaimantPayDetailsController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    if (req.body.arePayDetailsGivenCorrect === YesOrNoOrNotSure.NO) {
+    if (req.body.arePayDetailsGivenCorrect === YesOrNoOrNotApplicable.NO) {
       await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_PAY_DETAILS_ENTER);
     } else {
       await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_NOTICE_PERIOD);

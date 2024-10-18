@@ -9,7 +9,7 @@
   "bullet2": "[W]help with communicating, sight, hearing, speaking and interpretation",
   "bullet3": "[W]access and mobility support if a hearing takes place in person",
   "radioNo": "[W]No - I do not need any support at this time",
-  "yesLabelText": "[W]Select all that apply",
+  "yesDetail": "[W]Tell us what support you need.",
   "errors": {
     "reasonableAdjustments": {
       "required": "[W]Make a selection"

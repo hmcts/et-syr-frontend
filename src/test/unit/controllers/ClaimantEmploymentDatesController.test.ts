@@ -1,5 +1,5 @@
 import ClaimantEmploymentDatesController from '../../../main/controllers/ClaimantEmploymentDatesController';
-import { YesOrNoOrNotSure } from '../../../main/definitions/case';
+import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
@@ -35,7 +35,7 @@ describe('Claimant employment dates Controller', () => {
     it('should redirect to next page when yes is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseAreDatesCorrect: YesOrNoOrNotSure.YES,
+          et3ResponseAreDatesCorrect: YesOrNoOrNotApplicable.YES,
         },
       });
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES;
@@ -47,7 +47,7 @@ describe('Claimant employment dates Controller', () => {
     it('should redirect to next page when no is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseAreDatesCorrect: YesOrNoOrNotSure.NO,
+          et3ResponseAreDatesCorrect: YesOrNoOrNotApplicable.NO,
         },
       });
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES;
@@ -59,7 +59,7 @@ describe('Claimant employment dates Controller', () => {
     it('should redirect to next page when Not Sure is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseAreDatesCorrect: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseAreDatesCorrect: YesOrNoOrNotApplicable.NOT_APPLICABLE,
         },
       });
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES;

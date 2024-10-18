@@ -5,15 +5,13 @@ import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
+import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLogger } from '../logger';
+import ET3Util from '../utils/ET3Util';
 import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
-
-const logger = getLogger('ReasonableAdjustmentsController');
 
 export default class ReasonableAdjustmentsController {
   private readonly form: Form;
@@ -36,7 +34,7 @@ export default class ReasonableAdjustmentsController {
                 name: 'reasonableAdjustmentsDetail',
                 type: 'text',
                 labelSize: 'normal',
-                label: (l: AnyRecord): string => l.yesLabelText,
+                label: (l: AnyRecord): string => l.yesDetail,
                 classes: 'govuk-text',
                 validator: isFieldFilledIn,
               },
@@ -60,7 +58,16 @@ export default class ReasonableAdjustmentsController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.NOT_IMPLEMENTED);
+    // todo: field reset needed here for the reasonable adjustment detail
+
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.EmployerDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.RESPONDENT_EMPLOYEES
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -70,7 +77,6 @@ export default class ReasonableAdjustmentsController {
       TranslationKeys.REASONABLE_ADJUSTMENTS,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.REASONABLE_ADJUSTMENTS, {
       ...content,
       redirectUrl,

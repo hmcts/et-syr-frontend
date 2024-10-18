@@ -1,5 +1,5 @@
 import ClaimantPensionAndBenefitsController from '../../../main/controllers/ClaimantPensionAndBenefitsController';
-import { YesOrNoOrNotSure } from '../../../main/definitions/case';
+import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
@@ -34,7 +34,7 @@ describe('Claimant pension and benefits Controller', () => {
     it('should redirect to next page when yes is selected', () => {
       request = mockRequest({
         body: {
-          et3ResponseIsPensionCorrect: YesOrNoOrNotSure.YES,
+          et3ResponseIsPensionCorrect: YesOrNoOrNotApplicable.YES,
         },
       });
       updateET3ResponseWithET3FormMock.mockImplementationOnce(async () => {
@@ -49,7 +49,7 @@ describe('Claimant pension and benefits Controller', () => {
     it('should redirect to next page when no is selected', () => {
       request = mockRequest({
         body: {
-          et3ResponseIsPensionCorrect: YesOrNoOrNotSure.NO,
+          et3ResponseIsPensionCorrect: YesOrNoOrNotApplicable.NO,
           et3ResponsePensionCorrectDetails: 'Test',
         },
       });
@@ -65,7 +65,7 @@ describe('Claimant pension and benefits Controller', () => {
     it('should redirect to next page when Not Sure is selected', () => {
       request = mockRequest({
         body: {
-          et3ResponseIsPensionCorrect: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseIsPensionCorrect: YesOrNoOrNotApplicable.NOT_APPLICABLE,
         },
       });
       updateET3ResponseWithET3FormMock.mockImplementationOnce(async () => {
@@ -93,7 +93,7 @@ describe('Claimant pension and benefits Controller', () => {
     it('should render the same page when No is selected but summary text exceeds 2500 characters', () => {
       request = mockRequest({
         body: {
-          et3ResponseIsPensionCorrect: YesOrNoOrNotSure.NO,
+          et3ResponseIsPensionCorrect: YesOrNoOrNotApplicable.NO,
           et3ResponsePensionCorrectDetails: '1'.repeat(2501),
         },
       });

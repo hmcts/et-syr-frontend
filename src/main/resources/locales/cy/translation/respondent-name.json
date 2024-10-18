@@ -7,10 +7,10 @@
   "label2": "[W] the respondent’s correct name?",
   "respondentNameTextLabel": "[W]Enter correct name",
   "errors": {
-    "respondentName": {
+    "responseRespondentName": {
       "required": "[W]Select whether this is the correct name"
     },
-    "respondentNameDetail": {
+    "responseRespondentNameQuestion": {
       "required": "[W]Enter correct name"
     },
     "hiddenErrorField": {

@@ -4,22 +4,20 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
+import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLogger } from '../logger';
-
-const logger = getLogger('RespondentDXAddressController');
+import ET3Util from '../utils/ET3Util';
 
 export default class RespondentDXAddressController {
   private readonly form: Form;
   private readonly respondentDxAddressContent: FormContent = {
     fields: {
-      respondentDxAddress: {
-        id: 'respondentDxAddress',
-        name: 'respondentDxAddress',
+      et3ResponseDXAddress: {
+        id: 'et3ResponseDXAddress',
+        name: 'et3ResponseDXAddress',
         type: 'text',
         hint: (l: AnyRecord): string => l.respondentDxAddress,
         classes: 'govuk-text',
@@ -35,7 +33,14 @@ export default class RespondentDXAddressController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER);
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.ContactDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -46,7 +51,6 @@ export default class RespondentDXAddressController {
       TranslationKeys.RESPONDENT_DX_ADDRESS,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.RESPONDENT_DX_ADDRESS, {
       ...content,
       redirectUrl,

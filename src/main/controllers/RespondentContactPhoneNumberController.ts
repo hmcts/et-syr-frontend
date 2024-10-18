@@ -4,23 +4,21 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
+import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLogger } from '../logger';
+import ET3Util from '../utils/ET3Util';
 import { isPhoneNumberValid } from '../validators/validator';
-
-const logger = getLogger('RespondentContactPhoneNumberController');
 
 export default class RespondentContactPhoneNumberController {
   private readonly form: Form;
   private readonly respondentContactPhoneNumber: FormContent = {
     fields: {
-      respondentContactPhoneNumber: {
-        id: 'respondentContactPhoneNumber',
-        name: 'respondentContactPhoneNumber',
+      responseRespondentPhone1: {
+        id: 'responseRespondentPhone1',
+        name: 'responseRespondentPhone1',
         type: 'text',
         hint: (l: AnyRecord): string => l.respondentContactPhoneNumber,
         classes: 'govuk-text',
@@ -37,7 +35,14 @@ export default class RespondentContactPhoneNumberController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.RESPONDENT_CONTACT_PREFERENCES);
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.ContactDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.RESPONDENT_CONTACT_PREFERENCES
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -48,7 +53,6 @@ export default class RespondentContactPhoneNumberController {
       TranslationKeys.RESPONDENT_CONTACT_PHONE_NUMBER,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.RESPONDENT_CONTACT_PHONE_NUMBER, {
       ...content,
       redirectUrl,

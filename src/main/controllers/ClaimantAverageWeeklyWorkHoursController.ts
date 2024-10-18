@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, YesOrNoOrNotSure } from '../definitions/case';
+import { CaseWithId, YesOrNoOrNotApplicable } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
@@ -22,11 +22,11 @@ export default class ClaimantAverageWeeklyWorkHoursController {
         values: [
           {
             label: (l: AnyRecord): string => l.yes,
-            value: YesOrNoOrNotSure.YES,
+            value: YesOrNoOrNotApplicable.YES,
           },
           {
             label: (l: AnyRecord): string => l.no,
-            value: YesOrNoOrNotSure.NO,
+            value: YesOrNoOrNotApplicable.NO,
             subFields: {
               et3ResponseClaimantCorrectHours: {
                 type: 'text',
@@ -40,7 +40,7 @@ export default class ClaimantAverageWeeklyWorkHoursController {
           },
           {
             label: (l: AnyRecord): string => l.notSure,
-            value: YesOrNoOrNotSure.NOT_SURE,
+            value: YesOrNoOrNotApplicable.NOT_APPLICABLE,
           },
         ],
         validator: isOptionSelected,
@@ -57,7 +57,7 @@ export default class ClaimantAverageWeeklyWorkHoursController {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const fieldsToReset: string[] = [];
-    if (YesOrNoOrNotSure.NO !== formData.et3ResponseClaimantWeeklyHours) {
+    if (YesOrNoOrNotApplicable.NO !== formData.et3ResponseClaimantWeeklyHours) {
       fieldsToReset.push(formData.et3ResponseClaimantCorrectHours);
     }
     await ET3Util.updateET3ResponseWithET3Form(
