@@ -10,6 +10,7 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import ET3Util from '../utils/ET3Util';
+import { isValidPay } from '../validators/validator';
 
 export default class ClaimantPayDetailsEnterController {
   private readonly form: Form;
@@ -46,6 +47,7 @@ export default class ClaimantPayDetailsEnterController {
         attributes: {
           maxLength: 16,
         },
+        validator: isValidPay,
       },
       et3ResponsePayTakehome: {
         type: 'currency',
@@ -55,6 +57,7 @@ export default class ClaimantPayDetailsEnterController {
         attributes: {
           maxLength: 16,
         },
+        validator: isValidPay,
       },
     },
     submit: submitButton,

@@ -12,5 +12,15 @@
   "et3ResponsePayTakehome": {
     "label": "[W]Enter the claimant’s normal take-home pay (optional)",
     "hintLabel": "[W]Take-home pay is the pay after tax and insurance deductions.<br><br>Include overtime, commission and bonuses."
+  },
+  "errors": {
+    "et3ResponsePayBeforeTax": {
+      "minLengthRequired": "[W]Pay before tax and NI must be a minimum of double figures. For example £10",
+      "notANumber": "[W]Pay before tax must be entered as a number and a minimum of double figures. For example 10"
+    },
+    "et3ResponsePayTakehome": {
+      "minLengthRequired": "[W]Pay after tax and NI must be a minimum of double figures. For example £10",
+      "notANumber": "[W]Pay after tax must be entered as a number and a minimum of double figures. For example 10"
+    }
   }
 }

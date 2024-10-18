@@ -29,11 +29,11 @@ export default class ClaimantNoticePeriodController {
             value: YesOrNoOrNotSure.NO,
             subFields: {
               et3ResponseCorrectNoticeDetails: {
-                type: 'textarea',
-                id: 'et3ResponseCorrectNoticeDetails',
+                type: 'charactercount',
                 label: (l: AnyRecord): string => l.et3ResponseCorrectNoticeDetails.label,
                 labelSize: 's',
                 hint: (l: AnyRecord): string => l.et3ResponseCorrectNoticeDetails.hint,
+                maxlength: 2500,
                 validator: isContent2500CharsOrLess,
               },
             },

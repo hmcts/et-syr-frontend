@@ -11,7 +11,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
-import { isContent2500CharsOrLessOrEmpty } from '../validators/validator';
+import { isContent2500CharsOrLess } from '../validators/validator';
 
 const logger = getLogger('ClaimantPensionAndBenefitsController');
 
@@ -33,10 +33,10 @@ export default class ClaimantPensionAndBenefitsController {
             subFields: {
               et3ResponsePensionCorrectDetails: {
                 type: 'charactercount',
-                id: 'et3ResponsePensionCorrectDetails',
                 label: (l: AnyRecord): string => l.whatAreClaimantCorrectPensionBenefits.label,
                 labelSize: 's',
-                validator: isContent2500CharsOrLessOrEmpty,
+                maxlength: 2500,
+                validator: isContent2500CharsOrLess,
               },
             },
           },
