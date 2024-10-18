@@ -15,12 +15,10 @@
   },
   "errors": {
     "et3ResponsePayBeforeTax": {
-      "minLengthRequired": "Pay before tax and NI must be a minimum of double figures. For example £10",
-      "notANumber": "Pay before tax must be entered as a number and a minimum of double figures. For example 10"
+      "invalidCurrency": "Pay before tax must be entered as a number and a minimum of double figures. For example 10"
     },
     "et3ResponsePayTakehome": {
-      "minLengthRequired": "Pay after tax and NI must be a minimum of double figures. For example £10",
-      "notANumber": "Pay after tax must be entered as a number and a minimum of double figures. For example 10"
+      "invalidCurrency": "Pay after tax must be entered as a number and a minimum of double figures. For example 10"
     }
   }
 }
