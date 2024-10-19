@@ -7487,7 +7487,7 @@ __metadata:
     sonar-scanner: ^3.1.0
     style-loader: ^4.0.0
     supertest: ^7.0.0
-    swc_mut_cjs_exports: ^0.99.0
+    swc_mut_cjs_exports: ^0.109.0
     ts-loader: ^9.4.2
     ts-node: ^10.9.1
     tsconfig-paths: ^4.2.0
@@ -14586,13 +14586,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swc_mut_cjs_exports@npm:^0.99.0":
-  version: 0.99.0
-  resolution: "swc_mut_cjs_exports@npm:0.99.0"
+"swc_mut_cjs_exports@npm:^0.109.0":
+  version: 0.109.1
+  resolution: "swc_mut_cjs_exports@npm:0.109.1"
   peerDependencies:
-    "@swc/core": ^1.7.0
+    "@swc/core": ^1.7.35
     "@swc/jest": ^0.2.36
-  checksum: d7ddc3f086b157631aeb0bf2147541b2bc478c029917a3c9ffc6e253a65f3d2d2cb7ddaa518a73493314c44ae6e766d6d98ed4c3c64fc652d9e7dedcd91a014a
+  checksum: 143afe2d6c36515892c29259c217226bf96cc4f994cae355d04831b3d3d4cedc70de19085677e2dab3e1618dc1731bae97f69b501144b0ae83b3e94205f6981b
   languageName: node
   linkType: hard
 
