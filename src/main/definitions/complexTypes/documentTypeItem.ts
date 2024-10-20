@@ -13,3 +13,23 @@ export interface DocumentType {
   typeOfDocument?: string;
   creationDate?: string;
 }
+
+export interface ApiDocumentTypeItem {
+  id?: string;
+  value?: {
+    docNumber?: string;
+    documentType?: string;
+    typeOfDocument?: string;
+    shortDescription?: string;
+    uploadedDocument: {
+      category_id: string;
+      document_url: string;
+      document_filename: string;
+      document_binary_url: string;
+    };
+    topLevelDocuments: string;
+    dateOfCorrespondence: string;
+    startingClaimDocuments: string;
+  };
+  downloadLink?: string;
+}

@@ -11,7 +11,6 @@ export default class ClaimantET1FormDetailsController {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const redirectUrl = setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM_DETAILS);
     const et1FormDoc = setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED);
-    // TODO: et1Form, et1FormDesc and et1FormDate
     res.render(TranslationKeys.CLAIMANT_ET1_FORM_DETAILS, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CLAIMANT_ET1_FORM_DETAILS as never, { returnObjects: true } as never),

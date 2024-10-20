@@ -357,6 +357,7 @@ export const Applicant = {
 } as const;
 
 export const AllDocumentTypes = {
+  ET1: 'ET1',
   CLAIMANT_CORRESPONDENCE: 'Claimant correspondence',
   ACAS_CERT: 'ACAS Certificate',
   RESPONDENT_CORRESPONDENCE: 'Respondent correspondence',
@@ -483,6 +484,7 @@ export const DefaultValues = {
   STRING_EQUALS: '=',
   STRING_SPACE: ' ',
   STRING_NEW_LINE: '\n',
+  STRING_SLASH: '/',
 } as const;
 
 export const FormFieldNames = {
