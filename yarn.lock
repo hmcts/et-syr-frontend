@@ -3165,9 +3165,9 @@ __metadata:
   linkType: hard
 
 "@types/lodash@npm:^4.14.194":
-  version: 4.17.10
-  resolution: "@types/lodash@npm:4.17.10"
-  checksum: 4600f2f25270c8fee6953e363d318149a5f0f1b1bb820aa2f42d7ada6e4f7de31848bb5ffc2c687b40bd73aa982167bdd6e6d8d456e72abe0c660ec77d1fa7e9
+  version: 4.17.12
+  resolution: "@types/lodash@npm:4.17.12"
+  checksum: 7b564e4114f09ce5ae31a2e9493592baf20bb498507f3705c5d91cf838c2298b4f6a06f2d6c8dc608fcac63e210a2b7b13388c7a5e220e15688f813521030127
   languageName: node
   linkType: hard
 
@@ -3195,20 +3195,20 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 22.7.6
-  resolution: "@types/node@npm:22.7.6"
+  version: 22.7.7
+  resolution: "@types/node@npm:22.7.7"
   dependencies:
     undici-types: ~6.19.2
-  checksum: 6afe2a1bd70ee0afa76c904ffdb04c634366987103bb2bef2d5b036f3bb49a4e828bb5e9fc64af442a76aaac4896df9277e725c843d85375d135aa71eb2fe3d9
+  checksum: 70492e46d92bf00b537c8700322ad001c1f8d4fc65fc1627064a91c7edebb8ad18730b95a3c6bdff212dd0252a337a4b92e4cfcbc21c9f08616302e87ea855b8
   languageName: node
   linkType: hard
 
 "@types/node@npm:^20.0.0, @types/node@npm:^20.1.0, @types/node@npm:^20.11.30":
-  version: 20.16.12
-  resolution: "@types/node@npm:20.16.12"
+  version: 20.16.13
+  resolution: "@types/node@npm:20.16.13"
   dependencies:
     undici-types: ~6.19.2
-  checksum: 648b2a35713157f1d5861123c29546cf316b543afd536ff2c02234d78a99cea07d2259559efd7f58cf2c45c6a2e80c1064ff03c5b5213bb99b91a7d598b7975f
+  checksum: 2e998ac5ae133b1a4261dc89d0034e63834d285bb2124901b9d805e7b98c0f809fc2586fd1bf7ad9a0f0348bb503fac6c41612a3ca272334b943070a3e82227c
   languageName: node
   linkType: hard
 
@@ -9052,11 +9052,11 @@ __metadata:
   linkType: hard
 
 "i18next@npm:^23.0.0":
-  version: 23.16.0
-  resolution: "i18next@npm:23.16.0"
+  version: 23.16.2
+  resolution: "i18next@npm:23.16.2"
   dependencies:
     "@babel/runtime": ^7.23.2
-  checksum: 5282d9877fcf7da2054780a781873a9dbc1778562691c6ed646a3f98a362134e8050856bab79cc203ec648ad51c6837c77234a25fc62c717a5053449f5d79d65
+  checksum: 335e71737e0ff933941ab5a65ee324cfc650aecfe2516153fd2d3a4b08d77f2c79904e634ace339e4a47e50f649b4b486dac24e5dbc0ba303eba05b39b1bb8d6
   languageName: node
   linkType: hard
 
