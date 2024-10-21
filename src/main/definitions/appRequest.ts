@@ -3,7 +3,8 @@ import EventEmitter from 'events';
 import { Request } from 'express';
 import { Session } from 'express-session';
 
-import { CaseWithId } from './case';
+import { CaseWithId, RespondentET3Model } from './case';
+import { ApiDocumentTypeItem } from './complexTypes/documentTypeItem';
 import { FormError } from './form';
 import { AnyRecord } from './util-types';
 
@@ -58,6 +59,10 @@ export interface AppSession extends Session {
   documentDownloadPage?: string;
   respondentNameFromForm?: string;
   selectedRespondentIndex?: number;
+  selectedAcasCertificate?: ApiDocumentTypeItem;
+  selectedRespondent?: RespondentET3Model;
+  et1FormEnglish?: ApiDocumentTypeItem;
+  et1FormWelsh?: ApiDocumentTypeItem;
 }
 
 export interface UserDetails {

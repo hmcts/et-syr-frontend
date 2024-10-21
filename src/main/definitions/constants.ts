@@ -485,6 +485,8 @@ export const DefaultValues = {
   STRING_SPACE: ' ',
   STRING_NEW_LINE: '\n',
   STRING_SLASH: '/',
+  STRING_SLASH_REGEX: /\//gi,
+  STRING_UNDERSCORE: '_',
 } as const;
 
 export const FormFieldNames = {
