@@ -63,7 +63,7 @@ describe('Acas early conciliation certificate Controller', () => {
       request = mockRequest({
         body: {
           et3ResponseAcasAgree: YesOrNo.NO,
-          et3ResponseAcasAgreeReason: 'Test',
+          et3ResponseAcasAgreeReason: '1'.repeat(800),
         },
       });
       request.url = PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE;
@@ -84,7 +84,7 @@ describe('Acas early conciliation certificate Controller', () => {
       request = mockRequest({
         body: {
           et3ResponseAcasAgree: YesOrNo.NO,
-          et3ResponseAcasAgreeReason: '1'.repeat(2501),
+          et3ResponseAcasAgreeReason: '1'.repeat(801),
         },
       });
       request.url = PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE;

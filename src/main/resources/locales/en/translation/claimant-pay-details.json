@@ -1,21 +1,16 @@
 {
-  "title": "Claimant pay details",
+  "title": "Claimant pay details (optional)",
   "subtitle": "Pay details provided on ET1",
   "periodPayLabel": "Weekly, monthly or annual pay?",
   "payBeforeTaxLabel": "Pay BEFORE tax and National Insurance",
   "payAfterTaxLabel": "Pay AFTER tax and National Insurance",
-  "arePayDetailsGivenCorrect": {
+  "et3ResponseEarningDetailsCorrect": {
     "label": "Are the pay details given by the claimant correct?",
     "no": {
       "hint": "You will be able to enter correct pay details at the next step."
     },
     "notSure": {
       "hint": "If you select Not sure, you will not be able to enter pay details."
-    }
-  },
-  "errors": {
-    "arePayDetailsGivenCorrect": {
-      "required": "Make a selection"
     }
   }
 }

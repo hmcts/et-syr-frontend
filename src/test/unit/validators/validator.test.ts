@@ -1,17 +1,14 @@
 import { ValidationErrors } from '../../../main/definitions/constants';
 import { getLogger } from '../../../main/logger';
 import {
-  areBenefitsValid,
   arePayValuesNull,
   atLeastOneFieldIsChecked,
   hasInvalidFileFormat,
   hasInvalidName,
   isAcasNumberValid,
-  isContent100CharsOrLess,
-  isContent2500CharsOrLess,
-  isContent2500CharsOrLessOrEmpty,
-  isContent3000CharsOrLessOrEmpty,
   isContentBetween3And100Chars,
+  isContentCharsOrLess,
+  isContentCharsOrLessAndNotEmpty,
   isFieldFilledIn,
   isNameValid,
   isOptionSelected,
@@ -22,7 +19,6 @@ import {
   isValidCompanyRegistrationNumber,
   isValidCurrency,
   isValidNoticeLength,
-  isValidPay,
   isValidTwoDigitInteger,
   isValidUKTelNumber,
 } from '../../../main/validators/validator';
@@ -62,41 +58,28 @@ describe('Validation', () => {
     });
   });
 
-  describe('isContent2500CharsOrLess()', () => {
-    it('should not warn when content is 2500 characters or less', () => {
-      expect(isContent2500CharsOrLess(undefined)).toStrictEqual(undefined);
-      expect(isContent2500CharsOrLess('')).toStrictEqual(undefined);
-      expect(isContent2500CharsOrLess('1'.repeat(2500))).toStrictEqual(undefined);
+  describe('isContentCharsOrLess()', () => {
+    it('should not warn when content is maxlength characters or less', () => {
+      expect(isContentCharsOrLess(2500)(undefined)).toStrictEqual(undefined);
+      expect(isContentCharsOrLess(2500)('')).toStrictEqual(undefined);
+      expect(isContentCharsOrLess(2500)('1'.repeat(2500))).toStrictEqual(undefined);
     });
 
-    it('should warn when content longer than 2500 characters', () => {
-      expect(isContent2500CharsOrLess('1'.repeat(2501))).toStrictEqual('tooLong');
+    it('should warn when content longer than maxlength characters', () => {
+      expect(isContentCharsOrLess(2500)('1'.repeat(2501))).toStrictEqual(ValidationErrors.TOO_LONG);
     });
   });
 
-  describe('isContent2500CharsOrLessOrEmpty()', () => {
+  describe('isContentCharsOrLessOrEmpty()', () => {
     it('should not warn when content is 2500 characters or less', () => {
-      expect(isContent2500CharsOrLessOrEmpty('1'.repeat(2500))).toStrictEqual(undefined);
+      expect(isContentCharsOrLessAndNotEmpty(2500)('1'.repeat(2500))).toStrictEqual(undefined);
     });
     it('should warn when content is empty', () => {
-      expect(isContent2500CharsOrLessOrEmpty(undefined)).toStrictEqual(ValidationErrors.REQUIRED);
-      expect(isContent2500CharsOrLessOrEmpty('')).toStrictEqual(ValidationErrors.REQUIRED);
+      expect(isContentCharsOrLessAndNotEmpty(2500)(undefined)).toStrictEqual(ValidationErrors.REQUIRED);
+      expect(isContentCharsOrLessAndNotEmpty(2500)('')).toStrictEqual(ValidationErrors.REQUIRED);
     });
     it('should warn when content longer than 2500 characters', () => {
-      expect(isContent2500CharsOrLessOrEmpty('1'.repeat(2501))).toStrictEqual(ValidationErrors.TOO_LONG);
-    });
-  });
-
-  describe('isContent3000CharsOrLessOrEmpty()', () => {
-    it('should not warn when content is 3000 characters or less', () => {
-      expect(isContent3000CharsOrLessOrEmpty('1'.repeat(3000))).toStrictEqual(undefined);
-    });
-    it('should warn when content is empty', () => {
-      expect(isContent3000CharsOrLessOrEmpty(undefined)).toStrictEqual(ValidationErrors.REQUIRED);
-      expect(isContent3000CharsOrLessOrEmpty('')).toStrictEqual(ValidationErrors.REQUIRED);
-    });
-    it('should warn when content longer than 2500 characters', () => {
-      expect(isContent3000CharsOrLessOrEmpty('1'.repeat(3001))).toStrictEqual(ValidationErrors.TOO_LONG);
+      expect(isContentCharsOrLessAndNotEmpty(2500)('1'.repeat(2501))).toStrictEqual(ValidationErrors.TOO_LONG);
     });
   });
 
@@ -223,12 +206,6 @@ describe('Validation', () => {
     });
   });
 
-  describe('areBenefitsValid()', () => {
-    it.each([{ mockRef: 'a', expected: undefined }])('check if benefits are valid', ({ mockRef, expected }) => {
-      expect(areBenefitsValid(mockRef)).toEqual(expected);
-    });
-  });
-
   describe('isValidAvgWeeklyHours()', () => {
     it.each([
       { mockRef: 'a', expected: 'invalid' },
@@ -290,28 +267,6 @@ describe('Validation', () => {
       { mockRef: '123456789012.12', expected: 'invalidCurrency' },
     ])('Check pay amount is valid when %o', ({ mockRef, expected }) => {
       expect(isValidCurrency(mockRef)).toEqual(expected);
-    });
-  });
-
-  describe('isValidPay()', () => {
-    it.each([
-      { mockRef: '', expected: undefined },
-      { mockRef: '0', expected: 'minLengthRequired' },
-      { mockRef: '1', expected: 'minLengthRequired' },
-      { mockRef: '100', expected: undefined },
-      { mockRef: '10,000', expected: undefined },
-      { mockRef: '1,123,456,789.12', expected: undefined },
-      { mockRef: 'a', expected: 'notANumber' },
-      { mockRef: '%', expected: 'notANumber' },
-      { mockRef: '25a', expected: 'notANumber' },
-      { mockRef: '-120', expected: 'notANumber' },
-      { mockRef: '20,00', expected: 'notANumber' },
-      { mockRef: '100,00', expected: 'notANumber' },
-      { mockRef: '123456,890', expected: 'notANumber' },
-      { mockRef: '1234567890123', expected: 'notANumber' },
-      { mockRef: '123456789012.12', expected: 'minLengthRequired' },
-    ])('Check pay amount is valid when %o', ({ mockRef, expected }) => {
-      expect(isValidPay(mockRef)).toEqual(expected);
     });
   });
 
@@ -483,17 +438,6 @@ describe('Validation', () => {
     it('Should validate corect RNNNNNN/NN/NN format', () => {
       const isValid = isAcasNumberValid('R123456/78/12');
       expect(isValid).toStrictEqual(undefined);
-    });
-  });
-  describe('isContent100CharsOrLess()', () => {
-    it('should not warn when content is 100 characters or less', () => {
-      expect(isContent100CharsOrLess(undefined)).toStrictEqual(undefined);
-      expect(isContent100CharsOrLess('')).toStrictEqual(undefined);
-      expect(isContent100CharsOrLess('1'.repeat(100))).toStrictEqual(undefined);
-    });
-
-    it('should warn when content longer than 100 characters', () => {
-      expect(isContent100CharsOrLess('1'.repeat(101))).toStrictEqual('tooLong');
     });
   });
 

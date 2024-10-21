@@ -5,23 +5,21 @@ import { AppRequest } from '../definitions/appRequest';
 import { HowOften } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
-import { getLogger } from '../logger';
-import { isOptionSelected } from '../validators/validator';
-
-const logger = getLogger('ClaimantPayDetailsEnterController');
+import { getPageContent } from '../helpers/FormHelper';
+import ET3Util from '../utils/ET3Util';
+import { isValidCurrency } from '../validators/validator';
 
 export default class ClaimantPayDetailsEnterController {
-  form: Form;
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      howOftenClaimantPaid: {
+      et3ResponsePayFrequency: {
         type: 'radios',
-        label: (l: AnyRecord): string => l.howOftenClaimantPaid.label,
-        hint: (l: AnyRecord): string => l.howOftenClaimantPaid.hintLabel,
+        label: (l: AnyRecord): string => l.et3ResponsePayFrequency.label,
+        hint: (l: AnyRecord): string => l.et3ResponsePayFrequency.hintLabel,
         values: [
           {
             label: (l: AnyRecord): string => l.weekly,
@@ -40,33 +38,26 @@ export default class ClaimantPayDetailsEnterController {
             value: HowOften.NOT_SURE,
           },
         ],
-        validator: isOptionSelected,
       },
-      claimantPayBeforeTax: {
+      et3ResponsePayBeforeTax: {
         type: 'currency',
         classes: 'govuk-input--width-10',
-        label: (l: AnyRecord): string => l.claimantPayBeforeTax.label,
-        hint: (l: AnyRecord): string => l.claimantPayBeforeTax.hintLabel,
+        label: (l: AnyRecord): string => l.et3ResponsePayBeforeTax.label,
+        hint: (l: AnyRecord): string => l.et3ResponsePayBeforeTax.hintLabel,
         attributes: {
           maxLength: 16,
         },
+        validator: isValidCurrency,
       },
-      claimantNormalTakeHomePay: {
+      et3ResponsePayTakehome: {
         type: 'currency',
         classes: 'govuk-input--width-10',
-        label: (l: AnyRecord): string => l.claimantNormalTakeHomePay.label,
-        hint: (l: AnyRecord): string => l.claimantNormalTakeHomePay.hintLabel,
+        label: (l: AnyRecord): string => l.et3ResponsePayTakehome.label,
+        hint: (l: AnyRecord): string => l.et3ResponsePayTakehome.hintLabel,
         attributes: {
           maxLength: 16,
         },
-      },
-      furtherInfoAboutClaimantPayDetails: {
-        type: 'textarea',
-        id: 'et3ResponseAcasAgreeReason',
-        label: (l: AnyRecord): string => l.furtherInfoAboutClaimantPayDetails.label,
-        attributes: {
-          maxLength: 2500,
-        },
+        validator: isValidCurrency,
       },
     },
     submit: submitButton,
@@ -78,7 +69,14 @@ export default class ClaimantPayDetailsEnterController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_NOTICE_PERIOD);
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.PayPensionBenefitDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.CLAIMANT_NOTICE_PERIOD
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -87,12 +85,8 @@ export default class ClaimantPayDetailsEnterController {
       TranslationKeys.CLAIMANT_PAY_DETAILS_ENTER,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.CLAIMANT_PAY_DETAILS_ENTER, {
       ...content,
-      periodPay: '[Weekly / Monthly / Annual / Not provided]', // TODO: Update value
-      payBeforeTax: '[Pay BEFORE tax and National Insurance / Not provided]', // TODO: Update value
-      payAfterTax: '[Pay AFTER tax and National Insurance / Not provided]', // TODO: Update value
       hideContactUs: true,
     });
   };

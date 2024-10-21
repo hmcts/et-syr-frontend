@@ -9,7 +9,7 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import ET3Util from '../utils/ET3Util';
-import { isFilledInAndIs2500CharsOrLess } from '../validators/validator';
+import { isContentCharsOrLessAndNotEmpty } from '../validators/validator';
 
 export default class EmployersContractClaimDetailsController {
   private readonly form: Form;
@@ -19,7 +19,7 @@ export default class EmployersContractClaimDetailsController {
         type: 'textarea',
         id: 'et3ResponseContestClaimDetails',
         label: (l: AnyRecord): string => l.et3ResponseContestClaimDetails.label,
-        validator: isFilledInAndIs2500CharsOrLess,
+        validator: isContentCharsOrLessAndNotEmpty(2500),
       },
       inset: {
         type: 'insetFields',
