@@ -173,5 +173,5 @@
     "ws": "^8.17.1",
     "cookie": "^1.0.0"
   },
-  "packageManager": "yarn@3.8.5"
+  "packageManager": "yarn@3.8.6"
 }
