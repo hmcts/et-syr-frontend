@@ -5,5 +5,7 @@
   "et1Form": "ET1 Form",
   "acasCert": "Acas certificate",
   "attachments": "Attachments included",
-  "dateServed": "[Date served]"
+  "dateServed": "[Date served]",
+  "notExists": "Not exists",
+  "attachmentNotFound": "Attachment not found"
 }
