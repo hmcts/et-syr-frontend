@@ -1,5 +1,5 @@
 import ClaimantPayDetailsController from '../../../main/controllers/ClaimantPayDetailsController';
-import { YesOrNoOrNotSure } from '../../../main/definitions/case';
+import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
@@ -31,7 +31,7 @@ describe('Claimant pay details Controller', () => {
     it('should redirect to next page when yes is selected', () => {
       request = mockRequest({
         body: {
-          arePayDetailsGivenCorrect: YesOrNoOrNotSure.YES,
+          arePayDetailsGivenCorrect: YesOrNoOrNotApplicable.YES,
         },
       });
       request.url = PageUrls.CLAIMANT_PAY_DETAILS + languages.ENGLISH_URL_PARAMETER;
@@ -43,7 +43,7 @@ describe('Claimant pay details Controller', () => {
     it('should redirect to next page when no is selected', () => {
       request = mockRequest({
         body: {
-          arePayDetailsGivenCorrect: YesOrNoOrNotSure.NO,
+          arePayDetailsGivenCorrect: YesOrNoOrNotApplicable.NO,
         },
       });
       request.url = PageUrls.CLAIMANT_PAY_DETAILS + languages.ENGLISH_URL_PARAMETER;
@@ -57,7 +57,7 @@ describe('Claimant pay details Controller', () => {
     it('should redirect to next page when Not Sure is selected', () => {
       request = mockRequest({
         body: {
-          arePayDetailsGivenCorrect: YesOrNoOrNotSure.NOT_SURE,
+          arePayDetailsGivenCorrect: YesOrNoOrNotApplicable.NOT_APPLICABLE,
         },
       });
       request.url = PageUrls.CLAIMANT_PAY_DETAILS + languages.ENGLISH_URL_PARAMETER;

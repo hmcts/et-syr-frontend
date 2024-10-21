@@ -228,12 +228,6 @@ describe('Form', () => {
             month: '1',
             year: '2000',
           },
-          hiddenErrorField: {
-            id: 'hiddenErrorField',
-            name: 'hiddenErrorField',
-            hidden: true,
-            type: 'text',
-          },
           checkboxes: ['checkbox1'],
         },
         expected: true,
@@ -272,12 +266,6 @@ describe('Form', () => {
           label: 'custom',
           type: 'text',
           name: 'custom',
-        },
-        hiddenErrorField: {
-          id: 'hiddenErrorField',
-          name: 'hiddenErrorField',
-          hidden: true,
-          type: 'text',
         },
       },
     });

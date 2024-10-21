@@ -1,111 +1,113 @@
 import RespondentSitesController from '../../../main/controllers/RespondentSitesController';
+import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import { postLogic } from '../../../main/helpers/CaseHelpers';
-import { mockRequest } from '../mocks/mockRequest';
+import { ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
+import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
+import pageJsonRaw from '../../../main/resources/locales/en/translation/respondent-sites.json';
+import ET3Util from '../../../main/utils/ET3Util';
+import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
 jest.mock('../../../main/helpers/CaseHelpers');
+jest.mock('../../../main/utils/ET3Util');
 
 describe('RespondentSitesController', () => {
+  const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
   let controller: RespondentSitesController;
-  let response: ReturnType<typeof mockResponse>;
   let request: ReturnType<typeof mockRequest>;
+  let response: ReturnType<typeof mockResponse>;
+  let translationMock: Record<string, string>;
 
   beforeEach(() => {
     controller = new RespondentSitesController();
+    request = mockRequest({});
     response = mockResponse();
-    request = mockRequest({
-      session: {
-        userCase: {},
-      },
-    });
+
+    translationMock = {
+      yes: 'Yes',
+      no: 'No',
+      hint: 'Does the respondent operate on multiple sites?',
+    };
   });
 
   describe('GET method', () => {
-    it('should render the Respondent Sites page with the correct form content', () => {
+    it('should render the Respondent Sites page with the correct form content', async () => {
       controller.get(request, response);
 
-      expect(response.render).toHaveBeenCalledWith(
-        TranslationKeys.RESPONDENT_SITES,
-        expect.objectContaining({
-          PageUrls: expect.any(Object),
-          redirectUrl: expect.any(String),
-          hideContactUs: true,
-          form: expect.objectContaining({
-            fields: expect.objectContaining({
-              respondentSites: expect.objectContaining({
-                classes: 'govuk-radios',
-                id: 'respondentSites',
-                type: 'radios',
-                hint: expect.any(Function), // Account for hint function
-                labelHidden: true, // Include labelHidden: true
-                values: expect.arrayContaining([
-                  expect.objectContaining({
-                    name: 'respondentSites',
-                    label: expect.any(Function), // Check for label function
-                    value: 'Yes',
-                  }),
-                  expect.objectContaining({
-                    name: 'respondentSites',
-                    label: expect.any(Function), // Check for label function
-                    value: 'No',
-                  }),
-                  expect.objectContaining({
-                    name: 'respondentSites',
-                    label: expect.any(Function), // Check for label function
-                    value: 'Not Sure',
-                  }),
-                ]),
-                validator: expect.any(Function), // Check for validator function
-              }),
-            }),
-            submit: expect.objectContaining({
-              classes: 'govuk-!-margin-right-2',
-              text: expect.any(Function),
-            }),
-            saveForLater: expect.objectContaining({
-              classes: 'govuk-button--secondary',
-              text: expect.any(Function),
-            }),
-          }),
-          userCase: request.session.userCase,
-          sessionErrors: expect.any(Array),
-        })
-      );
+      expect(response.render).toHaveBeenCalledWith(TranslationKeys.RESPONDENT_SITES, expect.anything());
 
-      const mockLabels = {
-        yes: 'Yes', // expected label for 'Yes' option
-        no: 'No', // expected label for 'No' option
-        notSure: 'Not Sure', // expected label for 'Not Sure' option
-        hint: 'This is the hint', // expected hint text
-      };
-
-      // Verify that the main label function returns the correct value
       const renderMock = response.render as jest.Mock;
       const form = renderMock.mock.calls[0][1].form;
 
-      // Extract the label and hint functions from the form fields
-      const respondentSitesField = form.fields.respondentSites;
+      // Test the radio button options and labels
+      expect(form.fields.et3ResponseMultipleSites.values[0].label(translationMock)).toBe('Yes');
+      expect(form.fields.et3ResponseMultipleSites.values[1].label(translationMock)).toBe('No');
+      expect(form.fields.et3ResponseMultipleSites.hint(translationMock)).toBe(
+        'Does the respondent operate on multiple sites?'
+      );
+    });
 
-      // Test the labels
-      expect(respondentSitesField.values[0].label(mockLabels)).toBe('Yes');
-      expect(respondentSitesField.values[1].label(mockLabels)).toBe('No');
-      expect(respondentSitesField.values[2].label(mockLabels)).toBe('Not Sure');
-
-      // Test the hint
-      expect(respondentSitesField.hint(mockLabels)).toBe('This is the hint');
+    it('should render the page with the correct translations', () => {
+      request = mockRequestWithTranslation({}, translationJsons);
+      controller.get(request, response);
+      expect(response.render).toHaveBeenCalledWith(TranslationKeys.RESPONDENT_SITES, expect.anything());
     });
   });
 
   describe('POST method', () => {
-    it('should call postLogic with the correct parameters', async () => {
-      await controller.post(request, response);
+    it('should redirect to the next page when "yes" is selected', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseMultipleSites: YesOrNoOrNotApplicable.YES,
+        },
+      });
+      request.url = PageUrls.RESPONDENT_SITES;
 
-      expect(postLogic).toHaveBeenCalledWith(
+      await controller.post(request, response);
+      expect(ET3Util.updateET3ResponseWithET3Form).toHaveBeenCalledWith(
         request,
         response,
-        controller['form'],
         expect.anything(),
+        ET3HubLinkNames.EmployerDetails,
+        LinkStatus.IN_PROGRESS,
+        PageUrls.RESPONDENT_SITE_EMPLOYEES
+      );
+    });
+
+    it('should redirect to the next page when "no" is selected', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseMultipleSites: YesOrNoOrNotApplicable.NO,
+        },
+      });
+      request.url = PageUrls.RESPONDENT_SITES;
+
+      await controller.post(request, response);
+      expect(ET3Util.updateET3ResponseWithET3Form).toHaveBeenCalledWith(
+        request,
+        response,
+        expect.anything(),
+        ET3HubLinkNames.EmployerDetails,
+        LinkStatus.IN_PROGRESS,
+        PageUrls.RESPONDENT_SITE_EMPLOYEES
+      );
+    });
+
+    it('should redirect to the next page when nothing is selected - optional field', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseMultipleSites: '',
+        },
+      });
+      request.url = PageUrls.RESPONDENT_SITES;
+
+      await controller.post(request, response);
+      expect(ET3Util.updateET3ResponseWithET3Form).toHaveBeenCalledWith(
+        request,
+        response,
+        expect.anything(),
+        ET3HubLinkNames.EmployerDetails,
+        LinkStatus.IN_PROGRESS,
         PageUrls.RESPONDENT_SITE_EMPLOYEES
       );
     });

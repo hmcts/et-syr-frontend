@@ -36,6 +36,10 @@ describe('RespondentAddressController', () => {
       no: 'No',
     });
 
+    req.body.respondentAddress = YesOrNo.NO;
+    req.session.selectedRespondentIndex = 0;
+    req.session.userCase = mockCaseWithIdWithRespondents;
+
     controller.get(req, res);
 
     expect(res.render).toHaveBeenCalledWith(TranslationKeys.RESPONDENT_ADDRESS, expect.anything());

@@ -221,10 +221,3 @@ $lightgrey-panel: #d3d3d3;
 .no-text-transform {
   text-transform: none;
 }
-
-//summary-key width to be greater for forms and CYA when within two-thirds view
-.govuk-grid-column-two-thirds-from-desktop {
-  .govuk-summary-list__key {
-    width: 50%;
-  }
-}

@@ -1,4 +1,4 @@
-import { PayInterval, StillWorking, WeeksOrMonths, YesOrNo, YesOrNoOrNotSure } from '../case';
+import { PayInterval, StillWorking, WeeksOrMonths, YesOrNo, YesOrNoOrNotApplicable } from '../case';
 
 export interface ClaimantEmploymentDetails {
   pastEmployer?: YesOrNo;
@@ -12,7 +12,7 @@ export interface ClaimantEmploymentDetails {
   claimant_pay_before_tax?: number;
   claimant_pay_after_tax?: number;
   claimant_pay_cycle?: PayInterval;
-  claimant_pension_contribution?: YesOrNoOrNotSure;
+  claimant_pension_contribution?: YesOrNoOrNotApplicable;
   claimant_pension_weekly_contribution?: number;
   claimant_benefits?: YesOrNo;
   claimant_benefits_detail?: string;
