@@ -47,7 +47,7 @@ describe('Claimant pension and benefits Controller', () => {
       request = mockRequest({
         body: {
           et3ResponseIsPensionCorrect: YesOrNoOrNotSure.NO,
-          et3ResponsePensionCorrectDetails: 'Test',
+          et3ResponsePensionCorrectDetails: '1'.repeat(400),
         },
       });
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
@@ -78,7 +78,7 @@ describe('Claimant pension and benefits Controller', () => {
       request = mockRequest({
         body: {
           et3ResponseIsPensionCorrect: YesOrNoOrNotSure.NO,
-          et3ResponsePensionCorrectDetails: '1'.repeat(2501),
+          et3ResponsePensionCorrectDetails: '1'.repeat(401),
         },
       });
       request.url = PageUrls.CLAIMANT_PENSION_AND_BENEFITS;

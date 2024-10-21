@@ -7,11 +7,11 @@ import {
   hasInvalidFileFormat,
   hasInvalidName,
   isAcasNumberValid,
-  isContent100CharsOrLess,
   isContent2500CharsOrLess,
   isContent2500CharsOrLessOrEmpty,
   isContent3000CharsOrLessOrEmpty,
   isContentBetween3And100Chars,
+  isContentCharsOrLess,
   isFieldFilledIn,
   isNameValid,
   isOptionSelected,
@@ -58,6 +58,18 @@ describe('Validation', () => {
       const isValid = isRespondentNameValid(name);
 
       expect(isValid).toStrictEqual(result);
+    });
+  });
+
+  describe('isContentCharsOrLess()', () => {
+    it('should not warn when content is maxlength characters or less', () => {
+      expect(isContentCharsOrLess(500)(undefined)).toStrictEqual(undefined);
+      expect(isContentCharsOrLess(500)('')).toStrictEqual(undefined);
+      expect(isContentCharsOrLess(500)('1'.repeat(500))).toStrictEqual(undefined);
+    });
+
+    it('should warn when content longer than maxlength characters', () => {
+      expect(isContentCharsOrLess(500)('1'.repeat(501))).toStrictEqual('tooLong');
     });
   });
 
@@ -460,17 +472,6 @@ describe('Validation', () => {
     it('Should validate corect RNNNNNN/NN/NN format', () => {
       const isValid = isAcasNumberValid('R123456/78/12');
       expect(isValid).toStrictEqual(undefined);
-    });
-  });
-  describe('isContent100CharsOrLess()', () => {
-    it('should not warn when content is 100 characters or less', () => {
-      expect(isContent100CharsOrLess(undefined)).toStrictEqual(undefined);
-      expect(isContent100CharsOrLess('')).toStrictEqual(undefined);
-      expect(isContent100CharsOrLess('1'.repeat(100))).toStrictEqual(undefined);
-    });
-
-    it('should warn when content longer than 100 characters', () => {
-      expect(isContent100CharsOrLess('1'.repeat(101))).toStrictEqual('tooLong');
     });
   });
 

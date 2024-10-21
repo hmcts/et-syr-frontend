@@ -10,7 +10,7 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import ET3Util from '../utils/ET3Util';
-import { isContent2500CharsOrLess } from '../validators/validator';
+import { isContentCharsOrLess } from '../validators/validator';
 
 export default class ClaimantNoticePeriodController {
   private readonly form: Form;
@@ -33,8 +33,8 @@ export default class ClaimantNoticePeriodController {
                 label: (l: AnyRecord): string => l.et3ResponseCorrectNoticeDetails.label,
                 labelSize: 's',
                 hint: (l: AnyRecord): string => l.et3ResponseCorrectNoticeDetails.hint,
-                maxlength: 2500,
-                validator: isContent2500CharsOrLess,
+                maxlength: 500,
+                validator: isContentCharsOrLess(500),
               },
             },
           },

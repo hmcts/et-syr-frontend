@@ -12,7 +12,7 @@
   },
   "errors": {
     "et3ResponsePensionCorrectDetails": {
-      "tooLong": "[W]The claimant pension and benefits entered must be less than 2500 characters"
+      "tooLong": "[W]The claimant pension and benefits entered must be less than 400 characters"
     }
   }
 }

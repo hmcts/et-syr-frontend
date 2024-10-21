@@ -48,7 +48,7 @@ describe('Claimant notice period Controller', () => {
       request = mockRequest({
         body: {
           et3ResponseIsNoticeCorrect: YesOrNoOrNotSure.NO,
-          et3ResponseCorrectNoticeDetails: 'Test',
+          et3ResponseCorrectNoticeDetails: '1'.repeat(500),
         },
       });
       request.url = PageUrls.CLAIMANT_NOTICE_PERIOD;
@@ -81,7 +81,7 @@ describe('Claimant notice period Controller', () => {
       request = mockRequest({
         body: {
           et3ResponseIsNoticeCorrect: YesOrNoOrNotSure.NO,
-          et3ResponseCorrectNoticeDetails: '1'.repeat(2501),
+          et3ResponseCorrectNoticeDetails: '1'.repeat(501),
         },
       });
       request.url = PageUrls.CLAIMANT_NOTICE_PERIOD;

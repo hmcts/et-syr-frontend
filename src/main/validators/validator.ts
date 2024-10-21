@@ -18,6 +18,14 @@ export const isRespondentNameValid: Validator = value => {
   }
 };
 
+export const isContentCharsOrLess = (maxlength: number): Validator => {
+  return (value: string): string | undefined => {
+    if (value && value.trim().length > maxlength) {
+      return ValidationErrors.TOO_LONG;
+    }
+  };
+};
+
 export const isContent2500CharsOrLess: Validator = value => {
   if (value && (value as string).trim().length > 2500) {
     return ValidationErrors.TOO_LONG;
@@ -38,12 +46,6 @@ export const isContent3000CharsOrLessOrEmpty: Validator = value => {
     return ValidationErrors.REQUIRED;
   }
   if (value && (value as string).trim().length > 3000) {
-    return ValidationErrors.TOO_LONG;
-  }
-};
-
-export const isContent100CharsOrLess: Validator = value => {
-  if (value && (value as string).trim().length > 100) {
     return ValidationErrors.TOO_LONG;
   }
 };
