@@ -26,28 +26,15 @@ export const isContentCharsOrLess = (maxlength: number): Validator => {
   };
 };
 
-export const isContent2500CharsOrLess: Validator = value => {
-  if (value && (value as string).trim().length > 2500) {
-    return ValidationErrors.TOO_LONG;
-  }
-};
-
-export const isContent2500CharsOrLessOrEmpty: Validator = value => {
-  if (!value || StringUtils.isBlank(value as string)) {
-    return ValidationErrors.REQUIRED;
-  }
-  if (value && (value as string).trim().length > 2500) {
-    return ValidationErrors.TOO_LONG;
-  }
-};
-
-export const isContent3000CharsOrLessOrEmpty: Validator = value => {
-  if (!value || StringUtils.isBlank(value as string)) {
-    return ValidationErrors.REQUIRED;
-  }
-  if (value && (value as string).trim().length > 3000) {
-    return ValidationErrors.TOO_LONG;
-  }
+export const isContentCharsOrLessAndNotEmpty = (maxlength: number): Validator => {
+  return (value: string): string | undefined => {
+    if (!value || StringUtils.isBlank(value)) {
+      return ValidationErrors.REQUIRED;
+    }
+    if (value && value.trim().length > maxlength) {
+      return ValidationErrors.TOO_LONG;
+    }
+  };
 };
 
 export const isContentBetween3And100Chars: Validator = value => {
@@ -123,10 +110,6 @@ export const isValidNoticeLength: Validator = value => {
   if (!/^\d{1,2}$/.test(value as string)) {
     return ValidationErrors.NOT_A_NUMBER;
   }
-};
-
-export const areBenefitsValid: Validator = value => {
-  return isContent2500CharsOrLess(value);
 };
 
 export const isPayIntervalNull: Validator = (value: string) => {
@@ -244,14 +227,5 @@ export const isPhoneNumberValid: Validator = value => {
   // Test the value against the regular expression
   if (!phonePattern.test(value as string)) {
     return ValidationErrors.INVALID_PHONE_NUMBER;
-  }
-};
-
-export const isFilledInAndIs2500CharsOrLess: Validator = value => {
-  if (isFieldFilledIn(value)) {
-    return ValidationErrors.REQUIRED;
-  }
-  if (isContent2500CharsOrLess(value)) {
-    return ValidationErrors.TOO_LONG;
   }
 };
