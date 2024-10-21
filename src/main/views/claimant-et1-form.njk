@@ -11,6 +11,7 @@
 {% set et1FormUrl = '' %}
 {% set acasCertDate = '' %}
 {% set acasCertUrl = '' %}
+{% set acasAttachmentInfo = '' %}
 
 {% if et1FormDocument === 'undefined' %}
   {% set et1FormDate = '-' %}
@@ -19,12 +20,14 @@
   {% set et1FormDate = formattedEt1FormDate %}
   {% set et1FormUrl = "<a href=" + et1FormUrlValue + ">" + et1Form + "</a>" %}
 {% endif %}
-{% if acasCertificate === 'undefined' %}
+{% if acasCertificate === undefined %}
   {% set acasCertDate = '-' %}
-  {% set acasCertUrl = 'Not exists' %}
+  {% set acasCertUrl = notExists %}
+  {% set acasAttachmentInfo = attachmentNotFound %}
 {% else %}
   {% set acasCertDate = formattedAcasCertificateDate %}
   {% set acasCertUrl = "<a href=" + acasCertUrlValue + ">" + acasCert + "</a>" %}
+   {% set acasAttachmentInfo = attachments %}
 {% endif %}
 {% block content %}
 
@@ -53,7 +56,7 @@
               text: acasCertDate
             },
             {
-              text: attachments
+              text: acasAttachmentInfo
             },
             {
               html: acasCertUrl

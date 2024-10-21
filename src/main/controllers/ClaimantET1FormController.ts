@@ -24,15 +24,13 @@ export default class ClaimantET1FormController {
         tempDocument.value?.documentType === AllDocumentTypes.ET1
       ) {
         et1FormDocument = tempDocument;
-        formattedEt1FormDate = DateUtil.formatDateFromYYYYMMDDAsDDMMYYYY(tempDocument.value?.dateOfCorrespondence);
+        formattedEt1FormDate = DateUtil.formatDateStringToDDMonthYYYY(tempDocument.value?.dateOfCorrespondence);
       } else if (
         tempDocument.value?.documentType === AllDocumentTypes.ACAS_CERT ||
         tempDocument.value?.documentType === AllDocumentTypes.ACAS_CERT
       ) {
         acasCertificate = tempDocument;
-        formattedAcasCertificateDate = DateUtil.formatDateFromYYYYMMDDAsDDMMYYYY(
-          tempDocument.value?.dateOfCorrespondence
-        );
+        formattedAcasCertificateDate = DateUtil.formatDateStringToDDMonthYYYY(tempDocument.value?.dateOfCorrespondence);
       }
     });
     res.render(TranslationKeys.CLAIMANT_ET1_FORM, {
