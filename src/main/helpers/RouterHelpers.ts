@@ -5,7 +5,7 @@ import { ErrorPages, languages } from '../definitions/constants';
 import { FormFields } from '../definitions/form';
 
 export const getLanguageParam = (url: string): string => {
-  if (url?.includes('lng=cy')) {
+  if (url?.includes(languages.WELSH_URL_POSTFIX)) {
     return languages.WELSH_URL_PARAMETER;
   }
   return languages.ENGLISH_URL_PARAMETER;
@@ -51,4 +51,8 @@ export const returnValidUrl = (redirectUrl: string, validUrls: string[]): string
     }
   }
   return ErrorPages.NOT_FOUND;
+};
+
+export const isClearSelection = (req: AppRequest): boolean => {
+  return req.query !== undefined && req.query.redirect === 'clearSelection' && req.session.userCase !== undefined;
 };
