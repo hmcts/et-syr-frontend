@@ -1,9 +1,4 @@
 {
   "title": "[W]Is the claimant’s employment with the respondent continuing?",
-  "hint": "[W]It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
-  "errors": {
-    "et3ResponseContinuingEmployment": {
-      "required": "[W]Make a selection"
-    }
-  }
+  "hint": "[W]It may help the tribunal if you can provide these details. You will not be penalised for not providing them."
 }

@@ -75,11 +75,11 @@ export interface RespondentType {
   et3ResponseCorrectJobTitle?: string;
   et3ResponseClaimantWeeklyHours?: YesOrNoOrNotSure;
   et3ResponseClaimantCorrectHours?: string;
-  et3ResponseEarningDetailsCorrect?: YesOrNo;
+  et3ResponseEarningDetailsCorrect?: YesOrNoOrNotSure;
   et3ResponsePayFrequency?: string;
   et3ResponsePayBeforeTax?: string;
   et3ResponsePayTakehome?: string;
-  et3ResponseIsNoticeCorrect?: YesOrNo;
+  et3ResponseIsNoticeCorrect?: YesOrNoOrNotSure;
   et3ResponseCorrectNoticeDetails?: string;
   et3ResponseIsPensionCorrect?: YesOrNoOrNotSure;
   et3ResponsePensionCorrectDetails?: string;

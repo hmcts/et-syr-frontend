@@ -10,7 +10,7 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import ET3Util from '../utils/ET3Util';
-import { isContent2500CharsOrLess } from '../validators/validator';
+import { isContentCharsOrLess } from '../validators/validator';
 
 export default class AcasEarlyConciliationCertificateController {
   private readonly form: Form;
@@ -32,8 +32,8 @@ export default class AcasEarlyConciliationCertificateController {
                 type: 'charactercount',
                 label: (l: AnyRecord): string => l.et3ResponseAcasAgreeReason.label,
                 labelSize: 's',
-                maxlength: 2500,
-                validator: isContent2500CharsOrLess,
+                maxlength: 800,
+                validator: isContentCharsOrLess(800),
               },
             },
           },
