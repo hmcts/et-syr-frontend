@@ -5,13 +5,14 @@ import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
+import DateUtil from '../utils/DateUtil';
 
 export default class ClaimantAcasCertificateDetailsController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const redirectUrl = setUrlLanguage(req, PageUrls.CLAIMANT_ACAS_CERTIFICATE_DETAILS);
-    const acasCertDoc = setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED);
-    // TODO: acasCert, acasCertDesc and acasCertDate
+    const acasCert = req.session.selectedAcasCertificate;
+    const formattedAcasCertificateDate = DateUtil.formatDateStringToDDMonthYYYY(acasCert?.value?.dateOfCorrespondence);
     res.render(TranslationKeys.CLAIMANT_ACAS_CERTIFICATE_DETAILS, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CLAIMANT_ACAS_CERTIFICATE_DETAILS as never, { returnObjects: true } as never),
@@ -20,7 +21,8 @@ export default class ClaimantAcasCertificateDetailsController {
       hideContactUs: true,
       useCase: req.session.userCase,
       redirectUrl,
-      acasCertDoc,
+      acasCert,
+      formattedAcasCertificateDate,
       languageParam: getLanguageParam(req.url),
       welshEnabled,
     });
