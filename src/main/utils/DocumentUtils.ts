@@ -14,7 +14,8 @@ export default class DocumentUtils {
     }
     for (const tmpDocument of documentCollection) {
       if (
-        tmpDocument.value?.documentType === AllDocumentTypes.ET1 &&
+        (tmpDocument.value?.documentType === AllDocumentTypes.ET1 ||
+          tmpDocument.value?.typeOfDocument === AllDocumentTypes.ET1) &&
         ((language === languages.WELSH_URL_PARAMETER &&
           tmpDocument.value?.uploadedDocument?.document_filename?.includes(EnglishOrWelsh.WELSH)) ||
           ((language === languages.ENGLISH_URL_PARAMETER ||
@@ -38,7 +39,7 @@ export default class DocumentUtils {
     for (const tmpDocument of documentCollection) {
       if (
         (tmpDocument.value?.documentType === AllDocumentTypes.ACAS_CERT ||
-          tmpDocument.value?.documentType === AllDocumentTypes.ACAS_CERT) &&
+          tmpDocument.value?.typeOfDocument === AllDocumentTypes.ACAS_CERT) &&
         tmpDocument.value?.uploadedDocument?.document_filename?.includes(
           NumberUtils.formatAcasNumberDashToUnderscore(acasNumber)
         )
