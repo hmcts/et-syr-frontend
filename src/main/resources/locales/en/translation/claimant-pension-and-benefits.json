@@ -7,7 +7,7 @@
   "areClaimantPensionBenefitsCorrect": {
     "label": "Are the claimant’s pension and benefits details correct?"
   },
-  "whatAreClaimantCorrectPensionBenefits": {
+  "et3ResponsePensionCorrectDetails": {
     "label": "What are the claimant’s correct pension and benefits details? (optional)"
   },
   "errors": {

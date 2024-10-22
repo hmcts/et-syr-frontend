@@ -9,6 +9,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
+import { isClearSelection } from '../helpers/RouterHelpers';
 import ET3Util from '../utils/ET3Util';
 import { isContentCharsOrLess } from '../validators/validator';
 
@@ -39,6 +40,10 @@ export default class AcasEarlyConciliationCertificateController {
           },
         ],
       },
+      clearSelection: {
+        type: 'clearSelection',
+        targetUrl: PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE,
+      },
     },
     submit: submitButton,
     saveForLater: saveForLaterButton,
@@ -66,6 +71,10 @@ export default class AcasEarlyConciliationCertificateController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    if (isClearSelection(req)) {
+      req.session.userCase.et3ResponseAcasAgree = undefined;
+      req.session.userCase.et3ResponseAcasAgreeReason = undefined;
+    }
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.ACAS_EARLY_CONCILIATION_CERTIFICATE,
