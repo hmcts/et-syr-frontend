@@ -142,6 +142,7 @@ export const PageUrls = {
   EMPLOYERS_CONTRACT_CLAIM: '/employers-contract-claim',
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: '/employers-contract-claim-details',
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: '/check-your-answers-employers-contract-claim',
+  ET1_FORM_VIEW: '/et1-form-view',
 } as const;
 
 export const InterceptPaths = {

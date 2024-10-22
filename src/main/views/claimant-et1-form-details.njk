@@ -7,7 +7,7 @@
 {% set et1FormLink = '' %}
 {% set et1FormDate = '' %}
 
-{% if et1Form === undefined or et1Form.value === undefined or et1Form.value.uploadedDocument === undefined %}
+{% if et1Form !== undefined or et1Form.value !== undefined or et1Form.value.uploadedDocument !== undefined %}
   {% if et1Form.value.uploadedDocument.document_binary_url === undefined %}
     {% set et1FormDescription = 'Document not found' %}
   {% endif %}
@@ -19,7 +19,7 @@
   {% if et1Form.value.uploadedDocument.document_binary_url === undefined or et1Form.value.uploadedDocument.document_binary_url === '' %}
     {% set et1FormLink = '-' %}
   {% else  %}
-    {% set et1FormLink = "<a href=" + et1Form.value.uploadedDocument.document_binary_url + " target=\"_blank\">" + et1Form.value.uploadedDocument.document_filename + "</a>" %}
+    {% set et1FormLink = "<a href=/et1-form-view" + languageParam + " target=\"_blank\">" + et1Form.value.uploadedDocument.document_filename + "</a>" %}
   {% endif %}
 {% endif %}
 

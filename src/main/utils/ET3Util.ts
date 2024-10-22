@@ -160,6 +160,39 @@ export default class ET3Util {
     return caseWithId;
   }
 
+  public static async updateCaseDetailsLinkStatuses(
+    req: AppRequest,
+    caseDetailsLinksSectionId: string,
+    caseDetailsLinksSectionStatus: string
+  ): Promise<CaseWithId> {
+    let caseWithId: CaseWithId;
+    try {
+      caseWithId = formatApiCaseDataToCaseWithId(
+        (
+          await getCaseApi(req.session.user?.accessToken)?.modifyEt3Data(
+            req.session?.userCase,
+            req.session?.user?.id,
+            ET3ModificationTypes.MODIFICATION_TYPE_UPDATE,
+            caseDetailsLinksSectionId,
+            caseDetailsLinksSectionStatus,
+            DefaultValues.STRING_EMPTY,
+            DefaultValues.STRING_EMPTY
+          )
+        )?.data,
+        req
+      );
+    } catch (e) {
+      logger.error(LoggerConstants.ERROR_API + 'modifyEt3Data' + DefaultValues.STRING_NEW_LINE + e);
+      ErrorUtils.setManualErrorToRequestSession(
+        req,
+        ValidationErrors.API,
+        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+      );
+      return;
+    }
+    return caseWithId;
+  }
+
   public static async updateET3ResponseWithET3Form(
     req: AppRequest,
     res: Response,
