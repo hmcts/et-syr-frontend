@@ -1,18 +1,15 @@
 import ClaimantEmploymentDatesController from '../../../main/controllers/ClaimantEmploymentDatesController';
 import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
-import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
-import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
+import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
 jest.mock('../../../main/helpers/CaseHelpers');
 const updateET3DataMock = jest.spyOn(ET3Util, 'updateET3Data');
 
 describe('Claimant employment dates Controller', () => {
-  const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
   let controller: ClaimantEmploymentDatesController;
   let request: ReturnType<typeof mockRequest>;
   let response: ReturnType<typeof mockResponse>;
@@ -25,9 +22,17 @@ describe('Claimant employment dates Controller', () => {
 
   describe('GET method', () => {
     it('should render the page', () => {
-      request = mockRequestWithTranslation({}, translationJsons);
       controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.CLAIMANT_EMPLOYMENT_DATES, expect.anything());
+    });
+
+    it('should render the page when clear selection', () => {
+      request.session.userCase.et3ResponseAreDatesCorrect = YesOrNoOrNotSure.NO;
+      request.query = {
+        redirect: 'clearSelection',
+      };
+      controller.get(request, response);
+      expect(request.session.userCase.et3ResponseAreDatesCorrect).toStrictEqual(undefined);
     });
   });
 

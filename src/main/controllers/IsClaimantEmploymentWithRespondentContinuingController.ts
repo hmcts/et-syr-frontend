@@ -9,6 +9,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
+import { isClearSelection } from '../helpers/RouterHelpers';
 import ET3Util from '../utils/ET3Util';
 
 export default class IsClaimantEmploymentWithRespondentContinuingController {
@@ -33,6 +34,10 @@ export default class IsClaimantEmploymentWithRespondentContinuingController {
           },
         ],
       },
+      clearSelection: {
+        type: 'clearSelection',
+        targetUrl: PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING,
+      },
     },
     submit: submitButton,
     saveForLater: saveForLaterButton,
@@ -54,6 +59,9 @@ export default class IsClaimantEmploymentWithRespondentContinuingController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    if (isClearSelection(req)) {
+      req.session.userCase.et3ResponseContinuingEmployment = undefined;
+    }
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING,

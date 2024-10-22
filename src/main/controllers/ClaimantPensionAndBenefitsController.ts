@@ -9,6 +9,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
+import { isClearSelection } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
 import { isContentCharsOrLess } from '../validators/validator';
@@ -33,7 +34,7 @@ export default class ClaimantPensionAndBenefitsController {
             subFields: {
               et3ResponsePensionCorrectDetails: {
                 type: 'charactercount',
-                label: (l: AnyRecord): string => l.whatAreClaimantCorrectPensionBenefits.label,
+                label: (l: AnyRecord): string => l.et3ResponsePensionCorrectDetails.label,
                 labelSize: 's',
                 maxlength: 400,
                 validator: isContentCharsOrLess(400),
@@ -45,6 +46,10 @@ export default class ClaimantPensionAndBenefitsController {
             value: YesOrNoOrNotApplicable.NOT_APPLICABLE,
           },
         ],
+      },
+      clearSelection: {
+        type: 'clearSelection',
+        targetUrl: PageUrls.CLAIMANT_PENSION_AND_BENEFITS,
       },
     },
     submit: submitButton,
@@ -81,6 +86,10 @@ export default class ClaimantPensionAndBenefitsController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    if (isClearSelection(req)) {
+      req.session.userCase.et3ResponseIsPensionCorrect = undefined;
+      req.session.userCase.et3ResponsePensionCorrectDetails = undefined;
+    }
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.CLAIMANT_PENSION_AND_BENEFITS,

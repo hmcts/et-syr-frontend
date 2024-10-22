@@ -9,6 +9,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
+import { isClearSelection } from '../helpers/RouterHelpers';
 import ET3Util from '../utils/ET3Util';
 
 export default class ClaimantPayDetailsController {
@@ -35,6 +36,10 @@ export default class ClaimantPayDetailsController {
           },
         ],
       },
+      clearSelection: {
+        type: 'clearSelection',
+        targetUrl: PageUrls.CLAIMANT_PAY_DETAILS,
+      },
     },
     submit: submitButton,
     saveForLater: saveForLaterButton,
@@ -60,6 +65,9 @@ export default class ClaimantPayDetailsController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    if (isClearSelection(req)) {
+      req.session.userCase.et3ResponseEarningDetailsCorrect = undefined;
+    }
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.CLAIMANT_PAY_DETAILS,
