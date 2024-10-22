@@ -10,7 +10,7 @@
   },
   "errors": {
     "et3ResponseAcasAgreeReason": {
-      "tooLong": "The details of why you disagree must be less than 2500 characters"
+      "tooLong": "The details of why you disagree must be less than 800 characters"
     }
   }
 }

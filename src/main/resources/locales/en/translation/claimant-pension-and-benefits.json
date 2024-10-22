@@ -4,7 +4,7 @@
   "tableHeader": "Pension and benefits details provided in ET1",
   "anyContributionsLabel": "Did the respondent make any contributions to pension?",
   "receiveBenefitsLabel": "Receive any employee benefits?",
-  "areClaimantPensionBenefitsCorrect": {
+  "et3ResponseIsPensionCorrect": {
     "label": "Are the claimant’s pension and benefits details correct?"
   },
   "et3ResponsePensionCorrectDetails": {
