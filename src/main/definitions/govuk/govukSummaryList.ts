@@ -35,7 +35,7 @@ export function addSummaryRowWithAction(
     key: { text: key, classes: 'govuk-!-font-weight-regular-m' },
     value: { text: value || '' }, // Default to empty string if undefined
     actions: createChangeAction(
-      pageUrl + sectionCya !== undefined ? sectionCya : InterceptPaths.ANSWERS_CHANGE,
+      pageUrl + (sectionCya !== undefined ? sectionCya : InterceptPaths.ANSWERS_CHANGE),
       linkText,
       key
     ),
