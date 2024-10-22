@@ -16,7 +16,8 @@
       "required": "Make a selection"
     },
     "et3ResponseRespondentSupportDetails": {
-      "required": "Give details of the support you need"
+      "required": "Give details of the support you need",
+      "tooLong": "The details given for support needed must be less than 400 characters"
     }
   }
 }

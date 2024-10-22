@@ -16,7 +16,8 @@
       "required": "[W]Make a selection"
     },
     "et3ResponseRespondentSupportDetails": {
-      "required": "[W]Give details of the support you need"
+      "required": "[W]Give details of the support you need",
+      "tooLong": "[W]The details given for support needed must be less than 400 characters"
     }
   }
 }
