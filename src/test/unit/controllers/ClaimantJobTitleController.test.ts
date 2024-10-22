@@ -27,7 +27,7 @@ describe('Claimant job title Controller', () => {
     });
 
     it('should render the page when clear selection', () => {
-      request.session.userCase.et3ResponseIsJobTitleCorrect = YesOrNoOrNotSure.NO;
+      request.session.userCase.et3ResponseIsJobTitleCorrect = YesOrNoOrNotApplicable.NO;
       request.session.userCase.et3ResponseCorrectJobTitle = 'Test';
       request.query = {
         redirect: 'clearSelection',

@@ -27,7 +27,7 @@ describe('Claimant employment dates Controller', () => {
     });
 
     it('should render the page when clear selection', () => {
-      request.session.userCase.et3ResponseAreDatesCorrect = YesOrNoOrNotSure.NO;
+      request.session.userCase.et3ResponseAreDatesCorrect = YesOrNoOrNotApplicable.NO;
       request.query = {
         redirect: 'clearSelection',
       };

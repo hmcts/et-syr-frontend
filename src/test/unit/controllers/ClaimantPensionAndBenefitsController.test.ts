@@ -1,5 +1,4 @@
 import ClaimantPensionAndBenefitsController from '../../../main/controllers/ClaimantPensionAndBenefitsController';
-
 import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -28,7 +27,7 @@ describe('Claimant pension and benefits Controller', () => {
     });
 
     it('should render the page when clear selection', () => {
-      request.session.userCase.et3ResponseIsPensionCorrect = YesOrNoOrNotSure.NO;
+      request.session.userCase.et3ResponseIsPensionCorrect = YesOrNoOrNotApplicable.NO;
       request.session.userCase.et3ResponsePensionCorrectDetails = 'Test';
       request.query = {
         redirect: 'clearSelection',

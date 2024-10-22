@@ -30,7 +30,7 @@ describe('Claimant average weekly work hours Controller', () => {
     });
 
     it('should render the page when clear selection', () => {
-      request.session.userCase.et3ResponseClaimantWeeklyHours = YesOrNoOrNotSure.NO;
+      request.session.userCase.et3ResponseClaimantWeeklyHours = YesOrNoOrNotApplicable.NO;
       request.session.userCase.et3ResponseClaimantCorrectHours = 'Test';
       request.query = {
         redirect: 'clearSelection',

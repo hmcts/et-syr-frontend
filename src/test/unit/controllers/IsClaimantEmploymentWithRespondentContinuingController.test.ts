@@ -30,7 +30,7 @@ describe('Is the claimant’s employment with the respondent continuing? Control
     });
 
     it('should render the page when clear selection', () => {
-      request.session.userCase.et3ResponseContinuingEmployment = YesOrNoOrNotSure.NO;
+      request.session.userCase.et3ResponseContinuingEmployment = YesOrNoOrNotApplicable.NO;
       request.query = {
         redirect: 'clearSelection',
       };

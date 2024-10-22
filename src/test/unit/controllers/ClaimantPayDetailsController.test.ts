@@ -1,8 +1,6 @@
 import ClaimantPayDetailsController from '../../../main/controllers/ClaimantPayDetailsController';
 import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
-import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
@@ -29,7 +27,7 @@ describe('Claimant pay details Controller', () => {
     });
 
     it('should render the page when clear selection', () => {
-      request.session.userCase.et3ResponseEarningDetailsCorrect = YesOrNoOrNotSure.NO;
+      request.session.userCase.et3ResponseEarningDetailsCorrect = YesOrNoOrNotApplicable.NO;
       request.query = {
         redirect: 'clearSelection',
       };
