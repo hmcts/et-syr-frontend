@@ -1,5 +1,5 @@
 {
-  "title": "Claimant pension and benefits",
+  "title": "Claimant pension and benefits (optional)",
   "p1": "It may help the tribunal if you can provide this detail. You will not be penalised for not providing it.",
   "tableHeader": "Pension and benefits details provided in ET1",
   "anyContributionsLabel": "Did the respondent make any contributions to pension?",
@@ -11,12 +11,8 @@
     "label": "What are the claimant’s correct pension and benefits details? (optional)"
   },
   "errors": {
-    "et3ResponseIsPensionCorrect": {
-      "required": "Make a selection"
-    },
     "et3ResponsePensionCorrectDetails": {
-      "tooLong": "The claimant pension and benefits entered must be less than 3000 characters",
-      "required": "The claimant pension and benefits can not be empty"
+      "tooLong": "The claimant pension and benefits entered must be less than 400 characters"
     }
   }
 }

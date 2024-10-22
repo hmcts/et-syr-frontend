@@ -81,7 +81,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponseCorrectJobTitle?: string;
   et3ResponseClaimantWeeklyHours?: YesOrNoOrNotSure;
   et3ResponseClaimantCorrectHours?: string;
-  et3ResponseEarningDetailsCorrect?: YesOrNo;
+  et3ResponseEarningDetailsCorrect?: YesOrNoOrNotSure;
   et3ResponseEmployerClaimDocument?: UploadedDocumentType;
   et3ResponseRespondentSupportDocument?: UploadedDocumentType;
   et3ResponsePayFrequency?: string;
@@ -93,7 +93,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   respondentContactPreference?: string;
   responseStruckOutDate?: string;
   responseStruckOutChairman?: string;
-  et3ResponseIsNoticeCorrect?: YesOrNo;
+  et3ResponseIsNoticeCorrect?: YesOrNoOrNotSure;
   responseRequiredInfoAbsent?: string;
   responseNotes?: string;
   responseReferredToJudge?: string;

@@ -1,5 +1,5 @@
 {
-  "title": "Claimant job title",
+  "title": "Claimant job title (optional)",
   "jobTitleLabel": "Job title provided on ET1",
   "p1": "It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
   "et3ResponseIsJobTitleCorrect": {
@@ -9,9 +9,6 @@
     "label": "What is or was the claimant’s correct job title? (optional)"
   },
   "errors": {
-    "et3ResponseIsJobTitleCorrect": {
-      "required": "Make a selection"
-    },
     "et3ResponseCorrectJobTitle": {
       "tooLong": "The job title entered must be less than 100 characters"
     }
