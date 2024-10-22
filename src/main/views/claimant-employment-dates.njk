@@ -3,14 +3,14 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
-{% if userCase.startDate %}
-  {% set startDate = userCase.startDate %}
+{% if startDateDisplay %}
+  {% set startDate = startDateDisplay %}
 {% else %}
   {% set startDate = notProvided %}
 {% endif %}
 
-{% if userCase.endDate %}
-  {% set endDate = userCase.endDate %}
+{% if endDateDisplay %}
+  {% set endDate = endDateDisplay %}
 {% else %}
   {% set endDate = notProvided %}
 {% endif %}
