@@ -10,6 +10,7 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { isClearSelection } from '../helpers/RouterHelpers';
 import { getContactPreferencesDetails } from '../helpers/controller/RespondentContactPreferencesControllerHelper';
 import ET3Util from '../utils/ET3Util';
 import { isFieldFilledIn } from '../validators/validator';
@@ -68,6 +69,10 @@ export default class RespondentContactPreferencesController {
           },
         ],
       },
+      clearSelection: {
+        type: 'clearSelection',
+        targetUrl: PageUrls.RESPONDENT_CONTACT_PREFERENCES,
+      },
     },
     submit: submitButton,
     saveForLater: saveForLaterButton,
@@ -105,6 +110,11 @@ export default class RespondentContactPreferencesController {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_CONTACT_PREFERENCES);
     const userCase = req.session?.userCase;
     const user = req.session?.user;
+
+    if (isClearSelection(req)) {
+      userCase.responseRespondentContactPreference = undefined;
+      userCase.et3ResponseLanguagePreference = undefined;
+    }
 
     const translations: AnyRecord = {
       ...req.t(TranslationKeys.RESPONDENT_CONTACT_PREFERENCES as never, { returnObjects: true } as never),

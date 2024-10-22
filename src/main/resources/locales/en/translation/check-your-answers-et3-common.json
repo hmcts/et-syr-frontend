@@ -9,21 +9,19 @@
     "contactName": "Name of preferred contact at the respondent’s address (optional)",
     "dxAddressOptional": "DX address (optional)",
     "contactNumberOptional": "Contact phone number (optional)",
-    "contactFormat": "How would you prefer to be contacted?",
+    "contactFormat": "How would you prefer to be contacted? (optional)",
     "reasonForPost": "Provide a reason why you have selected post",
-    "contactLanguage": "What language would you like to be contacted in?",
-    "exampleData": "[example data]"
+    "contactLanguage": "What language would you like to be contacted in? (optional)"
   },
   "section2": {
     "header": "Hearing format and employer details",
-    "participateInHearings": "Would you be able to take part in hearings by video and phone?",
+    "participateInHearings": "Would you be able to take part in hearings by video and phone? (optional)",
     "explainReason": "Explain why you are unable to take part in video or phone hearings",
-    "disabilitySupport": "Do you have a physical, mental or learning disability or health condition that means you need support during your case?",
+    "disabilitySupport": "Do you have a physical, mental or learning disability or health condition that means you need support during your case? (optional)",
     "supportRequest": "Tell us what support you need to request",
     "employeesInGreatBritain": "How many people does the respondent employ in Great Britain? (optional)",
-    "multipleSites": "Does the respondent have more than one site in Great Britain?",
-    "employeesAtSite": "How many employed at the site the claimant worked at? (optional)",
-    "exampleData": "[example data]"
+    "multipleSites": "Does the respondent have more than one site in Great Britain? (optional)",
+    "employeesAtSite": "How many employed at the site the claimant worked at? (optional)"
   },
   "section3": {
     "header": "Early conciliation and employee details",

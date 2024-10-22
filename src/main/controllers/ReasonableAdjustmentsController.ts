@@ -10,6 +10,7 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { isClearSelection } from '../helpers/RouterHelpers';
 import ET3Util from '../utils/ET3Util';
 import { isContentCharsOrLessAndNotEmpty } from '../validators/validator';
 
@@ -53,10 +54,14 @@ export default class ReasonableAdjustmentsController {
           },
         ],
       },
+      clearSelection: {
+        type: 'clearSelection',
+        targetUrl: PageUrls.REASONABLE_ADJUSTMENTS,
+      },
     },
     submit: submitButton,
     saveForLater: saveForLaterButton,
-  };
+  } as never;
 
   constructor() {
     this.form = new Form(<FormFields>this.reasonableAdjustments.fields);
@@ -83,6 +88,11 @@ export default class ReasonableAdjustmentsController {
 
   public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.REASONABLE_ADJUSTMENTS);
+
+    if (isClearSelection(req)) {
+      req.session.userCase.et3ResponseRespondentSupportNeeded = undefined;
+    }
+
     const content = getPageContent(req, this.reasonableAdjustments, [
       TranslationKeys.COMMON,
       TranslationKeys.REASONABLE_ADJUSTMENTS,

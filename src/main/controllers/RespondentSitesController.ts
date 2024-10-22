@@ -10,6 +10,7 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { isClearSelection } from '../helpers/RouterHelpers';
 import ET3Util from '../utils/ET3Util';
 
 export default class RespondentSitesController {
@@ -35,10 +36,14 @@ export default class RespondentSitesController {
           },
         ],
       },
+      clearSelection: {
+        type: 'clearSelection',
+        targetUrl: PageUrls.RESPONDENT_SITES,
+      },
     },
     submit: submitButton,
     saveForLater: saveForLaterButton,
-  };
+  } as never;
 
   constructor() {
     this.form = new Form(<FormFields>this.respondentSites.fields);
@@ -57,6 +62,11 @@ export default class RespondentSitesController {
 
   public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_SITES);
+
+    if (isClearSelection(req)) {
+      req.session.userCase.et3ResponseMultipleSites = undefined;
+    }
+
     const content = getPageContent(req, this.respondentSites, [
       TranslationKeys.COMMON,
       TranslationKeys.RESPONDENT_SITES,
