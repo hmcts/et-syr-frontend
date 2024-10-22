@@ -72,14 +72,12 @@ describe('Is the claimant’s employment with the respondent continuing? Control
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_JOB_TITLE);
     });
 
-    it('should render the same page when nothing is selected', async () => {
+    it('should redirect to next page when nothing is selected', async () => {
       request = mockRequest({ body: {} });
       request.url = PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
-      const errors = [{ propertyName: 'et3ResponseContinuingEmployment', errorType: 'required' }];
-      expect(request.session.errors).toEqual(errors);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_JOB_TITLE);
     });
   });
 });

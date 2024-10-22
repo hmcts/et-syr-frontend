@@ -11,12 +11,12 @@ import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
-import { isContent2500CharsOrLessOrEmpty, isOptionSelected } from '../validators/validator';
+import { isContentCharsOrLess } from '../validators/validator';
 
 const logger = getLogger('ClaimantPensionAndBenefitsController');
 
 export default class ClaimantPensionAndBenefitsController {
-  form: Form;
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
       et3ResponseIsPensionCorrect: {
@@ -33,10 +33,10 @@ export default class ClaimantPensionAndBenefitsController {
             subFields: {
               et3ResponsePensionCorrectDetails: {
                 type: 'charactercount',
-                id: 'et3ResponsePensionCorrectDetails',
                 label: (l: AnyRecord): string => l.whatAreClaimantCorrectPensionBenefits.label,
                 labelSize: 's',
-                validator: isContent2500CharsOrLessOrEmpty,
+                maxlength: 400,
+                validator: isContentCharsOrLess(400),
               },
             },
           },
@@ -45,7 +45,6 @@ export default class ClaimantPensionAndBenefitsController {
             value: YesOrNoOrNotApplicable.NOT_APPLICABLE,
           },
         ],
-        validator: isOptionSelected,
       },
     },
     submit: submitButton,

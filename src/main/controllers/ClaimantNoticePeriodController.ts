@@ -2,25 +2,23 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNoOrNotApplicable } from '../definitions/case';
+import { CaseWithId, YesOrNoOrNotApplicable } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
-import { getLogger } from '../logger';
-import { isContent2500CharsOrLess, isOptionSelected } from '../validators/validator';
-
-const logger = getLogger('ClaimantNoticePeriodController');
+import { getPageContent } from '../helpers/FormHelper';
+import ET3Util from '../utils/ET3Util';
+import { isContentCharsOrLess } from '../validators/validator';
 
 export default class ClaimantNoticePeriodController {
-  form: Form;
+  private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      areClaimantNoticePeriodDetailsCorrect: {
+      et3ResponseIsNoticeCorrect: {
         type: 'radios',
-        label: (l: AnyRecord): string => l.areClaimantNoticePeriodDetailsCorrect.label,
+        label: (l: AnyRecord): string => l.et3ResponseIsNoticeCorrect.label,
         values: [
           {
             label: (l: AnyRecord): string => l.yes,
@@ -30,13 +28,13 @@ export default class ClaimantNoticePeriodController {
             label: (l: AnyRecord): string => l.no,
             value: YesOrNoOrNotApplicable.NO,
             subFields: {
-              whatAreClaimantCorrectNoticeDetails: {
-                type: 'textarea',
-                id: 'whatAreClaimantCorrectNoticeDetails',
-                label: (l: AnyRecord): string => l.whatAreClaimantCorrectNoticeDetails.label,
+              et3ResponseCorrectNoticeDetails: {
+                type: 'charactercount',
+                label: (l: AnyRecord): string => l.et3ResponseCorrectNoticeDetails.label,
                 labelSize: 's',
-                hint: (l: AnyRecord): string => l.whatAreClaimantCorrectNoticeDetails.hint,
-                validator: isContent2500CharsOrLess,
+                hint: (l: AnyRecord): string => l.et3ResponseCorrectNoticeDetails.hint,
+                maxlength: 500,
+                validator: isContentCharsOrLess(500),
               },
             },
           },
@@ -45,7 +43,6 @@ export default class ClaimantNoticePeriodController {
             value: YesOrNoOrNotApplicable.NOT_APPLICABLE,
           },
         ],
-        validator: isOptionSelected,
       },
     },
     submit: submitButton,
@@ -57,7 +54,20 @@ export default class ClaimantNoticePeriodController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.CLAIMANT_PENSION_AND_BENEFITS);
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    const fieldsToReset: string[] = [];
+    if (YesOrNoOrNotSure.NO !== formData.et3ResponseIsNoticeCorrect) {
+      fieldsToReset.push(formData.et3ResponseCorrectNoticeDetails);
+    }
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.PayPensionBenefitDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.CLAIMANT_PENSION_AND_BENEFITS,
+      fieldsToReset
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -66,11 +76,8 @@ export default class ClaimantNoticePeriodController {
       TranslationKeys.CLAIMANT_NOTICE_PERIOD,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.CLAIMANT_NOTICE_PERIOD, {
       ...content,
-      writtenContract: '[entry]', // TODO: Update value
-      noticePeriod: '[Notice period digit] [Weeks / Months]', // TODO: Update value
       hideContactUs: true,
     });
   };

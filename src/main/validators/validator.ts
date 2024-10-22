@@ -18,34 +18,23 @@ export const isRespondentNameValid: Validator = value => {
   }
 };
 
-export const isContent2500CharsOrLess: Validator = value => {
-  if (value && (value as string).trim().length > 2500) {
-    return ValidationErrors.TOO_LONG;
-  }
+export const isContentCharsOrLess = (maxlength: number): Validator => {
+  return (value: string): string | undefined => {
+    if (value && value.trim().length > maxlength) {
+      return ValidationErrors.TOO_LONG;
+    }
+  };
 };
 
-export const isContent2500CharsOrLessOrEmpty: Validator = value => {
-  if (!value || StringUtils.isBlank(value as string)) {
-    return ValidationErrors.REQUIRED;
-  }
-  if (value && (value as string).trim().length > 2500) {
-    return ValidationErrors.TOO_LONG;
-  }
-};
-
-export const isContent3000CharsOrLessOrEmpty: Validator = value => {
-  if (!value || StringUtils.isBlank(value as string)) {
-    return ValidationErrors.REQUIRED;
-  }
-  if (value && (value as string).trim().length > 3000) {
-    return ValidationErrors.TOO_LONG;
-  }
-};
-
-export const isContent100CharsOrLess: Validator = value => {
-  if (value && (value as string).trim().length > 100) {
-    return ValidationErrors.TOO_LONG;
-  }
+export const isContentCharsOrLessAndNotEmpty = (maxlength: number): Validator => {
+  return (value: string): string | undefined => {
+    if (!value || StringUtils.isBlank(value)) {
+      return ValidationErrors.REQUIRED;
+    }
+    if (value && value.trim().length > maxlength) {
+      return ValidationErrors.TOO_LONG;
+    }
+  };
 };
 
 export const isContentBetween3And100Chars: Validator = value => {
@@ -123,10 +112,6 @@ export const isValidNoticeLength: Validator = value => {
   }
 };
 
-export const areBenefitsValid: Validator = value => {
-  return isContent2500CharsOrLess(value);
-};
-
 export const isPayIntervalNull: Validator = (value: string) => {
   if (!value) {
     return ValidationErrors.REQUIRED;
@@ -183,19 +168,6 @@ export const isValidCurrency: Validator = value => {
     return;
   }
   return ValidationErrors.INVALID_CURRENCY;
-};
-
-export const isValidPay: Validator = value => {
-  if (!value) {
-    return;
-  }
-  const validatedValues: [digitCount: number, correctFormat: boolean] = currencyValidation(value);
-  if (!validatedValues[1]) {
-    return ValidationErrors.NOT_A_NUMBER;
-  }
-  if (validatedValues[0] < 2 || validatedValues[0] > 12) {
-    return ValidationErrors.MIN_LENGTH_REQUIRED;
-  }
 };
 
 export const currencyValidation = (value: string | string[]): [digitCount: number, correctFormat: boolean] => {
@@ -267,14 +239,5 @@ export const isPhoneNumberValid: Validator = value => {
   // Test the value against the regular expression
   if (!phonePattern.test(value as string)) {
     return ValidationErrors.INVALID_PHONE_NUMBER;
-  }
-};
-
-export const isFilledInAndIs2500CharsOrLess: Validator = value => {
-  if (isFieldFilledIn(value)) {
-    return ValidationErrors.REQUIRED;
-  }
-  if (isContent2500CharsOrLess(value)) {
-    return ValidationErrors.TOO_LONG;
   }
 };

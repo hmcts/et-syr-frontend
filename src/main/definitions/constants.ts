@@ -184,7 +184,6 @@ export const ValidationErrors = {
   INVALID_PHONE_NUMBER: 'invalidPhoneNumber',
   API: 'api',
   EXCEEDED: 'exceeded',
-  MIN_LENGTH_REQUIRED: 'minLengthRequired',
   NEGATIVE_NUMBER: 'negativeNumber',
   NON_NUMERIC: 'nonnumeric',
   NOT_A_NUMBER: 'notANumber',

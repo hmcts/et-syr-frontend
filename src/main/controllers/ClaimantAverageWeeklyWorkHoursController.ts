@@ -10,7 +10,7 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import ET3Util from '../utils/ET3Util';
-import { isOptionSelected, isValidAvgWeeklyHours } from '../validators/validator';
+import { isValidAvgWeeklyHours } from '../validators/validator';
 
 export default class ClaimantAverageWeeklyWorkHoursController {
   private readonly form: Form;
@@ -43,7 +43,6 @@ export default class ClaimantAverageWeeklyWorkHoursController {
             value: YesOrNoOrNotApplicable.NOT_APPLICABLE,
           },
         ],
-        validator: isOptionSelected,
       },
     },
     submit: submitButton,

@@ -84,14 +84,12 @@ describe('Claimant job title Controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS);
     });
 
-    it('should render the same page when nothing is selected', async () => {
+    it('should redirect to next page when nothing is selected', async () => {
       request = mockRequest({ body: {} });
       request.url = PageUrls.CLAIMANT_JOB_TITLE;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_JOB_TITLE);
-      const errors = [{ propertyName: 'et3ResponseIsJobTitleCorrect', errorType: 'required' }];
-      expect(request.session.errors).toEqual(errors);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS);
     });
   });
 });

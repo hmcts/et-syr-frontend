@@ -108,14 +108,14 @@ describe('Claimant average weekly work hours Controller', () => {
       );
     });
 
-    it('should render the same page when nothing is selected', async () => {
+    it('should redirect to next page when nothing is selected', async () => {
       request = mockRequest({ body: {} });
       request.url = PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS);
-      const errors = [{ propertyName: 'et3ResponseClaimantWeeklyHours', errorType: 'required' }];
-      expect(request.session.errors).toEqual(errors);
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS
+      );
     });
   });
 });
