@@ -1,18 +1,15 @@
 import ClaimantAverageWeeklyWorkHoursController from '../../../main/controllers/ClaimantAverageWeeklyWorkHoursController';
 import { YesOrNoOrNotSure } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
-import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
-import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
+import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
 jest.mock('../../../main/helpers/CaseHelpers');
 const updateET3DataMock = jest.spyOn(ET3Util, 'updateET3Data');
 
 describe('Claimant average weekly work hours Controller', () => {
-  const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
   let controller: ClaimantAverageWeeklyWorkHoursController;
   let request: ReturnType<typeof mockRequest>;
   let response: ReturnType<typeof mockResponse>;
@@ -25,12 +22,22 @@ describe('Claimant average weekly work hours Controller', () => {
 
   describe('GET method', () => {
     it('should render the page', () => {
-      request = mockRequestWithTranslation({}, translationJsons);
       controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(
         TranslationKeys.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS,
         expect.anything()
       );
+    });
+
+    it('should render the page when clear selection', () => {
+      request.session.userCase.et3ResponseClaimantWeeklyHours = YesOrNoOrNotSure.NO;
+      request.session.userCase.et3ResponseClaimantCorrectHours = 'Test';
+      request.query = {
+        redirect: 'clearSelection',
+      };
+      controller.get(request, response);
+      expect(request.session.userCase.et3ResponseClaimantWeeklyHours).toStrictEqual(undefined);
+      expect(request.session.userCase.et3ResponseClaimantCorrectHours).toStrictEqual(undefined);
     });
   });
 

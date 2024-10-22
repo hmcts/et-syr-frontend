@@ -1,18 +1,15 @@
 import IsClaimantEmploymentWithRespondentContinuingController from '../../../main/controllers/IsClaimantEmploymentWithRespondentContinuingController';
 import { YesOrNoOrNotSure } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
-import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
-import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
+import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
 jest.mock('../../../main/helpers/CaseHelpers');
 const updateET3DataMock = jest.spyOn(ET3Util, 'updateET3Data');
 
 describe('Is the claimant’s employment with the respondent continuing? Controller', () => {
-  const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
   let controller: IsClaimantEmploymentWithRespondentContinuingController;
   let request: ReturnType<typeof mockRequest>;
   let response: ReturnType<typeof mockResponse>;
@@ -25,13 +22,20 @@ describe('Is the claimant’s employment with the respondent continuing? Control
 
   describe('GET method', () => {
     it('should render the page', () => {
-      request = mockRequestWithTranslation({}, translationJsons);
       controller.get(request, response);
-
       expect(response.render).toHaveBeenCalledWith(
         TranslationKeys.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING,
         expect.anything()
       );
+    });
+
+    it('should render the page when clear selection', () => {
+      request.session.userCase.et3ResponseContinuingEmployment = YesOrNoOrNotSure.NO;
+      request.query = {
+        redirect: 'clearSelection',
+      };
+      controller.get(request, response);
+      expect(request.session.userCase.et3ResponseContinuingEmployment).toStrictEqual(undefined);
     });
   });
 
