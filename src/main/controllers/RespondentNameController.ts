@@ -11,7 +11,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import ET3Util from '../utils/ET3Util';
-import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
+import { isContentCharsOrLessAndNotEmpty, isOptionSelected } from '../validators/validator';
 
 export default class RespondentNameController {
   private readonly form: Form;
@@ -41,8 +41,8 @@ export default class RespondentNameController {
                 labelSize: 'normal',
                 label: (l: AnyRecord): string => l.respondentNameTextLabel,
                 classes: 'govuk-text',
-                attributes: { maxLength: 100 },
-                validator: isFieldFilledIn,
+                attributes: { maxLength: 60 },
+                validator: isContentCharsOrLessAndNotEmpty(60),
               },
             },
           },
