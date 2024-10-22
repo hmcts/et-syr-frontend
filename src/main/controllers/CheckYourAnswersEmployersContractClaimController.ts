@@ -77,7 +77,11 @@ export default class CheckYourAnswersEmployersContractClaimController {
       InterceptPaths,
       PageUrls,
       form: this.formContent,
-      et3ResponseSection6: getEt3Section6(userCase, sectionTranslations),
+      et3ResponseSection6: getEt3Section6(
+        userCase,
+        sectionTranslations,
+        InterceptPaths.EMPLOYERS_CONTRACT_CLAIM_CHANGE
+      ),
       redirectUrl,
       hideContactUs: true,
     });

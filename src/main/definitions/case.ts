@@ -138,7 +138,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponseClaimantNameCorrection?: string;
   et3ResponseRespondentCompanyNumber?: string;
   et3ResponseHearingRepresentative?: string[];
-  et3ResponseHearingRespondent?: string[];
+  et3ResponseHearingRespondent?: HearingPreferenceET3[];
   et3ResponseEmploymentCount?: string;
   et3ResponseMultipleSites?: YesOrNo;
   et3ResponseSiteEmploymentCount?: string;
@@ -149,7 +149,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponseEmployerClaimDocumentUrl?: string;
   et3ResponseEmployerClaimDocumentCategoryId?: string;
   et3ResponseEmployerClaimDocumentUploadTimestamp?: string;
-  et3ResponseRespondentSupportNeeded?: YesOrNo;
+  et3ResponseRespondentSupportNeeded?: YesOrNoOrNotSure;
   et3ResponseAcasAgree?: YesOrNo;
   et3ResponseAcasAgreeReason?: string;
   et3ResponseAreDatesCorrect?: YesOrNoOrNotApplicable;
@@ -399,6 +399,12 @@ export const enum YesOrNo {
   NO = 'No',
 }
 
+export const enum YesOrNoOrNotSure {
+  YES = 'Yes',
+  NO = 'No',
+  NOT_SURE = 'not sure',
+}
+
 export const enum YesOrNoOrPreferNot {
   YES = 'Yes',
   NO = 'No',
@@ -480,6 +486,12 @@ export const enum HearingPreference {
   VIDEO = 'Video',
   PHONE = 'Phone',
   NEITHER = 'Neither',
+}
+
+export const enum HearingPreferenceET3 {
+  VIDEO = 'Video hearings',
+  PHONE = 'Phone hearings',
+  NEITHER = 'No, I cannot take part in either a video or phone hearing',
 }
 
 export const enum AgreedDocuments {

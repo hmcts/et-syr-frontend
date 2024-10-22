@@ -11,7 +11,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import ET3Util from '../utils/ET3Util';
-import { isOptionSelected, isValidCompanyRegistrationNumber } from '../validators/validator';
+import { isValidCompanyRegistrationNumber } from '../validators/validator';
 
 export default class TypeOfOrganisationController {
   private readonly form: Form;
@@ -72,7 +72,6 @@ export default class TypeOfOrganisationController {
             value: TypeOfOrganisation.OTHER,
           },
         ],
-        validator: isOptionSelected,
       },
     },
     submit: submitButton,

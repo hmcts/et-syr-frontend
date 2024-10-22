@@ -77,7 +77,7 @@ export default class CheckYourAnswersContestClaimController {
       InterceptPaths,
       PageUrls,
       form: this.formContent,
-      et3ResponseSection5: getEt3Section5(userCase, sectionTranslations),
+      et3ResponseSection5: getEt3Section5(userCase, sectionTranslations, InterceptPaths.CONTEST_CLAIM_CHANGE),
       redirectUrl,
       hideContactUs: true,
     });

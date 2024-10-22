@@ -1,6 +1,6 @@
 {
   "title": "[W]Type of Organisation",
-  "h1": "[W]What type of organisation is the respondent?",
+  "h1": "[W]What type of organisation is the respondent? (optional)",
   "individual": "[W]Individual",
   "limitedCompany": "[W]Limited Company",
   "partnership": "[W]Partnership",

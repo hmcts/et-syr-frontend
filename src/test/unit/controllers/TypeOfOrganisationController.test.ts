@@ -95,19 +95,5 @@ describe('Type of organisation Controller', () => {
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_ADDRESS);
     });
-
-    it('should redirect to next page when no is selected but hour invalid', async () => {
-      request = mockRequest({
-        body: {
-          et3ResponseRespondentEmployerType: '',
-        },
-      });
-      request.url = PageUrls.TYPE_OF_ORGANISATION;
-      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
-      await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.TYPE_OF_ORGANISATION);
-      const errors = [{ propertyName: 'et3ResponseRespondentEmployerType', errorType: 'required' }];
-      expect(request.session.errors).toEqual(errors);
-    });
   });
 });

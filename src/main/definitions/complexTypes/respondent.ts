@@ -1,11 +1,13 @@
 import {
   EmailOrPost,
   EnglishOrWelsh,
+  HearingPreferenceET3,
   HowOften,
   NoAcasNumberReason,
   UploadedDocumentType,
   YesOrNo,
   YesOrNoOrNotApplicable,
+  YesOrNoOrNotSure,
 } from '../case';
 import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from '../links';
 
@@ -69,7 +71,7 @@ export interface RespondentType {
   et3ResponseContactReason?: string;
   et3ResponseLanguagePreference?: EnglishOrWelsh;
   et3ResponseHearingRepresentative?: string[];
-  et3ResponseHearingRespondent?: string[];
+  et3ResponseHearingRespondent?: HearingPreferenceET3[];
   et3ResponseEmploymentCount?: string;
   et3ResponseMultipleSites?: YesOrNo;
   et3ResponseSiteEmploymentCount?: string;
@@ -98,7 +100,7 @@ export interface RespondentType {
   et3ResponseEmployerClaim?: YesOrNo;
   et3ResponseEmployerClaimDetails?: string;
   et3ResponseEmployerClaimDocument?: UploadedDocumentType;
-  et3ResponseRespondentSupportNeeded?: YesOrNo; //Reasonable Adjustments
+  et3ResponseRespondentSupportNeeded?: YesOrNoOrNotSure; //Reasonable Adjustments
   et3ResponseRespondentSupportDetails?: string;
   et3ResponseRespondentSupportDocument?: UploadedDocumentType;
   et3Form?: UploadedDocumentType;

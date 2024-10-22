@@ -44,35 +44,5 @@ describe('Respondent Contact Preferences Controller', () => {
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS);
     });
-
-    it('should redirect to same page when no contact preference is selected', async () => {
-      request = mockRequest({
-        body: {
-          responseRespondentContactPreference: '',
-          et3ResponseLanguagePreference: EnglishOrWelsh.ENGLISH,
-        },
-      });
-      request.url = PageUrls.RESPONDENT_CONTACT_PREFERENCES;
-      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
-      await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTACT_PREFERENCES);
-      const errors = [{ propertyName: 'responseRespondentContactPreference', errorType: 'required' }];
-      expect(request.session.errors).toEqual(errors);
-    });
-
-    it('should redirect to same page when no language preference is selected', async () => {
-      request = mockRequest({
-        body: {
-          responseRespondentContactPreference: EmailOrPost.POST,
-          et3ResponseLanguagePreference: '',
-        },
-      });
-      request.url = PageUrls.RESPONDENT_CONTACT_PREFERENCES;
-      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
-      await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTACT_PREFERENCES);
-      const errors = [{ propertyName: 'et3ResponseLanguagePreference', errorType: 'required' }];
-      expect(request.session.errors).toEqual(errors);
-    });
   });
 });

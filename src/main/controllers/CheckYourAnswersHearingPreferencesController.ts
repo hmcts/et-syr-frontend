@@ -85,7 +85,7 @@ export default class CheckYourAnswersHearingPreferencesController {
       InterceptPaths,
       PageUrls,
       form: this.formContent,
-      et3ResponseSection2: getEt3Section2(userCase, sectionTranslations),
+      et3ResponseSection2: getEt3Section2(userCase, sectionTranslations, InterceptPaths.EMPLOYER_DETAILS_CHANGE),
       redirectUrl,
       hideContactUs: true,
     });

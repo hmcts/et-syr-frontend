@@ -10,6 +10,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import ET3Util from '../utils/ET3Util';
+import { isAValidNumber } from '../validators/validator';
 
 export default class RespondentSiteEmployeesController {
   private readonly form: Form;
@@ -22,6 +23,7 @@ export default class RespondentSiteEmployeesController {
         label: (l: AnyRecord): string => l.label,
         hint: (l: AnyRecord): string => l.hint,
         labelHidden: false,
+        validator: isAValidNumber,
       },
     },
     submit: submitButton,

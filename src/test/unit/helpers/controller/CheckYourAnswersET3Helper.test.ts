@@ -1,4 +1,10 @@
-import { CaseWithId, YesOrNo, YesOrNoOrNotApplicable } from '../../../../main/definitions/case';
+import {
+  CaseWithId,
+  HearingPreferenceET3,
+  YesOrNo,
+  YesOrNoOrNotApplicable,
+  YesOrNoOrNotSure,
+} from '../../../../main/definitions/case';
 import { PageUrls } from '../../../../main/definitions/constants';
 import { SummaryListRow, addSummaryRowWithAction } from '../../../../main/definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../../../main/definitions/util-types';
@@ -19,6 +25,7 @@ describe('CheckYourAnswersET3Helper', () => {
     id: '1',
     address1: '123 Test St',
     addressPostcode: 'AB12 3CD',
+    et3ResponseHearingRespondent: [HearingPreferenceET3.PHONE],
   };
 
   const translationsMock: AnyRecord = {
@@ -38,7 +45,6 @@ describe('CheckYourAnswersET3Helper', () => {
     },
     section2: {
       participateInHearings: 'Would you be able to take part in hearings by video and phone?',
-      explainReason: 'Explain why you are unable to take part in video or phone hearings',
       disabilitySupport:
         'Do you have a physical, mental or learning disability or health condition that means you need support during your case?',
       supportRequest: 'Tell us what support you need to request',
@@ -87,6 +93,9 @@ describe('CheckYourAnswersET3Helper', () => {
       exampleData: '[example data]',
     },
     change: 'Change',
+    hearings: {
+      phone: 'Phone',
+    },
   };
 
   const section1Urls = [
@@ -106,7 +115,6 @@ describe('CheckYourAnswersET3Helper', () => {
   // Define URLs for sections 2
   const section2Urls = [
     PageUrls.HEARING_PREFERENCES,
-    PageUrls.HEARING_PREFERENCES, // for part of the hearing preferences
     PageUrls.REASONABLE_ADJUSTMENTS,
     PageUrls.REASONABLE_ADJUSTMENTS, // for support requests
     PageUrls.RESPONDENT_EMPLOYEES,
@@ -185,6 +193,13 @@ describe('CheckYourAnswersET3Helper', () => {
         )
       );
     }
+
+    userCase.et3ResponseHearingRespondent = [HearingPreferenceET3.PHONE];
+    userCase.et3ResponseRespondentSupportNeeded = YesOrNoOrNotSure.NO;
+    userCase.et3ResponseRespondentSupportDetails = '';
+    userCase.et3ResponseEmploymentCount = '10';
+    userCase.et3ResponseMultipleSites = YesOrNo.YES;
+    userCase.et3ResponseSiteEmploymentCount = '100';
 
     const result = getEt3Section2(userCase, translationsMock);
 

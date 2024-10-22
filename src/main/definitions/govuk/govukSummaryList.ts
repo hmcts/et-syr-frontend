@@ -28,12 +28,17 @@ export function addSummaryRowWithAction(
   key: string,
   value: string | undefined,
   pageUrl: string | undefined,
-  linkText?: string
+  linkText?: string,
+  sectionCya?: string
 ): SummaryListRow {
   return {
     key: { text: key, classes: 'govuk-!-font-weight-regular-m' },
     value: { text: value || '' }, // Default to empty string if undefined
-    actions: createChangeAction(pageUrl + InterceptPaths.ANSWERS_CHANGE, linkText, key),
+    actions: createChangeAction(
+      pageUrl + sectionCya !== undefined ? sectionCya : InterceptPaths.ANSWERS_CHANGE,
+      linkText,
+      key
+    ),
   };
 }
 

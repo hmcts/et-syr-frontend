@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { HearingPreference } from '../definitions/case';
+import { HearingPreferenceET3 } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
@@ -10,14 +10,13 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import ET3Util from '../utils/ET3Util';
-import { atLeastOneFieldIsChecked, isContent2500CharsOrLessOrEmpty } from '../validators/validator';
 
 export default class HearingPreferencesController {
   private readonly form: Form;
   private readonly hearingPreferences: FormContent = {
     fields: {
-      hearingPreference: {
-        id: 'hearingPreference',
+      et3ResponseHearingRespondent: {
+        id: 'hearingPreferences',
         label: l => l.legend,
         labelHidden: false,
         labelSize: 'l',
@@ -25,36 +24,16 @@ export default class HearingPreferencesController {
         hint: l => l.selectAllHint,
         values: [
           {
-            name: 'hearingPreference',
+            name: 'et3ResponseHearingRespondent',
             label: l => l.checkboxVideo,
-            value: HearingPreference.VIDEO,
+            value: HearingPreferenceET3.VIDEO,
           },
           {
-            name: 'hearingPreference',
+            name: 'et3ResponseHearingRespondent',
             label: l => l.checkboxPhone,
-            value: HearingPreference.PHONE,
-          },
-          {
-            divider: true,
-          },
-          {
-            name: 'hearingPreference',
-            label: l => l.checkboxNeither,
-            exclusive: true,
-            value: HearingPreference.NEITHER,
-            subFields: {
-              hearingAssistance: {
-                id: 'hearingAssistance',
-                name: 'hearingAssistance',
-                type: 'textarea',
-                label: l => l.explain,
-                labelSize: 'normal',
-                validator: isContent2500CharsOrLessOrEmpty,
-              },
-            },
+            value: HearingPreferenceET3.PHONE,
           },
         ],
-        validator: atLeastOneFieldIsChecked,
       },
     },
     submit: submitButton,
@@ -66,7 +45,6 @@ export default class HearingPreferencesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    // todo: field reset needed here for the hearing preference detail
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,

@@ -35,7 +35,7 @@ describe('HearingPreferencesController', () => {
     it('should call ET3Util.updateET3ResponseWithET3Form with the correct parameters when preferences are valid', async () => {
       request = mockRequest({
         body: {
-          hearingPreference: HearingPreference.VIDEO,
+          et3ResponseHearingRespondent: HearingPreference.VIDEO,
         },
       });
       request.url = PageUrls.REASONABLE_ADJUSTMENTS;
@@ -44,27 +44,10 @@ describe('HearingPreferencesController', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
     });
 
-    it('should redirect to the same page when no options are selected', async () => {
-      request = mockRequest({
-        body: {
-          hearingPreference: '',
-        },
-      });
-      request.url = PageUrls.HEARING_PREFERENCES;
-      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
-
-      await controller.post(request, response);
-
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.HEARING_PREFERENCES);
-      const errors = [{ propertyName: 'hearingPreference', errorType: 'required' }];
-      expect(request.session.errors).toEqual(errors);
-    });
-
     it('should redirect to next page when NEITHER is selected and details is filled in', async () => {
       request = mockRequest({
         body: {
-          hearingPreference: HearingPreference.NEITHER,
-          hearingAssistance: 'test text',
+          et3ResponseHearingRespondent: HearingPreference.NEITHER,
         },
       });
       request.url = PageUrls.REASONABLE_ADJUSTMENTS;

@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, EmailOrPost, EnglishOrWelsh } from '../definitions/case';
-import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
@@ -12,7 +12,7 @@ import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getContactPreferencesDetails } from '../helpers/controller/RespondentContactPreferencesControllerHelper';
 import ET3Util from '../utils/ET3Util';
-import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
+import { isFieldFilledIn } from '../validators/validator';
 
 export default class RespondentContactPreferencesController {
   private readonly form: Form;
@@ -47,7 +47,6 @@ export default class RespondentContactPreferencesController {
             },
           },
         ],
-        validator: isOptionSelected,
       },
       //need to show ONLY if user is completing WELSH form
       et3ResponseLanguagePreference: {
@@ -68,7 +67,6 @@ export default class RespondentContactPreferencesController {
             value: EnglishOrWelsh.WELSH,
           },
         ],
-        validator: isOptionSelected,
       },
     },
     submit: submitButton,
@@ -122,6 +120,7 @@ export default class RespondentContactPreferencesController {
       ...content,
       redirectUrl,
       hideContactUs: true,
+      InterceptPaths,
       contactPreferencesRespondentSection: getContactPreferencesDetails(userCase, user.email, translations),
     });
   };

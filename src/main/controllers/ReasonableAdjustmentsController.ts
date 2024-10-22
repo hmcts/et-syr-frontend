@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNo } from '../definitions/case';
+import { CaseWithId, YesOrNoOrNotSure } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
@@ -11,42 +11,47 @@ import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import ET3Util from '../utils/ET3Util';
-import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
+import { isContent2500CharsOrLessOrEmpty } from '../validators/validator';
 
 export default class ReasonableAdjustmentsController {
   private readonly form: Form;
   private readonly reasonableAdjustments: FormContent = {
     fields: {
-      reasonableAdjustments: {
+      et3ResponseRespondentSupportNeeded: {
         classes: 'govuk-radios',
-        id: 'reasonableAdjustments',
+        id: 'et3ResponseRespondentSupportNeeded',
         type: 'radios',
         label: (l: AnyRecord): string => l.reasonableAdjustments,
         labelHidden: false,
         values: [
           {
-            name: 'reasonableAdjustments',
+            name: 'et3ResponseRespondentSupportNeeded',
             label: (l: AnyRecord): string => l.yes,
-            value: YesOrNo.YES,
+            value: YesOrNoOrNotSure.YES,
             subFields: {
-              reasonableAdjustmentsDetail: {
-                id: 'reasonableAdjustmentsDetail',
-                name: 'reasonableAdjustmentsDetail',
-                type: 'text',
+              et3ResponseRespondentSupportDetails: {
+                id: 'et3ResponseRespondentSupportDetails',
+                name: 'et3ResponseRespondentSupportDetails',
+                type: 'charactercount',
                 labelSize: 'normal',
                 label: (l: AnyRecord): string => l.yesDetail,
                 classes: 'govuk-text',
-                validator: isFieldFilledIn,
+                maxlength: 2500,
+                validator: isContent2500CharsOrLessOrEmpty,
               },
             },
           },
           {
-            name: 'reasonableAdjustments',
+            name: 'et3ResponseRespondentSupportNeeded',
             label: (l: AnyRecord): string => l.radioNo,
-            value: YesOrNo.NO,
+            value: YesOrNoOrNotSure.NO,
+          },
+          {
+            name: 'et3ResponseRespondentSupportNeeded',
+            label: (l: AnyRecord): string => l.radioNotSure,
+            value: YesOrNoOrNotSure.NOT_SURE,
           },
         ],
-        validator: isOptionSelected,
       },
     },
     submit: submitButton,
@@ -58,7 +63,12 @@ export default class ReasonableAdjustmentsController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    // todo: field reset needed here for the reasonable adjustment detail
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    const fieldsToReset: string[] = [];
+
+    if (YesOrNoOrNotSure.YES !== formData.et3ResponseRespondentSupportNeeded) {
+      fieldsToReset.push('et3ResponseRespondentSupportDetails');
+    }
 
     await ET3Util.updateET3ResponseWithET3Form(
       req,
@@ -66,7 +76,8 @@ export default class ReasonableAdjustmentsController {
       this.form,
       ET3HubLinkNames.EmployerDetails,
       LinkStatus.IN_PROGRESS,
-      PageUrls.RESPONDENT_EMPLOYEES
+      PageUrls.RESPONDENT_EMPLOYEES,
+      fieldsToReset
     );
   };
 

@@ -35,8 +35,8 @@ describe('ReasonableAdjustmentsController', () => {
     it('should call ET3Util.updateET3ResponseWithET3Form with the correct parameters when adjustments are selected', async () => {
       request = mockRequest({
         body: {
-          reasonableAdjustments: 'yes',
-          reasonableAdjustmentsDetail: 'Some adjustments',
+          et3ResponseRespondentSupportNeeded: 'yes',
+          et3ResponseRespondentSupportDetails: 'Some adjustments',
         },
       });
       request.url = PageUrls.RESPONDENT_EMPLOYEES;
@@ -45,27 +45,11 @@ describe('ReasonableAdjustmentsController', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_EMPLOYEES);
     });
 
-    it('should redirect to the same page with errors when no option is selected', async () => {
-      request = mockRequest({
-        body: {
-          reasonableAdjustments: '',
-        },
-      });
-      request.url = PageUrls.REASONABLE_ADJUSTMENTS;
-      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
-
-      await controller.post(request, response);
-
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
-      const errors = [{ propertyName: 'reasonableAdjustments', errorType: 'required' }];
-      expect(request.session.errors).toEqual(errors);
-    });
-
     it('should redirect to the same page with errors when details are required but not provided', async () => {
       request = mockRequest({
         body: {
-          reasonableAdjustments: YesOrNo.YES,
-          reasonableAdjustmentsDetail: '',
+          et3ResponseRespondentSupportNeeded: YesOrNo.YES,
+          et3ResponseRespondentSupportDetails: '',
         },
       });
       request.url = PageUrls.REASONABLE_ADJUSTMENTS;
@@ -74,7 +58,7 @@ describe('ReasonableAdjustmentsController', () => {
       await controller.post(request, response);
 
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
-      const errors = [{ propertyName: 'reasonableAdjustmentsDetail', errorType: 'required' }];
+      const errors = [{ propertyName: 'et3ResponseRespondentSupportDetails', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
   });

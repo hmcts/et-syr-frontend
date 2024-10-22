@@ -144,6 +144,18 @@ const isValidNumber = (value: string): boolean => {
   return numberPattern.test(value);
 };
 
+export const isAValidNumber: Validator = value => {
+  const valueAsString: string = value as string;
+
+  if (!value || valueAsString.trim().length === 0) {
+    return;
+  }
+
+  if (!isValidNumber(valueAsString)) {
+    return ValidationErrors.NOT_A_NUMBER;
+  }
+};
+
 export const isValidAvgWeeklyHours: Validator = value => {
   const valueAsString: string = value as string;
 
