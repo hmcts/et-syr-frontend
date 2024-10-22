@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
-import { AllDocumentTypes, PageUrls, TranslationKeys } from '../definitions/constants';
+import { PageUrls, TranslationKeys, languages } from '../definitions/constants';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
@@ -12,17 +12,14 @@ export default class ClaimantET1FormDetailsController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const redirectUrl = setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM_DETAILS);
-    let et1Document: ApiDocumentTypeItem;
-    let formattedEt1FormDate: string;
-    req.session?.userCase?.documentCollection?.forEach(function (tempDocument: ApiDocumentTypeItem): void {
-      if (
-        tempDocument.value?.documentType === AllDocumentTypes.ET1 ||
-        tempDocument.value?.documentType === AllDocumentTypes.ET1
-      ) {
-        et1Document = tempDocument;
-        formattedEt1FormDate = DateUtil.formatDateStringToDDMonthYYYY(tempDocument.value?.dateOfCorrespondence);
-      }
-    });
+    const languageParam: string = getLanguageParam(req.url);
+    let et1Form: ApiDocumentTypeItem;
+    if (languageParam === languages.WELSH_URL_PARAMETER) {
+      et1Form = req.session.et1FormWelsh;
+    } else {
+      et1Form = req.session.et1FormEnglish;
+    }
+    const formattedEt1FormDate = DateUtil.formatDateStringToDDMonthYYYY(et1Form?.value?.dateOfCorrespondence);
     res.render(TranslationKeys.CLAIMANT_ET1_FORM_DETAILS, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CLAIMANT_ET1_FORM_DETAILS as never, { returnObjects: true } as never),
@@ -31,9 +28,9 @@ export default class ClaimantET1FormDetailsController {
       hideContactUs: true,
       useCase: req.session.userCase,
       redirectUrl,
-      et1Document,
+      et1Form,
       formattedEt1FormDate,
-      languageParam: getLanguageParam(req.url),
+      languageParam,
       welshEnabled,
     });
   }

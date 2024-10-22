@@ -1,8 +1,10 @@
 import ClaimantET1FormController from '../../../main/controllers/ClaimantET1FormController';
+import { ApiDocumentTypeItem } from '../../../main/definitions/complexTypes/documentTypeItem';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
 import { getLanguageParam } from '../../../main/helpers/RouterHelpers';
 import { getFlagValue } from '../../../main/modules/featureFlag/launchDarkly';
+import { mockedAcasForm, mockedET1FormEnglish, mockedET1FormWelsh } from '../mocks/mockDocuments';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
@@ -44,5 +46,21 @@ describe('Claimant ET1 Form Controller', () => {
         })
       );
     });
+  });
+
+  it('should set acas certificate and both english and welsh et1forms to session and res.render is called with mockedET1FormEnglish', async () => {
+    // Call the controller's GET method
+    request.session.userCase.documentCollection = [
+      mockedET1FormEnglish as ApiDocumentTypeItem,
+      mockedET1FormWelsh as ApiDocumentTypeItem,
+      mockedAcasForm as ApiDocumentTypeItem,
+    ];
+    await controller.get(request, response);
+
+    // Expect that res.render was called with the right template and object
+    expect(request.session.et1FormWelsh).toStrictEqual(mockedET1FormWelsh as ApiDocumentTypeItem);
+    expect(request.session.et1FormEnglish).toStrictEqual(mockedET1FormEnglish as ApiDocumentTypeItem);
+    expect(request.session.selectedAcasCertificate).toStrictEqual(mockedAcasForm as ApiDocumentTypeItem);
+    expect(response.render).toHaveBeenCalled();
   });
 });
