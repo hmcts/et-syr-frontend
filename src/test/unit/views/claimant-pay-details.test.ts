@@ -30,7 +30,7 @@ const expectedRadioLabel3 = commonJson.notSure;
 const buttonClass = 'govuk-button';
 
 let htmlRes: Document;
-describe('Acas early conciliation certificate page', () => {
+describe('Claimant pay details page', () => {
   beforeAll(async () => {
     await request(mockApp({}))
       .get(PAGE_URL)
