@@ -46,7 +46,7 @@ export default class ClaimantPayDetailsController {
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const nextPage =
-      req.body.et3ResponseEarningDetailsCorrect === YesOrNoOrNotSure.NO
+      req.body.et3ResponseEarningDetailsCorrect === YesOrNoOrNotApplicable.NO
         ? PageUrls.CLAIMANT_PAY_DETAILS_ENTER
         : PageUrls.CLAIMANT_NOTICE_PERIOD;
     await ET3Util.updateET3ResponseWithET3Form(

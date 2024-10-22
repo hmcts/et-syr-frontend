@@ -11,7 +11,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import ET3Util from '../utils/ET3Util';
-import { isContent2500CharsOrLessOrEmpty } from '../validators/validator';
+import { isContentCharsOrLess } from '../validators/validator';
 
 export default class ReasonableAdjustmentsController {
   private readonly form: Form;
@@ -36,8 +36,8 @@ export default class ReasonableAdjustmentsController {
                 labelSize: 'normal',
                 label: (l: AnyRecord): string => l.yesDetail,
                 classes: 'govuk-text',
-                maxlength: 2500,
-                validator: isContent2500CharsOrLessOrEmpty,
+                maxlength: 400,
+                validator: isContentCharsOrLess(400),
               },
             },
           },

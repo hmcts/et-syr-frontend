@@ -56,7 +56,7 @@ export default class ClaimantNoticePeriodController {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const fieldsToReset: string[] = [];
-    if (YesOrNoOrNotSure.NO !== formData.et3ResponseIsNoticeCorrect) {
+    if (YesOrNoOrNotApplicable.NO !== formData.et3ResponseIsNoticeCorrect) {
       fieldsToReset.push(formData.et3ResponseCorrectNoticeDetails);
     }
     await ET3Util.updateET3ResponseWithET3Form(
