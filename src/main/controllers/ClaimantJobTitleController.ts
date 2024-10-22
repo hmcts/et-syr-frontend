@@ -77,6 +77,7 @@ export default class ClaimantJobTitleController {
   public get = (req: AppRequest, res: Response): void => {
     if (isClearSelection(req)) {
       req.session.userCase.et3ResponseIsJobTitleCorrect = undefined;
+      req.session.userCase.et3ResponseCorrectJobTitle = undefined;
     }
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
