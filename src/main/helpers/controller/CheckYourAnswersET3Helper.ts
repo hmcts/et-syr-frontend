@@ -21,26 +21,22 @@ export const getEt3Section1 = (
   et3ResponseSection1.push(
     addSummaryRowWithAction(
       translations.section1.respondentName,
-      userCase.responseRespondentName !== undefined ? userCase.responseRespondentName : userCase.respondentName,
+      userCase.responseRespondentName ?? userCase.respondentName,
       PageUrls.RESPONDENT_NAME,
       translations.change,
       sectionCya
     ),
     addSummaryRowWithAction(
       translations.section1.organisationType,
-      userCase.et3ResponseRespondentEmployerType !== undefined
-        ? userCase.et3ResponseRespondentEmployerType
-        : translations.notProvided,
+      userCase.et3ResponseRespondentEmployerType ?? translations.notProvided,
       PageUrls.TYPE_OF_ORGANISATION,
       translations.change,
       sectionCya
     ),
     addSummaryRowWithAction(
       translations.section1.preferredTitleOptional,
-      TypeOfOrganisation.INDIVIDUAL === userCase.et3ResponseRespondentEmployerType
-        ? userCase.et3ResponseRespondentPreferredTitle === undefined
-          ? translations.notProvided
-          : userCase.et3ResponseRespondentPreferredTitle
+      userCase.et3ResponseRespondentEmployerType === TypeOfOrganisation.INDIVIDUAL
+        ? userCase.et3ResponseRespondentPreferredTitle ?? translations.notProvided
         : translations.notApplicable,
       PageUrls.TYPE_OF_ORGANISATION,
       translations.change,
@@ -48,10 +44,8 @@ export const getEt3Section1 = (
     ),
     addSummaryRowWithAction(
       translations.section1.companyRegistrationNumberOptional,
-      TypeOfOrganisation.LIMITED_COMPANY === userCase.et3ResponseRespondentEmployerType
-        ? userCase.et3ResponseRespondentCompanyNumber === undefined
-          ? translations.notProvided
-          : userCase.et3ResponseRespondentCompanyNumber
+      userCase.et3ResponseRespondentEmployerType === TypeOfOrganisation.LIMITED_COMPANY
+        ? userCase.et3ResponseRespondentCompanyNumber ?? translations.notProvided
         : translations.notApplicable,
       PageUrls.TYPE_OF_ORGANISATION,
       translations.change,
@@ -74,23 +68,21 @@ export const getEt3Section1 = (
     ),
     addSummaryRowWithAction(
       translations.section1.contactName,
-      userCase.et3ResponseRespondentContactName !== undefined
-        ? userCase.et3ResponseRespondentContactName
-        : translations.notProvided,
+      userCase.et3ResponseRespondentContactName ?? translations.notProvided,
       PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME,
       translations.change,
       sectionCya
     ),
     addSummaryRowWithAction(
       translations.section1.dxAddressOptional,
-      userCase.et3ResponseDXAddress !== undefined ? userCase.et3ResponseDXAddress : translations.notProvided,
+      userCase.et3ResponseDXAddress ?? translations.notProvided,
       PageUrls.RESPONDENT_DX_ADDRESS,
       translations.change,
       sectionCya
     ),
     addSummaryRowWithAction(
       translations.section1.contactNumberOptional,
-      userCase.responseRespondentPhone1 !== undefined ? userCase.responseRespondentPhone1 : translations.notProvided,
+      userCase.responseRespondentPhone1 ?? translations.notProvided,
       PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER,
       translations.change,
       sectionCya
@@ -104,7 +96,7 @@ export const getEt3Section1 = (
     ),
     addSummaryRowWithAction(
       translations.section1.reasonForPost,
-      userCase.et3ResponseContactReason !== undefined ? userCase.et3ResponseContactReason : translations.notApplicable,
+      userCase.et3ResponseContactReason ?? translations.notApplicable,
       PageUrls.RESPONDENT_CONTACT_PREFERENCES,
       translations.change,
       sectionCya
@@ -144,9 +136,7 @@ export const getEt3Section2 = (
     addSummaryRowWithAction(
       translations.section2.disabilitySupport,
       YesOrNoOrNotSure.NOT_SURE !== userCase.et3ResponseRespondentSupportNeeded
-        ? userCase.et3ResponseRespondentSupportNeeded === undefined
-          ? translations.notProvided
-          : userCase.et3ResponseRespondentSupportNeeded
+        ? userCase.et3ResponseRespondentSupportNeeded ?? translations.notProvided
         : translations.notSure,
       PageUrls.REASONABLE_ADJUSTMENTS,
       translations.change,
@@ -154,9 +144,7 @@ export const getEt3Section2 = (
     ),
     addSummaryRowWithAction(
       translations.section2.supportRequest,
-      userCase.et3ResponseRespondentSupportDetails !== undefined
-        ? userCase.et3ResponseRespondentSupportDetails
-        : translations.notApplicable,
+      userCase.et3ResponseRespondentSupportDetails ?? translations.notApplicable,
       PageUrls.REASONABLE_ADJUSTMENTS,
       translations.change,
       sectionCya
