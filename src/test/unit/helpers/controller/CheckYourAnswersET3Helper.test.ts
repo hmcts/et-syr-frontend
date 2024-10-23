@@ -101,14 +101,11 @@ describe('CheckYourAnswersET3Helper', () => {
   const section1Urls = [
     PageUrls.RESPONDENT_NAME,
     PageUrls.TYPE_OF_ORGANISATION, // for preferredTitleOptional
-    PageUrls.TYPE_OF_ORGANISATION, // for companyRegistrationNumberOptional
-    PageUrls.TYPE_OF_ORGANISATION, // for companyRegistrationNumberOptional
     PageUrls.RESPONDENT_ADDRESS,
     PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME,
     PageUrls.RESPONDENT_DX_ADDRESS,
     PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER,
     PageUrls.RESPONDENT_CONTACT_PREFERENCES,
-    PageUrls.RESPONDENT_CONTACT_PREFERENCES, // for reasonForPost
     PageUrls.RESPONDENT_CONTACT_PREFERENCES, // for contactLanguage
   ];
 
@@ -116,7 +113,6 @@ describe('CheckYourAnswersET3Helper', () => {
   const section2Urls = [
     PageUrls.HEARING_PREFERENCES,
     PageUrls.REASONABLE_ADJUSTMENTS,
-    PageUrls.REASONABLE_ADJUSTMENTS, // for support requests
     PageUrls.RESPONDENT_EMPLOYEES,
     PageUrls.RESPONDENT_SITES,
     PageUrls.RESPONDENT_SITE_EMPLOYEES,
