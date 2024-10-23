@@ -86,6 +86,11 @@ export default class SelfAssignmentCheckController {
       return res.redirect(req.url);
     }
     if (!caseAssignmentResponse) {
+      ErrorUtils.setManualErrorToRequestSession(
+        req,
+        ValidationErrors.API,
+        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+      );
       return res.redirect(req.url);
     }
     return res.redirect(PageUrls.CASE_LIST);
