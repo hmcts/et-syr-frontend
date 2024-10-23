@@ -36,6 +36,7 @@ describe('Respondent Contact Preferences Controller', () => {
       request = mockRequest({
         body: {
           responseRespondentContactPreference: EmailOrPost.POST,
+          et3ResponseContactReason: 'Port Reason',
           et3ResponseLanguagePreference: EnglishOrWelsh.ENGLISH,
         },
       });
