@@ -98,13 +98,13 @@ export default class RespondentAddressController {
     ]);
 
     const respondentAddress = answersAddressFormatter(
-      userCase.respondents[0].respondentAddress.AddressLine1,
-      userCase.respondents[0].respondentAddress.AddressLine2,
-      userCase.respondents[0].respondentAddress.AddressLine3,
-      userCase.respondents[0].respondentAddress.PostTown,
-      userCase.respondents[0].respondentAddress.County,
-      userCase.respondents[0].respondentAddress.Country,
-      userCase.respondents[0].respondentAddress.PostCode
+      userCase.respondentAddressLine1,
+      userCase.respondentAddressLine2,
+      userCase.respondentAddressLine3,
+      userCase.respondentAddressPostTown,
+      userCase.respondentAddressCounty,
+      userCase.respondentAddressCountry,
+      userCase.respondentAddressPostCode
     );
 
     res.render(TranslationKeys.RESPONDENT_ADDRESS, {

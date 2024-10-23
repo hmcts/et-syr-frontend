@@ -12,7 +12,7 @@
   "postHintText": "[W]Explain why you have selected post.",
   "tribunalContactYouQuestion": "[W]Which language should the tribunal use to contact you? (optional)",
   "errors": {
-    "responseRespondentLanguagePreference": {
+    "et3ResponseContactReason": {
       "required": "[W]Explain why you selected post"
     }
   }

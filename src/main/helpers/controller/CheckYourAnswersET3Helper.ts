@@ -1,5 +1,5 @@
 import {
-  CaseWithId,
+  CaseWithId, EmailOrPost,
   HearingPreferenceET3,
   TypeOfOrganisation,
   YesOrNo,
@@ -32,25 +32,34 @@ export const getEt3Section1 = (
       PageUrls.TYPE_OF_ORGANISATION,
       translations.change,
       sectionCya
-    ),
-    addSummaryRowWithAction(
+    )
+  );
+
+  if (userCase.et3ResponseRespondentEmployerType === TypeOfOrganisation.INDIVIDUAL) {
+    et3ResponseSection1.push(
+      addSummaryRowWithAction(
       translations.section1.preferredTitleOptional,
-      userCase.et3ResponseRespondentEmployerType === TypeOfOrganisation.INDIVIDUAL
-        ? userCase.et3ResponseRespondentPreferredTitle ?? translations.notProvided
-        : translations.notApplicable,
+        userCase.et3ResponseRespondentPreferredTitle ?? '-',
       PageUrls.TYPE_OF_ORGANISATION,
       translations.change,
       sectionCya
-    ),
-    addSummaryRowWithAction(
-      translations.section1.companyRegistrationNumberOptional,
-      userCase.et3ResponseRespondentEmployerType === TypeOfOrganisation.LIMITED_COMPANY
-        ? userCase.et3ResponseRespondentCompanyNumber ?? translations.notProvided
-        : translations.notApplicable,
-      PageUrls.TYPE_OF_ORGANISATION,
-      translations.change,
-      sectionCya
-    ),
+      )
+    );
+  }
+
+  if (userCase.et3ResponseRespondentEmployerType === TypeOfOrganisation.LIMITED_COMPANY) {
+    et3ResponseSection1.push(
+      addSummaryRowWithAction(
+          translations.section1.companyRegistrationNumberOptional,
+            userCase.et3ResponseRespondentCompanyNumber ?? '-',
+          PageUrls.TYPE_OF_ORGANISATION,
+          translations.change,
+          sectionCya
+      )
+    );
+  }
+
+  et3ResponseSection1.push(
     addSummaryRowWithAction(
       translations.section1.address,
       answersAddressFormatter(
@@ -68,46 +77,51 @@ export const getEt3Section1 = (
     ),
     addSummaryRowWithAction(
       translations.section1.contactName,
-      userCase.et3ResponseRespondentContactName ?? translations.notProvided,
+      userCase.et3ResponseRespondentContactName ?? '-',
       PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME,
       translations.change,
       sectionCya
     ),
     addSummaryRowWithAction(
       translations.section1.dxAddressOptional,
-      userCase.et3ResponseDXAddress ?? translations.notProvided,
+      userCase.et3ResponseDXAddress ?? '-',
       PageUrls.RESPONDENT_DX_ADDRESS,
       translations.change,
       sectionCya
     ),
     addSummaryRowWithAction(
       translations.section1.contactNumberOptional,
-      userCase.responseRespondentPhone1 ?? translations.notProvided,
+      userCase.responseRespondentPhone1 ?? '-',
       PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER,
       translations.change,
       sectionCya
     ),
     addSummaryRowWithAction(
       translations.section1.contactFormat,
-      userCase.responseRespondentContactPreference,
-      PageUrls.RESPONDENT_CONTACT_PREFERENCES,
-      translations.change,
-      sectionCya
-    ),
-    addSummaryRowWithAction(
-      translations.section1.reasonForPost,
-      userCase.et3ResponseContactReason ?? translations.notApplicable,
+      userCase.responseRespondentContactPreference ?? '-',
       PageUrls.RESPONDENT_CONTACT_PREFERENCES,
       translations.change,
       sectionCya
     )
   );
 
+  if (userCase.responseRespondentContactPreference === EmailOrPost.POST) {
+    et3ResponseSection1.push(
+      addSummaryRowWithAction(
+        translations.section1.reasonForPost,
+        userCase.et3ResponseContactReason,
+        PageUrls.RESPONDENT_CONTACT_PREFERENCES,
+        translations.change,
+        sectionCya
+      )
+    );
+  }
+
   if (userCase.managingOffice !== 'Scotland') {
     et3ResponseSection1.push(
       addSummaryRowWithAction(
         translations.section1.contactLanguage,
-        userCase.et3ResponseLanguagePreference,
+        userCase.et3ResponseLanguagePreference ?? '-',
         PageUrls.RESPONDENT_CONTACT_PREFERENCES,
         translations.change,
         sectionCya
@@ -132,40 +146,49 @@ export const getEt3Section2 = (
       PageUrls.HEARING_PREFERENCES,
       translations.change,
       sectionCya
-    ),
+    )
+  );
+
+  et3ResponseSection2.push(
     addSummaryRowWithAction(
       translations.section2.disabilitySupport,
-      YesOrNoOrNotSure.NOT_SURE !== userCase.et3ResponseRespondentSupportNeeded
-        ? userCase.et3ResponseRespondentSupportNeeded ?? translations.notProvided
-        : translations.notSure,
+        userCase.et3ResponseRespondentSupportNeeded ?? '-',
       PageUrls.REASONABLE_ADJUSTMENTS,
       translations.change,
       sectionCya
-    ),
-    addSummaryRowWithAction(
-      translations.section2.supportRequest,
-      userCase.et3ResponseRespondentSupportDetails ?? translations.notApplicable,
-      PageUrls.REASONABLE_ADJUSTMENTS,
-      translations.change,
-      sectionCya
-    ),
+    )
+  );
+
+  if (YesOrNoOrNotSure.YES === userCase.et3ResponseRespondentSupportNeeded) {
+    et3ResponseSection2.push(
+      addSummaryRowWithAction(
+        translations.section2.supportRequest,
+        userCase.et3ResponseRespondentSupportDetails,
+        PageUrls.REASONABLE_ADJUSTMENTS,
+        translations.change,
+        sectionCya
+      )
+    );
+  }
+
+  et3ResponseSection2.push(
     addSummaryRowWithAction(
       translations.section2.employeesInGreatBritain,
-      userCase.et3ResponseEmploymentCount,
+      userCase.et3ResponseEmploymentCount ?? '-',
       PageUrls.RESPONDENT_EMPLOYEES,
       translations.change,
       sectionCya
     ),
     addSummaryRowWithAction(
       translations.section2.multipleSites,
-      userCase.et3ResponseMultipleSites,
+      userCase.et3ResponseMultipleSites ?? '-',
       PageUrls.RESPONDENT_SITES,
       translations.change,
       sectionCya
     ),
     addSummaryRowWithAction(
       translations.section2.employeesAtSite,
-      userCase.et3ResponseSiteEmploymentCount,
+      userCase.et3ResponseSiteEmploymentCount ?? '-',
       PageUrls.RESPONDENT_SITE_EMPLOYEES,
       translations.change,
       sectionCya

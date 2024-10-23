@@ -52,7 +52,7 @@ export default class ClaimantEmploymentDatesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const nextPagae =
+    const nextPage =
       req.body.et3ResponseAreDatesCorrect === YesOrNoOrNotApplicable.NO
         ? PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER
         : PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING;
@@ -62,7 +62,7 @@ export default class ClaimantEmploymentDatesController {
       this.form,
       ET3HubLinkNames.ConciliationAndEmployeeDetails,
       LinkStatus.IN_PROGRESS,
-      nextPagae
+      nextPage
     );
   };
 

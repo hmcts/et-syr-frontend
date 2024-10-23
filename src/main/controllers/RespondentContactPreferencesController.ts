@@ -27,12 +27,12 @@ export default class RespondentContactPreferencesController {
         labelHidden: false,
         values: [
           {
-            name: 'respondentContactPreferenceEmail',
+            name: 'responseRespondentContactPreference',
             label: (l: AnyRecord): string => l.email,
             value: EmailOrPost.EMAIL,
           },
           {
-            name: 'respondentContactPreferencePost',
+            name: 'responseRespondentContactPreference',
             label: (l: AnyRecord): string => l.post,
             value: EmailOrPost.POST,
             subFields: {

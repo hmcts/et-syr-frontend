@@ -491,7 +491,6 @@ export const enum HearingPreference {
 export const enum HearingPreferenceET3 {
   VIDEO = 'Video hearings',
   PHONE = 'Phone hearings',
-  NEITHER = 'No, I cannot take part in either a video or phone hearing',
 }
 
 export const enum AgreedDocuments {
