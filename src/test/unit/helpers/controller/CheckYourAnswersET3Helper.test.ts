@@ -1,6 +1,7 @@
 import {
   CaseWithId,
   HearingPreferenceET3,
+  TypeOfOrganisation,
   YesOrNo,
   YesOrNoOrNotApplicable,
   YesOrNoOrNotSure,
@@ -175,6 +176,54 @@ describe('CheckYourAnswersET3Helper', () => {
     expect(result).toEqual(expectedRows);
   });
 
+  // Test for section 1 INDIVIDUAL
+  it('should return correct summary list rows for section 1 when all fields are populated - INDIVIDUAL', () => {
+    const expectedRows: SummaryListRow[] = [];
+
+    section1Urls.splice(2, 0, PageUrls.TYPE_OF_ORGANISATION);
+
+    for (const pageUrl of section1Urls) {
+      expectedRows.push(
+        addSummaryRowWithAction(
+          expect.any(String), // respondentName
+          expect.any(String), // exampleData
+          pageUrl, // URL
+          expect.any(String) // change label
+        )
+      );
+    }
+
+    userCase.et3ResponseRespondentEmployerType = TypeOfOrganisation.INDIVIDUAL;
+
+    const result = getEt3Section1(userCase, translationsMock);
+
+    expect(result).toEqual(expectedRows);
+  });
+
+  // Test for section 1 LIMITED COMPANY
+  it('should return correct summary list rows for section 1 when all fields are populated - LIMITED COMPANY', () => {
+    const expectedRows: SummaryListRow[] = [];
+
+    // no need to add URL into section1Urls as it was added in previous test
+
+    for (const pageUrl of section1Urls) {
+      expectedRows.push(
+        addSummaryRowWithAction(
+          expect.any(String), // respondentName
+          expect.any(String), // exampleData
+          pageUrl, // URL
+          expect.any(String) // change label
+        )
+      );
+    }
+
+    userCase.et3ResponseRespondentEmployerType = TypeOfOrganisation.LIMITED_COMPANY;
+
+    const result = getEt3Section1(userCase, translationsMock);
+
+    expect(result).toEqual(expectedRows);
+  });
+
   // Tests for section 2
   it('should return correct summary list rows for section 2 when all fields are populated', () => {
     const expectedRows: SummaryListRow[] = [];
@@ -193,6 +242,35 @@ describe('CheckYourAnswersET3Helper', () => {
     userCase.et3ResponseHearingRespondent = [HearingPreferenceET3.PHONE];
     userCase.et3ResponseRespondentSupportNeeded = YesOrNoOrNotSure.NO;
     userCase.et3ResponseRespondentSupportDetails = '';
+    userCase.et3ResponseEmploymentCount = '10';
+    userCase.et3ResponseMultipleSites = YesOrNo.YES;
+    userCase.et3ResponseSiteEmploymentCount = '100';
+
+    const result = getEt3Section2(userCase, translationsMock);
+
+    expect(result).toEqual(expectedRows);
+  });
+
+  // Tests for section 2 with POST SELECTED
+  it('should return correct summary list rows for section 2 when all fields are populated POST selected', () => {
+    const expectedRows: SummaryListRow[] = [];
+
+    section2Urls.splice(2, 0, PageUrls.REASONABLE_ADJUSTMENTS);
+
+    for (const pageUrl of section2Urls) {
+      expectedRows.push(
+        addSummaryRowWithAction(
+          expect.any(String), // field1
+          expect.any(String), // exampleData
+          pageUrl, // URL
+          expect.any(String) // change label
+        )
+      );
+    }
+
+    userCase.et3ResponseHearingRespondent = [HearingPreferenceET3.PHONE];
+    userCase.et3ResponseRespondentSupportNeeded = YesOrNoOrNotSure.YES;
+    userCase.et3ResponseRespondentSupportDetails = 'Support Needed';
     userCase.et3ResponseEmploymentCount = '10';
     userCase.et3ResponseMultipleSites = YesOrNo.YES;
     userCase.et3ResponseSiteEmploymentCount = '100';

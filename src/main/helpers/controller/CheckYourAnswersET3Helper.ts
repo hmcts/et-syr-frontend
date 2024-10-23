@@ -1,5 +1,6 @@
 import {
-  CaseWithId, EmailOrPost,
+  CaseWithId,
+  EmailOrPost,
   HearingPreferenceET3,
   TypeOfOrganisation,
   YesOrNo,
@@ -38,11 +39,11 @@ export const getEt3Section1 = (
   if (userCase.et3ResponseRespondentEmployerType === TypeOfOrganisation.INDIVIDUAL) {
     et3ResponseSection1.push(
       addSummaryRowWithAction(
-      translations.section1.preferredTitleOptional,
+        translations.section1.preferredTitleOptional,
         userCase.et3ResponseRespondentPreferredTitle ?? '-',
-      PageUrls.TYPE_OF_ORGANISATION,
-      translations.change,
-      sectionCya
+        PageUrls.TYPE_OF_ORGANISATION,
+        translations.change,
+        sectionCya
       )
     );
   }
@@ -50,11 +51,11 @@ export const getEt3Section1 = (
   if (userCase.et3ResponseRespondentEmployerType === TypeOfOrganisation.LIMITED_COMPANY) {
     et3ResponseSection1.push(
       addSummaryRowWithAction(
-          translations.section1.companyRegistrationNumberOptional,
-            userCase.et3ResponseRespondentCompanyNumber ?? '-',
-          PageUrls.TYPE_OF_ORGANISATION,
-          translations.change,
-          sectionCya
+        translations.section1.companyRegistrationNumberOptional,
+        userCase.et3ResponseRespondentCompanyNumber ?? '-',
+        PageUrls.TYPE_OF_ORGANISATION,
+        translations.change,
+        sectionCya
       )
     );
   }
@@ -152,7 +153,7 @@ export const getEt3Section2 = (
   et3ResponseSection2.push(
     addSummaryRowWithAction(
       translations.section2.disabilitySupport,
-        userCase.et3ResponseRespondentSupportNeeded ?? '-',
+      userCase.et3ResponseRespondentSupportNeeded ?? '-',
       PageUrls.REASONABLE_ADJUSTMENTS,
       translations.change,
       sectionCya
