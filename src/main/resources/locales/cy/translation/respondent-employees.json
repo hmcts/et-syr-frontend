@@ -3,5 +3,10 @@
   "h1": "[W]Respondent employees",
   "info": "[W]It can help the tribunal to have an indication of the employer’s size.",
   "label": "[W]How many people does the respondent employ in Great Britain? (optional)",
-  "hint": "[W]Enter a number or leave blank if you're not sure."
+  "hint": "[W]Enter a number or leave blank if you're not sure.",
+  "errors": {
+    "et3ResponseEmploymentCount": {
+      "notANumber": "[W]Enter a valid number"
+    }
+  }
 }

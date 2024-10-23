@@ -1,5 +1,5 @@
 import ClaimantEmploymentDatesController from '../../../main/controllers/ClaimantEmploymentDatesController';
-import { YesOrNoOrNotSure } from '../../../main/definitions/case';
+import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
@@ -27,7 +27,7 @@ describe('Claimant employment dates Controller', () => {
     });
 
     it('should render the page when clear selection', () => {
-      request.session.userCase.et3ResponseAreDatesCorrect = YesOrNoOrNotSure.NO;
+      request.session.userCase.et3ResponseAreDatesCorrect = YesOrNoOrNotApplicable.NO;
       request.query = {
         redirect: 'clearSelection',
       };
@@ -40,7 +40,7 @@ describe('Claimant employment dates Controller', () => {
     it('should redirect to next page when yes is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseAreDatesCorrect: YesOrNoOrNotSure.YES,
+          et3ResponseAreDatesCorrect: YesOrNoOrNotApplicable.YES,
         },
       });
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES;
@@ -52,7 +52,7 @@ describe('Claimant employment dates Controller', () => {
     it('should redirect to next page when no is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseAreDatesCorrect: YesOrNoOrNotSure.NO,
+          et3ResponseAreDatesCorrect: YesOrNoOrNotApplicable.NO,
         },
       });
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES;
@@ -64,7 +64,7 @@ describe('Claimant employment dates Controller', () => {
     it('should redirect to next page when Not Sure is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseAreDatesCorrect: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseAreDatesCorrect: YesOrNoOrNotApplicable.NOT_APPLICABLE,
         },
       });
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES;

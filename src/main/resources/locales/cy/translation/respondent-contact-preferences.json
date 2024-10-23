@@ -6,19 +6,13 @@
   "contactPhoneNumber": "[W]Contact phone number (optional)",
   "emailAddress": "[W]Email address",
   "sectionText1": "[W]Normally the tribunal will contact you by email. If you need contact by post, you must explain why.",
-  "contactPreferenceQuestion": "[W]How would you prefer to be contacted?",
+  "contactPreferenceQuestion": "[W]How would you prefer to be contacted? (optional)",
   "email": "[W]Email",
   "post": "[W]Post",
   "postHintText": "[W]Explain why you have selected post.",
-  "tribunalContactYouQuestion": "[W]Which language should the tribunal use to contact you?",
+  "tribunalContactYouQuestion": "[W]Which language should the tribunal use to contact you? (optional)",
   "errors": {
-    "respondentContactPreference": {
-      "required": "[W]Select a contact method"
-    },
-    "respondentLanguagePreference": {
-      "required": "[W]Select language"
-    },
-    "respondentContactPreferenceDetail": {
+    "et3ResponseContactReason": {
       "required": "[W]Explain why you selected post"
     }
   }

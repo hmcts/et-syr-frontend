@@ -11,7 +11,7 @@ import {
   StillWorking,
   WeeksOrMonths,
   YesOrNo,
-  YesOrNoOrNotSure,
+  YesOrNoOrNotApplicable,
 } from '../../../main/definitions/case';
 import { Applicant, TYPE_OF_CLAIMANT } from '../../../main/definitions/constants';
 import {
@@ -71,7 +71,7 @@ export const mockedApiData: CaseApiDataResponse = {
       claimant_pay_before_tax: 123,
       claimant_pay_after_tax: 120,
       claimant_pay_cycle: PayInterval.WEEKLY,
-      claimant_pension_contribution: YesOrNoOrNotSure.YES,
+      claimant_pension_contribution: YesOrNoOrNotApplicable.YES,
       claimant_pension_weekly_contribution: 15,
       claimant_benefits: YesOrNo.YES,
       claimant_benefits_detail: 'Some benefits',

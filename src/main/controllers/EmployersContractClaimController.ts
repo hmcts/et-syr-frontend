@@ -42,7 +42,7 @@ export default class EmployersContractClaimController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const nextPagae =
+    const nextPage =
       req.body.et3ResponseRespondentContestClaim === YesOrNo.YES
         ? PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS
         : PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM;
@@ -52,7 +52,7 @@ export default class EmployersContractClaimController {
       this.form,
       ET3HubLinkNames.EmployersContractClaim,
       LinkStatus.IN_PROGRESS,
-      nextPagae
+      nextPage
     );
   };
 

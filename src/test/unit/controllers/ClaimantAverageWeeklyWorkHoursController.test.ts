@@ -1,5 +1,5 @@
 import ClaimantAverageWeeklyWorkHoursController from '../../../main/controllers/ClaimantAverageWeeklyWorkHoursController';
-import { YesOrNoOrNotSure } from '../../../main/definitions/case';
+import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
@@ -30,7 +30,7 @@ describe('Claimant average weekly work hours Controller', () => {
     });
 
     it('should render the page when clear selection', () => {
-      request.session.userCase.et3ResponseClaimantWeeklyHours = YesOrNoOrNotSure.NO;
+      request.session.userCase.et3ResponseClaimantWeeklyHours = YesOrNoOrNotApplicable.NO;
       request.session.userCase.et3ResponseClaimantCorrectHours = 'Test';
       request.query = {
         redirect: 'clearSelection',
@@ -45,7 +45,7 @@ describe('Claimant average weekly work hours Controller', () => {
     it('should redirect to next page when yes is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseClaimantWeeklyHours: YesOrNoOrNotSure.YES,
+          et3ResponseClaimantWeeklyHours: YesOrNoOrNotApplicable.YES,
         },
       });
       request.url = PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS;
@@ -59,7 +59,7 @@ describe('Claimant average weekly work hours Controller', () => {
     it('should redirect to next page when no is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseClaimantWeeklyHours: YesOrNoOrNotSure.NO,
+          et3ResponseClaimantWeeklyHours: YesOrNoOrNotApplicable.NO,
           et3ResponseClaimantCorrectHours: '168',
         },
       });
@@ -74,7 +74,7 @@ describe('Claimant average weekly work hours Controller', () => {
     it('should redirect to next page when no is selected but hour invalid', async () => {
       request = mockRequest({
         body: {
-          et3ResponseClaimantWeeklyHours: YesOrNoOrNotSure.NO,
+          et3ResponseClaimantWeeklyHours: YesOrNoOrNotApplicable.NO,
           et3ResponseClaimantCorrectHours: 'Test',
         },
       });
@@ -89,7 +89,7 @@ describe('Claimant average weekly work hours Controller', () => {
     it('should redirect to next page when no is selected but hour exceeded', async () => {
       request = mockRequest({
         body: {
-          et3ResponseClaimantWeeklyHours: YesOrNoOrNotSure.NO,
+          et3ResponseClaimantWeeklyHours: YesOrNoOrNotApplicable.NO,
           et3ResponseClaimantCorrectHours: '169',
         },
       });
@@ -104,7 +104,7 @@ describe('Claimant average weekly work hours Controller', () => {
     it('should redirect to next page when Not Sure is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseClaimantWeeklyHours: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseClaimantWeeklyHours: YesOrNoOrNotApplicable.NOT_APPLICABLE,
         },
       });
       request.url = PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS;

@@ -34,10 +34,6 @@ export default class ClaimantPayDetailsEnterController {
             label: (l: AnyRecord): string => l.annually,
             value: HowOften.ANNUALLY,
           },
-          {
-            label: (l: AnyRecord): string => l.notSure,
-            value: HowOften.NOT_SURE,
-          },
         ],
       },
       clearSelection: {

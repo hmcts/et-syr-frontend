@@ -3,5 +3,10 @@
   "h1": "Respondent employees",
   "info": "It can help the tribunal to have an indication of the employer’s size.",
   "label": "How many people are employed at the site where the claimant worked? (optional)",
-  "hint": "Enter an number or leave blank if you're not sure."
+  "hint": "Enter a number or leave blank if you're not sure.",
+  "errors": {
+    "et3ResponseSiteEmploymentCount": {
+      "notANumber": "Enter a valid number"
+    }
+  }
 }

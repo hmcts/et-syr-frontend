@@ -2,44 +2,43 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { EmailOrPost, EnglishOrWelsh } from '../definitions/case';
-import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { CaseWithId, EmailOrPost, EnglishOrWelsh } from '../definitions/case';
+import { InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
+import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { isClearSelection } from '../helpers/RouterHelpers';
 import { getContactPreferencesDetails } from '../helpers/controller/RespondentContactPreferencesControllerHelper';
-import { getLogger } from '../logger';
-import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
-
-const logger = getLogger('RespondentContactPreferencesController');
+import ET3Util from '../utils/ET3Util';
+import { isFieldFilledIn } from '../validators/validator';
 
 export default class RespondentContactPreferencesController {
   private readonly form: Form;
   private readonly respondentContactPreferences: FormContent = {
     fields: {
-      respondentContactPreference: {
+      responseRespondentContactPreference: {
         classes: 'govuk-radios',
-        id: 'respondentContactPreference',
+        id: 'responseRespondentContactPreference',
         type: 'radios',
         label: (l: AnyRecord): string => l.contactPreferenceQuestion,
         labelHidden: false,
         values: [
           {
-            name: 'respondentContactPreference',
+            name: 'responseRespondentContactPreference',
             label: (l: AnyRecord): string => l.email,
             value: EmailOrPost.EMAIL,
           },
           {
-            name: 'respondentContactPreference',
+            name: 'responseRespondentContactPreference',
             label: (l: AnyRecord): string => l.post,
             value: EmailOrPost.POST,
             subFields: {
-              respondentContactPreferenceDetail: {
-                id: 'respondentContactPreferenceDetail',
-                name: 'respondentContactPreferenceDetail',
+              et3ResponseContactReason: {
+                id: 'et3ResponseContactReason',
+                name: 'et3ResponseContactReason',
                 type: 'text',
                 labelSize: 'normal',
                 hint: (l: AnyRecord): string => l.postHintText,
@@ -49,28 +48,30 @@ export default class RespondentContactPreferencesController {
             },
           },
         ],
-        validator: isOptionSelected,
       },
       //need to show ONLY if user is completing WELSH form
-      respondentLanguagePreference: {
+      et3ResponseLanguagePreference: {
         classes: 'govuk-radios--inline',
-        id: 'respondentLanguagePreference',
+        id: 'et3ResponseLanguagePreference',
         type: 'radios',
-        label: (l: AnyRecord): string => l.contactPreferenceQuestion,
+        label: (l: AnyRecord): string => l.tribunalContactYouQuestion,
         labelHidden: false,
         values: [
           {
-            name: 'respondentLanguagePreference',
+            name: 'et3ResponseLanguagePreferenceEnglish',
             label: (l: AnyRecord): string => l.english,
             value: EnglishOrWelsh.ENGLISH,
           },
           {
-            name: 'respondentLanguagePreference',
+            name: 'et3ResponseLanguagePreferenceWelsh',
             label: (l: AnyRecord): string => l.cymraeg,
             value: EnglishOrWelsh.WELSH,
           },
         ],
-        validator: isOptionSelected,
+      },
+      clearSelection: {
+        type: 'clearSelection',
+        targetUrl: PageUrls.RESPONDENT_CONTACT_PREFERENCES,
       },
     },
     submit: submitButton,
@@ -82,12 +83,38 @@ export default class RespondentContactPreferencesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS);
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    const userCase = req.session.userCase;
+    const fieldsToReset: string[] = [];
+    if (EmailOrPost.POST !== formData.responseRespondentContactPreference) {
+      fieldsToReset.push('et3ResponseContactReason');
+    }
+
+    //hide the language preference if it's a Scottish office
+    if (userCase.managingOffice === 'Scotland') {
+      delete this.form.getFormFields().et3ResponseLanguagePreference;
+    }
+
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.ContactDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS,
+      fieldsToReset
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_CONTACT_PREFERENCES);
     const userCase = req.session?.userCase;
+    const user = req.session?.user;
+
+    if (isClearSelection(req)) {
+      userCase.responseRespondentContactPreference = undefined;
+      userCase.et3ResponseLanguagePreference = undefined;
+    }
 
     const translations: AnyRecord = {
       ...req.t(TranslationKeys.RESPONDENT_CONTACT_PREFERENCES as never, { returnObjects: true } as never),
@@ -99,12 +126,12 @@ export default class RespondentContactPreferencesController {
       TranslationKeys.RESPONDENT_CONTACT_PREFERENCES,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.RESPONDENT_CONTACT_PREFERENCES, {
       ...content,
       redirectUrl,
       hideContactUs: true,
-      contactPreferencesRespondentSection: getContactPreferencesDetails(userCase, translations),
+      InterceptPaths,
+      contactPreferencesRespondentSection: getContactPreferencesDetails(userCase, user.email, translations),
     });
   };
 }

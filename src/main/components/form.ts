@@ -7,14 +7,7 @@ import { setupCheckboxParser } from './parser';
 const WHITELISTED_FIELDS: string[] = ['_csrf'];
 
 export class Form {
-  constructor(private readonly fields: FormFields) {
-    fields.hiddenErrorField = {
-      id: 'hiddenErrorField',
-      name: 'hiddenErrorField',
-      hidden: true,
-      type: 'text',
-    };
-  }
+  constructor(private readonly fields: FormFields) {}
 
   /**
    * Pass the form body to any fields with a parser and return mutated body;

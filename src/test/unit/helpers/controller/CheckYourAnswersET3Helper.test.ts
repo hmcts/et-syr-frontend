@@ -1,4 +1,11 @@
-import { CaseWithId, YesOrNo, YesOrNoOrNotSure } from '../../../../main/definitions/case';
+import {
+  CaseWithId,
+  HearingPreferenceET3,
+  TypeOfOrganisation,
+  YesOrNo,
+  YesOrNoOrNotApplicable,
+  YesOrNoOrNotSure,
+} from '../../../../main/definitions/case';
 import { PageUrls } from '../../../../main/definitions/constants';
 import { SummaryListRow, addSummaryRowWithAction } from '../../../../main/definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../../../main/definitions/util-types';
@@ -19,6 +26,7 @@ describe('CheckYourAnswersET3Helper', () => {
     id: '1',
     address1: '123 Test St',
     addressPostcode: 'AB12 3CD',
+    et3ResponseHearingRespondent: [HearingPreferenceET3.PHONE],
   };
 
   const translationsMock: AnyRecord = {
@@ -38,7 +46,6 @@ describe('CheckYourAnswersET3Helper', () => {
     },
     section2: {
       participateInHearings: 'Would you be able to take part in hearings by video and phone?',
-      explainReason: 'Explain why you are unable to take part in video or phone hearings',
       disabilitySupport:
         'Do you have a physical, mental or learning disability or health condition that means you need support during your case?',
       supportRequest: 'Tell us what support you need to request',
@@ -87,28 +94,26 @@ describe('CheckYourAnswersET3Helper', () => {
       exampleData: '[example data]',
     },
     change: 'Change',
+    hearings: {
+      phone: 'Phone',
+    },
   };
 
   const section1Urls = [
     PageUrls.RESPONDENT_NAME,
     PageUrls.TYPE_OF_ORGANISATION, // for preferredTitleOptional
-    PageUrls.TYPE_OF_ORGANISATION, // for companyRegistrationNumberOptional
-    PageUrls.TYPE_OF_ORGANISATION, // for companyRegistrationNumberOptional
     PageUrls.RESPONDENT_ADDRESS,
     PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME,
     PageUrls.RESPONDENT_DX_ADDRESS,
     PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER,
     PageUrls.RESPONDENT_CONTACT_PREFERENCES,
-    PageUrls.RESPONDENT_CONTACT_PREFERENCES, // for reasonForPost
     PageUrls.RESPONDENT_CONTACT_PREFERENCES, // for contactLanguage
   ];
 
   // Define URLs for sections 2
   const section2Urls = [
     PageUrls.HEARING_PREFERENCES,
-    PageUrls.HEARING_PREFERENCES, // for part of the hearing preferences
     PageUrls.REASONABLE_ADJUSTMENTS,
-    PageUrls.REASONABLE_ADJUSTMENTS, // for support requests
     PageUrls.RESPONDENT_EMPLOYEES,
     PageUrls.RESPONDENT_SITES,
     PageUrls.RESPONDENT_SITE_EMPLOYEES,
@@ -171,6 +176,54 @@ describe('CheckYourAnswersET3Helper', () => {
     expect(result).toEqual(expectedRows);
   });
 
+  // Test for section 1 INDIVIDUAL
+  it('should return correct summary list rows for section 1 when all fields are populated - INDIVIDUAL', () => {
+    const expectedRows: SummaryListRow[] = [];
+
+    section1Urls.splice(2, 0, PageUrls.TYPE_OF_ORGANISATION);
+
+    for (const pageUrl of section1Urls) {
+      expectedRows.push(
+        addSummaryRowWithAction(
+          expect.any(String), // respondentName
+          expect.any(String), // exampleData
+          pageUrl, // URL
+          expect.any(String) // change label
+        )
+      );
+    }
+
+    userCase.et3ResponseRespondentEmployerType = TypeOfOrganisation.INDIVIDUAL;
+
+    const result = getEt3Section1(userCase, translationsMock);
+
+    expect(result).toEqual(expectedRows);
+  });
+
+  // Test for section 1 LIMITED COMPANY
+  it('should return correct summary list rows for section 1 when all fields are populated - LIMITED COMPANY', () => {
+    const expectedRows: SummaryListRow[] = [];
+
+    // no need to add URL into section1Urls as it was added in previous test
+
+    for (const pageUrl of section1Urls) {
+      expectedRows.push(
+        addSummaryRowWithAction(
+          expect.any(String), // respondentName
+          expect.any(String), // exampleData
+          pageUrl, // URL
+          expect.any(String) // change label
+        )
+      );
+    }
+
+    userCase.et3ResponseRespondentEmployerType = TypeOfOrganisation.LIMITED_COMPANY;
+
+    const result = getEt3Section1(userCase, translationsMock);
+
+    expect(result).toEqual(expectedRows);
+  });
+
   // Tests for section 2
   it('should return correct summary list rows for section 2 when all fields are populated', () => {
     const expectedRows: SummaryListRow[] = [];
@@ -185,6 +238,42 @@ describe('CheckYourAnswersET3Helper', () => {
         )
       );
     }
+
+    userCase.et3ResponseHearingRespondent = [HearingPreferenceET3.PHONE];
+    userCase.et3ResponseRespondentSupportNeeded = YesOrNoOrNotSure.NO;
+    userCase.et3ResponseRespondentSupportDetails = '';
+    userCase.et3ResponseEmploymentCount = '10';
+    userCase.et3ResponseMultipleSites = YesOrNo.YES;
+    userCase.et3ResponseSiteEmploymentCount = '100';
+
+    const result = getEt3Section2(userCase, translationsMock);
+
+    expect(result).toEqual(expectedRows);
+  });
+
+  // Tests for section 2 with POST SELECTED
+  it('should return correct summary list rows for section 2 when all fields are populated POST selected', () => {
+    const expectedRows: SummaryListRow[] = [];
+
+    section2Urls.splice(2, 0, PageUrls.REASONABLE_ADJUSTMENTS);
+
+    for (const pageUrl of section2Urls) {
+      expectedRows.push(
+        addSummaryRowWithAction(
+          expect.any(String), // field1
+          expect.any(String), // exampleData
+          pageUrl, // URL
+          expect.any(String) // change label
+        )
+      );
+    }
+
+    userCase.et3ResponseHearingRespondent = [HearingPreferenceET3.PHONE];
+    userCase.et3ResponseRespondentSupportNeeded = YesOrNoOrNotSure.YES;
+    userCase.et3ResponseRespondentSupportDetails = 'Support Needed';
+    userCase.et3ResponseEmploymentCount = '10';
+    userCase.et3ResponseMultipleSites = YesOrNo.YES;
+    userCase.et3ResponseSiteEmploymentCount = '100';
 
     const result = getEt3Section2(userCase, translationsMock);
 
@@ -207,9 +296,9 @@ describe('CheckYourAnswersET3Helper', () => {
     }
 
     userCase.et3ResponseAcasAgree = YesOrNo.YES;
-    userCase.et3ResponseAreDatesCorrect = YesOrNoOrNotSure.NO;
-    userCase.et3ResponseIsJobTitleCorrect = YesOrNoOrNotSure.NO;
-    userCase.et3ResponseClaimantWeeklyHours = YesOrNoOrNotSure.NO;
+    userCase.et3ResponseAreDatesCorrect = YesOrNoOrNotApplicable.NO;
+    userCase.et3ResponseIsJobTitleCorrect = YesOrNoOrNotApplicable.NO;
+    userCase.et3ResponseClaimantWeeklyHours = YesOrNoOrNotApplicable.NO;
 
     const result = getEt3Section3(userCase, translationsMock);
 

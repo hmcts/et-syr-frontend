@@ -7,13 +7,13 @@
   "country": "[W]Country",
   "postcodeOrAreaCode": "[W]Postcode or area code (optional)",
   "errors": {
-    "addressLine1": {
+    "responseRespondentAddressLine1": {
       "required": "[W]Enter address"
     },
-    "townOrCity": {
+    "responseRespondentAddressPostTown": {
       "required": "[W]Enter town or city"
     },
-    "country": {
+    "responseRespondentAddressCountry": {
       "required": "[W]Enter country"
     }
   }

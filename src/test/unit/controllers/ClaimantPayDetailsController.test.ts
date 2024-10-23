@@ -1,6 +1,6 @@
 import ClaimantPayDetailsController from '../../../main/controllers/ClaimantPayDetailsController';
-import { YesOrNoOrNotSure } from '../../../main/definitions/case';
-import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
+import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
+import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
@@ -27,7 +27,7 @@ describe('Claimant pay details Controller', () => {
     });
 
     it('should render the page when clear selection', () => {
-      request.session.userCase.et3ResponseEarningDetailsCorrect = YesOrNoOrNotSure.NO;
+      request.session.userCase.et3ResponseEarningDetailsCorrect = YesOrNoOrNotApplicable.NO;
       request.query = {
         redirect: 'clearSelection',
       };
@@ -40,47 +40,45 @@ describe('Claimant pay details Controller', () => {
     it('should redirect to next page when yes is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseEarningDetailsCorrect: YesOrNoOrNotSure.YES,
+          et3ResponseEarningDetailsCorrect: YesOrNoOrNotApplicable.YES,
         },
       });
-      request.url = PageUrls.CLAIMANT_PAY_DETAILS + languages.ENGLISH_URL_PARAMETER;
+      request.url = PageUrls.CLAIMANT_PAY_DETAILS;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_NOTICE_PERIOD + languages.ENGLISH_URL_PARAMETER);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_NOTICE_PERIOD);
     });
 
     it('should redirect to next page when no is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseEarningDetailsCorrect: YesOrNoOrNotSure.NO,
+          et3ResponseEarningDetailsCorrect: YesOrNoOrNotApplicable.NO,
         },
       });
-      request.url = PageUrls.CLAIMANT_PAY_DETAILS + languages.ENGLISH_URL_PARAMETER;
+      request.url = PageUrls.CLAIMANT_PAY_DETAILS;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.CLAIMANT_PAY_DETAILS_ENTER + languages.ENGLISH_URL_PARAMETER
-      );
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_PAY_DETAILS_ENTER);
     });
 
     it('should redirect to next page when Not Sure is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseEarningDetailsCorrect: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseEarningDetailsCorrect: YesOrNoOrNotApplicable.NOT_APPLICABLE,
         },
       });
-      request.url = PageUrls.CLAIMANT_PAY_DETAILS + languages.ENGLISH_URL_PARAMETER;
+      request.url = PageUrls.CLAIMANT_PAY_DETAILS;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_NOTICE_PERIOD + languages.ENGLISH_URL_PARAMETER);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_NOTICE_PERIOD);
     });
 
     it('should redirect to next page when nothing is selected', async () => {
       request = mockRequest({ body: {} });
-      request.url = PageUrls.CLAIMANT_PAY_DETAILS + languages.ENGLISH_URL_PARAMETER;
+      request.url = PageUrls.CLAIMANT_PAY_DETAILS;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_NOTICE_PERIOD + languages.ENGLISH_URL_PARAMETER);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_NOTICE_PERIOD);
     });
   });
 });

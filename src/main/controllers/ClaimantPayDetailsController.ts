@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNoOrNotSure } from '../definitions/case';
+import { YesOrNoOrNotApplicable } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
@@ -22,16 +22,16 @@ export default class ClaimantPayDetailsController {
         values: [
           {
             label: (l: AnyRecord): string => l.yes,
-            value: YesOrNoOrNotSure.YES,
+            value: YesOrNoOrNotApplicable.YES,
           },
           {
             label: (l: AnyRecord): string => l.no,
-            value: YesOrNoOrNotSure.NO,
+            value: YesOrNoOrNotApplicable.NO,
             hint: (l: AnyRecord): string => l.et3ResponseEarningDetailsCorrect.no.hint,
           },
           {
             label: (l: AnyRecord): string => l.notSure,
-            value: YesOrNoOrNotSure.NOT_SURE,
+            value: YesOrNoOrNotApplicable.NOT_APPLICABLE,
             hint: (l: AnyRecord): string => l.et3ResponseEarningDetailsCorrect.notSure.hint,
           },
         ],
@@ -51,7 +51,7 @@ export default class ClaimantPayDetailsController {
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const nextPage =
-      req.body.et3ResponseEarningDetailsCorrect === YesOrNoOrNotSure.NO
+      req.body.et3ResponseEarningDetailsCorrect === YesOrNoOrNotApplicable.NO
         ? PageUrls.CLAIMANT_PAY_DETAILS_ENTER
         : PageUrls.CLAIMANT_NOTICE_PERIOD;
     await ET3Util.updateET3ResponseWithET3Form(

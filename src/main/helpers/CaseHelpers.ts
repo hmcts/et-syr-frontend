@@ -147,6 +147,12 @@ export const resetFields = (formData: Partial<CaseWithId>, fieldsToReset: string
   }
 };
 
+function toTitleCase(str: string): string {
+  return str.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
+  });
+}
+
 export const convertJsonArrayToTitleCase = (jsonArray: Record<string, string>[]): Record<string, string>[] => {
   return jsonArray.map(addressObj => {
     const newObj: Record<string, string> = {};
@@ -166,9 +172,3 @@ export const convertJsonArrayToTitleCase = (jsonArray: Record<string, string>[])
     return newObj;
   });
 };
-
-function toTitleCase(str: string): string {
-  return str.replace(/\w\S*/g, function (txt) {
-    return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
-  });
-}

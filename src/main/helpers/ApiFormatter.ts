@@ -310,6 +310,7 @@ function mapResponseApiDataToCaseWithId(
     caseWithId.et3ResponseRespondentContactName = selectedRespondent.value?.et3ResponseRespondentContactName;
     caseWithId.et3ResponseDXAddress = selectedRespondent.value?.et3ResponseDXAddress;
     caseWithId.et3ResponseContactReason = selectedRespondent.value?.et3ResponseContactReason;
+    caseWithId.et3ResponseLanguagePreference = selectedRespondent.value?.et3ResponseLanguagePreference;
     caseWithId.responseStruckOutReason = selectedRespondent.value?.responseStruckOutReason;
     caseWithId.responseRespondentAddressLine1 = selectedRespondent.value?.responseRespondentAddress?.AddressLine1;
     caseWithId.responseRespondentAddressLine2 = selectedRespondent.value?.responseRespondentAddress?.AddressLine2;
@@ -451,9 +452,12 @@ function mapResponseApiDataToCaseWithId(
     caseWithId.et3FormUrl = selectedRespondent.value?.et3Form?.document_url;
     caseWithId.et3FormCategoryId = selectedRespondent.value?.et3Form?.category_id;
     caseWithId.et3FormUploadTimestamp = selectedRespondent.value?.et3Form?.upload_timestamp;
-    caseWithId.personalDetailsSection = selectedRespondent.value?.personalDetailsSection;
-    caseWithId.employmentDetailsSection = selectedRespondent.value?.employmentDetailsSection;
-    caseWithId.claimDetailsSection = selectedRespondent.value?.claimDetailsSection;
+    caseWithId.contactDetailsSection = selectedRespondent.value?.contactDetailsSection;
+    caseWithId.employerDetailsSection = selectedRespondent.value?.employerDetailsSection;
+    caseWithId.conciliationAndEmployeeDetailsSection = selectedRespondent.value?.conciliationAndEmployeeDetailsSection;
+    caseWithId.payPensionBenefitDetailsSection = selectedRespondent.value?.payPensionBenefitDetailsSection;
+    caseWithId.contestClaimSection = selectedRespondent.value?.contestClaimSection;
+    caseWithId.employersContractClaimSection = selectedRespondent.value?.employersContractClaimSection;
     caseWithId.respondentEnterPostcode = selectedRespondent.value?.respondent_address.PostCode;
     caseWithId.responseRespondentEmail = selectedRespondent.value?.responseRespondentEmail;
     caseWithId.responseRespondentContactPreference = selectedRespondent.value?.responseRespondentContactPreference;
@@ -747,6 +751,7 @@ export const mapRespondent = (respondent: RespondentType): RespondentET3Model =>
     et3ResponseRespondentContactName: respondent?.et3ResponseRespondentContactName,
     et3ResponseDXAddress: respondent?.et3ResponseDXAddress,
     et3ResponseContactReason: respondent?.et3ResponseContactReason,
+    et3ResponseLanguagePreference: respondent?.et3ResponseLanguagePreference,
     et3ResponseHearingRepresentative: respondent?.et3ResponseHearingRepresentative,
     et3ResponseHearingRespondent: respondent?.et3ResponseHearingRespondent,
     et3ResponseEmploymentCount: respondent?.et3ResponseEmploymentCount,
@@ -781,9 +786,12 @@ export const mapRespondent = (respondent: RespondentType): RespondentET3Model =>
     et3ResponseRespondentSupportDetails: respondent?.et3ResponseRespondentSupportDetails,
     et3ResponseRespondentSupportDocument: respondent?.et3ResponseRespondentSupportDocument,
     et3Form: respondent?.et3Form,
-    personalDetailsSection: respondent?.personalDetailsSection,
-    employmentDetailsSection: respondent?.employmentDetailsSection,
-    claimDetailsSection: respondent?.claimDetailsSection,
+    contactDetailsSection: respondent?.contactDetailsSection,
+    employerDetailsSection: respondent?.employerDetailsSection,
+    conciliationAndEmployeeDetailsSection: respondent?.conciliationAndEmployeeDetailsSection,
+    payPensionBenefitDetailsSection: respondent?.payPensionBenefitDetailsSection,
+    contestClaimSection: respondent?.contestClaimSection,
+    employersContractClaimSection: respondent?.employersContractClaimSection,
     workAddressLine1: respondent?.workAddress1,
     workAddressLine2: respondent?.workAddress2,
     workAddressTown: respondent?.workAddressTown,
