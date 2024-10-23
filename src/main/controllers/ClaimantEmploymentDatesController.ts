@@ -10,7 +10,9 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { isClearSelection } from '../helpers/RouterHelpers';
+import { dateInLocale } from '../helpers/dateInLocale';
 import ET3Util from '../utils/ET3Util';
+import { convertCaseDateToDate } from '../validators/dateValidators';
 
 export default class ClaimantEmploymentDatesController {
   private readonly form: Form;
@@ -68,6 +70,7 @@ export default class ClaimantEmploymentDatesController {
     if (isClearSelection(req)) {
       req.session.userCase.et3ResponseAreDatesCorrect = undefined;
     }
+    const { startDate, endDate } = req.session.userCase ?? {};
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.CLAIMANT_EMPLOYMENT_DATES,
@@ -76,7 +79,8 @@ export default class ClaimantEmploymentDatesController {
     res.render(TranslationKeys.CLAIMANT_EMPLOYMENT_DATES, {
       ...content,
       hideContactUs: true,
-      userCase: req.session.userCase,
+      startDateDisplay: startDate ? dateInLocale(convertCaseDateToDate(startDate), req.url) : undefined,
+      endDateDisplay: endDate ? dateInLocale(convertCaseDateToDate(endDate), req.url) : undefined,
     });
   };
 }

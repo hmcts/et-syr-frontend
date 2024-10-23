@@ -22,7 +22,7 @@ export default class ClaimantPensionAndBenefitsController {
     fields: {
       et3ResponseIsPensionCorrect: {
         type: 'radios',
-        label: (l: AnyRecord): string => l.areClaimantPensionBenefitsCorrect.label,
+        label: (l: AnyRecord): string => l.et3ResponseIsPensionCorrect.label,
         values: [
           {
             label: (l: AnyRecord): string => l.yes,
