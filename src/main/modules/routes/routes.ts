@@ -29,6 +29,7 @@ import ClaimantPayDetailsController from '../../controllers/ClaimantPayDetailsCo
 import ClaimantPayDetailsEnterController from '../../controllers/ClaimantPayDetailsEnterController';
 import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPensionAndBenefitsController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
+import ET1FormViewController from '../../controllers/ET1FormViewController';
 import ET3ResponseController from '../../controllers/ET3ResponseController';
 import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
@@ -187,6 +188,7 @@ export class Routes {
       new CheckYourAnswersEmployersContractClaimController().post
     );
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
+    app.get(PageUrls.ET1_FORM_VIEW, new ET1FormViewController().get);
     app.get(
       Urls.INFO,
       infoRequestHandler({

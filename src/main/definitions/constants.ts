@@ -142,6 +142,7 @@ export const PageUrls = {
   EMPLOYERS_CONTRACT_CLAIM: '/employers-contract-claim',
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: '/employers-contract-claim-details',
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: '/check-your-answers-employers-contract-claim',
+  ET1_FORM_VIEW: '/et1-form-view',
 } as const;
 
 export const InterceptPaths = {
@@ -363,6 +364,7 @@ export const Applicant = {
 } as const;
 
 export const AllDocumentTypes = {
+  ET1: 'ET1',
   CLAIMANT_CORRESPONDENCE: 'Claimant correspondence',
   ACAS_CERT: 'ACAS Certificate',
   RESPONDENT_CORRESPONDENCE: 'Respondent correspondence',
@@ -489,6 +491,9 @@ export const DefaultValues = {
   STRING_EQUALS: '=',
   STRING_SPACE: ' ',
   STRING_NEW_LINE: '\n',
+  STRING_SLASH: '/',
+  STRING_SLASH_REGEX: /\//gi,
+  STRING_UNDERSCORE: '_',
 } as const;
 
 export const FormFieldNames = {
@@ -513,9 +518,8 @@ export const ServiceErrors = {
   ERROR_GETTING_USER_CASE: 'Error getting user case: ',
   ERROR_GETTING_USER_CASES: 'Error getting user cases: ',
   ERROR_ASSIGNING_USER_ROLE: 'Error assigning user role: ',
-  ERROR_ASSIGNING_USER_ROLE_USER_ALREADY_HAS_ROLE_EXCEPTION_CHECK_VALUE: 'You have already been assigned to this case',
-  ERROR_ASSIGNING_USER_ROLE_ALREADY_ASSIGNED_CHECK_VALUE:
-    'Unable to add respondent idam id because case has already been assigned',
+  ERROR_ASSIGNING_USER_ROLE_USER_ALREADY_HAS_ROLE_EXCEPTION_CHECK_VALUE: 'already been assigned to this case',
+  ERROR_ASSIGNING_USER_ROLE_ALREADY_ASSIGNED_CHECK_VALUE: 'case has already been assigned',
   ERROR_DUMMY_DATA: 'Dummy data error',
   ERROR_MODIFYING_SUBMITTED_CASE: 'Error updating submit case: ',
   ERROR_MODIFYING_SUBMITTED_CASE_IDAM_ID_NOT_FOUND: 'Idam id not found',

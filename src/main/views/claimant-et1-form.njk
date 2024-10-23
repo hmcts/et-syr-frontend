@@ -7,12 +7,32 @@
   {{ super() }}
   {% include "back-link.njk" %}
 {% endblock %}
+{% set et1FormDate = '' %}
+{% set et1FormUrl = '' %}
+{% set acasCertDate = '' %}
+{% set acasCertUrl = '' %}
+{% set acasAttachmentInfo = '' %}
 
+{% if et1FormDocument === 'undefined' %}
+  {% set et1FormDate = '-' %}
+  {% set et1FormUrl = 'Not exists' %}
+{% else  %}
+  {% set et1FormDate = formattedEt1FormDate %}
+  {% set et1FormUrl = "<a href=" + et1FormUrlValue + ">" + et1Form + "</a>" %}
+{% endif %}
+{% if acasCertificate === undefined %}
+  {% set acasCertDate = '-' %}
+  {% set acasCertUrl = notExists %}
+  {% set acasAttachmentInfo = attachmentNotFound %}
+{% else %}
+  {% set acasCertDate = formattedAcasCertificateDate %}
+  {% set acasCertUrl = "<a href=" + acasCertUrlValue + ">" + acasCert + "</a>" %}
+   {% set acasAttachmentInfo = attachments %}
+{% endif %}
 {% block content %}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-      <span class="govuk-caption-xl">{{ sectionTitle }}</span>
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ h1 }}</h1>
 
       {{ govukTable({
@@ -22,24 +42,24 @@
         rows: [
           [
             {
-              text: dateServed
+              text: et1FormDate
             },
             {
               text: et1Form
             },
             {
-              html: '<a href="' ~ et1FormUrl ~ '" aria-label="' ~ et1Form ~ ' : ' ~ userCase.et1SubmittedForm.id ~ '">' ~ et1Form ~ '</a>'
+              html: et1FormUrl
             }
           ],
           [
             {
-              text: "acasCertDate"
+              text: acasCertDate
             },
             {
-              text: attachments
+              text: acasAttachmentInfo
             },
             {
-              html: '<a href="' ~ acasCertUrl ~ '" aria-label="' ~ acasCert ~ ' : ' ~ userCase.acasCertNum ~ '">' ~ acasCert ~ '</a>'
+              html: acasCertUrl
             }
           ]
         ]

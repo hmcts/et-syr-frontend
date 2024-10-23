@@ -55,6 +55,7 @@ export default class CaseDetailsController {
       await handleUpdateHubLinksStatuses(req, logger);
     }
     const currentState = currentStateFn(userCase);
+    req.session.selectedRespondent = req.session.userCase.respondents[req.session.selectedRespondentIndex];
     const et3CaseDetailsLinksStatuses =
       req.session.userCase.respondents[req.session.selectedRespondentIndex].et3CaseDetailsLinksStatuses;
     const languageParam = getLanguageParam(req.url);
