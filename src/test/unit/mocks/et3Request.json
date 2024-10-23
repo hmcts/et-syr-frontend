@@ -208,9 +208,12 @@
       "category_id": "test_et3_form_document_category_id",
       "upload_timestamp": "test_et3_form_document_upload_timestamp"
     },
-    "personalDetailsSection": "Yes",
-    "employmentDetailsSection": "Yes",
-    "claimDetailsSection": "Yes",
+    "contactDetailsSection": "Yes",
+    "employerDetailsSection": "Yes",
+    "conciliationAndEmployeeDetailsSection": "Yes",
+    "payPensionBenefitDetailsSection": "Yes",
+    "contestClaimSection": "Yes",
+    "employersContractClaimSection": "Yes",
     "idamId": "dda9d1c3-1a11-3c3a-819e-74174fbec26b",
     "et3CaseDetailsLinksStatuses": {
       "personalDetails": "notAvailableYet",

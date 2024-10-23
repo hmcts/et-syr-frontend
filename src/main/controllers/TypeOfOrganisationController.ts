@@ -2,16 +2,17 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { TypeOfOrganisation } from '../definitions/case';
+import { CaseWithId, TypeOfOrganisation } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
+import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { isClearSelection } from '../helpers/RouterHelpers';
 import ET3Util from '../utils/ET3Util';
-import { isOptionSelected, isValidCompanyRegistrationNumber } from '../validators/validator';
+import { isValidCompanyRegistrationNumber } from '../validators/validator';
 
 export default class TypeOfOrganisationController {
   private readonly form: Form;
@@ -72,7 +73,10 @@ export default class TypeOfOrganisationController {
             value: TypeOfOrganisation.OTHER,
           },
         ],
-        validator: isOptionSelected,
+      },
+      clearSelection: {
+        type: 'clearSelection',
+        targetUrl: PageUrls.TYPE_OF_ORGANISATION,
       },
     },
     submit: submitButton,
@@ -84,25 +88,39 @@ export default class TypeOfOrganisationController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    const fieldsToReset: string[] = [];
+
+    if (TypeOfOrganisation.INDIVIDUAL !== formData.et3ResponseRespondentEmployerType) {
+      fieldsToReset.push('et3ResponseRespondentPreferredTitle');
+    }
+    if (TypeOfOrganisation.LIMITED_COMPANY !== formData.et3ResponseRespondentEmployerType) {
+      fieldsToReset.push('et3ResponseRespondentCompanyNumber');
+    }
+
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.ContactDetails,
       LinkStatus.IN_PROGRESS,
-      PageUrls.RESPONDENT_ADDRESS
+      PageUrls.RESPONDENT_ADDRESS,
+      fieldsToReset
     );
   };
 
   public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.TYPE_OF_ORGANISATION);
 
+    if (isClearSelection(req)) {
+      req.session.userCase.et3ResponseRespondentEmployerType = undefined;
+    }
+
     const content = getPageContent(req, this.typeOfOrgContent, [
       TranslationKeys.COMMON,
       TranslationKeys.TYPE_OF_ORGANISATION,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.TYPE_OF_ORGANISATION, {
       ...content,
       redirectUrl,

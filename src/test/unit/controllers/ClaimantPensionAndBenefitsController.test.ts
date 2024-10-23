@@ -1,5 +1,5 @@
 import ClaimantPensionAndBenefitsController from '../../../main/controllers/ClaimantPensionAndBenefitsController';
-import { YesOrNoOrNotSure } from '../../../main/definitions/case';
+import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
@@ -27,7 +27,7 @@ describe('Claimant pension and benefits Controller', () => {
     });
 
     it('should render the page when clear selection', () => {
-      request.session.userCase.et3ResponseIsPensionCorrect = YesOrNoOrNotSure.NO;
+      request.session.userCase.et3ResponseIsPensionCorrect = YesOrNoOrNotApplicable.NO;
       request.session.userCase.et3ResponsePensionCorrectDetails = 'Test';
       request.query = {
         redirect: 'clearSelection',
@@ -42,7 +42,7 @@ describe('Claimant pension and benefits Controller', () => {
     it('should redirect to next page when yes is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseIsPensionCorrect: YesOrNoOrNotSure.YES,
+          et3ResponseIsPensionCorrect: YesOrNoOrNotApplicable.YES,
         },
       });
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
@@ -53,7 +53,7 @@ describe('Claimant pension and benefits Controller', () => {
     it('should redirect to next page when no is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseIsPensionCorrect: YesOrNoOrNotSure.NO,
+          et3ResponseIsPensionCorrect: YesOrNoOrNotApplicable.NO,
           et3ResponsePensionCorrectDetails: '1'.repeat(400),
         },
       });
@@ -65,7 +65,7 @@ describe('Claimant pension and benefits Controller', () => {
     it('should redirect to next page when Not Sure is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseIsPensionCorrect: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseIsPensionCorrect: YesOrNoOrNotApplicable.NOT_APPLICABLE,
         },
       });
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
@@ -84,7 +84,7 @@ describe('Claimant pension and benefits Controller', () => {
     it('should render the same page when No is selected but summary text exceeds 2500 characters', async () => {
       request = mockRequest({
         body: {
-          et3ResponseIsPensionCorrect: YesOrNoOrNotSure.NO,
+          et3ResponseIsPensionCorrect: YesOrNoOrNotApplicable.NO,
           et3ResponsePensionCorrectDetails: '1'.repeat(401),
         },
       });

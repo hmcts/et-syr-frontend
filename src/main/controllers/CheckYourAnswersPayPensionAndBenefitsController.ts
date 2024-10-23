@@ -77,7 +77,7 @@ export default class CheckYourAnswersPayPensionAndBenefitsController {
       InterceptPaths,
       PageUrls,
       form: this.formContent,
-      et3ResponseSection4: getEt3Section4(userCase, sectionTranslations),
+      et3ResponseSection4: getEt3Section4(userCase, sectionTranslations, InterceptPaths.PAY_PENSION_BENEFITS_CHANGE),
       redirectUrl,
       hideContactUs: true,
     });

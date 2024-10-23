@@ -24,7 +24,6 @@ const radioClass = 'govuk-radios__item';
 const expectedRadioLabel1 = commonJson.weekly;
 const expectedRadioLabel2 = commonJson.monthly;
 const expectedRadioLabel3 = commonJson.annually;
-const expectedRadioLabel4 = commonJson.notSure;
 const buttonClass = 'govuk-button';
 
 let htmlRes: Document;
@@ -42,9 +41,9 @@ describe('Claimant pay details page', () => {
     expect(title[0].innerHTML).contains(expectedTitle, 'Page title does not exist');
   });
 
-  it('should display 4 input fields', () => {
+  it('should display 3 input fields', () => {
     const radioButtons = htmlRes.getElementsByClassName(radioClass);
-    expect(radioButtons.length).equal(4, `only ${radioButtons.length} found`);
+    expect(radioButtons.length).equal(3, `only ${radioButtons.length} found`);
   });
 
   it('should display inputs with valid labels', () => {
@@ -60,10 +59,6 @@ describe('Claimant pay details page', () => {
     expect(radioButtons[2].innerHTML).contains(
       expectedRadioLabel3,
       'Could not find the radio button with label ' + expectedRadioLabel3
-    );
-    expect(radioButtons[3].innerHTML).contains(
-      expectedRadioLabel4,
-      'Could not find the radio button with label ' + expectedRadioLabel4
     );
   });
 

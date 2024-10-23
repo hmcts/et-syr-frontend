@@ -17,7 +17,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { convertJsonArrayToTitleCase } from '../helpers/CaseHelpers';
-import { assignAddresses, assignFormData, getPageContent } from '../helpers/FormHelper';
+import { assignAddresses, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLogger } from '../logger';
 import localesCy from '../resources/locales/cy/translation/common.json';
@@ -123,7 +123,6 @@ export default class RespondentSelectPostCodeController {
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
     assignAddresses(req.session.userCase, this.form.getFormFields());
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.RESPONDENT_SELECT_POST_CODE, {
       ...content,
       redirectUrl,

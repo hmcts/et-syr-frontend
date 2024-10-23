@@ -2,9 +2,8 @@ import { Response } from 'express';
 
 import { Form } from '../../../main/components/form';
 import { AppRequest } from '../../../main/definitions/appRequest';
-import { HearingPreference } from '../../../main/definitions/case';
 import { PageUrls } from '../../../main/definitions/constants';
-import { getHearingPreferenceReasonError, handleErrors, returnSessionErrors } from '../../../main/helpers/ErrorHelpers';
+import { handleErrors, returnSessionErrors } from '../../../main/helpers/ErrorHelpers';
 
 // Create a mock Response type that includes necessary methods
 class MockResponse implements Partial<Response> {
@@ -43,33 +42,6 @@ describe('Session and Error Handling Functions', () => {
 
       expect(form.getParsedBody).toHaveBeenCalledWith(req.body, form.getFormFields());
       expect(sessionErrors).toBeDefined();
-    });
-  });
-
-  describe('getHearingPreferenceReasonError', () => {
-    it('should return error when HearingPreference.NEITHER is selected but no hearingAssistance is provided', () => {
-      const formData = {
-        hearingPreferences: [HearingPreference.NEITHER],
-        hearingAssistance: '', // Empty string
-      };
-
-      const result = getHearingPreferenceReasonError(formData);
-
-      expect(result).toEqual({
-        errorType: 'required',
-        propertyName: 'hearingAssistance',
-      });
-    });
-
-    it('should not return error when HearingPreference.NEITHER is selected but hearingAssistance is provided', () => {
-      const formData = {
-        hearingPreferences: [HearingPreference.NEITHER],
-        hearingAssistance: 'Some reason',
-      };
-
-      const result = getHearingPreferenceReasonError(formData);
-
-      expect(result).toBeUndefined();
     });
   });
 

@@ -1,7 +1,7 @@
 {
   "title": "[W]Reasonable Adjustments",
   "h1": "[W]Extra support during the case",
-  "reasonableAdjustments": "[W]Do you have a physical, mental or learning disability or health condition that means you need support during the case?",
+  "reasonableAdjustments": "[W]Do you have a physical, mental or learning disability or health condition that means you need support during the case? (optional)",
   "insetText": "[W]We know some people need support to access information and use our services. We call this a reasonable adjustment. Some reasonable adjustments need to be agreed by a judge or HMCTS. You can discuss with the tribunal if your needs change.",
   "additionalInfo": "[W]What support is available?",
   "additionalText": "[W]Reasonable adjustments can include:",
@@ -9,13 +9,15 @@
   "bullet2": "[W]help with communicating, sight, hearing, speaking and interpretation",
   "bullet3": "[W]access and mobility support if a hearing takes place in person",
   "radioNo": "[W]No - I do not need any support at this time",
-  "yesLabelText": "[W]Select all that apply",
+  "radioNotSure": "[W]I'm not sure yet",
+  "yesDetail": "[W]Tell us what support you need",
   "errors": {
-    "reasonableAdjustments": {
+    "et3ResponseRespondentSupportNeeded": {
       "required": "[W]Make a selection"
     },
-    "reasonableAdjustmentsDetail": {
-      "required": "[W]Give details of the support you need"
+    "et3ResponseRespondentSupportDetails": {
+      "required": "[W]Give details of the support you need",
+      "tooLong": "[W]The details given for support needed must be less than 400 characters"
     }
   }
 }

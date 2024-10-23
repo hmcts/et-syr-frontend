@@ -7,7 +7,8 @@ import { FormFieldNames, LoggerConstants, PageUrls, TranslationKeys, ValidationE
 import { FormContent, FormFields } from '../definitions/form';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
+import { answersAddressFormatter } from '../helpers/AddressHelper';
+import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { conditionalRedirect } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
@@ -88,16 +89,28 @@ export default class RespondentAddressController {
 
   public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ADDRESS);
+    const userCase = req.session.userCase;
 
     const content = getPageContent(req, this.respondentAddressContent, [
       TranslationKeys.COMMON,
       TranslationKeys.RESPONDENT_ADDRESS,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
+
+    const respondentAddress = answersAddressFormatter(
+      userCase.respondentAddressLine1,
+      userCase.respondentAddressLine2,
+      userCase.respondentAddressLine3,
+      userCase.respondentAddressPostTown,
+      userCase.respondentAddressCounty,
+      userCase.respondentAddressCountry,
+      userCase.respondentAddressPostCode
+    );
+
     res.render(TranslationKeys.RESPONDENT_ADDRESS, {
       ...content,
       redirectUrl,
+      respondentAddress,
       hideContactUs: true,
     });
   };

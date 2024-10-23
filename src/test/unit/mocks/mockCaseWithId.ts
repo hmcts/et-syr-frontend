@@ -11,7 +11,7 @@ import {
   StillWorking,
   WeeksOrMonths,
   YesOrNo,
-  YesOrNoOrNotSure,
+  YesOrNoOrNotApplicable,
 } from '../../../main/definitions/case';
 import { DefaultValues } from '../../../main/definitions/constants';
 import {
@@ -77,7 +77,7 @@ export const mockCaseWithIdWithHubLinkStatuses: CaseWithId = {
   firstName: 'John',
   lastName: 'Doe',
   avgWeeklyHrs: 5,
-  claimantPensionContribution: YesOrNoOrNotSure.YES,
+  claimantPensionContribution: YesOrNoOrNotApplicable.YES,
   claimantPensionWeeklyContribution: 15,
   employeeBenefits: YesOrNo.YES,
   jobTitle: 'Developer',
@@ -189,7 +189,7 @@ export const mockCaseWithIdWithRespondents: CaseWithId = {
   firstName: 'John',
   lastName: 'Doe',
   avgWeeklyHrs: 5,
-  claimantPensionContribution: YesOrNoOrNotSure.YES,
+  claimantPensionContribution: YesOrNoOrNotApplicable.YES,
   claimantPensionWeeklyContribution: 15,
   employeeBenefits: YesOrNo.YES,
   jobTitle: 'Developer',

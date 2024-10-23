@@ -1,5 +1,5 @@
 import ClaimantNoticePeriodController from '../../../main/controllers/ClaimantNoticePeriodController';
-import { YesOrNoOrNotSure } from '../../../main/definitions/case';
+import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
@@ -27,7 +27,7 @@ describe('Claimant notice period Controller', () => {
     });
 
     it('should render the page when clear selection', () => {
-      request.session.userCase.et3ResponseIsNoticeCorrect = YesOrNoOrNotSure.NO;
+      request.session.userCase.et3ResponseIsNoticeCorrect = YesOrNoOrNotApplicable.NO;
       request.session.userCase.et3ResponseCorrectNoticeDetails = 'Test';
       request.query = {
         redirect: 'clearSelection',
@@ -42,7 +42,7 @@ describe('Claimant notice period Controller', () => {
     it('should redirect to next page when yes is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseIsNoticeCorrect: YesOrNoOrNotSure.YES,
+          et3ResponseIsNoticeCorrect: YesOrNoOrNotApplicable.YES,
         },
       });
       request.url = PageUrls.CLAIMANT_NOTICE_PERIOD;
@@ -54,7 +54,7 @@ describe('Claimant notice period Controller', () => {
     it('should redirect to next page when no is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseIsNoticeCorrect: YesOrNoOrNotSure.NO,
+          et3ResponseIsNoticeCorrect: YesOrNoOrNotApplicable.NO,
           et3ResponseCorrectNoticeDetails: '1'.repeat(500),
         },
       });
@@ -67,7 +67,7 @@ describe('Claimant notice period Controller', () => {
     it('should redirect to next page when Not Sure is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponseIsNoticeCorrect: YesOrNoOrNotSure.NOT_SURE,
+          et3ResponseIsNoticeCorrect: YesOrNoOrNotApplicable.NOT_APPLICABLE,
         },
       });
       request.url = PageUrls.CLAIMANT_NOTICE_PERIOD;
@@ -87,7 +87,7 @@ describe('Claimant notice period Controller', () => {
     it('should render the same page when No is selected but summary text exceeds 2500 characters', async () => {
       request = mockRequest({
         body: {
-          et3ResponseIsNoticeCorrect: YesOrNoOrNotSure.NO,
+          et3ResponseIsNoticeCorrect: YesOrNoOrNotApplicable.NO,
           et3ResponseCorrectNoticeDetails: '1'.repeat(501),
         },
       });

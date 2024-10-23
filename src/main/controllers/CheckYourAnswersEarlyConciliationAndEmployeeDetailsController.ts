@@ -80,7 +80,11 @@ export default class CheckYourAnswersEarlyConciliationAndEmployeeDetailsControll
       InterceptPaths,
       PageUrls,
       form: this.formContent,
-      et3ResponseSection3: getEt3Section3(userCase, sectionTranslations),
+      et3ResponseSection3: getEt3Section3(
+        userCase,
+        sectionTranslations,
+        InterceptPaths.CONCILIATION_AND_EMPLOYEE_DETAILS_CHANGE
+      ),
       redirectUrl,
       hideContactUs: true,
     });

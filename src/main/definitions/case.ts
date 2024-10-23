@@ -75,16 +75,14 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   rejectionReasonOther?: string;
   responseOutOfTime?: string;
   responseNotOnPrescribedForm?: string;
-  et3ResponseEmploymentInformation?: string;
-  et3ResponseContinuingEmployment?: YesOrNoOrNotSure;
-  et3ResponseIsJobTitleCorrect?: YesOrNoOrNotSure;
+  et3ResponseIsJobTitleCorrect?: YesOrNoOrNotApplicable;
   et3ResponseCorrectJobTitle?: string;
-  et3ResponseClaimantWeeklyHours?: YesOrNoOrNotSure;
+  et3ResponseClaimantWeeklyHours?: YesOrNoOrNotApplicable;
   et3ResponseClaimantCorrectHours?: string;
-  et3ResponseEarningDetailsCorrect?: YesOrNoOrNotSure;
+  et3ResponseEarningDetailsCorrect?: YesOrNoOrNotApplicable;
   et3ResponseEmployerClaimDocument?: UploadedDocumentType;
   et3ResponseRespondentSupportDocument?: UploadedDocumentType;
-  et3ResponsePayFrequency?: string;
+  et3ResponsePayFrequency?: HowOften;
   et3ResponsePayBeforeTax?: string;
   et3ResponsePayTakehome?: string;
   et3Form?: UploadedDocumentType;
@@ -93,7 +91,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   respondentContactPreference?: string;
   responseStruckOutDate?: string;
   responseStruckOutChairman?: string;
-  et3ResponseIsNoticeCorrect?: YesOrNoOrNotSure;
+  et3ResponseIsNoticeCorrect?: YesOrNoOrNotApplicable;
   responseRequiredInfoAbsent?: string;
   responseNotes?: string;
   responseReferredToJudge?: string;
@@ -109,6 +107,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponseRespondentContactName?: string;
   et3ResponseDXAddress?: string;
   et3ResponseContactReason?: string;
+  et3ResponseLanguagePreference?: EnglishOrWelsh;
   responseStruckOutReason?: string;
   responseRespondentAddressLine1?: string;
   responseRespondentAddressLine2?: string;
@@ -139,7 +138,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponseClaimantNameCorrection?: string;
   et3ResponseRespondentCompanyNumber?: string;
   et3ResponseHearingRepresentative?: string[];
-  et3ResponseHearingRespondent?: string[];
+  et3ResponseHearingRespondent?: HearingPreferenceET3[];
   et3ResponseEmploymentCount?: string;
   et3ResponseMultipleSites?: YesOrNo;
   et3ResponseSiteEmploymentCount?: string;
@@ -150,14 +149,16 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponseEmployerClaimDocumentUrl?: string;
   et3ResponseEmployerClaimDocumentCategoryId?: string;
   et3ResponseEmployerClaimDocumentUploadTimestamp?: string;
-  et3ResponseRespondentSupportNeeded?: YesOrNo;
+  et3ResponseRespondentSupportNeeded?: YesOrNoOrNotSure;
   et3ResponseAcasAgree?: YesOrNo;
   et3ResponseAcasAgreeReason?: string;
-  et3ResponseAreDatesCorrect?: YesOrNoOrNotSure;
+  et3ResponseAreDatesCorrect?: YesOrNoOrNotApplicable;
   et3ResponseEmploymentStartDate?: string;
   et3ResponseEmploymentEndDate?: string;
+  et3ResponseEmploymentInformation?: string;
+  et3ResponseContinuingEmployment?: YesOrNoOrNotApplicable;
   et3ResponseCorrectNoticeDetails?: string;
-  et3ResponseIsPensionCorrect?: YesOrNoOrNotSure;
+  et3ResponseIsPensionCorrect?: YesOrNoOrNotApplicable;
   et3ResponsePensionCorrectDetails?: string;
   et3ResponseRespondentContestClaim?: YesOrNo;
   et3ResponseContestClaimDocument?: DocumentTypeItem[];
@@ -173,12 +174,15 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3FormUrl?: string;
   et3FormCategoryId?: string;
   et3FormUploadTimestamp?: string;
-  personalDetailsSection?: string;
-  employmentDetailsSection?: string;
-  claimDetailsSection?: string;
+  contactDetailsSection?: string;
+  employerDetailsSection?: string;
+  conciliationAndEmployeeDetailsSection?: string;
+  payPensionBenefitDetailsSection?: string;
+  contestClaimSection?: string;
+  employersContractClaimSection?: string;
   respondentEnterPostcode?: string;
   responseRespondentEmail?: string;
-  responseRespondentContactPreference?: string;
+  responseRespondentContactPreference?: EmailOrPost;
   responseReceivedDate?: string;
   responseReceivedCount?: string;
   responseRespondentNameQuestion?: YesOrNo;
@@ -291,7 +295,7 @@ export interface Case {
   workAddresses?: Record<string, string>[];
   employmentAndRespondentCheck?: YesOrNo;
   ClaimantPcqId?: string;
-  claimantPensionContribution?: YesOrNoOrNotSure;
+  claimantPensionContribution?: YesOrNoOrNotApplicable;
   claimantPensionWeeklyContribution?: number;
   reasonableAdjustments?: YesOrNo;
   reasonableAdjustmentsDetail?: string;
@@ -395,16 +399,22 @@ export const enum YesOrNo {
   NO = 'No',
 }
 
+export const enum YesOrNoOrNotSure {
+  YES = 'Yes',
+  NO = 'No',
+  NOT_SURE = 'not sure',
+}
+
 export const enum YesOrNoOrPreferNot {
   YES = 'Yes',
   NO = 'No',
   PREFER_NOT = 'Prefer not to say',
 }
 
-export const enum YesOrNoOrNotSure {
+export const enum YesOrNoOrNotApplicable {
   YES = 'Yes',
   NO = 'No',
-  NOT_SURE = 'Not Sure',
+  NOT_APPLICABLE = 'Not applicable',
 }
 
 export const enum HowOften {
@@ -478,6 +488,11 @@ export const enum HearingPreference {
   NEITHER = 'Neither',
 }
 
+export const enum HearingPreferenceET3 {
+  VIDEO = 'Video hearings',
+  PHONE = 'Phone hearings',
+}
+
 export const enum AgreedDocuments {
   YES = 'Yes',
   AGREEDBUT = 'We have agreed but there are some disputed documents',
@@ -526,8 +541,8 @@ export const enum claimantRepresented {
 
 export const enum TypeOfOrganisation {
   INDIVIDUAL = 'Individual',
-  LIMITED_COMPANY = 'Limited Company',
+  LIMITED_COMPANY = 'Limited company',
   PARTNERSHIP = 'Partnership',
-  UNINCORPORATED_ASSOCIATION = 'Unincorporated association (such as a sports club)',
+  UNINCORPORATED_ASSOCIATION = 'Unincorporated association',
   OTHER = 'Other',
 }

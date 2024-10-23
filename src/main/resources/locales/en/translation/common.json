@@ -146,5 +146,10 @@
     "yes": "Yes, I’ve completed this section",
     "no": "No, I’ll come back later"
   },
-  "notProvided": "Not provided"
+  "notProvided": "Not provided",
+  "notApplicable": "Not applicable",
+  "hearings": {
+    "video": "Video",
+    "phone": "Phone"
+  }
 }

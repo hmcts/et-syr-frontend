@@ -1,6 +1,6 @@
 {
   "title": "Type of Organisation",
-  "h1": "What type of organisation is the respondent?",
+  "h1": "What type of organisation is the respondent? (optional)",
   "individual": "Individual",
   "limitedCompany": "Limited Company",
   "partnership": "Partnership",
@@ -9,11 +9,14 @@
   "individualTextLabel": "Preferred title (optional)",
   "limitedCompanyTextLabel": "Company registration number (optional)",
   "errors": {
-    "typeOfOrg": {
+    "et3ResponseRespondentEmployerType": {
       "required": "Select an organisation type"
     },
-    "typeOfOrgCRNDetail": {
+    "et3ResponseRespondentCompanyNumber": {
       "invalidCompanyRegistrationNumber": "Enter a valid Company Registration number"
+    },
+    "hiddenErrorField": {
+      "api": "A system error occurred, Please try again later"
     }
   }
 }
