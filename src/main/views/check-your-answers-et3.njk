@@ -45,11 +45,13 @@
         rows: et3ResponseSection5
       }) }}
 
-      <h2 class="govuk-heading-m">{{ section6.header }}</h2>
-      {{ govukSummaryList({
-        classes: "govuk-!-margin-bottom-9",
-        rows: et3ResponseSection6
-      }) }}
+      {% if userCase.typeOfClaimString === TypesOfClaim.BREACH_OF_CONTRACT %}
+        <h2 class="govuk-heading-m">{{ section6.header }}</h2>
+        {{ govukSummaryList({
+          classes: "govuk-!-margin-bottom-9",
+          rows: et3ResponseSection6
+        }) }}
+      {% endif %}
 
       <h2 class="govuk-heading-m">{{ h2 }}</h2>
       <p class="govuk-body ">{{ p1 }}</p>

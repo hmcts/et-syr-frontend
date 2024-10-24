@@ -2,13 +2,14 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNoOrNotApplicable } from '../definitions/case';
+import { CaseWithId, YesOrNoOrNotApplicable } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { isClearSelection } from '../helpers/RouterHelpers';
 import ET3Util from '../utils/ET3Util';
 
@@ -30,9 +31,9 @@ export default class ClaimantPayDetailsController {
             hint: (l: AnyRecord): string => l.et3ResponseEarningDetailsCorrect.no.hint,
           },
           {
-            label: (l: AnyRecord): string => l.notSure,
+            label: (l: AnyRecord): string => l.notApplicable,
             value: YesOrNoOrNotApplicable.NOT_APPLICABLE,
-            hint: (l: AnyRecord): string => l.et3ResponseEarningDetailsCorrect.notSure.hint,
+            hint: (l: AnyRecord): string => l.et3ResponseEarningDetailsCorrect.notApplicable.hint,
           },
         ],
       },
@@ -50,10 +51,12 @@ export default class ClaimantPayDetailsController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const nextPage =
-      req.body.et3ResponseEarningDetailsCorrect === YesOrNoOrNotApplicable.NO
-        ? PageUrls.CLAIMANT_PAY_DETAILS_ENTER
-        : PageUrls.CLAIMANT_NOTICE_PERIOD;
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    let nextPage = setUrlLanguage(req, PageUrls.CLAIMANT_NOTICE_PERIOD);
+    if (formData.et3ResponseEarningDetailsCorrect === YesOrNoOrNotApplicable.NO) {
+      nextPage = setUrlLanguage(req, PageUrls.CLAIMANT_PAY_DETAILS_ENTER);
+    }
+
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
