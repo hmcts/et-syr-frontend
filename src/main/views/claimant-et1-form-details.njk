@@ -3,19 +3,40 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
+{% set et1FormDescription = '' %}
+{% set et1FormLink = '' %}
+{% set et1FormDate = '' %}
+
+{% if et1Form !== undefined or et1Form.value !== undefined or et1Form.value.uploadedDocument !== undefined %}
+  {% if et1Form.value.uploadedDocument.document_binary_url === undefined %}
+    {% set et1FormDescription = 'Document not found' %}
+  {% endif %}
+  {% if et1Form.value.shortDescription === undefined or "null" in et1Form.value.shortDescription %}
+    {% set et1FormDescription = et1FormDescriptionValue %}
+  {% else %}
+    {% set et1FormDescription = et1Form.value.shortDescription %}
+  {% endif %}
+  {% if et1Form.value.uploadedDocument.document_binary_url === undefined or et1Form.value.uploadedDocument.document_binary_url === '' %}
+    {% set et1FormLink = '-' %}
+  {% else  %}
+    {% set et1FormLink = "<a href=/et1-form-view" + languageParam + " target=\"_blank\">" + et1Form.value.uploadedDocument.document_filename + "</a>" %}
+  {% endif %}
+{% endif %}
+
+{% if formattedEt1FormDate === undefined or formattedEt1FormDate === '' %}
+  {% set et1FormDate = '-' %}
+{% else  %}
+  {% set et1FormDate = formattedEt1FormDate %}
+{% endif %}
+
 {% block beforeContent %}
   {{ super() }}
   {% include "back-link.njk" %}
 {% endblock %}
-
 {% block content %}
-
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-      <span class="govuk-caption-xl">{{ sectionTitle }}</span>
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ h1 }}</h1>
-
-      {# Todo: Need to change so it uses the acasCert, acasCertDetail and asacCertDate #}
       {{ govukSummaryList({
         classes: "govuk-!-margin-bottom-9",
         rows: [
@@ -24,7 +45,7 @@
             text: description
           },
             value: {
-            text: et1Form
+            text: et1FormDescription
           }
           },
           {
@@ -32,7 +53,7 @@
             text: document
           },
             value: {
-            html: '<a href="' ~ et1FormDoc ~ '" aria-label="' ~ et1Form ~ ' : ' ~ userCase.et1SubmittedForm.id ~ '">' ~ et1FormDocument ~ '</a>'
+            html: et1FormLink
           }
           },
           {
@@ -40,7 +61,7 @@
             text: details
           },
             value: {
-            text: "[et1FormDetails]"
+            text: et1FormDetailsValue
           }
           },
           {
@@ -48,7 +69,7 @@
             text: date
           },
             value: {
-            text: "[et1FormDate]"
+            text: et1FormDate
           }
           }
         ]

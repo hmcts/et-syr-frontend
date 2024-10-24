@@ -1,9 +1,9 @@
 {
   "title": "Acas Certificate",
   "h1": "Acas certificate",
-  "acasCert": "Acas certificate",
-  "acasCertDocument": "Acas.pdf",
-  "description": "description",
+  "acasCertDescriptionValue": "Acas certificate",
+  "acasCertDetails": "The claimant's Acas certificate",
+  "description": "Description",
   "document": "Document",
   "details": "Details",
   "date": "Date"
