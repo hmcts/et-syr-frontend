@@ -35,8 +35,7 @@
     "et3ResponseIsJobTitleCorrect": "Is the claimant’s job title correct?",
     "et3ResponseCorrectJobTitle": "What is or was the claimant’s correct job title? (optional)",
     "et3ResponseClaimantWeeklyHours": "Are the claimant’s average weekly work hours correct?",
-    "et3ResponseClaimantCorrectHours": "What are the claimant’s correct average weekly work hours? (optional)",
-    "exampleData": "[example data]"
+    "et3ResponseClaimantCorrectHours": "What are the claimant’s correct average weekly work hours? (optional)"
   },
   "section4": {
     "header": "Pay, pension and benefits details",
@@ -45,15 +44,16 @@
     "claimantsPayBeforeTax": "Claimant’s pay BEFORE tax (optional)",
     "claimantsPayAfterTax": "Claimant’s pay AFTER tax (optional)",
     "noticePeriodDetailsCorrect": "Are the claimant’s notice period details correct?",
-    "correctPayDetails": "What are the claimant’s correct notice details? (optional)",
+    "noticePeriodDetails": "What are the claimant’s correct notice details? (optional)",
     "pensionAndBenefitsDetailsCorrect": "Are the claimants pension and benefits details correct?",
-    "correctPensionAndBenefitsDetails": "What are the claimant’s correct pension and benefits details? (optional)",
-    "exampleData": "[example data]"
+    "correctPensionAndBenefitsDetails": "What are the claimant’s correct pension and benefits details? (optional)"
   },
   "section5": {
     "header": "Contest the claim",
-    "contestClaim": "Does [respondent name] contest the claim?",
-    "contestExplanation": "Explain why [respondent name] contests the claim",
+    "contestClaim1": "Does ",
+    "contestClaim2": " contest the claim?",
+    "contestExplanation1": "Explain why ",
+    "contestExplanation2": " contests the claim",
     "supportingMaterials": "Supporting material",
     "exampleData": "[example data]"
   },

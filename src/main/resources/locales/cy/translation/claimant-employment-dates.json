@@ -7,8 +7,8 @@
     "no": {
       "hint": "[W]You will be able to enter correct employment dates at the next step."
     },
-    "notSure": {
-      "hint": "[W]If you select Not sure, you will not be able to enter employment dates."
+    "notApplicable": {
+      "hint": "[W]If you select 'Not applicable', you will not be able to enter employment dates."
     }
   }
 }

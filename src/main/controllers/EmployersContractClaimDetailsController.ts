@@ -15,28 +15,29 @@ export default class EmployersContractClaimDetailsController {
   private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      et3ResponseContestClaimDetails: {
-        type: 'textarea',
-        id: 'et3ResponseContestClaimDetails',
-        label: (l: AnyRecord): string => l.et3ResponseContestClaimDetails.label,
+      et3ResponseEmployerClaimDetails: {
+        type: 'charactercount',
+        id: 'et3ResponseEmployerClaimDetails',
+        label: (l: AnyRecord): string => l.et3ResponseEmployerClaimDetails.label,
+        maxlength: 2500,
         validator: isContentCharsOrLessAndNotEmpty(2500),
       },
       inset: {
         type: 'insetFields',
         id: 'inset',
         classes: 'govuk-heading-m',
-        label: (l: AnyRecord): string => l.et3ResponseContestClaimDocument.title,
+        label: (l: AnyRecord): string => l.et3ResponseEmployerClaimDocument.title,
         subFields: {
-          et3ResponseContestClaimDocument: {
+          et3ResponseEmployerClaimDocument: {
             type: 'upload',
-            id: 'et3ResponseContestClaimDocument',
+            id: 'et3ResponseEmployerClaimDocument',
             classes: 'govuk-label',
             labelHidden: false,
             labelSize: 'm',
           },
           upload: {
             type: 'button',
-            label: (l: AnyRecord): string => l.et3ResponseContestClaimDocument.button,
+            label: (l: AnyRecord): string => l.et3ResponseEmployerClaimDocument.button,
             classes: 'govuk-button--secondary',
             id: 'upload',
             name: 'upload',
@@ -46,7 +47,7 @@ export default class EmployersContractClaimDetailsController {
       },
       filesUploaded: {
         type: 'summaryList',
-        label: (l: AnyRecord): string => l.et3ResponseContestClaimDocument.uploaded,
+        label: (l: AnyRecord): string => l.et3ResponseEmployerClaimDocument.uploaded,
       },
     },
     submit: submitButton,

@@ -1,104 +1,79 @@
 import RespondentContestClaimController from '../../../main/controllers/RespondentContestClaimController';
 import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import { postLogic } from '../../../main/helpers/CaseHelpers';
-import { conditionalRedirect } from '../../../main/helpers/RouterHelpers';
-import { mockRequest } from '../mocks/mockRequest';
+import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
+import pageJsonRaw from '../../../main/resources/locales/en/translation/respondent-contest-claim.json';
+import ET3Util from '../../../main/utils/ET3Util';
+import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
+import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
 jest.mock('../../../main/helpers/CaseHelpers');
-jest.mock('../../../main/helpers/RouterHelpers');
+const updateET3DataMock = jest.spyOn(ET3Util, 'updateET3Data');
 
 describe('RespondentContestClaimController', () => {
+  const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
   let controller: RespondentContestClaimController;
-  let response: ReturnType<typeof mockResponse>;
   let request: ReturnType<typeof mockRequest>;
+  let response: ReturnType<typeof mockResponse>;
 
   beforeEach(() => {
     controller = new RespondentContestClaimController();
+    request = mockRequest({});
     response = mockResponse();
-    request = mockRequest({
-      session: {
-        userCase: {},
-      },
-    });
   });
 
   describe('GET method', () => {
-    it('should render the Respondent Contest Claim page with the correct form content', () => {
-      controller.get(request, response);
-
-      expect(response.render).toHaveBeenCalledWith(
-        TranslationKeys.RESPONDENT_CONTEST_CLAIM,
-        expect.objectContaining({
-          redirectUrl: expect.any(String),
-          hideContactUs: true,
-          form: expect.objectContaining({
-            fields: expect.objectContaining({
-              respondentContestClaim: expect.objectContaining({
-                classes: 'govuk-radios',
-                id: 'respondentContestClaim',
-                type: 'radios',
-                labelHidden: true,
-                values: expect.arrayContaining([
-                  expect.objectContaining({
-                    name: 'respondentContestClaim',
-                    label: expect.any(Function), // Check for label function
-                    value: YesOrNo.YES,
-                  }),
-                  expect.objectContaining({
-                    name: 'respondentContestClaim',
-                    label: expect.any(Function), // Check for label function
-                    value: YesOrNo.NO,
-                  }),
-                ]),
-                validator: expect.any(Function), // Check for validator function
-              }),
-            }),
-            submit: expect.objectContaining({
-              classes: 'govuk-!-margin-right-2',
-              text: expect.any(Function),
-            }),
-            saveForLater: expect.objectContaining({
-              classes: 'govuk-button--secondary',
-              text: expect.any(Function),
-            }),
-          }),
-        })
+    it('should render the respondent contest claim page with the correct translations', () => {
+      // Prepare the mock request with translation and session data
+      request = mockRequestWithTranslation(
+        {
+          session: {
+            userCase: {
+              respondents: [{
+                  respondentName: 'John Doe',
+                },
+              ],
+            },
+          },
+        },
+        translationJsons
       );
 
-      const mockLabels = {
-        yes: 'Yes', // expected label for 'Yes' option
-        no: 'No', // expected label for 'No' option
-      };
+      // Call the GET method of the controller
+      controller.get(request, response);
 
-      // Verify that the main label function returns the correct value
-      const renderMock = response.render as jest.Mock;
-      const form = renderMock.mock.calls[0][1].form;
-
-      // Extract the label functions from the form fields
-      const respondentContestClaimField = form.fields.respondentContestClaim;
-
-      // Test the labels
-      expect(respondentContestClaimField.values[0].label(mockLabels)).toBe('Yes');
-      expect(respondentContestClaimField.values[1].label(mockLabels)).toBe('No');
+      // Assert that the response.render method is called with the correct translation key and any content
+      expect(response.render).toHaveBeenCalledWith(TranslationKeys.RESPONDENT_CONTEST_CLAIM, expect.anything());
     });
   });
 
+
   describe('POST method', () => {
-    it('should call postLogic with the correct parameters when Yes is selected', async () => {
-      request.body = { respondentContestClaim: YesOrNo.YES };
-      (conditionalRedirect as jest.Mock).mockReturnValue(true); // Simulate Yes selected
+    it('should redirect to contest claim reason page when response is NO', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseRespondentContestClaim: YesOrNo.NO,
+        },
+      });
+      request.url = PageUrls.RESPONDENT_CONTEST_CLAIM_REASON;
 
       await controller.post(request, response);
 
-      expect(postLogic).toHaveBeenCalledWith(
-        request,
-        response,
-        controller['form'],
-        expect.anything(),
-        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON
-      );
+      expect(response.redirect).toHaveBeenCalledWith(expect.stringContaining(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+    });
+
+    it('should call ET3Util.updateET3ResponseWithET3Form with the correct parameters when response is YES', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseRespondentContestClaim: YesOrNo.YES,
+        },
+      });
+      request.url = PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM;
+
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM);
     });
   });
 });

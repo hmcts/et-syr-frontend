@@ -42,7 +42,6 @@ describe('CheckYourAnswersET3Helper', () => {
       reasonForPost: 'Reason for Postal Communication',
       contactLanguage: 'Preferred Language',
       contactNumberOptional: 'Contact Number (Optional)',
-      exampleData: 'Example Data',
     },
     section2: {
       participateInHearings: 'Would you be able to take part in hearings by video and phone?',
@@ -52,7 +51,6 @@ describe('CheckYourAnswersET3Helper', () => {
       employeesInGreatBritain: 'How many people does Redde Ltd employ in Great Britain? (optional)',
       multipleSites: 'Does the respondent have more than one site in Great Britain?',
       employeesAtSite: 'How many employed at the site the claimant worked at? (optional)',
-      exampleData: '[example data]',
     },
     section3: {
       et3ResponseAcasAgree: 'Do you agree with the details given by the claimant about early conciliation with Acas?',
@@ -67,7 +65,6 @@ describe('CheckYourAnswersET3Helper', () => {
       et3ResponseCorrectJobTitle: 'What is or was the claimant’s correct job title? (optional)',
       et3ResponseClaimantWeeklyHours: 'Are the claimant’s average weekly work hours correct?',
       et3ResponseClaimantCorrectHours: 'What are the claimant’s correct average weekly work hours? (optional)',
-      exampleData: '[example data]',
     },
     section4: {
       payDetailsCorrect: 'Are the pay details given by the claimant correct?',
@@ -75,23 +72,21 @@ describe('CheckYourAnswersET3Helper', () => {
       claimantsPayBeforeTax: 'Enter the claimant’s pay BEFORE tax (optional)',
       claimantsPayAfterTax: 'Enter the claimant’s pay AFTER tax (optional)',
       noticePeriodDetailsCorrect: 'Are the claimant’s notice period details correct?',
-      correctPayDetails: 'What are the claimant’s correct pay details? (optional)',
+      noticePeriodDetails: 'What are the claimant’s correct notice details? (optional)',
       pensionAndBenefitsDetailsCorrect: 'Are the claimants pension and benefits details correct?',
       correctPensionAndBenefitsDetails: 'What are the claimant’s correct pension and benefits details? (optional)',
-      exampleData: '[example data]',
     },
     section5: {
-      contestClaim: 'Does [respondent name] contest the claim?',
-      contestExplanation: 'Explain why [respondent name] contests the claim (text box label)',
-      supportingMaterials: 'Supporting materials',
-      exampleData: '[example data]',
+      contestClaim1: 'Does ',
+      contestClaim2: ' contest the claim?',
+      contestExplanation1: 'Explain why ',
+      contestExplanation2: ' contests the claim',
+      supportingMaterials: 'Supporting material',
     },
     section6: {
-      header: 'Employer’s contract claim',
       respondentWantToMakeECC: 'Does the respondent wish to make an Employer’s Contract Claim?',
       employerContractClaimDetails: 'Provide the background and details of your Employer’s Contract Claim',
       supportingMaterials: 'Supporting material',
-      exampleData: '[example data]',
     },
     change: 'Change',
     hearings: {
@@ -135,13 +130,13 @@ describe('CheckYourAnswersET3Helper', () => {
 
   const section4Urls = [
     PageUrls.CLAIMANT_PAY_DETAILS,
-    PageUrls.CLAIMANT_PAY_DETAILS, // for pay details confirmation
     PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
     PageUrls.CLAIMANT_PAY_DETAILS_ENTER, // for payment frequency
     PageUrls.CLAIMANT_PAY_DETAILS_ENTER, // for before tax payment
     PageUrls.CLAIMANT_NOTICE_PERIOD,
-    PageUrls.NOT_IMPLEMENTED, // for pension and benefits
-    PageUrls.NOT_IMPLEMENTED, // CLAIMANT_PENSION_AND_BENEFITS_DETAILS??
+    PageUrls.CLAIMANT_NOTICE_PERIOD,
+    PageUrls.CLAIMANT_PENSION_AND_BENEFITS, // for pension and benefits
+    PageUrls.CLAIMANT_PENSION_AND_BENEFITS,
   ];
 
   const section5Urls = [
@@ -152,8 +147,8 @@ describe('CheckYourAnswersET3Helper', () => {
 
   const section6Urls = [
     PageUrls.EMPLOYERS_CONTRACT_CLAIM,
-    PageUrls.NOT_IMPLEMENTED,
-    PageUrls.NOT_IMPLEMENTED, // for supporting materials
+    PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS,
+    PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS, // for supporting materials
   ];
 
   // Test for section 1
@@ -295,7 +290,7 @@ describe('CheckYourAnswersET3Helper', () => {
       );
     }
 
-    userCase.et3ResponseAcasAgree = YesOrNo.YES;
+    userCase.et3ResponseAcasAgree = YesOrNo.NO;
     userCase.et3ResponseAreDatesCorrect = YesOrNoOrNotApplicable.NO;
     userCase.et3ResponseIsJobTitleCorrect = YesOrNoOrNotApplicable.NO;
     userCase.et3ResponseClaimantWeeklyHours = YesOrNoOrNotApplicable.NO;
@@ -320,6 +315,10 @@ describe('CheckYourAnswersET3Helper', () => {
       );
     }
 
+    userCase.et3ResponseEarningDetailsCorrect = YesOrNoOrNotApplicable.NO;
+    userCase.et3ResponseIsNoticeCorrect = YesOrNoOrNotApplicable.NO;
+    userCase.et3ResponseIsPensionCorrect = YesOrNoOrNotApplicable.NO;
+
     const result = getEt3Section4(userCase, translationsMock);
 
     expect(result).toEqual(expectedRows);
@@ -340,12 +339,16 @@ describe('CheckYourAnswersET3Helper', () => {
       );
     }
 
+    // Populate necessary fields for section 5 in the userCase object
+    userCase.et3ResponseRespondentContestClaim = YesOrNo.YES;
+    userCase.et3ResponseContestClaimDetails = 'We contest the claim for reason XYZ';
+
     const result = getEt3Section5(userCase, translationsMock);
 
     expect(result).toEqual(expectedRows);
   });
 
-  // Tests for section 6
+  // Test for section 6
   it('should return correct summary list rows for section 6 when all fields are populated', () => {
     const expectedRows: SummaryListRow[] = [];
 
@@ -359,6 +362,9 @@ describe('CheckYourAnswersET3Helper', () => {
         )
       );
     }
+
+    // Populate necessary fields for section 6 in the userCase object
+    userCase.et3ResponseEmployerClaim = YesOrNo.YES;
 
     const result = getEt3Section6(userCase, translationsMock);
 

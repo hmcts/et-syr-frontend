@@ -9,14 +9,14 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
+import { isClearSelection } from '../helpers/RouterHelpers';
 import ET3Util from '../utils/ET3Util';
-import { isOptionSelected } from '../validators/validator';
 
 export default class EmployersContractClaimController {
   private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      et3ResponseRespondentContestClaim: {
+      et3ResponseEmployerClaim: {
         type: 'radios',
         classes: 'govuk-radios--inline',
         label: (l: AnyRecord): string => l.label,
@@ -30,7 +30,10 @@ export default class EmployersContractClaimController {
             value: YesOrNo.NO,
           },
         ],
-        validator: isOptionSelected,
+      },
+      clearSelection: {
+        type: 'clearSelection',
+        targetUrl: PageUrls.CLAIMANT_JOB_TITLE,
       },
     },
     submit: submitButton,
@@ -43,7 +46,7 @@ export default class EmployersContractClaimController {
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const nextPage =
-      req.body.et3ResponseRespondentContestClaim === YesOrNo.YES
+      req.body.et3ResponseEmployerClaim === YesOrNo.YES
         ? PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS
         : PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM;
     await ET3Util.updateET3ResponseWithET3Form(
@@ -57,6 +60,10 @@ export default class EmployersContractClaimController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    if (isClearSelection(req)) {
+      req.session.userCase.et3ContractClaimSection7 = undefined;
+    }
+
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.EMPLOYERS_CONTRACT_CLAIM,

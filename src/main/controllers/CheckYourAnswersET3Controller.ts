@@ -11,6 +11,7 @@ import {
   getEt3Section3,
   getEt3Section4,
   getEt3Section5,
+  getEt3Section6,
 } from '../helpers/controller/CheckYourAnswersET3Helper';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 
@@ -42,6 +43,7 @@ export default class CheckYourAnswersET3Controller {
       et3ResponseSection3: getEt3Section3(userCase, sectionTranslations),
       et3ResponseSection4: getEt3Section4(userCase, sectionTranslations),
       et3ResponseSection5: getEt3Section5(userCase, sectionTranslations),
+      et3ResponseSection6: getEt3Section6(userCase, sectionTranslations),
       redirectUrl,
       languageParam: getLanguageParam(req.url),
       welshEnabled,

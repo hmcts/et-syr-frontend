@@ -40,7 +40,7 @@ export default class ClaimantNoticePeriodController {
             },
           },
           {
-            label: (l: AnyRecord): string => l.notSure,
+            label: (l: AnyRecord): string => l.notApplicable,
             value: YesOrNoOrNotApplicable.NOT_APPLICABLE,
           },
         ],

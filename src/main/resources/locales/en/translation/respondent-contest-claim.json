@@ -2,8 +2,10 @@
   "title": "Respondent contest claim",
   "h1": "Does ",
   "h1Extra": " contest the claim?",
-  "yes": "Yes - [respondent name] contests all or part of the claim",
-  "no": "No - [respondent name] does not contest any of the claim",
+  "yes1": "Yes - ",
+  "yes2": "  contests all or part of the claim",
+  "no1": "No - ",
+  "no2": " does not contest any of the claim",
   "errors": {
     "respondentContestClaim": {
       "required": "Make a selection"

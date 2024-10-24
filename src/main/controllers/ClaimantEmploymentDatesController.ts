@@ -2,17 +2,18 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNoOrNotApplicable } from '../definitions/case';
+import { YesOrNo, YesOrNoOrNotApplicable } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
-import { isClearSelection } from '../helpers/RouterHelpers';
+import { conditionalRedirect, isClearSelection } from '../helpers/RouterHelpers';
 import { dateInLocale } from '../helpers/dateInLocale';
 import ET3Util from '../utils/ET3Util';
 import { convertCaseDateToDate } from '../validators/dateValidators';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
 
 export default class ClaimantEmploymentDatesController {
   private readonly form: Form;
@@ -32,9 +33,9 @@ export default class ClaimantEmploymentDatesController {
             hint: (l: AnyRecord): string => l.et3ResponseAreDatesCorrect.no.hint,
           },
           {
-            label: (l: AnyRecord): string => l.notSure,
+            label: (l: AnyRecord): string => l.notApplicable,
             value: YesOrNoOrNotApplicable.NOT_APPLICABLE,
-            hint: (l: AnyRecord): string => l.et3ResponseAreDatesCorrect.notSure.hint,
+            hint: (l: AnyRecord): string => l.et3ResponseAreDatesCorrect.notApplicable.hint,
           },
         ],
       },
@@ -52,17 +53,18 @@ export default class ClaimantEmploymentDatesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const nextPage =
-      req.body.et3ResponseAreDatesCorrect === YesOrNoOrNotApplicable.NO
-        ? PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER
-        : PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING;
+    if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.NO)) {
+      const nextPage = setUrlLanguage(req, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
+      return res.redirect(nextPage);
+    }
+
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.ConciliationAndEmployeeDetails,
       LinkStatus.IN_PROGRESS,
-      nextPage
+      PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING
     );
   };
 

@@ -4,27 +4,26 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields, FormInput } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { postLogic } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLogger } from '../logger';
-import { isFieldFilledIn } from '../validators/validator';
-
-const logger = getLogger('RespondentContestClaimReasonController');
+import ET3Util from '../utils/ET3Util';
+import { isContentCharsOrLessAndNotEmpty } from '../validators/validator';
 
 export default class RespondentContestClaimReasonController {
   private readonly form: Form;
   private readonly respondentContestClaimReason: FormContent = {
     fields: {
-      respondentContestClaimReason: {
+      et3ResponseContestClaimDetails: {
         classes: 'govuk-textarea',
-        id: 'respondentContestClaimReason',
-        type: 'textarea',
+        id: 'et3ResponseContestClaimDetails',
+        type: 'charactercount',
         label: (l: AnyRecord): string => l.textAreaLabel,
         labelHidden: false,
-        validator: isFieldFilledIn,
+        maxlength: 2500,
+        validator: isContentCharsOrLessAndNotEmpty(2500),
       },
       inset: {
         id: 'inset',
@@ -32,8 +31,8 @@ export default class RespondentContestClaimReasonController {
         label: l => l.files.title,
         type: 'insetFields',
         subFields: {
-          supportingMaterialFile: {
-            id: 'supportingMaterialFile',
+          et3ResponseContestClaimDocument: {
+            id: 'et3ResponseContestClaimDocument',
             classes: 'govuk-label',
             labelHidden: false,
             labelSize: 'm',
@@ -59,7 +58,14 @@ export default class RespondentContestClaimReasonController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await postLogic(req, res, this.form, logger, PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM);
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.ContactDetails,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {

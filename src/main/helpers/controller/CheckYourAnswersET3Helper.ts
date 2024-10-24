@@ -99,7 +99,7 @@ export const getEt3Section1 = (
     ),
     addSummaryRowWithAction(
       translations.section1.contactFormat,
-      userCase.responseRespondentContactPreference ?? '-',
+      translations[userCase.responseRespondentContactPreference] ?? '-',
       PageUrls.RESPONDENT_CONTACT_PREFERENCES,
       translations.change,
       sectionCya
@@ -122,7 +122,7 @@ export const getEt3Section1 = (
     et3ResponseSection1.push(
       addSummaryRowWithAction(
         translations.section1.contactLanguage,
-        userCase.et3ResponseLanguagePreference ?? '-',
+        translations[userCase.et3ResponseLanguagePreference] ?? '-',
         PageUrls.RESPONDENT_CONTACT_PREFERENCES,
         translations.change,
         sectionCya
@@ -153,7 +153,7 @@ export const getEt3Section2 = (
   et3ResponseSection2.push(
     addSummaryRowWithAction(
       translations.section2.disabilitySupport,
-      userCase.et3ResponseRespondentSupportNeeded ?? '-',
+      translations[userCase.et3ResponseRespondentSupportNeeded] ?? '-',
       PageUrls.REASONABLE_ADJUSTMENTS,
       translations.change,
       sectionCya
@@ -182,7 +182,7 @@ export const getEt3Section2 = (
     ),
     addSummaryRowWithAction(
       translations.section2.multipleSites,
-      userCase.et3ResponseMultipleSites ?? '-',
+      translations[userCase.et3ResponseMultipleSites] ?? '-',
       PageUrls.RESPONDENT_SITES,
       translations.change,
       sectionCya
@@ -209,18 +209,18 @@ export const getEt3Section3 = (
   et3ResponseSection3.push(
     addSummaryRowWithAction(
       translations.section3.et3ResponseAcasAgree,
-      translations[userCase.et3ResponseAcasAgree],
+      translations[userCase.et3ResponseAcasAgree] ?? '-',
       PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE,
       translations.change,
       sectionCya
     )
   );
 
-  if (YesOrNo.YES === userCase.et3ResponseAcasAgree) {
+  if (YesOrNo.NO === userCase.et3ResponseAcasAgree) {
     et3ResponseSection3.push(
       addSummaryRowWithAction(
         translations.section3.et3ResponseAcasAgreeReason,
-        userCase.et3ResponseAcasAgreeReason,
+        userCase.et3ResponseAcasAgreeReason ?? '-',
         PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE,
         translations.change,
         sectionCya
@@ -231,7 +231,7 @@ export const getEt3Section3 = (
   et3ResponseSection3.push(
     addSummaryRowWithAction(
       translations.section3.et3ResponseAreDatesCorrect,
-      translations[userCase.et3ResponseAreDatesCorrect],
+      translations[userCase.et3ResponseAreDatesCorrect] ?? '-',
       PageUrls.CLAIMANT_EMPLOYMENT_DATES,
       translations.change,
       sectionCya
@@ -242,21 +242,21 @@ export const getEt3Section3 = (
     et3ResponseSection3.push(
       addSummaryRowWithAction(
         translations.section3.et3ResponseEmploymentStartDate,
-        userCase.et3ResponseEmploymentStartDate,
+        userCase.et3ResponseEmploymentStartDate ?? '-',
         PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
         translations.change,
         sectionCya
       ),
       addSummaryRowWithAction(
         translations.section3.et3ResponseEmploymentEndDate,
-        userCase.et3ResponseEmploymentEndDate,
+        userCase.et3ResponseEmploymentEndDate ?? '-',
         PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
         translations.change,
         sectionCya
       ),
       addSummaryRowWithAction(
         translations.section3.et3ResponseEmploymentInformation,
-        userCase.et3ResponseEmploymentInformation,
+        userCase.et3ResponseEmploymentInformation ?? '-',
         PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
         translations.change,
         sectionCya
@@ -267,14 +267,14 @@ export const getEt3Section3 = (
   et3ResponseSection3.push(
     addSummaryRowWithAction(
       translations.section3.et3ResponseContinuingEmployment,
-      translations[userCase.et3ResponseContinuingEmployment],
+      translations[userCase.et3ResponseContinuingEmployment] ?? '-',
       PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING,
       translations.change,
       sectionCya
     ),
     addSummaryRowWithAction(
       translations.section3.et3ResponseIsJobTitleCorrect,
-      translations[userCase.et3ResponseIsJobTitleCorrect],
+      translations[userCase.et3ResponseIsJobTitleCorrect] ?? '-',
       PageUrls.CLAIMANT_JOB_TITLE,
       translations.change,
       sectionCya
@@ -284,7 +284,7 @@ export const getEt3Section3 = (
   if (YesOrNoOrNotApplicable.NO === userCase.et3ResponseIsJobTitleCorrect) {
     et3ResponseSection3.push(
       addSummaryRowWithAction(
-        translations.section3.et3ResponseCorrectJobTitle,
+        translations.section3.et3ResponseCorrectJobTitle ?? '-',
         userCase.et3ResponseCorrectJobTitle,
         PageUrls.CLAIMANT_JOB_TITLE,
         translations.change,
@@ -296,7 +296,7 @@ export const getEt3Section3 = (
   et3ResponseSection3.push(
     addSummaryRowWithAction(
       translations.section3.et3ResponseClaimantWeeklyHours,
-      translations[userCase.et3ResponseClaimantWeeklyHours],
+      translations[userCase.et3ResponseClaimantWeeklyHours] ?? '-',
       PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS,
       translations.change,
       sectionCya
@@ -307,7 +307,7 @@ export const getEt3Section3 = (
     et3ResponseSection3.push(
       addSummaryRowWithAction(
         translations.section3.et3ResponseClaimantCorrectHours,
-        userCase.et3ResponseClaimantCorrectHours,
+        userCase.et3ResponseClaimantCorrectHours ?? '-',
         PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS,
         translations.change,
         sectionCya
@@ -328,61 +328,82 @@ export const getEt3Section4 = (
   et3ResponseSection4.push(
     addSummaryRowWithAction(
       translations.section4.payDetailsCorrect,
-      translations.section4.exampleData, // todo: populate with the correct field from userCase
+      translations[userCase.et3ResponseEarningDetailsCorrect] ?? '-',
       PageUrls.CLAIMANT_PAY_DETAILS,
-      translations.change,
-      sectionCya
-    ),
-    addSummaryRowWithAction(
-      translations.section4.correctPayDetails,
-      translations.section4.exampleData, // todo: populate with the correct field from userCase
-      PageUrls.CLAIMANT_PAY_DETAILS,
-      translations.change,
-      sectionCya
-    ),
-    addSummaryRowWithAction(
-      translations.section4.paymentFrequency,
-      translations.section4.exampleData, // todo: populate with the correct field from userCase
-      PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
-      translations.change,
-      sectionCya
-    ),
-    addSummaryRowWithAction(
-      translations.section4.claimantsPayBeforeTax,
-      translations.section4.exampleData, // todo: populate with the correct field from userCase
-      PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
-      translations.change,
-      sectionCya
-    ),
-    addSummaryRowWithAction(
-      translations.section4.claimantsPayAfterTax,
-      translations.section4.exampleData, // todo: populate with the correct field from userCase
-      PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
-      translations.change,
-      sectionCya
-    ),
-    addSummaryRowWithAction(
-      translations.section4.noticePeriodDetailsCorrect,
-      translations.section4.exampleData, // todo: populate with the correct field from userCase
-      PageUrls.CLAIMANT_NOTICE_PERIOD,
-      translations.change,
-      sectionCya
-    ),
-    addSummaryRowWithAction(
-      translations.section4.pensionAndBenefitsDetailsCorrect,
-      translations.section4.exampleData, // todo: populate with the correct field from userCase
-      PageUrls.NOT_IMPLEMENTED, // todo: update with the correct URL
-      translations.change,
-      sectionCya
-    ),
-    addSummaryRowWithAction(
-      translations.section4.correctPensionAndBenefitsDetails,
-      translations.section4.exampleData, // todo: populate with the correct field from userCase
-      PageUrls.NOT_IMPLEMENTED, //CLAIMANT_PENSION_AND_BENEFITS_DETAILS??
       translations.change,
       sectionCya
     )
   );
+
+  if (YesOrNoOrNotApplicable.NO === userCase.et3ResponseEarningDetailsCorrect) {
+    et3ResponseSection4.push(
+      addSummaryRowWithAction(
+        translations.section4.paymentFrequency,
+        translations[userCase.et3ResponsePayFrequency] ?? '-',
+        PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
+        translations.change,
+        sectionCya
+      ),
+      addSummaryRowWithAction(
+        translations.section4.claimantsPayBeforeTax,
+        userCase.et3ResponsePayBeforeTax ?? '-',
+        PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
+        translations.change,
+        sectionCya
+      ),
+      addSummaryRowWithAction(
+        translations.section4.claimantsPayAfterTax,
+        userCase.et3ResponsePayTakehome ?? '-',
+        PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
+        translations.change,
+        sectionCya
+      )
+    );
+  }
+
+  et3ResponseSection4.push(
+    addSummaryRowWithAction(
+      translations.section4.noticePeriodDetailsCorrect,
+      translations[userCase.et3ResponseIsNoticeCorrect] ?? '-',
+      PageUrls.CLAIMANT_NOTICE_PERIOD,
+      translations.change,
+      sectionCya
+    )
+  );
+
+  if (YesOrNoOrNotApplicable.NO === userCase.et3ResponseIsNoticeCorrect) {
+    et3ResponseSection4.push(
+      addSummaryRowWithAction(
+        translations.section4.noticePeriodDetails,
+        userCase.et3ResponseCorrectNoticeDetails ?? '-',
+        PageUrls.CLAIMANT_NOTICE_PERIOD,
+        translations.change,
+        sectionCya
+      )
+    );
+  }
+
+  et3ResponseSection4.push(
+    addSummaryRowWithAction(
+      translations.section4.pensionAndBenefitsDetailsCorrect,
+      translations[userCase.et3ResponseIsPensionCorrect] ?? '-',
+      PageUrls.CLAIMANT_PENSION_AND_BENEFITS,
+      translations.change,
+      sectionCya
+    )
+  );
+
+  if (YesOrNoOrNotApplicable.NO === userCase.et3ResponseIsPensionCorrect) {
+    et3ResponseSection4.push(
+      addSummaryRowWithAction(
+        translations.section4.correctPensionAndBenefitsDetails,
+        userCase.et3ResponsePensionCorrectDetails ?? '-',
+        PageUrls.CLAIMANT_PENSION_AND_BENEFITS,
+        translations.change,
+        sectionCya
+      )
+    );
+  }
 
   return et3ResponseSection4;
 };
@@ -396,27 +417,32 @@ export const getEt3Section5 = (
 
   et3ResponseSection5.push(
     addSummaryRowWithAction(
-      translations.section5.contestClaim,
-      translations.section5.exampleData, // todo: populate with the correct field from userCase
+      translations.section5.contestClaim1 + userCase.respondentName + translations.section5.contestClaim2,
+      translations[userCase.et3ResponseRespondentContestClaim],
       PageUrls.RESPONDENT_CONTEST_CLAIM,
-      translations.change,
-      sectionCya
-    ),
-    addSummaryRowWithAction(
-      translations.section5.contestExplanation,
-      translations.section5.exampleData, // todo: populate with the correct field from userCase
-      PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
-      translations.change,
-      sectionCya
-    ),
-    addSummaryRowWithAction(
-      translations.section5.supportingMaterials,
-      translations.section5.exampleData, // todo: populate with the correct field from userCase
-      PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
       translations.change,
       sectionCya
     )
   );
+
+  if (YesOrNo.YES === userCase.et3ResponseRespondentContestClaim) {
+    et3ResponseSection5.push(
+      addSummaryRowWithAction(
+        translations.section5.contestExplanation1 + userCase.respondentName + translations.section5.contestExplanation2,
+        userCase.et3ResponseContestClaimDetails,
+        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON ?? '-',
+        translations.change,
+        sectionCya
+      ),
+      addSummaryRowWithAction(
+        translations.section5.supportingMaterials,
+        translations.section5.exampleData, // todo: populate with the correct field from userCase
+        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
+        translations.change,
+        sectionCya
+      )
+    );
+  }
 
   return et3ResponseSection5;
 };
@@ -431,26 +457,31 @@ export const getEt3Section6 = (
   et3ResponseSection6.push(
     addSummaryRowWithAction(
       translations.section6.respondentWantToMakeECC,
-      translations.section6.exampleData, // todo: populate with the correct field from userCase
+      translations[userCase.et3ResponseEmployerClaim ?? '-'],
       PageUrls.EMPLOYERS_CONTRACT_CLAIM,
-      translations.change,
-      sectionCya
-    ),
-    addSummaryRowWithAction(
-      translations.section6.employerContractClaimDetails,
-      translations.section6.exampleData, // todo: populate with the correct field from userCase
-      PageUrls.NOT_IMPLEMENTED,
-      translations.change,
-      sectionCya
-    ),
-    addSummaryRowWithAction(
-      translations.section6.supportingMaterials,
-      translations.section6.exampleData, // todo: populate with the correct field from userCase
-      PageUrls.NOT_IMPLEMENTED,
       translations.change,
       sectionCya
     )
   );
+
+  if (YesOrNo.YES === userCase.et3ResponseEmployerClaim) {
+    et3ResponseSection6.push(
+      addSummaryRowWithAction(
+        translations.section6.employerContractClaimDetails,
+        userCase.et3ResponseEmployerClaimDetails ?? '-',
+        PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS,
+        translations.change,
+        sectionCya
+      ),
+      addSummaryRowWithAction(
+        translations.section6.supportingMaterials,
+        translations.section6.exampleData, // todo: populate with the correct field from userCase
+        PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS,
+        translations.change,
+        sectionCya
+      )
+    );
+  }
 
   return et3ResponseSection6;
 };

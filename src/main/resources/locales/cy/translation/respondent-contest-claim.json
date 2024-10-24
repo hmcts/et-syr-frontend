@@ -1,9 +1,11 @@
 {
   "title": "[W]Respondent contest claim",
   "h1": "[W]Does ",
-  "h1Extra": " [W]contest the claim?",
-  "yes": "[W]Yes - [respondent name] contests all or part of the claim",
-  "no": "[W]No - [respondent name] does not contest any of the claim",
+  "h1Extra": "[W] contest the claim?",
+  "yes1": "[W]Yes - ",
+  "yes2": "[W]  contests all or part of the claim",
+  "no1": "[W]No - ",
+  "no2": "[W] does not contest any of the claim",
   "errors": {
     "respondentContestClaim": {
       "required": "[W]Make a selection"

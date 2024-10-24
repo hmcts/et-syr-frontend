@@ -39,7 +39,7 @@ export default class ClaimantJobTitleController {
             },
           },
           {
-            label: (l: AnyRecord): string => l.notSure,
+            label: (l: AnyRecord): string => l.notApplicable,
             value: YesOrNoOrNotApplicable.NOT_APPLICABLE,
           },
         ],
