@@ -100,6 +100,10 @@ export default class SelfAssignmentFormController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    const languageParam: string = getLanguageParam(req.url);
+    if (!req.session.caseNumberChecked) {
+      return res.redirect(PageUrls.CASE_NUMBER_CHECK + languageParam);
+    }
     const redirectUrl = setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_FORM);
     const caseReferenceIdContentForm = this.caseReferenceIdContent;
     assignFormData(req.session.userCase, this.form.getFormFields());
@@ -108,7 +112,7 @@ export default class SelfAssignmentFormController {
       ...req.t(TranslationKeys.SELF_ASSIGNMENT_FORM as never, { returnObjects: true } as never),
       PageUrls,
       redirectUrl,
-      languageParam: getLanguageParam(req.url),
+      languageParam,
       form: caseReferenceIdContentForm,
       sessionErrors: req.session.errors,
       userCase: req.session?.userCase,

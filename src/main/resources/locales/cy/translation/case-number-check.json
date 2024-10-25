@@ -1,0 +1,14 @@
+{
+  "title": "[W]Case Number Check",
+  "pageTitle": "[W]Case Number",
+  "caseNumber": "[W]What is the case number of the case you are responding to?",
+  "errors": {
+    "ethosCaseReference": {
+      "required": "[W]Enter an online case reference number that exactly matches the case details",
+      "invalid": "[W]Enter an online case reference number that exactly matches the case details"
+    },
+    "hiddenErrorField": {
+      "api": "[W]Unable to find the case. Data you entered does not match with any case"
+    }
+  }
+}

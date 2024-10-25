@@ -20,7 +20,7 @@ export default class CaseListCheckController {
     if (CollectionUtils.isNotEmpty<CaseWithId>(userCases)) {
       return res.redirect(PageUrls.CASE_LIST + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url));
     } else {
-      return res.redirect(PageUrls.SELF_ASSIGNMENT_FORM + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url));
+      return res.redirect(PageUrls.CASE_NUMBER_CHECK + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url));
     }
   }
 }

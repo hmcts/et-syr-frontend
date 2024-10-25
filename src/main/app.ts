@@ -9,7 +9,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import favicon from 'serve-favicon';
 
 import { AppRequest } from './definitions/appRequest';
-import { CaseApiErrors, ErrorPages, RedisErrors } from './definitions/constants';
+import { CaseApiErrors, ErrorPages, LegacyUrls, RedisErrors } from './definitions/constants';
 import setupDev from './development';
 import { AppInsights } from './modules/appinsights';
 import CSRFToken from './modules/csrf';
@@ -37,6 +37,7 @@ new Helmet(config.get('security'), [
   process.env.IDAM_WEB_URL ?? config.get('services.idam.authorizationURL'),
   process.env.PCQ_URL ?? config.get('services.pcq.url'),
   process.env.ET1_BASE_URL ?? config.get('services.et1Legacy.url'),
+  process.env.ET3_LEGACY_URL ? config.get('services.et1Legacy.url') : LegacyUrls.ET3,
 ]).enableFor(app);
 
 new I18Next().enableFor(app);
