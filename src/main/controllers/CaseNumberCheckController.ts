@@ -40,27 +40,27 @@ export default class CaseNumberCheckController {
     const languageParam = getLanguageParam(req.url);
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const errors = this.form.getValidatorErrors(formData);
-    if (errors.length === 0) {
-      try {
-        req.session.caseNumberChecked = false;
-        const isReformCase: AxiosResponse<string> = await getCaseApi(
-          req.session.user?.accessToken
-        ).checkEthosCaseReference(formData.ethosCaseReference);
-        if (isReformCase && isReformCase.data && isReformCase.data === 'true') {
-          req.session.caseNumberChecked = true;
-          return res.redirect(PageUrls.SELF_ASSIGNMENT_FORM + languageParam);
-        } else {
-          return res.redirect(LegacyUrls.ET3);
-        }
-      } catch (error) {
-        ErrorUtils.setManualErrorToRequestSession(
-          req,
-          ValidationErrors.API,
-          FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-        );
-      }
-    } else {
+    if (errors.length > 0) {
       req.session.errors = errors;
+      return res.redirect(req.url);
+    }
+    try {
+      req.session.caseNumberChecked = false;
+      const isReformCase: AxiosResponse<string> = await getCaseApi(
+        req.session.user?.accessToken
+      ).checkEthosCaseReference(formData.ethosCaseReference);
+      if (isReformCase && isReformCase.data && isReformCase.data === 'true') {
+        req.session.caseNumberChecked = true;
+        return res.redirect(PageUrls.SELF_ASSIGNMENT_FORM + languageParam);
+      } else {
+        return res.redirect(LegacyUrls.ET3);
+      }
+    } catch (error) {
+      ErrorUtils.setManualErrorToRequestSession(
+        req,
+        ValidationErrors.API,
+        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+      );
     }
     return res.redirect(req.url);
   };
