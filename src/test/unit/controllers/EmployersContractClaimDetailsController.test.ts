@@ -1,16 +1,15 @@
 import EmployersContractClaimDetailsController from '../../../main/controllers/EmployersContractClaimDetailsController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
+import { ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
+import pageJsonRaw from '../../../main/resources/locales/en/translation/employers-contract-claim-details.json';
 import ET3Util from '../../../main/utils/ET3Util';
-import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
-jest.mock('../../../main/helpers/CaseHelpers');
-const updateET3DataMock = jest.spyOn(ET3Util, 'updateET3Data');
+jest.mock('../../../main/utils/ET3Util');
 
-describe('Employer’s contract claim details Controller', () => {
+describe('EmployersContractClaimDetailsController', () => {
   const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
   let controller: EmployersContractClaimDetailsController;
   let request: ReturnType<typeof mockRequest>;
@@ -23,49 +22,37 @@ describe('Employer’s contract claim details Controller', () => {
   });
 
   describe('GET method', () => {
-    it('should render the page', () => {
+    it('should render the page with the correct translations', () => {
       request = mockRequestWithTranslation({}, translationJsons);
       controller.get(request, response);
-      expect(response.render).toHaveBeenCalledWith(TranslationKeys.EMPLOYERS_CONTRACT_CLAIM_DETAILS, expect.anything());
+      expect(response.render).toHaveBeenCalledWith(
+        TranslationKeys.EMPLOYERS_CONTRACT_CLAIM_DETAILS,
+        expect.objectContaining({
+          hideContactUs: true,
+        })
+      );
     });
   });
 
   describe('POST method', () => {
-    it('should redirect to next page when details is inputted', async () => {
+    it('should call ET3Util.updateET3ResponseWithET3Form with the correct parameters', async () => {
       request = mockRequest({
         body: {
-          et3ResponseContestClaimDetails: 'Test',
+          et3ResponseEmployerClaimDetails: 'Some claim details text',
         },
       });
       request.url = PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS;
-      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
-      await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
-    });
 
-    it('should render the same page when text exceeds 2500 characters', async () => {
-      request = mockRequest({
-        body: {
-          et3ResponseContestClaimDetails: '1'.repeat(2501),
-        },
-      });
-      request.url = PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS;
-      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS);
 
-      const errors = [{ propertyName: 'et3ResponseContestClaimDetails', errorType: 'tooLong' }];
-      expect(request.session.errors).toEqual(errors);
-    });
-
-    it('should render the same page when nothing is selected', async () => {
-      request = mockRequest({ body: {} });
-      request.url = PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS;
-      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
-      await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS);
-      const errors = [{ propertyName: 'et3ResponseContestClaimDetails', errorType: 'required' }];
-      expect(request.session.errors).toEqual(errors);
+      expect(ET3Util.updateET3ResponseWithET3Form).toHaveBeenCalledWith(
+        request,
+        response,
+        expect.anything(), // Form object
+        ET3HubLinkNames.EmployersContractClaim,
+        LinkStatus.IN_PROGRESS,
+        PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM
+      );
     });
   });
 });
