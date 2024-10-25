@@ -126,6 +126,20 @@ export class CaseApi {
     }
   };
 
+  checkEthosCaseReference = async (ethosCaseReference: string): Promise<AxiosResponse<string>> => {
+    try {
+      return await this.axios.get<string>(
+        JavaApiUrls.FIND_CASE_BY_ETHOS_CASE_REFERENCE +
+          DefaultValues.STRING_QUESTION_MARK +
+          JavaApiUrls.FIND_CASE_BY_ETHOS_CASE_REFERENCE_PARAM_NAME +
+          DefaultValues.STRING_EQUALS +
+          ethosCaseReference
+      );
+    } catch (error) {
+      throw new Error('Error getting user cases: ' + axiosErrorDetails(error));
+    }
+  };
+
   modifyEt3Data = async (
     caseDetails: CaseWithId,
     idamId: string,

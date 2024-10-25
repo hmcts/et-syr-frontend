@@ -14,7 +14,7 @@ export default class CaseListController {
     };
     const userCases = await getUserCasesByLastModified(req);
     const languageParam = getLanguageParam(req.url);
-    const newSelfAssignmentRequestUrl = PageUrls.NEW_SELF_ASSIGNMENT_REQUEST + languageParam;
+    const newSelfAssignmentRequestUrl = PageUrls.CASE_NUMBER_CHECK + languageParam;
     const usersApplications = getUserApplications(userCases, translations, languageParam);
     res.render(TranslationKeys.CASE_LIST, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),

@@ -28,11 +28,13 @@ export const MockCaseWithIdConstants = {
   TEST_RESPONDENT_NAME: 'Test Respondent Name',
   TEST_CLAIMANT_NAME: 'Test Claimant Name',
   TEST_CLAIMANT_SURNAME: 'Test Claimant Surname',
+  TEST_ETHOS_CASE_REFERENCE: '6000032/2024',
 };
 
 export const mockValidCaseWithId = <CaseWithId>{
   createdDate: DefaultValues.STRING_EMPTY,
   lastModified: DefaultValues.STRING_EMPTY,
+  ethosCaseReference: MockCaseWithIdConstants.TEST_ETHOS_CASE_REFERENCE,
   state: undefined,
   id: MockCaseWithIdConstants.TEST_SUBMISSION_REFERENCE_NUMBER,
   respondentName: MockCaseWithIdConstants.TEST_RESPONDENT_NAME,

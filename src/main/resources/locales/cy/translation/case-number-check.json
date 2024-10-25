@@ -1,0 +1,13 @@
+{
+  "title": "[W]Case Number Check",
+  "pageTitle": "[W]Case Number",
+  "caseNumber": "[W]What is the case number of the case you are responding to?",
+  "errors": {
+    "ethosCaseReference": {
+      "required": "[W]Enter case number. Sample case number format is 1111111/2020"
+    },
+    "hiddenErrorField": {
+      "api": "[W]A system error occurred. Please try again later."
+    }
+  }
+}

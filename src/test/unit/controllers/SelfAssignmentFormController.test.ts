@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import SelfAssignmentFormController from '../../../main/controllers/SelfAssignmentFormController';
-import { FormFieldNames } from '../../../main/definitions/constants';
+import { FormFieldNames, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
 import {
@@ -22,18 +22,26 @@ describe('Self assignment form controller', () => {
     common: {},
   };
 
-  it('should render the Self Assignment Form page', () => {
+  it('should render the Self Assignment Form page when case number is checked', () => {
     const request = mockRequest({ t });
+    request.session.caseNumberChecked = true;
     const response = mockResponse();
     request.session.userCase = mockValidCaseWithId;
     new SelfAssignmentFormController().get(request, response);
-    expect(response.render).toHaveBeenCalledWith('self-assignment-form', expect.anything());
+    expect(response.render).toHaveBeenCalledWith(TranslationKeys.SELF_ASSIGNMENT_FORM, expect.anything());
     expect(request.session.userCase.id).toEqual(MockCaseWithIdConstants.TEST_SUBMISSION_REFERENCE_NUMBER);
     expect(request.session.userCase.respondentName).toEqual(MockCaseWithIdConstants.TEST_RESPONDENT_NAME);
     expect(request.session.userCase.firstName).toEqual(MockCaseWithIdConstants.TEST_CLAIMANT_NAME);
     expect(request.session.userCase.lastName).toEqual(MockCaseWithIdConstants.TEST_CLAIMANT_SURNAME);
   });
-
+  it('should render the Self Assignment Form page when case number is not checked', () => {
+    const request = mockRequest({ t });
+    request.session.caseNumberChecked = false;
+    const response = mockResponse();
+    request.session.userCase = mockValidCaseWithId;
+    new SelfAssignmentFormController().get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.CASE_NUMBER_CHECK + languages.ENGLISH_URL_PARAMETER);
+  });
   describe('post()', () => {
     it("should return a 'required' error when the fields are empty", () => {
       const request = mockRequest({ t });

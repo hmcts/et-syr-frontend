@@ -8,6 +8,7 @@ import ApplicationSubmittedController from '../../controllers/ApplicationSubmitt
 import CaseDetailsController from '../../controllers/CaseDetailsController';
 import CaseListCheckController from '../../controllers/CaseListCheckController';
 import CaseListController from '../../controllers/CaseListController';
+import CaseNumberCheckController from '../../controllers/CaseNumberCheckController';
 import ChangeDetailsController from '../../controllers/ChangeDetailsController';
 import CheckYourAnswersContactDetailsController from '../../controllers/CheckYourAnswersContactDetailsController';
 import CheckYourAnswersContestClaimController from '../../controllers/CheckYourAnswersContestClaimController';
@@ -189,6 +190,8 @@ export class Routes {
     );
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(PageUrls.ET1_FORM_VIEW, new ET1FormViewController().get);
+    app.post(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().post);
+    app.get(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().get);
     app.get(
       Urls.INFO,
       infoRequestHandler({

@@ -11,11 +11,7 @@ import {
 } from './postcode';
 
 export const LegacyUrls = {
-  ET1: 'https://et-pet-et1.aat.platform.hmcts.net/en/apply/application-number',
-  ET1_BASE: 'https://et-pet-et1.aat.platform.hmcts.net',
-  ET1_APPLY: '/apply',
-  ET1_PATH: '/application-number',
-  ACAS_EC_URL: 'https://www.acas.org.uk/early-conciliation',
+  ET3: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_up',
 } as const;
 
 // Sonar: These objects are intentionally similar to PageUrls but serve different purposes.
@@ -53,6 +49,7 @@ export const TranslationKeys = {
   RESPONDENT_PREFERRED_CONTACT_NAME: 'respondent-preferred-contact-name',
   RESPONDENT_DX_ADDRESS: 'respondent-dx-address',
   RESPONDENT_CONTACT_PHONE_NUMBER: 'respondent-contact-phone-number',
+  CASE_NUMBER_CHECK: 'case-number-check',
   RESPONDENT_CONTACT_PREFERENCES: 'respondent-contact-preferences',
   CHECK_YOUR_ANSWERS_CONTACT_DETAILS: 'check-your-answers-contact-details',
   HEARING_PREFERENCES: 'hearing-preferences',
@@ -89,6 +86,7 @@ export const PageUrls = {
   NOT_IMPLEMENTED: '#',
   HOME: '/',
   CHECKLIST: '/checklist',
+  CASE_NUMBER_CHECK: '/case-number-check',
   SELF_ASSIGNMENT_FORM: '/self-assignment-form',
   CASE_LIST_CHECK: '/case-list-check',
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
@@ -208,6 +206,7 @@ export const AuthUrls = {
 export const JavaApiUrls = {
   FIND_CASE_FOR_ROLE_MODIFICATION: '/manageCaseRole/findCaseForRoleModification',
   ASSIGN_CASE_USER_ROLES: '/manageCaseRole/modifyCaseUserRoles?modificationType=Assignment',
+  FIND_CASE_BY_ETHOS_CASE_REFERENCE: '/et3/findCaseByEthosCaseReference',
   DOWNLOAD_CLAIM_PDF: '/generate-pdf',
   UPLOAD_FILE: '/documents/upload/',
   DOCUMENT_DOWNLOAD: '/document/download/',
@@ -235,6 +234,7 @@ export const JavaApiUrls = {
   SUBMIT_BUNDLES: 'bundles/submit-bundles',
   ROLE_PARAM_NAME: 'case_user_role',
   MODIFY_ET3_DATA: '/et3/modifyEt3Data',
+  FIND_CASE_BY_ETHOS_CASE_REFERENCE_PARAM_NAME: 'ethosCaseReference',
 } as const;
 
 export const Roles = {
@@ -499,6 +499,9 @@ export const DefaultValues = {
 export const FormFieldNames = {
   GENERIC_FORM_FIELDS: {
     HIDDEN_ERROR_FIELD: 'hiddenErrorField',
+  },
+  CASE_NUMBER_CHECK_FIELDS: {
+    ETHOS_CASE_REFERENCE: 'ethosCaseReference',
   },
   SELF_ASSIGNMENT_FORM_FIELDS: {
     CASE_REFERENCE_ID: 'caseReferenceId',

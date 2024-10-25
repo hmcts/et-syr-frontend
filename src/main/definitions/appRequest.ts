@@ -63,6 +63,7 @@ export interface AppSession extends Session {
   selectedRespondent?: RespondentET3Model;
   et1FormEnglish?: ApiDocumentTypeItem;
   et1FormWelsh?: ApiDocumentTypeItem;
+  caseNumberChecked?: boolean;
 }
 
 export interface UserDetails {
