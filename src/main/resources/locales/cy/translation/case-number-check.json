@@ -4,11 +4,10 @@
   "caseNumber": "[W]What is the case number of the case you are responding to?",
   "errors": {
     "ethosCaseReference": {
-      "required": "[W]Enter an online case reference number that exactly matches the case details",
-      "invalid": "[W]Enter an online case reference number that exactly matches the case details"
+      "required": "[W]Enter case number. Sample case number format is 1111111/2020"
     },
     "hiddenErrorField": {
-      "api": "[W]Unable to find the case. Data you entered does not match with any case"
+      "api": "[W]A system error occurred. Please try again later."
     }
   }
 }
