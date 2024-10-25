@@ -24,7 +24,7 @@ const expectedTitle = pageJson.title;
 const radioClass = 'govuk-radios__item';
 const expectedRadioLabel1 = commonJson.yes;
 const expectedRadioLabel2 = commonJson.no;
-const expectedRadioLabel3 = commonJson.notSure;
+const expectedRadioLabel3 = commonJson.notApplicable;
 const buttonClass = 'govuk-button';
 
 let htmlRes: Document;
