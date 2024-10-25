@@ -10,12 +10,9 @@ import { AnyRecord } from '../definitions/util-types';
 import { assignFormData } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import ErrorUtils from '../utils/ErrorUtils';
 import { isFieldFilledIn } from '../validators/validator';
-
-const logger = getLogger('AuthorizationIndex');
 
 export default class CaseNumberCheckController {
   private readonly form: Form;
@@ -50,11 +47,7 @@ export default class CaseNumberCheckController {
           req.session.user?.accessToken
         ).checkEthosCaseReference(formData.ethosCaseReference);
         if (!isReformCase || !isReformCase.data || isReformCase.data === 'false') {
-          try {
-            return res.redirect(LegacyUrls.ET3);
-          } catch (error) {
-            logger.error(error);
-          }
+          return res.redirect(LegacyUrls.ET3);
         } else {
           req.session.caseNumberChecked = true;
           return res.redirect(PageUrls.SELF_ASSIGNMENT_FORM + languageParam);
