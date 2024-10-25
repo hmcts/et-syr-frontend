@@ -272,6 +272,33 @@ describe('Case Service Tests', () => {
     });
   });
 
+  describe('Check ethos case reference', () => {
+    it('should return true when case details found', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.get.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithStringTrueResponse);
+      const value = await api.checkEthosCaseReference('6000032/2024');
+      expect(value.data).toEqual('true');
+    });
+    it('should return false when case details not found', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.get.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithStringFalseResponse);
+      const value = await api.checkEthosCaseReference('6000032/2024');
+      expect(value.data).toEqual('false');
+    });
+    it('should throw exception when there is a problem while checking ethos case reference', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.get.mockImplementation(() => {
+        throw mockAxiosError('TEST', ServiceErrors.ERROR_CASE_NOT_FOUND, 404);
+      });
+      await expect(() => api.checkEthosCaseReference('6000032/2024')).rejects.toEqual(
+        new Error(ServiceErrors.ERROR_GETTING_USER_CASES + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
+  });
+
   describe('getCaseApi', () => {
     test('should create a CaseApi', () => {
       expect(getCaseApi(token)).toBeInstanceOf(CaseApi);
