@@ -16,14 +16,14 @@ export const MockAxiosResponses = {
     config: undefined as never,
   },
   mockAxiosResponseWithStringTrueResponse: {
-    data: true,
+    data: 'true',
     status: 200,
     statusText: '',
     headers: undefined as never,
     config: undefined as never,
   },
   mockAxiosResponseWithStringFalseResponse: {
-    data: false,
+    data: 'false',
     status: 200,
     statusText: '',
     headers: undefined as never,

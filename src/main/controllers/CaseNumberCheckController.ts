@@ -49,7 +49,7 @@ export default class CaseNumberCheckController {
       const isReformCase: AxiosResponse<string> = await getCaseApi(
         req.session.user?.accessToken
       ).checkEthosCaseReference(formData.ethosCaseReference);
-      if (isReformCase?.data || isReformCase.data === 'true') {
+      if ((isReformCase?.data && isReformCase.data !== 'false') || isReformCase?.data === 'true') {
         req.session.caseNumberChecked = true;
         return res.redirect(PageUrls.SELF_ASSIGNMENT_FORM + languageParam);
       } else {
