@@ -45,6 +45,7 @@ export default class CaseNumberCheckController {
       return res.redirect(req.url);
     }
     try {
+      req.session.userCase = undefined;
       req.session.caseNumberChecked = false;
       const isReformCase: AxiosResponse<string> = await getCaseApi(
         req.session.user?.accessToken
