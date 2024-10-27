@@ -27,7 +27,7 @@ describe('Case number check controller', () => {
     expect(response.render).toHaveBeenCalledWith(TranslationKeys.CASE_NUMBER_CHECK, expect.anything());
   });
   describe('post()', () => {
-    it('should forward to legacy url when case reference check is false', async () => {
+    it('should forward to legacy url when case reference check is string false', async () => {
       const request = mockRequest({ t });
       const response = mockResponse();
       request.body = mockValidCaseWithId;
@@ -38,7 +38,7 @@ describe('Case number check controller', () => {
       await new CaseNumberCheckController().post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(LegacyUrls.ET3);
     });
-    it('should forward to et3 self form assignment when case reference check is true', async () => {
+    it('should forward to et3 self form assignment when case reference check is string true', async () => {
       const request = mockRequest({ t });
       const response = mockResponse();
       request.body = mockValidCaseWithId;
@@ -46,6 +46,28 @@ describe('Case number check controller', () => {
       api.checkEthosCaseReference = jest
         .fn()
         .mockResolvedValueOnce(MockAxiosResponses.mockAxiosResponseWithStringTrueResponse);
+      await new CaseNumberCheckController().post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_FORM + languages.ENGLISH_URL_PARAMETER);
+    });
+    it('should forward to legacy url when case reference check is boolean false', async () => {
+      const request = mockRequest({ t });
+      const response = mockResponse();
+      request.body = mockValidCaseWithId;
+      getCaseApiMock.mockReturnValue(api);
+      api.checkEthosCaseReference = jest
+        .fn()
+        .mockResolvedValueOnce(MockAxiosResponses.mockAxiosResponseWithBooleanFalseResponse);
+      await new CaseNumberCheckController().post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(LegacyUrls.ET3);
+    });
+    it('should forward to et3 self form assignment when case reference check is boolean true', async () => {
+      const request = mockRequest({ t });
+      const response = mockResponse();
+      request.body = mockValidCaseWithId;
+      getCaseApiMock.mockReturnValue(api);
+      api.checkEthosCaseReference = jest
+        .fn()
+        .mockResolvedValueOnce(MockAxiosResponses.mockAxiosResponseWithBooleanTrueResponse);
       await new CaseNumberCheckController().post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_FORM + languages.ENGLISH_URL_PARAMETER);
     });
