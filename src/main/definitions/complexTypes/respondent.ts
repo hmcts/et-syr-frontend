@@ -3,11 +3,11 @@ import {
   EnglishOrWelsh,
   HearingPreferenceET3,
   NoAcasNumberReason,
+  PayFrequency,
   UploadedDocumentType,
   YesOrNo,
   YesOrNoOrNotApplicable,
   YesOrNoOrNotSure,
-  payFrequency,
 } from '../case';
 import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from '../links';
 
@@ -87,7 +87,7 @@ export interface RespondentType {
   et3ResponseClaimantWeeklyHours?: YesOrNoOrNotApplicable;
   et3ResponseClaimantCorrectHours?: string;
   et3ResponseEarningDetailsCorrect?: YesOrNoOrNotApplicable;
-  et3ResponsePayFrequency?: payFrequency;
+  et3ResponsePayFrequency?: PayFrequency;
   et3ResponsePayBeforeTax?: string;
   et3ResponsePayTakehome?: string;
   et3ResponseIsNoticeCorrect?: YesOrNoOrNotApplicable;

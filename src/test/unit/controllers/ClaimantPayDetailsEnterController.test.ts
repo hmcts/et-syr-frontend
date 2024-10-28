@@ -1,5 +1,5 @@
 import ClaimantPayDetailsEnterController from '../../../main/controllers/ClaimantPayDetailsEnterController';
-import { payFrequency } from '../../../main/definitions/case';
+import { PayFrequency } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
@@ -27,7 +27,7 @@ describe('Claimant pay details enter details Controller', () => {
     });
 
     it('should render the page when clear selection', () => {
-      request.session.userCase.et3ResponsePayFrequency = payFrequency.WEEKLY;
+      request.session.userCase.et3ResponsePayFrequency = PayFrequency.WEEKLY;
       request.query = {
         redirect: 'clearSelection',
       };
@@ -40,7 +40,7 @@ describe('Claimant pay details enter details Controller', () => {
     it('should redirect to next page when radio is selected', async () => {
       request = mockRequest({
         body: {
-          et3ResponsePayFrequency: payFrequency.WEEKLY,
+          et3ResponsePayFrequency: PayFrequency.WEEKLY,
         },
       });
       request.url = PageUrls.CLAIMANT_PAY_DETAILS_ENTER;

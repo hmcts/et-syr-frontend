@@ -82,7 +82,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponseEarningDetailsCorrect?: YesOrNoOrNotApplicable;
   et3ResponseEmployerClaimDocument?: UploadedDocumentType;
   et3ResponseRespondentSupportDocument?: UploadedDocumentType;
-  et3ResponsePayFrequency?: payFrequency;
+  et3ResponsePayFrequency?: PayFrequency;
   et3ResponsePayBeforeTax?: string;
   et3ResponsePayTakehome?: string;
   et3Form?: UploadedDocumentType;
@@ -456,7 +456,7 @@ export const enum PayInterval {
   ANNUAL = 'Annual',
 }
 
-export const enum payFrequency {
+export const enum PayFrequency {
   WEEKLY = 'Weekly',
   MONTHLY = 'Monthly',
   ANNUALLY = 'Annually',
