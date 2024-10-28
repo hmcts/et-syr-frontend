@@ -1,27 +1,28 @@
 {
-  "title": "Self Assignment",
-  "pageTitle": "Self assignment",
-  "respondentSelfAssignmentInfo": "You can use this self assignment page to get access to the details of the digital case and it's contents.",
-  "caseReferenceId": "Case reference number",
-  "respondentName": "Respondent name",
-  "claimantFirstName": "Claimant first name(s)",
-  "claimantLastName": "Claimant last name",
+  "title": "[W]Case Details - Form",
+  "pageTitle": "[W]Case Details",
+  "respondentSelfAssignmentInfo": "[W]You can use this self assignment page to get access to the details of the digital case and it's contents.",
+  "p1": "[W]Enter the details below to access the response form for this case.",
+  "caseReferenceId": "[W]Submission Reference",
+  "respondentName": "[W]Respondent's name",
+  "claimantFirstName": "[W]Claimant's first name(s)",
+  "claimantLastName": "[W]Claimant's last name",
   "errors": {
     "id": {
-      "required": "Enter an online case reference number that exactly matches the case details",
-      "invalid": "Enter an online case reference number that exactly matches the case details"
+      "required": "[W]Enter an online case reference number that exactly matches the case details",
+      "invalid": "[W]You entered an invalid submission reference. Submission reference should be 16 numeric characters in 123456789123456 or 1234-5678-9123-4567 formats"
     },
     "respondentName": {
-      "required": "Enter respondent name that exactly matches the case details"
+      "required": "[W]Enter respondent name that exactly matches the case details"
     },
     "firstName": {
-      "required": "Enter claimant name that exactly matches the case details"
+      "required": "[W]Enter claimant name that exactly matches the case details"
     },
     "lastName": {
-      "required": "Enter claimant last name that exactly matches the case details"
+      "required": "[W]Enter claimant last name that exactly matches the case details"
     },
     "hiddenErrorField": {
-      "api": "Unable to find the case. Data you entered does not match with any case"
+      "api": "[W]Unable to find the case. Data you entered does not match with any case"
     }
   }
 }

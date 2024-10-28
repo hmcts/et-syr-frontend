@@ -7,7 +7,7 @@ import { getLanguageParam } from '../helpers/RouterHelpers';
 
 export default class HomeController {
   public get = (req: AppRequest, res: Response): void => {
-    const redirectUrl = setUrlLanguage(req, PageUrls.CHECKLIST);
+    const redirectUrl = setUrlLanguage(req, PageUrls.CASE_NUMBER_CHECK);
     res.render(TranslationKeys.HOME, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.HOME as never, { returnObjects: true } as never),

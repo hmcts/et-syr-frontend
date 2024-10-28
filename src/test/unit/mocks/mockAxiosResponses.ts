@@ -29,4 +29,18 @@ export const MockAxiosResponses = {
     headers: undefined as never,
     config: undefined as never,
   },
+  mockAxiosResponseWithBooleanFalseResponse: {
+    data: false,
+    status: 200,
+    statusText: '',
+    headers: undefined as never,
+    config: undefined as never,
+  },
+  mockAxiosResponseWithBooleanTrueResponse: {
+    data: true,
+    status: 200,
+    statusText: '',
+    headers: undefined as never,
+    config: undefined as never,
+  },
 };
