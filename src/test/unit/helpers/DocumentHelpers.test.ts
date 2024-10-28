@@ -1,5 +1,12 @@
-import { combineDocuments } from '../../../main/helpers/DocumentHelpers';
-
+import { DefaultValues } from '../../../main/definitions/constants';
+import { DocumentDetail } from '../../../main/definitions/definition';
+import {
+  combineDocuments,
+  combineUserCaseDocuments,
+  findContentTypeByDocumentDetail,
+  findUploadedDocumentIdByDocumentUrl,
+} from '../../../main/helpers/DocumentHelpers';
+import mockUserCaseWithDocumentsComplete from '../mocks/mockUserCaseWithDocumentsComplete';
 const testDocumentList1ForCombineDocuments: string[] = ['Document1.pdf', 'Document2.txt', 'Document3.xlsx'];
 const testDocumentList2ForCombineDocuments: string[] = ['Document4.docx', 'Document5.rtx', 'Document6.xls'];
 const testExpectedDocumentListForCombineDocuments: string[] = [
@@ -11,10 +18,74 @@ const testExpectedDocumentListForCombineDocuments: string[] = [
   'Document6.xls',
 ];
 
+const documentDetailWithMimeType = {
+  id: '1',
+  description: 'desc',
+  mimeType: 'image/jpeg',
+  size: '123',
+  createdOn: '01/12/2023',
+};
+
+const documentDetailWithOriginalDocumentName = {
+  id: '1',
+  description: 'desc',
+  size: '123',
+  createdOn: '01/12/2023',
+  originalDocumentName: 'test.doc',
+};
+
+const documentDetailWithoutMimeTypeAndOriginalDocumentName = {
+  id: '1',
+  description: 'desc',
+  size: '123',
+  createdOn: '01/12/2023',
+};
+
 describe('Documents Helper Test', () => {
   it('should combine document names', async () => {
     expect(combineDocuments(testDocumentList1ForCombineDocuments, testDocumentList2ForCombineDocuments)).toEqual(
       testExpectedDocumentListForCombineDocuments
     );
+  });
+
+  it('should combine user case documents correctly', () => {
+    expect(combineUserCaseDocuments([mockUserCaseWithDocumentsComplete])).toStrictEqual([
+      { description: 'Case Details - Mehmet Tahir Dede', id: '3aa7dfc1-378b-4fa8-9a17-89126fae5673', type: 'ET1' },
+      { id: '1', description: 'desc1' },
+      { id: '2', description: 'desc2' },
+      { id: '3', description: 'desc3' },
+      { id: '4', description: 'desc4' },
+      { id: '5', description: 'desc5' },
+      { id: '6', description: 'desc6' },
+      { id: '7', description: 'desc7' },
+      { id: '8', description: 'desc8' },
+      {
+        id: 'a0c113ec-eede-472a-a59c-f2614b48177c',
+        description: 'Claim Summary File Detail',
+        originalDocumentName: 'document.pdf',
+      },
+    ]);
+  });
+
+  describe('FindContentTypeByDocumentDetail', () => {
+    it.each([
+      [documentDetailWithMimeType, 'image/jpeg'],
+      [documentDetailWithOriginalDocumentName, 'application/vnd.ms-word'],
+      [documentDetailWithoutMimeTypeAndOriginalDocumentName, undefined],
+    ])('%o document type should be %s', (documentDetailItem: DocumentDetail, contentType: string) => {
+      expect(findContentTypeByDocumentDetail(documentDetailItem)).toStrictEqual(contentType);
+    });
+  });
+
+  describe('FindUploadedDocumentIdByDocumentUrl', () => {
+    it.each([
+      { value: undefined, result: undefined },
+      { value: '', result: undefined },
+      { value: 'http', result: undefined },
+      { value: 'https://', result: DefaultValues.STRING_EMPTY },
+      { value: 'http://test_document_id', result: 'test_document_id' },
+    ])('check if given string value is blank: %o', ({ value, result }) => {
+      expect(findUploadedDocumentIdByDocumentUrl(value)).toStrictEqual(result);
+    });
   });
 });

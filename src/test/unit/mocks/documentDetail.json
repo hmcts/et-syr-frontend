@@ -1,0 +1,25 @@
+{
+  "headers": {
+    "vary": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers",
+    "set-cookie": ["JSESSIONID=BD206D39BC40FE14B8390CA122B0BD6A; Path=/; HttpOnly"],
+    "originalfilename": "ET1 - A User.pdf",
+    "content-disposition": "fileName=\"ET1 - A User.pdf\"",
+    "data-source": "contentURI",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "x-frame-options": "DENY",
+    "date": "Mon, 28 Oct 2024 22:05:21 GMT",
+    "keep-alive": "timeout=60",
+    "connection": "keep-alive, keep-alive, close",
+    "accept-ranges": "bytes",
+    "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
+    "pragma": "no-cache",
+    "expires": "0",
+    "content-type": "application/pdf",
+    "content-length": "312394"
+  },
+  "status": "200",
+  "statusText": "",
+  "type": "Buffer",
+  "data": [45, 49, 46]
+}

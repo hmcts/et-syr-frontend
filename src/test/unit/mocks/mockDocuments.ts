@@ -1,4 +1,9 @@
 import { ApiDocumentTypeItem } from '../../../main/definitions/complexTypes/documentTypeItem';
+import { DocumentDetail } from '../../../main/definitions/definition';
+
+import mockDocument from './documentDetail.json';
+
+export const mockedET1FormDocument = mockDocument;
 
 export const mockedET1FormEnglish: ApiDocumentTypeItem = {
   id: '916d3bc2-006a-40ee-a95e-b59eeb14e865',
@@ -17,6 +22,16 @@ export const mockedET1FormEnglish: ApiDocumentTypeItem = {
     dateOfCorrespondence: '2024-10-21',
     startingClaimDocuments: 'ET1',
   },
+};
+
+export const mockET1SubmittedForm: DocumentDetail = {
+  id: '916d3bc2-006a-40ee-a95e-b59eeb14e865',
+  size: '32564',
+  mimeType: 'application/pdf',
+  createdOn: '2024-10-21',
+  type: 'ET1',
+  description: 'ET1 submitted form',
+  originalDocumentName: 'test_document.pdf',
 };
 
 export const mockedET1FormWelsh: ApiDocumentTypeItem = {
