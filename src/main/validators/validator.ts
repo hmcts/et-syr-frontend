@@ -10,14 +10,6 @@ export const isFieldFilledIn: Validator = value => {
   }
 };
 
-export const isRespondentNameValid: Validator = value => {
-  if (!value || (value as string).trim().length === 0) {
-    return ValidationErrors.REQUIRED;
-  } else if (!/(=?^.{1,100}$)/.test(value as string)) {
-    return ValidationErrors.INVALID_LENGTH;
-  }
-};
-
 export const isContentCharsOrLess = (maxlength: number): Validator => {
   return (value: string): string | undefined => {
     if (value && value.trim().length > maxlength) {
@@ -37,17 +29,6 @@ export const isContentCharsOrLessAndNotEmpty = (maxlength: number): Validator =>
   };
 };
 
-export const isContentBetween3And100Chars: Validator = value => {
-  if (!value) {
-    return ValidationErrors.REQUIRED;
-  }
-
-  const nameLength = (value as string).trim().length;
-  if (nameLength < 3 || nameLength > 100) {
-    return ValidationErrors.INVALID_LENGTH;
-  }
-};
-
 export const isOptionSelected: Validator = value => {
   if (!value || (value as string).trim() === 'notSelected') {
     return ValidationErrors.REQUIRED;
@@ -60,36 +41,6 @@ export const atLeastOneFieldIsChecked: Validator = (fields: string[]) => {
   }
 };
 
-export const isValidUKTelNumber: Validator = value => {
-  if (value === null || value === '') {
-    return;
-  }
-  try {
-    if (!/^[+()\- \d]+$/.test(value as string)) {
-      return ValidationErrors.NON_NUMERIC;
-    }
-    if (
-      !/^(((\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3})|((\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?\d{4})|((\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}))(\s?#(\d{4}|\d{3}))?$/.test(
-        value as string
-      )
-    ) {
-      return ValidationErrors.INVALID_VALUE;
-    }
-  } catch (e) {
-    return ValidationErrors.INVALID_VALUE;
-  }
-};
-
-export const isValidTwoDigitInteger: Validator = value => {
-  if (!value || (value as string).trim().length === 0) {
-    return ValidationErrors.INVALID_VALUE;
-  }
-
-  if (!/^\d{1,2}$/.test(value as string)) {
-    return ValidationErrors.NOT_A_NUMBER;
-  }
-};
-
 export const isValidCompanyRegistrationNumber: Validator = value => {
   // Allow empty value (optional field)
   if (!value || (value as string).trim().length === 0) {
@@ -99,28 +50,6 @@ export const isValidCompanyRegistrationNumber: Validator = value => {
   // Ensure the value is alphanumeric and does not exceed 8 characters
   if (!/^[a-zA-Z0-9]{1,8}$/.test(value as string)) {
     return ValidationErrors.INVALID_COMPANY_REGISTRATION_NUMBER;
-  }
-};
-
-export const isValidNoticeLength: Validator = value => {
-  if (!value || (value as string).trim().length === 0) {
-    return;
-  }
-
-  if (!/^\d{1,2}$/.test(value as string)) {
-    return ValidationErrors.NOT_A_NUMBER;
-  }
-};
-
-export const isPayIntervalNull: Validator = (value: string) => {
-  if (!value) {
-    return ValidationErrors.REQUIRED;
-  }
-};
-
-export const arePayValuesNull: Validator = (value: string[]) => {
-  if (value && value.every(element => !element)) {
-    return ValidationErrors.REQUIRED;
   }
 };
 
@@ -170,14 +99,14 @@ export const isValidCurrency: Validator = value => {
   return ValidationErrors.INVALID_CURRENCY;
 };
 
-export const currencyValidation = (value: string | string[]): [digitCount: number, correctFormat: boolean] => {
+const currencyValidation = (value: string | string[]): [digitCount: number, correctFormat: boolean] => {
   value = (value as string).trim();
   const digitCount = value.replace(/\D/g, '').length;
   const correctFormat = /^\d{1,3}((,\d{3}){0,3}|(\d{3}){0,3})(\.\d{2})?$/.test(value);
   return [digitCount, correctFormat];
 };
 
-export const hasInvalidName = (fileName: string): string => {
+export const hasInvalidFileName = (fileName: string): string => {
   if (!fileName) {
     return;
   }

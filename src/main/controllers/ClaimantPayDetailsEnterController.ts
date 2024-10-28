@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { HowOften } from '../definitions/case';
+import { payFrequency } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
@@ -24,15 +24,15 @@ export default class ClaimantPayDetailsEnterController {
         values: [
           {
             label: (l: AnyRecord): string => l.weekly,
-            value: HowOften.WEEKLY,
+            value: payFrequency.WEEKLY,
           },
           {
             label: (l: AnyRecord): string => l.monthly,
-            value: HowOften.MONTHLY,
+            value: payFrequency.MONTHLY,
           },
           {
             label: (l: AnyRecord): string => l.annually,
-            value: HowOften.ANNUALLY,
+            value: payFrequency.ANNUALLY,
           },
         ],
       },
