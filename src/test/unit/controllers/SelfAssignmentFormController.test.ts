@@ -1,12 +1,12 @@
 import axios from 'axios';
 
 import SelfAssignmentFormController from '../../../main/controllers/SelfAssignmentFormController';
-import { FormFieldNames, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
+import { LegacyUrls, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
 import {
   MockCaseApiDataResponseConstants,
-  mockCaseApiDataResponseForSelfAssignment,
+  mockCaseApiDataResponseForSelfAssignmentAsData,
 } from '../mocks/mockCaseApiDataResponse';
 import { MockCaseWithIdConstants, mockInvalidCaseWithId, mockValidCaseWithId } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
@@ -34,14 +34,6 @@ describe('Self assignment form controller', () => {
     expect(request.session.userCase.firstName).toEqual(MockCaseWithIdConstants.TEST_CLAIMANT_NAME);
     expect(request.session.userCase.lastName).toEqual(MockCaseWithIdConstants.TEST_CLAIMANT_SURNAME);
   });
-  it('should render the Self Assignment Form page when case number is not checked', () => {
-    const request = mockRequest({ t });
-    request.session.caseNumberChecked = false;
-    const response = mockResponse();
-    request.session.userCase = mockValidCaseWithId;
-    new SelfAssignmentFormController().get(request, response);
-    expect(response.redirect).toHaveBeenCalledWith(PageUrls.CASE_NUMBER_CHECK + languages.ENGLISH_URL_PARAMETER);
-  });
   describe('post()', () => {
     it("should return a 'required' error when the fields are empty", () => {
       const request = mockRequest({ t });
@@ -57,18 +49,6 @@ describe('Self assignment form controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(request.path);
       expect(request.session.errors).toEqual(expectedErrors);
     });
-
-    it('should throw error when input fields are invalid and not able to save request session', async () => {
-      const request = mockRequest({ t });
-      const response = mockResponse();
-      request.body = mockInvalidCaseWithId;
-      const sessionSaveError = new Error('Unable to save request session');
-      request.session.save = jest.fn().mockImplementation(() => {
-        throw new Error('Unable to save request session');
-      });
-      await expect(new SelfAssignmentFormController().post(request, response)).rejects.toThrow(sessionSaveError);
-    });
-
     it('should return case data when all fields are entered', async () => {
       const request = mockRequest({ t });
       const response = mockResponse();
@@ -76,9 +56,9 @@ describe('Self assignment form controller', () => {
       getCaseApiMock.mockReturnValue(api);
       api.getCaseByApplicationRequest = jest
         .fn()
-        .mockResolvedValueOnce(Promise.resolve(mockCaseApiDataResponseForSelfAssignment));
+        .mockResolvedValueOnce(Promise.resolve(mockCaseApiDataResponseForSelfAssignmentAsData));
       await new SelfAssignmentFormController().post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(request.path);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_CHECK);
       expect(request.session.userCase.id).toEqual(MockCaseApiDataResponseConstants.TEST_SUBMISSION_REFERENCE_NUMBER);
       expect(request.session.userCase.respondentName).toEqual(MockCaseApiDataResponseConstants.TEST_RESPONDENT_NAME);
       expect(request.session.userCase.firstName).toEqual(MockCaseApiDataResponseConstants.TEST_CLAIMANT_NAME);
@@ -86,14 +66,13 @@ describe('Self assignment form controller', () => {
     });
   });
 
-  it('should set error when no case data returns', async () => {
+  it('should forward to legacy ET3 URL when no case data returns', async () => {
     const request = mockRequest({ t });
     const response = mockResponse();
     request.body = mockValidCaseWithId;
     getCaseApiMock.mockReturnValue(api);
-    api.getCaseByApplicationRequest = jest.fn().mockResolvedValueOnce(null);
-    const errors = [{ propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD, errorType: 'api' }];
+    api.getCaseByApplicationRequest = jest.fn().mockResolvedValueOnce(Promise.resolve(null));
     await new SelfAssignmentFormController().post(request, response);
-    expect(request.session.errors).toEqual(errors);
+    expect(response.redirect).toHaveBeenCalledWith(LegacyUrls.ET3);
   });
 });

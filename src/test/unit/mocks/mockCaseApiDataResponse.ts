@@ -11,6 +11,30 @@ export const MockCaseApiDataResponseConstants = {
   TEST_CLAIMANT_SURNAME: 'Test Claimant Surname',
 };
 
+export const mockCaseApiDataResponseForSelfAssignmentAsData = {
+  data: {
+    id: MockCaseApiDataResponseConstants.TEST_SUBMISSION_REFERENCE_NUMBER,
+    case_type_id: CaseTypeId.ENGLAND_WALES,
+    created_date: '2022-08-19T09:19:25.79202',
+    last_modified: '2022-08-19T09:19:25.817549',
+    state: 'inProgress',
+    case_data: {
+      respondentCollection: [
+        {
+          id: 'test',
+          value: {
+            respondent_name: MockCaseApiDataResponseConstants.TEST_RESPONDENT_NAME,
+          },
+        },
+      ],
+      claimantIndType: {
+        claimant_first_names: MockCaseApiDataResponseConstants.TEST_CLAIMANT_NAME,
+        claimant_last_name: MockCaseApiDataResponseConstants.TEST_CLAIMANT_SURNAME,
+      },
+    },
+  },
+};
+
 export const mockCaseApiDataResponseForSelfAssignment = <CaseApiDataResponse>{
   id: MockCaseApiDataResponseConstants.TEST_SUBMISSION_REFERENCE_NUMBER,
   case_type_id: CaseTypeId.ENGLAND_WALES,

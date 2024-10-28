@@ -45,14 +45,16 @@ export default class CaseNumberCheckController {
       return res.redirect(req.url);
     }
     try {
+      req.session.userCase = undefined;
       req.session.caseNumberChecked = false;
       const isReformCase: AxiosResponse<string> = await getCaseApi(
         req.session.user?.accessToken
       ).checkEthosCaseReference(formData.ethosCaseReference);
-      if (isReformCase?.data && isReformCase.data === 'true') {
+      if ((isReformCase?.data && isReformCase.data !== 'false') || isReformCase?.data === 'true') {
         req.session.caseNumberChecked = true;
-        return res.redirect(PageUrls.SELF_ASSIGNMENT_FORM + languageParam);
+        return res.redirect(PageUrls.CHECKLIST + languageParam);
       } else {
+        req.session.errors = undefined;
         return res.redirect(LegacyUrls.ET3);
       }
     } catch (error) {
