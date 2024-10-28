@@ -451,8 +451,8 @@ export enum ccdPreferredTitle {
 }
 
 export const enum PayInterval {
-  WEEKLY = 'Weeks',
-  MONTHLY = 'Months',
+  WEEKS = 'Weeks',
+  MONTHS = 'Months',
   ANNUAL = 'Annual',
 }
 

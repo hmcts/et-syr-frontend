@@ -80,8 +80,8 @@ export default class ClaimantPayDetailsController {
       ...content,
       hideContactUs: true,
       PayInterval: {
-        WEEKS: PayInterval.WEEKLY,
-        MONTHS: PayInterval.MONTHLY,
+        WEEKS: PayInterval.WEEKS,
+        MONTHS: PayInterval.MONTHS,
         ANNUAL: PayInterval.ANNUAL,
       },
     });
