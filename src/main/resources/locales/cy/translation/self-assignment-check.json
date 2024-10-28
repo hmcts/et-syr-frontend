@@ -18,10 +18,12 @@
   "satisfied": "[W]You're satisfied that all these details are accurate and match what is written on the case",
   "errors": {
     "selfAssignmentCheck": {
-      "required": "Please confirm case assignment."
+      "required": "[W]Please confirm case assignment."
     },
     "hiddenErrorField": {
-      "api": "Unable to assign role. Please check your name recorded in the system"
+      "api": "[W]Unable to assign role. Please try again later",
+      "caseAlreadyAssignedToSameUser": "[W]You have already assigned to this case",
+      "caseAlreadyAssigned": "[W]Case has already assigned to a respondent"
     }
   }
 }
