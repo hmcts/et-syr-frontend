@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import { FormFieldNames, LegacyUrls, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
@@ -12,7 +12,6 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import SelfAssignmentFormControllerHelper from '../helpers/controller/SelfAssignmentFormControllerHelper';
 import { getCaseApi } from '../services/CaseService';
-import ErrorUtils from '../utils/ErrorUtils';
 import { isValidCaseReferenceId } from '../validators/numeric-validator';
 import { isFieldFilledIn } from '../validators/validator';
 
@@ -82,36 +81,21 @@ export default class SelfAssignmentFormController {
         SelfAssignmentFormControllerHelper.setRespondentName(req, caseData);
         return res.redirect(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK));
       }
-      ErrorUtils.setManualErrorToRequestSession(
-        req,
-        ValidationErrors.API,
-        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-      );
-      return res.redirect(req.url);
+      return res.redirect(LegacyUrls.ET3);
     } else {
       req.session.errors = errors;
-      req.session.save(err => {
-        if (err) {
-          throw err;
-        }
-        return res.redirect(req.url);
-      });
+      return res.redirect(req.url);
     }
   };
 
   public get = (req: AppRequest, res: Response): void => {
     const languageParam: string = getLanguageParam(req.url);
-    if (!req.session.caseNumberChecked) {
-      return res.redirect(PageUrls.CASE_NUMBER_CHECK + languageParam);
-    }
-    const redirectUrl = setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_FORM);
     const caseReferenceIdContentForm = this.caseReferenceIdContent;
     assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.SELF_ASSIGNMENT_FORM, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SELF_ASSIGNMENT_FORM as never, { returnObjects: true } as never),
       PageUrls,
-      redirectUrl,
       languageParam,
       form: caseReferenceIdContentForm,
       sessionErrors: req.session.errors,

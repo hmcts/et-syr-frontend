@@ -45,7 +45,7 @@ export class Oidc {
       return next();
     });
 
-    app.get(PageUrls.CASE_LIST_CHECK, (req: AppRequest, res: Response, next: NextFunction) => {
+    app.get(PageUrls.CHECKLIST, (req: AppRequest, res: Response, next: NextFunction) => {
       const redisClient = req.app.locals?.redisClient;
       if (!redisClient) {
         return ErrorUtils.throwManualError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
@@ -53,7 +53,7 @@ export class Oidc {
         try {
           req.session.guid = cachePreLoginUrl(
             redisClient,
-            PageUrls.CASE_LIST_CHECK + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url)
+            PageUrls.CHECKLIST + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url)
           );
         } catch (err) {
           return ErrorUtils.throwError(err, RedisErrors.FAILED_TO_SAVE);

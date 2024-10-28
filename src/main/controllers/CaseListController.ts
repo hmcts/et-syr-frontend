@@ -14,15 +14,15 @@ export default class CaseListController {
     };
     const userCases = await getUserCasesByLastModified(req);
     const languageParam = getLanguageParam(req.url);
-    const newSelfAssignmentRequestUrl = PageUrls.CASE_NUMBER_CHECK + languageParam;
+    const newSelfAssignmentRequestUrl = PageUrls.SELF_ASSIGNMENT_FORM + languageParam;
     const usersApplications = getUserApplications(userCases, translations, languageParam);
+    req.session.userCase = undefined;
     res.render(TranslationKeys.CASE_LIST, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CASE_LIST as never, { returnObjects: true } as never),
       form: <FormContent>{},
       sessionErrors: req.session?.errors || [],
       PageUrls,
-      userCase: req.session?.userCase,
       user: req.session?.user,
       usersApplications,
       languageParam,

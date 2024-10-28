@@ -52,8 +52,9 @@ export default class CaseNumberCheckController {
       ).checkEthosCaseReference(formData.ethosCaseReference);
       if ((isReformCase?.data && isReformCase.data !== 'false') || isReformCase?.data === 'true') {
         req.session.caseNumberChecked = true;
-        return res.redirect(PageUrls.SELF_ASSIGNMENT_FORM + languageParam);
+        return res.redirect(PageUrls.CHECKLIST + languageParam);
       } else {
+        req.session.errors = undefined;
         return res.redirect(LegacyUrls.ET3);
       }
     } catch (error) {
