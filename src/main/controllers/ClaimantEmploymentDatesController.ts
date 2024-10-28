@@ -81,8 +81,8 @@ export default class ClaimantEmploymentDatesController {
     res.render(TranslationKeys.CLAIMANT_EMPLOYMENT_DATES, {
       ...content,
       hideContactUs: true,
-      startDateDisplay: startDate ? dateInLocale(convertCaseDateToDate(startDate), req.url) : undefined,
-      endDateDisplay: endDate ? dateInLocale(convertCaseDateToDate(endDate), req.url) : undefined,
+      startDate: startDate ? dateInLocale(convertCaseDateToDate(startDate), req.url) : undefined,
+      endDate: endDate ? dateInLocale(convertCaseDateToDate(endDate), req.url) : undefined,
     });
   };
 }
