@@ -20,7 +20,7 @@
   </h3>
 
   <p class="govuk-body">
-    {{notificationBanner.acknowledgement.p1}}
+    {{notificationBanner.acknowledgement.p1 + respondentResponseDeadline}}
   </p>
 
   <p class="govuk-body">
@@ -28,12 +28,7 @@
     <a class="govuk-link" href="{{ respondToClaimUrl }}"><b>{{notificationBanner.acknowledgement.link2}}</b></a>
   </p>
 
-  {% if respondentResponseDeadline %}
-    <p class="govuk-body">
-      {{notificationBanner.acknowledgement.p2 | safe}}
-      {{respondentResponseDeadline}}.
-    </p>
-  {% endif %}
+
 {% endif %}
 
 {% if showViewResponseAlert %}

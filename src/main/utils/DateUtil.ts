@@ -24,12 +24,25 @@ export default class DateUtil {
     return new Date(timestamp);
   }
 
+  public static addStringDate28Days(dateString: string): string {
+    const date = this.convertStringToDate(dateString);
+    if (!date) {
+      return undefined;
+    }
+    date.setDate(date.getDate() + 28);
+    return this.formatDateToDDMMYYY(date);
+  }
+
   /**
    * Formats input date string to DD/MM/YYYY like 01/01/2025
    * @param dateString
    */
   public static formatDateStringToDDMMYYYY(dateString: string): string {
     const date: Date = this.convertStringToDate(dateString);
+    return this.formatDateToDDMMYYY(date);
+  }
+
+  public static formatDateToDDMMYYY(date: Date): string {
     if (date) {
       const padStart = (value: number): string => value.toString().padStart(2, '0');
       return `${padStart(date.getDate())}/${padStart(date.getMonth() + 1)}/${date.getFullYear()}`;
@@ -43,13 +56,21 @@ export default class DateUtil {
    */
   public static formatDateStringToDDMonthYYYY(dateString: string): string {
     const date: Date = this.convertStringToDate(dateString);
-    if (date) {
+    return this.formatDateToDDMonthYYYY(date);
+  }
+
+  /**
+   * Formats input date string to DD/Month/YYYY like 01 Jan 2025
+   * @param dateVal
+   */
+  public static formatDateToDDMonthYYYY(dateVal: Date): string {
+    if (dateVal) {
       return new Intl.DateTimeFormat('en-GB', {
         day: '2-digit',
         month: 'short',
         year: 'numeric',
         timeZone: 'Europe/London',
-      }).format(date);
+      }).format(dateVal);
     }
     return DefaultValues.STRING_EMPTY;
   }

@@ -18,9 +18,7 @@
       {% else %}
         {% set respondentName = respondent.respondentFirstName + " " + respondent.respondentLastName %}
       {% endif %}
-      {% if respondent.personalDetailsSection === 'Yes'
-            or respondent.employmentDetailsSection === 'Yes'
-            or respondent.claimDetailsSection === 'Yes' %}
+      {% if respondent.et3Status === 'inProgress' or respondent.et3Status === undefined or respondent.et3Status === '' %}
         {% set et3Started = (et3Started.push([
           {
             text: app.userCase.createdDate
@@ -40,9 +38,7 @@
         ]), et3Started) %}
       {% endif %}
 
-      {% if respondent.personalDetailsSection !== 'Yes'
-            and respondent.employmentDetailsSection !== 'Yes'
-            and respondent.claimDetailsSection !== 'Yes' %}
+      {% if respondent.et3Status === 'responseCompleted' %}
         {% set et3NotStarted = (et3NotStarted.push([
           {
             text: app.userCase.createdDate

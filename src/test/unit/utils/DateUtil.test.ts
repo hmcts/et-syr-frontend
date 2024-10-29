@@ -43,4 +43,18 @@ describe('DateUtil tests', () => {
   ])('check if given string is a valid date', ({ value, result }) => {
     expect(DateUtil.isDateStringValid(value)).toStrictEqual(result);
   });
+
+  it.each([
+    { value: undefined, result: undefined },
+    { value: '', result: undefined },
+    { value: ' ', result: undefined },
+    { value: '', result: undefined },
+    { value: ' test', result: undefined },
+    { value: '20240101   ', result: undefined },
+    { value: '20251230', result: undefined },
+    { value: '2024-01-01   ', result: '29/01/2024' },
+    { value: '2025-12-30', result: '27/01/2026' },
+  ])('check if 28 days added to given string', ({ value, result }) => {
+    expect(DateUtil.addStringDate28Days(value)).toStrictEqual(result);
+  });
 });

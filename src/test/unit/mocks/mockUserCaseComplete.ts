@@ -163,6 +163,7 @@ export default {
   workAddressPostcode: 'SW1H 9AQ',
   workEnterPostcode: 'SW1H 9AQ',
   otherClaim: 'other type of claims',
+  preAcceptCase: undefined,
   respondents: [
     {
       respondentName: 'Globo Corp',

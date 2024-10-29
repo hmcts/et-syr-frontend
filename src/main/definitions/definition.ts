@@ -31,6 +31,16 @@ export const enum HubCaseState {
   CLAIM_DECISION = 'CLAIM_DECISION',
 }
 
+export const enum ET3Status {
+  NOT_STARTED = 'notStarted',
+  IN_PROGRESS = 'inProgress',
+  RESPONSE_COMPLETED = 'responseCompleted',
+  RESPONSE_ACCEPTED = 'responseAccepted',
+  HEARINGS_ESTABLISHED = 'hearingsEstablished',
+  CASE_DECIDED = 'caseDecided',
+  FINISHED = 'finished',
+}
+
 export const enum ClaimTypeDiscrimination {
   AGE = 'Age',
   DISABILITY = 'Disability',
