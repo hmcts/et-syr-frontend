@@ -4,7 +4,7 @@
   "addressText": "Address provided on ET1",
   "correctAddressQuestion": "Is this the respondent’s correct address?",
   "errors": {
-    "respondentAddress": {
+    "et3IsRespondentAddressCorrect": {
       "required": "Make a selection"
     },
     "hiddenErrorField": {

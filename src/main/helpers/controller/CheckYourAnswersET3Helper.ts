@@ -1,13 +1,14 @@
 import {
   CaseWithId,
   EmailOrPost,
+  EnglishOrWelsh,
   HearingPreferenceET3,
   TypeOfOrganisation,
   YesOrNo,
   YesOrNoOrNotApplicable,
   YesOrNoOrNotSure,
 } from '../../definitions/case';
-import { PageUrls } from '../../definitions/constants';
+import { DefaultValues, PageUrls } from '../../definitions/constants';
 import { SummaryListRow, addSummaryRowWithAction } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import { answersAddressFormatter } from '../AddressHelper';
@@ -99,7 +100,11 @@ export const getEt3Section1 = (
     ),
     addSummaryRowWithAction(
       translations.section1.contactFormat,
-      translations[userCase.responseRespondentContactPreference] ?? '-',
+      userCase.responseRespondentContactPreference === EmailOrPost.EMAIL
+        ? translations.email
+        : userCase.responseRespondentContactPreference === EmailOrPost.POST
+        ? translations.post
+        : DefaultValues.STRING_DASH,
       PageUrls.RESPONDENT_CONTACT_PREFERENCES,
       translations.change,
       sectionCya
@@ -122,7 +127,11 @@ export const getEt3Section1 = (
     et3ResponseSection1.push(
       addSummaryRowWithAction(
         translations.section1.contactLanguage,
-        translations[userCase.et3ResponseLanguagePreference] ?? '-',
+        userCase.et3ResponseLanguagePreference === EnglishOrWelsh.ENGLISH
+          ? translations.english
+          : userCase.et3ResponseLanguagePreference === EnglishOrWelsh.WELSH
+          ? translations.welsh
+          : DefaultValues.STRING_DASH,
         PageUrls.RESPONDENT_CONTACT_PREFERENCES,
         translations.change,
         sectionCya

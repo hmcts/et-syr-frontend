@@ -92,6 +92,8 @@
   "manualAddress": "I live outside the UK",
   "respondentManualAddress": "The respondent address is outside the UK",
   "workManualAddress": "My work address is outside the UK",
+  "email": "Email",
+  "post": "Post",
   "errors": {
     "addressEnterPostcode": {
       "invalid": "Enter a valid postcode. For example, SW1 1AA",

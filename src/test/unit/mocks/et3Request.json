@@ -21,6 +21,7 @@
     "respondent_ACAS_question": "Yes",
     "respondent_ACAS": "R123456/78/90",
     "respondent_ACAS_no": "Test respondent acas no",
+    "et3Status": "inProgress",
     "respondent_address": {
       "AddressLine1": "Test address line 1",
       "AddressLine2": "Test address line 2",

@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, YesOrNo } from '../definitions/case';
-import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields, FormInput } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
@@ -76,6 +76,11 @@ export default class RespondentNameController {
   };
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
+    if (req.session?.errors?.length > 0) {
+      if (ValidationErrors.RESPONDENT_NOT_FOUND === req.session.errors[0].errorType) {
+        req.session.errors = undefined;
+      }
+    }
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_NAME);
     const userCase = req.session.userCase;
     const content = getPageContent(req, this.respondentNameContent, [
