@@ -5,7 +5,9 @@ import {
   combineUserCaseDocuments,
   findContentTypeByDocumentDetail,
   findUploadedDocumentIdByDocumentUrl,
+  formatDocumentDetailToApiDocumentTypeItem,
 } from '../../../main/helpers/DocumentHelpers';
+import { mockDocumentDetail } from '../mocks/mockDocumentDetailsResponse';
 import mockUserCaseWithDocumentsComplete from '../mocks/mockUserCaseWithDocumentsComplete';
 const testDocumentList1ForCombineDocuments: string[] = ['Document1.pdf', 'Document2.txt', 'Document3.xlsx'];
 const testDocumentList2ForCombineDocuments: string[] = ['Document4.docx', 'Document5.rtx', 'Document6.xls'];
@@ -86,6 +88,18 @@ describe('Documents Helper Test', () => {
       { value: 'http://test_document_id', result: 'test_document_id' },
     ])('check if given string value is blank: %o', ({ value, result }) => {
       expect(findUploadedDocumentIdByDocumentUrl(value)).toStrictEqual(result);
+    });
+  });
+
+  describe('FormatDocumentDetailToApiDocumentTypeItem', () => {
+    it('should format document detail to ApiDocumentTypeItem', async () => {
+      const apiDocumentTypeItem = formatDocumentDetailToApiDocumentTypeItem(mockDocumentDetail);
+      expect(apiDocumentTypeItem.id).toEqual(mockDocumentDetail.id);
+      expect(apiDocumentTypeItem.value.uploadedDocument.document_filename).toEqual(
+        mockDocumentDetail.originalDocumentName
+      );
+      expect(apiDocumentTypeItem.value.shortDescription).toEqual(mockDocumentDetail.description);
+      expect(apiDocumentTypeItem.value.dateOfCorrespondence).toEqual(mockDocumentDetail.createdOn);
     });
   });
 });

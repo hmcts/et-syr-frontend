@@ -2,7 +2,8 @@
 import { AxiosResponse } from 'axios';
 
 import { CaseWithId } from '../definitions/case';
-import { DOCUMENT_CONTENT_TYPES } from '../definitions/constants';
+import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
+import { DOCUMENT_CONTENT_TYPES, DefaultValues } from '../definitions/constants';
 import { DocumentDetail } from '../definitions/definition';
 
 export const combineDocuments = <T>(...arrays: T[][]): T[] =>
@@ -79,4 +80,20 @@ export const findContentTypeByDocument = (document: AxiosResponse): string => {
     contentType = findDocumentMimeTypeByExtension(fileExtension);
   }
   return contentType;
+};
+
+export const formatDocumentDetailToApiDocumentTypeItem = (form: DocumentDetail): ApiDocumentTypeItem => {
+  return {
+    id: form.id,
+    value: {
+      dateOfCorrespondence: form.createdOn,
+      shortDescription: form.description,
+      uploadedDocument: {
+        document_filename: form.originalDocumentName,
+        document_url: DefaultValues.STRING_EMPTY,
+        document_binary_url: DefaultValues.STRING_EMPTY,
+        category_id: DefaultValues.STRING_EMPTY,
+      },
+    },
+  };
 };

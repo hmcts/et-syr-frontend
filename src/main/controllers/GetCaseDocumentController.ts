@@ -32,9 +32,10 @@ export default class GetCaseDocumentController {
     let contentType;
     let uploadedDocumentId = docId;
     if (documentDetails) {
-      logger.info('requested document not found in userCase fields');
+      logger.info('requested document found in userCase fields');
       contentType = findContentTypeByDocumentDetail(documentDetails);
     } else {
+      logger.info('requested document not found in userCase fields checking document collection');
       const documentTypeItem = req.session.userCase.documentCollection.find(doc => doc.id === req.params.docId);
       uploadedDocumentId = findUploadedDocumentIdByDocumentUrl(documentTypeItem?.value?.uploadedDocument?.document_url);
       contentType = findContentTypeByDocumentName(documentTypeItem?.value?.uploadedDocument?.document_filename);
