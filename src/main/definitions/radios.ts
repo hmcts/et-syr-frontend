@@ -7,11 +7,11 @@ import { AnyRecord } from './util-types';
 export const PayIntervalRadioValues = [
   {
     label: (l: AnyRecord): string => l.weekly,
-    value: PayInterval.WEEKLY,
+    value: PayInterval.WEEKS,
   },
   {
     label: (l: AnyRecord): string => l.monthly,
-    value: PayInterval.MONTHLY,
+    value: PayInterval.MONTHS,
   },
   {
     label: (l: AnyRecord): string => l.annual,

@@ -9,11 +9,11 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { conditionalRedirect, isClearSelection } from '../helpers/RouterHelpers';
 import { dateInLocale } from '../helpers/dateInLocale';
 import ET3Util from '../utils/ET3Util';
 import { convertCaseDateToDate } from '../validators/dateValidators';
-import { setUrlLanguage } from '../helpers/LanguageHelper';
 
 export default class ClaimantEmploymentDatesController {
   private readonly form: Form;
@@ -81,8 +81,8 @@ export default class ClaimantEmploymentDatesController {
     res.render(TranslationKeys.CLAIMANT_EMPLOYMENT_DATES, {
       ...content,
       hideContactUs: true,
-      startDateDisplay: startDate ? dateInLocale(convertCaseDateToDate(startDate), req.url) : undefined,
-      endDateDisplay: endDate ? dateInLocale(convertCaseDateToDate(endDate), req.url) : undefined,
+      startDate: startDate ? dateInLocale(convertCaseDateToDate(startDate), req.url) : undefined,
+      endDate: endDate ? dateInLocale(convertCaseDateToDate(endDate), req.url) : undefined,
     });
   };
 }

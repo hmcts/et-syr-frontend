@@ -1,26 +1,19 @@
 import { ValidationErrors } from '../../../main/definitions/constants';
 import { getLogger } from '../../../main/logger';
 import {
-  arePayValuesNull,
   atLeastOneFieldIsChecked,
   hasInvalidFileFormat,
-  hasInvalidName,
+  hasInvalidFileName,
   isAcasNumberValid,
-  isContentBetween3And100Chars,
   isContentCharsOrLess,
   isContentCharsOrLessAndNotEmpty,
   isFieldFilledIn,
   isNameValid,
   isOptionSelected,
-  isPayIntervalNull,
   isPhoneNumberValid,
-  isRespondentNameValid,
   isValidAvgWeeklyHours,
   isValidCompanyRegistrationNumber,
   isValidCurrency,
-  isValidNoticeLength,
-  isValidTwoDigitInteger,
-  isValidUKTelNumber,
 } from '../../../main/validators/validator';
 import { mockFile } from '../mocks/mockFile';
 
@@ -42,19 +35,6 @@ describe('Validation', () => {
       const isValid = isFieldFilledIn('    ');
 
       expect(isValid).toStrictEqual('required');
-    });
-  });
-
-  describe('isRespondentNameValid()', () => {
-    it.each([
-      { name: 'Test Respondent Name', result: undefined },
-      { name: undefined, result: 'required' },
-      { name: '     ', result: 'required' },
-      { name: 'a'.repeat(101), result: 'invalidLength' },
-    ])('check respondent name passes validation: %o', ({ name, result }) => {
-      const isValid = isRespondentNameValid(name);
-
-      expect(isValid).toStrictEqual(result);
     });
   });
 
@@ -83,25 +63,6 @@ describe('Validation', () => {
     });
   });
 
-  describe('isContentBetween3And100Chars()', () => {
-    it('should warn when content is empty', () => {
-      expect(isContentBetween3And100Chars('')).toStrictEqual('required');
-    });
-
-    it('should not warn when content is valid length', () => {
-      expect(isContentBetween3And100Chars('abc')).toStrictEqual(undefined);
-      expect(isContentBetween3And100Chars('1'.repeat(100))).toStrictEqual(undefined);
-    });
-
-    it('should warn when content shorter than 3 characters', () => {
-      expect(isContentBetween3And100Chars('12')).toStrictEqual('invalidLength');
-    });
-
-    it('should warn when content longer than 100 characters', () => {
-      expect(isContentBetween3And100Chars('1'.repeat(101))).toStrictEqual('invalidLength');
-    });
-  });
-
   describe('isOptionSelected()', () => {
     it('Should correctly identify an option was selected', () => {
       expect(isOptionSelected('anything')).toStrictEqual(undefined);
@@ -123,43 +84,6 @@ describe('Validation', () => {
       const isValid = atLeastOneFieldIsChecked([]);
 
       expect(isValid).toStrictEqual('required');
-    });
-  });
-
-  describe('isValidUKTelNumber()', () => {
-    it.each([
-      { mockRef: '', expected: undefined },
-      { mockRef: null, expected: undefined },
-      { mockRef: '12345', expected: 'invalid' },
-      { mockRef: '@£$£@$%', expected: 'nonnumeric' },
-      { mockRef: 'not a phone number', expected: 'nonnumeric' },
-      { mockRef: '01234!567890', expected: 'nonnumeric' },
-      { mockRef: '00361234567890', expected: 'invalid' },
-      { mockRef: '1234567890', expected: 'invalid' },
-      { mockRef: '01234 567 890', expected: undefined },
-      { mockRef: '01234 567890', expected: undefined },
-      { mockRef: '+441234567890', expected: undefined },
-      { mockRef: '00441234567890', expected: 'invalid' },
-      { mockRef: '004401234567890', expected: 'invalid' },
-      { mockRef: '01234567890', expected: undefined },
-      { mockRef: '+44 (07500) 900 983', expected: 'invalid' },
-      { mockRef: '(01629) 900 983', expected: undefined },
-      { mockRef: '01234567B90', expected: 'nonnumeric' },
-    ])('check telephone number validity when %o', ({ mockRef, expected }) => {
-      expect(isValidUKTelNumber(mockRef)).toEqual(expected);
-    });
-  });
-
-  describe('isValidTwoDigitInteger()', () => {
-    it.each([
-      { mockRef: '', expected: 'invalid' },
-      { mockRef: null, expected: 'invalid' },
-      { mockRef: 'a', expected: 'notANumber' },
-      { mockRef: '%', expected: 'notANumber' },
-      { mockRef: '2a', expected: 'notANumber' },
-      { mockRef: '20', expected: undefined },
-    ])('check two digit input is valid', ({ mockRef, expected }) => {
-      expect(isValidTwoDigitInteger(mockRef)).toEqual(expected);
     });
   });
 
@@ -194,18 +118,6 @@ describe('Validation', () => {
     });
   });
 
-  describe('isValidNoticeLength()', () => {
-    it.each([
-      { mockRef: 'a', expected: 'notANumber' },
-      { mockRef: '%', expected: 'notANumber' },
-      { mockRef: '2a', expected: 'notANumber' },
-      { mockRef: '', expected: undefined },
-    ])('check notice length is valid', ({ mockRef, expected }) => {
-      expect(isValidNoticeLength(mockRef)).toEqual(expected);
-      expect(isValidNoticeLength('')).toBeUndefined();
-    });
-  });
-
   describe('isValidAvgWeeklyHours()', () => {
     it.each([
       { mockRef: 'a', expected: 'invalid' },
@@ -218,32 +130,6 @@ describe('Validation', () => {
       { mockRef: null, expected: undefined },
     ])('check integer input is valid', ({ mockRef, expected }) => {
       expect(isValidAvgWeeklyHours(mockRef)).toEqual(expected);
-    });
-  });
-
-  describe('isPayIntervalNull()', () => {
-    it('Should check if value exists', () => {
-      const isValid = isPayIntervalNull('Weekly' || 'Monthly' || 'Annual');
-      expect(isValid).toStrictEqual(undefined);
-    });
-
-    it('Should check if value does not exist', () => {
-      const value = '';
-      const isValid = isPayIntervalNull(value);
-      expect(isValid).toStrictEqual('required');
-    });
-  });
-
-  describe('arePayValuesNull()', () => {
-    it('Should check if pay values exists', () => {
-      const isValid = arePayValuesNull(['123', '123', null]);
-      expect(isValid).toStrictEqual(undefined);
-    });
-
-    it('Should check if pay values do not exist', () => {
-      const value = ['', '', undefined];
-      const isValid = arePayValuesNull(value);
-      expect(isValid).toStrictEqual('required');
     });
   });
 
@@ -340,8 +226,8 @@ describe('Validation', () => {
       { fileName: 'file<1>.csv', expected: 'invalidFileName' },
       { fileName: undefined, expected: undefined },
     ])('Check filename %o', ({ fileName, expected }) => {
-      expect(hasInvalidName(fileName)).toEqual(expected);
-      expect(hasInvalidName('')).toBeUndefined();
+      expect(hasInvalidFileName(fileName)).toEqual(expected);
+      expect(hasInvalidFileName('')).toBeUndefined();
     });
   });
   describe('isAcasNumberValid()', () => {

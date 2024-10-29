@@ -184,7 +184,6 @@ export const ValidationErrors = {
   API: 'api',
   EXCEEDED: 'exceeded',
   NEGATIVE_NUMBER: 'negativeNumber',
-  NON_NUMERIC: 'nonnumeric',
   NOT_A_NUMBER: 'notANumber',
   SESSION_USER_CASE: 'sessionUserCase',
   SESSION_USER: 'sessionUser',

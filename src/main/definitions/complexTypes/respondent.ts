@@ -2,8 +2,8 @@ import {
   EmailOrPost,
   EnglishOrWelsh,
   HearingPreferenceET3,
-  HowOften,
   NoAcasNumberReason,
+  PayFrequency,
   UploadedDocumentType,
   YesOrNo,
   YesOrNoOrNotApplicable,
@@ -87,7 +87,7 @@ export interface RespondentType {
   et3ResponseClaimantWeeklyHours?: YesOrNoOrNotApplicable;
   et3ResponseClaimantCorrectHours?: string;
   et3ResponseEarningDetailsCorrect?: YesOrNoOrNotApplicable;
-  et3ResponsePayFrequency?: HowOften;
+  et3ResponsePayFrequency?: PayFrequency;
   et3ResponsePayBeforeTax?: string;
   et3ResponsePayTakehome?: string;
   et3ResponseIsNoticeCorrect?: YesOrNoOrNotApplicable;
