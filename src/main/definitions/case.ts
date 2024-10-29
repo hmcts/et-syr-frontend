@@ -82,7 +82,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponseEarningDetailsCorrect?: YesOrNoOrNotApplicable;
   et3ResponseEmployerClaimDocument?: UploadedDocumentType;
   et3ResponseRespondentSupportDocument?: UploadedDocumentType;
-  et3ResponsePayFrequency?: HowOften;
+  et3ResponsePayFrequency?: PayFrequency;
   et3ResponsePayBeforeTax?: string;
   et3ResponsePayTakehome?: string;
   et3Form?: UploadedDocumentType;
@@ -405,23 +405,10 @@ export const enum YesOrNoOrNotSure {
   NOT_SURE = 'not sure',
 }
 
-export const enum YesOrNoOrPreferNot {
-  YES = 'Yes',
-  NO = 'No',
-  PREFER_NOT = 'Prefer not to say',
-}
-
 export const enum YesOrNoOrNotApplicable {
   YES = 'Yes',
   NO = 'No',
   NOT_APPLICABLE = 'Not applicable',
-}
-
-export const enum HowOften {
-  WEEKLY = 'Weekly',
-  MONTHLY = 'Monthly',
-  ANNUALLY = 'Annually',
-  NOT_SURE = 'Not Sure',
 }
 
 export const enum CaseType {
@@ -464,9 +451,15 @@ export enum ccdPreferredTitle {
 }
 
 export const enum PayInterval {
-  WEEKLY = 'Weeks',
-  MONTHLY = 'Months',
+  WEEKS = 'Weeks',
+  MONTHS = 'Months',
   ANNUAL = 'Annual',
+}
+
+export const enum PayFrequency {
+  WEEKLY = 'Weekly',
+  MONTHLY = 'Monthly',
+  ANNUALLY = 'Annually',
 }
 
 export type DateParser = (property: string, body: UnknownRecord) => CaseDate;
@@ -530,13 +523,6 @@ export interface UploadedDocumentType {
 export interface Representative {
   hasMyHMCTSAccount?: YesOrNo;
   respondentId?: string;
-}
-
-export const enum claimantRepresented {
-  YES = 'Yes',
-  NO = 'No',
-  LEGAL_REP_SINGLE_CLAIM = 'Legal Representative Single Claim',
-  LEGAL_REP_GROUP_CLAIM = 'Legal Representative Group Claim',
 }
 
 export const enum TypeOfOrganisation {

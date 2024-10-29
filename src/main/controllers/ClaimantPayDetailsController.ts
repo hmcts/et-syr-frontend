@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, YesOrNoOrNotApplicable } from '../definitions/case';
+import { CaseWithId, PayInterval, YesOrNoOrNotApplicable } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
@@ -79,6 +79,11 @@ export default class ClaimantPayDetailsController {
     res.render(TranslationKeys.CLAIMANT_PAY_DETAILS, {
       ...content,
       hideContactUs: true,
+      PayInterval: {
+        WEEKS: PayInterval.WEEKS,
+        MONTHS: PayInterval.MONTHS,
+        ANNUAL: PayInterval.ANNUAL,
+      },
     });
   };
 }

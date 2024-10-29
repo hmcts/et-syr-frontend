@@ -70,7 +70,7 @@ export const mockedApiData: CaseApiDataResponse = {
       claimant_average_weekly_hours: 5,
       claimant_pay_before_tax: 123,
       claimant_pay_after_tax: 120,
-      claimant_pay_cycle: PayInterval.WEEKLY,
+      claimant_pay_cycle: PayInterval.WEEKS,
       claimant_pension_contribution: YesOrNoOrNotApplicable.YES,
       claimant_pension_weekly_contribution: 15,
       claimant_benefits: YesOrNo.YES,
@@ -81,7 +81,7 @@ export const mockedApiData: CaseApiDataResponse = {
       new_job: YesOrNo.YES,
       newly_employed_from: '2010-05-12',
       new_pay_before_tax: 4000,
-      new_job_pay_interval: PayInterval.MONTHLY,
+      new_job_pay_interval: PayInterval.MONTHS,
     },
     claimantHearingPreference: {
       reasonable_adjustments: YesOrNo.YES,
