@@ -16,10 +16,10 @@
   {% else %}
     {% set et1FormDescription = et1Form.value.shortDescription %}
   {% endif %}
-  {% if et1Form.value.uploadedDocument.document_binary_url === undefined or et1Form.value.uploadedDocument.document_binary_url === '' %}
+  {% if et1Form.id === undefined or et1Form.id === '' %}
     {% set et1FormLink = '-' %}
   {% else  %}
-    {% set et1FormLink = "<a href=/et1-form-view" + languageParam + " target=\"_blank\">" + et1Form.value.uploadedDocument.document_filename + "</a>" %}
+    {% set et1FormLink = "<a href=getCaseDocument/" + et1Form.id + " target=\"_blank\">" + et1Form.value.uploadedDocument.document_filename + "</a>" %}
   {% endif %}
 {% endif %}
 

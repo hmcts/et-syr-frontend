@@ -164,6 +164,16 @@ export class CaseApi {
       throw new Error(ServiceErrors.ERROR_MODIFYING_SUBMITTED_CASE + axiosErrorDetails(error));
     }
   };
+
+  getCaseDocument = async (docId: string): Promise<AxiosResponse> => {
+    try {
+      return await this.axios.get(`${JavaApiUrls.DOCUMENT_DOWNLOAD}${docId}`, {
+        responseType: 'arraybuffer',
+      });
+    } catch (error) {
+      throw new Error('Error fetching document: ' + axiosErrorDetails(error));
+    }
+  };
 }
 
 export const getCaseApi = (token: string): CaseApi => {

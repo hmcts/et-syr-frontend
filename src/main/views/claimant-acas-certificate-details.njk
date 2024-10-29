@@ -16,10 +16,10 @@
   {% else %}
     {% set acasCertDescription = acasCert.value.shortDescription %}
   {% endif %}
-  {% if acasCert.value.uploadedDocument.document_binary_url === undefined or acasCert.value.uploadedDocument.document_binary_url === '' %}
+  {% if acasCert.id === undefined or acasCert.id === '' %}
     {% set acasCertLink = '-' %}
   {% else  %}
-    {% set acasCertLink = "<a href=" + acasCert.value.uploadedDocument.document_binary_url + " target=\"_blank\">" + acasCert.value.uploadedDocument.document_filename + "</a>" %}
+    {% set acasCertLink = "<a href=getCaseDocument/" + acasCert.id + " target=\"_blank\">" + acasCert.value.uploadedDocument.document_filename + "</a>" %}
   {% endif %}
 {% endif %}
 

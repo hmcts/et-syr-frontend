@@ -12,6 +12,7 @@ import {
   mockCaseWithIdWithRespondents,
   mockValidCaseWithId,
 } from '../mocks/mockCaseWithId';
+import { mockedET1FormDocument } from '../mocks/mockDocuments';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockUserDetails } from '../mocks/mockUser';
 import mockUserCase from '../mocks/mockUserCase';
@@ -296,6 +297,17 @@ describe('Case Service Tests', () => {
       await expect(() => api.checkEthosCaseReference('6000032/2024')).rejects.toEqual(
         new Error(ServiceErrors.ERROR_GETTING_USER_CASES + ServiceErrors.ERROR_CASE_NOT_FOUND)
       );
+    });
+  });
+
+  describe('Axios get to download case document', () => {
+    it('should send get request to the correct api endpoint with the document id passed in the param', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.get.mockResolvedValue(mockedET1FormDocument);
+      const document = await api.getCaseDocument('docId');
+      expect(mockedAxios.get).toHaveBeenCalled();
+      expect(document).toEqual(mockedET1FormDocument);
     });
   });
 
