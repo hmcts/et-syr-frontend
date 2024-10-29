@@ -1,4 +1,3 @@
-import { TypeItem } from '../../definitions/util-types';
 import { CaseType, CaseTypeId, Document, YesOrNo } from '../case';
 import { ClaimantCorrespondence } from '../complexTypes/claimantCorrespondence';
 import { ClaimantEmploymentDetails } from '../complexTypes/claimantEmploymentDetails';
@@ -14,6 +13,7 @@ import { TaskListCheckType } from '../complexTypes/taskListCheckType';
 import { WorkAddressDetails } from '../complexTypes/workAddressDetails';
 import { CaseState } from '../definition';
 import { HubLinksStatuses } from '../hub';
+import { TypeItem } from '../util-types';
 
 export interface CreateCaseResponse {
   data: CaseApiDataResponse;
@@ -75,7 +75,13 @@ export interface CaseData {
   multipleFlag?: YesOrNo;
   leadClaimant?: YesOrNo;
   batchCaseStayed?: YesOrNo;
+  preAcceptCase?: PreAcceptCase;
 }
+
+export type PreAcceptCase = {
+  caseAccepted?: YesOrNo;
+  dateAccepted?: string;
+};
 
 export type HearingBundleType = {
   uploadFile: Document;

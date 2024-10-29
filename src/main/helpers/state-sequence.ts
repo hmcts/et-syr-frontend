@@ -1,5 +1,5 @@
-import { CaseWithId } from '../definitions/case';
-import { CaseState, HubCaseState } from '../definitions/definition';
+import { RespondentET3Model } from '../definitions/case';
+import { ET3Status } from '../definitions/definition';
 
 export class StateSequence {
   states: string[];
@@ -23,26 +23,32 @@ export class StateSequence {
     return this.stateIndex + 1 === this.states.indexOf(state);
   }
 
-  public toHubState(userCase: Partial<CaseWithId>): HubCaseState {
-    if (userCase.et3ResponseReceived) {
-      return HubCaseState.RESPONSE_RECEIVED;
-    } else if (userCase.state === CaseState.ACCEPTED) {
-      return HubCaseState.ACCEPTED;
+  public toET3Status(respondent: RespondentET3Model): ET3Status {
+    if (!respondent?.et3Status || ET3Status.IN_PROGRESS.toString() === respondent.et3Status) {
+      return ET3Status.IN_PROGRESS;
+    } else if (ET3Status.RESPONSE_ACCEPTED.toString() === respondent.et3Status) {
+      return ET3Status.RESPONSE_ACCEPTED;
+    } else if (ET3Status.HEARINGS_ESTABLISHED.toString() === respondent.et3Status) {
+      return ET3Status.HEARINGS_ESTABLISHED;
+    } else if (ET3Status.CASE_DECIDED.toString() === respondent.et3Status) {
+      return ET3Status.CASE_DECIDED;
     }
-    return HubCaseState.SUBMITTED;
+    return ET3Status.IN_PROGRESS;
   }
 }
 
-export const currentStateFn = (userCase: Partial<CaseWithId>): StateSequence => {
-  const stateSequence = new StateSequence([
-    HubCaseState.SUBMITTED,
-    HubCaseState.ACCEPTED,
-    HubCaseState.RESPONSE_RECEIVED,
-    HubCaseState.HEARING_DETAILS,
-    HubCaseState.CLAIM_DECISION,
+export const currentET3StatusFn = (respondent: RespondentET3Model): StateSequence => {
+  const statusSequence = new StateSequence([
+    ET3Status.NOT_STARTED,
+    ET3Status.IN_PROGRESS,
+    ET3Status.RESPONSE_COMPLETED,
+    ET3Status.RESPONSE_ACCEPTED,
+    ET3Status.HEARINGS_ESTABLISHED,
+    ET3Status.CASE_DECIDED,
+    ET3Status.FINISHED,
   ]);
 
-  const currentHubState = stateSequence.toHubState(userCase);
+  const currentET3State = statusSequence.toET3Status(respondent);
 
-  return stateSequence.at(currentHubState);
+  return statusSequence.at(currentET3State);
 };

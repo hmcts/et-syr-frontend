@@ -33,26 +33,26 @@
               {
                 text: claimAccepted
               },
-              complete: currentState.isAfter('SUBMITTED'),
-              active: currentState.isRightAfter('ACCEPTED')
+              complete: currentState.isAfter('notStarted'),
+              active: currentState.isRightAfter('responseCompleted')
             }, {
               label: {
                 text: responseAccepted
               },
-              complete: currentState.isAfter('ACCEPTED'),
-              active: currentState.isRightAfter('RESPONSE_RECEIVED')
+              complete: currentState.isAfter('responseCompleted'),
+              active: currentState.isRightAfter('hearingsEstablished')
             }, {
               label: {
                 text: hearingDetails
               },
-              complete: currentState.isAfter('RESPONSE_RECEIVED'),
-              active: currentState.isRightAfter('HEARING_DETAILS')
+              complete: currentState.isAfter('responseAccepted'),
+              active: currentState.isRightAfter('caseDecided')
             }, {
               label: {
                 text: caseDecision
               },
-              complete: currentState.isAfter('HEARING_DETAILS'),
-              active: currentState.isRightAfter('CLAIM_DECISION')
+              complete: currentState.isAfter('hearingsEstablished'),
+              active: currentState.isRightAfter('finished')
              }],
               classes: ''
             }) }}

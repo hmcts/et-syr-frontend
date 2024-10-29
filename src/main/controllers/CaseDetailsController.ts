@@ -14,10 +14,12 @@ import { handleUpdateHubLinksStatuses } from '../helpers/CaseHelpers';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { currentStateFn } from '../helpers/state-sequence';
+import { currentET3StatusFn } from '../helpers/state-sequence';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
+import DateUtil from '../utils/DateUtil';
 import ET3Util from '../utils/ET3Util';
+import StringUtils from '../utils/StringUtils';
 
 const logger = getLogger('CaseDetailsController');
 const DAYS_FOR_PROCESSING = 7;
@@ -29,12 +31,20 @@ export default class CaseDetailsController {
 
     let showAcknowledgementAlert: boolean = false;
     let showViewResponseAlert: boolean = false;
+    let respondentResponseDeadline: string = '';
 
     try {
       req.session.userCase = formatApiCaseDataToCaseWithId(
         (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseSubmissionReference)).data,
         req
       );
+      if (StringUtils.isNotBlank(req.session.userCase?.respondentResponseDeadline)) {
+        respondentResponseDeadline = req.session.userCase.respondentResponseDeadline;
+      } else {
+        if (StringUtils.isNotBlank(req.session.userCase?.preAcceptCase?.dateAccepted)) {
+          respondentResponseDeadline = DateUtil.addStringDate28Days(req.session.userCase?.preAcceptCase?.dateAccepted);
+        }
+      }
       // Check if Respond to claim acknowledgment needs to be shown or not
       req.session.userCase?.respondents.forEach(respondent => {
         if (respondent.responseContinue === YesOrNo.YES) {
@@ -54,7 +64,10 @@ export default class CaseDetailsController {
         new ET3CaseDetailsLinksStatuses();
       await handleUpdateHubLinksStatuses(req, logger);
     }
-    const currentState = currentStateFn(userCase);
+    const currentState = currentET3StatusFn(req.session.userCase.respondents[req.session.selectedRespondentIndex]);
+    logger.info(currentState.stateIndex as unknown as string);
+    logger.info(currentState.states as unknown as string);
+    logger.info(currentState.isAfter('CASE_DECIDED') as unknown as string);
     req.session.selectedRespondent = req.session.userCase.respondents[req.session.selectedRespondentIndex];
     const et3CaseDetailsLinksStatuses =
       req.session.userCase.respondents[req.session.selectedRespondentIndex].et3CaseDetailsLinksStatuses;
@@ -91,7 +104,7 @@ export default class CaseDetailsController {
       processingDueDate: getDueDate(formatDate(userCase.submittedDate), DAYS_FOR_PROCESSING),
       showAcknowledgementAlert,
       showViewResponseAlert,
-      respondentResponseDeadline: userCase?.respondentResponseDeadline,
+      respondentResponseDeadline,
       languageParam: getLanguageParam(req.url),
     });
   }

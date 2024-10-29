@@ -1,4 +1,4 @@
-import { HearingModel } from './api/caseApiResponse';
+import { HearingModel, PreAcceptCase } from './api/caseApiResponse';
 import { DocumentTypeItem } from './complexTypes/documentTypeItem';
 import { Et1Address } from './complexTypes/et1Address';
 import { GenericTseApplicationTypeItem, TseRespondTypeItem } from './complexTypes/genericTseApplicationTypeItem';
@@ -197,6 +197,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   idamId?: string;
   et3CaseDetailsLinksStatuses?: ET3CaseDetailsLinksStatuses;
   et3HubLinksStatuses?: ET3HubLinksStatuses;
+  et3Status?: string;
 }
 
 export interface RespondentApiModel {
@@ -374,6 +375,7 @@ export interface Case {
   respondentDetails?: YesOrNo;
   claimantDetails?: YesOrNo;
   respondentResponse?: YesOrNo;
+  preAcceptCase?: PreAcceptCase;
 }
 
 export const enum StillWorking {

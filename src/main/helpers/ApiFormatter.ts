@@ -223,6 +223,7 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
     multipleFlag: fromApiCaseData?.case_data?.multipleFlag,
     leadClaimant: fromApiCaseData?.case_data?.leadClaimant,
     caseStayed: fromApiCaseData?.case_data?.batchCaseStayed,
+    preAcceptCase: fromApiCaseData?.case_data?.preAcceptCase,
   };
   if (req?.session) {
     req.session.selectedRespondentIndex = ET3Util.findSelectedRespondentByCaseWithId(req, caseWithId);
@@ -475,6 +476,7 @@ function mapResponseApiDataToCaseWithId(
     caseWithId.idamId = selectedRespondent.value?.idamId;
     caseWithId.et3CaseDetailsLinksStatuses = selectedRespondent.value?.et3CaseDetailsLinksStatuses;
     caseWithId.et3HubLinksStatuses = selectedRespondent.value?.et3HubLinksStatuses;
+    caseWithId.et3Status = selectedRespondent.value?.et3Status;
   }
 }
 

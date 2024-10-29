@@ -50,15 +50,15 @@
   "mustRespond": "[W]You must respond to this.",
   "notificationBanner": {
     "viewResponse": {
-      "header": "[W][W]The tribunal has acknowledged a claim against ",
-      "p1": "[W][W]You have responded to this claim",
-      "link": "[W]Gweld yr ymateb"
+      "header": "[W]The tribunal has acknowledged a claim against ",
+      "p1": "[W]You have responded to this claim",
+      "link": "[W]View the response"
     },
     "acknowledgement": {
-      "header": "[W]The tribunal has acknowledged a claim against Redde Ltd",
+      "header": "[W]The tribunal has acknowledged a claim against ",
       "link": "[W]View the claimant's ET1 claim form",
       "link2": "[W]Respond to the claim",
-      "p1": "[W]You should respond to this claim by 05/08/2024",
+      "p1": "[W]You should respond to this claim by ",
       "p2": "[W]<span class=\"govuk-body govuk-!-font-weight-bold\">What happens next</span><br>The tribunal has asked the respondent to respond to your claim by"
     },
     "rejection": {
