@@ -18,26 +18,27 @@ import {
 import ET3Util from '../utils/ET3Util';
 import { isDateInPast, isDateInputInvalid } from '../validators/dateValidators';
 
-const et3_response_employment_start_date: DateFormFields = {
+const employment_date_common_fields = {
   classes: 'govuk-date-input',
   labelHidden: false,
   type: 'date',
+  values: DateValues,
+};
+
+const et3_response_employment_start_date: DateFormFields = {
+  ...employment_date_common_fields,
   id: 'et3ResponseEmploymentStartDate',
   label: (l: AnyRecord): string => l.et3ResponseEmploymentStartDate.label,
   hint: (l: AnyRecord): string => l.et3ResponseEmploymentStartDate.hint,
-  values: DateValues,
   validator: (value: CaseDate) => isDateInputInvalid(value) || isDateInPast(value),
   parser: (body: UnknownRecord): CaseDate => convertToDateObject('et3ResponseEmploymentStartDate', body),
 };
 
 const et3_response_employment_end_date: DateFormFields = {
-  classes: 'govuk-date-input',
-  labelHidden: false,
-  type: 'date',
+  ...employment_date_common_fields,
   id: 'et3ResponseEmploymentEndDate',
   label: (l: AnyRecord): string => l.et3ResponseEmploymentEndDate.label,
   hint: (l: AnyRecord): string => l.et3ResponseEmploymentEndDate.hint,
-  values: DateValues,
   validator: (value: CaseDate) => isDateInputInvalid(value),
   parser: (body: UnknownRecord): CaseDate => convertToDateObject('et3ResponseEmploymentEndDate', body),
 };
@@ -51,14 +52,37 @@ const et3_response_employment_information: FormField = {
   },
 };
 
+const dateFieldList = [
+  {
+    label: (l: AnyRecord): string => l.dateFormat.day,
+    name: 'day',
+    classes: 'govuk-input--width-2',
+    attributes: { maxLength: 2 },
+  },
+  {
+    label: (l: AnyRecord): string => l.dateFormat.month,
+    name: 'month',
+    classes: 'govuk-input--width-2',
+    attributes: { maxLength: 2 },
+  },
+  {
+    label: (l: AnyRecord): string => l.dateFormat.year,
+    name: 'year',
+    classes: 'govuk-input--width-4',
+    attributes: { maxLength: 4 },
+  },
+];
+
+const formContentFieldsList = {
+  et3ResponseEmploymentStartDate: et3_response_employment_start_date,
+  et3ResponseEmploymentEndDate: et3_response_employment_end_date,
+  et3ResponseEmploymentInformation: et3_response_employment_information,
+};
+
 export default class ClaimantEmploymentDatesEnterController {
   private readonly form: Form;
   private readonly formContent: FormContent = {
-    fields: {
-      et3ResponseEmploymentStartDate: et3_response_employment_start_date,
-      et3ResponseEmploymentEndDate: et3_response_employment_end_date,
-      et3ResponseEmploymentInformation: { et3_response_employment_information },
-    },
+    fields: formContentFieldsList,
     submit: submitButton,
     saveForLater: saveForLaterButton,
   } as never;
@@ -83,51 +107,9 @@ export default class ClaimantEmploymentDatesEnterController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    et3_response_employment_start_date.values = [
-      {
-        label: (l: AnyRecord): string => l.dateFormat.day,
-        name: 'day',
-        classes: 'govuk-input--width-2',
-        attributes: { maxLength: 2 },
-      },
-      {
-        label: (l: AnyRecord): string => l.dateFormat.month,
-        name: 'month',
-        classes: 'govuk-input--width-2',
-        attributes: { maxLength: 2 },
-      },
-      {
-        label: (l: AnyRecord): string => l.dateFormat.year,
-        name: 'year',
-        classes: 'govuk-input--width-4',
-        attributes: { maxLength: 4 },
-      },
-    ];
-    et3_response_employment_end_date.values = [
-      {
-        label: (l: AnyRecord): string => l.dateFormat.day,
-        name: 'day',
-        classes: 'govuk-input--width-2',
-        attributes: { maxLength: 2 },
-      },
-      {
-        label: (l: AnyRecord): string => l.dateFormat.month,
-        name: 'month',
-        classes: 'govuk-input--width-2',
-        attributes: { maxLength: 2 },
-      },
-      {
-        label: (l: AnyRecord): string => l.dateFormat.year,
-        name: 'year',
-        classes: 'govuk-input--width-4',
-        attributes: { maxLength: 4 },
-      },
-    ];
-    this.formContent.fields = {
-      et3ResponseEmploymentStartDate: et3_response_employment_start_date,
-      et3ResponseEmploymentEndDate: et3_response_employment_end_date,
-      et3ResponseEmploymentInformation: et3_response_employment_information,
-    };
+    et3_response_employment_start_date.values = dateFieldList;
+    et3_response_employment_end_date.values = dateFieldList;
+    this.formContent.fields = formContentFieldsList;
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.CLAIMANT_EMPLOYMENT_DATES_ENTER,
