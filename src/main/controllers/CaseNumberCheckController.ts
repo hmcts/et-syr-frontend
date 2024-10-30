@@ -25,6 +25,7 @@ export default class CaseNumberCheckController {
         classes: 'govuk-!-width-one-half',
         validator: isValidEthosCaseReference,
         label: (l: AnyRecord): string => l.caseNumber,
+        hint: (l: AnyRecord): string => l.hint,
       },
     },
     submit: {
