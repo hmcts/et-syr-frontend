@@ -2,6 +2,7 @@
   "title": "Case Number Check",
   "pageTitle": "Case Number",
   "caseNumber": "What is the case number of the case you are responding to?",
+  "hint": "This will appear on the letter sent to you from the employment tribunal.",
   "errors": {
     "ethosCaseReference": {
       "required": "Enter case number. Sample case number format is 1111111/2020",
