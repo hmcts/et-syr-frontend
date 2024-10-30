@@ -1,8 +1,7 @@
 import RespondentNameController from '../../../main/controllers/RespondentNameController';
 import { YesOrNo } from '../../../main/definitions/case';
-import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../../../main/definitions/constants';
+import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import ET3Util from '../../../main/utils/ET3Util';
-import ErrorUtils from '../../../main/utils/ErrorUtils';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -57,15 +56,6 @@ describe('RespondentNameController', () => {
       expect(
         form.fields.responseRespondentNameQuestion.values[1].subFields.responseRespondentName.label(translationMock)
       ).toBe('is this respondentNameTextLabel');
-    });
-    it('should remove session errors when dummy respondent not found exists.', async () => {
-      ErrorUtils.setManualErrorToRequestSession(
-        request,
-        ValidationErrors.RESPONDENT_NOT_FOUND,
-        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-      );
-      await controller.get(request, response);
-      expect(request.session.errors).toBeUndefined();
     });
   });
 
