@@ -4,7 +4,8 @@
   "caseNumber": "[W]What is the case number of the case you are responding to?",
   "errors": {
     "ethosCaseReference": {
-      "required": "[W]Enter case number. Sample case number format is 1111111/2020"
+      "required": "[W]Enter case number. Sample case number format is 1111111/2020",
+      "invalid": "[W]Invalid case number. Sample Case number format is 1111111/2020"
     },
     "hiddenErrorField": {
       "api": "[W]A system error occurred. Please try again later."

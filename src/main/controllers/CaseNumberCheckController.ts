@@ -12,7 +12,7 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getCaseApi } from '../services/CaseService';
 import ErrorUtils from '../utils/ErrorUtils';
-import { isFieldFilledIn } from '../validators/validator';
+import { isValidEthosCaseReference } from '../validators/validator';
 
 export default class CaseNumberCheckController {
   private readonly form: Form;
@@ -23,8 +23,8 @@ export default class CaseNumberCheckController {
         name: FormFieldNames.CASE_NUMBER_CHECK_FIELDS.ETHOS_CASE_REFERENCE,
         type: 'text',
         classes: 'govuk-!-width-one-half',
-        validator: isFieldFilledIn,
-        label: (l: AnyRecord): string => l.caseReferenceId,
+        validator: isValidEthosCaseReference,
+        label: (l: AnyRecord): string => l.caseNumber,
       },
     },
     submit: {
@@ -39,13 +39,17 @@ export default class CaseNumberCheckController {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const languageParam = getLanguageParam(req.url);
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    if (!req.session.userCase) {
+      req.session.userCase = { createdDate: '', id: '', lastModified: '', state: undefined };
+    }
+    req.session.userCase.ethosCaseReference = formData.ethosCaseReference;
     const errors = this.form.getValidatorErrors(formData);
     if (errors.length > 0) {
       req.session.errors = errors;
       return res.redirect(req.url);
     }
+    req.session.errors = [];
     try {
-      req.session.userCase = undefined;
       req.session.caseNumberChecked = false;
       const isReformCase: AxiosResponse<string> = await getCaseApi(
         req.session.user?.accessToken
@@ -54,7 +58,6 @@ export default class CaseNumberCheckController {
         req.session.caseNumberChecked = true;
         return res.redirect(PageUrls.CHECKLIST + languageParam);
       } else {
-        req.session.errors = undefined;
         return res.redirect(LegacyUrls.ET3);
       }
     } catch (error) {
