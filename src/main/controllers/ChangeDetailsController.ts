@@ -11,6 +11,10 @@ export default class ChangeDetailsController {
     if (req.query.redirect === 'respondent-contact-preferences') {
       req.session.returnUrl = setCheckAnswersLanguage(req, PageUrls.RESPONDENT_CONTACT_PREFERENCES);
       return res.redirect(req.url.replace(InterceptPaths.RESPONDENT_CONTACT_PREFERENCES, languageParam));
+    } // Section 1.1 - contact-details
+    else if (req.query.redirect === 'contact-details') {
+      req.session.returnUrl = setCheckAnswersLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS);
+      return res.redirect(req.url.replace(InterceptPaths.CONTACT_DETAILS_CHANGE, languageParam));
     } // Section 1.2 employer-details
     else if (req.query.redirect === 'employer-details') {
       req.session.returnUrl = setCheckAnswersLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES);
