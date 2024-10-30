@@ -144,6 +144,7 @@ export const isValidEthosCaseReference: Validator = value => {
   if (!/^\d{7}\/\d{4}$/.test(valueAsString)) {
     return ValidationErrors.INVALID_VALUE;
   }
+  return;
 };
 
 export const isAcasNumberValid: Validator = value => {

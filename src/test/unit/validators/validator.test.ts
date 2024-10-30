@@ -14,6 +14,7 @@ import {
   isValidAvgWeeklyHours,
   isValidCompanyRegistrationNumber,
   isValidCurrency,
+  isValidEthosCaseReference,
 } from '../../../main/validators/validator';
 import { mockFile } from '../mocks/mockFile';
 
@@ -411,6 +412,23 @@ describe('Validation', () => {
 
       validNoEntryInField.forEach(phoneNumber => {
         expect(isPhoneNumberValid(phoneNumber)).toBeUndefined();
+      });
+    });
+
+    describe('isValidEthosCaseReference()', () => {
+      it.each([
+        { mockRef: undefined, expected: 'required' },
+        { mockRef: '', expected: 'required' },
+        { mockRef: '0', expected: 'invalid' },
+        { mockRef: '1', expected: 'invalid' },
+        { mockRef: '1234567', expected: 'invalid' },
+        { mockRef: '1234567/', expected: 'invalid' },
+        { mockRef: '123456/1234', expected: 'invalid' },
+        { mockRef: '1234561234', expected: 'invalid' },
+        { mockRef: '123456/123', expected: 'invalid' },
+        { mockRef: '1234567/1234', expected: undefined },
+      ])('Check ethos case reference is valid when %o', ({ mockRef, expected }) => {
+        expect(isValidEthosCaseReference(mockRef)).toEqual(expected);
       });
     });
   });
