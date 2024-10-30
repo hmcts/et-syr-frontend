@@ -27,12 +27,12 @@ export default class CheckYourAnswersContactDetailsController {
         labelHidden: false,
         values: [
           {
-            name: 'personalDetailsSection',
+            name: 'personalDetailsSectionYes',
             label: (l: AnyRecord): string => l.cya.yes,
             value: YesOrNo.YES,
           },
           {
-            name: 'personalDetailsSection',
+            name: 'personalDetailsSectionNo',
             label: (l: AnyRecord): string => l.cya.no,
             value: YesOrNo.NO,
           },
@@ -42,7 +42,7 @@ export default class CheckYourAnswersContactDetailsController {
     },
     submit: submitButton,
     saveForLater: saveForLaterButton,
-  };
+  } as never;
 
   constructor() {
     this.form = new Form(<FormFields>this.formContent.fields);

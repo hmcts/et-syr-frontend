@@ -22,7 +22,14 @@
       "required": "[W]Enter claimant last name that exactly matches the case details"
     },
     "hiddenErrorField": {
-      "api": "[W]Unable to find the case. Data you entered does not match with any case"
+      "api": "[W]Unable to assign role. Please try again later",
+      "caseAlreadyAssignedToSameUser": "[W]You have already assigned to this case",
+      "caseAlreadyAssigned": "[W]Case has already assigned to a respondent",
+      "sessionUserCase": "[W]User case not found in session",
+      "sessionUser": "[W]User not found in session",
+      "sessionRespondent": "[W]Unable to find selected respondent in session",
+      "userId": "[W]Invalid session user. User does not have an ID",
+      "respondentNotFound": "[W]Unable to find respondent"
     }
   }
 }

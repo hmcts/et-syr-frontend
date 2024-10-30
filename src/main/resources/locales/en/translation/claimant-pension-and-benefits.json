@@ -13,6 +13,14 @@
   "errors": {
     "et3ResponsePensionCorrectDetails": {
       "tooLong": "The claimant pension and benefits entered must be less than 400 characters"
+    },
+    "hiddenErrorField": {
+      "sessionUserCase": "User case not found in session",
+      "sessionUser": "User not found in session",
+      "sessionRespondent": "Unable to find selected respondent in session",
+      "userId": "Invalid session user. User does not have an ID",
+      "respondentNotFound": "Unable to find respondent",
+      "api": "A system error occurred, Please try again later"
     }
   }
 }
