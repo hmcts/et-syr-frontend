@@ -6,6 +6,8 @@ import { CaseWithId } from '../definitions/case';
 import { PageUrls } from '../definitions/constants';
 import { FormError } from '../definitions/form';
 
+import { returnValidUrl } from './RouterHelpers';
+
 export const returnSessionErrors = <T>(req: AppRequest, form: Form): FormError[] => {
   const formData = form.getParsedBody<T>(req.body, form.getFormFields());
   return getSessionErrors(req, form, formData);
@@ -29,7 +31,7 @@ export const handleErrors = (req: AppRequest, res: Response, sessionErrors: Form
         if (err) {
           throw err;
         }
-        return res.redirect(req.url);
+        return res.redirect(returnValidUrl(req.url));
       });
     }
   }

@@ -13,7 +13,7 @@ import {
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { setUserCase } from '../helpers/CaseHelpers';
-import { returnNextPage } from '../helpers/RouterHelpers';
+import { returnNextPage, returnValidUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 
@@ -206,13 +206,13 @@ export default class ET3Util {
     req.session.errors = form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
       logger.error(LoggerConstants.ERROR_FORM_INVALID_DATA + 'Form: ' + form);
-      return res.redirect(req.url);
+      return res.redirect(returnValidUrl(req.url));
     }
     setUserCase(req, formData, fieldsToReset);
     const userCase: CaseWithId = await ET3Util.updateET3Data(req, et3HubLinkName, et3HubLinkStatus);
     if (req.session.errors?.length > 0) {
       logger.error(LoggerConstants.ERROR_API);
-      return res.redirect(req.url);
+      return res.redirect(returnValidUrl(req.url));
     } else {
       req.session.userCase = userCase;
       returnNextPage(req, res, redirectUrl);

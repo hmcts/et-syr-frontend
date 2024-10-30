@@ -7,7 +7,7 @@ import { FormFieldNames, PageUrls, ServiceErrors, TranslationKeys, ValidationErr
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import { getCaseApi } from '../services/CaseService';
 import ErrorUtils from '../utils/ErrorUtils';
 import StringUtils from '../utils/StringUtils';
@@ -50,7 +50,7 @@ export default class SelfAssignmentCheckController {
     const errors = this.form.getValidatorErrors(formData);
     if (errors.length !== 0) {
       req.session.errors = errors;
-      return res.redirect(req.url);
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
     }
     let caseAssignmentResponse;
     try {
@@ -83,7 +83,7 @@ export default class SelfAssignmentCheckController {
           FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
         );
       }
-      return res.redirect(req.url);
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
     }
     if (!caseAssignmentResponse) {
       ErrorUtils.setManualErrorToRequestSession(
@@ -91,7 +91,7 @@ export default class SelfAssignmentCheckController {
         ValidationErrors.API,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
       );
-      return res.redirect(req.url);
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
     }
     return res.redirect(PageUrls.CASE_LIST);
   };

@@ -35,7 +35,7 @@ describe('Self assignment check controller', () => {
       req.body.selfAssignmentCheck = DefaultValues.STRING_EMPTY;
       const errors = [{ propertyName: 'selfAssignmentCheck', errorType: 'required' }];
       new SelfAssignmentCheckController().post(req, res);
-      expect(res.redirect).toHaveBeenCalledWith(req.path);
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_CHECK);
       expect(req.session.errors).toEqual(errors);
     });
 
@@ -56,7 +56,7 @@ describe('Self assignment check controller', () => {
       req.session.userCase = mockValidCaseWithId;
       req.session.user = mockUserDetails;
       await new SelfAssignmentCheckController().post(req, res);
-      expect(res.redirect).toHaveBeenCalledWith(req.path);
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_CHECK);
     });
 
     it('should redirect to self assignment check and add session error when role not assigned with same user error', async () => {
@@ -66,7 +66,7 @@ describe('Self assignment check controller', () => {
         throw new Error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE_USER_ALREADY_HAS_ROLE_EXCEPTION_CHECK_VALUE);
       });
       await new SelfAssignmentCheckController().post(req, res);
-      expect(res.redirect).toHaveBeenCalledWith(req.path);
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_CHECK);
       expect(req.session.errors).toHaveLength(1);
       expect(req.session.errors[0].errorType).toEqual(ValidationErrors.CASE_ALREADY_ASSIGNED_TO_SAME_USER);
     });
@@ -77,7 +77,7 @@ describe('Self assignment check controller', () => {
         throw new Error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE_ALREADY_ASSIGNED_CHECK_VALUE);
       });
       await new SelfAssignmentCheckController().post(req, res);
-      expect(res.redirect).toHaveBeenCalledWith(req.path);
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_CHECK);
       expect(req.session.errors).toHaveLength(1);
       expect(req.session.errors[0].errorType).toEqual(ValidationErrors.CASE_ALREADY_ASSIGNED);
     });
@@ -88,7 +88,7 @@ describe('Self assignment check controller', () => {
         throw new Error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE);
       });
       await new SelfAssignmentCheckController().post(req, res);
-      expect(res.redirect).toHaveBeenCalledWith(req.path);
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_CHECK);
       expect(req.session.errors).toHaveLength(1);
       expect(req.session.errors[0].errorType).toEqual(ValidationErrors.API);
     });

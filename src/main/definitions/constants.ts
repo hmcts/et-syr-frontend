@@ -14,8 +14,6 @@ export const LegacyUrls = {
   ET3: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_up',
 } as const;
 
-// Sonar: These objects are intentionally similar to PageUrls but serve different purposes.
-// Suppress duplication warning here.
 export const TranslationKeys = {
   COMMON: 'common',
   WELSH_ENABLED: 'welsh-language',
@@ -80,8 +78,6 @@ export const TranslationKeys = {
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: 'check-your-answers-employers-contract-claim',
 } as const;
 
-// Sonar: These objects are intentionally similar to TranslationKeys but serve different purposes.
-// Suppress duplication warning here.
 export const PageUrls = {
   NOT_IMPLEMENTED: '#',
   HOME: '/',
