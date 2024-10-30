@@ -8,7 +8,7 @@ import './go-back';
 import './print';
 import './cookie';
 import './set-focus';
-import './submit-claim';
+// import './submit-claim';
 import { initialize, ready } from './session/utils';
 import './data-layer';
 // Initialize GOV.UK Frontend components

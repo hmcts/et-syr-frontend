@@ -13,6 +13,14 @@
     "et3ResponseClaimantCorrectHours": {
       "invalid": "[W]The average weekly work hours’ entered must be less than 168 hours",
       "exceeded": "[W]The average weekly work hours’ entered must be less than 168 hours"
+    },
+    "hiddenErrorField": {
+      "sessionUserCase": "[W]User case not found in session",
+      "sessionUser": "[W]User not found in session",
+      "sessionRespondent": "[W]Unable to find selected respondent in session",
+      "userId": "[W]Invalid session user. User does not have an ID",
+      "respondentNotFound": "[W]Unable to find respondent",
+      "api": "[W]A system error occurred, Please try again later"
     }
   }
 }

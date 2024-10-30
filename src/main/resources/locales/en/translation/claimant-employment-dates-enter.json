@@ -40,6 +40,14 @@
       "invalidDateTooFarInPast": "Enter a date in the correct format",
       "invalidDate": "Enter a date in the correct format",
       "invalidEndDateBeforeStartDate": "This date must be later than the start date"
+    },
+    "hiddenErrorField": {
+      "sessionUserCase": "User case not found in session",
+      "sessionUser": "User not found in session",
+      "sessionRespondent": "No respondent found in user case",
+      "userId": "Invalid session user. User does not have an ID",
+      "respondentNotFound": "Unable to find respondent",
+      "api": "A system error occurred, Please try again later"
     }
   }
 }

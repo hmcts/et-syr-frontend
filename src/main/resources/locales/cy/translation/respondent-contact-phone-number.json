@@ -5,6 +5,14 @@
   "errors": {
     "responseRespondentPhone1": {
       "invalidPhoneNumber": "[W][If Telephone Number contains alpha- numeric chars] Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192"
+    },
+    "hiddenErrorField": {
+      "sessionUserCase": "[W]User case not found in session",
+      "sessionUser": "[W]User not found in session",
+      "sessionRespondent": "[W]Unable to find selected respondent in session",
+      "userId": "[W]Invalid session user. User does not have an ID",
+      "respondentNotFound": "[W]Unable to find respondent",
+      "api": "[W]A system error occurred, Please try again later"
     }
   }
 }

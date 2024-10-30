@@ -39,6 +39,8 @@ describe('CheckYourAnswersContactDetailsController', () => {
   describe('GET method', () => {
     it('should render the page', () => {
       request = mockRequestWithTranslation({}, translationJsons);
+      request.url = '/check-your-answers';
+      request.session.userCase = mockCaseWithIdWithRespondents;
       controller.get(request, response);
 
       expect(response.render).toHaveBeenCalledWith(
