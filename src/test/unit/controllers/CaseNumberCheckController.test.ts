@@ -81,7 +81,7 @@ describe('Case number check controller', () => {
       });
       await new CaseNumberCheckController().post(request, response);
       expect(request.session.errors).toHaveLength(1);
-      expect(response.redirect).toHaveBeenCalledWith(request.url);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CASE_NUMBER_CHECK);
     });
     it('should add session error to request when form field error occurs', async () => {
       const request = mockRequest({ t });
@@ -91,7 +91,7 @@ describe('Case number check controller', () => {
       getCaseApiMock.mockReturnValue(api);
       await new CaseNumberCheckController().post(request, response);
       expect(request.session.errors).toHaveLength(1);
-      expect(response.redirect).toHaveBeenCalledWith(request.url);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CASE_NUMBER_CHECK);
     });
   });
 });

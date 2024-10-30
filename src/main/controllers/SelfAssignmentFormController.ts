@@ -9,7 +9,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { assignFormData } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import SelfAssignmentFormControllerHelper from '../helpers/controller/SelfAssignmentFormControllerHelper';
 import { getCaseApi } from '../services/CaseService';
 import { isValidCaseReferenceId } from '../validators/numeric-validator';
@@ -84,7 +84,7 @@ export default class SelfAssignmentFormController {
       return res.redirect(LegacyUrls.ET3);
     } else {
       req.session.errors = errors;
-      return res.redirect(req.url);
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_FORM)));
     }
   };
 

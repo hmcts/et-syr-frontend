@@ -46,7 +46,7 @@ describe('Self assignment form controller', () => {
         { propertyName: 'firstName', errorType: 'required' },
         { propertyName: 'lastName', errorType: 'required' },
       ];
-      expect(response.redirect).toHaveBeenCalledWith(request.path);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_FORM);
       expect(request.session.errors).toEqual(expectedErrors);
     });
     it('should return case data when all fields are entered', async () => {

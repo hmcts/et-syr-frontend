@@ -9,7 +9,7 @@ import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import { getCaseApi } from '../services/CaseService';
 import ErrorUtils from '../utils/ErrorUtils';
 import { isValidEthosCaseReference } from '../validators/validator';
@@ -46,7 +46,7 @@ export default class CaseNumberCheckController {
     const errors = this.form.getValidatorErrors(formData);
     if (errors.length > 0) {
       req.session.errors = errors;
-      return res.redirect(req.url);
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CASE_NUMBER_CHECK)));
     }
     req.session.errors = [];
     try {
@@ -67,7 +67,8 @@ export default class CaseNumberCheckController {
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
       );
     }
-    return res.redirect(req.url);
+
+    return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CASE_NUMBER_CHECK)));
   };
 
   public get = (req: AppRequest, res: Response): void => {

@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { ErrorPages, languages } from '../definitions/constants';
+import { ErrorPages, PageUrls, languages } from '../definitions/constants';
 import { FormFields } from '../definitions/form';
 
 export const getLanguageParam = (url: string): string => {
@@ -25,11 +25,8 @@ export const conditionalRedirect = (
   return matchingValues?.some(v => v === condition);
 };
 
-export const returnNextPage = (req: AppRequest, res: Response, redirectUrl: string): void => {
-  return res.redirect(handleReturnUrl(req, redirectUrl));
-};
-
-const handleReturnUrl = (req: AppRequest, redirectUrl: string): string => {
+// Function to handle return URL with safety check
+export const handleReturnUrl = (req: AppRequest, redirectUrl: string): string => {
   let nextPage = redirectUrl;
   if (req.session.returnUrl) {
     nextPage = req.session.returnUrl;
@@ -38,7 +35,14 @@ const handleReturnUrl = (req: AppRequest, redirectUrl: string): string => {
   return nextPage;
 };
 
-export const returnValidUrl = (redirectUrl: string, validUrls: string[]): string => {
+// Main function to redirect to the next page
+export const returnNextPage = (req: AppRequest, res: Response, redirectUrl: string): void => {
+  return res.redirect(handleReturnUrl(req, redirectUrl));
+};
+
+export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): string => {
+  validUrls = validUrls ?? Object.values(PageUrls); // if undefined use PageURLs
+
   for (const url of validUrls) {
     const welshUrl = url + languages.WELSH_URL_PARAMETER;
     const englishUrl = url + languages.ENGLISH_URL_PARAMETER;

@@ -4,6 +4,7 @@ import { Form } from '../../../main/components/form';
 import { AppRequest } from '../../../main/definitions/appRequest';
 import { PageUrls } from '../../../main/definitions/constants';
 import { handleErrors, returnSessionErrors } from '../../../main/helpers/ErrorHelpers';
+import { returnValidUrl } from '../../../main/helpers/RouterHelpers';
 
 // Create a mock Response type that includes necessary methods
 class MockResponse implements Partial<Response> {
@@ -14,6 +15,12 @@ class MockResponse implements Partial<Response> {
   sendStatus = jest.fn();
   // Include other methods as needed
 }
+
+// Mock returnValidUrl to return /some-url as a valid URL
+jest.mock('../../../main/helpers/RouterHelpers', () => ({
+  ...jest.requireActual('../../../main/helpers/RouterHelpers'),
+  returnValidUrl: jest.fn(),
+}));
 
 describe('Session and Error Handling Functions', () => {
   let req: Partial<AppRequest>;
@@ -34,6 +41,9 @@ describe('Session and Error Handling Functions', () => {
       getFormFields: jest.fn().mockReturnValue({ someField: 'someValue' }),
       getValidatorErrors: jest.fn().mockReturnValue([]),
     } as unknown as Form;
+
+    // Set up returnValidUrl mock to return the request URL as valid
+    (returnValidUrl as jest.Mock).mockReturnValue(req.url);
   });
 
   describe('returnSessionErrors', () => {

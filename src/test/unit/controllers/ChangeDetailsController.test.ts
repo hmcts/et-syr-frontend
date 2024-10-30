@@ -8,15 +8,13 @@ describe('Change Details Controller', () => {
     const controller = new ChangeDetailsController();
     const response = mockResponse();
     const request = mockRequest({});
-    request.url = '/respondent/1' + PageUrls.RESPONDENT_ADDRESS + InterceptPaths.ANSWERS_CHANGE;
+    request.url = PageUrls.RESPONDENT_EMPLOYEES + InterceptPaths.ANSWERS_CHANGE;
     request.query = {
       redirect: 'answers',
     };
     controller.get(request, response);
     expect(request.session.returnUrl).toStrictEqual(PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER);
-    expect(response.redirect).toHaveBeenCalledWith(
-      '/respondent/1' + PageUrls.RESPONDENT_ADDRESS + languages.ENGLISH_URL_PARAMETER
-    );
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_EMPLOYEES + languages.ENGLISH_URL_PARAMETER);
   });
 
   it('should redirect to the not found page if req.query.redirect is not "answers"', () => {
