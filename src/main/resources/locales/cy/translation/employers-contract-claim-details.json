@@ -16,6 +16,14 @@
     "et3ResponseEmployerClaimDetails": {
       "required": "[W]Give details of the Employer's Contract Claim",
       "tooLong": "[W]Free text details must be 2500 characters or less"
+    },
+    "hiddenErrorField": {
+      "sessionUserCase": "[W]User case not found in session",
+      "sessionUser": "[W]User not found in session",
+      "sessionRespondent": "[W]Unable to find selected respondent in session",
+      "userId": "[W]Invalid session user. User does not have an ID",
+      "respondentNotFound": "[W]Unable to find respondent",
+      "api": "[W]A system error occurred, Please try again later"
     }
   }
 }

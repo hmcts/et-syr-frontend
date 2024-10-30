@@ -13,6 +13,14 @@
   "errors": {
     "hearingPreference": {
       "required": "[W]Select whether you can take part in video or phone hearings"
+    },
+    "hiddenErrorField": {
+      "sessionUserCase": "[W]User case not found in session",
+      "sessionUser": "[W]User not found in session",
+      "sessionRespondent": "[W]Unable to find selected respondent in session",
+      "userId": "[W]Invalid session user. User does not have an ID",
+      "respondentNotFound": "[W]Unable to find respondent",
+      "api": "[W]A system error occurred, Please try again later"
     }
   }
 }

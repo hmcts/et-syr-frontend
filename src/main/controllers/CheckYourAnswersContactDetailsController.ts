@@ -8,7 +8,6 @@ import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { conditionalRedirect } from '../helpers/RouterHelpers';
 import { getEt3Section1 } from '../helpers/controller/CheckYourAnswersET3Helper';
@@ -75,15 +74,14 @@ export default class CheckYourAnswersContactDetailsController {
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
     };
-    const content = getPageContent(req, this.formContent, [
-      TranslationKeys.COMMON,
-      TranslationKeys.CHECK_YOUR_ANSWERS_CONTACT_DETAILS,
-      TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON,
-      TranslationKeys.SIDEBAR_CONTACT_US,
-    ]);
     const et3ResponseSection1 = getEt3Section1(userCase, sectionTranslations, InterceptPaths.CONTACT_DETAILS_CHANGE);
     res.render(TranslationKeys.CHECK_YOUR_ANSWERS_CONTACT_DETAILS, {
-      ...content,
+      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_CONTACT_DETAILS as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
+      PageUrls,
+      form: this.formContent,
       et3ResponseSection1,
       redirectUrl,
       hideContactUs: true,

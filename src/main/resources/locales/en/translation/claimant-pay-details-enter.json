@@ -19,6 +19,14 @@
     },
     "et3ResponsePayTakehome": {
       "invalidCurrency": "Pay after tax must be entered as a number and a minimum of double figures. For example 10"
+    },
+    "hiddenErrorField": {
+      "sessionUserCase": "User case not found in session",
+      "sessionUser": "User not found in session",
+      "sessionRespondent": "Unable to find selected respondent in session",
+      "userId": "Invalid session user. User does not have an ID",
+      "respondentNotFound": "Unable to find respondent",
+      "api": "A system error occurred, Please try again later"
     }
   }
 }

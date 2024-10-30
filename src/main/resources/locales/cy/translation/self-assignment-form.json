@@ -22,7 +22,12 @@
       "required": "[W]Enter claimant last name that exactly matches the case details"
     },
     "hiddenErrorField": {
-      "api": "[W]Unable to find the case. Data you entered does not match with any case"
+      "sessionUserCase": "[W]User case not found in session",
+      "sessionUser": "[W]User not found in session",
+      "sessionRespondent": "[W]Unable to find selected respondent in session",
+      "userId": "[W]Invalid session user. User does not have an ID",
+      "respondentNotFound": "[W]Unable to find respondent",
+      "api": "[W]A system error occurred, Please try again later"
     }
   }
 }
