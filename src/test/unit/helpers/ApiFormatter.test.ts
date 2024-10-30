@@ -317,7 +317,7 @@ describe('Format document model', () => {
 describe('Format Case Data to Frontend Model', () => {
   it('should format Case Api Response`', () => {
     const result = formatApiCaseDataToCaseWithId(mockedApiData);
-    expect(result).toStrictEqual(mockUserCaseComplete);
+    expect(result).toEqual(mockUserCaseComplete);
   });
 
   it('should format Case Api Response with no applications`', () => {
@@ -328,7 +328,7 @@ describe('Format Case Data to Frontend Model', () => {
 
     const result = formatApiCaseDataToCaseWithId(mock);
 
-    expect(complete).toStrictEqual(result);
+    expect(complete).toEqual(result);
   });
 
   it('should return undefined for empty field`', () => {

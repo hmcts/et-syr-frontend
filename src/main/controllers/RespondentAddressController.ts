@@ -5,6 +5,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, YesOrNo } from '../definitions/case';
 import { FormFieldNames, LoggerConstants, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { answersAddressFormatter } from '../helpers/AddressHelper';
@@ -12,6 +13,7 @@ import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { conditionalRedirect } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
+import ET3Util from '../utils/ET3Util';
 import ErrorUtils from '../utils/ErrorUtils';
 import { isOptionSelected } from '../validators/validator';
 
@@ -21,20 +23,20 @@ export default class RespondentAddressController {
   form: Form;
   private readonly respondentAddressContent: FormContent = {
     fields: {
-      respondentAddress: {
+      et3IsRespondentAddressCorrect: {
         classes: 'govuk-radios--inline',
-        id: 'respondentAddress',
+        id: 'et3IsRespondentAddressCorrect',
         type: 'radios',
         label: (l: AnyRecord): string => l.correctAddressQuestion,
         labelHidden: false,
         values: [
           {
-            name: 'respondentAddress',
+            name: 'et3IsRespondentAddressCorrectYes',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNo.YES,
           },
           {
-            name: 'respondentAddress',
+            name: 'et3IsRespondentAddressCorrectNo',
             label: (l: AnyRecord): string => l.no,
             value: YesOrNo.NO,
           },
@@ -61,7 +63,15 @@ export default class RespondentAddressController {
     let redirectUrl: string = setUrlLanguage(req, PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME);
     if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.NO)) {
       redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ENTER_POST_CODE);
-      return res.redirect(redirectUrl);
+      await ET3Util.updateET3ResponseWithET3Form(
+        req,
+        res,
+        this.form,
+        ET3HubLinkNames.ContactDetails,
+        LinkStatus.IN_PROGRESS,
+        redirectUrl,
+        []
+      );
     } else if (req.session.selectedRespondentIndex !== undefined && req.session.selectedRespondentIndex >= 0) {
       logger.info(LoggerConstants.INFO_LOG_UPDATING_RESPONSE_RESPONDENT_ADDRESS_SELECTION + req.session.userCase.id);
       const selectedRespondentAddress = req.session?.userCase?.respondents?.at(
@@ -75,7 +85,15 @@ export default class RespondentAddressController {
       req.session.userCase.responseRespondentAddressCountry = selectedRespondentAddress?.Country;
       req.session.userCase.responseRespondentAddressPostCode = selectedRespondentAddress?.PostCode;
       logger.info(LoggerConstants.INFO_LOG_UPDATED_RESPONSE_RESPONDENT_ADDRESS_SELECTION + req.session.userCase.id);
-      return res.redirect(redirectUrl);
+      await ET3Util.updateET3ResponseWithET3Form(
+        req,
+        res,
+        this.form,
+        ET3HubLinkNames.ContactDetails,
+        LinkStatus.IN_PROGRESS,
+        redirectUrl,
+        []
+      );
     } else {
       logger.info(LoggerConstants.ERROR_SESSION_SELECTED_USER_NOT_FOUND + ' caseId: ' + req.session?.userCase?.id);
       ErrorUtils.setManualErrorToRequestSession(

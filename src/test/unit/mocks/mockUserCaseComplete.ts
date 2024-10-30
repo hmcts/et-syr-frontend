@@ -286,6 +286,7 @@ export default {
       idamId: '1234',
       et3CaseDetailsLinksStatuses: new ET3CaseDetailsLinksStatuses(),
       et3HubLinksStatuses: new ET3HubLinksStatuses(),
+      et3IsRespondentAddressCorrect: undefined,
     },
     {
       respondentName: 'Version1',

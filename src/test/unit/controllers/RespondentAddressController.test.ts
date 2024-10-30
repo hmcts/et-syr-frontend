@@ -2,12 +2,16 @@ import RespondentAddressController from '../../../main/controllers/RespondentAdd
 import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { conditionalRedirect } from '../../../main/helpers/RouterHelpers';
+import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
 jest.mock('../../../main/helpers/RouterHelpers');
 jest.mock('../../../main/helpers/CaseHelpers');
+
+jest.mock('../../../main/helpers/CaseHelpers');
+const updateET3ResponseWithET3FormMock = jest.spyOn(ET3Util, 'updateET3ResponseWithET3Form');
 
 describe('RespondentAddressController', () => {
   let controller: RespondentAddressController;
@@ -36,7 +40,7 @@ describe('RespondentAddressController', () => {
       no: 'No',
     });
 
-    req.body.respondentAddress = YesOrNo.NO;
+    req.body.et3IsRespondentAddressCorrect = YesOrNo.NO;
     req.session.selectedRespondentIndex = 0;
     req.session.userCase = mockCaseWithIdWithRespondents;
 
@@ -47,20 +51,22 @@ describe('RespondentAddressController', () => {
     // Check that the form label functions return the correct values
     const renderMock = res.render as jest.Mock;
     const formContent = renderMock.mock.calls[0][1].form;
-    expect(formContent.fields.respondentAddress.label({ correctAddressQuestion: 'Is this the correct address?' })).toBe(
-      'Is this the correct address?'
-    );
-    expect(formContent.fields.respondentAddress.values[0].label({ yes: 'Yes' })).toBe('Yes');
-    expect(formContent.fields.respondentAddress.values[1].label({ no: 'No' })).toBe('No');
+    expect(
+      formContent.fields.et3IsRespondentAddressCorrect.label({ correctAddressQuestion: 'Is this the correct address?' })
+    ).toBe('Is this the correct address?');
+    expect(formContent.fields.et3IsRespondentAddressCorrect.values[0].label({ yes: 'Yes' })).toBe('Yes');
+    expect(formContent.fields.et3IsRespondentAddressCorrect.values[1].label({ no: 'No' })).toBe('No');
   });
 
   it('should redirect to RESPONDENT_PREFERRED_CONTACT_NAME when YesOrNo.YES is selected', async () => {
-    req.body.respondentAddress = YesOrNo.NO;
+    req.body.et3IsRespondentAddressCorrect = YesOrNo.YES;
     req.session.selectedRespondentIndex = 0;
     req.session.userCase = mockCaseWithIdWithRespondents;
     // Mock conditionalRedirect to return true for YesOrNo.YES
     (conditionalRedirect as jest.Mock).mockReturnValue(false);
-
+    updateET3ResponseWithET3FormMock.mockImplementationOnce(async () => {
+      res.redirect(PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME);
+    });
     await controller.post(req, res);
 
     // Assert that postLogic is called with the correct parameters
@@ -69,17 +75,20 @@ describe('RespondentAddressController', () => {
 
   it('should redirect to RESPONDENT_ENTER_POST_CODE when YesOrNo.NO is selected', async () => {
     // Change the request body to reflect No selection
-    req.body.respondentAddress = YesOrNo.NO;
+    req.body.et3IsRespondentAddressCorrect = YesOrNo.NO;
     req.session.selectedRespondentIndex = 0;
     req.session.userCase = mockCaseWithIdWithRespondents;
 
     // Mock conditionalRedirect to return true for YesOrNo.NO
     (conditionalRedirect as jest.Mock).mockReturnValueOnce(true);
-
+    updateET3ResponseWithET3FormMock.mockImplementationOnce(async () => {
+      res.redirect(PageUrls.RESPONDENT_ENTER_POST_CODE);
+    });
     await controller.post(req, res);
 
     // Assert that page is redirected to preferred contact name is called with the correct parameters
     expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_ENTER_POST_CODE);
+    expect(ET3Util.updateET3ResponseWithET3Form).toHaveBeenCalled();
   });
 
   it('should redirect to RESPONDENT_ADDRESS when selected user not found', async () => {

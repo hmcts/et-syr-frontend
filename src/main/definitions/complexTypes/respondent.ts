@@ -120,6 +120,7 @@ export interface RespondentType {
   workAddressCountry?: string;
   workAddressPostcode?: string;
   et3Status?: string;
+  et3IsRespondentAddressCorrect?: YesOrNo;
 }
 
 export interface ET3VettingType extends ET3VettingCommonTypes {

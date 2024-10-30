@@ -136,6 +136,17 @@ export const hasInvalidFileFormat = (value: Express.Multer.File, logger: Logger)
   return ValidationErrors.INVALID_FILE_FORMAT;
 };
 
+export const isValidEthosCaseReference: Validator = value => {
+  const valueAsString = value as string;
+  if (StringUtils.isBlank(valueAsString)) {
+    return ValidationErrors.REQUIRED;
+  }
+  if (!/^\d{7}\/\d{4}$/.test(valueAsString)) {
+    return ValidationErrors.INVALID_VALUE;
+  }
+  return;
+};
+
 export const isAcasNumberValid: Validator = value => {
   const valueAsString = value as string;
   if (!/^[rR]\d{6}\/\d{2}\/\d{2}$/.test(valueAsString)) {

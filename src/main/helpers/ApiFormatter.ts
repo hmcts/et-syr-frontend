@@ -477,6 +477,7 @@ function mapResponseApiDataToCaseWithId(
     caseWithId.et3CaseDetailsLinksStatuses = selectedRespondent.value?.et3CaseDetailsLinksStatuses;
     caseWithId.et3HubLinksStatuses = selectedRespondent.value?.et3HubLinksStatuses;
     caseWithId.et3Status = selectedRespondent.value?.et3Status;
+    caseWithId.et3IsRespondentAddressCorrect = selectedRespondent.value?.et3IsRespondentAddressCorrect;
   }
 }
 
@@ -701,6 +702,7 @@ export const mapRespondent = (respondent: RespondentType): RespondentET3Model =>
     noAcasReason: respondent?.respondent_ACAS_no,
     respondentOrganisation: respondent?.respondentOrganisation,
     respondentAddress: respondent?.respondent_address,
+    et3IsRespondentAddressCorrect: respondent?.et3IsRespondentAddressCorrect,
     respondentACASQuestion: respondent?.respondent_ACAS_question,
     respondentACAS: respondent?.respondent_ACAS,
     respondentACASNo: respondent?.respondent_ACAS_no,

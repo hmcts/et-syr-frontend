@@ -74,7 +74,7 @@ export default class CheckYourAnswersContactDetailsController {
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
     };
-
+    const et3ResponseSection1 = getEt3Section1(userCase, sectionTranslations, InterceptPaths.CONTACT_DETAILS_CHANGE);
     res.render(TranslationKeys.CHECK_YOUR_ANSWERS_CONTACT_DETAILS, {
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_CONTACT_DETAILS as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
@@ -82,7 +82,7 @@ export default class CheckYourAnswersContactDetailsController {
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,
       form: this.formContent,
-      et3ResponseSection1: getEt3Section1(userCase, sectionTranslations, InterceptPaths.CONTACT_DETAILS_CHANGE),
+      et3ResponseSection1,
       redirectUrl,
       hideContactUs: true,
     });

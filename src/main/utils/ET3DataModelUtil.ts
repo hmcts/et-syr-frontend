@@ -205,6 +205,8 @@ export default class ET3DataModelUtil {
       employersContractClaimSection: caseWithId.employersContractClaimSection,
       idamId: StringUtils.isNotBlank(caseWithId.idamId) ? caseWithId.idamId : selectedRespondent.idamId,
       et3CaseDetailsLinksStatuses: caseWithId.et3CaseDetailsLinksStatuses,
+      et3IsRespondentAddressCorrect: caseWithId.et3IsRespondentAddressCorrect,
+      et3Status: caseWithId.et3Status ?? 'inProgress',
       et3HubLinksStatuses: caseWithId.et3HubLinksStatuses,
       claimant_work_address: {
         AddressLine1: caseWithId.claimantWorkAddressLine1,
