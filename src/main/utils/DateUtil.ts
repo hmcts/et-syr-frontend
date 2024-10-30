@@ -1,3 +1,4 @@
+import { CaseDate } from '../definitions/case';
 import { DefaultValues } from '../definitions/constants';
 
 import StringUtils from './StringUtils';
@@ -73,5 +74,40 @@ export default class DateUtil {
       }).format(dateVal);
     }
     return DefaultValues.STRING_EMPTY;
+  }
+
+  public static formatDateStringToCaseDate(dateString: string): CaseDate {
+    const date: Date = this.convertStringToDate(dateString);
+    if (!date) {
+      return undefined;
+    }
+    const padStart = (value: number): string => value.toString().padStart(2, '0');
+    return {
+      day: padStart(date.getDate()),
+      month: padStart(date.getMonth() + 1),
+      year: date.getFullYear().toString(),
+    };
+  }
+
+  public static convertCaseDateToString(caseDate: CaseDate): string {
+    if (!caseDate) {
+      return DefaultValues.STRING_EMPTY;
+    }
+    const caseDateStringValue: string = this.convertCaseDateToDateStringDD_MM_YYYY(caseDate);
+    if (StringUtils.isBlank(caseDateStringValue)) {
+      return DefaultValues.STRING_EMPTY;
+    }
+    const date: Date = this.convertStringToDate(caseDateStringValue);
+    if (!date) {
+      return DefaultValues.STRING_EMPTY;
+    }
+    return this.formatDateToDDMonthYYYY(date);
+  }
+
+  public static convertCaseDateToDateStringDD_MM_YYYY(caseDate: CaseDate): string {
+    if (!caseDate) {
+      return DefaultValues.STRING_EMPTY;
+    }
+    return caseDate.year + DefaultValues.STRING_DASH + caseDate.month + DefaultValues.STRING_DASH + caseDate.day;
   }
 }

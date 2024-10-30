@@ -38,6 +38,7 @@ import {
 } from '../definitions/constants';
 import { DocumentDetail } from '../definitions/definition';
 import { TypeItem } from '../definitions/util-types';
+import DateUtil from '../utils/DateUtil';
 import ET3Util from '../utils/ET3Util';
 import { isDateEmpty } from '../validators/dateValidators';
 
@@ -429,8 +430,12 @@ function mapResponseApiDataToCaseWithId(
     caseWithId.et3ResponseAcasAgree = selectedRespondent.value?.et3ResponseAcasAgree;
     caseWithId.et3ResponseAcasAgreeReason = selectedRespondent.value?.et3ResponseAcasAgreeReason;
     caseWithId.et3ResponseAreDatesCorrect = selectedRespondent.value?.et3ResponseAreDatesCorrect;
-    caseWithId.et3ResponseEmploymentStartDate = selectedRespondent.value?.et3ResponseEmploymentStartDate;
-    caseWithId.et3ResponseEmploymentEndDate = selectedRespondent.value?.et3ResponseEmploymentEndDate;
+    caseWithId.et3ResponseEmploymentStartDate = DateUtil.formatDateStringToCaseDate(
+      selectedRespondent.value?.et3ResponseEmploymentStartDate
+    );
+    caseWithId.et3ResponseEmploymentEndDate = DateUtil.formatDateStringToCaseDate(
+      selectedRespondent.value?.et3ResponseEmploymentEndDate
+    );
     caseWithId.et3ResponseCorrectNoticeDetails = selectedRespondent.value?.et3ResponseCorrectNoticeDetails;
     caseWithId.et3ResponseIsPensionCorrect = selectedRespondent.value?.et3ResponseIsPensionCorrect;
     caseWithId.et3ResponsePensionCorrectDetails = selectedRespondent.value?.et3ResponsePensionCorrectDetails;
@@ -764,8 +769,8 @@ export const mapRespondent = (respondent: RespondentType): RespondentET3Model =>
     et3ResponseAcasAgree: respondent?.et3ResponseAcasAgree,
     et3ResponseAcasAgreeReason: respondent?.et3ResponseAcasAgreeReason,
     et3ResponseAreDatesCorrect: respondent?.et3ResponseAreDatesCorrect,
-    et3ResponseEmploymentStartDate: respondent?.et3ResponseEmploymentStartDate,
-    et3ResponseEmploymentEndDate: respondent?.et3ResponseEmploymentEndDate,
+    et3ResponseEmploymentStartDate: DateUtil.formatDateStringToCaseDate(respondent?.et3ResponseEmploymentStartDate),
+    et3ResponseEmploymentEndDate: DateUtil.formatDateStringToCaseDate(respondent?.et3ResponseEmploymentEndDate),
     et3ResponseEmploymentInformation: respondent?.et3ResponseEmploymentInformation,
     et3ResponseContinuingEmployment: respondent?.et3ResponseContinuingEmployment,
     et3ResponseIsJobTitleCorrect: respondent?.et3ResponseIsJobTitleCorrect,
