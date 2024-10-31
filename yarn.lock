@@ -3007,7 +3007,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^22.0.0":
   version: 22.8.5
   resolution: "@types/node@npm:22.8.5"
   dependencies:
@@ -3016,7 +3016,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.0.0, @types/node@npm:^20.1.0, @types/node@npm:^20.11.30":
+"@types/node@npm:^20.1.0, @types/node@npm:^20.11.30":
   version: 20.17.4
   resolution: "@types/node@npm:20.17.4"
   dependencies:
@@ -7213,7 +7213,7 @@ __metadata:
     "@types/jest": ^29.5.1
     "@types/lodash": ^4.14.194
     "@types/multer": ^1.4.7
-    "@types/node": ^20.0.0
+    "@types/node": ^22.0.0
     "@types/nunjucks": ^3.2.2
     "@types/redis-mock": ^0.17.1
     "@types/require-directory": ^2.1.2
