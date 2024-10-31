@@ -32,7 +32,7 @@ export const handleReturnUrl = (req: AppRequest, redirectUrl: string): string =>
     nextPage = req.session.returnUrl;
     req.session.returnUrl = undefined;
   }
-  return nextPage;
+  return returnValidUrl(nextPage);
 };
 
 // Main function to redirect to the next page

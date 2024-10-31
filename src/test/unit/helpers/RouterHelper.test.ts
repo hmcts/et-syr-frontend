@@ -1,4 +1,4 @@
-import { ErrorPages, languages } from '../../../main/definitions/constants';
+import { ErrorPages, PageUrls, languages } from '../../../main/definitions/constants';
 import { FormFields } from '../../../main/definitions/form';
 import {
   conditionalRedirect,
@@ -72,14 +72,15 @@ describe('RouterHelper', () => {
     });
 
     it('should redirect to the given URL if session.returnUrl is not set', () => {
-      returnNextPage(req, res, '/next-page');
-      expect(res.redirect).toHaveBeenCalledWith('/next-page');
+      returnNextPage(req, res, PageUrls.HOME);
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.HOME);
     });
 
     it('should redirect to session.returnUrl if it is set and clear the returnUrl', () => {
-      req.session.returnUrl = '/return-url';
-      returnNextPage(req, res, '/next-page');
-      expect(res.redirect).toHaveBeenCalledWith('/return-url');
+      req.session.returnUrl = PageUrls.HOME; //returnUrl (valid as it's within PageUrls for returnValidUrl())
+      returnNextPage(req, res, PageUrls.CASE_NUMBER_CHECK); // overridden within returnNextPage as returnUrl is present
+
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.HOME);
       expect(req.session.returnUrl).toBeUndefined(); // Ensuring returnUrl is cleared
     });
   });
