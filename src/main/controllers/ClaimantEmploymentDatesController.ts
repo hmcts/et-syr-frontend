@@ -53,18 +53,25 @@ export default class ClaimantEmploymentDatesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    let nextPage = setUrlLanguage(req, PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
     if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.NO)) {
-      const nextPage = setUrlLanguage(req, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
-      return res.redirect(nextPage);
+      nextPage = setUrlLanguage(req, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
+    } else {
+      const { startDate, endDate } = req.session.userCase ?? {};
+      if (startDate) {
+        req.session.userCase.et3ResponseEmploymentStartDate = startDate;
+      }
+      if (endDate) {
+        req.session.userCase.et3ResponseEmploymentEndDate = endDate;
+      }
     }
-
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.ConciliationAndEmployeeDetails,
       LinkStatus.IN_PROGRESS,
-      PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING
+      nextPage
     );
   };
 
