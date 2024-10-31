@@ -24,6 +24,7 @@ import localesCy from '../resources/locales/cy/translation/common.json';
 import locales from '../resources/locales/en/translation/common.json';
 import ET3Util from '../utils/ET3Util';
 import ErrorUtils from '../utils/ErrorUtils';
+import NumberUtils from '../utils/NumberUtils';
 import StringUtils from '../utils/StringUtils';
 import { isOptionSelected } from '../validators/validator';
 
@@ -58,6 +59,10 @@ export default class RespondentSelectPostCodeController {
       return res.redirect(errorRedirectUrl);
     }
     const selectedAddressIndex = formData?.respondentAddressTypes?.toString();
+    if (NumberUtils.isNonNumericValue(selectedAddressIndex) && selectedAddressIndex !== '0') {
+      ErrorUtils.setManualErrorToRequestSession(req, ValidationErrors.ADDRESS_NOT_SELECTED, 'respondentAddressTypes');
+      return res.redirect(errorRedirectUrl);
+    }
     let selectedAddress;
     if (StringUtils.isNotBlank(selectedAddressIndex)) {
       selectedAddress = req.session?.userCase?.respondentAddresses?.at(selectedAddressIndex as unknown as number);
@@ -87,7 +92,10 @@ export default class RespondentSelectPostCodeController {
       return res.redirect(errorRedirectUrl);
     } else {
       req.session.userCase = userCase;
-      const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ENTER_ADDRESS);
+      let redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ENTER_ADDRESS);
+      if (req.body?.saveForLater) {
+        redirectUrl = setUrlLanguage(req, PageUrls.CLAIM_SAVED);
+      }
       res.redirect(redirectUrl);
     }
   };

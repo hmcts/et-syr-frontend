@@ -57,4 +57,29 @@ describe('DateUtil tests', () => {
   ])('check if 28 days added to given string', ({ value, result }) => {
     expect(DateUtil.addStringDate28Days(value)).toStrictEqual(result);
   });
+
+  it.each([
+    { value: undefined, result: undefined },
+    { value: '', result: undefined },
+    { value: ' ', result: undefined },
+    { value: '', result: undefined },
+    { value: ' test', result: undefined },
+    { value: '20240101   ', result: undefined },
+    { value: '20251230', result: undefined },
+    { value: '2024-01-01   ', result: { day: '01', month: '01', year: '2024' } },
+    { value: '2025-12-30', result: { day: '30', month: '12', year: '2025' } },
+  ])('format date string to case date', ({ value, result }) => {
+    expect(DateUtil.formatDateStringToCaseDate(value)).toStrictEqual(result);
+  });
+
+  it.each([
+    { value: undefined, result: DefaultValues.STRING_EMPTY },
+    { value: { day: '33', month: '01', year: '2024' }, result: DefaultValues.STRING_EMPTY },
+    { value: { day: '01', month: '13', year: '2024' }, result: DefaultValues.STRING_EMPTY },
+    { value: { day: '01', month: '13', year: '024' }, result: DefaultValues.STRING_EMPTY },
+    { value: { day: '01', month: '01', year: '2024' }, result: '01 Jan 2024' },
+    { value: { day: '30', month: '12', year: '2025' }, result: '30 Dec 2025' },
+  ])('converts case date to string', ({ value, result }) => {
+    expect(DateUtil.convertCaseDateToString(value)).toStrictEqual(result);
+  });
 });
