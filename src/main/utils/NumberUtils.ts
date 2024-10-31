@@ -14,4 +14,10 @@ export default class NumberUtils {
       ? DefaultValues.STRING_EMPTY
       : acasNumber.trim().replace(DefaultValues.STRING_SLASH_REGEX, DefaultValues.STRING_UNDERSCORE);
   }
+  public static isNumericValue(stringValue: string): boolean {
+    return !(!stringValue || isNaN(Number(stringValue)) || !Number(stringValue));
+  }
+  public static isNonNumericValue(stringValue: string): boolean {
+    return !this.isNumericValue(stringValue);
+  }
 }

@@ -75,7 +75,16 @@ describe('RespondentSelectPostCodeController', () => {
       expect(updateET3DataMock).toHaveBeenCalledWith(request, ET3HubLinkNames.ContactDetails, LinkStatus.IN_PROGRESS);
     });
   });
-
+  it('should set session error when no postcode is selected', async () => {
+    request.body = {
+      respondentAddressTypes: '',
+    };
+    await controller.post(request, response);
+    // Endure request has error in the session
+    expect(request.session.errors).toHaveLength(1);
+    // Ensure response is redirected to the same page
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_SELECT_POST_CODE);
+  });
   it('should have session error when respondent address not found', async () => {
     request.body = {
       respondentAddressTypes: '1',

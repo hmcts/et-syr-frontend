@@ -20,6 +20,7 @@ export const TranslationKeys = {
   HOME: 'home',
   CHECKLIST: 'checklist',
   COOKIE_PREFERENCES: 'cookie-preferences',
+  CLAIM_SAVED: 'claim-saved',
   RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
   CASE_DETAILS_WITH_CASE_ID_PARAMETER: 'case-details',
   YOUR_APPLICATIONS: 'your-applications',
@@ -84,6 +85,7 @@ export const PageUrls = {
   NOT_FOUND: '/not-found',
   CHECKLIST: '/checklist',
   CASE_NUMBER_CHECK: '/case-number-check',
+  CLAIM_SAVED: '/claim-saved',
   SELF_ASSIGNMENT_FORM: '/self-assignment-form',
   CASE_LIST_CHECK: '/case-list-check',
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
@@ -189,6 +191,7 @@ export const ValidationErrors = {
   USER_ID: 'userId',
   RESPONDENT_NOT_FOUND: 'respondentNotFound',
   SELECTED_ADDRESS_NOT_FOUND: 'selectedAddressNotFound',
+  ADDRESS_NOT_SELECTED: 'addressNotSelected',
   CASE_ALREADY_ASSIGNED: 'caseAlreadyAssigned',
   CASE_ALREADY_ASSIGNED_TO_SAME_USER: 'caseAlreadyAssignedToSameUser',
 } as const;

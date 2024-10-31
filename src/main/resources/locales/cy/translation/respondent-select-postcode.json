@@ -7,7 +7,8 @@
   "errors": {
     "respondentAddressTypes": {
       "required": "[W]Make a selection",
-      "selectedAddressNotFound": "[W]Selected address not found"
+      "selectedAddressNotFound": "[W]Selected address not found",
+      "addressNotSelected": "[W]Please select an address"
     },
     "hiddenErrorField": {
       "sessionUserCase": "[W]User case not found in session",
