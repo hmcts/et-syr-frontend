@@ -32,6 +32,13 @@ const isEnabled = (): boolean => {
   return process.env.PCQ_ENABLED === 'true' || config.get('services.pcq.enabled') === 'true';
 };
 
+// Array of Valid PCQ URLs
+const PCQ_URLS = [process.env.PCQ_URL ?? config.get('services.pcq.url')];
+
+const isValidPcqUrl = (url: string): boolean => {
+  return PCQ_URLS.includes(url);
+};
+
 export const invokePCQ = async (req: AppRequest, res: Response): Promise<void> => {
   if (isEnabled()) {
     const healthResp = await callPCQHealth();
@@ -69,7 +76,13 @@ export const invokePCQ = async (req: AppRequest, res: Response): Promise<void> =
       req.session.save();
       await handleUpdateDraftCase(req, logger);
 
-      res.redirect(`${pcqUrl}?${qs}`);
+      // Redirect only if the pcqUrl is in the list of allowed URLs
+      if (isValidPcqUrl(pcqUrl)) {
+        res.redirect(`${pcqUrl}?${qs}`);
+      } else {
+        logger.info(`PCQ url: ${pcqUrl} is invalid`);
+        res.redirect(ErrorPages.NOT_FOUND);
+      }
     } else {
       //skip pcq
       logger.info(`PCQ status is ${healthResp} and PCQ ID is ${pcqId}`);
