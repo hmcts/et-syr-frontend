@@ -44,32 +44,32 @@ const et3_response_employment_end_date: DateFormFields = {
 };
 
 const et3_response_employment_information: FormField = {
-  type: 'textarea',
-  id: 'et3ResponseEmploymentInformation',
   label: (l: AnyRecord): string => l.et3ResponseEmploymentInformation.label,
+  id: 'et3ResponseEmploymentInformation',
   attributes: {
     maxLength: 2500,
   },
+  type: 'textarea',
 };
 
 const dateFieldList = [
   {
-    label: (l: AnyRecord): string => l.dateFormat.day,
-    name: 'day',
-    classes: 'govuk-input--width-2',
     attributes: { maxLength: 2 },
+    label: (l: AnyRecord): string => l.dateFormat.day,
+    classes: 'govuk-input--width-2',
+    name: 'day',
   },
   {
-    label: (l: AnyRecord): string => l.dateFormat.month,
-    name: 'month',
     classes: 'govuk-input--width-2',
+    name: 'month',
+    label: (l: AnyRecord): string => l.dateFormat.month,
     attributes: { maxLength: 2 },
   },
   {
     label: (l: AnyRecord): string => l.dateFormat.year,
+    attributes: { maxLength: 4 },
     name: 'year',
     classes: 'govuk-input--width-4',
-    attributes: { maxLength: 4 },
   },
 ];
 
