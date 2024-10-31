@@ -14,6 +14,7 @@ import {
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { setUserCase } from '../helpers/CaseHelpers';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { returnNextPage, returnValidUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
