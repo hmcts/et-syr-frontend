@@ -1,0 +1,30 @@
+{% extends "form/main/template.njk" %}
+
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% block beforeContent %}
+  {{ super() }}
+  {% include "back-link.njk"%}
+{% endblock %}
+
+{% block content %}
+  {{ govukPanel({
+        titleText: titleText
+      }) }}
+
+  <div class="govuk-button-group">
+    {{ govukButton({
+        text: continueWithClaim,
+        href: redirectUrl,
+        preventDoubleClick: true
+      }) }}
+    {{ govukButton({
+        text: signOut,
+        href: AuthUrls.LOGOUT + languageParam,
+        classes: "govuk-button--secondary"
+      }) }}
+  </div>
+
+{% endblock %}

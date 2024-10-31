@@ -8,11 +8,13 @@ import {
   ET3ModificationTypes,
   FormFieldNames,
   LoggerConstants,
+  PageUrls,
   ValidationErrors,
 } from '../definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { setUserCase } from '../helpers/CaseHelpers';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { returnNextPage, returnValidUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
@@ -214,6 +216,9 @@ export default class ET3Util {
       logger.error(LoggerConstants.ERROR_API);
       return res.redirect(returnValidUrl(req.url));
     } else {
+      if (req.body?.saveForLater) {
+        redirectUrl = setUrlLanguage(req, PageUrls.CLAIM_SAVED);
+      }
       req.session.userCase = userCase;
       returnNextPage(req, res, redirectUrl);
     }

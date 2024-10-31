@@ -26,4 +26,24 @@ describe('NumberUtils tests', () => {
   ])('check if Acas Number is formatted', ({ value, result }) => {
     expect(NumberUtils.formatAcasNumberDashToUnderscore(value)).toStrictEqual(result);
   });
+  it.each([
+    { value: undefined, result: false },
+    { value: DefaultValues.STRING_EMPTY, result: false },
+    { value: '0.1', result: true },
+    { value: null, result: false },
+    { value: 'dummy', result: false },
+    { value: '1', result: true },
+  ])('check if given string value is numeric: %o', ({ value, result }) => {
+    expect(NumberUtils.isNumericValue(value)).toStrictEqual(result);
+  });
+  it.each([
+    { value: undefined, result: true },
+    { value: DefaultValues.STRING_EMPTY, result: true },
+    { value: '0.1', result: false },
+    { value: null, result: true },
+    { value: 'dummy', result: true },
+    { value: '1', result: false },
+  ])('check if given string value is non numeric: %o', ({ value, result }) => {
+    expect(NumberUtils.isNonNumericValue(value)).toStrictEqual(result);
+  });
 });

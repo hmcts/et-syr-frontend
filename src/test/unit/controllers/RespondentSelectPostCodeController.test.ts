@@ -1,8 +1,9 @@
 import * as app from '../../../main/address/index';
 import RespondentSelectPostCodeController from '../../../main/controllers/RespondentSelectPostCodeController';
-import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../../../main/definitions/constants';
 import { ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
 import ET3Util from '../../../main/utils/ET3Util';
+import ErrorUtils from '../../../main/utils/ErrorUtils';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -75,7 +76,16 @@ describe('RespondentSelectPostCodeController', () => {
       expect(updateET3DataMock).toHaveBeenCalledWith(request, ET3HubLinkNames.ContactDetails, LinkStatus.IN_PROGRESS);
     });
   });
-
+  it('should set session error when no postcode is selected', async () => {
+    request.body = {
+      respondentAddressTypes: '',
+    };
+    await controller.post(request, response);
+    // Endure request has error in the session
+    expect(request.session.errors).toHaveLength(1);
+    // Ensure response is redirected to the same page
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_SELECT_POST_CODE);
+  });
   it('should have session error when respondent address not found', async () => {
     request.body = {
       respondentAddressTypes: '1',
@@ -87,7 +97,50 @@ describe('RespondentSelectPostCodeController', () => {
     // Ensure page is redirected to itself correctly
     expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_SELECT_POST_CODE);
   });
+  it('should have session error when respondent address not selected', async () => {
+    request.body = {
+      respondentAddressTypes: 'dummy',
+    };
+    await controller.post(request, response);
 
+    // Ensure session has errors
+    expect(request.session.errors).toHaveLength(1);
+    expect(request.session.errors[0].errorType).toEqual(ValidationErrors.ADDRESS_NOT_SELECTED);
+    // Ensure page is redirected to itself correctly
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_SELECT_POST_CODE);
+  });
+  it('should have session error when unable to update et3Data', async () => {
+    request.body = {
+      respondentAddressTypes: '0',
+    };
+    ET3Util.updateET3Data = updateET3DataMock;
+    updateET3DataMock.mockImplementationOnce(() => {
+      ErrorUtils.setManualErrorToRequestSession(
+        request,
+        ValidationErrors.API,
+        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+      );
+    });
+    request.session.userCase.respondentAddresses = addressLookupResponse;
+    await controller.post(request, response);
+    // Ensure session has errors
+    expect(request.session.errors).toHaveLength(1);
+    expect(request.session.errors[0].errorType).toEqual(ValidationErrors.API);
+    // Ensure page is redirected to itself correctly
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_SELECT_POST_CODE);
+  });
+  it('should redirect to claim saved when save for later', async () => {
+    request.body = {
+      respondentAddressTypes: '0',
+    };
+    request.body.saveForLater = true;
+    ET3Util.updateET3Data = updateET3DataMock;
+    request.session.userCase.respondentAddresses = addressLookupResponse;
+    updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+    await controller.post(request, response);
+    // Ensure page is redirected to CLAIM SAVED
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIM_SAVED);
+  });
   it('should have session error with invalid data', async () => {
     request.body = {
       respondentAddressTypes: undefined,
