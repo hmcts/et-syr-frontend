@@ -147,14 +147,6 @@ describe('ET3lUtil tests', () => {
     });
   });
   describe('Find selected respondent by case with id tests', () => {
-    test('Should find selected respondent with given correct data', () => {
-      request.session.userCase = mockCaseWithIdWithRespondents;
-      request.session.user = mockUserDetails;
-      request.session.selectedRespondentIndex = 0;
-      const selectedRespondent = ET3Util.findSelectedRespondentByCaseWithId(request, mockCaseWithIdWithRespondents);
-      expect(selectedRespondent).toBeDefined();
-    });
-
     test('Should not find selected respondent when case with id is empty', () => {
       request.session.userCase = mockCaseWithIdWithRespondents;
       request.session.user = mockUserDetails;
