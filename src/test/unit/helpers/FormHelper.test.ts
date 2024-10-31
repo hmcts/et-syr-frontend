@@ -1,78 +1,8 @@
 import { CaseWithId } from '../../../main/definitions/case';
-import { DefaultValues } from '../../../main/definitions/constants';
-import { FormField, FormFields } from '../../../main/definitions/form';
+import { FormFields } from '../../../main/definitions/form';
 import { assignAddresses, assignFormData, trimFormData } from '../../../main/helpers/FormHelper';
-import { MockCaseWithIdConstants, mockValidCaseWithId } from '../mocks/mockCaseWithId';
-import { mockFormField } from '../mocks/mockForm';
-
-const testFormFieldIdForAssignFormData: FormField = mockFormField(
-  'id',
-  'id',
-  'text',
-  MockCaseWithIdConstants.TEST_SUBMISSION_REFERENCE_NUMBER,
-  undefined,
-  'submissionReference'
-);
-
-const testFormFieldCreatedDateForAssignFormData: FormField = mockFormField(
-  'createdDate',
-  'createdDate',
-  'text',
-  DefaultValues.STRING_EMPTY,
-  undefined,
-  'Created Date'
-);
-
-const testFormFieldLastModifiedForAssignFormData: FormField = mockFormField(
-  'lastModified',
-  'lastModified',
-  'text',
-  DefaultValues.STRING_EMPTY,
-  undefined,
-  'Last Modified'
-);
-const testFormFieldStateForAssignFormData: FormField = mockFormField(
-  'state',
-  'state',
-  'text',
-  undefined,
-  undefined,
-  'State'
-);
-const testFormFieldRespondentNameForAssignFormData: FormField = mockFormField(
-  'respondentName',
-  'respondentName',
-  'text',
-  MockCaseWithIdConstants.TEST_RESPONDENT_NAME,
-  undefined,
-  'Respondent Name'
-);
-const testFormFieldFirstNameForAssignFormData: FormField = mockFormField(
-  'firstName',
-  'firstName',
-  'text',
-  MockCaseWithIdConstants.TEST_CLAIMANT_NAME,
-  undefined,
-  'Claimant First Name(s)'
-);
-const testFormFieldLastNameForAssignFormData: FormField = mockFormField(
-  'lastName',
-  'lastName',
-  'text',
-  MockCaseWithIdConstants.TEST_CLAIMANT_SURNAME,
-  undefined,
-  'Claimant Last Name'
-);
-
-const formFields: FormFields = {
-  testFormFieldIdForAssignFormData,
-  testFormFieldCreatedDateForAssignFormData,
-  testFormFieldLastModifiedForAssignFormData,
-  testFormFieldStateForAssignFormData,
-  testFormFieldRespondentNameForAssignFormData,
-  testFormFieldFirstNameForAssignFormData,
-  testFormFieldLastNameForAssignFormData,
-};
+import { mockValidCaseWithId } from '../mocks/mockCaseWithId';
+import { formFields } from '../mocks/mockForm';
 
 describe('Form Helper Test', () => {
   it('should assign form data to userCase which has CaseWithId type', async () => {
