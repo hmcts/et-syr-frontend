@@ -3,9 +3,16 @@ import { randomUUID } from 'crypto';
 import redis from 'redis-mock';
 
 import { CaseDataCacheKey, CaseType, YesOrNo } from '../../../main/definitions/case';
-import { CacheErrors, RedisErrors } from '../../../main/definitions/constants';
+import { CacheErrors, PageUrls, RedisErrors } from '../../../main/definitions/constants';
 import { TypesOfClaim } from '../../../main/definitions/definition';
-import { cachePreLoginCaseData, generatePreLoginUrl, getPreloginCaseData } from '../../../main/services/CacheService';
+import {
+  cachePreLoginCaseData,
+  generatePreLoginUrl,
+  getPreloginCaseData,
+  setPreLoginUrl,
+} from '../../../main/services/CacheService';
+import { mockApp } from '../mocks/mockApp';
+import { mockRequest } from '../mocks/mockRequest';
 
 const redisClient = redis.createClient();
 const uuid = 'f0d62bc6-5c7b-4ac1-98d2-c745a2df79b8';
@@ -107,5 +114,15 @@ describe('Generate pre login url', () => {
       caughtError = error;
     }
     expect(caughtError).toEqual(new Error(CacheErrors.ERROR_URL_NOT_FOUND_FOR_PRE_LOGIN_URL));
+  });
+  describe('setPreLoginUrl', () => {
+    it('should set pre login url to redis', () => {
+      mockedRandomUUID.mockImplementation(() => uuid);
+      const request = mockRequest({});
+      request.app = mockApp({});
+      request.app.locals = { redisClient };
+      setPreLoginUrl(request, PageUrls.CASE_LIST);
+      expect(request.session.guid).toEqual(uuid);
+    });
   });
 });

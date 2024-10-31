@@ -13,11 +13,11 @@ import {
   languages,
 } from '../../definitions/constants';
 import { getLogger } from '../../logger';
-import { cachePreLoginUrl, generatePreLoginUrl, getPreLoginUrl } from '../../services/CacheService';
+import { cachePreLoginUrl, generatePreLoginUrl, getPreLoginUrl, setPreLoginUrl } from '../../services/CacheService';
 import ErrorUtils from '../../utils/ErrorUtils';
-import LanguageUtils from '../../utils/LanguageUtils';
 
 import { validateNoSignInEndpoints } from './noSignInRequiredEndpoints';
+
 const logger = getLogger('oidc');
 
 export class Oidc {
@@ -46,19 +46,12 @@ export class Oidc {
     });
 
     app.get(PageUrls.CHECKLIST, (req: AppRequest, res: Response, next: NextFunction) => {
-      const redisClient = req.app.locals?.redisClient;
-      if (!redisClient) {
-        return ErrorUtils.throwManualError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
-      } else {
-        try {
-          req.session.guid = cachePreLoginUrl(
-            redisClient,
-            PageUrls.CHECKLIST + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url)
-          );
-        } catch (err) {
-          return ErrorUtils.throwError(err, RedisErrors.FAILED_TO_SAVE);
-        }
-      }
+      setPreLoginUrl(req, PageUrls.CHECKLIST);
+      return next();
+    });
+
+    app.get(PageUrls.CASE_LIST, (req: AppRequest, res: Response, next: NextFunction) => {
+      setPreLoginUrl(req, PageUrls.CASE_LIST);
       return next();
     });
 

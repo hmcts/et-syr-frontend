@@ -2,8 +2,11 @@ import { randomUUID } from 'crypto';
 
 import { RedisClient } from 'redis';
 
+import { AppRequest } from '../definitions/appRequest';
 import { CaseDataCacheKey } from '../definitions/case';
 import { CacheErrors, HTTPS_PROTOCOL, RedisErrors } from '../definitions/constants';
+import ErrorUtils from '../utils/ErrorUtils';
+import LanguageUtils from '../utils/LanguageUtils';
 import StringUtils from '../utils/StringUtils';
 
 export const generatePreLoginUrl = (host: string, port: string, url: string, developmentMode: boolean): string => {
@@ -23,6 +26,22 @@ export const cachePreLoginUrl = (redisClient: RedisClient, preLoginUrl: string):
   const guid = randomUUID();
   redisClient.set(guid, preLoginUrl);
   return guid;
+};
+
+export const setPreLoginUrl = (req: AppRequest, preLoginUrl: string): void => {
+  const redisClient = req.app.locals?.redisClient;
+  if (!redisClient) {
+    return ErrorUtils.throwManualError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
+  } else {
+    try {
+      req.session.guid = cachePreLoginUrl(
+        redisClient,
+        preLoginUrl + LanguageUtils.findLanguageUrlParameterInGivenUrl(req.url)
+      );
+    } catch (err) {
+      return ErrorUtils.throwError(err, RedisErrors.FAILED_TO_SAVE);
+    }
+  }
 };
 
 export const cachePreLoginCaseData = (redisClient: RedisClient, cacheMap: Map<CaseDataCacheKey, string>): string => {
