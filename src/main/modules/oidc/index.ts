@@ -20,6 +20,13 @@ import LanguageUtils from '../../utils/LanguageUtils';
 import { validateNoSignInEndpoints } from './noSignInRequiredEndpoints';
 const logger = getLogger('oidc');
 
+// Array of Valid PCQ URLs
+const VALID_URLS = [AuthUrls.CALLBACK, PageUrls.HOME];
+
+const isValidUrl = (url: string): boolean => {
+  return VALID_URLS.some(allowedUrl => url.startsWith(allowedUrl));
+};
+
 export class Oidc {
   public enableFor(app: Application): void {
     const port = app.locals.developmentMode ? `:${config.get('port')}` : '';
@@ -68,7 +75,15 @@ export class Oidc {
       req.session.guid ? (stateParam = req.session.guid) : (stateParam = EXISTING_USER);
       req.session.caseNumberChecked = false;
       stateParam = stateParam + '-' + languageParam;
-      res.redirect(getRedirectUrl(serviceUrl(res), AuthUrls.CALLBACK, stateParam, languageParam));
+      const redirectUrl = getRedirectUrl(serviceUrl(res), AuthUrls.CALLBACK, stateParam, languageParam);
+
+      // Only redirect if the generated URL is allowed
+      if (isValidUrl(redirectUrl)) {
+        return res.redirect(redirectUrl);
+      } else {
+        logger.info(`Redirect URL: ${redirectUrl} is invalid`);
+        return res.redirect(PageUrls.HOME); // Fallback to a safe page
+      }
     });
 
     app.get(AuthUrls.LOGOUT, (req: AppRequest, res: Response) => {
