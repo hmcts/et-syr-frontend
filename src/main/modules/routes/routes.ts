@@ -2,6 +2,9 @@ import os from 'os';
 
 import { infoRequestHandler } from '@hmcts/info-provider';
 import { Application } from 'express';
+// eslint-disable-next-line import/no-named-as-default
+import rateLimit from 'express-rate-limit';
+import multer, { FileFilterCallback } from 'multer';
 
 import AcasEarlyConciliationCertificateController from '../../controllers/AcasEarlyConciliationCertificateController';
 import ApplicationSubmittedController from '../../controllers/ApplicationSubmittedController';
@@ -61,10 +64,29 @@ import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheck
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
-import { InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
+import { AppRequest } from '../../definitions/appRequest';
+import { FILE_SIZE_LIMIT, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
+
+const handleUploads = multer({
+  limits: {
+    fileSize: FILE_SIZE_LIMIT,
+  },
+  fileFilter: (req: AppRequest, file: Express.Multer.File, callback: FileFilterCallback) => {
+    req.fileTooLarge = parseInt(req.headers['content-length']) > FILE_SIZE_LIMIT;
+    return callback(null, !req.fileTooLarge);
+  },
+});
+
+const respondentContestClaimReasonLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  message: 'Too many requests from this IP, please try again later.',
+});
 
 export class Routes {
   public enableFor(app: Application): void {
+    // Singleton controllers:
+    const respondentContestClaimReasonController = new RespondentContestClaimReasonController();
     app.get(InterceptPaths.CHANGE_DETAILS, new ChangeDetailsController().get);
     // Page URLs
     app.get(PageUrls.HOME, new HomeController().get);
@@ -174,8 +196,13 @@ export class Routes {
     // 3. Give us your response (contest-claim)
     app.get(PageUrls.RESPONDENT_CONTEST_CLAIM, new RespondentContestClaimController().get);
     app.post(PageUrls.RESPONDENT_CONTEST_CLAIM, new RespondentContestClaimController().post);
-    app.get(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, new RespondentContestClaimReasonController().get);
-    app.post(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, new RespondentContestClaimReasonController().post);
+    app.get(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, respondentContestClaimReasonController.get);
+    app.post(
+      PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
+      respondentContestClaimReasonLimiter,
+      handleUploads.single('contestClaimDocument'),
+      respondentContestClaimReasonController.post
+    );
     app.get(PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, new CheckYourAnswersContestClaimController().get);
     app.post(PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, new CheckYourAnswersContestClaimController().post);
     app.get(PageUrls.EMPLOYERS_CONTRACT_CLAIM, new EmployersContractClaimController().get);

@@ -96,7 +96,7 @@ export default class RespondentAddressController {
       );
     } else {
       logger.info(LoggerConstants.ERROR_SESSION_SELECTED_USER_NOT_FOUND + ' caseId: ' + req.session?.userCase?.id);
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.SESSION_RESPONDENT,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD

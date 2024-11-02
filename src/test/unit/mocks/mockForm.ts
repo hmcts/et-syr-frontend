@@ -91,6 +91,14 @@ export const testFormFieldLastNameForAssignFormData: FormField = mockFormField(
   undefined,
   'Claimant Last Name'
 );
+export const testFormField: FormField = mockFormField(
+  'lastName',
+  'lastName',
+  'text',
+  MockCaseWithIdConstants.TEST_CLAIMANT_SURNAME,
+  undefined,
+  'Claimant Last Name'
+);
 
 export const formFields: FormFields = {
   testFormFieldIdForAssignFormData,

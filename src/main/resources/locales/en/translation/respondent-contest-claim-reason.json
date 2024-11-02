@@ -9,17 +9,34 @@
   "bullet2": "making sure that any facts or events are in date order",
   "bullet3": "whether you think another person or company may be liable and why",
   "p3": "You can use the text box or upload a file containing the details of your response.",
-  "p4": "Files should be a maximum of 100MB in size (larger files must be split).",
+  "p4": "Each file should be a maximum of 50MB in size (larger files must be split).",
   "textAreaLabel1": "Explain why ",
   "textAreaLabel2": " contests the claim",
   "files": {
     "title": "Upload a file (Optional)",
-    "button": "Upload file",
+    "uploadButton": "Upload file",
+    "removeButton": "Remove file",
     "uploaded": "Files uploaded"
   },
+  "fileUpload": {
+    "linkText": "Or upload your summary as a separate document (optional)",
+    "hint": "<p>You can upload multiple documents.</p><p>If you want to upload an email, download and convert from your email client first. Most email clients will give the option of downloading as pdf or PostScript.</p><p>Upload a file</p>",
+    "hintExisting": "<p>You can only upload 1 document.</p><p>If you want to upload an email, download and convert from your email client first. Most email clients will give the option of downloading as pdf or PostScript.</p><b><p>You have previously uploaded: {{filename}}</p></b>"
+  },
+  "acceptedFormats": {
+    "label": "Accepted formats",
+    "p1": "Accepted file formats are pdf, doc, docx, txt, dot, jpg, jpeg, bmp, tif, tiff, png, xls, xlt, xla, xlsx, xltx, ppt, pot, pps, ppa, pptx, potx, ppsx, rtf, csv."
+  },
   "errors": {
-    "respondentContestClaimReason": {
-      "required": "Explain why the respondent contests the claim"
+    "et3ResponseContestClaimDetails": {
+      "required": "Give details of Employer’s contract claim",
+      "tooLong": "Details of the contest must be 3000 characters or less",
+      "textAndFile": "Enter a free text summary or upload as a separate document you cannot have both"
+    },
+    "contestClaimDocument": {
+      "invalidFileName": "The name of the file provided is invalid. A file name cannot exceed 150 characters or contain any of the following characters: \\/:*?\"|<>",
+      "invalidFileFormat": "The type of file(s) you are trying to upload is not supported by our system. Please convert this into one of the supported file types listed below.",
+      "invalidFileSize": "The file you are trying to upload has exceeded the maximum file size limit of 50MB, please reduce the size of the file."
     },
     "hiddenErrorField": {
       "sessionUserCase": "User case not found in session",

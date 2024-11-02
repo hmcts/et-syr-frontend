@@ -62,7 +62,7 @@ export default class CaseNumberCheckController {
         return res.redirect(LegacyUrls.ET3);
       }
     } catch (error) {
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.API,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD

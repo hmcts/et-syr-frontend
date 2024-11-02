@@ -6,7 +6,7 @@ import { PageUrls, TranslationKeys, languages } from '../definitions/constants';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
-import DateUtil from '../utils/DateUtil';
+import DateUtils from '../utils/DateUtils';
 
 export default class ClaimantET1FormDetailsController {
   public async get(req: AppRequest, res: Response): Promise<void> {
@@ -19,7 +19,7 @@ export default class ClaimantET1FormDetailsController {
     } else {
       et1Form = req.session.et1FormEnglish;
     }
-    const formattedEt1FormDate = DateUtil.formatDateStringToDDMonthYYYY(et1Form?.value?.dateOfCorrespondence);
+    const formattedEt1FormDate = DateUtils.formatDateStringToDDMonthYYYY(et1Form?.value?.dateOfCorrespondence);
     res.render(TranslationKeys.CLAIMANT_ET1_FORM_DETAILS, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CLAIMANT_ET1_FORM_DETAILS as never, { returnObjects: true } as never),

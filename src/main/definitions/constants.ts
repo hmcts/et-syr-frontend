@@ -177,9 +177,11 @@ export const ValidationErrors = {
   INVALID_END_DATE_BEFORE_START_DATE: 'invalidEndDateBeforeStartDate',
   INVALID_FILE_FORMAT: 'invalidFileFormat',
   INVALID_FILE_NAME: 'invalidFileName',
+  INVALID_FILE_SIZE: 'invalidFileSize',
   INVALID_LENGTH: 'invalidLength',
   INVALID_NAME: 'invalidName',
   INVALID_PHONE_NUMBER: 'invalidPhoneNumber',
+  TEXT_AND_FILE: 'textAndFile',
   API: 'api',
   EXCEEDED: 'exceeded',
   NEGATIVE_NUMBER: 'negativeNumber',
@@ -493,6 +495,8 @@ export const DefaultValues = {
   STRING_SLASH: '/',
   STRING_SLASH_REGEX: /\//gi,
   STRING_UNDERSCORE: '_',
+  NUMBER_ZERO: 0,
+  CONTEST_CLAIM_REASON_MAX_LENGTH: 3000,
 } as const;
 
 export const FormFieldNames = {
@@ -510,6 +514,10 @@ export const FormFieldNames = {
   },
   SELF_ASSIGNMENT_CHECK_FIELDS: {
     SELF_ASSIGNMENT_CHECK: 'selfAssignmentCheck',
+  },
+  RESPONDENT_CONTEST_CLAIM_REASON: {
+    ET3_RESPONSE_CONTEST_CLAIM_DETAILS: 'et3ResponseContestClaimDetails',
+    CONTEST_CLAIM_DOCUMENT: 'contestClaimDocument',
   },
 } as const;
 

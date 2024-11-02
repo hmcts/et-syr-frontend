@@ -62,7 +62,7 @@ export default class SelfAssignmentCheckController {
           .toString()
           .includes(ServiceErrors.ERROR_ASSIGNING_USER_ROLE_USER_ALREADY_HAS_ROLE_EXCEPTION_CHECK_VALUE)
       ) {
-        ErrorUtils.setManualErrorToRequestSession(
+        ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
           req,
           ValidationErrors.CASE_ALREADY_ASSIGNED_TO_SAME_USER,
           FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -71,13 +71,13 @@ export default class SelfAssignmentCheckController {
         StringUtils.isNotBlank(error?.message) &&
         error.message.toString().includes(ServiceErrors.ERROR_ASSIGNING_USER_ROLE_ALREADY_ASSIGNED_CHECK_VALUE)
       ) {
-        ErrorUtils.setManualErrorToRequestSession(
+        ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
           req,
           ValidationErrors.CASE_ALREADY_ASSIGNED,
           FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
         );
       } else {
-        ErrorUtils.setManualErrorToRequestSession(
+        ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
           req,
           ValidationErrors.API,
           FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -86,7 +86,7 @@ export default class SelfAssignmentCheckController {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
     }
     if (!caseAssignmentResponse) {
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.API,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD

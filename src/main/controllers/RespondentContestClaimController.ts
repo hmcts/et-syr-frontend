@@ -47,18 +47,17 @@ export default class RespondentContestClaimController {
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    let nextPage = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM);
     if (formData.et3ResponseRespondentContestClaim === YesOrNo.NO) {
-      const nextPage = setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
-      return res.redirect(nextPage);
+      nextPage = setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
     }
-
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.ContactDetails,
       LinkStatus.IN_PROGRESS,
-      PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM
+      nextPage
     );
   };
 

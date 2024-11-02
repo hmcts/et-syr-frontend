@@ -17,7 +17,7 @@ import { getLanguageParam } from '../helpers/RouterHelpers';
 import { currentET3StatusFn } from '../helpers/state-sequence';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
-import DateUtil from '../utils/DateUtil';
+import DateUtils from '../utils/DateUtils';
 import ET3Util from '../utils/ET3Util';
 import StringUtils from '../utils/StringUtils';
 
@@ -42,7 +42,7 @@ export default class CaseDetailsController {
         respondentResponseDeadline = req.session.userCase.respondentResponseDeadline;
       } else {
         if (StringUtils.isNotBlank(req.session.userCase?.preAcceptCase?.dateAccepted)) {
-          respondentResponseDeadline = DateUtil.addStringDate28Days(req.session.userCase?.preAcceptCase?.dateAccepted);
+          respondentResponseDeadline = DateUtils.addStringDate28Days(req.session.userCase?.preAcceptCase?.dateAccepted);
         }
       }
       // Check if Respond to claim acknowledgment needs to be shown or not

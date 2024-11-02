@@ -115,7 +115,7 @@ describe('RespondentSelectPostCodeController', () => {
     };
     ET3Util.updateET3Data = updateET3DataMock;
     updateET3DataMock.mockImplementationOnce(() => {
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         request,
         ValidationErrors.API,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD

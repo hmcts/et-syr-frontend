@@ -27,7 +27,7 @@ const logger = getLogger('RespondentNameController');
 export default class ET3Util {
   public static findSelectedRespondent(req: AppRequest): number {
     if (!req.session?.userCase) {
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.SESSION_USER_CASE,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -36,7 +36,7 @@ export default class ET3Util {
       return;
     }
     if (!req.session.user) {
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.SESSION_USER,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -45,7 +45,7 @@ export default class ET3Util {
       return;
     }
     if (!req.session.userCase.respondents) {
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.SESSION_RESPONDENT,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -54,7 +54,7 @@ export default class ET3Util {
       return;
     }
     if (StringUtils.isBlank(req.session.user.id)) {
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.USER_ID,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -69,7 +69,7 @@ export default class ET3Util {
       }
       selectedRespondentIndex++;
     }
-    ErrorUtils.setManualErrorToRequestSession(
+    ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
       req,
       ValidationErrors.RESPONDENT_NOT_FOUND,
       FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -79,7 +79,7 @@ export default class ET3Util {
 
   public static findSelectedRespondentByCaseWithId(req: AppRequest, caseWithId: CaseWithId): number {
     if (!caseWithId) {
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.SESSION_USER_CASE,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -88,7 +88,7 @@ export default class ET3Util {
       return;
     }
     if (!req.session.user) {
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.SESSION_USER,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -97,7 +97,7 @@ export default class ET3Util {
       return;
     }
     if (!caseWithId.respondents) {
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.SESSION_RESPONDENT,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -106,7 +106,7 @@ export default class ET3Util {
       return;
     }
     if (StringUtils.isBlank(req.session.user.id)) {
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.USER_ID,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -121,7 +121,7 @@ export default class ET3Util {
       }
       selectedRespondentIndex++;
     }
-    ErrorUtils.setManualErrorToRequestSession(
+    ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
       req,
       ValidationErrors.RESPONDENT_NOT_FOUND,
       FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -152,7 +152,7 @@ export default class ET3Util {
       );
     } catch (e) {
       logger.error(LoggerConstants.ERROR_API + 'modifyEt3Data' + DefaultValues.STRING_NEW_LINE + e);
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.API,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -185,7 +185,7 @@ export default class ET3Util {
       );
     } catch (e) {
       logger.error(LoggerConstants.ERROR_API + 'modifyEt3Data' + DefaultValues.STRING_NEW_LINE + e);
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.API,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD

@@ -1,6 +1,5 @@
 import RespondentContestClaimReasonController from '../../../main/controllers/RespondentContestClaimReasonController';
-import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import { ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
+import { DefaultValues, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/respondent-contest-claim-reason.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -55,14 +54,7 @@ describe('RespondentContestClaimReasonController', () => {
 
       await controller.post(request, response);
 
-      expect(ET3Util.updateET3ResponseWithET3Form).toHaveBeenCalledWith(
-        request,
-        response,
-        expect.anything(), // Form object
-        ET3HubLinkNames.ContactDetails,
-        LinkStatus.IN_PROGRESS,
-        PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM
-      );
+      expect(ET3Util.updateET3ResponseWithET3Form).toHaveBeenCalledTimes(DefaultValues.NUMBER_ZERO);
     });
   });
 });

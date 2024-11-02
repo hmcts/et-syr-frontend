@@ -1,7 +1,7 @@
 import { DefaultValues } from '../../../main/definitions/constants';
-import DateUtil from '../../../main/utils/DateUtil';
+import DateUtils from '../../../main/utils/DateUtils';
 
-describe('DateUtil tests', () => {
+describe('DateUtils tests', () => {
   it.each([
     { value: undefined, result: DefaultValues.STRING_EMPTY },
     { value: '', result: DefaultValues.STRING_EMPTY },
@@ -13,7 +13,7 @@ describe('DateUtil tests', () => {
     { value: '2024-01-01   ', result: '01/01/2024' },
     { value: '2025-12-30', result: '30/12/2025' },
   ])('check if given string is correctly parsed to date like 01/01/2024', ({ value, result }) => {
-    expect(DateUtil.formatDateStringToDDMMYYYY(value)).toStrictEqual(result);
+    expect(DateUtils.formatDateStringToDDMMYYYY(value)).toStrictEqual(result);
   });
 
   it.each([
@@ -27,7 +27,7 @@ describe('DateUtil tests', () => {
     { value: '2024-01-01   ', result: '01 Jan 2024' },
     { value: '2025-12-30', result: '30 Dec 2025' },
   ])('check if given string is correctly parsed to date like 01 Jan 2024', ({ value, result }) => {
-    expect(DateUtil.formatDateStringToDDMonthYYYY(value)).toStrictEqual(result);
+    expect(DateUtils.formatDateStringToDDMonthYYYY(value)).toStrictEqual(result);
   });
 
   it.each([
@@ -41,7 +41,7 @@ describe('DateUtil tests', () => {
     { value: '2024-01-01   ', result: true },
     { value: '2025-12-30', result: true },
   ])('check if given string is a valid date', ({ value, result }) => {
-    expect(DateUtil.isDateStringValid(value)).toStrictEqual(result);
+    expect(DateUtils.isDateStringValid(value)).toStrictEqual(result);
   });
 
   it.each([
@@ -55,7 +55,7 @@ describe('DateUtil tests', () => {
     { value: '2024-01-01   ', result: '29/01/2024' },
     { value: '2025-12-30', result: '27/01/2026' },
   ])('check if 28 days added to given string', ({ value, result }) => {
-    expect(DateUtil.addStringDate28Days(value)).toStrictEqual(result);
+    expect(DateUtils.addStringDate28Days(value)).toStrictEqual(result);
   });
 
   it.each([
@@ -69,7 +69,7 @@ describe('DateUtil tests', () => {
     { value: '2024-01-01   ', result: { day: '01', month: '01', year: '2024' } },
     { value: '2025-12-30', result: { day: '30', month: '12', year: '2025' } },
   ])('format date string to case date', ({ value, result }) => {
-    expect(DateUtil.formatDateStringToCaseDate(value)).toStrictEqual(result);
+    expect(DateUtils.formatDateStringToCaseDate(value)).toStrictEqual(result);
   });
 
   it.each([
@@ -80,6 +80,6 @@ describe('DateUtil tests', () => {
     { value: { day: '01', month: '01', year: '2024' }, result: '01 Jan 2024' },
     { value: { day: '30', month: '12', year: '2025' }, result: '30 Dec 2025' },
   ])('converts case date to string', ({ value, result }) => {
-    expect(DateUtil.convertCaseDateToString(value)).toStrictEqual(result);
+    expect(DateUtils.convertCaseDateToString(value)).toStrictEqual(result);
   });
 });
