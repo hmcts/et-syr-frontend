@@ -18,10 +18,12 @@
     "removeButton": "Remove file",
     "uploaded": "Files uploaded"
   },
+  "fileUploadTable": {
+    "hint": "<p>You can upload multiple documents.</p><p>If you want to upload an email, download and convert from your email client first. Most email clients will give the option of downloading as pdf or PostScript.</p>"
+  },
   "fileUpload": {
     "linkText": "Or upload your summary as a separate document (optional)",
-    "hint": "<p>You can upload multiple documents.</p><p>If you want to upload an email, download and convert from your email client first. Most email clients will give the option of downloading as pdf or PostScript.</p><p>Upload a file</p>",
-    "hintExisting": "<p>You can only upload 1 document.</p><p>If you want to upload an email, download and convert from your email client first. Most email clients will give the option of downloading as pdf or PostScript.</p><b><p>You have previously uploaded: {{filename}}</p></b>"
+    "hint": "<p>Upload a file</p>"
   },
   "acceptedFormats": {
     "label": "Accepted formats",

@@ -1,4 +1,6 @@
+{% if field.divider %}
 <div class="govuk-inset-text">
+{% endif %}
   <div class={{field.classes}}>{{getContent(field.label)}}</div>
   {% for fieldName, field in field.subFields %}
     {% set labelClasses %}
@@ -10,4 +12,6 @@
       {% include "./" + field.type + ".njk" %}
     {% endif %}
   {% endfor %}
+{% if field.divider %}
 </div>
+{% endif %}

@@ -11,21 +11,13 @@ import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import RespondentContestClaimReasonControllerHelper from '../helpers/controller/RespondentContestClaimReasonControllerHelper';
 import { getLogger } from '../logger';
-import CollectionUtils from '../utils/CollectionUtils';
 import { isContentCharsOrLessAndNotEmpty } from '../validators/validator';
 
 const logger = getLogger('RespondentContestClaimReasonController');
 
 export default class RespondentContestClaimReasonController {
   private readonly form: Form;
-  private uploadedFileList: [];
-  private getHint = (label: AnyRecord): string => {
-    if (CollectionUtils.isNotEmpty(this.uploadedFileList)) {
-      return (label.fileUpload.hintExisting as string).replace('{{filename}}', this.uploadedFileList.toString);
-    } else {
-      return label.fileUpload.hint;
-    }
-  };
+  public uploadedFileList: [] = undefined;
   private readonly respondentContestClaimReason: FormContent = {
     fields: {
       et3ResponseContestClaimDetails: {
@@ -46,30 +38,30 @@ export default class RespondentContestClaimReasonController {
         isCollapsable: true,
         collapsableTitle: l => l.fileUpload.linkText,
         exclusive: true,
-        divider: true,
+        divider: false,
         subFields: {
+          uploadDocumentTable: {
+            id: 'uploadDocumentTable',
+            rows: this.uploadedFileList,
+            type: 'table',
+            hint: l => l.fileUploadTable.hint,
+            hidden: false,
+          },
           contestClaimDocument: {
             id: 'contestClaimDocument',
             classes: 'govuk-label',
             labelHidden: false,
             labelSize: 'm',
             type: 'upload',
-            hint: l => this.getHint(l),
           },
           upload: {
             label: (l: AnyRecord): string => l.files.uploadButton,
+            classes: 'govuk-button--secondary',
             id: 'upload',
             type: 'button',
             name: 'upload',
             value: 'true',
-          },
-          remove: {
-            label: (l: AnyRecord): string => l.files.removeButton,
-            classes: 'govuk-button--warning',
-            id: 'remove',
-            type: 'button',
-            name: 'remove',
-            value: 'true',
+            divider: false,
           },
         },
       },
