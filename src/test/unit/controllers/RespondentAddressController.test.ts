@@ -93,7 +93,7 @@ describe('RespondentAddressController', () => {
 
   it('should redirect to RESPONDENT_ADDRESS when selected user not found', async () => {
     // Change the request body to reflect No selection
-    req.body.respondentAddress = YesOrNo.NO;
+    req.body.et3IsRespondentAddressCorrect = YesOrNo.NO;
     req.session.selectedRespondentIndex = undefined;
     req.session.userCase = mockCaseWithIdWithRespondents;
 
@@ -108,7 +108,7 @@ describe('RespondentAddressController', () => {
 
   it('should redirect to RESPONDENT_ADDRESS when session error occurs', async () => {
     // Change the request body to reflect No selection
-    req.body.respondentAddress = undefined;
+    req.body.et3IsRespondentAddressCorrect = undefined;
     req.session.selectedRespondentIndex = undefined;
     req.session.userCase = mockCaseWithIdWithRespondents;
 

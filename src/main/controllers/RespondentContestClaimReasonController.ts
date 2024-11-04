@@ -107,7 +107,19 @@ export default class RespondentContestClaimReasonController {
       if (!documentTypeItem) {
         return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
       }
-      if (!req.session?.userCase?.respondents[req.session.selectedRespondentIndex]) {
+      if (!req.session?.selectedRespondentIndex && req.session.selectedRespondentIndex !== 0) {
+        req.session.errors = [
+          {
+            propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
+            errorType: ValidationErrors.RESPONDENT_NOT_FOUND,
+          },
+        ];
+        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+      }
+      if (
+        !req.session?.userCase?.respondents ||
+        !req.session?.userCase?.respondents[req.session.selectedRespondentIndex]
+      ) {
         req.session.errors = [
           {
             propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,

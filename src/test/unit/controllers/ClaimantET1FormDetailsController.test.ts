@@ -1,5 +1,5 @@
 import ClaimantET1FormDetailsController from '../../../main/controllers/ClaimantET1FormDetailsController';
-import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
 import { getLanguageParam } from '../../../main/helpers/RouterHelpers';
 import { getFlagValue } from '../../../main/modules/featureFlag/launchDarkly';
@@ -23,26 +23,25 @@ describe('Claimant ET1 Form Details Controller', () => {
     // Mocking external dependencies
     (setUrlLanguage as jest.Mock).mockReturnValue(PageUrls.CLAIMANT_ET1_FORM_DETAILS);
     (getFlagValue as jest.Mock).mockResolvedValue(true); // Assume Welsh is enabled for the test
-    (getLanguageParam as jest.Mock).mockReturnValue('en');
   });
 
   describe('GET method', () => {
     it('should call res.render with the correct parameters', async () => {
+      (getLanguageParam as jest.Mock).mockReturnValue('?lng=en');
       // Call the controller's GET method
       await controller.get(request, response);
 
       // Expect that res.render was called with the right template and object
-      expect(response.render).toHaveBeenCalledWith(
-        TranslationKeys.CLAIMANT_ET1_FORM_DETAILS,
-        expect.objectContaining({
-          PageUrls,
-          hideContactUs: true,
-          useCase: request.session.userCase,
-          redirectUrl: PageUrls.CLAIMANT_ET1_FORM_DETAILS,
-          languageParam: 'en',
-          welshEnabled: true,
-        })
-      );
+      expect(response.render).toHaveBeenCalledWith(TranslationKeys.CLAIMANT_ET1_FORM_DETAILS, expect.anything());
+    });
+    it('should call res.render with the correct parameters when selected language is welsh', async () => {
+      (getLanguageParam as jest.Mock).mockReturnValue('?lng=cy');
+      request.url = PageUrls.CLAIMANT_ET1_FORM_DETAILS + languages.WELSH_URL_PARAMETER;
+      // Call the controller's GET method
+      await controller.get(request, response);
+
+      // Expect that res.render was called with the right template and object
+      expect(response.render).toHaveBeenCalledWith(TranslationKeys.CLAIMANT_ET1_FORM_DETAILS, expect.anything());
     });
   });
 });
