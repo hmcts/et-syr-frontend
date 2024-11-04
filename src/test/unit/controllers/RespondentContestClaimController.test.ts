@@ -53,7 +53,7 @@ describe('RespondentContestClaimController', () => {
     it('should redirect to contest claim reason page when response is NO', async () => {
       request = mockRequest({
         body: {
-          et3ResponseRespondentContestClaim: YesOrNo.NO,
+          et3ResponseRespondentContestClaim: YesOrNo.YES,
         },
       });
       request.url = PageUrls.RESPONDENT_CONTEST_CLAIM_REASON;
@@ -65,7 +65,7 @@ describe('RespondentContestClaimController', () => {
     it('should call ET3Util.updateET3ResponseWithET3Form with the correct parameters when response is YES', async () => {
       request = mockRequest({
         body: {
-          et3ResponseRespondentContestClaim: YesOrNo.YES,
+          et3ResponseRespondentContestClaim: YesOrNo.NO,
         },
       });
       request.url = PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM;

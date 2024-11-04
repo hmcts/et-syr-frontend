@@ -1,19 +1,13 @@
 import { AppRequest } from '../../definitions/appRequest';
 import { CaseWithId } from '../../definitions/case';
 import { DefaultValues, FormFieldNames, ValidationErrors } from '../../definitions/constants';
-import { Logger } from '../../logger';
 import CollectionUtils from '../../utils/CollectionUtils';
 import ErrorUtils from '../../utils/ErrorUtils';
+import ObjectUtils from '../../utils/ObjectUtils';
 import StringUtils from '../../utils/StringUtils';
-import { hasInvalidFileFormat, hasInvalidFileName } from '../../validators/validator';
 
 export default class RespondentContestClaimReasonControllerHelper {
-  public static areInputValuesValid(
-    req: AppRequest,
-    formData: Partial<CaseWithId>,
-    fileList: Express.Multer.File[],
-    logger: Logger
-  ): boolean {
+  public static areInputValuesValid(req: AppRequest, formData: Partial<CaseWithId>): boolean {
     req.session.errors = [];
     const et3ResponseContestClaimDetailsText = formData.et3ResponseContestClaimDetails;
     const respondentContestClaimReasonProvided = StringUtils.isNotBlank(et3ResponseContestClaimDetailsText);
@@ -21,24 +15,26 @@ export default class RespondentContestClaimReasonControllerHelper {
       et3ResponseContestClaimDetailsText,
       DefaultValues.CONTEST_CLAIM_REASON_MAX_LENGTH
     );
-    const contestClaimDocumentsExist = CollectionUtils.isNotEmpty(fileList);
-    let fileFormatInvalid = false;
-    for (const file of fileList) {
-      if (hasInvalidFileFormat(file, logger) === ValidationErrors.INVALID_FILE_FORMAT) {
-        fileFormatInvalid = true;
-      }
+    if (
+      (!req?.session?.selectedRespondentIndex && req.session.selectedRespondentIndex !== 0) ||
+      CollectionUtils.isEmpty(req?.session?.userCase?.respondents) ||
+      ObjectUtils.isObjectEmpty(req.session.userCase.respondents[req.session.selectedRespondentIndex])
+    ) {
+      ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
+        req,
+        ValidationErrors.RESPONDENT_NOT_FOUND,
+        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+      );
+      return false;
     }
-    let fileNameInvalid = false;
-    for (const file of fileList) {
-      if (hasInvalidFileName(file.originalname) === ValidationErrors.INVALID_FILE_NAME) {
-        fileNameInvalid = true;
-      }
-    }
+    const contestClaimDocumentsExist = CollectionUtils.isNotEmpty(
+      req.session.userCase.respondents[req.session.selectedRespondentIndex].et3ResponseContestClaimDocument
+    );
     if (!respondentContestClaimReasonProvided && !contestClaimDocumentsExist) {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.REQUIRED,
-        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.ET3_RESPONSE_CONTEST_CLAIM_DETAILS
+        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
       );
       return false;
     }
@@ -46,7 +42,7 @@ export default class RespondentContestClaimReasonControllerHelper {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.TEXT_AND_FILE,
-        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.ET3_RESPONSE_CONTEST_CLAIM_DETAILS
+        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
       );
       return false;
     }
@@ -55,22 +51,6 @@ export default class RespondentContestClaimReasonControllerHelper {
         req,
         ValidationErrors.TOO_LONG,
         FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.ET3_RESPONSE_CONTEST_CLAIM_DETAILS
-      );
-      return false;
-    }
-    if (contestClaimDocumentsExist && fileFormatInvalid) {
-      ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
-        req,
-        ValidationErrors.INVALID_FILE_FORMAT,
-        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
-      );
-      return false;
-    }
-    if (contestClaimDocumentsExist && fileNameInvalid) {
-      ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
-        req,
-        ValidationErrors.INVALID_FILE_NAME,
-        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
       );
       return false;
     }

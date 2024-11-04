@@ -11,6 +11,13 @@ export type GovukTableRow = {
   attributes?: Record<string, string>;
 };
 
+export type GovukTableRowArray = {
+  text?: string;
+  html?: string;
+  classes?: string;
+  attributes?: Record<string, string>;
+}[];
+
 export function createTextRow<T extends Record<string, any>>(
   data: T,
   mapping: Partial<Record<keyof T, 'text' | 'html'>>

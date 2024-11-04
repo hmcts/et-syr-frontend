@@ -1,7 +1,10 @@
 import axiosService, { AxiosInstance, AxiosResponse } from 'axios';
 import config from 'config';
+import FormData from 'form-data';
 
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
+import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
+import { UploadedFile } from '../definitions/api/uploadedFile';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
@@ -172,6 +175,23 @@ export class CaseApi {
       });
     } catch (error) {
       throw new Error('Error fetching document: ' + axiosErrorDetails(error));
+    }
+  };
+
+  uploadDocument = async (file: UploadedFile, caseTypeId: string): Promise<AxiosResponse<DocumentUploadResponse>> => {
+    try {
+      const formData: FormData = new FormData();
+      formData.append('document_upload', file.buffer, file.originalname);
+
+      return await this.axios.post(JavaApiUrls.UPLOAD_FILE + caseTypeId, formData, {
+        headers: {
+          ...formData.getHeaders(),
+        },
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
+      });
+    } catch (error) {
+      throw new Error('Error uploading document: ' + axiosErrorDetails(error));
     }
   };
 }

@@ -1,4 +1,5 @@
 import { mockCaseApiDataResponse } from './mockCaseApiDataResponse';
+import { mockDocumentUploadResponse } from './mockDocumentUploadResponse';
 
 export const MockAxiosResponses = {
   mockAxiosResponseWithCaseApiDataResponseList: {
@@ -38,6 +39,20 @@ export const MockAxiosResponses = {
   },
   mockAxiosResponseWithBooleanTrueResponse: {
     data: true,
+    status: 200,
+    statusText: '',
+    headers: undefined as never,
+    config: undefined as never,
+  },
+  mockAxiosResponseWithDocumentUploadResponse: {
+    data: mockDocumentUploadResponse,
+    status: 200,
+    statusText: '',
+    headers: undefined as never,
+    config: undefined as never,
+  },
+  mockAxiosResponseWithoutData: {
+    data: {} as never,
     status: 200,
     statusText: '',
     headers: undefined as never,

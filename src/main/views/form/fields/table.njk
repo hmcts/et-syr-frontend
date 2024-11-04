@@ -1,15 +1,16 @@
 {% if field.hidden === false %}
+
   {% if field.label %}
   <h2 class="govuk-summary-list__key govuk-heading-m">
     {{ getContent(field.label) }}
   </h2>
   {% endif %}
   {% if field.hint %}
-  <p class = "govuk-hint">
+  <p class = "govuk-body">
   {{ getContent(field.hint) | safe }}
   </p>
   {% endif %}
   {{ govukTable({
-    rows: field.rows
+    rows: field.tableRows
   }) }}
 {% endif %}

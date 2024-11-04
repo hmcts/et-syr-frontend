@@ -1,5 +1,6 @@
 import { Case, CaseDate } from './case';
 import { SummaryListRow } from './govuk/govukSummaryList';
+import { GovukTableRow } from './govuk/govukTable';
 import { AnyRecord } from './util-types';
 
 type LanguageLookup = (lang: AnyRecord) => string;
@@ -48,6 +49,7 @@ export interface FormOptions {
   parser?: Parser;
   subFields?: Record<string, FormField>;
   rows?: SummaryListRow[];
+  tableRows?: GovukTableRow[];
 }
 
 export interface FormInput {
