@@ -278,6 +278,8 @@ describe('Form', () => {
           name: 'hiddenErrorField',
           hidden: true,
           type: 'text',
+          label: expect.any(Function),
+          labelHidden: true,
         },
       },
     });
