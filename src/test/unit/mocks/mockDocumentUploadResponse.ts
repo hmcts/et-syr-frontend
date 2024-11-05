@@ -95,6 +95,23 @@ export const mockDocumentTypeItemFromMockDocumentUploadResponse: DocumentTypeIte
     },
   },
 };
+export const mockDocumentTypeItemFromMockDocumentUploadResponseDocumentFileNameTestFilePdf: DocumentTypeItem = {
+  id: '900d4265-aaeb-455f-9cdd-bc0bdf61c918',
+  downloadLink: 'http://localhost:5005/documents/900d4265-aaeb-455f-9cdd-bc0bdf61c918/binary',
+  value: {
+    typeOfDocument: 'image/png',
+    creationDate: '2024-11-04T13:53:43.000+00:00',
+    shortDescription: mockDocumentUploadResponse.originalDocumentName,
+    uploadedDocument: {
+      document_filename: 'testFile.pdf',
+      document_url: 'http://localhost:5005/documents/900d4265-aaeb-455f-9cdd-bc0bdf61c918',
+      document_mime_type: 'image/png',
+      document_size: 47481,
+      createdOn: '2024-11-04T13:53:43.000+00:00',
+      document_binary_url: 'http://localhost:5005/documents/900d4265-aaeb-455f-9cdd-bc0bdf61c918/binary',
+    },
+  },
+};
 export const mockGovUKTableRowArrayFromDocumentTypeItem: GovukTableRowArray[] = [
   [
     {

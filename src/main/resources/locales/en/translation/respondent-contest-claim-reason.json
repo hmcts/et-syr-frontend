@@ -42,7 +42,8 @@
       "invalidFileSize": "The file you are trying to upload has exceeded the maximum file size limit of 50MB, please reduce the size of the file.",
       "fileNameNotFound": "The file you are trying to upload does not have name.",
       "fileBufferEmpty": "The file you are trying to upload is empty.",
-      "fileNameNotSelected": "Please select a file."
+      "fileNameNotSelected": "Please select a file.",
+      "fileAlreadyExists": "The file you are trying to upload already exists. Please remove existing one first."
     },
     "hiddenErrorField": {
       "sessionUserCase": "User case not found in session",

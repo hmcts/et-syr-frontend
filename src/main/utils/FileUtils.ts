@@ -5,6 +5,7 @@ import { UploadedFile } from '../definitions/api/uploadedFile';
 import { AppRequest } from '../definitions/appRequest';
 import { DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
 import { FormFieldNames, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import { GovukTableRowArray } from '../definitions/govuk/govukTable';
 import { AnyRecord } from '../definitions/util-types';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
@@ -65,6 +66,19 @@ export default class FileUtils {
     }
     return true;
   }
+  public static fileAlreadyExists(req: AppRequest): boolean {
+    if (!req.session?.userCase?.respondents[req.session.selectedRespondentIndex]?.et3ResponseContestClaimDocument) {
+      req.session.userCase.respondents[req.session.selectedRespondentIndex].et3ResponseContestClaimDocument = [];
+      return false;
+    }
+    for (const file of req.session.userCase.respondents[req.session.selectedRespondentIndex]
+      .et3ResponseContestClaimDocument) {
+      if (file.value.uploadedDocument.document_filename === req.file.originalname) {
+        return true;
+      }
+    }
+    return false;
+  }
   public static async uploadFile(req: AppRequest): Promise<DocumentUploadResponse> {
     try {
       req.session.errors = [];
@@ -99,46 +113,44 @@ export default class FileUtils {
     }
   }
 
-  public static convertDocumentTypeItemsToGovUkTableRows(req: AppRequest): void {
-    req.session.errors = [];
+  public static convertDocumentTypeItemsToGovUkTableRows(req: AppRequest): GovukTableRowArray[] {
     const languageParam = getLanguageParam(req.url);
     const translationFunction: AnyRecord = {
       ...req.t(TranslationKeys.RESPONDENT_CONTEST_CLAIM_REASON, { returnObjects: true }),
     };
+    const govUKTableRows = [];
     if (
       (!req?.session?.selectedRespondentIndex && req.session.selectedRespondentIndex !== 0) ||
       CollectionUtils.isEmpty(req?.session?.userCase?.respondents) ||
       ObjectUtils.isObjectEmpty(req?.session?.userCase?.respondents[req.session.selectedRespondentIndex])
     ) {
+      req.session.errors = [];
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.RESPONDENT_NOT_FOUND,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
       );
-      return;
+      return [];
     }
     if (
       CollectionUtils.isEmpty(
         req.session.userCase.respondents[req.session.selectedRespondentIndex].et3ResponseContestClaimDocument
       )
     ) {
-      req.session.selectedDocuments = [];
       req.session.userCase.respondents[req.session.selectedRespondentIndex].et3ResponseContestClaimDocument = [];
-      return;
-    }
-    if (!req.session.selectedDocuments) {
-      req.session.selectedDocuments = [];
+      return [];
     }
     const textRemove = translationFunction.remove ? translationFunction.remove : 'remove';
     for (const documentTypeItem of req.session.userCase.respondents[req.session.selectedRespondentIndex]
       .et3ResponseContestClaimDocument) {
-      req.session.selectedDocuments.push([
+      govUKTableRows.push([
         { text: documentTypeItem.value?.uploadedDocument?.document_filename },
         {
           html: '<a href="remove-file' + languageParam + '&fileId=' + documentTypeItem?.id + '">' + textRemove + '</a>',
         },
       ]);
     }
+    return govUKTableRows;
   }
 
   public static convertDocumentUploadResponseToDocumentTypeItem(

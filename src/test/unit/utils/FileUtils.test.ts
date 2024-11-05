@@ -4,6 +4,7 @@ import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import {
   mockDocumentTypeItemFromMockDocumentUploadResponse,
+  mockDocumentTypeItemFromMockDocumentUploadResponseDocumentFileNameTestFilePdf,
   mockDocumentUploadResponse,
   mockDocumentUploadResponseWithoutBinaryLink,
   mockDocumentUploadResponseWithoutOriginalDocumentName,
@@ -11,11 +12,11 @@ import {
   mockGovUKTableRowArrayFromDocumentTypeItem,
 } from '../mocks/mockDocumentUploadResponse';
 import {
-  fileEmptyFileName,
-  fileInvalidBuffer,
-  fileInvalidFormat,
-  fileInvalidName,
-  fileValid,
+  mockInvalidMulterFileWithEmptyFileName,
+  mockInvalidMulterFileWithInvalidBuffer,
+  mockInvalidMulterFileWithInvalidFormat,
+  mockInvalidMulterFileWithInvalidName,
+  mockValidMulterFile,
 } from '../mocks/mockExpressMulterFile';
 import { mockRequest } from '../mocks/mockRequest';
 
@@ -32,7 +33,7 @@ describe('FileUtils', () => {
       ]);
     });
     test('Should return false and set empty file error when file buffer in request is empty', async () => {
-      request.file = fileInvalidBuffer;
+      request.file = mockInvalidMulterFileWithInvalidBuffer;
       expect(FileUtils.checkFile(request)).toStrictEqual(false);
       expect(request.session.errors).toStrictEqual([
         {
@@ -42,7 +43,7 @@ describe('FileUtils', () => {
       ]);
     });
     test('Should return false and set file name not found error when file name in request not found', async () => {
-      request.file = fileEmptyFileName;
+      request.file = mockInvalidMulterFileWithEmptyFileName;
       expect(FileUtils.checkFile(request)).toStrictEqual(false);
       expect(request.session.errors).toStrictEqual([
         {
@@ -52,7 +53,7 @@ describe('FileUtils', () => {
       ]);
     });
     test('Should return false and set invalid file name error when file name in request is invalid', async () => {
-      request.file = fileInvalidName;
+      request.file = mockInvalidMulterFileWithInvalidName;
       expect(FileUtils.checkFile(request)).toStrictEqual(false);
       expect(request.session.errors).toStrictEqual([
         {
@@ -62,7 +63,7 @@ describe('FileUtils', () => {
       ]);
     });
     test('Should return false and set invalid file format error when file in request has invalid format', async () => {
-      request.file = fileInvalidFormat;
+      request.file = mockInvalidMulterFileWithInvalidFormat;
       expect(FileUtils.checkFile(request)).toStrictEqual(false);
       expect(request.session.errors).toStrictEqual([
         {
@@ -72,7 +73,7 @@ describe('FileUtils', () => {
       ]);
     });
     test('Should return true when file in request is valid', async () => {
-      request.file = fileValid;
+      request.file = mockValidMulterFile;
       expect(FileUtils.checkFile(request)).toStrictEqual(true);
       expect(request.session.errors).toStrictEqual([]);
     });
@@ -191,9 +192,7 @@ describe('FileUtils', () => {
       request.session.userCase = mockCaseWithIdWithRespondents;
       request.session.userCase.respondents[0].et3ResponseContestClaimDocument = undefined;
       FileUtils.convertDocumentTypeItemsToGovUkTableRows(request);
-      expect(request.session.errors).toStrictEqual([]);
       expect(request.session.userCase.respondents[0].et3ResponseContestClaimDocument).toStrictEqual([]);
-      expect(request.session.selectedDocuments).toStrictEqual([]);
     });
     test('Should have no selected document in the session when there is document in et3ResponseContestClaimDocument field', async () => {
       request.session.selectedRespondentIndex = 0;
@@ -201,9 +200,39 @@ describe('FileUtils', () => {
       request.session.userCase.respondents[0].et3ResponseContestClaimDocument = [
         mockDocumentTypeItemFromMockDocumentUploadResponse,
       ];
-      FileUtils.convertDocumentTypeItemsToGovUkTableRows(request);
-      expect(request.session.errors).toStrictEqual([]);
-      expect(request.session.selectedDocuments).toStrictEqual(mockGovUKTableRowArrayFromDocumentTypeItem);
+      const govUKTableRows = FileUtils.convertDocumentTypeItemsToGovUkTableRows(request);
+      expect(govUKTableRows).toStrictEqual(mockGovUKTableRowArrayFromDocumentTypeItem);
     });
+  });
+  describe('fileAlreadyExists', () => {
+    test('Should return true if req file name is equal to one of the existing contest claim documents file name.', async () => {
+      request.session.selectedRespondentIndex = 0;
+      request.session.userCase = mockCaseWithIdWithRespondents;
+      request.file = mockValidMulterFile;
+      request.session.userCase = mockCaseWithIdWithRespondents;
+      request.session.userCase.respondents[0].et3ResponseContestClaimDocument = [
+        mockDocumentTypeItemFromMockDocumentUploadResponseDocumentFileNameTestFilePdf,
+      ];
+      expect(FileUtils.fileAlreadyExists(request)).toStrictEqual(true);
+    });
+  });
+  test('Should return false if req file name is not equal to one of the existing contest claim documents file name.', async () => {
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.file = mockValidMulterFile;
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.userCase.respondents[0].et3ResponseContestClaimDocument = [
+      mockDocumentTypeItemFromMockDocumentUploadResponse,
+    ];
+    expect(FileUtils.fileAlreadyExists(request)).toStrictEqual(false);
+  });
+  test('Should return false and set empty array if contest claim documents field is undefined.', async () => {
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.file = mockValidMulterFile;
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.userCase.respondents[0].et3ResponseContestClaimDocument = undefined;
+    expect(FileUtils.fileAlreadyExists(request)).toStrictEqual(false);
+    expect(request.session.userCase.respondents[0].et3ResponseContestClaimDocument).toStrictEqual([]);
   });
 });

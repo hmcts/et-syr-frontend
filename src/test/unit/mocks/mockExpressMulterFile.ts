@@ -1,4 +1,4 @@
-export const fileValid: Express.Multer.File = {
+export const mockValidMulterFile: Express.Multer.File = {
   buffer: Buffer.from('./et3Request.json'),
   destination: '',
   encoding: '',
@@ -10,7 +10,7 @@ export const fileValid: Express.Multer.File = {
   size: 0,
   stream: undefined,
 };
-export const fileEmptyFileName: Express.Multer.File = {
+export const mockInvalidMulterFileWithEmptyFileName: Express.Multer.File = {
   buffer: Buffer.from('./et3Request.json'),
   destination: '',
   encoding: '',
@@ -22,7 +22,7 @@ export const fileEmptyFileName: Express.Multer.File = {
   size: 0,
   stream: undefined,
 };
-export const fileInvalidName: Express.Multer.File = {
+export const mockInvalidMulterFileWithInvalidName: Express.Multer.File = {
   buffer: Buffer.from('./et3Request.json'),
   destination: '',
   encoding: '',
@@ -34,7 +34,7 @@ export const fileInvalidName: Express.Multer.File = {
   size: 0,
   stream: undefined,
 };
-export const fileInvalidFormat: Express.Multer.File = {
+export const mockInvalidMulterFileWithInvalidFormat: Express.Multer.File = {
   buffer: Buffer.from('./et3Request.json'),
   destination: '',
   encoding: '',
@@ -46,7 +46,7 @@ export const fileInvalidFormat: Express.Multer.File = {
   size: 0,
   stream: undefined,
 };
-export const fileInvalidBuffer: Express.Multer.File = {
+export const mockInvalidMulterFileWithInvalidBuffer: Express.Multer.File = {
   buffer: undefined,
   destination: '',
   encoding: '',

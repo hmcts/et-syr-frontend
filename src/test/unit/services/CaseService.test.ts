@@ -15,7 +15,7 @@ import {
 } from '../mocks/mockCaseWithId';
 import { mockDocumentUploadResponse } from '../mocks/mockDocumentUploadResponse';
 import { mockedET1FormDocument } from '../mocks/mockDocuments';
-import { fileValid } from '../mocks/mockExpressMulterFile';
+import { mockValidMulterFile } from '../mocks/mockExpressMulterFile';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockUserDetails } from '../mocks/mockUser';
 import mockUserCase from '../mocks/mockUserCase';
@@ -318,7 +318,7 @@ describe('Case Service Tests', () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
       mockedAxios.post.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithDocumentUploadResponse);
-      const uploadedDocument = await api.uploadDocument(fileValid, CaseTypeId.ENGLAND_WALES);
+      const uploadedDocument = await api.uploadDocument(mockValidMulterFile, CaseTypeId.ENGLAND_WALES);
       expect(uploadedDocument.data).toEqual(mockDocumentUploadResponse);
     });
     test('Should throw error when can not upload file', async () => {
@@ -327,7 +327,7 @@ describe('Case Service Tests', () => {
       mockedAxios.post.mockImplementationOnce(() => {
         throw new Error('Error uploading document');
       });
-      await expect(() => api.uploadDocument(fileValid, CaseTypeId.ENGLAND_WALES)).rejects.toEqual(
+      await expect(() => api.uploadDocument(mockValidMulterFile, CaseTypeId.ENGLAND_WALES)).rejects.toEqual(
         new Error('Error uploading document: Error uploading document')
       );
     });

@@ -14,6 +14,7 @@ import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import RespondentContestClaimReasonControllerHelper from '../helpers/controller/RespondentContestClaimReasonControllerHelper';
 import { getLogger } from '../logger';
+import ErrorUtils from '../utils/ErrorUtils';
 import FileUtils from '../utils/FileUtils';
 import { isContentCharsOrLessAndNotEmpty } from '../validators/validator';
 
@@ -96,17 +97,6 @@ export default class RespondentContestClaimReasonController {
       if (!FileUtils.checkFile(req)) {
         return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
       }
-      const uploadedDocument: DocumentUploadResponse = await FileUtils.uploadFile(req);
-      if (!uploadedDocument) {
-        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
-      }
-      const documentTypeItem: DocumentTypeItem = FileUtils.convertDocumentUploadResponseToDocumentTypeItem(
-        req,
-        uploadedDocument
-      );
-      if (!documentTypeItem) {
-        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
-      }
       if (!req.session?.selectedRespondentIndex && req.session.selectedRespondentIndex !== 0) {
         req.session.errors = [
           {
@@ -126,6 +116,25 @@ export default class RespondentContestClaimReasonController {
             errorType: ValidationErrors.RESPONDENT_NOT_FOUND,
           },
         ];
+        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+      }
+      if (FileUtils.fileAlreadyExists(req)) {
+        ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
+          req,
+          ValidationErrors.FILE_ALREADY_EXISTS,
+          FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
+        );
+        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+      }
+      const uploadedDocument: DocumentUploadResponse = await FileUtils.uploadFile(req);
+      if (!uploadedDocument) {
+        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+      }
+      const documentTypeItem: DocumentTypeItem = FileUtils.convertDocumentUploadResponseToDocumentTypeItem(
+        req,
+        uploadedDocument
+      );
+      if (!documentTypeItem) {
         return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
       }
       if (!req.session?.userCase?.respondents[req.session.selectedRespondentIndex].et3ResponseContestClaimDocument) {
@@ -148,7 +157,7 @@ export default class RespondentContestClaimReasonController {
     const textAreaLabel = Object.entries(this.form.getFormFields())[0][1] as FormInput;
     const uploadedDocumentListTable = Object.entries(this.form.getFormFields())[1][1] as GovukTableRow;
     if ('tableRows' in uploadedDocumentListTable) {
-      uploadedDocumentListTable.tableRows = req.session.selectedDocuments;
+      uploadedDocumentListTable.tableRows = FileUtils.convertDocumentTypeItemsToGovUkTableRows(req);
     }
     textAreaLabel.label = (l: AnyRecord): string =>
       l.textAreaLabel1 + userCase.respondents[0].respondentName + l.textAreaLabel2;

@@ -176,6 +176,7 @@ export const ValidationErrors = {
   INVALID_CURRENCY: 'invalidCurrency',
   INVALID_END_DATE_BEFORE_START_DATE: 'invalidEndDateBeforeStartDate',
   INVALID_FILE_FORMAT: 'invalidFileFormat',
+  FILE_ALREADY_EXISTS: 'fileAlreadyExists',
   INVALID_FILE_BUFFER_EMPTY: 'fileBufferEmpty',
   INVALID_FILE_NAME: 'invalidFileName',
   INVALID_FILE_NAME_NOT_FOUND: 'fileNameNotFound',
