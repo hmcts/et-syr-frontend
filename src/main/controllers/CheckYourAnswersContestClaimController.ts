@@ -9,10 +9,10 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { conditionalRedirect } from '../helpers/RouterHelpers';
 import { getEt3Section5 } from '../helpers/controller/CheckYourAnswersET3Helper';
 import ET3Util from '../utils/ET3Util';
 import { isOptionSelected } from '../validators/validator';
-import { conditionalRedirect } from '../helpers/RouterHelpers';
 
 export default class CheckYourAnswersContestClaimController {
   private readonly form: Form;
