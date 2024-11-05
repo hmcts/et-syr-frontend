@@ -7,10 +7,10 @@
   "label2": "[W] the respondent’s correct name?",
   "respondentNameTextLabel": "[W]Enter correct name",
   "errors": {
-    "responseRespondentName": {
+    "responseRespondentNameQuestion": {
       "required": "[W]Select whether this is the correct name"
     },
-    "responseRespondentNameQuestion": {
+    "responseRespondentName": {
       "required": "[W]Enter correct name",
       "tooLong": "[W]The 'Respondent Name' must be less than 60 characters"
     },

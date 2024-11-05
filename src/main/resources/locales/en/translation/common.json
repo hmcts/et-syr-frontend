@@ -162,5 +162,6 @@
   "hearings": {
     "video": "Video",
     "phone": "Phone"
-  }
+  },
+  "hiddenErrorFieldLabel": "Hidden Error Field"
 }

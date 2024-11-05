@@ -25,12 +25,12 @@ export default class RespondentNameController {
         labelHidden: false,
         values: [
           {
-            name: 'responseRespondentNameQuestionYes',
+            name: 'responseRespondentNameQuestion',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNo.YES,
           },
           {
-            name: 'responseRespondentNameQuestionNo',
+            name: 'responseRespondentNameQuestion',
             label: (l: AnyRecord): string => l.no,
             value: YesOrNo.NO,
             subFields: {
