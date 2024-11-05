@@ -9,6 +9,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { conditionalRedirect } from '../helpers/RouterHelpers';
 import { getEt3Section3 } from '../helpers/controller/CheckYourAnswersET3Helper';
 import ET3Util from '../utils/ET3Util';
 import { isOptionSelected } from '../validators/validator';
@@ -48,14 +49,16 @@ export default class CheckYourAnswersEarlyConciliationAndEmployeeDetailsControll
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    // todo: handle the submission of CheckYourAnswersEarlyConciliationAndEmployeeDetailsController screen and set to yes or no depending on value,
-    //  also handle duplication of this block
+    const linkStatus = conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)
+      ? LinkStatus.COMPLETED
+      : LinkStatus.IN_PROGRESS;
+
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.ConciliationAndEmployeeDetails,
-      LinkStatus.COMPLETED,
+      linkStatus,
       PageUrls.CLAIMANT_PAY_DETAILS
     );
   };

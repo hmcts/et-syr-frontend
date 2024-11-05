@@ -46,7 +46,7 @@ describe('CheckYourAnswersContestClaimController', () => {
   });
 
   describe('POST method', () => {
-    it('should redirect to the respondent response task list on valid submission', async () => {
+    it('should redirect to the respondent response task list on valid submission and YES is selected on Contact Claim CYA', async () => {
       (conditionalRedirect as jest.Mock).mockReturnValue(true);
 
       updateET3ResponseWithET3FormMock.mockImplementation(
@@ -72,7 +72,7 @@ describe('CheckYourAnswersContestClaimController', () => {
       );
     });
 
-    it('should redirect to the respondent response task list on valid submission (no selected)', async () => {
+    it('should redirect to the respondent response task list on valid submission and NO is selected on Contact Claim CYA', async () => {
       (conditionalRedirect as jest.Mock).mockReturnValue(false);
 
       updateET3ResponseWithET3FormMock.mockImplementation(

@@ -49,12 +49,9 @@ export default class CheckYourAnswersContestClaimController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    let linkStatus;
-    if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)) {
-      linkStatus = LinkStatus.COMPLETED;
-    } else {
-      linkStatus = LinkStatus.IN_PROGRESS;
-    }
+    const linkStatus = conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)
+      ? LinkStatus.COMPLETED
+      : LinkStatus.IN_PROGRESS;
 
     await ET3Util.updateET3ResponseWithET3Form(
       req,

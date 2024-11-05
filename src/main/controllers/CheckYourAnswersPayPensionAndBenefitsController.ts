@@ -9,10 +9,10 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { conditionalRedirect } from '../helpers/RouterHelpers';
 import { getEt3Section4 } from '../helpers/controller/CheckYourAnswersET3Helper';
 import ET3Util from '../utils/ET3Util';
 import { isOptionSelected } from '../validators/validator';
-import { conditionalRedirect } from '../helpers/RouterHelpers';
 
 export default class CheckYourAnswersPayPensionAndBenefitsController {
   private readonly form: Form;
@@ -49,12 +49,9 @@ export default class CheckYourAnswersPayPensionAndBenefitsController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    let linkStatus;
-    if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)) {
-      linkStatus = LinkStatus.COMPLETED;
-    } else {
-      linkStatus = LinkStatus.IN_PROGRESS;
-    }
+    const linkStatus = conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)
+      ? LinkStatus.COMPLETED
+      : LinkStatus.IN_PROGRESS;
 
     await ET3Util.updateET3ResponseWithET3Form(
       req,
