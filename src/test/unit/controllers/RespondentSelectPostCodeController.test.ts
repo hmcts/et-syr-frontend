@@ -139,7 +139,7 @@ describe('RespondentSelectPostCodeController', () => {
     updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
     await controller.post(request, response);
     // Ensure page is redirected to CLAIM SAVED
-    expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIM_SAVED);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONSE_SAVED);
   });
   it('should have session error with invalid data', async () => {
     request.body = {

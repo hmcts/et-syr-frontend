@@ -3,7 +3,6 @@ import { CaseWithId } from '../../definitions/case';
 import { DefaultValues, FormFieldNames, ValidationErrors } from '../../definitions/constants';
 import CollectionUtils from '../../utils/CollectionUtils';
 import ErrorUtils from '../../utils/ErrorUtils';
-import ObjectUtils from '../../utils/ObjectUtils';
 import StringUtils from '../../utils/StringUtils';
 
 export default class RespondentContestClaimReasonControllerHelper {
@@ -15,21 +14,7 @@ export default class RespondentContestClaimReasonControllerHelper {
       et3ResponseContestClaimDetailsText,
       DefaultValues.CONTEST_CLAIM_REASON_MAX_LENGTH
     );
-    if (
-      (!req?.session?.selectedRespondentIndex && req.session.selectedRespondentIndex !== 0) ||
-      CollectionUtils.isEmpty(req?.session?.userCase?.respondents) ||
-      ObjectUtils.isObjectEmpty(req.session.userCase.respondents[req.session.selectedRespondentIndex])
-    ) {
-      ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
-        req,
-        ValidationErrors.RESPONDENT_NOT_FOUND,
-        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-      );
-      return false;
-    }
-    const contestClaimDocumentsExist = CollectionUtils.isNotEmpty(
-      req.session.userCase.respondents[req.session.selectedRespondentIndex].et3ResponseContestClaimDocument
-    );
+    const contestClaimDocumentsExist = CollectionUtils.isNotEmpty(req.session.userCase.et3ResponseContestClaimDocument);
     if (!respondentContestClaimReasonProvided && !contestClaimDocumentsExist) {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,

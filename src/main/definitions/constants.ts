@@ -20,7 +20,6 @@ export const TranslationKeys = {
   HOME: 'home',
   CHECKLIST: 'checklist',
   COOKIE_PREFERENCES: 'cookie-preferences',
-  CLAIM_SAVED: 'claim-saved',
   RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
   CASE_DETAILS_WITH_CASE_ID_PARAMETER: 'case-details',
   YOUR_APPLICATIONS: 'your-applications',
@@ -85,7 +84,7 @@ export const PageUrls = {
   NOT_FOUND: '/not-found',
   CHECKLIST: '/checklist',
   CASE_NUMBER_CHECK: '/case-number-check',
-  CLAIM_SAVED: '/claim-saved',
+  REMOVE_FILE: '/remove-file',
   SELF_ASSIGNMENT_FORM: '/self-assignment-form',
   CASE_LIST_CHECK: '/case-list-check',
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
@@ -187,6 +186,7 @@ export const ValidationErrors = {
   INVALID_NAME: 'invalidName',
   INVALID_PHONE_NUMBER: 'invalidPhoneNumber',
   FILE_UPLOAD_BACKEND_ERROR: 'fileUploadBackendError',
+  UPDATE_RESPONDENT_ERROR: 'updateRespondentError',
   TEXT_AND_FILE: 'textAndFile',
   API: 'api',
   EXCEEDED: 'exceeded',
@@ -198,6 +198,7 @@ export const ValidationErrors = {
   TOO_LONG: 'tooLong',
   USER_ID: 'userId',
   RESPONDENT_NOT_FOUND: 'respondentNotFound',
+  UNABLE_TO_REMOVE_FILE: 'unableToRemoveFile',
   SELECTED_ADDRESS_NOT_FOUND: 'selectedAddressNotFound',
   ADDRESS_NOT_SELECTED: 'addressNotSelected',
   CASE_ALREADY_ASSIGNED: 'caseAlreadyAssigned',
@@ -482,6 +483,7 @@ export const DefaultValues = {
   STRING_UNDERSCORE: '_',
   NUMBER_ZERO: 0,
   CONTEST_CLAIM_REASON_MAX_LENGTH: 3000,
+  FILE_ID_PARAMETER: 'fileId=',
 } as const;
 
 export const FormFieldNames = {

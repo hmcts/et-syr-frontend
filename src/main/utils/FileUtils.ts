@@ -4,7 +4,7 @@ import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { UploadedFile } from '../definitions/api/uploadedFile';
 import { AppRequest } from '../definitions/appRequest';
 import { DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
-import { FormFieldNames, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import { DefaultValues, FormFieldNames, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { GovukTableRowArray } from '../definitions/govuk/govukTable';
 import { AnyRecord } from '../definitions/util-types';
 import { getLanguageParam } from '../helpers/RouterHelpers';
@@ -12,7 +12,6 @@ import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import { hasInvalidFileFormat, hasInvalidFileName } from '../validators/validator';
 
-import CollectionUtils from './CollectionUtils';
 import DocumentUtils from './DocumentUtils';
 import ErrorUtils from './ErrorUtils';
 import NumberUtils from './NumberUtils';
@@ -67,12 +66,11 @@ export default class FileUtils {
     return true;
   }
   public static fileAlreadyExists(req: AppRequest): boolean {
-    if (!req.session?.userCase?.respondents[req.session.selectedRespondentIndex]?.et3ResponseContestClaimDocument) {
-      req.session.userCase.respondents[req.session.selectedRespondentIndex].et3ResponseContestClaimDocument = [];
+    if (!req.session?.userCase?.et3ResponseContestClaimDocument) {
+      req.session.userCase.et3ResponseContestClaimDocument = [];
       return false;
     }
-    for (const file of req.session.userCase.respondents[req.session.selectedRespondentIndex]
-      .et3ResponseContestClaimDocument) {
+    for (const file of req.session.userCase.et3ResponseContestClaimDocument) {
       if (file.value.uploadedDocument.document_filename === req.file.originalname) {
         return true;
       }
@@ -119,30 +117,12 @@ export default class FileUtils {
       ...req.t(TranslationKeys.RESPONDENT_CONTEST_CLAIM_REASON, { returnObjects: true }),
     };
     const govUKTableRows = [];
-    if (
-      (!req?.session?.selectedRespondentIndex && req.session.selectedRespondentIndex !== 0) ||
-      CollectionUtils.isEmpty(req?.session?.userCase?.respondents) ||
-      ObjectUtils.isObjectEmpty(req?.session?.userCase?.respondents[req.session.selectedRespondentIndex])
-    ) {
-      req.session.errors = [];
-      ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
-        req,
-        ValidationErrors.RESPONDENT_NOT_FOUND,
-        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-      );
-      return [];
-    }
-    if (
-      CollectionUtils.isEmpty(
-        req.session.userCase.respondents[req.session.selectedRespondentIndex].et3ResponseContestClaimDocument
-      )
-    ) {
-      req.session.userCase.respondents[req.session.selectedRespondentIndex].et3ResponseContestClaimDocument = [];
+    if (!req.session?.userCase?.et3ResponseContestClaimDocument) {
+      req.session.userCase.et3ResponseContestClaimDocument = [];
       return [];
     }
     const textRemove = translationFunction.remove ? translationFunction.remove : 'remove';
-    for (const documentTypeItem of req.session.userCase.respondents[req.session.selectedRespondentIndex]
-      .et3ResponseContestClaimDocument) {
+    for (const documentTypeItem of req.session.userCase.et3ResponseContestClaimDocument) {
       govUKTableRows.push([
         { text: documentTypeItem.value?.uploadedDocument?.document_filename },
         {
@@ -162,7 +142,7 @@ export default class FileUtils {
       id: DocumentUtils.findDocumentIdByURL(documentUploadResponse?._links?.self?.href),
       downloadLink: documentUploadResponse?._links?.binary?.href,
       value: {
-        typeOfDocument: documentUploadResponse?.mimeType,
+        typeOfDocument: 'ET3 Attachment',
         creationDate: documentUploadResponse?.createdOn,
         shortDescription: documentUploadResponse?.originalDocumentName,
         uploadedDocument: {
@@ -190,5 +170,16 @@ export default class FileUtils {
       return undefined;
     }
     return documentTypeItem;
+  }
+
+  public static getFileIdByUrl(url: string): string {
+    if (StringUtils.isBlank(url) || !url.includes(DefaultValues.FILE_ID_PARAMETER)) {
+      return undefined;
+    }
+    const fileId = url.substring(url.lastIndexOf(DefaultValues.FILE_ID_PARAMETER) + 7);
+    if (!fileId) {
+      return undefined;
+    }
+    return fileId;
   }
 }

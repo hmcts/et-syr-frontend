@@ -120,7 +120,7 @@ describe('ET3lUtil tests', () => {
           mockedForm,
           ET3HubLinkNames.ContactDetails,
           LinkStatus.IN_PROGRESS,
-          PageUrls.CLAIM_SAVED,
+          PageUrls.RESPONSE_SAVED,
           []
         );
         expect(request.session.errors[0].errorType).toEqual(ValidationErrors.API);
@@ -141,10 +141,10 @@ describe('ET3lUtil tests', () => {
           mockedForm,
           ET3HubLinkNames.ContactDetails,
           LinkStatus.IN_PROGRESS,
-          PageUrls.CLAIM_SAVED,
+          PageUrls.RESPONSE_SAVED,
           []
         );
-        expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIM_SAVED);
+        expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONSE_SAVED);
       });
     });
   });

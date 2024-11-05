@@ -217,7 +217,7 @@ export default class ET3Util {
       return res.redirect(returnValidUrl(req.url));
     } else {
       if (req.body?.saveForLater) {
-        redirectUrl = setUrlLanguage(req, PageUrls.CLAIM_SAVED);
+        redirectUrl = setUrlLanguage(req, PageUrls.RESPONSE_SAVED);
       }
       req.session.userCase = userCase;
       returnNextPage(req, res, redirectUrl);

@@ -1,7 +1,7 @@
 import { DefaultValues, FormFieldNames, ValidationErrors } from '../../../../main/definitions/constants';
 import RespondentContestClaimReasonControllerHelper from '../../../../main/helpers/controller/RespondentContestClaimReasonControllerHelper';
 import FileUtils from '../../../../main/utils/FileUtils';
-import { mockCaseWithIdWithRespondents, mockValidCaseWithId } from '../../mocks/mockCaseWithId';
+import { mockCaseWithIdWithRespondents } from '../../mocks/mockCaseWithId';
 import {
   mockDocumentTypeItemFromMockDocumentUploadResponse,
   mockDocumentUploadResponse,
@@ -12,45 +12,6 @@ import { mockRespondentET3Model } from '../../mocks/mockRespondentET3Model';
 describe('RespondentContestClaimReasonControllerHelper', () => {
   const request = mockRequest({});
   describe('checkInputs', () => {
-    it('sets respondent not found error to session for hidden field field when there is no selected respondent', () => {
-      request.session.userCase = mockCaseWithIdWithRespondents;
-      request.session.selectedRespondentIndex = undefined;
-      expect(
-        RespondentContestClaimReasonControllerHelper.areInputValuesValid(request, mockCaseWithIdWithRespondents)
-      ).toEqual(false);
-      expect(request.session.errors).toEqual([
-        {
-          errorType: ValidationErrors.RESPONDENT_NOT_FOUND,
-          propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
-        },
-      ]);
-    });
-    it('sets respondent not found error to session for hidden field when there is no respondent collection in user case', () => {
-      const formData = mockCaseWithIdWithRespondents;
-      formData.et3ResponseContestClaimDetails = 'a'.repeat(100);
-      request.session.selectedRespondentIndex = 0;
-      request.session.userCase = mockValidCaseWithId;
-      expect(RespondentContestClaimReasonControllerHelper.areInputValuesValid(request, formData)).toEqual(false);
-      expect(request.session.errors).toEqual([
-        {
-          errorType: ValidationErrors.RESPONDENT_NOT_FOUND,
-          propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
-        },
-      ]);
-    });
-    it('sets respondent not found error to session for hidden field when there is no respondent gor the given index', () => {
-      const formData = mockCaseWithIdWithRespondents;
-      formData.et3ResponseContestClaimDetails = 'a'.repeat(100);
-      request.session.selectedRespondentIndex = 1;
-      request.session.userCase = mockCaseWithIdWithRespondents;
-      expect(RespondentContestClaimReasonControllerHelper.areInputValuesValid(request, formData)).toEqual(false);
-      expect(request.session.errors).toEqual([
-        {
-          errorType: ValidationErrors.RESPONDENT_NOT_FOUND,
-          propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
-        },
-      ]);
-    });
     it('sets required error to session for hidden field when there is no file and detail entered', () => {
       request.session.userCase = mockCaseWithIdWithRespondents;
       request.session.selectedRespondentIndex = 0;
@@ -69,9 +30,7 @@ describe('RespondentContestClaimReasonControllerHelper', () => {
     it('sets text and file error to session for for hidden field when there both file and detail entered', () => {
       request.session.userCase = mockCaseWithIdWithRespondents;
       request.session.userCase.respondents[1] = mockRespondentET3Model;
-      request.session.userCase.respondents[1].et3ResponseContestClaimDocument = [
-        mockDocumentTypeItemFromMockDocumentUploadResponse,
-      ];
+      request.session.userCase.et3ResponseContestClaimDocument = [mockDocumentTypeItemFromMockDocumentUploadResponse];
       request.session.selectedRespondentIndex = 1;
       const formData = mockCaseWithIdWithRespondents;
       formData.et3ResponseContestClaimDetails = 'a'.repeat(100);
@@ -85,8 +44,8 @@ describe('RespondentContestClaimReasonControllerHelper', () => {
     });
     it('sets too long error to session for et3ResponseContestClaimDetails field when detail entered is more than 3000 characters', () => {
       request.session.userCase = mockCaseWithIdWithRespondents;
+      request.session.userCase.et3ResponseContestClaimDocument = [];
       const formData = mockCaseWithIdWithRespondents;
-      request.session.selectedRespondentIndex = 0;
       formData.et3ResponseContestClaimDetails = '0'.repeat(3001);
       expect(RespondentContestClaimReasonControllerHelper.areInputValuesValid(request, formData)).toEqual(false);
       expect(request.session.errors).toEqual([
@@ -108,7 +67,7 @@ describe('RespondentContestClaimReasonControllerHelper', () => {
       mockCaseWithIdWithRespondents.et3ResponseContestClaimDetails = undefined;
       request.session.selectedRespondentIndex = 0;
       request.session.userCase = mockCaseWithIdWithRespondents;
-      request.session.userCase.respondents[0].et3ResponseContestClaimDocument = [
+      request.session.userCase.et3ResponseContestClaimDocument = [
         FileUtils.convertDocumentUploadResponseToDocumentTypeItem(request, mockDocumentUploadResponse),
       ];
       expect(

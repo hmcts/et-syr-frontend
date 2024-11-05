@@ -8,12 +8,13 @@ import { DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
 import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields, FormInput } from '../definitions/form';
 import { GovukTableRow } from '../definitions/govuk/govukTable';
-import { saveForLaterButton, submitButton } from '../definitions/radios';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import RespondentContestClaimReasonControllerHelper from '../helpers/controller/RespondentContestClaimReasonControllerHelper';
 import { getLogger } from '../logger';
+import ET3Util from '../utils/ET3Util';
 import ErrorUtils from '../utils/ErrorUtils';
 import FileUtils from '../utils/FileUtils';
 import { isContentCharsOrLessAndNotEmpty } from '../validators/validator';
@@ -68,9 +69,24 @@ export default class RespondentContestClaimReasonController {
         collapsableTitle: l => l.acceptedFormats.label,
         hint: l => l.acceptedFormats.p1,
       },
+      submit: {
+        label: (l: AnyRecord): string => l.submit,
+        id: 'submit',
+        type: 'button',
+        name: 'submit',
+        value: 'true',
+        divider: false,
+      },
+      saveAsDraft: {
+        label: (l: AnyRecord): string => l.saveForLater,
+        id: 'saveAsDraft',
+        type: 'button',
+        name: 'saveAsDraft',
+        value: 'true',
+        divider: false,
+        classes: 'govuk-button--secondary',
+      },
     },
-    submit: submitButton,
-    saveForLater: saveForLaterButton,
   };
 
   constructor() {
@@ -97,27 +113,6 @@ export default class RespondentContestClaimReasonController {
       if (!FileUtils.checkFile(req)) {
         return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
       }
-      if (!req.session?.selectedRespondentIndex && req.session.selectedRespondentIndex !== 0) {
-        req.session.errors = [
-          {
-            propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
-            errorType: ValidationErrors.RESPONDENT_NOT_FOUND,
-          },
-        ];
-        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
-      }
-      if (
-        !req.session?.userCase?.respondents ||
-        !req.session?.userCase?.respondents[req.session.selectedRespondentIndex]
-      ) {
-        req.session.errors = [
-          {
-            propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
-            errorType: ValidationErrors.RESPONDENT_NOT_FOUND,
-          },
-        ];
-        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
-      }
       if (FileUtils.fileAlreadyExists(req)) {
         ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
           req,
@@ -137,16 +132,34 @@ export default class RespondentContestClaimReasonController {
       if (!documentTypeItem) {
         return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
       }
-      if (!req.session?.userCase?.respondents[req.session.selectedRespondentIndex].et3ResponseContestClaimDocument) {
-        req.session.userCase.respondents[req.session.selectedRespondentIndex].et3ResponseContestClaimDocument = [];
+      if (!req.session?.userCase?.et3ResponseContestClaimDocument) {
+        req.session.userCase.et3ResponseContestClaimDocument = [];
       }
-      req.session?.userCase?.respondents[req.session.selectedRespondentIndex].et3ResponseContestClaimDocument.push(
-        documentTypeItem
-      );
+      req.session?.userCase?.et3ResponseContestClaimDocument.push(documentTypeItem);
       return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
     }
+
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     RespondentContestClaimReasonControllerHelper.areInputValuesValid(req, formData);
+
+    if (req.session.errors && req.session.errors.length === 0 && (req.body?.submit || req.body?.saveAsDraft)) {
+      const userCase = await ET3Util.updateET3Data(req, ET3HubLinkNames.ContestClaim, LinkStatus.IN_PROGRESS);
+      if (!userCase) {
+        ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
+          req,
+          ValidationErrors.FILE_UPLOAD_BACKEND_ERROR,
+          FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+        );
+        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+      }
+      req.session.userCase = userCase;
+      if (req.body?.submit) {
+        return res.redirect(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM));
+      }
+      if (req.body?.saveAsDraft) {
+        return res.redirect(setUrlLanguage(req, PageUrls.RESPONSE_SAVED));
+      }
+    }
     return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
   };
 
@@ -160,7 +173,7 @@ export default class RespondentContestClaimReasonController {
       uploadedDocumentListTable.tableRows = FileUtils.convertDocumentTypeItemsToGovUkTableRows(req);
     }
     textAreaLabel.label = (l: AnyRecord): string =>
-      l.textAreaLabel1 + userCase.respondents[0].respondentName + l.textAreaLabel2;
+      l.textAreaLabel1 + userCase.respondents[req.session.selectedRespondentIndex].respondentName + l.textAreaLabel2;
 
     const content = getPageContent(req, this.respondentContestClaimReason, [
       TranslationKeys.COMMON,

@@ -82,7 +82,7 @@ export const mockDocumentTypeItemFromMockDocumentUploadResponse: DocumentTypeIte
   id: '900d4265-aaeb-455f-9cdd-bc0bdf61c918',
   downloadLink: 'http://localhost:5005/documents/900d4265-aaeb-455f-9cdd-bc0bdf61c918/binary',
   value: {
-    typeOfDocument: 'image/png',
+    typeOfDocument: 'ET3 Attachment',
     creationDate: '2024-11-04T13:53:43.000+00:00',
     shortDescription: mockDocumentUploadResponse.originalDocumentName,
     uploadedDocument: {
@@ -99,7 +99,7 @@ export const mockDocumentTypeItemFromMockDocumentUploadResponseDocumentFileNameT
   id: '900d4265-aaeb-455f-9cdd-bc0bdf61c918',
   downloadLink: 'http://localhost:5005/documents/900d4265-aaeb-455f-9cdd-bc0bdf61c918/binary',
   value: {
-    typeOfDocument: 'image/png',
+    typeOfDocument: 'ET3 Attachment',
     creationDate: '2024-11-04T13:53:43.000+00:00',
     shortDescription: mockDocumentUploadResponse.originalDocumentName,
     uploadedDocument: {

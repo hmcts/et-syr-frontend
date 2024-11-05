@@ -157,49 +157,17 @@ describe('FileUtils', () => {
     });
   });
   describe('convertDocumentTypeItemsToGovUkTableRows', () => {
-    test('Should set respondent not found error when selected respondent index not found in session', async () => {
-      FileUtils.convertDocumentTypeItemsToGovUkTableRows(request);
-      expect(request.session.errors).toStrictEqual([
-        {
-          errorType: ValidationErrors.RESPONDENT_NOT_FOUND,
-          propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
-        },
-      ]);
-    });
-    test('Should set respondent not found error when there is no respondent in session user case', async () => {
-      request.session.selectedRespondentIndex = 0;
-      FileUtils.convertDocumentTypeItemsToGovUkTableRows(request);
-      expect(request.session.errors).toStrictEqual([
-        {
-          errorType: ValidationErrors.RESPONDENT_NOT_FOUND,
-          propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
-        },
-      ]);
-    });
-    test('Should set respondent not found error when there is no respondent in session user case with the given selected respondent index', async () => {
-      request.session.selectedRespondentIndex = 1;
-      request.session.userCase = mockCaseWithIdWithRespondents;
-      FileUtils.convertDocumentTypeItemsToGovUkTableRows(request);
-      expect(request.session.errors).toStrictEqual([
-        {
-          errorType: ValidationErrors.RESPONDENT_NOT_FOUND,
-          propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
-        },
-      ]);
-    });
     test('Should have no selected documents in the session when there is no document in et3ResponseContestClaimDocument field', async () => {
       request.session.selectedRespondentIndex = 0;
       request.session.userCase = mockCaseWithIdWithRespondents;
-      request.session.userCase.respondents[0].et3ResponseContestClaimDocument = undefined;
+      request.session.userCase.et3ResponseContestClaimDocument = undefined;
       FileUtils.convertDocumentTypeItemsToGovUkTableRows(request);
-      expect(request.session.userCase.respondents[0].et3ResponseContestClaimDocument).toStrictEqual([]);
+      expect(request.session.userCase.et3ResponseContestClaimDocument).toStrictEqual([]);
     });
     test('Should have no selected document in the session when there is document in et3ResponseContestClaimDocument field', async () => {
       request.session.selectedRespondentIndex = 0;
       request.session.userCase = mockCaseWithIdWithRespondents;
-      request.session.userCase.respondents[0].et3ResponseContestClaimDocument = [
-        mockDocumentTypeItemFromMockDocumentUploadResponse,
-      ];
+      request.session.userCase.et3ResponseContestClaimDocument = [mockDocumentTypeItemFromMockDocumentUploadResponse];
       const govUKTableRows = FileUtils.convertDocumentTypeItemsToGovUkTableRows(request);
       expect(govUKTableRows).toStrictEqual(mockGovUKTableRowArrayFromDocumentTypeItem);
     });
@@ -210,7 +178,7 @@ describe('FileUtils', () => {
       request.session.userCase = mockCaseWithIdWithRespondents;
       request.file = mockValidMulterFile;
       request.session.userCase = mockCaseWithIdWithRespondents;
-      request.session.userCase.respondents[0].et3ResponseContestClaimDocument = [
+      request.session.userCase.et3ResponseContestClaimDocument = [
         mockDocumentTypeItemFromMockDocumentUploadResponseDocumentFileNameTestFilePdf,
       ];
       expect(FileUtils.fileAlreadyExists(request)).toStrictEqual(true);
@@ -221,9 +189,7 @@ describe('FileUtils', () => {
     request.session.userCase = mockCaseWithIdWithRespondents;
     request.file = mockValidMulterFile;
     request.session.userCase = mockCaseWithIdWithRespondents;
-    request.session.userCase.respondents[0].et3ResponseContestClaimDocument = [
-      mockDocumentTypeItemFromMockDocumentUploadResponse,
-    ];
+    request.session.userCase.et3ResponseContestClaimDocument = [mockDocumentTypeItemFromMockDocumentUploadResponse];
     expect(FileUtils.fileAlreadyExists(request)).toStrictEqual(false);
   });
   test('Should return false and set empty array if contest claim documents field is undefined.', async () => {
@@ -231,8 +197,26 @@ describe('FileUtils', () => {
     request.session.userCase = mockCaseWithIdWithRespondents;
     request.file = mockValidMulterFile;
     request.session.userCase = mockCaseWithIdWithRespondents;
-    request.session.userCase.respondents[0].et3ResponseContestClaimDocument = undefined;
+    request.session.userCase.et3ResponseContestClaimDocument = undefined;
     expect(FileUtils.fileAlreadyExists(request)).toStrictEqual(false);
-    expect(request.session.userCase.respondents[0].et3ResponseContestClaimDocument).toStrictEqual([]);
+    expect(request.session.userCase.et3ResponseContestClaimDocument).toStrictEqual([]);
+  });
+  describe('getFileByUrl', () => {
+    test('Should return undefined when url is undefined', async () => {
+      const url: string = undefined;
+      expect(FileUtils.getFileIdByUrl(url)).toStrictEqual(undefined);
+    });
+    test('Should return undefined when url not includes file id parameter', async () => {
+      const url: string = '/remove-file?lng=en';
+      expect(FileUtils.getFileIdByUrl(url)).toStrictEqual(undefined);
+    });
+    test('Should return undefined when url not includes file id parameter does not have any value', async () => {
+      const url: string = '/remove-file?lng=en&fileId=';
+      expect(FileUtils.getFileIdByUrl(url)).toStrictEqual(undefined);
+    });
+    test('Should return file id when remove url is valid', async () => {
+      const url: string = 'https://localhost:3003/remove-file?lng=en&fileId=57ce554c-a8b0-4a0d-a786-0565634601b1';
+      expect(FileUtils.getFileIdByUrl(url)).toStrictEqual('57ce554c-a8b0-4a0d-a786-0565634601b1');
+    });
   });
 });

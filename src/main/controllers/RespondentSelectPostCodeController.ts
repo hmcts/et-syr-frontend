@@ -98,7 +98,7 @@ export default class RespondentSelectPostCodeController {
       req.session.userCase = userCase;
       let redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ENTER_ADDRESS);
       if (req.body?.saveForLater) {
-        redirectUrl = setUrlLanguage(req, PageUrls.CLAIM_SAVED);
+        redirectUrl = setUrlLanguage(req, PageUrls.RESPONSE_SAVED);
       }
       res.redirect(redirectUrl);
     }

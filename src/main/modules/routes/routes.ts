@@ -21,7 +21,6 @@ import CheckYourAnswersEmployersContractClaimController from '../../controllers/
 import CheckYourAnswersHearingPreferencesController from '../../controllers/CheckYourAnswersHearingPreferencesController';
 import CheckYourAnswersPayPensionAndBenefitsController from '../../controllers/CheckYourAnswersPayPensionAndBenefitsController';
 import ChecklistController from '../../controllers/ChecklistController';
-import ClaimSavedController from '../../controllers/ClaimSavedController';
 import ClaimantAcasCertificateDetailsController from '../../controllers/ClaimantAcasCertificateDetailsController';
 import ClaimantAverageWeeklyWorkHoursController from '../../controllers/ClaimantAverageWeeklyWorkHoursController';
 import ClaimantET1FormController from '../../controllers/ClaimantET1FormController';
@@ -43,6 +42,7 @@ import HomeController from '../../controllers/HomeController';
 import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
+import RemoveFileController from '../../controllers/RemoveFileController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
@@ -91,7 +91,6 @@ export class Routes {
     // Page URLs
     app.get(PageUrls.HOME, new HomeController().get);
     app.get(PageUrls.CHECKLIST, new ChecklistController().get);
-    app.get(PageUrls.CLAIM_SAVED, new ClaimSavedController().get);
     app.get(PageUrls.CASE_LIST_CHECK, new CaseListCheckController().get);
     app.get(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().get);
     app.post(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().post);
@@ -221,6 +220,7 @@ export class Routes {
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);
     app.post(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().post);
     app.get(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().get);
+    app.get(PageUrls.REMOVE_FILE, new RemoveFileController().get);
     app.get(
       Urls.INFO,
       infoRequestHandler({
