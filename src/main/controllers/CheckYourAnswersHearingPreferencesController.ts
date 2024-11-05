@@ -49,8 +49,6 @@ export default class CheckYourAnswersHearingPreferencesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    // todo: handle the submission of CheckYourAnswersHearingPreferencesController screen and set to yes or no depending on value,
-    //  also handle duplication of this block
     let linkStatus;
     if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)) {
       linkStatus = LinkStatus.COMPLETED;
@@ -78,12 +76,13 @@ export default class CheckYourAnswersHearingPreferencesController {
     };
 
     res.render(TranslationKeys.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES, {
-      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       InterceptPaths,
       PageUrls,
+      sessionErrors: req.session.errors,
       form: this.formContent,
       et3ResponseSection2: getEt3Section2(userCase, sectionTranslations, InterceptPaths.EMPLOYER_DETAILS_CHANGE),
       redirectUrl,

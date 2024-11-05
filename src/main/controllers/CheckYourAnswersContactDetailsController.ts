@@ -27,12 +27,12 @@ export default class CheckYourAnswersContactDetailsController {
         labelHidden: false,
         values: [
           {
-            name: 'personalDetailsSectionYes',
+            name: 'personalDetailsSection',
             label: (l: AnyRecord): string => l.cya.yes,
             value: YesOrNo.YES,
           },
           {
-            name: 'personalDetailsSectionNo',
+            name: 'personalDetailsSection',
             label: (l: AnyRecord): string => l.cya.no,
             value: YesOrNo.NO,
           },
@@ -69,18 +69,18 @@ export default class CheckYourAnswersContactDetailsController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const redirectUrl = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS);
     const userCase = req.session.userCase;
-
     const sectionTranslations: AnyRecord = {
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
     };
     const et3ResponseSection1 = getEt3Section1(userCase, sectionTranslations, InterceptPaths.CONTACT_DETAILS_CHANGE);
     res.render(TranslationKeys.CHECK_YOUR_ANSWERS_CONTACT_DETAILS, {
-      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_CONTACT_DETAILS as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_CONTACT_DETAILS as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,
+      sessionErrors: req.session.errors,
       form: this.formContent,
       et3ResponseSection1,
       redirectUrl,

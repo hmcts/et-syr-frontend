@@ -12,6 +12,7 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getEt3Section5 } from '../helpers/controller/CheckYourAnswersET3Helper';
 import ET3Util from '../utils/ET3Util';
 import { isOptionSelected } from '../validators/validator';
+import { conditionalRedirect } from '../helpers/RouterHelpers';
 
 export default class CheckYourAnswersContestClaimController {
   private readonly form: Form;
@@ -48,14 +49,19 @@ export default class CheckYourAnswersContestClaimController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    // todo: handle the submission of CheckYourAnswersContestClaimController screen and set to yes or no depending on value,
-    //  also handle duplication of this block
+    let linkStatus;
+    if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)) {
+      linkStatus = LinkStatus.COMPLETED;
+    } else {
+      linkStatus = LinkStatus.IN_PROGRESS;
+    }
+
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.ContestClaim,
-      LinkStatus.COMPLETED,
+      linkStatus,
       PageUrls.RESPONDENT_RESPONSE_TASK_LIST
     );
   };
@@ -70,12 +76,13 @@ export default class CheckYourAnswersContestClaimController {
     };
 
     res.render(TranslationKeys.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, {
-      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_CONTEST_CLAIM as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_CONTEST_CLAIM as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       InterceptPaths,
       PageUrls,
+      sessionErrors: req.session.errors,
       form: this.formContent,
       et3ResponseSection5: getEt3Section5(userCase, sectionTranslations, InterceptPaths.CONTEST_CLAIM_CHANGE),
       redirectUrl,

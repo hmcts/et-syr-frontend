@@ -17,21 +17,21 @@ export default class CheckYourAnswersEarlyConciliationAndEmployeeDetailsControll
   form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      haveYouCompleted: {
+      conciliationAndEmployeeDetailsSection: {
         classes: 'govuk-radios',
-        id: 'haveYouCompleted',
+        id: 'conciliationAndEmployeeDetailsSection',
         type: 'radios',
         label: (l: AnyRecord): string => l.cya.label,
         hint: (l: AnyRecord): string => l.cya.hint,
         labelHidden: false,
         values: [
           {
-            name: 'haveYouCompleted',
+            name: 'conciliationAndEmployeeDetailsSection',
             label: (l: AnyRecord): string => l.cya.yes,
             value: YesOrNo.YES,
           },
           {
-            name: 'haveYouCompleted',
+            name: 'conciliationAndEmployeeDetailsSection',
             label: (l: AnyRecord): string => l.cya.no,
             value: YesOrNo.NO,
           },
@@ -70,15 +70,16 @@ export default class CheckYourAnswersEarlyConciliationAndEmployeeDetailsControll
     };
 
     res.render(TranslationKeys.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS, {
+      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(
         TranslationKeys.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS as never,
         { returnObjects: true } as never
       ),
-      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       InterceptPaths,
       PageUrls,
+      sessionErrors: req.session.errors,
       form: this.formContent,
       et3ResponseSection3: getEt3Section3(
         userCase,

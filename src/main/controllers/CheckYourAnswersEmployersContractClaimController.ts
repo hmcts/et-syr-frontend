@@ -12,6 +12,7 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getEt3Section6 } from '../helpers/controller/CheckYourAnswersET3Helper';
 import ET3Util from '../utils/ET3Util';
 import { isOptionSelected } from '../validators/validator';
+import { conditionalRedirect } from '../helpers/RouterHelpers';
 
 export default class CheckYourAnswersEmployersContractClaimController {
   private readonly form: Form;
@@ -48,15 +49,20 @@ export default class CheckYourAnswersEmployersContractClaimController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    // todo: handle the submission of CheckYourAnswersEmployersContractClaimController screen and set to yes or no depending on value,
-    //  also handle duplication of this block
+    let linkStatus;
+    if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)) {
+      linkStatus = LinkStatus.COMPLETED;
+    } else {
+      linkStatus = LinkStatus.IN_PROGRESS;
+    }
+
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.EmployersContractClaim,
-      LinkStatus.COMPLETED,
-      PageUrls.CLAIMANT_PAY_DETAILS
+      linkStatus,
+      PageUrls.RESPONDENT_RESPONSE_TASK_LIST
     );
   };
 
@@ -70,12 +76,13 @@ export default class CheckYourAnswersEmployersContractClaimController {
     };
 
     res.render(TranslationKeys.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM, {
-      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       InterceptPaths,
       PageUrls,
+      sessionErrors: req.session.errors,
       form: this.formContent,
       et3ResponseSection6: getEt3Section6(
         userCase,

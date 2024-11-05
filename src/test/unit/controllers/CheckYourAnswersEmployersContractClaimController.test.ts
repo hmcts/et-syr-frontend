@@ -1,5 +1,6 @@
 import CheckYourAnswersEmployersContractClaimController from '../../../main/controllers/CheckYourAnswersEmployersContractClaimController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { conditionalRedirect } from '../../../main/helpers/RouterHelpers';
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
 import commonJsonRaw from '../../../main/resources/locales/cy/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -10,6 +11,9 @@ import { createMockedUpdateET3ResponseWithET3FormFunction, mockFormError } from 
 
 jest.mock('../../../main/helpers/controller/CheckYourAnswersET3Helper');
 jest.mock('../../../main/utils/ET3Util');
+jest.mock('../../../main/helpers/RouterHelpers', () => ({
+  conditionalRedirect: jest.fn(),
+}));
 
 describe('CheckYourAnswersEmployersContractClaimController', () => {
   let controller: CheckYourAnswersEmployersContractClaimController;
@@ -46,6 +50,8 @@ describe('CheckYourAnswersEmployersContractClaimController', () => {
 
   describe('POST method', () => {
     it('should go to the respondent response task list on valid submission', async () => {
+      (conditionalRedirect as jest.Mock).mockReturnValue(true);
+
       updateET3ResponseWithET3FormMock.mockImplementation(
         createMockedUpdateET3ResponseWithET3FormFunction(
           PageUrls.RESPONDENT_RESPONSE_TASK_LIST,
@@ -62,6 +68,8 @@ describe('CheckYourAnswersEmployersContractClaimController', () => {
     });
 
     it('should redirect back to Employers Contract Claim if ET3 data update fails', async () => {
+      (conditionalRedirect as jest.Mock).mockReturnValue(false);
+
       updateET3ResponseWithET3FormMock.mockImplementation(
         createMockedUpdateET3ResponseWithET3FormFunction(
           request.url,

@@ -19,6 +19,8 @@ export default class RespondentDXAddressController {
         id: 'et3ResponseDXAddress',
         name: 'et3ResponseDXAddress',
         type: 'text',
+        label: (l: AnyRecord): string => l.h1,
+        labelHidden: true,
         hint: (l: AnyRecord): string => l.respondentDxAddress,
         classes: 'govuk-text',
         attributes: { maxLength: 100 },

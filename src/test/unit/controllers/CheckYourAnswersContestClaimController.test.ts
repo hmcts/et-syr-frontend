@@ -8,6 +8,10 @@ import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import { createMockedUpdateET3ResponseWithET3FormFunction, mockFormError } from '../mocks/mockStaticFunctions';
 
+jest.mock('../../../main/helpers/RouterHelpers', () => ({
+  conditionalRedirect: jest.fn(),
+}));
+
 describe('CheckYourAnswersContestClaimController', () => {
   let controller: CheckYourAnswersContestClaimController;
   let request: ReturnType<typeof mockRequest>;
