@@ -13,6 +13,8 @@ export class Form {
       name: 'hiddenErrorField',
       hidden: true,
       type: 'text',
+      label: (l: AnyRecord): string => l.hiddenErrorFieldLabel,
+      labelHidden: true,
     };
   }
 
