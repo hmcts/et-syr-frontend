@@ -3,7 +3,7 @@ import { DefaultValues } from '../definitions/constants';
 
 import StringUtils from './StringUtils';
 
-export default class DateUtil {
+export default class DateUtils {
   public static isDateStringValid(dateString: string): boolean {
     return !this.isDateStringInValid(dateString);
   }

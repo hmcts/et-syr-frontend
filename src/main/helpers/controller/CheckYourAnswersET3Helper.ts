@@ -11,7 +11,7 @@ import {
 import { DefaultValues, PageUrls } from '../../definitions/constants';
 import { SummaryListRow, addSummaryRowWithAction } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
-import DateUtil from '../../utils/DateUtil';
+import DateUtils from '../../utils/DateUtils';
 import { answersAddressFormatter } from '../AddressHelper';
 
 export const getEt3Section1 = (
@@ -252,14 +252,14 @@ export const getEt3Section3 = (
     et3ResponseSection3.push(
       addSummaryRowWithAction(
         translations.section3.et3ResponseEmploymentStartDate,
-        DateUtil.convertCaseDateToString(userCase.et3ResponseEmploymentStartDate),
+        DateUtils.convertCaseDateToString(userCase.et3ResponseEmploymentStartDate),
         PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
         translations.change,
         sectionCya
       ),
       addSummaryRowWithAction(
         translations.section3.et3ResponseEmploymentEndDate,
-        DateUtil.convertCaseDateToString(userCase.et3ResponseEmploymentEndDate),
+        DateUtils.convertCaseDateToString(userCase.et3ResponseEmploymentEndDate),
         PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
         translations.change,
         sectionCya

@@ -2,6 +2,9 @@ import os from 'os';
 
 import { infoRequestHandler } from '@hmcts/info-provider';
 import { Application } from 'express';
+// eslint-disable-next-line import/no-named-as-default
+import rateLimit from 'express-rate-limit';
+import multer, { FileFilterCallback } from 'multer';
 
 import AcasEarlyConciliationCertificateController from '../../controllers/AcasEarlyConciliationCertificateController';
 import ApplicationSubmittedController from '../../controllers/ApplicationSubmittedController';
@@ -18,7 +21,6 @@ import CheckYourAnswersEmployersContractClaimController from '../../controllers/
 import CheckYourAnswersHearingPreferencesController from '../../controllers/CheckYourAnswersHearingPreferencesController';
 import CheckYourAnswersPayPensionAndBenefitsController from '../../controllers/CheckYourAnswersPayPensionAndBenefitsController';
 import ChecklistController from '../../controllers/ChecklistController';
-import ClaimSavedController from '../../controllers/ClaimSavedController';
 import ClaimantAcasCertificateDetailsController from '../../controllers/ClaimantAcasCertificateDetailsController';
 import ClaimantAverageWeeklyWorkHoursController from '../../controllers/ClaimantAverageWeeklyWorkHoursController';
 import ClaimantET1FormController from '../../controllers/ClaimantET1FormController';
@@ -40,6 +42,7 @@ import HomeController from '../../controllers/HomeController';
 import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
+import RemoveFileController from '../../controllers/RemoveFileController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
@@ -61,15 +64,33 @@ import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheck
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
-import { InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
+import { AppRequest } from '../../definitions/appRequest';
+import { FILE_SIZE_LIMIT, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
+
+const handleUploads = multer({
+  limits: {
+    fileSize: FILE_SIZE_LIMIT,
+  },
+  fileFilter: (req: AppRequest, file: Express.Multer.File, callback: FileFilterCallback) => {
+    req.fileTooLarge = parseInt(req.headers['content-length']) > FILE_SIZE_LIMIT;
+    return callback(null, !req.fileTooLarge);
+  },
+});
+
+const respondentContestClaimReasonLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  message: 'Too many requests from this IP, please try again later.',
+});
 
 export class Routes {
   public enableFor(app: Application): void {
+    // Singleton controllers:
+    const respondentContestClaimReasonController = new RespondentContestClaimReasonController();
     app.get(InterceptPaths.CHANGE_DETAILS, new ChangeDetailsController().get);
     // Page URLs
     app.get(PageUrls.HOME, new HomeController().get);
     app.get(PageUrls.CHECKLIST, new ChecklistController().get);
-    app.get(PageUrls.CLAIM_SAVED, new ClaimSavedController().get);
     app.get(PageUrls.CASE_LIST_CHECK, new CaseListCheckController().get);
     app.get(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().get);
     app.post(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().post);
@@ -174,8 +195,13 @@ export class Routes {
     // 3. Give us your response (contest-claim)
     app.get(PageUrls.RESPONDENT_CONTEST_CLAIM, new RespondentContestClaimController().get);
     app.post(PageUrls.RESPONDENT_CONTEST_CLAIM, new RespondentContestClaimController().post);
-    app.get(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, new RespondentContestClaimReasonController().get);
-    app.post(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, new RespondentContestClaimReasonController().post);
+    app.get(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, respondentContestClaimReasonController.get);
+    app.post(
+      PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
+      respondentContestClaimReasonLimiter,
+      handleUploads.single('contestClaimDocument'),
+      respondentContestClaimReasonController.post
+    );
     app.get(PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, new CheckYourAnswersContestClaimController().get);
     app.post(PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, new CheckYourAnswersContestClaimController().post);
     app.get(PageUrls.EMPLOYERS_CONTRACT_CLAIM, new EmployersContractClaimController().get);
@@ -194,6 +220,7 @@ export class Routes {
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);
     app.post(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().post);
     app.get(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().get);
+    app.get(PageUrls.REMOVE_FILE, new RemoveFileController().get);
     app.get(
       Urls.INFO,
       infoRequestHandler({

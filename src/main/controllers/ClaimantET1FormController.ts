@@ -6,7 +6,7 @@ import { PageUrls, TranslationKeys, languages } from '../definitions/constants';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
-import DateUtil from '../utils/DateUtil';
+import DateUtils from '../utils/DateUtils';
 import DocumentUtils from '../utils/DocumentUtils';
 
 export default class ClaimantET1FormController {
@@ -30,7 +30,7 @@ export default class ClaimantET1FormController {
     } else {
       et1FormDocument = req.session.et1FormEnglish;
     }
-    const formattedEt1FormDate: string = DateUtil.formatDateStringToDDMonthYYYY(
+    const formattedEt1FormDate: string = DateUtils.formatDateStringToDDMonthYYYY(
       et1FormDocument?.value?.dateOfCorrespondence
     );
     const acasCertificate: ApiDocumentTypeItem = DocumentUtils.findAcasCertificateByAcasNumber(
@@ -38,7 +38,7 @@ export default class ClaimantET1FormController {
       req.session?.userCase?.acasCertNum
     );
     req.session.selectedAcasCertificate = acasCertificate;
-    const formattedAcasCertificateDate: string = DateUtil.formatDateStringToDDMonthYYYY(
+    const formattedAcasCertificateDate: string = DateUtils.formatDateStringToDDMonthYYYY(
       acasCertificate?.value?.dateOfCorrespondence
     );
 

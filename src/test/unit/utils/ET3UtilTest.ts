@@ -50,7 +50,9 @@ describe('ET3lUtil tests', () => {
       request.session.user = undefined;
       request.session.selectedRespondentIndex = 0;
       ET3Util.findSelectedRespondent(request);
-      expect(request.session.errors[0].errorType).toEqual(ValidationErrors.SESSION_USER);
+      expect(request.session.errors[request.session.errors.length - 1].errorType).toEqual(
+        ValidationErrors.SESSION_USER
+      );
     });
 
     test('Should set session respondent error when user case respondent collection is empty', () => {
@@ -118,7 +120,7 @@ describe('ET3lUtil tests', () => {
           mockedForm,
           ET3HubLinkNames.ContactDetails,
           LinkStatus.IN_PROGRESS,
-          PageUrls.CLAIM_SAVED,
+          PageUrls.RESPONSE_SAVED,
           []
         );
         expect(request.session.errors[0].errorType).toEqual(ValidationErrors.API);
@@ -139,10 +141,10 @@ describe('ET3lUtil tests', () => {
           mockedForm,
           ET3HubLinkNames.ContactDetails,
           LinkStatus.IN_PROGRESS,
-          PageUrls.CLAIM_SAVED,
+          PageUrls.RESPONSE_SAVED,
           []
         );
-        expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIM_SAVED);
+        expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONSE_SAVED);
       });
     });
   });

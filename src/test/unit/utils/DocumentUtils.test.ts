@@ -69,4 +69,24 @@ describe('Document utils tests', () => {
     const et1FormEnglish: ApiDocumentTypeItem = DocumentUtils.findAcasCertificateByAcasNumber([], 'R123456/78/90');
     expect(et1FormEnglish).toStrictEqual(undefined);
   });
+  it.each([
+    { value: undefined, result: undefined },
+    { value: '', result: undefined },
+    { value: ' ', result: undefined },
+    { value: 'test', result: undefined },
+    { value: ' test', result: undefined },
+    { value: 'test   ', result: undefined },
+    { value: 'test ', result: undefined },
+    { value: '    test', result: undefined },
+    { value: ' test ', result: undefined },
+    { value: '    test   ', result: undefined },
+    { value: '     ', result: undefined },
+    { value: null, result: undefined },
+    {
+      value: 'http://localhost:5005/documents/900d4265-aaeb-455f-9cdd-bc0bdf61c918',
+      result: '900d4265-aaeb-455f-9cdd-bc0bdf61c918',
+    },
+  ])('check if given string value returns document id by url: %o', ({ value, result }) => {
+    expect(DocumentUtils.findDocumentIdByURL(value)).toStrictEqual(result);
+  });
 });

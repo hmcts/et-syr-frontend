@@ -7,7 +7,7 @@
   "no1": "[W]No - ",
   "no2": "[W] does not contest any of the claim",
   "errors": {
-    "respondentContestClaim": {
+    "et3ResponseRespondentContestClaim": {
       "required": "[W]Make a selection"
     },
     "hiddenErrorField": {

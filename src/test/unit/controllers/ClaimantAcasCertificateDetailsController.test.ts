@@ -3,6 +3,7 @@ import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
 import { getLanguageParam } from '../../../main/helpers/RouterHelpers';
 import { getFlagValue } from '../../../main/modules/featureFlag/launchDarkly';
+import { mockedAcasForm, mockedAcasFormWithDateOfCorrespondence } from '../mocks/mockDocuments';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
@@ -28,6 +29,42 @@ describe('Claimant Acas Certificate Details Controller', () => {
 
   describe('GET method', () => {
     it('should call res.render with the correct parameters', async () => {
+      // Call the controller's GET method
+      await controller.get(request, response);
+
+      // Expect that res.render was called with the right template and object
+      expect(response.render).toHaveBeenCalledWith(
+        TranslationKeys.CLAIMANT_ACAS_CERTIFICATE_DETAILS,
+        expect.objectContaining({
+          PageUrls,
+          hideContactUs: true,
+          useCase: request.session.userCase,
+          redirectUrl: PageUrls.CLAIMANT_ACAS_CERTIFICATE_DETAILS,
+          languageParam: 'en',
+          welshEnabled: true,
+        })
+      );
+    });
+    it('should call res.render when there is acas certificate', async () => {
+      request.session.selectedAcasCertificate = mockedAcasForm;
+      // Call the controller's GET method
+      await controller.get(request, response);
+
+      // Expect that res.render was called with the right template and object
+      expect(response.render).toHaveBeenCalledWith(
+        TranslationKeys.CLAIMANT_ACAS_CERTIFICATE_DETAILS,
+        expect.objectContaining({
+          PageUrls,
+          hideContactUs: true,
+          useCase: request.session.userCase,
+          redirectUrl: PageUrls.CLAIMANT_ACAS_CERTIFICATE_DETAILS,
+          languageParam: 'en',
+          welshEnabled: true,
+        })
+      );
+    });
+    it('should call res.render when there is acas certificate with date of correspondence', async () => {
+      request.session.selectedAcasCertificate = mockedAcasFormWithDateOfCorrespondence;
       // Call the controller's GET method
       await controller.get(request, response);
 

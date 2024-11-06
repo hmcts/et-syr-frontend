@@ -45,7 +45,7 @@ describe('Case list check controller', () => {
     api.getUserCases = jest.fn().mockResolvedValueOnce(Promise.resolve(undefined));
     await caseListCheckController.get(request, response);
     expect(response.redirect).toHaveBeenCalledTimes(1);
-    expect(response.redirect).toHaveBeenCalledWith(PageUrls.CASE_NUMBER_CHECK);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_FORM);
   });
   it('should call response.redirect with /self-assignment-form url in welsh language', async () => {
     const response = mockResponse();
@@ -55,7 +55,7 @@ describe('Case list check controller', () => {
     api.getUserCases = jest.fn().mockResolvedValueOnce(Promise.resolve(undefined));
     await caseListCheckController.get(request, response);
     expect(response.redirect).toHaveBeenCalledTimes(1);
-    expect(response.redirect).toHaveBeenCalledWith(PageUrls.CASE_NUMBER_CHECK + languages.WELSH_URL_PARAMETER);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_FORM + languages.WELSH_URL_PARAMETER);
   });
   it('should throw error when there is a problem while getting user cases', async () => {
     const response = mockResponse();

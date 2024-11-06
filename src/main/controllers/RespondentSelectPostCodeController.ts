@@ -60,7 +60,11 @@ export default class RespondentSelectPostCodeController {
     }
     const selectedAddressIndex = formData?.respondentAddressTypes?.toString();
     if (NumberUtils.isNonNumericValue(selectedAddressIndex) && selectedAddressIndex !== '0') {
-      ErrorUtils.setManualErrorToRequestSession(req, ValidationErrors.ADDRESS_NOT_SELECTED, 'respondentAddressTypes');
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
+        req,
+        ValidationErrors.ADDRESS_NOT_SELECTED,
+        'respondentAddressTypes'
+      );
       return res.redirect(errorRedirectUrl);
     }
     let selectedAddress;
@@ -75,7 +79,7 @@ export default class RespondentSelectPostCodeController {
       }
     }
     if (!selectedAddress) {
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.SELECTED_ADDRESS_NOT_FOUND,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -94,7 +98,7 @@ export default class RespondentSelectPostCodeController {
       req.session.userCase = userCase;
       let redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ENTER_ADDRESS);
       if (req.body?.saveForLater) {
-        redirectUrl = setUrlLanguage(req, PageUrls.CLAIM_SAVED);
+        redirectUrl = setUrlLanguage(req, PageUrls.RESPONSE_SAVED);
       }
       res.redirect(redirectUrl);
     }

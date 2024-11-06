@@ -115,7 +115,7 @@ describe('RespondentSelectPostCodeController', () => {
     };
     ET3Util.updateET3Data = updateET3DataMock;
     updateET3DataMock.mockImplementationOnce(() => {
-      ErrorUtils.setManualErrorToRequestSession(
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         request,
         ValidationErrors.API,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
@@ -139,7 +139,7 @@ describe('RespondentSelectPostCodeController', () => {
     updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
     await controller.post(request, response);
     // Ensure page is redirected to CLAIM SAVED
-    expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIM_SAVED);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONSE_SAVED);
   });
   it('should have session error with invalid data', async () => {
     request.body = {

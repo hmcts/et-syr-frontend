@@ -3,6 +3,7 @@ import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeIte
 import { AllDocumentTypes, DefaultValues, languages } from '../definitions/constants';
 
 import NumberUtils from './NumberUtils';
+import StringUtils from './StringUtils';
 
 export default class DocumentUtils {
   public static findET1DocumentByLanguage(
@@ -48,5 +49,12 @@ export default class DocumentUtils {
       }
     }
     return undefined;
+  }
+
+  public static findDocumentIdByURL(url: string): string {
+    if (StringUtils.isBlank(url) || !url.includes(DefaultValues.STRING_SLASH)) {
+      return undefined;
+    }
+    return url?.substring(url?.lastIndexOf('/') + 1);
   }
 }

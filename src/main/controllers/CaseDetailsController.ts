@@ -3,21 +3,16 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
-import {
-  ET3CaseDetailsLinksStatuses,
-  SectionIndexToEt3CaseDetailsLinkNames,
-  linkStatusColorMap,
-} from '../definitions/links';
+import { SectionIndexToEt3CaseDetailsLinkNames, linkStatusColorMap } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
-import { handleUpdateHubLinksStatuses } from '../helpers/CaseHelpers';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { currentET3StatusFn } from '../helpers/state-sequence';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
-import DateUtil from '../utils/DateUtil';
+import DateUtils from '../utils/DateUtils';
 import ET3Util from '../utils/ET3Util';
 import StringUtils from '../utils/StringUtils';
 
@@ -42,7 +37,7 @@ export default class CaseDetailsController {
         respondentResponseDeadline = req.session.userCase.respondentResponseDeadline;
       } else {
         if (StringUtils.isNotBlank(req.session.userCase?.preAcceptCase?.dateAccepted)) {
-          respondentResponseDeadline = DateUtil.addStringDate28Days(req.session.userCase?.preAcceptCase?.dateAccepted);
+          respondentResponseDeadline = DateUtils.addStringDate28Days(req.session.userCase?.preAcceptCase?.dateAccepted);
         }
       }
       // Check if Respond to claim acknowledgment needs to be shown or not
@@ -59,11 +54,6 @@ export default class CaseDetailsController {
     }
     const userCase = req.session.userCase;
     req.session.selectedRespondentIndex = ET3Util.findSelectedRespondent(req);
-    if (!req.session.userCase.respondents[req.session.selectedRespondentIndex].et3CaseDetailsLinksStatuses) {
-      req.session.userCase.respondents[req.session.selectedRespondentIndex].et3CaseDetailsLinksStatuses =
-        new ET3CaseDetailsLinksStatuses();
-      await handleUpdateHubLinksStatuses(req, logger);
-    }
     const currentState = currentET3StatusFn(req.session.userCase.respondents[req.session.selectedRespondentIndex]);
     logger.info(currentState.stateIndex as unknown as string);
     logger.info(currentState.states as unknown as string);

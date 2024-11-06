@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { CaseTypeId } from '../../../main/definitions/case';
 import { DefaultValues, ET3ModificationTypes, ServiceErrors } from '../../../main/definitions/constants';
 import { HubLinkStatus } from '../../../main/definitions/hub';
 import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
@@ -12,7 +13,9 @@ import {
   mockCaseWithIdWithRespondents,
   mockValidCaseWithId,
 } from '../mocks/mockCaseWithId';
+import { mockDocumentUploadResponse } from '../mocks/mockDocumentUploadResponse';
 import { mockedET1FormDocument } from '../mocks/mockDocuments';
+import { mockValidMulterFile } from '../mocks/mockExpressMulterFile';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockUserDetails } from '../mocks/mockUser';
 import mockUserCase from '../mocks/mockUserCase';
@@ -310,7 +313,25 @@ describe('Case Service Tests', () => {
       expect(document).toEqual(mockedET1FormDocument);
     });
   });
-
+  describe('uploadFile', () => {
+    test('Should upload file when file is valid', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.post.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithDocumentUploadResponse);
+      const uploadedDocument = await api.uploadDocument(mockValidMulterFile, CaseTypeId.ENGLAND_WALES);
+      expect(uploadedDocument.data).toEqual(mockDocumentUploadResponse);
+    });
+    test('Should throw error when can not upload file', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.post.mockImplementationOnce(() => {
+        throw new Error('Error uploading document');
+      });
+      await expect(() => api.uploadDocument(mockValidMulterFile, CaseTypeId.ENGLAND_WALES)).rejects.toEqual(
+        new Error('Error uploading document: Error uploading document')
+      );
+    });
+  });
   describe('getCaseApi', () => {
     test('should create a CaseApi', () => {
       expect(getCaseApi(token)).toBeInstanceOf(CaseApi);

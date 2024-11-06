@@ -38,7 +38,7 @@ import {
 } from '../definitions/constants';
 import { DocumentDetail } from '../definitions/definition';
 import { TypeItem } from '../definitions/util-types';
-import DateUtil from '../utils/DateUtil';
+import DateUtils from '../utils/DateUtils';
 import ET3Util from '../utils/ET3Util';
 import { isDateEmpty } from '../validators/dateValidators';
 
@@ -430,10 +430,10 @@ function mapResponseApiDataToCaseWithId(
     caseWithId.et3ResponseAcasAgree = selectedRespondent.value?.et3ResponseAcasAgree;
     caseWithId.et3ResponseAcasAgreeReason = selectedRespondent.value?.et3ResponseAcasAgreeReason;
     caseWithId.et3ResponseAreDatesCorrect = selectedRespondent.value?.et3ResponseAreDatesCorrect;
-    caseWithId.et3ResponseEmploymentStartDate = DateUtil.formatDateStringToCaseDate(
+    caseWithId.et3ResponseEmploymentStartDate = DateUtils.formatDateStringToCaseDate(
       selectedRespondent.value?.et3ResponseEmploymentStartDate
     );
-    caseWithId.et3ResponseEmploymentEndDate = DateUtil.formatDateStringToCaseDate(
+    caseWithId.et3ResponseEmploymentEndDate = DateUtils.formatDateStringToCaseDate(
       selectedRespondent.value?.et3ResponseEmploymentEndDate
     );
     caseWithId.et3ResponseCorrectNoticeDetails = selectedRespondent.value?.et3ResponseCorrectNoticeDetails;
@@ -769,8 +769,8 @@ export const mapRespondent = (respondent: RespondentType): RespondentET3Model =>
     et3ResponseAcasAgree: respondent?.et3ResponseAcasAgree,
     et3ResponseAcasAgreeReason: respondent?.et3ResponseAcasAgreeReason,
     et3ResponseAreDatesCorrect: respondent?.et3ResponseAreDatesCorrect,
-    et3ResponseEmploymentStartDate: DateUtil.formatDateStringToCaseDate(respondent?.et3ResponseEmploymentStartDate),
-    et3ResponseEmploymentEndDate: DateUtil.formatDateStringToCaseDate(respondent?.et3ResponseEmploymentEndDate),
+    et3ResponseEmploymentStartDate: DateUtils.formatDateStringToCaseDate(respondent?.et3ResponseEmploymentStartDate),
+    et3ResponseEmploymentEndDate: DateUtils.formatDateStringToCaseDate(respondent?.et3ResponseEmploymentEndDate),
     et3ResponseEmploymentInformation: respondent?.et3ResponseEmploymentInformation,
     et3ResponseContinuingEmployment: respondent?.et3ResponseContinuingEmployment,
     et3ResponseIsJobTitleCorrect: respondent?.et3ResponseIsJobTitleCorrect,

@@ -1,6 +1,8 @@
 import { AppRequest } from '../definitions/appRequest';
 import { FormError } from '../definitions/form';
 
+import CollectionUtils from './CollectionUtils';
+
 export default class ErrorUtils {
   public static throwError(err: Error, errorName: string): void {
     const error = new Error(err.message);
@@ -17,7 +19,7 @@ export default class ErrorUtils {
     throw err;
   }
 
-  public static readonly setManualErrorToRequestSession = (
+  public static readonly setManualErrorToRequestSessionWithRemovingExistingErrors = (
     request: AppRequest,
     errorType: string,
     propertyName: string
@@ -25,6 +27,17 @@ export default class ErrorUtils {
     const errors: FormError[] = [];
     errors.push({ errorType, propertyName });
     request.session.errors = errors;
+  };
+
+  public static readonly setManualErrorToRequestSessionWithExistingErrors = (
+    request: AppRequest,
+    errorType: string,
+    propertyName: string
+  ): void => {
+    if (CollectionUtils.isEmpty(request.session.errors)) {
+      request.session.errors = [];
+    }
+    request.session.errors.push({ errorType, propertyName });
   };
 
   public static readonly setManualErrorWithFieldToRequestSession = (

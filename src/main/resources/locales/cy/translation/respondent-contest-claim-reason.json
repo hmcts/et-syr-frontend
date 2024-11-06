@@ -9,25 +9,54 @@
   "bullet2": "[W]making sure that any facts or events are in date order",
   "bullet3": "[W]whether you think another person or company may be liable and why",
   "p3": "[W]You can use the text box or upload a file containing the details of your response.",
-  "p4": "[W]Files should be a maximum of 100MB in size (larger files must be split).",
+  "p4": "[W]Each file should be a maximum of 80MB in size (larger files must be split).",
   "textAreaLabel1": "[W]Explain why ",
-  "textAreaLabel2": " [W]contests the claim",
+  "textAreaLabel2": "[W] contests the claim",
+  "remove": "[W]remove",
   "files": {
     "title": "[W]Upload a file (Optional)",
-    "button": "[W]Upload file",
+    "uploadButton": "[W]Upload file",
+    "removeButton": "[W]Remove file",
     "uploaded": "[W]Files uploaded"
   },
+  "fileUploadTable": {
+    "hint": "[W]<p class='govuk-hint'>You can upload multiple documents.</p><p class='govuk-hint'>If you want to upload an email, download and convert from your email client first. Most email clients will give the option of downloading as pdf or PostScript.</p>"
+  },
+  "fileUpload": {
+    "linkText": "[W]Or upload your summary as a separate document (optional)",
+    "hint": "[W]<p>Upload a file</p>"
+  },
+  "acceptedFormats": {
+    "label": "[W]Accepted formats",
+    "p1": "[W]Accepted file formats are pdf, doc, docx, txt, dot, jpg, jpeg, bmp, tif, tiff, png, xls, xlt, xla, xlsx, xltx, ppt, pot, pps, ppa, pptx, potx, ppsx, rtf, csv."
+  },
   "errors": {
-    "respondentContestClaimReason": {
-      "required": "[W]Explain why the respondent contests the claim"
+    "et3ResponseContestClaimDetails": {
+      "required": "[W]Give details of Employer’s contract claim. You can give details by filling the text area or uploading a document.",
+      "tooLong": "[W]Details of the contest must be 3000 characters or less",
+      "textAndFile": "[W]Enter a free text summary or upload as a separate document. You cannot have both"
+    },
+    "contestClaimDocument": {
+      "invalidFileName": "[W]The name of the file provided is invalid. A file name cannot exceed 150 characters or contain any of the following characters: \\/:*?\"|<>",
+      "invalidFileFormat": "[W]The type of file(s) you are trying to upload is not supported by our system. Please convert this into one of the supported file types listed below.",
+      "invalidFileSize": "[W]The file you are trying to upload has exceeded the maximum file size limit of 80MB, please reduce the size of the file.",
+      "fileNameNotFound": "[W]The file you are trying to upload does not have name.",
+      "fileBufferEmpty": "[W]The file you are trying to upload is empty.",
+      "fileNameNotSelected": "[W]Please select a file.",
+      "fileAlreadyExists": "[W]The file you are trying to upload already exists. Please remove existing one first."
     },
     "hiddenErrorField": {
       "sessionUserCase": "[W]User case not found in session",
       "sessionUser": "[W]User not found in session",
       "sessionRespondent": "[W]Unable to find selected respondent in session",
       "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "respondentNotFound": "[W]Unable to find respondent in the session. Please logout and login again.",
+      "api": "[W]A system error occurred, Please try again later",
+      "fileUploadBackendError": "[W]There was an error uploading your file. Please try again. If this error persists please contact support.",
+      "invalidFileCreated": "[W]Invalid file was created.",
+      "unableToRemoveFile": "[W]Unable to remove file. Please try again later.",
+      "required": "[W]Give details of Employer’s contract claim. You can give details by filling the text area or uploading a document.",
+      "updateRespondentError": "[W]Unable to update respondent info. Please try again later."
     }
   }
 }

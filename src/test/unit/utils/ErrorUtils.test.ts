@@ -29,7 +29,7 @@ describe('ErrorUtils tests', () => {
     const errorType = ValidationErrors.API;
     const propertyName = 'hiddenErrorField';
     const request = mockRequest({});
-    ErrorUtils.setManualErrorToRequestSession(request, errorType, propertyName);
+    ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(request, errorType, propertyName);
     expect(request.session.errors).toStrictEqual([{ errorType, propertyName }]);
   });
 });

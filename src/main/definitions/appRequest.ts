@@ -44,26 +44,26 @@ interface ReadableStream extends EventEmitter {
 }
 
 export interface AppSession extends Session {
-  returnUrl: string;
-  lang: string | undefined;
-  errors: FormError[] | undefined;
-  userCase: CaseWithId;
-  submittedCase?: CaseWithId;
-  user: UserDetails;
-  guid: string | undefined;
-  fileTooLarge?: boolean;
-  cookies?: string;
-  respondentRedirectCheckAnswer?: boolean;
-  contactType?: string;
+  caseNumberChecked?: boolean;
   contactTribunalSelection?: string;
+  contactType?: string;
+  cookies?: string;
   documentDownloadPage?: string;
-  respondentNameFromForm?: string;
-  selectedRespondentIndex?: number;
-  selectedAcasCertificate?: ApiDocumentTypeItem;
-  selectedRespondent?: RespondentET3Model;
+  errors: FormError[] | undefined;
   et1FormEnglish?: ApiDocumentTypeItem;
   et1FormWelsh?: ApiDocumentTypeItem;
-  caseNumberChecked?: boolean;
+  fileTooLarge?: boolean;
+  guid: string | undefined;
+  lang: string | undefined;
+  respondentNameFromForm?: string;
+  respondentRedirectCheckAnswer?: boolean;
+  returnUrl: string;
+  selectedAcasCertificate?: ApiDocumentTypeItem;
+  selectedRespondent?: RespondentET3Model;
+  selectedRespondentIndex?: number;
+  submittedCase?: CaseWithId;
+  user: UserDetails;
+  userCase: CaseWithId;
 }
 
 export interface UserDetails {

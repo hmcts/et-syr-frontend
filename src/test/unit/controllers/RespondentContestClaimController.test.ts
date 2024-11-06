@@ -30,7 +30,8 @@ describe('RespondentContestClaimController', () => {
         {
           session: {
             userCase: {
-              respondents: [{
+              respondents: [
+                {
                   respondentName: 'John Doe',
                 },
               ],
@@ -48,25 +49,23 @@ describe('RespondentContestClaimController', () => {
     });
   });
 
-
   describe('POST method', () => {
     it('should redirect to contest claim reason page when response is NO', async () => {
       request = mockRequest({
         body: {
-          et3ResponseRespondentContestClaim: YesOrNo.NO,
+          et3ResponseRespondentContestClaim: YesOrNo.YES,
         },
       });
       request.url = PageUrls.RESPONDENT_CONTEST_CLAIM_REASON;
-
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-
       expect(response.redirect).toHaveBeenCalledWith(expect.stringContaining(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
     });
 
     it('should call ET3Util.updateET3ResponseWithET3Form with the correct parameters when response is YES', async () => {
       request = mockRequest({
         body: {
-          et3ResponseRespondentContestClaim: YesOrNo.YES,
+          et3ResponseRespondentContestClaim: YesOrNo.NO,
         },
       });
       request.url = PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM;
