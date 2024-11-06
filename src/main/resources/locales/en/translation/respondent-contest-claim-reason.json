@@ -9,7 +9,7 @@
   "bullet2": "making sure that any facts or events are in date order",
   "bullet3": "whether you think another person or company may be liable and why",
   "p3": "You can use the text box or upload a file containing the details of your response.",
-  "p4": "Each file should be a maximum of 50MB in size (larger files must be split).",
+  "p4": "Each file should be a maximum of 80MB in size (larger files must be split).",
   "textAreaLabel1": "Explain why ",
   "textAreaLabel2": " contests the claim",
   "remove": "remove",
@@ -39,7 +39,7 @@
     "contestClaimDocument": {
       "invalidFileName": "The name of the file provided is invalid. A file name cannot exceed 150 characters or contain any of the following characters: \\/:*?\"|<>",
       "invalidFileFormat": "The type of file(s) you are trying to upload is not supported by our system. Please convert this into one of the supported file types listed below.",
-      "invalidFileSize": "The file you are trying to upload has exceeded the maximum file size limit of 50MB, please reduce the size of the file.",
+      "invalidFileSize": "The file you are trying to upload has exceeded the maximum file size limit of 80MB, please reduce the size of the file.",
       "fileNameNotFound": "The file you are trying to upload does not have name.",
       "fileBufferEmpty": "The file you are trying to upload is empty.",
       "fileNameNotSelected": "Please select a file.",
