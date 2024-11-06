@@ -3,14 +3,9 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
-import {
-  ET3CaseDetailsLinksStatuses,
-  SectionIndexToEt3CaseDetailsLinkNames,
-  linkStatusColorMap,
-} from '../definitions/links';
+import { SectionIndexToEt3CaseDetailsLinkNames, linkStatusColorMap } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
-import { handleUpdateHubLinksStatuses } from '../helpers/CaseHelpers';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
@@ -59,11 +54,6 @@ export default class CaseDetailsController {
     }
     const userCase = req.session.userCase;
     req.session.selectedRespondentIndex = ET3Util.findSelectedRespondent(req);
-    if (!req.session.userCase.respondents[req.session.selectedRespondentIndex].et3CaseDetailsLinksStatuses) {
-      req.session.userCase.respondents[req.session.selectedRespondentIndex].et3CaseDetailsLinksStatuses =
-        new ET3CaseDetailsLinksStatuses();
-      await handleUpdateHubLinksStatuses(req, logger);
-    }
     const currentState = currentET3StatusFn(req.session.userCase.respondents[req.session.selectedRespondentIndex]);
     logger.info(currentState.stateIndex as unknown as string);
     logger.info(currentState.states as unknown as string);
