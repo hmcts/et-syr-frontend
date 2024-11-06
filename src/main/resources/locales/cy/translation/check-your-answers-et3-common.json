@@ -6,7 +6,7 @@
     "preferredTitleOptional": "[W]Preferred title (optional)",
     "companyRegistrationNumberOptional": "[W]Company registration number (optional)",
     "address": "[W]Address",
-    "contactName": "[W]Name of preferred contact at the respondent’s address (optional)",
+    "contactName": "[W]Name of contact (optional)",
     "dxAddressOptional": "[W]DX address (optional)",
     "contactNumberOptional": "[W]Contact phone number (optional)",
     "contactFormat": "[W]How would you prefer to be contacted? (optional)",
