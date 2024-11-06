@@ -132,18 +132,24 @@ export default class ET3Util {
   public static async updateET3Data(
     req: AppRequest,
     responseHubLinksSectionId: string,
-    responseHubLinksSectionStatus: string
+    responseHubLinksSectionStatus: string,
+    modificationType?: string
   ): Promise<CaseWithId> {
     let caseWithId: CaseWithId;
     try {
+      let caseDetailsLinkStatus = LinkStatus.COMPLETED;
+      if (!modificationType) {
+        modificationType = ET3ModificationTypes.MODIFICATION_TYPE_UPDATE;
+        caseDetailsLinkStatus = LinkStatus.IN_PROGRESS;
+      }
       caseWithId = formatApiCaseDataToCaseWithId(
         (
           await getCaseApi(req.session.user?.accessToken)?.modifyEt3Data(
             req.session?.userCase,
             req.session?.user?.id,
-            ET3ModificationTypes.MODIFICATION_TYPE_UPDATE,
+            modificationType,
             ET3CaseDetailsLinkNames.RespondentResponse,
-            LinkStatus.IN_PROGRESS,
+            caseDetailsLinkStatus,
             responseHubLinksSectionId,
             responseHubLinksSectionStatus
           )

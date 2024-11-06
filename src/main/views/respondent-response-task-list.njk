@@ -52,7 +52,7 @@
               {% for link in section.links %}
                 <li class="app-task-list__item">
                 <span class="app-task-list__task-name--300px">
-                    {% if getContent(link.url) !="" %}
+                    {% if getContent(link.url) !="" and getContent(link.shouldShow) === true %}
                       <a href= "{{ getContent(link.url) }}">
                     {{ getContent(link.linkTxt) }}
                     </a>

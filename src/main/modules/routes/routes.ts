@@ -104,6 +104,7 @@ export class Routes {
     app.get(PageUrls.RESPONSE_SAVED, new ResponseSavedController().get);
     app.get(PageUrls.RESPONDENT_ET3_RESPONSE, new ET3ResponseController().get);
     app.get(PageUrls.CHECK_YOUR_ANSWERS_ET3, new CheckYourAnswersET3Controller().get);
+    app.post(PageUrls.CHECK_YOUR_ANSWERS_ET3, new CheckYourAnswersET3Controller().post);
     // hub links
     app.get(PageUrls.CLAIMANT_ET1_FORM, new ClaimantET1FormController().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_LANDING, new RespondentResponseLandingController().get);

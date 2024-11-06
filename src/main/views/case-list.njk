@@ -18,7 +18,7 @@
       {% else %}
         {% set respondentName = respondent.respondentFirstName + " " + respondent.respondentLastName %}
       {% endif %}
-      {% if respondent.et3Status === 'inProgress' or respondent.et3Status === undefined or respondent.et3Status === '' %}
+      {% if app.et3Status === 'inProgress' or app.et3Status === undefined or app.et3Status === '' %}
         {% set et3Started = (et3Started.push([
           {
             text: app.userCase.createdDate
@@ -38,7 +38,7 @@
         ]), et3Started) %}
       {% endif %}
 
-      {% if respondent.et3Status === 'responseCompleted' %}
+      {% if app.et3Status === 'completed' %}
         {% set et3NotStarted = (et3NotStarted.push([
           {
             text: app.userCase.createdDate
