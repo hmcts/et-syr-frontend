@@ -1,7 +1,7 @@
 {
   "header": "Pay, pension and benefits details",
   "errors": {
-    "haveYouCompleted": {
+    "pensionAndBenefitsSection": {
       "required": "Make a selection"
     },
     "hiddenErrorField": {

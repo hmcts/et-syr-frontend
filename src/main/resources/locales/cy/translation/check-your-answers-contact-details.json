@@ -1,7 +1,7 @@
 {
   "header": "[W]Contact details",
   "errors": {
-    "haveYouCompleted": {
+    "personalDetailsSection": {
       "required": "[W]Make a selection"
     },
     "hiddenErrorField": {

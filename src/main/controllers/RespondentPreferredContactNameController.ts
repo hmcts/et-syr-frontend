@@ -20,6 +20,8 @@ export default class RespondentPreferredContactNameController {
         id: 'et3ResponseRespondentContactName',
         name: 'et3ResponseRespondentContactName',
         type: 'text',
+        label: (l: AnyRecord): string => l.h1,
+        labelHidden: true,
         hint: (l: AnyRecord): string => l.respondentPreferredContactName,
         classes: 'govuk-text',
         attributes: { maxLength: 60 },

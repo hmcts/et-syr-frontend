@@ -22,7 +22,7 @@ import { getCaseApi } from '../services/CaseService';
 import ErrorUtils from './ErrorUtils';
 import StringUtils from './StringUtils';
 
-const logger = getLogger('RespondentNameController');
+const logger = getLogger('ET3Util');
 
 export default class ET3Util {
   public static findSelectedRespondent(req: AppRequest): number {

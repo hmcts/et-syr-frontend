@@ -1,7 +1,7 @@
 {
   "header": "Contest the claim",
   "errors": {
-    "haveYouCompleted": {
+    "contestClaimSection": {
       "required": "Make a selection"
     },
     "hiddenErrorField": {
