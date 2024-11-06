@@ -1,7 +1,7 @@
 {
   "header": "Early conciliation and employee details",
   "errors": {
-    "haveYouCompleted": {
+    "conciliationAndEmployeeDetailsSection": {
       "required": "Make a selection"
     },
     "hiddenErrorField": {

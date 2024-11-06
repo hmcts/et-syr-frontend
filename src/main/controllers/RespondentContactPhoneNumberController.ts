@@ -20,6 +20,8 @@ export default class RespondentContactPhoneNumberController {
         id: 'responseRespondentPhone1',
         name: 'responseRespondentPhone1',
         type: 'text',
+        label: (l: AnyRecord): string => l.h1,
+        labelHidden: true,
         hint: (l: AnyRecord): string => l.respondentContactPhoneNumber,
         classes: 'govuk-text',
         attributes: { maxLength: 20 },

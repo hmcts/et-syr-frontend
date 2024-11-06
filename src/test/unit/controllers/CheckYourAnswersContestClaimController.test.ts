@@ -1,5 +1,7 @@
 import CheckYourAnswersContestClaimController from '../../../main/controllers/CheckYourAnswersContestClaimController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { LinkStatus } from '../../../main/definitions/links';
+import { conditionalRedirect } from '../../../main/helpers/RouterHelpers';
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
 import commonJsonRaw from '../../../main/resources/locales/cy/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -7,6 +9,10 @@ import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import { createMockedUpdateET3ResponseWithET3FormFunction, mockFormError } from '../mocks/mockStaticFunctions';
+
+jest.mock('../../../main/helpers/RouterHelpers', () => ({
+  conditionalRedirect: jest.fn(),
+}));
 
 describe('CheckYourAnswersContestClaimController', () => {
   let controller: CheckYourAnswersContestClaimController;
@@ -40,7 +46,9 @@ describe('CheckYourAnswersContestClaimController', () => {
   });
 
   describe('POST method', () => {
-    it('should redirect to the respondent response task list on valid submission', async () => {
+    it('should redirect to the respondent response task list on valid submission and YES is selected on Contact Claim CYA', async () => {
+      (conditionalRedirect as jest.Mock).mockReturnValue(true);
+
       updateET3ResponseWithET3FormMock.mockImplementation(
         createMockedUpdateET3ResponseWithET3FormFunction(
           PageUrls.RESPONDENT_RESPONSE_TASK_LIST,
@@ -54,6 +62,41 @@ describe('CheckYourAnswersContestClaimController', () => {
 
       expect(request.session.userCase).toEqual(mockCaseWithIdWithRespondents); // Validate the userCase is set
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_RESPONSE_TASK_LIST); // Ensure the correct redirect occurs
+      expect(updateET3ResponseWithET3FormMock).toHaveBeenCalledWith(
+        request,
+        response,
+        expect.anything(),
+        expect.anything(),
+        LinkStatus.COMPLETED,
+        PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+      );
+    });
+
+    it('should redirect to the respondent response task list on valid submission and NO is selected on Contact Claim CYA', async () => {
+      (conditionalRedirect as jest.Mock).mockReturnValue(false);
+
+      updateET3ResponseWithET3FormMock.mockImplementation(
+        createMockedUpdateET3ResponseWithET3FormFunction(
+          PageUrls.RESPONDENT_RESPONSE_TASK_LIST,
+          request,
+          response,
+          [],
+          mockCaseWithIdWithRespondents
+        )
+      );
+
+      await controller.post(request, response);
+
+      expect(request.session.userCase).toEqual(mockCaseWithIdWithRespondents);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_RESPONSE_TASK_LIST);
+      expect(updateET3ResponseWithET3FormMock).toHaveBeenCalledWith(
+        request,
+        response,
+        expect.anything(),
+        expect.anything(),
+        LinkStatus.IN_PROGRESS,
+        PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+      );
     });
 
     it('should redirect back to Check Contest Claim if ET3 data update fails', async () => {
