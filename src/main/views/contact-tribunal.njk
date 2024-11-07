@@ -17,7 +17,11 @@
 
       {{ govukAccordion({
         id: "contact-options",
-        items: applicationsAccordionItems
+        items: applicationsAccordionItems,
+        showAllSectionsText: showAllSections,
+        hideAllSectionsText: hideAllSections,
+        showSectionText: showSection,
+        hideSectionText: hideSection
       }) }}
 
       <h2 class="govuk-heading-m">{{ call.h1 }}</h2>

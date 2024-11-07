@@ -88,8 +88,9 @@ describe('getET3CaseDetailsLinksUrlMap', () => {
     [ET3CaseDetailsLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING],
     [ET3CaseDetailsLinkNames.HearingDetails, PageUrls.NOT_IMPLEMENTED],
     [ET3CaseDetailsLinkNames.RespondentRequestsAndApplications, PageUrls.NOT_IMPLEMENTED],
-    [ET3CaseDetailsLinkNames.RespondentRequestsAndApplications, PageUrls.NOT_IMPLEMENTED],
-    [ET3CaseDetailsLinkNames.ContactTribunal, PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER],
+    [ET3CaseDetailsLinkNames.ClaimantApplications, PageUrls.NOT_IMPLEMENTED],
+    [ET3CaseDetailsLinkNames.ContactTribunal, PageUrls.CONTACT_TRIBUNAL],
+    [ET3CaseDetailsLinkNames.TribunalOrders, PageUrls.NOT_IMPLEMENTED],
     [ET3CaseDetailsLinkNames.TribunalJudgements, PageUrls.NOT_IMPLEMENTED],
     [ET3CaseDetailsLinkNames.Documents, PageUrls.NOT_IMPLEMENTED],
   ]);
