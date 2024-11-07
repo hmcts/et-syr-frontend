@@ -76,14 +76,9 @@ describe('getET3CaseDetailsLinksUrlMap', () => {
       ET3CaseDetailsLinkNames.RespondentRequestsAndApplications,
       PageUrls.NOT_IMPLEMENTED + languages.WELSH_URL_PARAMETER,
     ],
-    [
-      ET3CaseDetailsLinkNames.RespondentRequestsAndApplications,
-      PageUrls.NOT_IMPLEMENTED + languages.WELSH_URL_PARAMETER,
-    ],
-    [
-      ET3CaseDetailsLinkNames.ContactTribunal,
-      PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER + languages.WELSH_URL_PARAMETER,
-    ],
+    [ET3CaseDetailsLinkNames.ClaimantApplications, PageUrls.NOT_IMPLEMENTED + languages.WELSH_URL_PARAMETER],
+    [ET3CaseDetailsLinkNames.ContactTribunal, PageUrls.CONTACT_TRIBUNAL + languages.WELSH_URL_PARAMETER],
+    [ET3CaseDetailsLinkNames.TribunalOrders, PageUrls.NOT_IMPLEMENTED + languages.WELSH_URL_PARAMETER],
     [ET3CaseDetailsLinkNames.TribunalJudgements, PageUrls.NOT_IMPLEMENTED + languages.WELSH_URL_PARAMETER],
     [ET3CaseDetailsLinkNames.Documents, PageUrls.NOT_IMPLEMENTED + languages.WELSH_URL_PARAMETER],
   ]);

@@ -76,6 +76,9 @@ export const TranslationKeys = {
   EMPLOYERS_CONTRACT_CLAIM: 'employers-contract-claim',
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: 'employers-contract-claim-details',
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: 'check-your-answers-employers-contract-claim',
+  // Contact Tribunal
+  CONTACT_TRIBUNAL: 'contact-tribunal',
+  CONTACT_TRIBUNAL_SELECTED: 'contact-tribunal-selected',
 } as const;
 
 export const PageUrls = {
@@ -139,6 +142,9 @@ export const PageUrls = {
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: '/employers-contract-claim-details',
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: '/check-your-answers-employers-contract-claim',
   GET_CASE_DOCUMENT: '/getCaseDocument/:docId',
+  // Contact Tribunal
+  CONTACT_TRIBUNAL: '/contact-tribunal',
+  CONTACT_TRIBUNAL_SELECTED: '/contact-tribunal/:selectedOption',
 } as const;
 
 export const InterceptPaths = {
