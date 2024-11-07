@@ -1,9 +1,16 @@
 import axios from 'axios';
 
 import SelfAssignmentFormController from '../../../main/controllers/SelfAssignmentFormController';
-import { LegacyUrls, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import {
+  FormFieldNames,
+  LegacyUrls,
+  PageUrls,
+  TranslationKeys,
+  ValidationErrors,
+} from '../../../main/definitions/constants';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
+import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import {
   MockCaseApiDataResponseConstants,
   mockCaseApiDataResponseForSelfAssignmentAsData,
@@ -65,14 +72,33 @@ describe('Self assignment form controller', () => {
       expect(request.session.userCase.lastName).toEqual(MockCaseApiDataResponseConstants.TEST_CLAIMANT_SURNAME);
     });
   });
-
-  it('should forward to legacy ET3 URL when no case data returns', async () => {
+  it('should forward to legacy ET3 URL if id in non-reform', async () => {
     const request = mockRequest({ t });
     const response = mockResponse();
     request.body = mockValidCaseWithId;
     getCaseApiMock.mockReturnValue(api);
-    api.getCaseByApplicationRequest = jest.fn().mockResolvedValueOnce(Promise.resolve(null));
+    api.checkIdAndState = jest
+      .fn()
+      .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithStringFalseResponse));
     await new SelfAssignmentFormController().post(request, response);
     expect(response.redirect).toHaveBeenCalledWith(LegacyUrls.ET3);
+  });
+  it('should show an error if there is no case returned', async () => {
+    const request = mockRequest({ t });
+    const response = mockResponse();
+    request.body = mockValidCaseWithId;
+    getCaseApiMock.mockReturnValue(api);
+    api.checkIdAndState = jest
+      .fn()
+      .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithStringTrueResponse));
+    api.getCaseByApplicationRequest = jest.fn().mockResolvedValueOnce(Promise.resolve(null));
+    await new SelfAssignmentFormController().post(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_FORM);
+    expect(request.session.errors).toStrictEqual([
+      {
+        errorType: ValidationErrors.INVALID_CASE_DETAILS,
+        propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
+      },
+    ]);
   });
 });

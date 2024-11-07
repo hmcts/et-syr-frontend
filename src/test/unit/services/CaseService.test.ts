@@ -303,6 +303,33 @@ describe('Case Service Tests', () => {
     });
   });
 
+  describe('Check id', () => {
+    it('should return true when case details found', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.get.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithStringTrueResponse);
+      const value = await api.checkIdAndState('1234567891234567');
+      expect(value.data).toEqual('true');
+    });
+    it('should return false when case details not found', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.get.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithStringFalseResponse);
+      const value = await api.checkIdAndState('1234567891234567');
+      expect(value.data).toEqual('false');
+    });
+    it('should throw exception when there is a problem while checking id', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.get.mockImplementation(() => {
+        throw mockAxiosError('TEST', ServiceErrors.ERROR_CASE_NOT_FOUND, 404);
+      });
+      await expect(() => api.checkIdAndState('1234567891234567')).rejects.toEqual(
+        new Error(ServiceErrors.ERROR_GETTING_USER_CASES + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
+  });
+
   describe('Axios get to download case document', () => {
     it('should send get request to the correct api endpoint with the document id passed in the param', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
