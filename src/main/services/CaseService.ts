@@ -143,6 +143,16 @@ export class CaseApi {
     }
   };
 
+  checkIdAndState = async (id: string): Promise<AxiosResponse<string>> => {
+    try {
+      return await this.axios.get<string>(
+        JavaApiUrls.FIND_CASE_BY_ID + DefaultValues.STRING_QUESTION_MARK + 'id' + DefaultValues.STRING_EQUALS + id
+      );
+    } catch (error) {
+      throw new Error('Error getting user cases: ' + axiosErrorDetails(error));
+    }
+  };
+
   modifyEt3Data = async (
     caseDetails: CaseWithId,
     idamId: string,

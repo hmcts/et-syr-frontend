@@ -29,7 +29,8 @@
       "sessionUser": "[W]User not found in session",
       "sessionRespondent": "[W]Unable to find selected respondent in session",
       "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent"
+      "respondentNotFound": "[W]Unable to find respondent",
+      "invalidCaseDetails": "[W]Please enter the details exactly as they are written on the case, including any mistakes"
     }
   }
 }
