@@ -1,0 +1,37 @@
+{
+  "title": "[W]Amend response",
+  "applicationType": "[W]Amend my response",
+  "applicationTitle": "[W]Amend response",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "[W]Use this form to apply to amend the ET3 response."
+    },
+    {
+      "type": "paragraph",
+      "text": "[W]The tribunal will decide if you can make the amendment by judging the fairness of the application. This decision may be made at a hearing."
+    },
+    {
+      "type": "paragraph",
+      "text": "[W]The tribunal also needs to know if you consider the amendment minor or substantial."
+    },
+    {
+      "type": "paragraph",
+      "text": "[W]Providing details of why you want to amend the response and the importance of the amendment will help the tribunal to decide your application more quickly."
+    },
+    {
+      "type": "bold-paragraph",
+      "text": "[W]Details to include in your application:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "[W]what you want to amend in your response. Be specific and refer to your ET3 response form if possible",
+        "[W]if you consider it a minor or substantial amendment ",
+        "[W]why you want to make this amendment",
+        "[W]why you are asking to make this amendment now",
+        "[W]how this amendment will benefit you and how could it disadvantage you if not granted"
+      ]
+    }
+  ]
+}

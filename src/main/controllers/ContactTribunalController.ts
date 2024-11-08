@@ -5,7 +5,7 @@ import { TranslationKeys } from '../definitions/constants';
 import { getApplicationsAccordionItems } from '../helpers/controller/ContactTribunalHelper';
 
 export default class ContactTribunalController {
-  public async get(req: AppRequest, res: Response): Promise<void> {
+  public get(req: AppRequest, res: Response): void {
     res.render(TranslationKeys.CONTACT_TRIBUNAL, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
       ...req.t(TranslationKeys.CONTACT_TRIBUNAL, { returnObjects: true }),

@@ -1,0 +1,27 @@
+{
+  "title": "Change personal details",
+  "applicationType": "Change my personal details",
+  "applicationTitle": "Change personal details",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Use this form to apply to change details like the company address, email or telephone number. "
+    },
+    {
+      "type": "paragraph",
+      "text": "If you change the postal or email address, we’ll send any letters to the new address."
+    },
+    {
+      "type": "paragraph",
+      "text": "If you change the telephone number, we’ll contact you using the new number if we have questions about your response."
+    },
+    {
+      "type": "bold-paragraph",
+      "text": "Details you can apply to change:"
+    },
+    {
+      "type": "list",
+      "items": ["name", "sex and preferred title", "address", "telephone number", "email address"]
+    }
+  ]
+}
