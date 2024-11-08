@@ -11,10 +11,6 @@
     "p3": "[W]You may be able to request that some details do not get shared with the applicant."
   },
   "sections": {
-    "WITHDRAW_CLAIM": {
-      "label": "Rhoi gwybod fy mod eisiau tynnu’r cyfan neu ran o’m hawliad yn ôl",
-      "body": "Pan fyddwch wedi cyrraedd setliad neu ddim eisiau parhau â’ch hawliad."
-    },
     "CHANGE_PERSONAL_DETAILS": {
       "label": "Rwyf eisiau newid fy manylion personol",
       "body": "Newid y manylion personol y bu i chi eu rhoi wrth wneud eich hawliad."

@@ -11,10 +11,6 @@
     "p3": "You may be able to request that some details do not get shared with the applicant."
   },
   "sections": {
-    "WITHDRAW_CLAIM": {
-      "label": "Give notice that I want to withdraw all or part of my claim",
-      "body": "When you've reached a settlement or do not want to continue with your claim."
-    },
     "CHANGE_PERSONAL_DETAILS": {
       "label": "I want to change my personal details",
       "body": "Change the personal details you gave when making your claim."

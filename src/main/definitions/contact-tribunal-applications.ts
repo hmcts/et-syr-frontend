@@ -11,11 +11,6 @@ export interface Application {
 }
 
 export const application: { [key: string]: Application } = {
-  WITHDRAW_CLAIM: {
-    code: 'Withdraw all or part of claim',
-    url: 'withdraw-all-or-part-of-my-claim',
-    type: ApplicationType.A,
-  },
   CHANGE_PERSONAL_DETAILS: {
     code: 'Change personal details',
     url: 'change-my-personal-details',
