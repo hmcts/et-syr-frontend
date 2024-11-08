@@ -8,7 +8,6 @@ import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 
 export default class RespondentResponseLandingController {
   public async get(req: AppRequest, res: Response): Promise<void> {
-    req.session.errors = undefined;
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_TASK_LIST);
     res.render(TranslationKeys.RESPONDENT_RESPONSE_LANDING, {

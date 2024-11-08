@@ -16,7 +16,7 @@ describe('NumberUtils tests', () => {
     { value: null, result: false },
     { value: 1, result: true },
   ])('check if given collection value is blank: %o', ({ value, result }) => {
-    expect(NumberUtils.isNotNotEmptyOrZero(value)).toStrictEqual(result);
+    expect(NumberUtils.isNotEmptyOrZero(value)).toStrictEqual(result);
   });
   it.each([
     { value: undefined, result: DefaultValues.STRING_EMPTY },
@@ -45,5 +45,25 @@ describe('NumberUtils tests', () => {
     { value: '1', result: false },
   ])('check if given string value is non numeric: %o', ({ value, result }) => {
     expect(NumberUtils.isNonNumericValue(value)).toStrictEqual(result);
+  });
+  it.each([
+    { value: undefined, result: false },
+    { value: 0, result: true },
+    { value: 0.1, result: true },
+    { value: null, result: false },
+    { value: 1, result: true },
+    { value: 9999999999999, result: true },
+  ])('check if given number value is not empty: %o', ({ value, result }) => {
+    expect(NumberUtils.isNotEmpty(value)).toStrictEqual(result);
+  });
+  it.each([
+    { value: undefined, result: true },
+    { value: 0, result: false },
+    { value: 0.1, result: false },
+    { value: null, result: true },
+    { value: 1, result: false },
+    { value: 9999999999999, result: false },
+  ])('check if given number value is not empty: %o', ({ value, result }) => {
+    expect(NumberUtils.isEmpty(value)).toStrictEqual(result);
   });
 });

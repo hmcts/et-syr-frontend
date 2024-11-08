@@ -1,37 +1,19 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { RespondentET3Model } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
-import { ET3HubLinksStatuses, SectionIndexToEt3HubLinkNames, linkStatusColorMap } from '../definitions/links';
+import { SectionIndexToEt3HubLinkNames, linkStatusColorMap } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
-import { handleUpdateHubLinksStatuses } from '../helpers/CaseHelpers';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getET3HubLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getLogger } from '../logger';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
-
-const logger = getLogger('RespondentResponseTaskListController');
 
 export default class RespondentResponseTaskListController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const redirectUrl = setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED);
-
-    let selectedRespondent: RespondentET3Model;
-    for (const respondent of req.session.userCase.respondents) {
-      if (respondent.idamId === req.session.user.id) {
-        selectedRespondent = respondent;
-        break;
-      }
-    }
-
-    if (!selectedRespondent.et3HubLinksStatuses) {
-      selectedRespondent.et3HubLinksStatuses = new ET3HubLinksStatuses();
-      await handleUpdateHubLinksStatuses(req, logger);
-    }
-
+    const selectedRespondent = req.session.userCase.respondents[req.session.selectedRespondentIndex];
     const et3HubLinksStatuses = selectedRespondent.et3HubLinksStatuses;
     const languageParam = getLanguageParam(req.url);
 

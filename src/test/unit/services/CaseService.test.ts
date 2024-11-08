@@ -176,12 +176,15 @@ describe('Case Service Tests', () => {
 
   describe('Modify ET3 Data', () => {
     it('should modify et3 data', async () => {
+      const request = mockRequest({});
+      request.session.userCase = mockCaseWithIdWithRespondents;
+      request.session.selectedRespondentIndex = 0;
+      request.session.user = mockUserDetails;
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
       mockedAxios.post.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponseList);
       const value = await api.modifyEt3Data(
-        mockCaseWithIdWithRespondents,
-        mockUserDetails.id,
+        request,
         ET3ModificationTypes.MODIFICATION_TYPE_UPDATE,
         ET3CaseDetailsLinkNames.RespondentResponse,
         LinkStatus.IN_PROGRESS,
@@ -194,11 +197,15 @@ describe('Case Service Tests', () => {
     it('should throw exception when idamId not exists', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
+      const request = mockRequest({});
+      request.session.userCase = mockCaseWithIdWithRespondents;
+      request.session.selectedRespondentIndex = 0;
+      request.session.user = mockUserDetails;
+      request.session.user.id = DefaultValues.STRING_EMPTY;
       mockedAxios.post.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponseList);
       await expect(() =>
         api.modifyEt3Data(
-          mockCaseWithIdWithRespondents,
-          DefaultValues.STRING_EMPTY,
+          request,
           ET3ModificationTypes.MODIFICATION_TYPE_UPDATE,
           ET3CaseDetailsLinkNames.RespondentResponse,
           LinkStatus.IN_PROGRESS,
@@ -215,11 +222,15 @@ describe('Case Service Tests', () => {
     it('should throw exception when request type not exists', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
+      const request = mockRequest({});
+      request.session.userCase = mockCaseWithIdWithRespondents;
+      request.session.selectedRespondentIndex = 0;
+      request.session.user = mockUserDetails;
+      request.session.user.id = '1234';
       mockedAxios.post.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponseList);
       await expect(() =>
         api.modifyEt3Data(
-          mockCaseWithIdWithRespondents,
-          mockUserDetails.id,
+          request,
           DefaultValues.STRING_SPACE,
           ET3CaseDetailsLinkNames.RespondentResponse,
           LinkStatus.IN_PROGRESS,
@@ -237,11 +248,15 @@ describe('Case Service Tests', () => {
     it('should throw exception when respondent not found', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
+      const request = mockRequest({});
+      request.session.userCase = mockCaseWithIdWithRespondents;
+      request.session.selectedRespondentIndex = undefined;
+      request.session.user = mockUserDetails;
+      request.session.user.id = '123';
       mockedAxios.post.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponseList);
       await expect(() =>
         api.modifyEt3Data(
-          mockCaseWithIdWithRespondents,
-          '123',
+          request,
           ET3ModificationTypes.MODIFICATION_TYPE_UPDATE,
           ET3CaseDetailsLinkNames.RespondentResponse,
           LinkStatus.IN_PROGRESS,
@@ -255,17 +270,19 @@ describe('Case Service Tests', () => {
         )
       );
     });
-
     it('should throw exception when there is a problem while updating case details on axios', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
+      const request = mockRequest({});
+      request.session.userCase = mockCaseWithIdWithRespondents;
+      request.session.selectedRespondentIndex = 0;
+      request.session.user = mockUserDetails;
       mockedAxios.post.mockImplementation(() => {
         throw mockAxiosError('TEST', ServiceErrors.ERROR_CASE_NOT_FOUND, 404);
       });
       await expect(() =>
         api.modifyEt3Data(
-          mockCaseWithIdWithRespondents,
-          mockUserDetails.id,
+          request,
           ET3ModificationTypes.MODIFICATION_TYPE_UPDATE,
           ET3CaseDetailsLinkNames.RespondentResponse,
           LinkStatus.IN_PROGRESS,

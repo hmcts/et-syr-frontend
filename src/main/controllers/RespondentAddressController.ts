@@ -15,6 +15,7 @@ import { conditionalRedirect } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
 import ErrorUtils from '../utils/ErrorUtils';
+import NumberUtils from '../utils/NumberUtils';
 import { isOptionSelected } from '../validators/validator';
 
 const logger = getLogger('RespondentAddressController');
@@ -72,7 +73,7 @@ export default class RespondentAddressController {
         redirectUrl,
         []
       );
-    } else if (req.session.selectedRespondentIndex !== undefined && req.session.selectedRespondentIndex >= 0) {
+    } else if (NumberUtils.isNotEmpty(req.session?.selectedRespondentIndex)) {
       logger.info(LoggerConstants.INFO_LOG_UPDATING_RESPONSE_RESPONDENT_ADDRESS_SELECTION + req.session.userCase.id);
       const selectedRespondentAddress = req.session?.userCase?.respondents?.at(
         req.session.selectedRespondentIndex

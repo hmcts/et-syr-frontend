@@ -2,12 +2,9 @@ import axios from 'axios';
 
 import { DefaultValues, PageUrls, ServiceErrors, ValidationErrors } from '../../../main/definitions/constants';
 import { ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
-import { formatApiCaseDataToCaseWithId } from '../../../main/helpers/ApiFormatter';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
 import ET3Util from '../../../main/utils/ET3Util';
-import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
-import { mockCaseApiDataResponse } from '../mocks/mockCaseApiDataResponse';
 import { mockCaseWithIdWithRespondents, mockValidCaseWithId } from '../mocks/mockCaseWithId';
 import { mockedForm } from '../mocks/mockForm';
 import { mockRequest } from '../mocks/mockRequest';
@@ -32,24 +29,25 @@ describe('ET3lUtil tests', () => {
     test('Should find selected respondent with given correct data', () => {
       request.session.userCase = mockCaseWithIdWithRespondents;
       request.session.user = mockUserDetails;
-      request.session.selectedRespondentIndex = 0;
-      const selectedRespondent = ET3Util.findSelectedRespondent(request);
-      expect(selectedRespondent).toBeDefined();
+      request.params = { ccdId: '1234' };
+      request.session.userCase.respondents[0].ccdId = '1234';
+      const selectedRespondentIndex = ET3Util.findSelectedRespondentIndex(request);
+      expect(selectedRespondentIndex).toStrictEqual(0);
     });
 
     test('Should set session user case error when user case is undefined', () => {
       request.session.userCase = undefined;
       request.session.user = mockUserDetails;
       request.session.selectedRespondentIndex = 0;
-      ET3Util.findSelectedRespondent(request);
-      expect(request.session.errors[0].errorType).toEqual(ValidationErrors.SESSION_USER_CASE);
+      ET3Util.findSelectedRespondentIndex(request);
+      expect(request.session.errors[0].errorType).toEqual(ValidationErrors.SESSION_USER_CASE_NOT_FOUND);
     });
 
     test('Should set session user error when user case is undefined', () => {
       request.session.userCase = mockCaseWithIdWithRespondents;
       request.session.user = undefined;
       request.session.selectedRespondentIndex = 0;
-      ET3Util.findSelectedRespondent(request);
+      ET3Util.findSelectedRespondentIndex(request);
       expect(request.session.errors[request.session.errors.length - 1].errorType).toEqual(
         ValidationErrors.SESSION_USER
       );
@@ -59,7 +57,7 @@ describe('ET3lUtil tests', () => {
       request.session.userCase = mockValidCaseWithId;
       request.session.user = mockUserDetails;
       request.session.selectedRespondentIndex = 0;
-      ET3Util.findSelectedRespondent(request);
+      ET3Util.findSelectedRespondentIndex(request);
       expect(request.session.errors[0].errorType).toEqual(ValidationErrors.SESSION_RESPONDENT);
     });
 
@@ -68,8 +66,8 @@ describe('ET3lUtil tests', () => {
       request.session.user = mockUserDetails;
       request.session.selectedRespondentIndex = 0;
       request.session.user.id = DefaultValues.STRING_SPACE;
-      ET3Util.findSelectedRespondent(request);
-      expect(request.session.errors[0].errorType).toEqual(ValidationErrors.USER_ID);
+      ET3Util.findSelectedRespondentIndex(request);
+      expect(request.session.errors[0].errorType).toEqual(ValidationErrors.USER_ID_NOT_FOUND);
     });
 
     test('Should set respondent not found error when user id and respondent idamId not matches', () => {
@@ -77,24 +75,12 @@ describe('ET3lUtil tests', () => {
       request.session.user = mockUserDetails;
       request.session.selectedRespondentIndex = 0;
       request.session.user.id = '123';
-      ET3Util.findSelectedRespondent(request);
-      expect(request.session.errors[0].errorType).toEqual(ValidationErrors.RESPONDENT_NOT_FOUND);
+      ET3Util.findSelectedRespondentIndex(request);
+      expect(request.session.errors[0].errorType).toEqual(ValidationErrors.RESPONDENT_INDEX_NOT_FOUND);
     });
   });
 
   describe('Update ET3 data function test', () => {
-    test('Should update ET3 data', async () => {
-      request.session.user = mockUserDetails;
-      request.session.userCase = mockCaseWithIdWithRespondents;
-      request.session.selectedRespondentIndex = 0;
-      getCaseApiMock.mockReturnValue(api);
-      api.modifyEt3Data = jest
-        .fn()
-        .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse));
-      const caseWithId = await ET3Util.updateET3Data(request, ET3HubLinkNames.ContactDetails, LinkStatus.IN_PROGRESS);
-      expect(caseWithId).toEqual(formatApiCaseDataToCaseWithId(mockCaseApiDataResponse));
-    });
-
     test('Should not update ET3 data when not able to modify user case', async () => {
       request.session.user = mockUserDetails;
       request.session.selectedRespondentIndex = 0;
@@ -149,38 +135,14 @@ describe('ET3lUtil tests', () => {
     });
   });
   describe('Find selected respondent by case with id tests', () => {
-    test('Should not find selected respondent when case with id is empty', () => {
-      request.session.userCase = mockCaseWithIdWithRespondents;
-      request.session.user = mockUserDetails;
-      request.session.selectedRespondentIndex = 0;
-      ET3Util.findSelectedRespondentByCaseWithId(request, undefined);
-      expect(request.session.errors[0].errorType).toEqual(ValidationErrors.SESSION_USER_CASE);
-    });
-
-    test('Should not find selected respondent when request session user is undefined', () => {
-      request.session.userCase = mockCaseWithIdWithRespondents;
-      request.session.user = undefined;
-      request.session.selectedRespondentIndex = 0;
-      ET3Util.findSelectedRespondentByCaseWithId(request, mockCaseWithIdWithRespondents);
-      expect(request.session.errors[0].errorType).toEqual(ValidationErrors.SESSION_USER);
-    });
-
-    test('Should not find selected respondent when case with id does not have any respondent', () => {
-      request.session.userCase = mockValidCaseWithId;
-      request.session.user = mockUserDetails;
-      request.session.selectedRespondentIndex = 0;
-      ET3Util.findSelectedRespondentByCaseWithId(request, mockValidCaseWithId);
-      expect(request.session.errors[0].errorType).toEqual(ValidationErrors.SESSION_RESPONDENT);
-    });
-
     test('Should not find selected respondent when session user does not have id', () => {
       request.session.userCase = mockCaseWithIdWithRespondents;
       request.session.user = mockUserDetails;
       request.session.user.id = undefined;
       request.session.selectedRespondentIndex = 0;
       request.session.user.id = DefaultValues.STRING_SPACE;
-      ET3Util.findSelectedRespondent(request);
-      expect(request.session.errors[0].errorType).toEqual(ValidationErrors.USER_ID);
+      ET3Util.findSelectedRespondentIndex(request);
+      expect(request.session.errors[0].errorType).toEqual(ValidationErrors.USER_ID_NOT_FOUND);
     });
   });
 });

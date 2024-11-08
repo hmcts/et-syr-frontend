@@ -197,8 +197,8 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   idamId?: string;
   et3CaseDetailsLinksStatuses?: ET3CaseDetailsLinksStatuses;
   et3HubLinksStatuses?: ET3HubLinksStatuses;
-  et3Status?: string;
   et3IsRespondentAddressCorrect?: YesOrNo;
+  et3Status?: string;
 }
 
 export interface RespondentApiModel {

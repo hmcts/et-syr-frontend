@@ -38,6 +38,7 @@ describe('Respondent response task list controller', () => {
     const controller = new RespondentResponseTaskListController();
     const response = mockResponse();
     const request = mockRequest({ session: { userCase: mockUserCaseComplete, user: mockUserDetails } });
+    request.session.selectedRespondentIndex = 0;
     // Mock the translation function to return valid section data
     (request.t as unknown as jest.Mock).mockReturnValue(mockRespondentHubTranslations);
     await controller.get(request, response);
@@ -80,7 +81,7 @@ describe('Respondent response task list controller', () => {
     const controller = new RespondentResponseTaskListController();
     const response = mockResponse();
     const request = mockRequest({ session: { userCase: mockUserCaseComplete, user: mockUserDetails } });
-
+    request.session.selectedRespondentIndex = 0;
     await controller.get(request, response);
 
     expect(response.render).toHaveBeenCalledWith(
@@ -96,7 +97,7 @@ describe('Respondent response task list controller', () => {
     const controller = new RespondentResponseTaskListController();
     const response = mockResponse();
     const request = mockRequest({ session: { userCase: mockUserCaseComplete, user: mockUserDetails } });
-
+    request.session.selectedRespondentIndex = 0;
     await controller.get(request, response);
 
     expect(request.t).toHaveBeenCalledWith(TranslationKeys.COMMON, { returnObjects: true });

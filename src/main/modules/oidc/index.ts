@@ -25,25 +25,28 @@ export class Oidc {
     const port = app.locals.developmentMode ? `:${config.get('port')}` : '';
     const serviceUrl = (res: Response): string => `${HTTPS_PROTOCOL}${res.locals.host}${port}`;
 
-    app.get(PageUrls.CASE_DETAILS_WITH_CASE_ID_PARAMETER, (req: AppRequest, res: Response, next: NextFunction) => {
-      const redisClient = req.app.locals?.redisClient;
-      if (!redisClient) {
-        logger.error('Unable to connect to Redis');
-        return ErrorUtils.throwManualError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
-      } else {
-        try {
-          const preLoginUrl = generatePreLoginUrl(res.locals.host, port, req.url, app.locals.developmentMode);
-          req.session.guid = cachePreLoginUrl(redisClient, preLoginUrl);
-        } catch (err) {
-          logger.error('Unable to cache pre login URL' + err.message);
-          return ErrorUtils.throwError(err, RedisErrors.FAILED_TO_SAVE);
+    app.get(
+      PageUrls.CASE_DETAILS_WITH_CASE_ID_RESPONDENT_CCD_ID_PARAMETERS,
+      (req: AppRequest, res: Response, next: NextFunction) => {
+        const redisClient = req.app.locals?.redisClient;
+        if (!redisClient) {
+          logger.error('Unable to connect to Redis');
+          return ErrorUtils.throwManualError(RedisErrors.CLIENT_NOT_FOUND, RedisErrors.FAILED_TO_CONNECT);
+        } else {
+          try {
+            const preLoginUrl = generatePreLoginUrl(res.locals.host, port, req.url, app.locals.developmentMode);
+            req.session.guid = cachePreLoginUrl(redisClient, preLoginUrl);
+          } catch (err) {
+            logger.error('Unable to cache pre login URL' + err.message);
+            return ErrorUtils.throwError(err, RedisErrors.FAILED_TO_SAVE);
+          }
         }
+        if (!req.session.user?.isCitizen) {
+          return res.redirect(AuthUrls.LOGIN);
+        }
+        return next();
       }
-      if (!req.session.user?.isCitizen) {
-        return res.redirect(AuthUrls.LOGIN);
-      }
-      return next();
-    });
+    );
 
     app.get(PageUrls.CHECKLIST, (req: AppRequest, res: Response, next: NextFunction) => {
       setPreLoginUrl(req, PageUrls.CHECKLIST);

@@ -39,7 +39,7 @@ import {
 import { DocumentDetail } from '../definitions/definition';
 import { TypeItem } from '../definitions/util-types';
 import DateUtils from '../utils/DateUtils';
-import ET3Util from '../utils/ET3Util';
+import NumberUtils from '../utils/NumberUtils';
 import { isDateEmpty } from '../validators/dateValidators';
 
 import { retrieveCurrentLocale } from './ApplicationTableRecordTranslationHelper';
@@ -226,10 +226,9 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
     caseStayed: fromApiCaseData?.case_data?.batchCaseStayed,
     preAcceptCase: fromApiCaseData?.case_data?.preAcceptCase,
   };
-  if (req?.session) {
-    req.session.selectedRespondentIndex = ET3Util.findSelectedRespondentByCaseWithId(req, caseWithId);
+  if (NumberUtils.isNotEmpty(req?.session?.selectedRespondentIndex)) {
+    mapResponseApiDataToCaseWithId(fromApiCaseData, caseWithId, req);
   }
-  mapResponseApiDataToCaseWithId(fromApiCaseData, caseWithId, req);
   return caseWithId;
 }
 
@@ -238,252 +237,242 @@ function mapResponseApiDataToCaseWithId(
   caseWithId: CaseWithId,
   req: AppRequest
 ): void {
-  const selectedRespondentIndex: number = req?.session?.selectedRespondentIndex;
-  if (
-    selectedRespondentIndex !== undefined &&
-    selectedRespondentIndex >= 0 &&
-    selectedRespondentIndex < fromApiCaseData.case_data.respondentCollection.length
-  ) {
-    const selectedRespondent: RespondentApiModel =
-      fromApiCaseData.case_data.respondentCollection[selectedRespondentIndex];
-    caseWithId.respondentName = selectedRespondent.value?.respondent_name;
-    caseWithId.workAddressLine1 = selectedRespondent.value?.workAddress1;
-    caseWithId.workAddressLine2 = selectedRespondent.value?.workAddress2;
-    caseWithId.workAddressLine3 = undefined;
-    caseWithId.workAddressTown = selectedRespondent.value?.workAddressTown;
-    caseWithId.workAddressCountry = selectedRespondent.value?.workAddressCountry;
-    caseWithId.workAddressPostcode = selectedRespondent.value?.workAddressPostcode;
-    caseWithId.workAddressCounty = undefined;
-    caseWithId.acasCert = selectedRespondent.value?.et3ResponseAcasAgree;
-    caseWithId.acasCertNum = selectedRespondent.value?.respondent_ACAS;
-    caseWithId.noAcasReason = selectedRespondent.value?.respondent_ACAS_no;
-    caseWithId.respondentACASNo = selectedRespondent.value?.respondent_ACAS_no;
-    caseWithId.claimantWorkAddressLine1 = selectedRespondent.value?.claimant_work_address?.AddressLine1;
-    caseWithId.claimantWorkAddressLine2 = selectedRespondent.value?.claimant_work_address?.AddressLine2;
-    caseWithId.claimantWorkAddressLine3 = selectedRespondent.value?.claimant_work_address?.AddressLine3;
-    caseWithId.claimantWorkAddressCountry = selectedRespondent.value?.claimant_work_address?.Country;
-    caseWithId.claimantWorkAddressPostCode = selectedRespondent.value?.claimant_work_address?.PostCode;
-    caseWithId.claimantWorkAddressCounty = selectedRespondent.value?.claimant_work_address?.County;
-    caseWithId.claimantWorkAddressPostTown = selectedRespondent.value?.claimant_work_address?.PostTown;
-    caseWithId.responseReceived = selectedRespondent.value?.responseReceived;
-    caseWithId.responseStatus = selectedRespondent.value?.response_status;
-    caseWithId.responseToClaim = selectedRespondent.value?.responseToClaim;
-    caseWithId.rejectionReason = selectedRespondent.value?.rejection_reason;
-    caseWithId.respondentAddressLine1 = selectedRespondent.value?.respondent_address?.AddressLine1;
-    caseWithId.respondentAddressLine2 = selectedRespondent.value?.respondent_address?.AddressLine2;
-    caseWithId.respondentAddressLine3 = selectedRespondent.value?.respondent_address?.AddressLine3;
-    caseWithId.respondentAddressCountry = selectedRespondent.value?.respondent_address?.Country;
-    caseWithId.respondentAddressPostCode = selectedRespondent.value?.respondent_address?.PostCode;
-    caseWithId.respondentAddressCounty = selectedRespondent.value?.respondent_address?.County;
-    caseWithId.respondentAddressPostTown = selectedRespondent.value?.respondent_address?.PostTown;
-    caseWithId.respondentACASQuestion = selectedRespondent.value?.respondent_ACAS_question;
-    caseWithId.respondentACAS = selectedRespondent.value?.respondent_ACAS;
-    caseWithId.rejectionReasonOther = selectedRespondent.value?.rejection_reason_other;
-    caseWithId.responseOutOfTime = selectedRespondent.value?.responseOutOfTime;
-    caseWithId.responseNotOnPrescribedForm = selectedRespondent.value?.responseNotOnPrescribedForm;
-    caseWithId.et3ResponseEmploymentInformation = selectedRespondent.value?.et3ResponseEmploymentInformation;
-    caseWithId.et3ResponseContinuingEmployment = selectedRespondent.value?.et3ResponseContinuingEmployment;
-    caseWithId.et3ResponseIsJobTitleCorrect = selectedRespondent.value?.et3ResponseIsJobTitleCorrect;
-    caseWithId.et3ResponseCorrectJobTitle = selectedRespondent.value?.et3ResponseCorrectJobTitle;
-    caseWithId.et3ResponseClaimantWeeklyHours = selectedRespondent.value?.et3ResponseClaimantWeeklyHours;
-    caseWithId.et3ResponseClaimantCorrectHours = selectedRespondent.value?.et3ResponseClaimantCorrectHours;
-    caseWithId.et3ResponseEarningDetailsCorrect = selectedRespondent.value?.et3ResponseEarningDetailsCorrect;
-    caseWithId.et3ResponsePayFrequency = selectedRespondent.value?.et3ResponsePayFrequency;
-    caseWithId.et3ResponsePayBeforeTax = selectedRespondent.value?.et3ResponsePayBeforeTax;
-    caseWithId.et3ResponsePayTakehome = selectedRespondent.value?.et3ResponsePayTakehome;
-    caseWithId.respondentEmail = selectedRespondent.value?.respondent_email;
-    caseWithId.responseStruckOut = selectedRespondent.value?.responseStruckOut;
-    caseWithId.respondentContactPreference = selectedRespondent.value?.respondent_contact_preference;
-    caseWithId.responseStruckOutDate = selectedRespondent.value?.responseStruckOutDate;
-    caseWithId.responseStruckOutChairman = selectedRespondent.value?.responseStruckOutChairman;
-    caseWithId.et3ResponseIsNoticeCorrect = selectedRespondent.value?.et3ResponseIsNoticeCorrect;
-    caseWithId.responseRequiredInfoAbsent = selectedRespondent.value?.responseRequiredInfoAbsent;
-    caseWithId.responseNotes = selectedRespondent.value?.responseNotes;
-    caseWithId.responseReferredToJudge = selectedRespondent.value?.response_referred_to_judge;
-    caseWithId.responseReturnedFromJudge = selectedRespondent.value?.response_returned_from_judge;
-    caseWithId.respondentType = selectedRespondent.value?.respondentType;
-    caseWithId.respondentOrganisation = selectedRespondent.value?.respondentOrganisation;
-    caseWithId.respondentFirstName = selectedRespondent.value?.respondentFirstName;
-    caseWithId.respondentLastName = selectedRespondent.value?.respondentLastName;
-    caseWithId.respondentPhone1 = selectedRespondent.value?.respondent_phone1;
-    caseWithId.respondentPhone2 = selectedRespondent.value?.respondent_phone2;
-    caseWithId.et3ResponseRespondentEmployerType = selectedRespondent.value?.et3ResponseRespondentEmployerType;
-    caseWithId.et3ResponseRespondentPreferredTitle = selectedRespondent.value?.et3ResponseRespondentPreferredTitle;
-    caseWithId.et3ResponseRespondentContactName = selectedRespondent.value?.et3ResponseRespondentContactName;
-    caseWithId.et3ResponseDXAddress = selectedRespondent.value?.et3ResponseDXAddress;
-    caseWithId.et3ResponseContactReason = selectedRespondent.value?.et3ResponseContactReason;
-    caseWithId.et3ResponseLanguagePreference = selectedRespondent.value?.et3ResponseLanguagePreference;
-    caseWithId.responseStruckOutReason = selectedRespondent.value?.responseStruckOutReason;
-    caseWithId.responseRespondentAddressLine1 = selectedRespondent.value?.responseRespondentAddress?.AddressLine1;
-    caseWithId.responseRespondentAddressLine2 = selectedRespondent.value?.responseRespondentAddress?.AddressLine2;
-    caseWithId.responseRespondentAddressLine3 = selectedRespondent.value?.responseRespondentAddress?.AddressLine3;
-    caseWithId.responseRespondentAddressPostTown = selectedRespondent.value?.responseRespondentAddress?.PostTown;
-    caseWithId.responseRespondentAddressCounty = selectedRespondent.value?.responseRespondentAddress?.County;
-    caseWithId.responseRespondentAddressPostCode = selectedRespondent.value?.responseRespondentAddress?.PostCode;
-    caseWithId.responseRespondentAddressCountry = selectedRespondent.value?.responseRespondentAddress?.Country;
-    caseWithId.responseRespondentPhone1 = selectedRespondent.value?.responseRespondentPhone1;
-    caseWithId.responseRespondentPhone2 = selectedRespondent.value?.responseRespondentPhone2;
-    caseWithId.et3IsThereAnEt3Response = selectedRespondent.value?.et3Vetting?.et3IsThereAnEt3Response;
-    caseWithId.et3NoEt3Response = selectedRespondent.value?.et3Vetting?.et3NoEt3Response;
-    caseWithId.et3GeneralNotes = selectedRespondent.value?.et3Vetting?.et3GeneralNotes;
-    caseWithId.et3IsThereACompaniesHouseSearchDocument =
-      selectedRespondent.value?.et3Vetting?.et3IsThereACompaniesHouseSearchDocument;
-    caseWithId.et3CompanyHouseDocumentBinaryUrl =
-      selectedRespondent.value?.et3Vetting?.et3CompanyHouseDocument?.document_binary_url;
-    caseWithId.et3CompanyHouseDocumentFileName =
-      selectedRespondent.value?.et3Vetting?.et3CompanyHouseDocument?.document_filename;
-    caseWithId.et3CompanyHouseDocumentUrl = selectedRespondent.value?.et3Vetting?.et3CompanyHouseDocument?.document_url;
-    caseWithId.et3CompanyHouseDocumentCategoryId =
-      selectedRespondent.value?.et3Vetting?.et3CompanyHouseDocument?.category_id;
-    caseWithId.et3CompanyHouseDocumentUploadTimestamp =
-      selectedRespondent.value?.et3Vetting?.et3CompanyHouseDocument?.upload_timestamp;
-    caseWithId.et3GeneralNotesCompanyHouse = selectedRespondent.value?.et3Vetting?.et3GeneralNotesCompanyHouse;
-    caseWithId.et3IsThereAnIndividualSearchDocument =
-      selectedRespondent.value?.et3Vetting?.et3IsThereAnIndividualSearchDocument;
-    caseWithId.et3IndividualInsolvencyDocumentBinaryUrl =
-      selectedRespondent.value?.et3Vetting?.et3IndividualInsolvencyDocument?.document_binary_url;
-    caseWithId.et3IndividualInsolvencyDocumentFileName =
-      selectedRespondent.value?.et3Vetting?.et3IndividualInsolvencyDocument?.document_filename;
-    caseWithId.et3IndividualInsolvencyDocumentUrl =
-      selectedRespondent.value?.et3Vetting?.et3IndividualInsolvencyDocument?.document_url;
-    caseWithId.et3IndividualInsolvencyDocumentCategoryId =
-      selectedRespondent.value?.et3Vetting?.et3IndividualInsolvencyDocument?.category_id;
-    caseWithId.et3IndividualInsolvencyDocumentUploadTimestamp =
-      selectedRespondent.value?.et3Vetting?.et3IndividualInsolvencyDocument?.upload_timestamp;
-    caseWithId.et3GeneralNotesIndividualInsolvency =
-      selectedRespondent.value?.et3Vetting?.et3GeneralNotesIndividualInsolvency;
-    caseWithId.et3LegalIssue = selectedRespondent.value?.et3Vetting?.et3LegalIssue;
-    caseWithId.et3LegalIssueGiveDetails = selectedRespondent.value?.et3Vetting?.et3LegalIssueGiveDetails;
-    caseWithId.et3GeneralNotesLegalEntity = selectedRespondent.value?.et3Vetting?.et3GeneralNotesLegalEntity;
-    caseWithId.et3ResponseInTime = selectedRespondent.value?.et3Vetting?.et3ResponseInTime;
-    caseWithId.et3ResponseInTimeDetails = selectedRespondent.value?.et3Vetting?.et3ResponseInTimeDetails;
-    caseWithId.et3DoWeHaveRespondentsName = selectedRespondent.value?.et3Vetting?.et3DoWeHaveRespondentsName;
-    caseWithId.et3GeneralNotesRespondentName = selectedRespondent.value?.et3Vetting?.et3DoWeHaveRespondentsName;
-    caseWithId.et3DoesRespondentsNameMatch = selectedRespondent.value?.et3Vetting?.et3DoesRespondentsNameMatch;
-    caseWithId.et3RespondentNameMismatchDetails =
-      selectedRespondent.value?.et3Vetting?.et3RespondentNameMismatchDetails;
-    caseWithId.et3GeneralNotesRespondentNameMatch =
-      selectedRespondent.value?.et3Vetting?.et3GeneralNotesRespondentNameMatch;
-    caseWithId.et3DoWeHaveRespondentsAddress = selectedRespondent.value?.et3Vetting?.et3DoWeHaveRespondentsAddress;
-    caseWithId.et3DoesRespondentsAddressMatch = selectedRespondent.value?.et3Vetting?.et3DoesRespondentsAddressMatch;
-    caseWithId.et3RespondentAddressMismatchDetails =
-      selectedRespondent.value?.et3Vetting?.et3RespondentAddressMismatchDetails;
-    caseWithId.et3GeneralNotesRespondentAddress =
-      selectedRespondent.value?.et3Vetting?.et3GeneralNotesRespondentAddress;
-    caseWithId.et3GeneralNotesAddressMatch = selectedRespondent.value?.et3Vetting?.et3GeneralNotesAddressMatch;
-    caseWithId.et3IsCaseListedForHearing = selectedRespondent.value?.et3Vetting?.et3IsCaseListedForHearing;
-    caseWithId.et3IsCaseListedForHearingDetails =
-      selectedRespondent.value?.et3Vetting?.et3IsCaseListedForHearingDetails;
-    caseWithId.et3GeneralNotesCaseListed = selectedRespondent.value?.et3Vetting?.et3GeneralNotesCaseListed;
-    caseWithId.et3IsThisLocationCorrect = selectedRespondent.value?.et3Vetting?.et3IsThisLocationCorrect;
-    caseWithId.et3GeneralNotesTransferApplication =
-      selectedRespondent.value?.et3Vetting?.et3GeneralNotesTransferApplication;
-    caseWithId.et3RegionalOffice = selectedRespondent.value?.et3Vetting?.et3RegionalOffice;
-    caseWithId.et3WhyWeShouldChangeTheOffice = selectedRespondent.value?.et3Vetting?.et3WhyWeShouldChangeTheOffice;
-    caseWithId.et3ContestClaim = selectedRespondent.value?.et3Vetting?.et3ContestClaim;
-    caseWithId.et3ContestClaimGiveDetails = selectedRespondent.value?.et3Vetting?.et3ContestClaimGiveDetails;
-    caseWithId.et3GeneralNotesContestClaim = selectedRespondent.value?.et3Vetting?.et3GeneralNotesContestClaim;
-    caseWithId.et3ContractClaimSection7 = selectedRespondent.value?.et3Vetting?.et3ContractClaimSection7;
-    caseWithId.et3ContractClaimSection7Details = selectedRespondent.value?.et3Vetting?.et3ContractClaimSection7Details;
-    caseWithId.et3GeneralNotesContractClaimSection7 =
-      selectedRespondent.value?.et3Vetting?.et3GeneralNotesContractClaimSection7;
-    caseWithId.et3Rule26 = selectedRespondent.value?.et3Vetting?.et3Rule26;
-    caseWithId.et3Rule26Details = selectedRespondent.value?.et3Vetting?.et3Rule26Details;
-    caseWithId.et3SuggestedIssues = selectedRespondent.value?.et3Vetting?.et3SuggestedIssues;
-    caseWithId.et3SuggestedIssuesStrikeOut = selectedRespondent.value?.et3Vetting?.et3SuggestedIssuesStrikeOut;
-    caseWithId.et3SuggestedIssueInterpreters = selectedRespondent.value?.et3Vetting?.et3SuggestedIssueInterpreters;
-    caseWithId.et3SuggestedIssueJurisdictional = selectedRespondent.value?.et3Vetting?.et3SuggestedIssueJurisdictional;
-    caseWithId.et3SuggestedIssueAdjustments = selectedRespondent.value?.et3Vetting?.et3SuggestedIssueAdjustments;
-    caseWithId.et3SuggestedIssueRule50 = selectedRespondent.value?.et3Vetting?.et3SuggestedIssueRule50;
-    caseWithId.et3SuggestedIssueTimePoints = selectedRespondent.value?.et3Vetting?.et3SuggestedIssueTimePoints;
-    caseWithId.et3GeneralNotesRule26 = selectedRespondent.value?.et3Vetting?.et3GeneralNotesRule26;
-    caseWithId.et3AdditionalInformation = selectedRespondent.value?.et3Vetting?.et3AdditionalInformation;
-    caseWithId.et3VettingDocumentBinaryUrl =
-      selectedRespondent.value?.et3Vetting?.et3VettingDocument?.document_binary_url;
-    caseWithId.et3VettingDocumentFileName = selectedRespondent.value?.et3Vetting?.et3VettingDocument?.document_filename;
-    caseWithId.et3VettingDocumentUrl = selectedRespondent.value?.et3Vetting?.et3VettingDocument?.document_url;
-    caseWithId.et3VettingDocumentCategoryId = selectedRespondent.value?.et3Vetting?.et3VettingDocument?.category_id;
-    caseWithId.et3VettingDocumentUploadTimestamp =
-      selectedRespondent.value?.et3Vetting?.et3VettingDocument?.upload_timestamp;
-    caseWithId.et3VettingCompleted = selectedRespondent.value?.et3VettingCompleted;
-    caseWithId.et3ResponseIsClaimantNameCorrect = selectedRespondent.value?.et3ResponseIsClaimantNameCorrect;
-    caseWithId.et3ResponseClaimantNameCorrection = selectedRespondent.value?.et3ResponseClaimantNameCorrection;
-    caseWithId.et3ResponseRespondentCompanyNumber = selectedRespondent.value?.et3ResponseRespondentCompanyNumber;
-    caseWithId.et3ResponseHearingRepresentative = selectedRespondent.value?.et3ResponseHearingRepresentative;
-    caseWithId.et3ResponseHearingRespondent = selectedRespondent.value?.et3ResponseHearingRespondent;
-    caseWithId.et3ResponseEmploymentCount = selectedRespondent.value?.et3ResponseEmploymentCount;
-    caseWithId.et3ResponseMultipleSites = selectedRespondent.value?.et3ResponseMultipleSites;
-    caseWithId.et3ResponseSiteEmploymentCount = selectedRespondent.value?.et3ResponseSiteEmploymentCount;
-    caseWithId.et3ResponseEmployerClaim = selectedRespondent.value?.et3ResponseEmployerClaim;
-    caseWithId.et3ResponseEmployerClaimDetails = selectedRespondent.value?.et3ResponseEmployerClaimDetails;
-    caseWithId.et3ResponseEmployerClaimDocumentBinaryUrl =
-      selectedRespondent.value?.et3ResponseEmployerClaimDocument?.document_binary_url;
-    caseWithId.et3ResponseEmployerClaimDocumentFileName =
-      selectedRespondent.value?.et3ResponseEmployerClaimDocument?.document_filename;
-    caseWithId.et3ResponseEmployerClaimDocumentUrl =
-      selectedRespondent.value?.et3ResponseEmployerClaimDocument?.document_url;
-    caseWithId.et3ResponseEmployerClaimDocumentCategoryId =
-      selectedRespondent.value?.et3ResponseEmployerClaimDocument?.category_id;
-    caseWithId.et3ResponseEmployerClaimDocumentUploadTimestamp =
-      selectedRespondent.value?.et3ResponseEmployerClaimDocument?.upload_timestamp;
-    caseWithId.et3ResponseRespondentSupportNeeded = selectedRespondent.value?.et3ResponseRespondentSupportNeeded;
-    caseWithId.et3ResponseAcasAgree = selectedRespondent.value?.et3ResponseAcasAgree;
-    caseWithId.et3ResponseAcasAgreeReason = selectedRespondent.value?.et3ResponseAcasAgreeReason;
-    caseWithId.et3ResponseAreDatesCorrect = selectedRespondent.value?.et3ResponseAreDatesCorrect;
-    caseWithId.et3ResponseEmploymentStartDate = DateUtils.formatDateStringToCaseDate(
-      selectedRespondent.value?.et3ResponseEmploymentStartDate
-    );
-    caseWithId.et3ResponseEmploymentEndDate = DateUtils.formatDateStringToCaseDate(
-      selectedRespondent.value?.et3ResponseEmploymentEndDate
-    );
-    caseWithId.et3ResponseCorrectNoticeDetails = selectedRespondent.value?.et3ResponseCorrectNoticeDetails;
-    caseWithId.et3ResponseIsPensionCorrect = selectedRespondent.value?.et3ResponseIsPensionCorrect;
-    caseWithId.et3ResponsePensionCorrectDetails = selectedRespondent.value?.et3ResponsePensionCorrectDetails;
-    caseWithId.et3ResponseRespondentContestClaim = selectedRespondent.value?.et3ResponseRespondentContestClaim;
-    caseWithId.et3ResponseContestClaimDocument = selectedRespondent.value?.et3ResponseContestClaimDocument;
-    caseWithId.et3ResponseContestClaimDetails = selectedRespondent.value?.et3ResponseContestClaimDetails;
-    caseWithId.et3ResponseRespondentSupportDetails = selectedRespondent.value?.et3ResponseRespondentSupportDetails;
-    caseWithId.et3ResponseRespondentSupportDocumentBinaryUrl =
-      selectedRespondent.value?.et3ResponseRespondentSupportDocument?.document_binary_url;
-    caseWithId.et3ResponseRespondentSupportDocumentFileName =
-      selectedRespondent.value?.et3ResponseRespondentSupportDocument?.document_filename;
-    caseWithId.et3ResponseRespondentSupportDocumentUrl =
-      selectedRespondent.value?.et3ResponseRespondentSupportDocument?.document_url;
-    caseWithId.et3ResponseRespondentSupportDocumentCategoryId =
-      selectedRespondent.value?.et3ResponseRespondentSupportDocument?.category_id;
-    caseWithId.et3ResponseRespondentSupportDocumentUploadTimestamp =
-      selectedRespondent.value?.et3ResponseRespondentSupportDocument?.upload_timestamp;
-    caseWithId.et3FormBinaryUrl = selectedRespondent.value?.et3Form?.document_binary_url;
-    caseWithId.et3FormFileName = selectedRespondent.value?.et3Form?.document_filename;
-    caseWithId.et3FormUrl = selectedRespondent.value?.et3Form?.document_url;
-    caseWithId.et3FormCategoryId = selectedRespondent.value?.et3Form?.category_id;
-    caseWithId.et3FormUploadTimestamp = selectedRespondent.value?.et3Form?.upload_timestamp;
-    caseWithId.contactDetailsSection = selectedRespondent.value?.contactDetailsSection;
-    caseWithId.employerDetailsSection = selectedRespondent.value?.employerDetailsSection;
-    caseWithId.conciliationAndEmployeeDetailsSection = selectedRespondent.value?.conciliationAndEmployeeDetailsSection;
-    caseWithId.payPensionBenefitDetailsSection = selectedRespondent.value?.payPensionBenefitDetailsSection;
-    caseWithId.contestClaimSection = selectedRespondent.value?.contestClaimSection;
-    caseWithId.employersContractClaimSection = selectedRespondent.value?.employersContractClaimSection;
-    caseWithId.respondentEnterPostcode = selectedRespondent.value?.respondent_address.PostCode;
-    caseWithId.responseRespondentEmail = selectedRespondent.value?.responseRespondentEmail;
-    caseWithId.responseRespondentContactPreference = selectedRespondent.value?.responseRespondentContactPreference;
-    caseWithId.responseReceivedDate = selectedRespondent.value?.responseReceivedDate;
-    caseWithId.responseReceivedCount = selectedRespondent.value?.responseReceivedCount;
-    caseWithId.responseRespondentNameQuestion = selectedRespondent.value?.responseRespondentNameQuestion;
-    caseWithId.responseRespondentName = selectedRespondent.value?.responseRespondentName;
-    caseWithId.responseContinue = selectedRespondent.value?.responseContinue;
-    caseWithId.responseCounterClaim = selectedRespondent.value?.responseCounterClaim;
-    caseWithId.responseReference = selectedRespondent.value?.responseReference;
-    caseWithId.extensionRequested = selectedRespondent.value?.extensionRequested;
-    caseWithId.extensionGranted = selectedRespondent.value?.extensionGranted;
-    caseWithId.extensionDate = selectedRespondent.value?.extensionDate;
-    caseWithId.extensionResubmitted = selectedRespondent.value?.extensionResubmitted;
-    caseWithId.idamId = selectedRespondent.value?.idamId;
-    caseWithId.et3CaseDetailsLinksStatuses = selectedRespondent.value?.et3CaseDetailsLinksStatuses;
-    caseWithId.et3HubLinksStatuses = selectedRespondent.value?.et3HubLinksStatuses;
-    caseWithId.et3Status = selectedRespondent.value?.et3Status;
-    caseWithId.et3IsRespondentAddressCorrect = selectedRespondent.value?.et3IsRespondentAddressCorrect;
-  }
+  const selectedRespondent: RespondentApiModel =
+    fromApiCaseData.case_data.respondentCollection[req.session.selectedRespondentIndex];
+  caseWithId.respondentName = selectedRespondent.value?.respondent_name;
+  caseWithId.workAddressLine1 = selectedRespondent.value?.workAddress1;
+  caseWithId.workAddressLine2 = selectedRespondent.value?.workAddress2;
+  caseWithId.workAddressLine3 = undefined;
+  caseWithId.workAddressTown = selectedRespondent.value?.workAddressTown;
+  caseWithId.workAddressCountry = selectedRespondent.value?.workAddressCountry;
+  caseWithId.workAddressPostcode = selectedRespondent.value?.workAddressPostcode;
+  caseWithId.workAddressCounty = undefined;
+  caseWithId.acasCert = selectedRespondent.value?.et3ResponseAcasAgree;
+  caseWithId.acasCertNum = selectedRespondent.value?.respondent_ACAS;
+  caseWithId.noAcasReason = selectedRespondent.value?.respondent_ACAS_no;
+  caseWithId.respondentACASNo = selectedRespondent.value?.respondent_ACAS_no;
+  caseWithId.claimantWorkAddressLine1 = selectedRespondent.value?.claimant_work_address?.AddressLine1;
+  caseWithId.claimantWorkAddressLine2 = selectedRespondent.value?.claimant_work_address?.AddressLine2;
+  caseWithId.claimantWorkAddressLine3 = selectedRespondent.value?.claimant_work_address?.AddressLine3;
+  caseWithId.claimantWorkAddressCountry = selectedRespondent.value?.claimant_work_address?.Country;
+  caseWithId.claimantWorkAddressPostCode = selectedRespondent.value?.claimant_work_address?.PostCode;
+  caseWithId.claimantWorkAddressCounty = selectedRespondent.value?.claimant_work_address?.County;
+  caseWithId.claimantWorkAddressPostTown = selectedRespondent.value?.claimant_work_address?.PostTown;
+  caseWithId.responseReceived = selectedRespondent.value?.responseReceived;
+  caseWithId.responseStatus = selectedRespondent.value?.response_status;
+  caseWithId.responseToClaim = selectedRespondent.value?.responseToClaim;
+  caseWithId.rejectionReason = selectedRespondent.value?.rejection_reason;
+  caseWithId.respondentAddressLine1 = selectedRespondent.value?.respondent_address?.AddressLine1;
+  caseWithId.respondentAddressLine2 = selectedRespondent.value?.respondent_address?.AddressLine2;
+  caseWithId.respondentAddressLine3 = selectedRespondent.value?.respondent_address?.AddressLine3;
+  caseWithId.respondentAddressCountry = selectedRespondent.value?.respondent_address?.Country;
+  caseWithId.respondentAddressPostCode = selectedRespondent.value?.respondent_address?.PostCode;
+  caseWithId.respondentAddressCounty = selectedRespondent.value?.respondent_address?.County;
+  caseWithId.respondentAddressPostTown = selectedRespondent.value?.respondent_address?.PostTown;
+  caseWithId.respondentACASQuestion = selectedRespondent.value?.respondent_ACAS_question;
+  caseWithId.respondentACAS = selectedRespondent.value?.respondent_ACAS;
+  caseWithId.rejectionReasonOther = selectedRespondent.value?.rejection_reason_other;
+  caseWithId.responseOutOfTime = selectedRespondent.value?.responseOutOfTime;
+  caseWithId.responseNotOnPrescribedForm = selectedRespondent.value?.responseNotOnPrescribedForm;
+  caseWithId.et3ResponseEmploymentInformation = selectedRespondent.value?.et3ResponseEmploymentInformation;
+  caseWithId.et3ResponseContinuingEmployment = selectedRespondent.value?.et3ResponseContinuingEmployment;
+  caseWithId.et3ResponseIsJobTitleCorrect = selectedRespondent.value?.et3ResponseIsJobTitleCorrect;
+  caseWithId.et3ResponseCorrectJobTitle = selectedRespondent.value?.et3ResponseCorrectJobTitle;
+  caseWithId.et3ResponseClaimantWeeklyHours = selectedRespondent.value?.et3ResponseClaimantWeeklyHours;
+  caseWithId.et3ResponseClaimantCorrectHours = selectedRespondent.value?.et3ResponseClaimantCorrectHours;
+  caseWithId.et3ResponseEarningDetailsCorrect = selectedRespondent.value?.et3ResponseEarningDetailsCorrect;
+  caseWithId.et3ResponsePayFrequency = selectedRespondent.value?.et3ResponsePayFrequency;
+  caseWithId.et3ResponsePayBeforeTax = selectedRespondent.value?.et3ResponsePayBeforeTax;
+  caseWithId.et3ResponsePayTakehome = selectedRespondent.value?.et3ResponsePayTakehome;
+  caseWithId.respondentEmail = selectedRespondent.value?.respondent_email;
+  caseWithId.responseStruckOut = selectedRespondent.value?.responseStruckOut;
+  caseWithId.respondentContactPreference = selectedRespondent.value?.respondent_contact_preference;
+  caseWithId.responseStruckOutDate = selectedRespondent.value?.responseStruckOutDate;
+  caseWithId.responseStruckOutChairman = selectedRespondent.value?.responseStruckOutChairman;
+  caseWithId.et3ResponseIsNoticeCorrect = selectedRespondent.value?.et3ResponseIsNoticeCorrect;
+  caseWithId.responseRequiredInfoAbsent = selectedRespondent.value?.responseRequiredInfoAbsent;
+  caseWithId.responseNotes = selectedRespondent.value?.responseNotes;
+  caseWithId.responseReferredToJudge = selectedRespondent.value?.response_referred_to_judge;
+  caseWithId.responseReturnedFromJudge = selectedRespondent.value?.response_returned_from_judge;
+  caseWithId.respondentType = selectedRespondent.value?.respondentType;
+  caseWithId.respondentOrganisation = selectedRespondent.value?.respondentOrganisation;
+  caseWithId.respondentFirstName = selectedRespondent.value?.respondentFirstName;
+  caseWithId.respondentLastName = selectedRespondent.value?.respondentLastName;
+  caseWithId.respondentPhone1 = selectedRespondent.value?.respondent_phone1;
+  caseWithId.respondentPhone2 = selectedRespondent.value?.respondent_phone2;
+  caseWithId.et3ResponseRespondentEmployerType = selectedRespondent.value?.et3ResponseRespondentEmployerType;
+  caseWithId.et3ResponseRespondentPreferredTitle = selectedRespondent.value?.et3ResponseRespondentPreferredTitle;
+  caseWithId.et3ResponseRespondentContactName = selectedRespondent.value?.et3ResponseRespondentContactName;
+  caseWithId.et3ResponseDXAddress = selectedRespondent.value?.et3ResponseDXAddress;
+  caseWithId.et3ResponseContactReason = selectedRespondent.value?.et3ResponseContactReason;
+  caseWithId.et3ResponseLanguagePreference = selectedRespondent.value?.et3ResponseLanguagePreference;
+  caseWithId.responseStruckOutReason = selectedRespondent.value?.responseStruckOutReason;
+  caseWithId.responseRespondentAddressLine1 = selectedRespondent.value?.responseRespondentAddress?.AddressLine1;
+  caseWithId.responseRespondentAddressLine2 = selectedRespondent.value?.responseRespondentAddress?.AddressLine2;
+  caseWithId.responseRespondentAddressLine3 = selectedRespondent.value?.responseRespondentAddress?.AddressLine3;
+  caseWithId.responseRespondentAddressPostTown = selectedRespondent.value?.responseRespondentAddress?.PostTown;
+  caseWithId.responseRespondentAddressCounty = selectedRespondent.value?.responseRespondentAddress?.County;
+  caseWithId.responseRespondentAddressPostCode = selectedRespondent.value?.responseRespondentAddress?.PostCode;
+  caseWithId.responseRespondentAddressCountry = selectedRespondent.value?.responseRespondentAddress?.Country;
+  caseWithId.responseRespondentPhone1 = selectedRespondent.value?.responseRespondentPhone1;
+  caseWithId.responseRespondentPhone2 = selectedRespondent.value?.responseRespondentPhone2;
+  caseWithId.et3IsThereAnEt3Response = selectedRespondent.value?.et3Vetting?.et3IsThereAnEt3Response;
+  caseWithId.et3NoEt3Response = selectedRespondent.value?.et3Vetting?.et3NoEt3Response;
+  caseWithId.et3GeneralNotes = selectedRespondent.value?.et3Vetting?.et3GeneralNotes;
+  caseWithId.et3IsThereACompaniesHouseSearchDocument =
+    selectedRespondent.value?.et3Vetting?.et3IsThereACompaniesHouseSearchDocument;
+  caseWithId.et3CompanyHouseDocumentBinaryUrl =
+    selectedRespondent.value?.et3Vetting?.et3CompanyHouseDocument?.document_binary_url;
+  caseWithId.et3CompanyHouseDocumentFileName =
+    selectedRespondent.value?.et3Vetting?.et3CompanyHouseDocument?.document_filename;
+  caseWithId.et3CompanyHouseDocumentUrl = selectedRespondent.value?.et3Vetting?.et3CompanyHouseDocument?.document_url;
+  caseWithId.et3CompanyHouseDocumentCategoryId =
+    selectedRespondent.value?.et3Vetting?.et3CompanyHouseDocument?.category_id;
+  caseWithId.et3CompanyHouseDocumentUploadTimestamp =
+    selectedRespondent.value?.et3Vetting?.et3CompanyHouseDocument?.upload_timestamp;
+  caseWithId.et3GeneralNotesCompanyHouse = selectedRespondent.value?.et3Vetting?.et3GeneralNotesCompanyHouse;
+  caseWithId.et3IsThereAnIndividualSearchDocument =
+    selectedRespondent.value?.et3Vetting?.et3IsThereAnIndividualSearchDocument;
+  caseWithId.et3IndividualInsolvencyDocumentBinaryUrl =
+    selectedRespondent.value?.et3Vetting?.et3IndividualInsolvencyDocument?.document_binary_url;
+  caseWithId.et3IndividualInsolvencyDocumentFileName =
+    selectedRespondent.value?.et3Vetting?.et3IndividualInsolvencyDocument?.document_filename;
+  caseWithId.et3IndividualInsolvencyDocumentUrl =
+    selectedRespondent.value?.et3Vetting?.et3IndividualInsolvencyDocument?.document_url;
+  caseWithId.et3IndividualInsolvencyDocumentCategoryId =
+    selectedRespondent.value?.et3Vetting?.et3IndividualInsolvencyDocument?.category_id;
+  caseWithId.et3IndividualInsolvencyDocumentUploadTimestamp =
+    selectedRespondent.value?.et3Vetting?.et3IndividualInsolvencyDocument?.upload_timestamp;
+  caseWithId.et3GeneralNotesIndividualInsolvency =
+    selectedRespondent.value?.et3Vetting?.et3GeneralNotesIndividualInsolvency;
+  caseWithId.et3LegalIssue = selectedRespondent.value?.et3Vetting?.et3LegalIssue;
+  caseWithId.et3LegalIssueGiveDetails = selectedRespondent.value?.et3Vetting?.et3LegalIssueGiveDetails;
+  caseWithId.et3GeneralNotesLegalEntity = selectedRespondent.value?.et3Vetting?.et3GeneralNotesLegalEntity;
+  caseWithId.et3ResponseInTime = selectedRespondent.value?.et3Vetting?.et3ResponseInTime;
+  caseWithId.et3ResponseInTimeDetails = selectedRespondent.value?.et3Vetting?.et3ResponseInTimeDetails;
+  caseWithId.et3DoWeHaveRespondentsName = selectedRespondent.value?.et3Vetting?.et3DoWeHaveRespondentsName;
+  caseWithId.et3GeneralNotesRespondentName = selectedRespondent.value?.et3Vetting?.et3DoWeHaveRespondentsName;
+  caseWithId.et3DoesRespondentsNameMatch = selectedRespondent.value?.et3Vetting?.et3DoesRespondentsNameMatch;
+  caseWithId.et3RespondentNameMismatchDetails = selectedRespondent.value?.et3Vetting?.et3RespondentNameMismatchDetails;
+  caseWithId.et3GeneralNotesRespondentNameMatch =
+    selectedRespondent.value?.et3Vetting?.et3GeneralNotesRespondentNameMatch;
+  caseWithId.et3DoWeHaveRespondentsAddress = selectedRespondent.value?.et3Vetting?.et3DoWeHaveRespondentsAddress;
+  caseWithId.et3DoesRespondentsAddressMatch = selectedRespondent.value?.et3Vetting?.et3DoesRespondentsAddressMatch;
+  caseWithId.et3RespondentAddressMismatchDetails =
+    selectedRespondent.value?.et3Vetting?.et3RespondentAddressMismatchDetails;
+  caseWithId.et3GeneralNotesRespondentAddress = selectedRespondent.value?.et3Vetting?.et3GeneralNotesRespondentAddress;
+  caseWithId.et3GeneralNotesAddressMatch = selectedRespondent.value?.et3Vetting?.et3GeneralNotesAddressMatch;
+  caseWithId.et3IsCaseListedForHearing = selectedRespondent.value?.et3Vetting?.et3IsCaseListedForHearing;
+  caseWithId.et3IsCaseListedForHearingDetails = selectedRespondent.value?.et3Vetting?.et3IsCaseListedForHearingDetails;
+  caseWithId.et3GeneralNotesCaseListed = selectedRespondent.value?.et3Vetting?.et3GeneralNotesCaseListed;
+  caseWithId.et3IsThisLocationCorrect = selectedRespondent.value?.et3Vetting?.et3IsThisLocationCorrect;
+  caseWithId.et3GeneralNotesTransferApplication =
+    selectedRespondent.value?.et3Vetting?.et3GeneralNotesTransferApplication;
+  caseWithId.et3RegionalOffice = selectedRespondent.value?.et3Vetting?.et3RegionalOffice;
+  caseWithId.et3WhyWeShouldChangeTheOffice = selectedRespondent.value?.et3Vetting?.et3WhyWeShouldChangeTheOffice;
+  caseWithId.et3ContestClaim = selectedRespondent.value?.et3Vetting?.et3ContestClaim;
+  caseWithId.et3ContestClaimGiveDetails = selectedRespondent.value?.et3Vetting?.et3ContestClaimGiveDetails;
+  caseWithId.et3GeneralNotesContestClaim = selectedRespondent.value?.et3Vetting?.et3GeneralNotesContestClaim;
+  caseWithId.et3ContractClaimSection7 = selectedRespondent.value?.et3Vetting?.et3ContractClaimSection7;
+  caseWithId.et3ContractClaimSection7Details = selectedRespondent.value?.et3Vetting?.et3ContractClaimSection7Details;
+  caseWithId.et3GeneralNotesContractClaimSection7 =
+    selectedRespondent.value?.et3Vetting?.et3GeneralNotesContractClaimSection7;
+  caseWithId.et3Rule26 = selectedRespondent.value?.et3Vetting?.et3Rule26;
+  caseWithId.et3Rule26Details = selectedRespondent.value?.et3Vetting?.et3Rule26Details;
+  caseWithId.et3SuggestedIssues = selectedRespondent.value?.et3Vetting?.et3SuggestedIssues;
+  caseWithId.et3SuggestedIssuesStrikeOut = selectedRespondent.value?.et3Vetting?.et3SuggestedIssuesStrikeOut;
+  caseWithId.et3SuggestedIssueInterpreters = selectedRespondent.value?.et3Vetting?.et3SuggestedIssueInterpreters;
+  caseWithId.et3SuggestedIssueJurisdictional = selectedRespondent.value?.et3Vetting?.et3SuggestedIssueJurisdictional;
+  caseWithId.et3SuggestedIssueAdjustments = selectedRespondent.value?.et3Vetting?.et3SuggestedIssueAdjustments;
+  caseWithId.et3SuggestedIssueRule50 = selectedRespondent.value?.et3Vetting?.et3SuggestedIssueRule50;
+  caseWithId.et3SuggestedIssueTimePoints = selectedRespondent.value?.et3Vetting?.et3SuggestedIssueTimePoints;
+  caseWithId.et3GeneralNotesRule26 = selectedRespondent.value?.et3Vetting?.et3GeneralNotesRule26;
+  caseWithId.et3AdditionalInformation = selectedRespondent.value?.et3Vetting?.et3AdditionalInformation;
+  caseWithId.et3VettingDocumentBinaryUrl =
+    selectedRespondent.value?.et3Vetting?.et3VettingDocument?.document_binary_url;
+  caseWithId.et3VettingDocumentFileName = selectedRespondent.value?.et3Vetting?.et3VettingDocument?.document_filename;
+  caseWithId.et3VettingDocumentUrl = selectedRespondent.value?.et3Vetting?.et3VettingDocument?.document_url;
+  caseWithId.et3VettingDocumentCategoryId = selectedRespondent.value?.et3Vetting?.et3VettingDocument?.category_id;
+  caseWithId.et3VettingDocumentUploadTimestamp =
+    selectedRespondent.value?.et3Vetting?.et3VettingDocument?.upload_timestamp;
+  caseWithId.et3VettingCompleted = selectedRespondent.value?.et3VettingCompleted;
+  caseWithId.et3ResponseIsClaimantNameCorrect = selectedRespondent.value?.et3ResponseIsClaimantNameCorrect;
+  caseWithId.et3ResponseClaimantNameCorrection = selectedRespondent.value?.et3ResponseClaimantNameCorrection;
+  caseWithId.et3ResponseRespondentCompanyNumber = selectedRespondent.value?.et3ResponseRespondentCompanyNumber;
+  caseWithId.et3ResponseHearingRepresentative = selectedRespondent.value?.et3ResponseHearingRepresentative;
+  caseWithId.et3ResponseHearingRespondent = selectedRespondent.value?.et3ResponseHearingRespondent;
+  caseWithId.et3ResponseEmploymentCount = selectedRespondent.value?.et3ResponseEmploymentCount;
+  caseWithId.et3ResponseMultipleSites = selectedRespondent.value?.et3ResponseMultipleSites;
+  caseWithId.et3ResponseSiteEmploymentCount = selectedRespondent.value?.et3ResponseSiteEmploymentCount;
+  caseWithId.et3ResponseEmployerClaim = selectedRespondent.value?.et3ResponseEmployerClaim;
+  caseWithId.et3ResponseEmployerClaimDetails = selectedRespondent.value?.et3ResponseEmployerClaimDetails;
+  caseWithId.et3ResponseEmployerClaimDocumentBinaryUrl =
+    selectedRespondent.value?.et3ResponseEmployerClaimDocument?.document_binary_url;
+  caseWithId.et3ResponseEmployerClaimDocumentFileName =
+    selectedRespondent.value?.et3ResponseEmployerClaimDocument?.document_filename;
+  caseWithId.et3ResponseEmployerClaimDocumentUrl =
+    selectedRespondent.value?.et3ResponseEmployerClaimDocument?.document_url;
+  caseWithId.et3ResponseEmployerClaimDocumentCategoryId =
+    selectedRespondent.value?.et3ResponseEmployerClaimDocument?.category_id;
+  caseWithId.et3ResponseEmployerClaimDocumentUploadTimestamp =
+    selectedRespondent.value?.et3ResponseEmployerClaimDocument?.upload_timestamp;
+  caseWithId.et3ResponseRespondentSupportNeeded = selectedRespondent.value?.et3ResponseRespondentSupportNeeded;
+  caseWithId.et3ResponseAcasAgree = selectedRespondent.value?.et3ResponseAcasAgree;
+  caseWithId.et3ResponseAcasAgreeReason = selectedRespondent.value?.et3ResponseAcasAgreeReason;
+  caseWithId.et3ResponseAreDatesCorrect = selectedRespondent.value?.et3ResponseAreDatesCorrect;
+  caseWithId.et3ResponseEmploymentStartDate = DateUtils.formatDateStringToCaseDate(
+    selectedRespondent.value?.et3ResponseEmploymentStartDate
+  );
+  caseWithId.et3ResponseEmploymentEndDate = DateUtils.formatDateStringToCaseDate(
+    selectedRespondent.value?.et3ResponseEmploymentEndDate
+  );
+  caseWithId.et3ResponseCorrectNoticeDetails = selectedRespondent.value?.et3ResponseCorrectNoticeDetails;
+  caseWithId.et3ResponseIsPensionCorrect = selectedRespondent.value?.et3ResponseIsPensionCorrect;
+  caseWithId.et3ResponsePensionCorrectDetails = selectedRespondent.value?.et3ResponsePensionCorrectDetails;
+  caseWithId.et3ResponseRespondentContestClaim = selectedRespondent.value?.et3ResponseRespondentContestClaim;
+  caseWithId.et3ResponseContestClaimDocument = selectedRespondent.value?.et3ResponseContestClaimDocument;
+  caseWithId.et3ResponseContestClaimDetails = selectedRespondent.value?.et3ResponseContestClaimDetails;
+  caseWithId.et3ResponseRespondentSupportDetails = selectedRespondent.value?.et3ResponseRespondentSupportDetails;
+  caseWithId.et3ResponseRespondentSupportDocumentBinaryUrl =
+    selectedRespondent.value?.et3ResponseRespondentSupportDocument?.document_binary_url;
+  caseWithId.et3ResponseRespondentSupportDocumentFileName =
+    selectedRespondent.value?.et3ResponseRespondentSupportDocument?.document_filename;
+  caseWithId.et3ResponseRespondentSupportDocumentUrl =
+    selectedRespondent.value?.et3ResponseRespondentSupportDocument?.document_url;
+  caseWithId.et3ResponseRespondentSupportDocumentCategoryId =
+    selectedRespondent.value?.et3ResponseRespondentSupportDocument?.category_id;
+  caseWithId.et3ResponseRespondentSupportDocumentUploadTimestamp =
+    selectedRespondent.value?.et3ResponseRespondentSupportDocument?.upload_timestamp;
+  caseWithId.et3FormBinaryUrl = selectedRespondent.value?.et3Form?.document_binary_url;
+  caseWithId.et3FormFileName = selectedRespondent.value?.et3Form?.document_filename;
+  caseWithId.et3FormUrl = selectedRespondent.value?.et3Form?.document_url;
+  caseWithId.et3FormCategoryId = selectedRespondent.value?.et3Form?.category_id;
+  caseWithId.et3FormUploadTimestamp = selectedRespondent.value?.et3Form?.upload_timestamp;
+  caseWithId.contactDetailsSection = selectedRespondent.value?.contactDetailsSection;
+  caseWithId.employerDetailsSection = selectedRespondent.value?.employerDetailsSection;
+  caseWithId.conciliationAndEmployeeDetailsSection = selectedRespondent.value?.conciliationAndEmployeeDetailsSection;
+  caseWithId.payPensionBenefitDetailsSection = selectedRespondent.value?.payPensionBenefitDetailsSection;
+  caseWithId.contestClaimSection = selectedRespondent.value?.contestClaimSection;
+  caseWithId.employersContractClaimSection = selectedRespondent.value?.employersContractClaimSection;
+  caseWithId.respondentEnterPostcode = selectedRespondent.value?.respondent_address.PostCode;
+  caseWithId.responseRespondentEmail = selectedRespondent.value?.responseRespondentEmail;
+  caseWithId.responseRespondentContactPreference = selectedRespondent.value?.responseRespondentContactPreference;
+  caseWithId.responseReceivedDate = selectedRespondent.value?.responseReceivedDate;
+  caseWithId.responseReceivedCount = selectedRespondent.value?.responseReceivedCount;
+  caseWithId.responseRespondentNameQuestion = selectedRespondent.value?.responseRespondentNameQuestion;
+  caseWithId.responseRespondentName = selectedRespondent.value?.responseRespondentName;
+  caseWithId.responseContinue = selectedRespondent.value?.responseContinue;
+  caseWithId.responseCounterClaim = selectedRespondent.value?.responseCounterClaim;
+  caseWithId.responseReference = selectedRespondent.value?.responseReference;
+  caseWithId.extensionRequested = selectedRespondent.value?.extensionRequested;
+  caseWithId.extensionGranted = selectedRespondent.value?.extensionGranted;
+  caseWithId.extensionDate = selectedRespondent.value?.extensionDate;
+  caseWithId.extensionResubmitted = selectedRespondent.value?.extensionResubmitted;
+  caseWithId.idamId = selectedRespondent.value?.idamId;
+  caseWithId.et3CaseDetailsLinksStatuses = selectedRespondent.value?.et3CaseDetailsLinksStatuses;
+  caseWithId.et3HubLinksStatuses = selectedRespondent.value?.et3HubLinksStatuses;
+  caseWithId.et3Status = selectedRespondent.value?.et3Status;
+  caseWithId.et3IsRespondentAddressCorrect = selectedRespondent.value?.et3IsRespondentAddressCorrect;
 }
 
 export function toApiFormat(caseItem: CaseWithId): UpdateCaseBody {
@@ -809,6 +798,7 @@ export const mapRespondent = (respondent: RespondentType): RespondentET3Model =>
     idamId: respondent?.idamId,
     et3CaseDetailsLinksStatuses: respondent?.et3CaseDetailsLinksStatuses,
     et3HubLinksStatuses: respondent?.et3HubLinksStatuses,
+    et3Status: respondent?.et3Status,
   };
 };
 

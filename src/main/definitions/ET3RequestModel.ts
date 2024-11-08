@@ -1,4 +1,4 @@
-import { RespondentType } from './complexTypes/respondent';
+import { RespondentSumType } from './complexTypes/respondent';
 
 export interface ET3RequestModel {
   caseSubmissionReference: string;
@@ -8,5 +8,5 @@ export interface ET3RequestModel {
   caseDetailsLinksSectionStatus?: string;
   responseHubLinksSectionId?: string;
   responseHubLinksSectionStatus?: string;
-  respondent: RespondentType;
+  respondent: RespondentSumType;
 }
