@@ -1,9 +1,10 @@
+import { AxiosResponse } from 'axios';
 import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { FormFieldNames, LegacyUrls, PageUrls, TranslationKeys } from '../definitions/constants';
+import { FormFieldNames, LegacyUrls, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
@@ -12,6 +13,7 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import SelfAssignmentFormControllerHelper from '../helpers/controller/SelfAssignmentFormControllerHelper';
 import { getCaseApi } from '../services/CaseService';
+import ErrorUtils from '../utils/ErrorUtils';
 import { isValidCaseReferenceId } from '../validators/numeric-validator';
 import { isFieldFilledIn } from '../validators/validator';
 
@@ -75,13 +77,25 @@ export default class SelfAssignmentFormController {
     req.session.respondentNameFromForm = formData.respondentName;
     const errors = this.form.getValidatorErrors(formData);
     if (errors.length === 0) {
+      const isReformCase: AxiosResponse<string> = await getCaseApi(req.session.user?.accessToken).checkIdAndState(
+        formData.id
+      );
+      if (isReformCase?.data.toString() === 'false') {
+        return res.redirect(LegacyUrls.ET3);
+      }
       const caseData = (await getCaseApi(req.session.user?.accessToken)?.getCaseByApplicationRequest(req))?.data;
       if (caseData) {
         req.session.userCase = formatApiCaseDataToCaseWithId(caseData);
         SelfAssignmentFormControllerHelper.setRespondentName(req, caseData);
         return res.redirect(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK));
+      } else {
+        ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
+          req,
+          ValidationErrors.INVALID_CASE_DETAILS,
+          FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+        );
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_FORM)));
       }
-      return res.redirect(LegacyUrls.ET3);
     } else {
       req.session.errors = errors;
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_FORM)));

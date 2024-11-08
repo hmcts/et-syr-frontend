@@ -207,6 +207,7 @@ export const ValidationErrors = {
   ADDRESS_NOT_SELECTED: 'addressNotSelected',
   CASE_ALREADY_ASSIGNED: 'caseAlreadyAssigned',
   CASE_ALREADY_ASSIGNED_TO_SAME_USER: 'caseAlreadyAssignedToSameUser',
+  INVALID_CASE_DETAILS: 'invalidCaseDetails',
 } as const;
 
 export const AuthUrls = {
@@ -219,6 +220,7 @@ export const JavaApiUrls = {
   FIND_CASE_FOR_ROLE_MODIFICATION: '/manageCaseRole/findCaseForRoleModification',
   ASSIGN_CASE_USER_ROLES: '/manageCaseRole/modifyCaseUserRoles?modificationType=Assignment',
   FIND_CASE_BY_ETHOS_CASE_REFERENCE: '/et3/findCaseByEthosCaseReference',
+  FIND_CASE_BY_ID: '/et3/findCaseById',
   DOWNLOAD_CLAIM_PDF: '/generate-pdf',
   UPLOAD_FILE: '/documents/upload/',
   DOCUMENT_DOWNLOAD: '/document/download/',
