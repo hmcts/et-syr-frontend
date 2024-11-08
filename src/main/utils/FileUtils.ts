@@ -81,7 +81,7 @@ export default class FileUtils {
     try {
       req.session.errors = [];
       const result: AxiosResponse<DocumentUploadResponse> = await this.callAxiosFileUpload(req, req.file);
-      if (ObjectUtils.isObjectNotEmpty(result?.data)) {
+      if (ObjectUtils.isNotEmpty(result?.data)) {
         return result.data;
       }
     } catch (error) {

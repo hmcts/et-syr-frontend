@@ -4,7 +4,7 @@ import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, RespondentET3Model, YesOrNo } from '../definitions/case';
 import { LoggerConstants, PageUrls } from '../definitions/constants';
-import { ApplicationTableRecord, CaseState } from '../definitions/definition';
+import { ApplicationTableRecord } from '../definitions/definition';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { translateOverallStatus, translateTypesOfClaims } from '../helpers/ApplicationTableRecordTranslationHelper';
@@ -17,11 +17,7 @@ import { getCaseApi } from './CaseService';
 const logger = getLogger('CaseSelectionService');
 
 export const getRedirectUrl = (userCase: CaseWithId, languageParam: string): string => {
-  if (userCase.state === CaseState.AWAITING_SUBMISSION_TO_HMCTS) {
-    return `/claimant-application/${userCase.id}${languageParam}`;
-  } else {
-    return `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${userCase.id}${languageParam}`;
-  }
+  return `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${userCase.id}${languageParam}`;
 };
 
 export const getUserCasesByLastModified = async (req: AppRequest): Promise<CaseWithId[]> => {

@@ -101,7 +101,11 @@
       "sessionRespondent": "[W]No respondent found in user case",
       "userId": "[W]Invalid session user. User does not have an ID",
       "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "api": "[W]A system error occurred, Please try again later",
+      "sessionNotFound": "[W]Session not found. Please login again.",
+      "respondentIndexNotFound": "[W]Respondent index not found",
+      "respondentCCDIdParameterNotReceived": "[W]Unable to receive respondent CCD ID parameter",
+      "respondentNotFoundByRespondentIndex": "[W]Unable to receive respondent"
     },
     "addressEnterPostcode": {
       "required": "Rhowch god post. Er enghraifft, SW1 1AA",

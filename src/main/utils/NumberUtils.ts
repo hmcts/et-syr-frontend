@@ -6,7 +6,13 @@ export default class NumberUtils {
   public static isEmptyOrZero(value: number): boolean {
     return !value || value === 0;
   }
-  public static isNotNotEmptyOrZero(value: number): boolean {
+  public static isNotEmpty(value: number): boolean {
+    return value !== undefined && value !== null;
+  }
+  public static isEmpty(value: number): boolean {
+    return !this.isNotEmpty(value);
+  }
+  public static isNotEmptyOrZero(value: number): boolean {
     return !this.isEmptyOrZero(value);
   }
   public static formatAcasNumberDashToUnderscore(acasNumber: string): string {

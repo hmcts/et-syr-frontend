@@ -1,7 +1,10 @@
 import { Response } from 'express';
 
+import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
+import { ET3ModificationTypes, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
+import { FormContent, FormFields } from '../definitions/form';
+import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
@@ -14,12 +17,52 @@ import {
   getEt3Section6,
 } from '../helpers/controller/CheckYourAnswersET3Helper';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
+import ET3Util from '../utils/ET3Util';
 
 export default class CheckYourAnswersET3Controller {
-  // todo: handle the submission of cya screen and set form complete to yes or no depending on value selected,
-  //  also handle duplication of this block
+  readonly form: Form;
+  private readonly checkYourAnswers: FormContent = {
+    fields: {
+      submit: {
+        label: (l: AnyRecord): string => l.submit,
+        id: 'submit',
+        type: 'button',
+        name: 'submit',
+        value: 'true',
+        divider: false,
+      },
+      saveAsDraft: {
+        label: (l: AnyRecord): string => l.saveForLater,
+        id: 'saveAsDraft',
+        type: 'button',
+        name: 'saveAsDraft',
+        value: 'true',
+        divider: false,
+        classes: 'govuk-button--secondary',
+      },
+    },
+  } as never;
 
-  public async get(req: AppRequest, res: Response): Promise<void> {
+  constructor() {
+    this.form = new Form(<FormFields>this.checkYourAnswers.fields);
+  }
+
+  public post = async (req: AppRequest, res: Response): Promise<void> => {
+    const userCase = await ET3Util.updateET3Data(
+      req,
+      ET3HubLinkNames.CheckYorAnswers,
+      LinkStatus.COMPLETED,
+      ET3ModificationTypes.MODIFICATION_TYPE_SUBMIT
+    );
+    if (!userCase || req.body.saveAsDraft) {
+      return res.redirect(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3));
+    }
+    if (req.body?.submit) {
+      return res.redirect(setUrlLanguage(req, PageUrls.APPLICATION_SUBMITTED));
+    }
+  };
+
+  public get = async (req: AppRequest, res: Response): Promise<void> => {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const redirectUrl = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3);
     const userCase = req.session.userCase;
@@ -47,6 +90,7 @@ export default class CheckYourAnswersET3Controller {
       redirectUrl,
       languageParam: getLanguageParam(req.url),
       welshEnabled,
+      form: this.checkYourAnswers,
     });
-  }
+  };
 }

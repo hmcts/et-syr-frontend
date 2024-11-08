@@ -14,6 +14,11 @@ import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from '../links';
 import { DocumentTypeItem } from './documentTypeItem';
 import { Et1Address } from './et1Address';
 
+export interface RespondentSumType {
+  id?: string;
+  value?: RespondentType;
+}
+
 export interface RespondentType {
   response_status?: string;
   responseToClaim?: string;

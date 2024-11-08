@@ -19,23 +19,34 @@ import { returnNextPage, returnValidUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 
+import CollectionUtils from './CollectionUtils';
 import ErrorUtils from './ErrorUtils';
+import ObjectUtils from './ObjectUtils';
 import StringUtils from './StringUtils';
 
 const logger = getLogger('ET3Util');
 
 export default class ET3Util {
-  public static findSelectedRespondent(req: AppRequest): number {
-    if (!req.session?.userCase) {
+  public static findSelectedRespondentIndex(req: AppRequest): number {
+    if (ObjectUtils.isEmpty(req.session)) {
       ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
-        ValidationErrors.SESSION_USER_CASE,
+        ValidationErrors.SESSION_NOT_FOUND,
+        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+      );
+      logger.error(LoggerConstants.ERROR_SESSION_NOT_FOUND);
+      return;
+    }
+    if (ObjectUtils.isEmpty(req.session.userCase)) {
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
+        req,
+        ValidationErrors.SESSION_USER_CASE_NOT_FOUND,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
       );
       logger.error(LoggerConstants.ERROR_SESSION_USER_CASE_NOT_FOUND);
       return;
     }
-    if (!req.session.user) {
+    if (ObjectUtils.isEmpty(req.session.user)) {
       ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.SESSION_USER,
@@ -44,7 +55,7 @@ export default class ET3Util {
       logger.error(LoggerConstants.ERROR_SESSION_USER_NOT_FOUND);
       return;
     }
-    if (!req.session.userCase.respondents) {
+    if (CollectionUtils.isEmpty(req.session.userCase.respondents)) {
       ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.SESSION_RESPONDENT,
@@ -56,94 +67,62 @@ export default class ET3Util {
     if (StringUtils.isBlank(req.session.user.id)) {
       ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
-        ValidationErrors.USER_ID,
+        ValidationErrors.USER_ID_NOT_FOUND,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
       );
       logger.error(LoggerConstants.ERROR_SESSION_INVALID_USER_ID);
+      return;
+    }
+    const ccdIdParameter = req.params.ccdId;
+    if (StringUtils.isBlank(ccdIdParameter)) {
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
+        req,
+        ValidationErrors.RESPONDENT_INDEX_NOT_FOUND,
+        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+      );
+      logger.error(LoggerConstants.ERROR_SESSION_RESPONDENT_INDEX_NOT_FOUND);
       return;
     }
     let selectedRespondentIndex: number = 0;
     for (const respondent of req.session.userCase.respondents) {
-      if (respondent.idamId === req.session.user.id) {
+      const ccdId = respondent.ccdId;
+      if (
+        respondent.idamId === req.session.user.id &&
+        StringUtils.isNotBlank(ccdIdParameter) &&
+        ccdIdParameter === ccdId
+      ) {
         return selectedRespondentIndex;
       }
       selectedRespondentIndex++;
     }
     ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
       req,
-      ValidationErrors.RESPONDENT_NOT_FOUND,
+      ValidationErrors.RESPONDENT_INDEX_NOT_FOUND,
       FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
     );
-    logger.error(LoggerConstants.ERROR_SESSION_INVALID_RESPONDENT);
-  }
-
-  public static findSelectedRespondentByCaseWithId(req: AppRequest, caseWithId: CaseWithId): number {
-    if (!caseWithId) {
-      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
-        req,
-        ValidationErrors.SESSION_USER_CASE,
-        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-      );
-      logger.error(LoggerConstants.ERROR_SESSION_USER_CASE_NOT_FOUND);
-      return;
-    }
-    if (!req.session.user) {
-      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
-        req,
-        ValidationErrors.SESSION_USER,
-        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-      );
-      logger.error(LoggerConstants.ERROR_SESSION_USER_NOT_FOUND);
-      return;
-    }
-    if (!caseWithId.respondents) {
-      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
-        req,
-        ValidationErrors.SESSION_RESPONDENT,
-        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-      );
-      logger.error(LoggerConstants.ERROR_SESSION_INVALID_RESPONDENT_LIST);
-      return;
-    }
-    if (StringUtils.isBlank(req.session.user.id)) {
-      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
-        req,
-        ValidationErrors.USER_ID,
-        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-      );
-      logger.error(LoggerConstants.ERROR_SESSION_INVALID_USER_ID);
-      return;
-    }
-    let selectedRespondentIndex: number = 0;
-    for (const respondent of caseWithId.respondents) {
-      if (respondent.idamId === req.session.user.id) {
-        return selectedRespondentIndex;
-      }
-      selectedRespondentIndex++;
-    }
-    ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
-      req,
-      ValidationErrors.RESPONDENT_NOT_FOUND,
-      FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-    );
-    logger.error(LoggerConstants.ERROR_SESSION_INVALID_RESPONDENT);
+    logger.error(LoggerConstants.ERROR_SESSION_RESPONDENT_INDEX_NOT_FOUND);
   }
 
   public static async updateET3Data(
     req: AppRequest,
     responseHubLinksSectionId: string,
-    responseHubLinksSectionStatus: string
+    responseHubLinksSectionStatus: string,
+    modificationType?: string
   ): Promise<CaseWithId> {
     let caseWithId: CaseWithId;
     try {
+      let caseDetailsLinkStatus = LinkStatus.COMPLETED;
+      if (!modificationType) {
+        modificationType = ET3ModificationTypes.MODIFICATION_TYPE_UPDATE;
+        caseDetailsLinkStatus = LinkStatus.IN_PROGRESS;
+      }
       caseWithId = formatApiCaseDataToCaseWithId(
         (
           await getCaseApi(req.session.user?.accessToken)?.modifyEt3Data(
-            req.session?.userCase,
-            req.session?.user?.id,
-            ET3ModificationTypes.MODIFICATION_TYPE_UPDATE,
+            req,
+            modificationType,
             ET3CaseDetailsLinkNames.RespondentResponse,
-            LinkStatus.IN_PROGRESS,
+            caseDetailsLinkStatus,
             responseHubLinksSectionId,
             responseHubLinksSectionStatus
           )
@@ -172,8 +151,7 @@ export default class ET3Util {
       caseWithId = formatApiCaseDataToCaseWithId(
         (
           await getCaseApi(req.session.user?.accessToken)?.modifyEt3Data(
-            req.session?.userCase,
-            req.session?.user?.id,
+            req,
             ET3ModificationTypes.MODIFICATION_TYPE_UPDATE,
             caseDetailsLinksSectionId,
             caseDetailsLinksSectionStatus,

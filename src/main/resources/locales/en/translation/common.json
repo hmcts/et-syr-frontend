@@ -101,7 +101,11 @@
       "sessionRespondent": "No respondent found in user case",
       "userId": "Invalid session user. User does not have an ID",
       "respondentNotFound": "Unable to find respondent",
-      "api": "A system error occurred, Please try again later"
+      "api": "A system error occurred, Please try again later",
+      "sessionNotFound": "Session not found. Please login again.",
+      "respondentIndexNotFound": "Respondent index not found",
+      "respondentCCDIdParameterNotReceived": "Unable to receive respondent CCD ID parameter",
+      "respondentNotFoundByRespondentIndex": "Unable to receive respondent"
     },
     "addressEnterPostcode": {
       "invalid": "Enter a valid postcode. For example, SW1 1AA",

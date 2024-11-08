@@ -154,8 +154,7 @@ export class CaseApi {
   };
 
   modifyEt3Data = async (
-    caseDetails: CaseWithId,
-    idamId: string,
+    req: AppRequest,
     requestType: string,
     caseDetailsLinksSectionId: string,
     caseDetailsLinksSectionStatus: string,
@@ -164,8 +163,7 @@ export class CaseApi {
   ): Promise<AxiosResponse<CaseApiDataResponse>> => {
     try {
       const et3Request = ET3DataModelUtil.convertCaseWithIdToET3Request(
-        caseDetails,
-        idamId,
+        req,
         requestType,
         caseDetailsLinksSectionId,
         caseDetailsLinksSectionStatus,

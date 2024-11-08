@@ -27,6 +27,7 @@ export default class CaseListController {
       usersApplications,
       languageParam,
       newSelfAssignmentRequestUrl,
+      caseDetailsUrl: PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER,
     });
   };
 }

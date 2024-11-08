@@ -9,7 +9,7 @@ describe('ObjectUtils tests', () => {
     { value: {}, result: true },
     { value: { test: 'testValue' }, result: false },
   ])('check if given object is empty', ({ value, result }) => {
-    expect(ObjectUtils.isObjectEmpty(value)).toStrictEqual(result);
+    expect(ObjectUtils.isEmpty(value)).toStrictEqual(result);
   });
 
   it.each([
@@ -20,6 +20,6 @@ describe('ObjectUtils tests', () => {
     { value: {}, result: false },
     { value: { test: 'testValue' }, result: true },
   ])('check if given object is not empty', ({ value, result }) => {
-    expect(ObjectUtils.isObjectNotEmpty(value)).toStrictEqual(result);
+    expect(ObjectUtils.isNotEmpty(value)).toStrictEqual(result);
   });
 });

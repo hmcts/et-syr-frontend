@@ -25,7 +25,7 @@ describe('Get redirect url tests', () => {
   const languageParam = '?lng=en';
   it('Should return claimant application link when user case state is awaiting submission to HMCTS', async () => {
     userCase.state = CaseState.AWAITING_SUBMISSION_TO_HMCTS;
-    expect(getRedirectUrl(userCase, languageParam)).toEqual('/claimant-application/1234567890123456?lng=en');
+    expect(getRedirectUrl(userCase, languageParam)).toEqual('/case-details/1234567890123456?lng=en');
   });
   it('Should return response hub link when user case state is not awaiting submission to HMCTS', async () => {
     userCase.state = CaseState.ACCEPTED;

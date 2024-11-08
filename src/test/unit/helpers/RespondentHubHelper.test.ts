@@ -1,6 +1,6 @@
 import { PageUrls, languages } from '../../../main/definitions/constants';
-import { HubLinkNames, HubLinkStatus } from '../../../main/definitions/hub';
-import { ET3CaseDetailsLinkNames, ET3HubLinkNames } from '../../../main/definitions/links';
+import { HubLinkNames } from '../../../main/definitions/hub';
+import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
 import {
   getET3CaseDetailsLinksUrlMap,
   getET3HubLinksUrlMap,
@@ -9,21 +9,19 @@ import {
 
 describe('shouldHubLinkBeClickable', () => {
   it('should not be clickable if not yet available', () => {
-    expect(shouldHubLinkBeClickable(HubLinkStatus.NOT_YET_AVAILABLE, undefined)).toBe(false);
+    expect(shouldHubLinkBeClickable(LinkStatus.NOT_YET_AVAILABLE, undefined)).toBe(false);
   });
 
   it('should not be clickable if awaiting tribunal and not respondent applications', () => {
-    expect(shouldHubLinkBeClickable(HubLinkStatus.WAITING_FOR_TRIBUNAL, HubLinkNames.Documents)).toBe(false);
+    expect(shouldHubLinkBeClickable(LinkStatus.WAITING_FOR_TRIBUNAL, HubLinkNames.Documents)).toBe(false);
   });
 
   it('should be clickable if awaiting tribunal and not respondent applications', () => {
-    expect(shouldHubLinkBeClickable(HubLinkStatus.WAITING_FOR_TRIBUNAL, HubLinkNames.RespondentApplications)).toBe(
-      true
-    );
+    expect(shouldHubLinkBeClickable(LinkStatus.WAITING_FOR_TRIBUNAL, HubLinkNames.RespondentApplications)).toBe(false);
   });
 
   it('should not be clickable otherwise', () => {
-    expect(shouldHubLinkBeClickable(HubLinkStatus.IN_PROGRESS, undefined)).toBe(true);
+    expect(shouldHubLinkBeClickable(LinkStatus.IN_PROGRESS, undefined)).toBe(true);
   });
 });
 
@@ -38,7 +36,7 @@ describe('getET3HubLinksUrlMap', () => {
     [ET3HubLinkNames.PayPensionBenefitDetails, PageUrls.CLAIMANT_PENSION_AND_BENEFITS + languages.WELSH_URL_PARAMETER],
     [ET3HubLinkNames.ContestClaim, PageUrls.RESPONDENT_CONTEST_CLAIM + languages.WELSH_URL_PARAMETER],
     [ET3HubLinkNames.EmployersContractClaim, PageUrls.EMPLOYERS_CONTRACT_CLAIM + languages.WELSH_URL_PARAMETER],
-    [ET3HubLinkNames.CheckYorAnswers, PageUrls.NOT_IMPLEMENTED + languages.WELSH_URL_PARAMETER],
+    [ET3HubLinkNames.CheckYorAnswers, PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.WELSH_URL_PARAMETER],
   ]);
   const et3HubLinksMapEnglish: Map<string, string> = new Map<string, string>([
     [ET3HubLinkNames.ContactDetails, PageUrls.RESPONDENT_NAME],
@@ -47,7 +45,7 @@ describe('getET3HubLinksUrlMap', () => {
     [ET3HubLinkNames.PayPensionBenefitDetails, PageUrls.CLAIMANT_PENSION_AND_BENEFITS],
     [ET3HubLinkNames.ContestClaim, PageUrls.RESPONDENT_CONTEST_CLAIM],
     [ET3HubLinkNames.EmployersContractClaim, PageUrls.EMPLOYERS_CONTRACT_CLAIM],
-    [ET3HubLinkNames.CheckYorAnswers, PageUrls.NOT_IMPLEMENTED],
+    [ET3HubLinkNames.CheckYorAnswers, PageUrls.CHECK_YOUR_ANSWERS_ET3],
   ]);
   it('returns correct links when respondent is system user in English', () => {
     expect(getET3HubLinksUrlMap(languages.ENGLISH_URL_PARAMETER)).toEqual(et3HubLinksMapEnglish);

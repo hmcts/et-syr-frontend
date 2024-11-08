@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import { Request } from 'express';
 import { Session } from 'express-session';
 
-import { CaseWithId, RespondentET3Model } from './case';
+import { CaseWithId } from './case';
 import { ApiDocumentTypeItem } from './complexTypes/documentTypeItem';
 import { FormError } from './form';
 import { AnyRecord } from './util-types';
@@ -59,7 +59,6 @@ export interface AppSession extends Session {
   respondentRedirectCheckAnswer?: boolean;
   returnUrl: string;
   selectedAcasCertificate?: ApiDocumentTypeItem;
-  selectedRespondent?: RespondentET3Model;
   selectedRespondentIndex?: number;
   submittedCase?: CaseWithId;
   user: UserDetails;

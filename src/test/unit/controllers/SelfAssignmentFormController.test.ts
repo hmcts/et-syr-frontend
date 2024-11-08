@@ -16,6 +16,7 @@ import {
   mockCaseApiDataResponseForSelfAssignmentAsData,
 } from '../mocks/mockCaseApiDataResponse';
 import { MockCaseWithIdConstants, mockInvalidCaseWithId, mockValidCaseWithId } from '../mocks/mockCaseWithId';
+import { mockValidCaseWithIdWithFullRespondentDetails } from '../mocks/mockCaseWithIdWithFullRespondentDetails';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
@@ -59,7 +60,10 @@ describe('Self assignment form controller', () => {
     it('should return case data when all fields are entered', async () => {
       const request = mockRequest({ t });
       const response = mockResponse();
-      request.body = mockValidCaseWithId;
+      request.body = mockValidCaseWithIdWithFullRespondentDetails;
+      request.session.userCase = mockValidCaseWithIdWithFullRespondentDetails;
+      request.session.userCase.respondents[0].ccdId = 'dummyCCDId';
+      request.params = { ccdId: 'dummyCCDId' };
       getCaseApiMock.mockReturnValue(api);
       api.getCaseByApplicationRequest = jest
         .fn()

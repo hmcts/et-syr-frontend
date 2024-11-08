@@ -3,7 +3,7 @@ import {
   GenericTseApplicationType,
   GenericTseApplicationTypeItem,
 } from '../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
-import { PageUrls } from "../../../main/definitions/constants";
+import { PageUrls } from '../../../main/definitions/constants';
 import { ApplicationTableRecord, CaseState, RespondentApplicationDetails } from '../../../main/definitions/definition';
 import { HubLinkStatus } from '../../../main/definitions/hub';
 import { clone } from '../test-helpers/clone';
@@ -31,7 +31,7 @@ export const mockApplications: ApplicationTableRecord[] = [
     },
     respondents: 'Globo Corp<br />Mega Globo Corp',
     completionStatus: '4 of 4 tasks completed',
-    url: '/claimant-application/12345?lng=en',
+    url: '/case-details/12345?lng=en',
   },
   {
     userCase: {
@@ -44,7 +44,7 @@ export const mockApplications: ApplicationTableRecord[] = [
     },
     respondents: 'undefined',
     completionStatus: '0 of 4 tasks completed',
-    url: '/claimant-application/123456?lng=en',
+    url: '/case-details/123456?lng=en',
   },
   {
     userCase: {
