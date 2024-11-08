@@ -1,0 +1,84 @@
+{
+  "title": "Cysylltu â’r tribiwnlys ynglŷn â’ch achos",
+  "h1": "Cysylltu â’r tribiwnlys ynglŷn â’ch achos",
+  "showAllSections": "Dangos pob adran",
+  "hideAllSections": "Cuddio pob adran",
+  "showSection": "Dangos",
+  "hideSection": "Cuddio",
+  "landing_text": {
+    "p1": "Defnyddiwch y ffurflen briodol i gyfathrebu â'r tribiwnlys.",
+    "p2": "[W]These requests and applications will be reviewed by the tribunal and copied to the applicant who will have an opportunity to respond.",
+    "p3": "[W]You may be able to request that some details do not get shared with the applicant."
+  },
+  "sections": {
+    "CHANGE_PERSONAL_DETAILS": {
+      "label": "Rwyf eisiau newid fy manylion personol",
+      "body": "Newid y manylion personol y bu i chi eu rhoi wrth wneud eich hawliad."
+    },
+    "POSTPONE_HEARING": {
+      "label": "Gwneud cais i ohirio fy ngwrandawiad",
+      "body": "Gofyn i’r tribiwnlys ohirio eich gwrandawiad i ddyddiad diweddarach."
+    },
+    "VARY_OR_REVOKE_ORDER": {
+      "label": "Gwneud cais i amrywio neu ddirymu gorchymyn",
+      "body": "Gwneud cais i amrywio neu ddirymu gorchymyn y mae'r tribiwnlys wedi ei gyhoeddi. Er enghraifft, efallai y bydd angen mwy o amser arnoch i gyflwyno rhywbeth neu eisiau newid nifer y tudalennau yn eich dogfennau gwrandawiad."
+    },
+    "CONSIDER_DECISION_AFRESH": {
+      "label": "Gwneud cais i benderfyniad gael ei ystyried o'r newydd",
+      "body": "Os ydych yn anghytuno â dyfarniad neu orchymyn a wnaed gan swyddog cyfreithiol yn eich achos chi, gallwch ofyn i farnwr cyflogaeth edrych ar y penderfyniad hwnnw eto."
+    },
+    "AMEND_RESPONSE": {
+      "label": "Gwneud cais i ddiwygio fy hawliad",
+      "body": "Gwneud cais i ddiwygio eich hawliad ET1 - gan gynnwys ychwanegu neu ddileu hawliadau neu fanylion eich hawliad."
+    },
+    "ORDER_OTHER_PARTY": {
+      "label": "[W]Order the applicant to do something",
+      "body": "[W]Apply to order the applicant to do or provide something."
+    },
+    "ORDER_WITNESS_ATTEND": {
+      "label": "Gorchymyn bod tyst yn bresennol i roi tystiolaeth",
+      "body": "Gwneud cais i orchymyn bod tyst yn bresennol i roi tystiolaeth yn eich achos chi."
+    },
+    "CLAIMANT_NOT_COMPLIED": {
+      "label": "[W]Tell the tribunal the applicant has not complied with an order",
+      "body": "[W]Tell us that the applicant has not complied with all or part of an order from the tribunal."
+    },
+    "RESTRICT_PUBLICITY": {
+      "label": "Gwneud cais i gyfyngu ar gyhoeddusrwydd",
+      "body": "Gwneud cais i atal neu gyfyngu ar gyhoeddusrwydd yn eich achos chi. Gall y tribiwnlys gynnal gwrandawiadau yn breifat neu gadw manylion partïon a thystion penodol yn gyfrinachol os oes angen."
+    },
+    "STRIKE_OUT_CLAIM": {
+      "label": "Dileu’r cyfan neu ran o’r ymateb",
+      "body": "[W]You can request that the tribunal strike out all or parts of the applicant's response."
+    },
+    "RECONSIDER_JUDGMENT": {
+      "label": "Gwneud cais i ddyfarniad gael ei ailystyried",
+      "body": "Gofyn i ddyfarniad a wnaed gan farnwr gael ei ailystyried."
+    },
+    "CONTACT_TRIBUNAL": {
+      "label": "Cysylltu â'r tribiwnlys am rywbeth arall",
+      "body": "Dweud neu ofyn i’r tribiwnlys am rywbeth sy’n berthnasol i’ch achos chi. Rhywbeth sydd ddim yn dod o dan yr opsiynau eraill ar y dudalen hon."
+    }
+  },
+  "call": {
+    "h1": "Ffonio canolfan gyswllt cwsmeriaid y Tribiwnlys Cyflogaeth",
+    "p1": "Ffoniwch os oes gennych unrhyw gwestiynau ynglŷn â’ch hawliad. Ni allant roi cyngor cyfreithiol i chi na phrosesu unrhyw ddiweddariadau i'ch achos.",
+    "p2": "Defnyddiwch y ffurflenni cyswllt i wneud cais neu i ddarparu rhywbeth i'r tribiwnlys.",
+    "english": {
+      "h1": "Cymru a Lloegr",
+      "p1": "Rhif ffôn: 0300 323 0196"
+    },
+    "welsh": {
+      "h1": "Gwasanaeth Cymraeg",
+      "p1": "Rhif ffôn: 0300 303 5176"
+    },
+    "scottish": {
+      "h1": "Yr Alban",
+      "p1": "Rhif ffôn: 0300 790 6234"
+    },
+    "p3": "Dydd Llun i ddydd Iau, 8.30am - 5pm.",
+    "p4": "Dydd Gwener 8.30am - 4pm.",
+    "p5": "Nid yw’r ganolfan ar agor ar wyliau banc.",
+    "label": "Gwybodaeth am gost galwadau (agor mewn tab newydd)"
+  }
+}

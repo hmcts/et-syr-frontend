@@ -32,6 +32,7 @@ import ClaimantNoticePeriodController from '../../controllers/ClaimantNoticePeri
 import ClaimantPayDetailsController from '../../controllers/ClaimantPayDetailsController';
 import ClaimantPayDetailsEnterController from '../../controllers/ClaimantPayDetailsEnterController';
 import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPensionAndBenefitsController';
+import ContactTribunalController from '../../controllers/ContactTribunalController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import ET3ResponseController from '../../controllers/ET3ResponseController';
 import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
@@ -217,6 +218,8 @@ export class Routes {
       PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM,
       new CheckYourAnswersEmployersContractClaimController().post
     );
+    // Contact Tribunal
+    app.get(PageUrls.CONTACT_TRIBUNAL, new ContactTribunalController().get);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);
     app.post(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().post);
