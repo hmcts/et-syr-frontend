@@ -38,7 +38,7 @@ export const application: { [key: string]: Application } = {
   },
   AMEND_RESPONSE: {
     code: 'Amend response',
-    url: 'apply-to-amend-my-claim',
+    url: 'apply-to-amend-my-response',
     type: ApplicationType.A,
   },
   ORDER_OTHER_PARTY: {
