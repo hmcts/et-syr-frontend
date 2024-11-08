@@ -28,7 +28,7 @@ export const getET3HubLinksUrlMap = (languageParam: string): Map<string, string>
       ET3HubLinkNames.ConciliationAndEmployeeDetails,
       PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + baseUrls[languageParam],
     ],
-    [ET3HubLinkNames.PayPensionBenefitDetails, PageUrls.CLAIMANT_PENSION_AND_BENEFITS + baseUrls[languageParam]],
+    [ET3HubLinkNames.PayPensionBenefitDetails, PageUrls.CLAIMANT_PAY_DETAILS + baseUrls[languageParam]],
     [ET3HubLinkNames.ContestClaim, PageUrls.RESPONDENT_CONTEST_CLAIM + baseUrls[languageParam]],
     [ET3HubLinkNames.EmployersContractClaim, PageUrls.EMPLOYERS_CONTRACT_CLAIM + baseUrls[languageParam]],
     [ET3HubLinkNames.CheckYorAnswers, PageUrls.CHECK_YOUR_ANSWERS_ET3 + baseUrls[languageParam]],
