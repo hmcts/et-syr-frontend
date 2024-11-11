@@ -1,7 +1,8 @@
 import ResponseSavedController from '../../../main/controllers/ResponseSavedController';
-import { TranslationKeys } from '../../../main/definitions/constants';
+import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { getLanguageParam } from '../../../main/helpers/RouterHelpers';
 import { getFlagValue } from '../../../main/modules/featureFlag/launchDarkly';
+import ET3DataModelUtil from '../../../main/utils/ET3DataModelUtil';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
@@ -15,6 +16,7 @@ describe('ResponseSavedController', () => {
   const mockUserCase = {
     id: '12345',
     respondentResponseDeadline: '2024-12-31', // Example deadline
+    respondents: [{ respondentName: 'test respondent', ccdId: '1234' }],
   };
 
   beforeEach(() => {
@@ -22,6 +24,7 @@ describe('ResponseSavedController', () => {
     req = mockRequest({
       session: {
         userCase: mockUserCase,
+        selectedRespondentIndex: 0,
       },
     });
     res = mockResponse();
@@ -39,7 +42,8 @@ describe('ResponseSavedController', () => {
 
       await controller.get(req, res);
 
-      const expectedRedirectUrl = `/case-details/${mockUserCase.id}${mockLanguageParam}`;
+      const index = req.session.selectedRespondentIndex;
+      const expectedRedirectUrl = `/case-details/${mockUserCase.id}/${mockUserCase.respondents[index].ccdId}${mockLanguageParam}`;
 
       expect(getFlagValue).toHaveBeenCalledWith('welsh-language', null);
       expect(getLanguageParam).toHaveBeenCalledWith(req.url);
@@ -47,9 +51,10 @@ describe('ResponseSavedController', () => {
       expect(res.render).toHaveBeenCalledWith(TranslationKeys.RESPONSE_SAVED, {
         ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
         ...req.t(TranslationKeys.RESPONSE_SAVED, { returnObjects: true }),
-        applicationDeadline: mockUserCase.respondentResponseDeadline,
         userCase: mockUserCase,
-        redirectUrl: expectedRedirectUrl,
+        redirectToResponse: expectedRedirectUrl,
+        redirectToCaseList: PageUrls.CASE_LIST + mockLanguageParam,
+        respondentResponseDeadline: ET3DataModelUtil.getRespondentResponseDeadline(req),
         welshEnabled: mockWelshEnabled,
       });
     });
@@ -64,7 +69,8 @@ describe('ResponseSavedController', () => {
 
       await controller.get(req, res);
 
-      const expectedRedirectUrl = `/case-details/${mockUserCase.id}${mockLanguageParam}`;
+      const index = req.session.selectedRespondentIndex;
+      const expectedRedirectUrl = `/case-details/${mockUserCase.id}/${mockUserCase.respondents[index].ccdId}${mockLanguageParam}`;
 
       expect(getFlagValue).toHaveBeenCalledWith('welsh-language', null);
       expect(getLanguageParam).toHaveBeenCalledWith(req.url);
@@ -72,9 +78,10 @@ describe('ResponseSavedController', () => {
       expect(res.render).toHaveBeenCalledWith(TranslationKeys.RESPONSE_SAVED, {
         ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
         ...req.t(TranslationKeys.RESPONSE_SAVED, { returnObjects: true }),
-        applicationDeadline: mockUserCase.respondentResponseDeadline,
         userCase: mockUserCase,
-        redirectUrl: expectedRedirectUrl,
+        redirectToResponse: expectedRedirectUrl,
+        redirectToCaseList: PageUrls.CASE_LIST + mockLanguageParam,
+        respondentResponseDeadline: ET3DataModelUtil.getRespondentResponseDeadline(req),
         welshEnabled: mockWelshEnabled,
       });
     });
