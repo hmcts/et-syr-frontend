@@ -13,9 +13,8 @@ const getNextCopyPage = (userCase: CaseWithId): string => {
 };
 
 const isClaimantSystemUser = (userCase: CaseWithId): boolean => {
-  // TODO: Check and Fix this function
   if (userCase) {
-    return userCase.et1OnlineSubmission !== undefined || userCase.hubLinksStatuses !== undefined;
+    return userCase.et1OnlineSubmission !== undefined || userCase.hubLinksStatuses !== undefined; // TODO: Check and Fix this
   }
   return false;
 };
@@ -24,7 +23,7 @@ export const getFormDataError = (formData: Partial<CaseWithId>): FormError => {
   const file = formData.contactApplicationFile;
   const text = formData.contactApplicationText;
 
-  const fileProvided = file !== undefined;
+  const fileProvided = file !== undefined && false; // TODO: Fix fileProvided checking
   const textProvided = isFieldFilledIn(text) === undefined;
   if (!textProvided && !fileProvided) {
     return { propertyName: 'contactApplicationText', errorType: ValidationErrors.REQUIRED };

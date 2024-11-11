@@ -9,5 +9,11 @@
   },
   "contactApplicationText": {
     "label": "Use this box for any accompanying information (Optional)"
+  },
+  "errors": {
+    "contactApplicationText": {
+      "required": "Use the text box or file upload to give details",
+      "tooLong": "Give details (free text) must be entered as 2500 characters or less"
+    }
   }
 }

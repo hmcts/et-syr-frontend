@@ -9,5 +9,11 @@
   },
   "contactApplicationText": {
     "label": "[W]Use this box for any accompanying information (Optional)"
+  },
+  "errors": {
+    "contactApplicationText": {
+      "required": "Defnyddiwch y blwch testun neu’r cyfleuster llwytho ffeil i roi manylion",
+      "tooLong": "Rhaid i’ch manylion fod yn llai na 2500 o nodau"
+    }
   }
 }
