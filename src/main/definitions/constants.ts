@@ -147,8 +147,8 @@ export const PageUrls = {
   CONTACT_TRIBUNAL: '/contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: '/contact-tribunal/:selectedOption',
   COPY_TO_OTHER_PARTY: '/copy-to-other-party',
-  CONTACT_THE_TRIBUNAL_CYA: '/contact-the-tribunal-cya',
   COPY_TO_OTHER_PARTY_OFFLINE: '/copy-to-other-party-not-system-user',
+  CONTACT_TRIBUNAL_CYA: '/contact-the-tribunal-cya',
 } as const;
 
 export const InterceptPaths = {
