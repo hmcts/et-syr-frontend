@@ -13,8 +13,9 @@ const getNextCopyPage = (userCase: CaseWithId): string => {
 };
 
 const isClaimantSystemUser = (userCase: CaseWithId): boolean => {
+  // TODO: need to check if the claim was submitted through MyHMCTS as those would also be counted as online claims
   if (userCase) {
-    return userCase.et1OnlineSubmission !== undefined || userCase.hubLinksStatuses !== undefined; // TODO: Check and Fix this
+    return userCase.et1OnlineSubmission !== undefined || userCase.hubLinksStatuses !== undefined;
   }
   return false;
 };

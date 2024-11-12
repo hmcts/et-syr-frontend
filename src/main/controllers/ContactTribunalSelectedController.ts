@@ -6,10 +6,9 @@ import { CaseWithId } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { getApplicationByUrl } from '../definitions/contact-tribunal-applications';
 import { FormContent, FormFields } from '../definitions/form';
-import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getCancelLink, getLanguageParam } from '../helpers/RouterHelpers';
 import { getFormDataError, getNextPage } from '../helpers/controller/ContactTribunalSelectedHelper';
 
 export default class ContactTribunalSelectedController {
@@ -28,8 +27,10 @@ export default class ContactTribunalSelectedController {
         labelAsHint: true,
       },
     },
-    submit: submitButton,
-    saveForLater: saveForLaterButton,
+    submit: {
+      text: (l: AnyRecord): string => l.continue,
+      classes: 'govuk-!-margin-right-2',
+    },
   } as never;
 
   constructor() {
@@ -75,6 +76,7 @@ export default class ContactTribunalSelectedController {
     res.render(TranslationKeys.CONTACT_TRIBUNAL_SELECTED, {
       ...content,
       hideContactUs: true,
+      cancelLink: getCancelLink(req),
     });
   };
 }
