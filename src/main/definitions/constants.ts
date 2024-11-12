@@ -79,6 +79,7 @@ export const TranslationKeys = {
   // Contact Tribunal
   CONTACT_TRIBUNAL: 'contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: 'contact-tribunal-selected',
+  COPY_TO_OTHER_PARTY: 'copy-to-other-party',
 } as const;
 
 export const PageUrls = {
@@ -145,6 +146,9 @@ export const PageUrls = {
   // Contact Tribunal
   CONTACT_TRIBUNAL: '/contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: '/contact-tribunal/:selectedOption',
+  COPY_TO_OTHER_PARTY: '/copy-to-other-party',
+  COPY_TO_OTHER_PARTY_OFFLINE: '/copy-to-other-party-offline',
+  CONTACT_TRIBUNAL_CYA: '/contact-the-tribunal-cya',
 } as const;
 
 export const InterceptPaths = {

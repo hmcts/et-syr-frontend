@@ -4,10 +4,6 @@ import { AccordionItem, addAccordionRow } from '../../definitions/govuk/govukAcc
 import { AnyRecord } from '../../definitions/util-types';
 import { getLanguageParam } from '../RouterHelpers';
 
-export const isClaimantSystemUser = (): boolean => {
-  return true;
-};
-
 const getContentHtml = (key: keyof typeof application, translations: AnyRecord, languageParam: string): string => {
   return (
     '<p class="govuk-body">' +
