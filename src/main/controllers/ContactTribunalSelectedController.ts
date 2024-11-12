@@ -31,7 +31,7 @@ export default class ContactTribunalSelectedController {
       text: (l: AnyRecord): string => l.continue,
       classes: 'govuk-!-margin-right-2',
     },
-  } as never;
+  };
 
   constructor() {
     this.form = new Form(<FormFields>this.formContent.fields);
