@@ -36,34 +36,37 @@ export const getET3HubLinksUrlMap = (languageParam: string): Map<string, string>
 };
 
 export const getET3CaseDetailsLinksUrlMap = (languageParam: string, userCase?: CaseWithId): Map<string, string> => {
+  const caseDetailsLinksMap = new Map<string, string>();
+  caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.PersonalDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
+  caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.ET1ClaimForm, PageUrls.CLAIMANT_ET1_FORM + baseUrls[languageParam]);
   if (userCase && LinkStatus.COMPLETED === userCase.et3Status) {
-    return new Map<string, string>([
-      [ET3CaseDetailsLinkNames.PersonalDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
-      [ET3CaseDetailsLinkNames.ET1ClaimForm, PageUrls.CLAIMANT_ET1_FORM + baseUrls[languageParam]],
-      [ET3CaseDetailsLinkNames.RespondentResponse, PageUrls.APPLICATION_SUBMITTED + baseUrls[languageParam]],
-      [ET3CaseDetailsLinkNames.HearingDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
-      [ET3CaseDetailsLinkNames.RespondentRequestsAndApplications, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
-      [ET3CaseDetailsLinkNames.RespondentRequestsAndApplications, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
-      [
-        ET3CaseDetailsLinkNames.ContactTribunal,
-        PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER + baseUrls[languageParam],
-      ],
-      [ET3CaseDetailsLinkNames.TribunalJudgements, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
-      [ET3CaseDetailsLinkNames.Documents, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
-    ]);
+    caseDetailsLinksMap.set(
+      ET3CaseDetailsLinkNames.RespondentResponse,
+      PageUrls.APPLICATION_SUBMITTED + baseUrls[languageParam]
+    );
+  } else {
+    caseDetailsLinksMap.set(
+      ET3CaseDetailsLinkNames.RespondentResponse,
+      PageUrls.RESPONDENT_RESPONSE_LANDING + baseUrls[languageParam]
+    );
   }
-  return new Map<string, string>([
-    [ET3CaseDetailsLinkNames.PersonalDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
-    [ET3CaseDetailsLinkNames.ET1ClaimForm, PageUrls.CLAIMANT_ET1_FORM + baseUrls[languageParam]],
-    [ET3CaseDetailsLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING + baseUrls[languageParam]],
-    [ET3CaseDetailsLinkNames.HearingDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
-    [ET3CaseDetailsLinkNames.RespondentRequestsAndApplications, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
-    [ET3CaseDetailsLinkNames.RespondentRequestsAndApplications, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
-    [
-      ET3CaseDetailsLinkNames.ContactTribunal,
-      PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER + baseUrls[languageParam],
-    ],
-    [ET3CaseDetailsLinkNames.TribunalJudgements, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
-    [ET3CaseDetailsLinkNames.Documents, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]],
-  ]);
+  caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.HearingDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
+  caseDetailsLinksMap.set(
+    ET3CaseDetailsLinkNames.RespondentRequestsAndApplications,
+    PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]
+  );
+  caseDetailsLinksMap.set(
+    ET3CaseDetailsLinkNames.RespondentRequestsAndApplications,
+    PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]
+  );
+  caseDetailsLinksMap.set(
+    ET3CaseDetailsLinkNames.ContactTribunal,
+    PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER + baseUrls[languageParam]
+  );
+  caseDetailsLinksMap.set(
+    ET3CaseDetailsLinkNames.TribunalJudgements,
+    PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]
+  );
+  caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.Documents, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
+  return caseDetailsLinksMap;
 };
