@@ -6,9 +6,9 @@ import { CaseWithId, YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
+import { getApplicationTypeByCode } from '../helpers/ApplicationHelper';
 import { getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getApplicationTypeByCode } from '../helpers/controller/ContactTribunalHelper';
 import UrlUtils from '../utils/UrlUtils';
 import { isContentCharsOrLessAndNotEmpty, isOptionSelected } from '../validators/validator';
 

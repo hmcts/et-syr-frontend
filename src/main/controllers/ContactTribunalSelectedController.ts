@@ -4,13 +4,12 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
-import { getApplicationByUrl } from '../definitions/contact-tribunal-applications';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
+import { getApplicationByUrl, getApplicationTypeByUrl } from '../helpers/ApplicationHelper';
 import { getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getApplicationTypeByUrl } from '../helpers/controller/ContactTribunalHelper';
-import { getFormDataError, getNextPage } from '../helpers/controller/ContactTribunalSelectedHelper';
+import { getFormDataError, getNextPage } from '../helpers/controller/ContactTribunalHelper';
 import UrlUtils from '../utils/UrlUtils';
 
 export default class ContactTribunalSelectedController {
