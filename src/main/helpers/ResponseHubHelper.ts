@@ -28,7 +28,7 @@ export const getET3HubLinksUrlMap = (languageParam: string): Map<string, string>
       ET3HubLinkNames.ConciliationAndEmployeeDetails,
       PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + baseUrls[languageParam],
     ],
-    [ET3HubLinkNames.PayPensionBenefitDetails, PageUrls.CLAIMANT_PENSION_AND_BENEFITS + baseUrls[languageParam]],
+    [ET3HubLinkNames.PayPensionBenefitDetails, PageUrls.CLAIMANT_PAY_DETAILS + baseUrls[languageParam]],
     [ET3HubLinkNames.ContestClaim, PageUrls.RESPONDENT_CONTEST_CLAIM + baseUrls[languageParam]],
     [ET3HubLinkNames.EmployersContractClaim, PageUrls.EMPLOYERS_CONTRACT_CLAIM + baseUrls[languageParam]],
     [ET3HubLinkNames.CheckYorAnswers, PageUrls.CHECK_YOUR_ANSWERS_ET3 + baseUrls[languageParam]],
@@ -63,6 +63,11 @@ export const getET3CaseDetailsLinksUrlMap = (languageParam: string, userCase?: C
     ET3CaseDetailsLinkNames.ContactTribunal,
     PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER + baseUrls[languageParam]
   );
+    ET3CaseDetailsLinkNames.ClaimantApplications,
+    PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]
+  );
+  caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.ContactTribunal, PageUrls.CONTACT_TRIBUNAL + baseUrls[languageParam]);
+  caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.TribunalOrders, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
   caseDetailsLinksMap.set(
     ET3CaseDetailsLinkNames.TribunalJudgements,
     PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]

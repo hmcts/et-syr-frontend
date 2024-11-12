@@ -56,8 +56,8 @@ describe('Acas early conciliation certificate page', () => {
   });
 
   it('should display link', () => {
-    const cancel = htmlRes.getElementsByClassName(linkClass);
-    expect(cancel[5].innerHTML).contains(expectedLink, 'Could not find the link');
+    const link = htmlRes.getElementsByClassName(linkClass);
+    expect(link[5].innerHTML).contains(expectedLink, 'Could not find the link');
   });
 
   it('should display 2 input fields', () => {

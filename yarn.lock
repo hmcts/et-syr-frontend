@@ -2515,92 +2515,92 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-arm64@npm:1.8.0":
-  version: 1.8.0
-  resolution: "@swc/core-darwin-arm64@npm:1.8.0"
+"@swc/core-darwin-arm64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@swc/core-darwin-arm64@npm:1.9.2"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-x64@npm:1.8.0":
-  version: 1.8.0
-  resolution: "@swc/core-darwin-x64@npm:1.8.0"
+"@swc/core-darwin-x64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@swc/core-darwin-x64@npm:1.9.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm-gnueabihf@npm:1.8.0":
-  version: 1.8.0
-  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.8.0"
+"@swc/core-linux-arm-gnueabihf@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.9.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-gnu@npm:1.8.0":
-  version: 1.8.0
-  resolution: "@swc/core-linux-arm64-gnu@npm:1.8.0"
+"@swc/core-linux-arm64-gnu@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@swc/core-linux-arm64-gnu@npm:1.9.2"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-musl@npm:1.8.0":
-  version: 1.8.0
-  resolution: "@swc/core-linux-arm64-musl@npm:1.8.0"
+"@swc/core-linux-arm64-musl@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@swc/core-linux-arm64-musl@npm:1.9.2"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-gnu@npm:1.8.0":
-  version: 1.8.0
-  resolution: "@swc/core-linux-x64-gnu@npm:1.8.0"
+"@swc/core-linux-x64-gnu@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@swc/core-linux-x64-gnu@npm:1.9.2"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-musl@npm:1.8.0":
-  version: 1.8.0
-  resolution: "@swc/core-linux-x64-musl@npm:1.8.0"
+"@swc/core-linux-x64-musl@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@swc/core-linux-x64-musl@npm:1.9.2"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@swc/core-win32-arm64-msvc@npm:1.8.0":
-  version: 1.8.0
-  resolution: "@swc/core-win32-arm64-msvc@npm:1.8.0"
+"@swc/core-win32-arm64-msvc@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@swc/core-win32-arm64-msvc@npm:1.9.2"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@swc/core-win32-ia32-msvc@npm:1.8.0":
-  version: 1.8.0
-  resolution: "@swc/core-win32-ia32-msvc@npm:1.8.0"
+"@swc/core-win32-ia32-msvc@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@swc/core-win32-ia32-msvc@npm:1.9.2"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@swc/core-win32-x64-msvc@npm:1.8.0":
-  version: 1.8.0
-  resolution: "@swc/core-win32-x64-msvc@npm:1.8.0"
+"@swc/core-win32-x64-msvc@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@swc/core-win32-x64-msvc@npm:1.9.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
 "@swc/core@npm:^1.3.100":
-  version: 1.8.0
-  resolution: "@swc/core@npm:1.8.0"
+  version: 1.9.2
+  resolution: "@swc/core@npm:1.9.2"
   dependencies:
-    "@swc/core-darwin-arm64": 1.8.0
-    "@swc/core-darwin-x64": 1.8.0
-    "@swc/core-linux-arm-gnueabihf": 1.8.0
-    "@swc/core-linux-arm64-gnu": 1.8.0
-    "@swc/core-linux-arm64-musl": 1.8.0
-    "@swc/core-linux-x64-gnu": 1.8.0
-    "@swc/core-linux-x64-musl": 1.8.0
-    "@swc/core-win32-arm64-msvc": 1.8.0
-    "@swc/core-win32-ia32-msvc": 1.8.0
-    "@swc/core-win32-x64-msvc": 1.8.0
+    "@swc/core-darwin-arm64": 1.9.2
+    "@swc/core-darwin-x64": 1.9.2
+    "@swc/core-linux-arm-gnueabihf": 1.9.2
+    "@swc/core-linux-arm64-gnu": 1.9.2
+    "@swc/core-linux-arm64-musl": 1.9.2
+    "@swc/core-linux-x64-gnu": 1.9.2
+    "@swc/core-linux-x64-musl": 1.9.2
+    "@swc/core-win32-arm64-msvc": 1.9.2
+    "@swc/core-win32-ia32-msvc": 1.9.2
+    "@swc/core-win32-x64-msvc": 1.9.2
     "@swc/counter": ^0.1.3
-    "@swc/types": ^0.1.14
+    "@swc/types": ^0.1.15
   peerDependencies:
     "@swc/helpers": "*"
   dependenciesMeta:
@@ -2627,7 +2627,7 @@ __metadata:
   peerDependenciesMeta:
     "@swc/helpers":
       optional: true
-  checksum: 8b62e6399943ef930cd32dd4e34de475baa62be7873ee0d4f89a1c4784e441df1373d9df6dda1c00203cda9907af347329e32874059ff00bed004de1cfc373a1
+  checksum: 325afca1473e371804cc420d096553a0c6b19d01296b46b23e3b75a797c8b139c712ad79bc5c876cfc6d7bd6d60014a9f81286a2e888e94f0dec70903893f0b6
   languageName: node
   linkType: hard
 
@@ -2639,11 +2639,11 @@ __metadata:
   linkType: hard
 
 "@swc/helpers@npm:^0.5.1":
-  version: 0.5.13
-  resolution: "@swc/helpers@npm:0.5.13"
+  version: 0.5.15
+  resolution: "@swc/helpers@npm:0.5.15"
   dependencies:
-    tslib: ^2.4.0
-  checksum: d50c2c10da6ef940af423c6b03ad9c3c94cf9de59314b1e921a7d1bcc081a6074481c9d67b655fc8fe66a73288f98b25950743792a63882bfb5793b362494fc0
+    tslib: ^2.8.0
+  checksum: 1a9e0dbb792b2d1e0c914d69c201dbc96af3a0e6e6e8cf5a7f7d6a5d7b0e8b762915cd4447acb6b040e2ecc1ed49822875a7239f99a2d63c96c3c3407fb6fccf
   languageName: node
   linkType: hard
 
@@ -2660,12 +2660,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/types@npm:^0.1.14":
-  version: 0.1.14
-  resolution: "@swc/types@npm:0.1.14"
+"@swc/types@npm:^0.1.15":
+  version: 0.1.15
+  resolution: "@swc/types@npm:0.1.15"
   dependencies:
     "@swc/counter": ^0.1.3
-  checksum: d7f198e1a07f4dbcff62a9823dfa81703e0029a908a02f9e9bfb9f18bc259c05b780f3385d36ec220e86a107dd6908f96bdc50319699bd34bf04b01d9adb5d5b
+  checksum: 19889eed42d28f5dcef7c16f3b0cf4375890984b106aca46d9455d1f5ba364156d206a8e1f73962718ee408ff9e460b84aaa79025bf8dc30e0d6ded471e1e2d2
   languageName: node
   linkType: hard
 
@@ -8890,11 +8890,11 @@ __metadata:
   linkType: hard
 
 "i18next@npm:^23.0.0":
-  version: 23.16.4
-  resolution: "i18next@npm:23.16.4"
+  version: 23.16.5
+  resolution: "i18next@npm:23.16.5"
   dependencies:
     "@babel/runtime": ^7.23.2
-  checksum: a753a23faf87b5028c9b136645b3d6287dd13c6e5ffadcc652edce8c321da2403f57c513aa7168f7ba664e85853aa83acbd291839d622addd701fc85bc991438
+  checksum: c0b483a3e6f9118654d243c7a39e2ccd4a8f5b32b6df90d9626cedb2916703aaaea98b15ad40e78fc399e9d3a818b85e538697250e9b7561fb91843627f5b428
   languageName: node
   linkType: hard
 
@@ -11517,13 +11517,13 @@ __metadata:
   linkType: hard
 
 "nock@npm:^13.3.0":
-  version: 13.5.5
-  resolution: "nock@npm:13.5.5"
+  version: 13.5.6
+  resolution: "nock@npm:13.5.6"
   dependencies:
     debug: ^4.1.0
     json-stringify-safe: ^5.0.1
     propagate: ^2.0.0
-  checksum: 91947b683992096a694140714323f11493b8ad9961c172e3e574c4801131fea259755e95c48e7e01527c14209967c20f151ff03b6bf6700471f0f76fa4071d32
+  checksum: 82d31ef7a428e8a6bc430b2772745ecb1f9c8835170789bbcc29c9036614adf3b7112daeb6d59edd93f4340a9a96acee401021572d469a7a0e09a669679f2794
   languageName: node
   linkType: hard
 
@@ -12694,9 +12694,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:23.7.0":
-  version: 23.7.0
-  resolution: "puppeteer-core@npm:23.7.0"
+"puppeteer-core@npm:23.7.1":
+  version: 23.7.1
+  resolution: "puppeteer-core@npm:23.7.1"
   dependencies:
     "@puppeteer/browsers": 2.4.1
     chromium-bidi: 0.8.0
@@ -12704,7 +12704,7 @@ __metadata:
     devtools-protocol: 0.0.1354347
     typed-query-selector: ^2.12.0
     ws: ^8.18.0
-  checksum: 168219dcf71f39a63c046e8888a82cfe427715335b904ddef147dfbba16fdf3f1be01b2cd4b4728f848cc1fe1eb41192168712462b83bff55ce9d9ce0d19f54d
+  checksum: 2d3fd02a2f43fd6b6ed33947614b9f11375010bb57c2fc22b21ff97b92a606792be062da7fe8f05519927f017834fcaada319f5c0ee221c0557e126f081c562b
   languageName: node
   linkType: hard
 
@@ -12723,18 +12723,18 @@ __metadata:
   linkType: hard
 
 "puppeteer@npm:^23.0.0":
-  version: 23.7.0
-  resolution: "puppeteer@npm:23.7.0"
+  version: 23.7.1
+  resolution: "puppeteer@npm:23.7.1"
   dependencies:
     "@puppeteer/browsers": 2.4.1
     chromium-bidi: 0.8.0
     cosmiconfig: ^9.0.0
     devtools-protocol: 0.0.1354347
-    puppeteer-core: 23.7.0
+    puppeteer-core: 23.7.1
     typed-query-selector: ^2.12.0
   bin:
     puppeteer: lib/cjs/puppeteer/node/cli.js
-  checksum: d669740bc9c66de280881117fc54103057916a5db7c1b5cffb4c084e99841016a38ca46f5375a49b987866a6545b9959fa5719ff49415c17f182600c824aade2
+  checksum: aec11bdec51b326d1443c902ecaa3ac5b172b5082844784aa1957641a7924a5fe5957641aa7418d62b11ed1230e96ab06072a0a711c5c9a54ffa5c8aa8a6e2dd
   languageName: node
   linkType: hard
 
@@ -14767,10 +14767,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.6.2, tslib@npm:^2.7.0":
+"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.6.2, tslib@npm:^2.7.0":
   version: 2.8.0
   resolution: "tslib@npm:2.8.0"
   checksum: de852ecd81adfdb4870927e250763345f07dc13fe7f395ce261424966bb122a0992ad844c3ec875c9e63e72afe2220a150712984e44dfd1a8a7e538a064e3d46
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.8.0":
+  version: 2.8.1
+  resolution: "tslib@npm:2.8.1"
+  checksum: e4aba30e632b8c8902b47587fd13345e2827fa639e7c3121074d5ee0880723282411a8838f830b55100cbe4517672f84a2472667d355b81e8af165a55dc6203a
   languageName: node
   linkType: hard
 
@@ -15191,11 +15198,11 @@ __metadata:
   linkType: hard
 
 "uuid@npm:^11.0.0":
-  version: 11.0.2
-  resolution: "uuid@npm:11.0.2"
+  version: 11.0.3
+  resolution: "uuid@npm:11.0.3"
   bin:
     uuid: dist/esm/bin/uuid
-  checksum: 9b322963db18623d22f46cf98f51b45830f956715577fb24d272ec29324fe919bedbedc6e29627aced490ac3f982ee53c80441651daf4a6ef74f2af58689f2e0
+  checksum: 646181c77e8b8df9bd07254faa703943e1c4d5ccde7d080312edf12f443f6c5750801fd9b27bf2e628594182165e6b1b880c0382538f7eca00b26622203741dc
   languageName: node
   linkType: hard
 
@@ -15335,8 +15342,8 @@ __metadata:
   linkType: hard
 
 "webdriverio@npm:^9.0.0":
-  version: 9.2.8
-  resolution: "webdriverio@npm:9.2.8"
+  version: 9.2.12
+  resolution: "webdriverio@npm:9.2.12"
   dependencies:
     "@types/node": ^20.11.30
     "@types/sinonjs__fake-timers": ^8.1.5
@@ -15370,7 +15377,7 @@ __metadata:
   peerDependenciesMeta:
     puppeteer-core:
       optional: true
-  checksum: f84503d054d28b114761017f0478aa297593b6e63fc367c5e4e165cf9d5fd8cc5e03d2499a001709fe5e3009c2802eb35eb9210aa80d08db89eeafb7ae607453
+  checksum: de7e06be5a1a8c5e9a62cba2ff15f2346fece04ae4721d6f1c7fd9ce8149031d98d762ccfdb911a7a7a4f9d5d5cdd6ed436d146363237cde40bebe994cd5992d
   languageName: node
   linkType: hard
 

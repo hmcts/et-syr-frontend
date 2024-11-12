@@ -2,12 +2,15 @@ import { ErrorPages, PageUrls, languages } from '../../../main/definitions/const
 import { FormFields } from '../../../main/definitions/form';
 import {
   conditionalRedirect,
+  getCancelLink,
   getLanguageParam,
+  isClearSelection,
   returnNextPage,
   returnValidUrl,
 } from '../../../main/helpers/RouterHelpers';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+import mockUserCase from '../mocks/mockUserCase';
 
 describe('RouterHelper', () => {
   describe('getLanguageParam', () => {
@@ -106,6 +109,53 @@ describe('RouterHelper', () => {
     it('should return NOT_FOUND if the redirectUrl is not valid', () => {
       const result = returnValidUrl('/invalid-page', validUrls);
       expect(result).toBe(ErrorPages.NOT_FOUND);
+    });
+  });
+
+  describe('isClearSelection', () => {
+    const request = mockRequest({
+      session: { userCase: mockUserCase },
+    });
+
+    it('should return true', () => {
+      request.query = {
+        redirect: 'clearSelection',
+      };
+      const result = isClearSelection(request);
+      expect(result).toBe(true);
+    });
+
+    it('should return false when query undefined', () => {
+      request.query = undefined;
+      const result = isClearSelection(request);
+      expect(result).toBe(false);
+    });
+
+    it('should return false when redirect undefined', () => {
+      request.query = {
+        redirect: undefined,
+      };
+      const result = isClearSelection(request);
+      expect(result).toBe(false);
+    });
+
+    it('should return false when userCase undefined', () => {
+      request.session.userCase = undefined;
+      request.query = {
+        redirect: 'clearSelection',
+      };
+      const result = isClearSelection(request);
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('getCancelLink', () => {
+    it('should return cancel URL', () => {
+      const request = mockRequest({
+        session: { userCase: mockUserCase },
+      });
+      const result = getCancelLink(request);
+      expect(result).toBe('/case-details/1?lng=en');
     });
   });
 });
