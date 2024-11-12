@@ -86,6 +86,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponsePayBeforeTax?: string;
   et3ResponsePayTakehome?: string;
   et3Form?: UploadedDocumentType;
+  et3FormWelsh?: UploadedDocumentType;
   respondentEmail?: string;
   responseStruckOut?: YesOrNo;
   respondentContactPreference?: string;
@@ -174,6 +175,11 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3FormUrl?: string;
   et3FormCategoryId?: string;
   et3FormUploadTimestamp?: string;
+  et3FormWelshBinaryUrl?: string;
+  et3FormWelshFileName?: string;
+  et3FormWelshUrl?: string;
+  et3FormWelshCategoryId?: string;
+  et3FormWelshUploadTimestamp?: string;
   contactDetailsSection?: string;
   employerDetailsSection?: string;
   conciliationAndEmployeeDetailsSection?: string;

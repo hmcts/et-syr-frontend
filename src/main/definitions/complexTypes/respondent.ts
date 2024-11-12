@@ -109,6 +109,7 @@ export interface RespondentType {
   et3ResponseRespondentSupportDetails?: string;
   et3ResponseRespondentSupportDocument?: UploadedDocumentType;
   et3Form?: UploadedDocumentType;
+  et3FormWelsh?: UploadedDocumentType;
   contactDetailsSection?: string;
   employerDetailsSection?: string;
   conciliationAndEmployeeDetailsSection?: string;

@@ -7,6 +7,12 @@
   {{ super() }}
 {% endblock %}
 
+{% if et3FormId !== '' %}
+  {% set et3FormLink = "<a href=getCaseDocument/" + et3FormId + " target=\"_blank\">" + et3FormName + "</a>" %}
+{% else %}
+  {% set et3FormLink = et3FormNotFound %}
+{% endif %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -45,7 +51,7 @@
             text: downloadResponse
           },
             value: {
-            text: '[' + downloadResponse + ']'
+            html: et3FormLink
           }
           },
           {

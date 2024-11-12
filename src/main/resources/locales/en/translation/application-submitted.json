@@ -13,5 +13,6 @@
   "linkText": "Contact the tribunal about the case (opens in new tab)",
   "heading4": "For questions about the employment tribunal process",
   "p3": "Call one of our Employment Tribunal customer contact centres. They cannot give you legal advice.",
-  "button": "Close and return to case overview"
+  "button": "Close and return to case overview",
+  "et3FormNotFound": "ET3 form not found"
 }

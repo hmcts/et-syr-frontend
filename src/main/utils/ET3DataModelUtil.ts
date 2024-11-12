@@ -245,6 +245,8 @@ export default class ET3DataModelUtil {
       et3IsRespondentAddressCorrect: caseWithId.et3IsRespondentAddressCorrect,
       et3Status: caseWithId.et3Status ?? 'inProgress',
       et3HubLinksStatuses: caseWithId.et3HubLinksStatuses,
+      et3FormWelsh: caseWithId.et3FormWelsh,
+      et3Form: caseWithId.et3Form,
       claimant_work_address: {
         AddressLine1: caseWithId.claimantWorkAddressLine1,
         AddressLine2: caseWithId.claimantWorkAddressLine2,
@@ -327,6 +329,18 @@ export default class ET3DataModelUtil {
         document_url: caseWithId.et3FormUrl,
         category_id: caseWithId.et3FormCategoryId,
         upload_timestamp: caseWithId.et3FormUploadTimestamp,
+      };
+    }
+    if (
+      StringUtils.isNotBlank(caseWithId.et3FormWelshBinaryUrl) &&
+      StringUtils.isNotBlank(caseWithId.et3FormWelshUrl)
+    ) {
+      respondentType.et3FormWelsh = {
+        document_binary_url: caseWithId.et3FormWelshBinaryUrl,
+        document_filename: caseWithId.et3FormWelshFileName,
+        document_url: caseWithId.et3FormWelshUrl,
+        category_id: caseWithId.et3FormWelshCategoryId,
+        upload_timestamp: caseWithId.et3FormWelshUploadTimestamp,
       };
     }
     respondentType.idamId = selectedRespondent.idamId;
