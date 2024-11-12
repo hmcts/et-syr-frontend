@@ -1,6 +1,6 @@
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, RespondentET3Model } from '../definitions/case';
-import { DefaultValues } from '../definitions/constants';
+import { PageUrls } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 
 import CollectionUtils from './CollectionUtils';
@@ -19,11 +19,11 @@ export default class UrlUtils {
       StringUtils.isBlank(languageParam) ||
       NumberUtils.isEmpty(selectedRespondentIndex)
     ) {
-      return DefaultValues.STRING_EMPTY;
+      return PageUrls.NOT_IMPLEMENTED;
     }
     const selectedRespondent: RespondentET3Model = userCase.respondents[selectedRespondentIndex];
     if (ObjectUtils.isEmpty(selectedRespondent)) {
-      return DefaultValues.STRING_EMPTY;
+      return PageUrls.NOT_IMPLEMENTED;
     }
     return `/case-details/${request.session.userCase?.id}/${selectedRespondent.ccdId}${languageParam}`;
   }
