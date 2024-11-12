@@ -1,5 +1,9 @@
 import { PageUrls } from '../../definitions/constants';
-import { application } from '../../definitions/contact-tribunal-applications';
+import {
+  application,
+  getApplicationKeyByCode,
+  getApplicationKeyByUrl,
+} from '../../definitions/contact-tribunal-applications';
 import { AccordionItem, addAccordionRow } from '../../definitions/govuk/govukAccordion';
 import { AnyRecord } from '../../definitions/util-types';
 import { getLanguageParam } from '../RouterHelpers';
@@ -24,4 +28,20 @@ export const getApplicationsAccordionItems = (url: string, translations: AnyReco
     const applicationContent = getContentHtml(key, translations, getLanguageParam(url));
     return addAccordionRow(applicationHeading, applicationContent);
   });
+};
+
+export const getApplicationTypeByUrl = (url: string, translations: AnyRecord): string => {
+  if (!url) {
+    return '';
+  }
+  const key = getApplicationKeyByUrl(url);
+  return key ? translations[key] : '';
+};
+
+export const getApplicationTypeByCode = (appCode: string, translations: AnyRecord): string => {
+  if (!appCode) {
+    return '';
+  }
+  const key = getApplicationKeyByCode(appCode);
+  return key ? translations[key] : '';
 };

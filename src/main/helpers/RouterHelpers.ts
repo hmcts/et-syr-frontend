@@ -60,9 +60,3 @@ export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): strin
 export const isClearSelection = (req: AppRequest): boolean => {
   return req.query !== undefined && req.query.redirect === 'clearSelection' && req.session.userCase !== undefined;
 };
-
-export const getCancelLink = (req: AppRequest): string => {
-  const userCase = req.session?.userCase;
-  const languageParam = getLanguageParam(req.url);
-  return PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER + '/' + userCase?.id + languageParam;
-};

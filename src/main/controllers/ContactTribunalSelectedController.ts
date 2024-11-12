@@ -8,8 +8,10 @@ import { getApplicationByUrl } from '../definitions/contact-tribunal-application
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
-import { getCancelLink, getLanguageParam } from '../helpers/RouterHelpers';
+import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getApplicationTypeByUrl } from '../helpers/controller/ContactTribunalHelper';
 import { getFormDataError, getNextPage } from '../helpers/controller/ContactTribunalSelectedHelper';
+import UrlUtils from '../utils/UrlUtils';
 
 export default class ContactTribunalSelectedController {
   private readonly form: Form;
@@ -62,7 +64,7 @@ export default class ContactTribunalSelectedController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const selectedApplication = getApplicationByUrl(req.params.selectedOption);
+    const selectedApplication = getApplicationByUrl(req.params?.selectedOption);
     if (!selectedApplication) {
       return res.redirect(PageUrls.CONTACT_TRIBUNAL);
     }
@@ -76,7 +78,10 @@ export default class ContactTribunalSelectedController {
     res.render(TranslationKeys.CONTACT_TRIBUNAL_SELECTED, {
       ...content,
       hideContactUs: true,
-      cancelLink: getCancelLink(req),
+      cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
+      applicationType: getApplicationTypeByUrl(req.params?.selectedOption, {
+        ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
+      }),
     });
   };
 }

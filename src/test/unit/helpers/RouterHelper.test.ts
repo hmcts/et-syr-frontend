@@ -2,7 +2,6 @@ import { ErrorPages, PageUrls, languages } from '../../../main/definitions/const
 import { FormFields } from '../../../main/definitions/form';
 import {
   conditionalRedirect,
-  getCancelLink,
   getLanguageParam,
   isClearSelection,
   returnNextPage,
@@ -146,16 +145,6 @@ describe('RouterHelper', () => {
       };
       const result = isClearSelection(request);
       expect(result).toBe(false);
-    });
-  });
-
-  describe('getCancelLink', () => {
-    it('should return cancel URL', () => {
-      const request = mockRequest({
-        session: { userCase: mockUserCase },
-      });
-      const result = getCancelLink(request);
-      expect(result).toBe('/case-details/1?lng=en');
     });
   });
 });

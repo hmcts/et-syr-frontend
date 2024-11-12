@@ -80,3 +80,11 @@ export const isTypeAOrB = (app: Application): boolean => {
 export const getApplicationByUrl = (url: string): Application | undefined => {
   return Object.values(application).find(app => app.url === url);
 };
+
+export const getApplicationKeyByCode = (code: string): string | undefined => {
+  return Object.keys(application).find(key => application[key].code === code);
+};
+
+export const getApplicationKeyByUrl = (url: string): string | undefined => {
+  return Object.keys(application).find(key => application[key].url === url);
+};
