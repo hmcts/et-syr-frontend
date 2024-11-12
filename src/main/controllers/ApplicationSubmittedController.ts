@@ -35,8 +35,7 @@ export default class ApplicationSubmittedController {
     ) {
       et3FormId = DocumentUtils.findDocumentIdByURL(selectedRespondent.et3FormWelsh.document_url);
       et3FormName = selectedRespondent.et3FormWelsh.document_filename;
-    }
-    if (
+    } else if (
       ObjectUtils.isNotEmpty(selectedRespondent) &&
       languages.ENGLISH_URL_PARAMETER === languageParam &&
       ObjectUtils.isNotEmpty(selectedRespondent.et3Form) &&
