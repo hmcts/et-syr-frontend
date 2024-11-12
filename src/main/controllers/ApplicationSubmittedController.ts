@@ -9,13 +9,15 @@ import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import DocumentUtils from '../utils/DocumentUtils';
 import ObjectUtils from '../utils/ObjectUtils';
 import StringUtils from '../utils/StringUtils';
+import UrlUtils from '../utils/UrlUtils';
 
 export default class ApplicationSubmittedController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
+    const redirectUrl = UrlUtils.getCaseDetailsUrlByRequest(req);
     const welshEnabled = await getFlagValue('welsh-language', null);
     const userCase = req.session?.userCase;
     const languageParam = getLanguageParam(req.url);
-
+    const selectedRespondent: RespondentET3Model = userCase.respondents[req.session.selectedRespondentIndex];
     const applicationDate = new Date();
     applicationDate.setDate(applicationDate.getDate() + 7);
     const dateString = applicationDate.toLocaleDateString(retrieveCurrentLocale(req?.url), {
@@ -23,8 +25,6 @@ export default class ApplicationSubmittedController {
       month: 'long',
       day: 'numeric',
     });
-    const selectedRespondent: RespondentET3Model = userCase.respondents[req.session.selectedRespondentIndex];
-    const redirectUrl = `/case-details/${userCase?.id}/${selectedRespondent.ccdId}${languageParam}`;
     let et3FormId = '';
     let et3FormName = '';
     if (
