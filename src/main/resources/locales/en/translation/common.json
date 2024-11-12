@@ -51,6 +51,10 @@
   "monthly": "Monthly",
   "annual": "Annual",
   "annually": "Annually",
+  "Weekly": "Weekly",
+  "Monthly": "Monthly",
+  "Annual": "Annual",
+  "Annually": "Annually",
   "saveAndContinue": "Save and continue",
   "selectAllHint": "Select all that apply.",
   "claimTypes": {
