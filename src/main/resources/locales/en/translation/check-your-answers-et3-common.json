@@ -40,7 +40,7 @@
   "section4": {
     "header": "Pay, pension and benefits details",
     "payDetailsCorrect": "Are the pay details given by the claimant correct?",
-    "paymentFrequency": "How often was the claimant paid?",
+    "paymentFrequency": "How often was the claimant paid? (optional)",
     "claimantsPayBeforeTax": "Claimant’s pay BEFORE tax (optional)",
     "claimantsPayAfterTax": "Claimant’s pay AFTER tax (optional)",
     "noticePeriodDetailsCorrect": "Are the claimant’s notice period details correct?",

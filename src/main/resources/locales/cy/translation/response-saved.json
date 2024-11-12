@@ -7,6 +7,6 @@
     "p1": "[W]You have until ",
     "p2": "[W]to submit your response."
   },
-  "returnToOverview": "[W]Return to case overview",
-  "returnToResponse": "[W]Return to response"
+  "returnToResponse": "[W]Return to response",
+  "returnToCaseList": "[W]Return to case list"
 }

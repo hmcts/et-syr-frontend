@@ -18,17 +18,17 @@
     <h2 class="govuk-heading-m">{{ heading1 }}</h2>
     <div class="govuk-body">
       <p>{{ p1 }}</p>
-      <p>{{ deadline.p1 }} <b>[deadline date]</b> {{ deadline.p2 }}</p>    </div>
+      <p>{{ deadline.p1 }} <b>{{ respondentResponseDeadline }}</b> {{ deadline.p2 }}</p>    </div>
 
     <div class="govuk-button-group">
       {{ govukButton({
-        text: returnToOverview,
-        href: redirectUrl
+        text: returnToResponse,
+        href: redirectToResponse
       }) }}
       {{ govukButton({
-        classes: 'response-saved-button govuk-button--secondary',
-        text: returnToResponse,
-        href: '#'
+        classes: 'govuk-button--secondary',
+        text: returnToCaseList,
+        href: redirectToCaseList
       }) }}
     </div>
   </div>

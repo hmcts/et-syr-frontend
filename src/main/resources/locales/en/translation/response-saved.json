@@ -7,6 +7,6 @@
     "p1": "You have until ",
     "p2": "to submit your response."
   },
-  "returnToOverview": "Return to case overview",
-  "returnToResponse": "Return to response"
+  "returnToResponse": "Return to response",
+  "returnToCaseList": "Return to case list"
 }
