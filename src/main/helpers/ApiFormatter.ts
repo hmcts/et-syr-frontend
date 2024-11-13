@@ -448,6 +448,11 @@ function mapResponseApiDataToCaseWithId(
   caseWithId.et3FormUrl = selectedRespondent.value?.et3Form?.document_url;
   caseWithId.et3FormCategoryId = selectedRespondent.value?.et3Form?.category_id;
   caseWithId.et3FormUploadTimestamp = selectedRespondent.value?.et3Form?.upload_timestamp;
+  caseWithId.et3FormWelshBinaryUrl = selectedRespondent.value?.et3FormWelsh?.document_binary_url;
+  caseWithId.et3FormWelshFileName = selectedRespondent.value?.et3FormWelsh?.document_filename;
+  caseWithId.et3FormWelshUrl = selectedRespondent.value?.et3FormWelsh?.document_url;
+  caseWithId.et3FormWelshCategoryId = selectedRespondent.value?.et3FormWelsh?.category_id;
+  caseWithId.et3FormWelshUploadTimestamp = selectedRespondent.value?.et3FormWelsh?.upload_timestamp;
   caseWithId.contactDetailsSection = selectedRespondent.value?.contactDetailsSection;
   caseWithId.employerDetailsSection = selectedRespondent.value?.employerDetailsSection;
   caseWithId.conciliationAndEmployeeDetailsSection = selectedRespondent.value?.conciliationAndEmployeeDetailsSection;
@@ -473,6 +478,8 @@ function mapResponseApiDataToCaseWithId(
   caseWithId.et3HubLinksStatuses = selectedRespondent.value?.et3HubLinksStatuses;
   caseWithId.et3Status = selectedRespondent.value?.et3Status;
   caseWithId.et3IsRespondentAddressCorrect = selectedRespondent.value?.et3IsRespondentAddressCorrect;
+  caseWithId.et3Form = selectedRespondent.value?.et3Form;
+  caseWithId.et3FormWelsh = selectedRespondent.value?.et3FormWelsh;
 }
 
 export function toApiFormat(caseItem: CaseWithId): UpdateCaseBody {

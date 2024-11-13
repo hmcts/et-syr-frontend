@@ -56,6 +56,10 @@ export const getET3CaseDetailsLinksUrlMap = (languageParam: string, userCase?: C
     PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]
   );
   caseDetailsLinksMap.set(
+    ET3CaseDetailsLinkNames.RespondentRequestsAndApplications,
+    PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]
+  );
+  caseDetailsLinksMap.set(
     ET3CaseDetailsLinkNames.ClaimantApplications,
     PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]
   );

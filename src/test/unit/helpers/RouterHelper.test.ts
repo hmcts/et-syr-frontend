@@ -3,6 +3,7 @@ import { FormFields } from '../../../main/definitions/form';
 import {
   conditionalRedirect,
   endSubSection,
+  getCancelLink,
   getLanguageParam,
   isClearSelection,
   returnNextPage,
@@ -11,6 +12,7 @@ import {
 } from '../../../main/helpers/RouterHelpers';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+import mockUserCase from '../mocks/mockUserCase';
 
 describe('RouterHelper', () => {
   describe('getLanguageParam', () => {
@@ -211,6 +213,16 @@ describe('RouterHelper', () => {
       endSubSection(req);
 
       expect(req.session).toEqual(initialSession);
+    });
+  });
+
+  describe('getCancelLink', () => {
+    it('should return cancel URL', () => {
+      const request = mockRequest({
+        session: { userCase: mockUserCase },
+      });
+      const result = getCancelLink(request);
+      expect(result).toBe('/case-details/1?lng=en');
     });
   });
 });
