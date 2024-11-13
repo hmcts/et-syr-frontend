@@ -11,7 +11,7 @@ import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
-import { isFieldFilledIn } from '../validators/validator';
+import { isContentCharsOrLessAndNotEmpty, isFieldFilledIn } from '../validators/validator';
 
 const logger = getLogger('RespondentEnterAddressController');
 
@@ -24,7 +24,8 @@ export default class RespondentEnterAddressController {
         type: 'text',
         label: (l: AnyRecord): string => l.addressLine1,
         classes: 'govuk-label govuk-!-width-one-half',
-        validator: isFieldFilledIn,
+        attributes: { maxLength: 100 },
+        validator: isContentCharsOrLessAndNotEmpty(100),
       },
       responseRespondentAddressLine2: {
         id: 'responseRespondentAddressLine2',
