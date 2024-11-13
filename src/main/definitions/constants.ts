@@ -88,7 +88,7 @@ export const PageUrls = {
   NOT_FOUND: '/not-found',
   CHECKLIST: '/checklist',
   CASE_NUMBER_CHECK: '/case-number-check',
-  REMOVE_FILE: '/remove-file',
+  REMOVE_FILE: '/remove-file/:fileId/:contestClaimDetails',
   SELF_ASSIGNMENT_FORM: '/self-assignment-form',
   CASE_LIST_CHECK: '/case-list-check',
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',

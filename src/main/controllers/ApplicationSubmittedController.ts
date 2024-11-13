@@ -2,10 +2,11 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { RespondentET3Model } from '../definitions/case';
-import { TranslationKeys, languages } from '../definitions/constants';
+import { TranslationKeys, et3AttachmentDocTypes, languages } from '../definitions/constants';
 import { retrieveCurrentLocale } from '../helpers/ApplicationTableRecordTranslationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
+import DateUtils from '../utils/DateUtils';
 import DocumentUtils from '../utils/DocumentUtils';
 import ObjectUtils from '../utils/ObjectUtils';
 import StringUtils from '../utils/StringUtils';
@@ -25,6 +26,11 @@ export default class ApplicationSubmittedController {
       month: 'long',
       day: 'numeric',
     });
+    const responseSubmittedDate = DateUtils.formatDateStringToDDMonthYYYY(selectedRespondent.responseReceivedDate);
+    const attachmentsIncluded = DocumentUtils.getDocumentsWithTheirLinksByDocumentTypes(
+      req.session?.userCase.documentCollection,
+      et3AttachmentDocTypes
+    );
     let et3FormId = '';
     let et3FormName = '';
     if (
@@ -55,6 +61,8 @@ export default class ApplicationSubmittedController {
       selectedRespondent,
       et3FormId,
       et3FormName,
+      responseSubmittedDate,
+      attachmentsIncluded,
     });
   };
 }
