@@ -27,26 +27,20 @@ describe('RespondentContestClaimReasonControllerHelper', () => {
         },
       ]);
     });
-    it('sets text and file error to session for for hidden field when there both file and detail entered', () => {
+    it('user can upload and set a reason for contest claim', () => {
       request.session.userCase = mockCaseWithIdWithRespondents;
       request.session.userCase.respondents[1] = mockRespondentET3Model;
       request.session.userCase.et3ResponseContestClaimDocument = [mockDocumentTypeItemFromMockDocumentUploadResponse];
       request.session.selectedRespondentIndex = 1;
       const formData = mockCaseWithIdWithRespondents;
       formData.et3ResponseContestClaimDetails = 'a'.repeat(100);
-      expect(RespondentContestClaimReasonControllerHelper.areInputValuesValid(request, formData)).toEqual(false);
-      expect(request.session.errors).toEqual([
-        {
-          errorType: ValidationErrors.TEXT_AND_FILE,
-          propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
-        },
-      ]);
+      expect(RespondentContestClaimReasonControllerHelper.areInputValuesValid(request, formData)).toEqual(true);
     });
     it('sets too long error to session for et3ResponseContestClaimDetails field when detail entered is more than 3000 characters', () => {
       request.session.userCase = mockCaseWithIdWithRespondents;
       request.session.userCase.et3ResponseContestClaimDocument = [];
       const formData = mockCaseWithIdWithRespondents;
-      formData.et3ResponseContestClaimDetails = '0'.repeat(3001);
+      formData.et3ResponseContestClaimDetails = '0'.repeat(2501);
       expect(RespondentContestClaimReasonControllerHelper.areInputValuesValid(request, formData)).toEqual(false);
       expect(request.session.errors).toEqual([
         {

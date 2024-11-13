@@ -2,11 +2,13 @@ import { ErrorPages, PageUrls, languages } from '../../../main/definitions/const
 import { FormFields } from '../../../main/definitions/form';
 import {
   conditionalRedirect,
+  endSubSection,
   getCancelLink,
   getLanguageParam,
   isClearSelection,
   returnNextPage,
   returnValidUrl,
+  startSubSection,
 } from '../../../main/helpers/RouterHelpers';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -113,39 +115,104 @@ describe('RouterHelper', () => {
   });
 
   describe('isClearSelection', () => {
-    const request = mockRequest({
-      session: { userCase: mockUserCase },
+    let req: ReturnType<typeof mockRequest>;
+
+    beforeEach(() => {
+      req = mockRequest({});
     });
 
-    it('should return true', () => {
-      request.query = {
-        redirect: 'clearSelection',
-      };
-      const result = isClearSelection(request);
+    it('should return true if req.query.redirect is "clearSelection" and userCase is defined in session', () => {
+      req.query = { redirect: 'clearSelection' };
+
+      const result = isClearSelection(req);
+
       expect(result).toBe(true);
     });
 
-    it('should return false when query undefined', () => {
-      request.query = undefined;
-      const result = isClearSelection(request);
+    it('should return false if req.query.redirect is not "clearSelection"', () => {
+      req.query = { redirect: 'anotherRedirect' };
+
+      const result = isClearSelection(req);
+
       expect(result).toBe(false);
     });
 
-    it('should return false when redirect undefined', () => {
-      request.query = {
-        redirect: undefined,
-      };
-      const result = isClearSelection(request);
+    it('should return false if userCase is not defined in session', () => {
+      req.query = { redirect: 'clearSelection' };
+      req.session.userCase = undefined;
+
+      const result = isClearSelection(req);
+
       expect(result).toBe(false);
     });
 
-    it('should return false when userCase undefined', () => {
-      request.session.userCase = undefined;
-      request.query = {
-        redirect: 'clearSelection',
-      };
-      const result = isClearSelection(request);
+    it('should return false if req.query is undefined', () => {
+      req.query = undefined;
+
+      const result = isClearSelection(req);
+
       expect(result).toBe(false);
+    });
+  });
+
+  describe('startSubSection', () => {
+    let req: ReturnType<typeof mockRequest>;
+
+    beforeEach(() => {
+      req = mockRequest({});
+    });
+
+    it('should set subSectionUrl to returnUrl and update returnUrl to forceRedirectUrl when returnUrl is defined', () => {
+      req.session.returnUrl = PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS;
+      const forceRedirectUrl = PageUrls.HOME;
+
+      startSubSection(req, forceRedirectUrl);
+
+      expect(req.session.subSectionUrl).toBe(PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS);
+      expect(req.session.returnUrl).toBe(forceRedirectUrl);
+    });
+
+    it('should not modify session if returnUrl is not set', () => {
+      const initialSession = { ...req.session };
+      const forceRedirectUrl = PageUrls.HOME;
+
+      startSubSection(req, forceRedirectUrl);
+
+      expect(req.session).toEqual(initialSession);
+    });
+  });
+
+  describe('endSubSection', () => {
+    let req: ReturnType<typeof mockRequest>;
+
+    beforeEach(() => {
+      req = mockRequest({});
+    });
+
+    it('should set returnUrl to subSectionUrl and clear subSectionUrl if subSectionUrl matches a CYA page', () => {
+      req.session.subSectionUrl = PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS;
+
+      endSubSection(req);
+
+      expect(req.session.returnUrl).toBe(PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS);
+      expect(req.session.subSectionUrl).toBeUndefined();
+    });
+
+    it('should not modify session if subSectionUrl does not match a CYA page', () => {
+      req.session.subSectionUrl = '/some-other-page';
+
+      endSubSection(req);
+
+      expect(req.session.returnUrl).toBeUndefined();
+      expect(req.session.subSectionUrl).toBe('/some-other-page');
+    });
+
+    it('should do nothing if subSectionUrl is not set', () => {
+      const initialSession = { ...req.session };
+
+      endSubSection(req);
+
+      expect(req.session).toEqual(initialSession);
     });
   });
 

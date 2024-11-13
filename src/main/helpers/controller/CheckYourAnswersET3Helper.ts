@@ -436,6 +436,13 @@ export const getEt3Section5 = (
   );
 
   if (YesOrNo.YES === userCase.et3ResponseRespondentContestClaim) {
+    const documents = userCase.et3ResponseContestClaimDocument;
+    // Join the shortDescriptions with a comma
+    const contestClaimDocumentNames =
+      userCase.et3ResponseContestClaimDocument !== undefined
+        ? documents.map(document => document.value.shortDescription).join(', ')
+        : '-';
+
     et3ResponseSection5.push(
       addSummaryRowWithAction(
         translations.section5.contestExplanation1 + userCase.respondentName + translations.section5.contestExplanation2,
@@ -446,7 +453,7 @@ export const getEt3Section5 = (
       ),
       addSummaryRowWithAction(
         translations.section5.supportingMaterials,
-        translations.section5.exampleData, // todo: populate with the correct field from userCase
+        contestClaimDocumentNames,
         PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
         translations.change,
         sectionCya

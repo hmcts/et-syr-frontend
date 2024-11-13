@@ -58,6 +58,7 @@ export interface AppSession extends Session {
   respondentNameFromForm?: string;
   respondentRedirectCheckAnswer?: boolean;
   returnUrl: string;
+  subSectionUrl: string;
   selectedAcasCertificate?: ApiDocumentTypeItem;
   selectedRespondentIndex?: number;
   submittedCase?: CaseWithId;

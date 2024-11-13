@@ -59,6 +59,7 @@ export function mockSession(
       familyName: 'user',
     },
     returnUrl: undefined,
+    subSectionUrl: undefined,
     contactType: 'Respond',
   };
 }
