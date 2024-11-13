@@ -11,7 +11,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { answersAddressFormatter } from '../helpers/AddressHelper';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { conditionalRedirect } from '../helpers/RouterHelpers';
+import { conditionalRedirect, startSubSection } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
 import ErrorUtils from '../utils/ErrorUtils';
@@ -64,6 +64,8 @@ export default class RespondentAddressController {
     let redirectUrl: string = setUrlLanguage(req, PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME);
     if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.NO)) {
       redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ENTER_POST_CODE);
+      startSubSection(req, redirectUrl);
+
       await ET3Util.updateET3ResponseWithET3Form(
         req,
         res,

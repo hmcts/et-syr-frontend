@@ -24,14 +24,14 @@ export const getContactPreferencesDetails = (
         userCase.responseRespondentAddressPostCode
       ),
       createChangeAction(
-        PageUrls.RESPONDENT_SELECT_POST_CODE + InterceptPaths.RESPONDENT_CONTACT_PREFERENCES,
+        PageUrls.RESPONDENT_ADDRESS + InterceptPaths.RESPONDENT_CONTACT_PREFERENCES,
         translations.change,
         translations.postalAddress
       )
     ),
     addSummaryRow(
       translations.dxAddress,
-      userCase.et3ResponseDXAddress !== undefined ? userCase.et3ResponseDXAddress : translations.notProvided,
+      userCase.et3ResponseDXAddress ?? '-',
       createChangeAction(
         PageUrls.RESPONDENT_DX_ADDRESS + InterceptPaths.RESPONDENT_CONTACT_PREFERENCES,
         translations.change,
@@ -40,7 +40,7 @@ export const getContactPreferencesDetails = (
     ),
     addSummaryRow(
       translations.contactPhoneNumber,
-      userCase.responseRespondentPhone1 !== undefined ? userCase.responseRespondentPhone1 : translations.notProvided,
+      userCase.responseRespondentPhone1 ?? '-',
       createChangeAction(
         PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER + InterceptPaths.RESPONDENT_CONTACT_PREFERENCES,
         translations.change,
