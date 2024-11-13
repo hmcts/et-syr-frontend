@@ -10,7 +10,7 @@ export default class RespondentContestClaimReasonControllerHelper {
     req.session.errors = [];
     const et3ResponseContestClaimDetailsText = formData.et3ResponseContestClaimDetails;
     const respondentContestClaimReasonProvided = StringUtils.isNotBlank(et3ResponseContestClaimDetailsText);
-    const respondentContestClaimReasonMoreThan3000Chars = StringUtils.isLengthMoreThan(
+    const respondentContestClaimReasonMoreThan2500Chars = StringUtils.isLengthMoreThan(
       et3ResponseContestClaimDetailsText,
       DefaultValues.CONTEST_CLAIM_REASON_MAX_LENGTH
     );
@@ -23,15 +23,7 @@ export default class RespondentContestClaimReasonControllerHelper {
       );
       return false;
     }
-    if (respondentContestClaimReasonProvided && contestClaimDocumentsExist) {
-      ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
-        req,
-        ValidationErrors.TEXT_AND_FILE,
-        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-      );
-      return false;
-    }
-    if (respondentContestClaimReasonMoreThan3000Chars) {
+    if (respondentContestClaimReasonMoreThan2500Chars) {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.TOO_LONG,

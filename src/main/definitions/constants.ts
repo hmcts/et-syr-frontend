@@ -169,6 +169,17 @@ export const InterceptPaths = {
   SUBMIT_BUNDLES_HEARING_DOCS_CYA: '/submitBundlesHearingDocsCya',
 } as const;
 
+export const RedirectKeys = {
+  RESPONDENT_CONTACT_PREFERENCES: 'respondent-contact-preferences',
+  CONTACT_DETAILS: 'contact-details',
+  EMPLOYER_DETAILS: 'employer-details',
+  CONCILIATION_AND_EMPLOYEE_DETAILS: 'conciliation-and-employee-details',
+  PAY_PENSION_BENEFIT_DETAILS: 'pay-pension-benefit-details',
+  CONTEST_CLAIM: 'contest-claim',
+  EMPLOYERS_CONTRACT_CLAIM: 'employers-contract-claim',
+  ANSWERS: 'answers',
+};
+
 export const ErrorPages = {
   NOT_FOUND: '/not-found/:errId',
 };
@@ -494,7 +505,7 @@ export const DefaultValues = {
   STRING_SLASH_REGEX: /\//gi,
   STRING_UNDERSCORE: '_',
   NUMBER_ZERO: 0,
-  CONTEST_CLAIM_REASON_MAX_LENGTH: 3000,
+  CONTEST_CLAIM_REASON_MAX_LENGTH: 2500,
   FILE_ID_PARAMETER: 'fileId=',
 } as const;
 

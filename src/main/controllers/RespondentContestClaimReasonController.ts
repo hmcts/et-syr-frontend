@@ -10,14 +10,14 @@ import { FormContent, FormFields, FormInput } from '../definitions/form';
 import { GovukTableRow } from '../definitions/govuk/govukTable';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
-import { assignFormData, getPageContent } from '../helpers/FormHelper';
+import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import RespondentContestClaimReasonControllerHelper from '../helpers/controller/RespondentContestClaimReasonControllerHelper';
 import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
 import ErrorUtils from '../utils/ErrorUtils';
 import FileUtils from '../utils/FileUtils';
-import { isContentCharsOrLessAndNotEmpty } from '../validators/validator';
+import { isContentCharsOrLess } from '../validators/validator';
 
 const logger = getLogger('RespondentContestClaimReasonController');
 
@@ -32,7 +32,7 @@ export default class RespondentContestClaimReasonController {
         label: (l: AnyRecord): string => l.textAreaLabel,
         labelHidden: false,
         maxlength: 2500,
-        validator: isContentCharsOrLessAndNotEmpty(2500),
+        validator: isContentCharsOrLess(2500),
       },
       uploadDocumentTable: {
         id: 'uploadDocumentTable',
@@ -143,6 +143,7 @@ export default class RespondentContestClaimReasonController {
     RespondentContestClaimReasonControllerHelper.areInputValuesValid(req, formData);
 
     if (req.session.errors && req.session.errors.length === 0 && (req.body?.submit || req.body?.saveAsDraft)) {
+      req.session.userCase.et3ResponseContestClaimDetails = formData.et3ResponseContestClaimDetails;
       const userCase = await ET3Util.updateET3Data(req, ET3HubLinkNames.ContestClaim, LinkStatus.IN_PROGRESS);
       if (!userCase) {
         ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
@@ -180,7 +181,6 @@ export default class RespondentContestClaimReasonController {
       TranslationKeys.RESPONDENT_CONTEST_CLAIM_REASON,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.RESPONDENT_CONTEST_CLAIM_REASON, {
       ...content,
       redirectUrl,

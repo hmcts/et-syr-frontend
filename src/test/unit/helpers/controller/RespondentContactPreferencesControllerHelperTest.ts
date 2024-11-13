@@ -32,7 +32,7 @@ describe('getContactPreferencesDetails', () => {
         translationsMock.postalAddress,
         '123 Test St, AB12 3CD',
         createChangeAction(
-          PageUrls.RESPONDENT_SELECT_POST_CODE + InterceptPaths.RESPONDENT_CONTACT_PREFERENCES,
+          PageUrls.RESPONDENT_ADDRESS + InterceptPaths.RESPONDENT_CONTACT_PREFERENCES,
           translationsMock.change,
           translationsMock.postalAddress
         )
