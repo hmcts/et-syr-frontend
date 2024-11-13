@@ -52,7 +52,28 @@ const et3_response_employment_information: FormField = {
   type: 'textarea',
 };
 
-const dateFieldList = [
+const startDateFieldList = [
+  {
+    attributes: { maxLength: 2 },
+    label: (l: AnyRecord): string => l.dateFormat.day,
+    classes: 'govuk-input--width-2',
+    name: 'day',
+  },
+  {
+    classes: 'govuk-input--width-2',
+    name: 'month',
+    label: (l: AnyRecord): string => l.dateFormat.month,
+    attributes: { maxLength: 2 },
+  },
+  {
+    label: (l: AnyRecord): string => l.dateFormat.year,
+    attributes: { maxLength: 4 },
+    name: 'year',
+    classes: 'govuk-input--width-4',
+  },
+];
+
+const endDateFieldList = [
   {
     attributes: { maxLength: 2 },
     label: (l: AnyRecord): string => l.dateFormat.day,
@@ -107,8 +128,8 @@ export default class ClaimantEmploymentDatesEnterController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    et3_response_employment_start_date.values = dateFieldList;
-    et3_response_employment_end_date.values = dateFieldList;
+    et3_response_employment_start_date.values = startDateFieldList;
+    et3_response_employment_end_date.values = endDateFieldList;
     this.formContent.fields = formContentFieldsList;
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
