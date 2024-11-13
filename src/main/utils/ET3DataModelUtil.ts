@@ -199,20 +199,42 @@ export default class ET3DataModelUtil {
       et3ResponseAcasAgree: caseWithId.et3ResponseAcasAgree,
       et3ResponseAcasAgreeReason: caseWithId.et3ResponseAcasAgreeReason,
       et3ResponseAreDatesCorrect: caseWithId.et3ResponseAreDatesCorrect,
-      et3ResponseEmploymentStartDate: caseWithId.et3ResponseEmploymentStartDate
-        ? caseWithId.et3ResponseEmploymentStartDate.year +
-          DefaultValues.STRING_DASH +
-          caseWithId.et3ResponseEmploymentStartDate.month +
-          DefaultValues.STRING_DASH +
-          caseWithId.et3ResponseEmploymentStartDate.day
-        : undefined,
-      et3ResponseEmploymentEndDate: caseWithId.et3ResponseEmploymentEndDate
-        ? caseWithId.et3ResponseEmploymentEndDate.year +
-          DefaultValues.STRING_DASH +
-          caseWithId.et3ResponseEmploymentEndDate.month +
-          DefaultValues.STRING_DASH +
-          caseWithId.et3ResponseEmploymentEndDate.day
-        : undefined,
+      et3ResponseEmploymentStartDate:
+        ObjectUtils.isNotEmpty(caseWithId.et3ResponseEmploymentStartDate) &&
+        StringUtils.isNotBlank(caseWithId.et3ResponseEmploymentStartDate.year) &&
+        StringUtils.isNotBlank(caseWithId.et3ResponseEmploymentStartDate.month) &&
+        StringUtils.isNotBlank(caseWithId.et3ResponseEmploymentStartDate.day) &&
+        DateUtils.isDateStringValid(
+          caseWithId.et3ResponseEmploymentStartDate.year +
+            DefaultValues.STRING_DASH +
+            caseWithId.et3ResponseEmploymentStartDate.month +
+            DefaultValues.STRING_DASH +
+            caseWithId.et3ResponseEmploymentStartDate.day
+        )
+          ? caseWithId.et3ResponseEmploymentStartDate.year +
+            DefaultValues.STRING_DASH +
+            caseWithId.et3ResponseEmploymentStartDate.month +
+            DefaultValues.STRING_DASH +
+            caseWithId.et3ResponseEmploymentStartDate.day
+          : undefined,
+      et3ResponseEmploymentEndDate:
+        ObjectUtils.isNotEmpty(caseWithId.et3ResponseEmploymentEndDate) &&
+        StringUtils.isNotBlank(caseWithId.et3ResponseEmploymentEndDate.year) &&
+        StringUtils.isNotBlank(caseWithId.et3ResponseEmploymentEndDate.month) &&
+        StringUtils.isNotBlank(caseWithId.et3ResponseEmploymentEndDate.day) &&
+        DateUtils.isDateStringValid(
+          caseWithId.et3ResponseEmploymentEndDate.year +
+            DefaultValues.STRING_DASH +
+            caseWithId.et3ResponseEmploymentEndDate.month +
+            DefaultValues.STRING_DASH +
+            caseWithId.et3ResponseEmploymentEndDate.day
+        )
+          ? caseWithId.et3ResponseEmploymentEndDate.year +
+            DefaultValues.STRING_DASH +
+            caseWithId.et3ResponseEmploymentEndDate.month +
+            DefaultValues.STRING_DASH +
+            caseWithId.et3ResponseEmploymentEndDate.day
+          : undefined,
       et3ResponseEmploymentInformation: caseWithId.et3ResponseEmploymentInformation,
       et3ResponseContinuingEmployment: caseWithId.et3ResponseContinuingEmployment,
       et3ResponseIsJobTitleCorrect: caseWithId.et3ResponseIsJobTitleCorrect,
