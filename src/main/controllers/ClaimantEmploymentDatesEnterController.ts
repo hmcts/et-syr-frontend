@@ -54,21 +54,21 @@ const et3_response_employment_information: FormField = {
 
 const startDateFieldList = [
   {
-    label: (l: AnyRecord): string => l.dateFormat.year,
-    attributes: { maxLength: 4 },
-    name: 'year',
     classes: 'govuk-input--width-4',
+    attributes: { maxLength: 4 },
+    label: (l: AnyRecord): string => l.dateFormat.year,
+    name: 'year',
+  },
+  {
+    label: (l: AnyRecord): string => l.dateFormat.month,
+    name: 'month',
+    attributes: { maxLength: 2 },
+    classes: 'govuk-input--width-2',
   },
   {
     classes: 'govuk-input--width-2',
-    name: 'month',
-    label: (l: AnyRecord): string => l.dateFormat.month,
-    attributes: { maxLength: 2 },
-  },
-  {
     attributes: { maxLength: 2 },
     label: (l: AnyRecord): string => l.dateFormat.day,
-    classes: 'govuk-input--width-2',
     name: 'day',
   },
 ];
