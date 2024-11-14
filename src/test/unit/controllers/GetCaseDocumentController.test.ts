@@ -104,6 +104,15 @@ describe('Get case document controller', () => {
     await getCaseDocumentController.get(request, response);
     expect(response.status(200).send).toHaveBeenCalled();
   });
+  it('Should forward to not found page when respondent collection is empty', async () => {
+    const request = mockRequest({});
+    request.session.userCase = mockValidCaseWithId;
+    request.params.docId = '916d3bc2-006a-40ee-a95e-b59eeb14e86';
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(undefined));
+    await getCaseDocumentController.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
+  });
   it('Should forward to not found page when there is no respondent in userCase', async () => {
     const request = mockRequest({});
     request.params.docId = '916d3bc2-006a-40ee-a95e-b59eeb14e8';
