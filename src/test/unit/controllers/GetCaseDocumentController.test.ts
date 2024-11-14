@@ -101,7 +101,7 @@ describe('Get case document controller', () => {
     request.params.docId = '916d3bc2-006a-40ee-a95e-b59eeb14e865';
     getCaseApiMock.mockReturnValue(api);
     api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
-    await getCaseDocumentController.get(requestWithDocIdUserCase, response);
+    await getCaseDocumentController.get(request, response);
     expect(response.status(200).send).toHaveBeenCalled();
   });
   it('Should forward to not found page when there is no respondent in userCase', async () => {
@@ -111,7 +111,7 @@ describe('Get case document controller', () => {
     request.session.userCase = mockValidCaseWithId;
     getCaseApiMock.mockReturnValue(api);
     api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(undefined));
-    await getCaseDocumentController.get(requestWithDocIdUserCase, response);
+    await getCaseDocumentController.get(request, response);
     expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
   });
 });
