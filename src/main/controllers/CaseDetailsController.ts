@@ -38,8 +38,8 @@ export default class CaseDetailsController {
       return res.redirect(setUrlLanguage(req, PageUrls.CASE_LIST));
     }
     respondentResponseDeadline = ET3DataModelUtil.getRespondentResponseDeadline(req);
-    showAcknowledgementAlert = req.session.userCase.responseContinue === YesOrNo.YES;
-    showViewResponseAlert = req.session.userCase.responseContinue !== YesOrNo.YES;
+    showAcknowledgementAlert = req.session.userCase.responseReceived !== YesOrNo.YES;
+    showViewResponseAlert = req.session.userCase.responseReceived === YesOrNo.YES;
     const currentState = currentET3StatusFn(selectedRespondent);
     const et3CaseDetailsLinksStatuses = selectedRespondent.et3CaseDetailsLinksStatuses;
     const languageParam = getLanguageParam(req.url);
