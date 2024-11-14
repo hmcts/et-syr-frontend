@@ -28,7 +28,7 @@ export default class ApplicationSubmittedController {
     });
     const responseSubmittedDate = DateUtils.formatDateStringToDDMonthYYYY(selectedRespondent.responseReceivedDate);
     const attachmentsIncluded = DocumentUtils.getDocumentsWithTheirLinksByDocumentTypes(
-      req.session?.userCase.documentCollection,
+      selectedRespondent.et3ResponseContestClaimDocument,
       et3AttachmentDocTypes
     );
     let et3FormId = '';
