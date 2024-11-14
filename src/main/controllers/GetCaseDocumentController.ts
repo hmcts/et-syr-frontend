@@ -1,6 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
+import { RespondentET3Model } from '../definitions/case';
 import { PageUrls } from '../definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import {
@@ -12,7 +13,10 @@ import {
 } from '../helpers/DocumentHelpers';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
+import CollectionUtils from '../utils/CollectionUtils';
 import ET3Util from '../utils/ET3Util';
+import NumberUtils from '../utils/NumberUtils';
+import ObjectUtils from '../utils/ObjectUtils';
 import StringUtils from '../utils/StringUtils';
 
 const logger = getLogger('CaseDocumentController');
@@ -36,9 +40,27 @@ export default class GetCaseDocumentController {
       contentType = findContentTypeByDocumentDetail(documentDetails);
     } else {
       logger.info('requested document not found in userCase fields checking document collection');
-      const documentTypeItem = req.session.userCase.documentCollection.find(doc => doc.id === req.params.docId);
-      uploadedDocumentId = findUploadedDocumentIdByDocumentUrl(documentTypeItem?.value?.uploadedDocument?.document_url);
-      contentType = findContentTypeByDocumentName(documentTypeItem?.value?.uploadedDocument?.document_filename);
+      let documentTypeItem = req.session.userCase.documentCollection.find(doc => doc.id === req.params.docId);
+      let selectedRespondent: RespondentET3Model;
+      if (!documentTypeItem) {
+        if (
+          CollectionUtils.isNotEmpty(req?.session?.userCase?.respondents) &&
+          NumberUtils.isNotEmpty(req?.session?.selectedRespondentIndex)
+        ) {
+          selectedRespondent = req.session.userCase.respondents[req.session.selectedRespondentIndex];
+        }
+        if (ObjectUtils.isNotEmpty(selectedRespondent)) {
+          documentTypeItem = selectedRespondent?.et3ResponseContestClaimDocument.find(
+            doc => doc.id === req.params.docId
+          );
+        }
+      }
+      if (ObjectUtils.isNotEmpty(documentTypeItem)) {
+        uploadedDocumentId = findUploadedDocumentIdByDocumentUrl(
+          documentTypeItem?.value?.uploadedDocument?.document_url
+        );
+        contentType = findContentTypeByDocumentName(documentTypeItem?.value?.uploadedDocument?.document_filename);
+      }
     }
     try {
       if (StringUtils.isBlank(uploadedDocumentId)) {

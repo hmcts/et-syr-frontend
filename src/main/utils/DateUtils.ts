@@ -1,9 +1,11 @@
 import { CaseDate } from '../definitions/case';
 import { DefaultValues } from '../definitions/constants';
 
+import ObjectUtils from './ObjectUtils';
 import StringUtils from './StringUtils';
 
 export default class DateUtils {
+  static padStart = (value: number): string => value.toString().padStart(2, '0');
   public static isDateStringValid(dateString: string): boolean {
     return !this.isDateStringInValid(dateString);
   }
@@ -45,8 +47,7 @@ export default class DateUtils {
 
   public static formatDateToDDMMYYY(date: Date): string {
     if (date) {
-      const padStart = (value: number): string => value.toString().padStart(2, '0');
-      return `${padStart(date.getDate())}/${padStart(date.getMonth() + 1)}/${date.getFullYear()}`;
+      return `${this.padStart(date.getDate())}/${this.padStart(date.getMonth() + 1)}/${date.getFullYear()}`;
     }
     return DefaultValues.STRING_EMPTY;
   }
@@ -81,10 +82,9 @@ export default class DateUtils {
     if (!date) {
       return undefined;
     }
-    const padStart = (value: number): string => value.toString().padStart(2, '0');
     return {
-      day: padStart(date.getDate()),
-      month: padStart(date.getMonth() + 1),
+      day: this.padStart(date.getDate()),
+      month: this.padStart(date.getMonth() + 1),
       year: date.getFullYear().toString(),
     };
   }
@@ -109,5 +109,23 @@ export default class DateUtils {
       return DefaultValues.STRING_EMPTY;
     }
     return caseDate.year + DefaultValues.STRING_DASH + caseDate.month + DefaultValues.STRING_DASH + caseDate.day;
+  }
+
+  public static convertCaseDateToApiDateStringYYYY_MM_DD(caseDate: CaseDate): string {
+    if (
+      ObjectUtils.isEmpty(caseDate) ||
+      StringUtils.isBlank(caseDate.year) ||
+      StringUtils.isBlank(caseDate.month) ||
+      StringUtils.isBlank(caseDate.day)
+    ) {
+      return undefined;
+    }
+    const dateStringValue: string =
+      caseDate.year + DefaultValues.STRING_DASH + caseDate.month + DefaultValues.STRING_DASH + caseDate.day;
+    if (!DateUtils.isDateStringValid(dateStringValue)) {
+      return undefined;
+    }
+    const date = this.convertStringToDate(dateStringValue);
+    return `${date.getFullYear()}-${this.padStart(date.getMonth() + 1)}-${this.padStart(date.getDate())}`;
   }
 }
