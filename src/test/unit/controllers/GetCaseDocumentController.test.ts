@@ -6,7 +6,7 @@ import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockAxiosError } from '../mocks/mockAxios';
-import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
+import { mockCaseWithIdWithRespondents, mockValidCaseWithId } from '../mocks/mockCaseWithId';
 import { mockET1SubmittedForm, mockedET1FormDocument, mockedET1FormWelsh } from '../mocks/mockDocuments';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -27,8 +27,21 @@ describe('Get case document controller', () => {
   updateCaseDetailsLinkStatuses.mockResolvedValueOnce(Promise.resolve(mockCaseWithIdWithRespondents));
   requestWithDocId.params.docId = testDocumentId;
   requestWithDocIdUserCase.params.docId = testDocumentId;
+  it('Should forward to not found page when there is no parameter in request', async () => {
+    const request = mockRequest({});
+    await getCaseDocumentController.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
+  });
   it('Should forward to not found page when docId parameter not sent', async () => {
     const request = mockRequest({});
+    request.params = { test: 'test' };
+    await getCaseDocumentController.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
+  });
+  it('Should forward to not found page when request session is undefined', async () => {
+    const request = mockRequest({});
+    request.params = { docId: 'test' };
+    request.session = undefined;
     await getCaseDocumentController.get(request, response);
     expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
   });
@@ -77,5 +90,28 @@ describe('Get case document controller', () => {
     api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
     await getCaseDocumentController.get(requestWithDocIdUserCase, response);
     expect(response.status(200).send).toHaveBeenCalled();
+  });
+  it('Should find document in selected respondent et3ResponseContestClaimDocument list when not found in document collection', async () => {
+    const et1Form = mockedET1FormWelsh;
+    et1Form.value.uploadedDocument.document_filename = 'dummy_document_file_name';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.respondents[0].et3ResponseContestClaimDocument = [et1Form];
+    request.params.docId = '916d3bc2-006a-40ee-a95e-b59eeb14e865';
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(requestWithDocIdUserCase, response);
+    expect(response.status(200).send).toHaveBeenCalled();
+  });
+  it('Should forward to not found page when there is no respondent in userCase', async () => {
+    const request = mockRequest({});
+    request.params.docId = '916d3bc2-006a-40ee-a95e-b59eeb14e8';
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase = mockValidCaseWithId;
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(undefined));
+    await getCaseDocumentController.get(requestWithDocIdUserCase, response);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
   });
 });

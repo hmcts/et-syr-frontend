@@ -40,7 +40,7 @@ export default class GetCaseDocumentController {
       contentType = findContentTypeByDocumentDetail(documentDetails);
     } else {
       logger.info('requested document not found in userCase fields checking document collection');
-      let documentTypeItem = req.session.userCase.documentCollection.find(doc => doc.id === req.params.docId);
+      let documentTypeItem = req.session.userCase.documentCollection?.find(doc => doc.id === req.params.docId);
       let selectedRespondent: RespondentET3Model;
       if (!documentTypeItem) {
         if (

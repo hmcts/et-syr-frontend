@@ -134,9 +134,6 @@ export default class RespondentContestClaimReasonController {
       if (!documentTypeItem) {
         return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
       }
-      if (!req.session?.userCase?.et3ResponseContestClaimDocument) {
-        req.session.userCase.et3ResponseContestClaimDocument = [];
-      }
       req.session?.userCase?.et3ResponseContestClaimDocument.push(documentTypeItem);
       req.session.userCase.et3ResponseContestClaimDetails = formData.et3ResponseContestClaimDetails;
       return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
