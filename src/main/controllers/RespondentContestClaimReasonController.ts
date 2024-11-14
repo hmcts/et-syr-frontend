@@ -46,8 +46,9 @@ export default class RespondentContestClaimReasonController {
       contestClaimDocument: {
         id: 'contestClaimDocument',
         classes: 'govuk-label',
-        labelHidden: false,
+        labelHidden: true,
         labelSize: 'm',
+        label: 'Upload Document',
         type: 'upload',
       },
       upload: {
@@ -100,6 +101,7 @@ export default class RespondentContestClaimReasonController {
       res.status(200).end('Thank you for your submission. You will be contacted in due course.');
       return;
     }
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     if (req.body?.upload) {
       if (req.fileTooLarge) {
         req.session.errors = [
@@ -132,14 +134,10 @@ export default class RespondentContestClaimReasonController {
       if (!documentTypeItem) {
         return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
       }
-      if (!req.session?.userCase?.et3ResponseContestClaimDocument) {
-        req.session.userCase.et3ResponseContestClaimDocument = [];
-      }
       req.session?.userCase?.et3ResponseContestClaimDocument.push(documentTypeItem);
+      req.session.userCase.et3ResponseContestClaimDetails = formData.et3ResponseContestClaimDetails;
       return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
     }
-
-    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     RespondentContestClaimReasonControllerHelper.areInputValuesValid(req, formData);
 
     if (req.session.errors && req.session.errors.length === 0 && (req.body?.submit || req.body?.saveAsDraft)) {

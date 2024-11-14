@@ -1,7 +1,8 @@
 import { EnglishOrWelsh } from '../definitions/case';
-import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
+import { ApiDocumentTypeItem, DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
 import { AllDocumentTypes, DefaultValues, languages } from '../definitions/constants';
 
+import CollectionUtils from './CollectionUtils';
 import NumberUtils from './NumberUtils';
 import StringUtils from './StringUtils';
 
@@ -56,5 +57,32 @@ export default class DocumentUtils {
       return undefined;
     }
     return url?.substring(url?.lastIndexOf('/') + 1);
+  }
+
+  public static getDocumentsWithTheirLinksByDocumentTypes(
+    documents: DocumentTypeItem[],
+    documentTypes: string[]
+  ): string {
+    if (CollectionUtils.isEmpty(documents) || CollectionUtils.isEmpty(documentTypes)) {
+      return DefaultValues.STRING_EMPTY;
+    }
+    let attachmentsIncluded = '';
+    for (const documentTypeItem of documents) {
+      if (
+        StringUtils.isNotBlank(documentTypeItem.value?.typeOfDocument) &&
+        documentTypes.includes(documentTypeItem.value.typeOfDocument) &&
+        StringUtils.isNotBlank(documentTypeItem.id) &&
+        StringUtils.isNotBlank(documentTypeItem.value.uploadedDocument?.document_filename)
+      ) {
+        attachmentsIncluded =
+          attachmentsIncluded +
+          '<a href="getCaseDocument/' +
+          documentTypeItem.id +
+          '" target="_blank">' +
+          documentTypeItem.value.uploadedDocument.document_filename +
+          '</a><br>';
+      }
+    }
+    return attachmentsIncluded;
   }
 }

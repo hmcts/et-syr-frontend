@@ -5,13 +5,12 @@ import { FormFieldNames, PageUrls, ValidationErrors } from '../definitions/const
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import CollectionUtils from '../utils/CollectionUtils';
 import ErrorUtils from '../utils/ErrorUtils';
-import FileUtils from '../utils/FileUtils';
 import StringUtils from '../utils/StringUtils';
 
 export default class RemoveFileController {
   public get(req: AppRequest, res: Response): void {
     req.session.errors = [];
-    const fileId = FileUtils.getFileIdByUrl(req.url);
+    const fileId = req.params.fileId;
     if (StringUtils.isBlank(fileId)) {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
@@ -28,6 +27,7 @@ export default class RemoveFileController {
       );
       return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
     }
+    req.session.userCase.et3ResponseContestClaimDetails = req.params.contestClaimDetails;
     let itemRemoved = false;
     for (const file of req.session.userCase.et3ResponseContestClaimDocument) {
       if (file.id === fileId) {

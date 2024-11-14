@@ -4,7 +4,13 @@ import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { UploadedFile } from '../definitions/api/uploadedFile';
 import { AppRequest } from '../definitions/appRequest';
 import { DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
-import { DefaultValues, FormFieldNames, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import {
+  DefaultValues,
+  FormFieldNames,
+  TranslationKeys,
+  ValidationErrors,
+  et3AttachmentDocTypes,
+} from '../definitions/constants';
 import { GovukTableRowArray } from '../definitions/govuk/govukTable';
 import { AnyRecord } from '../definitions/util-types';
 import { getLanguageParam } from '../helpers/RouterHelpers';
@@ -126,7 +132,16 @@ export default class FileUtils {
       govUKTableRows.push([
         { text: documentTypeItem.value?.uploadedDocument?.document_filename },
         {
-          html: '<a href="remove-file' + languageParam + '&fileId=' + documentTypeItem?.id + '">' + textRemove + '</a>',
+          html:
+            '<a href="remove-file' +
+            '/' +
+            documentTypeItem?.id +
+            '/' +
+            req.session?.userCase?.et3ResponseContestClaimDetails +
+            languageParam +
+            '" target="_blank">' +
+            textRemove +
+            '</a>',
         },
       ]);
     }
@@ -142,7 +157,7 @@ export default class FileUtils {
       id: DocumentUtils.findDocumentIdByURL(documentUploadResponse?._links?.self?.href),
       downloadLink: documentUploadResponse?._links?.binary?.href,
       value: {
-        typeOfDocument: 'ET3 Attachment',
+        typeOfDocument: et3AttachmentDocTypes[0],
         creationDate: documentUploadResponse?.createdOn,
         shortDescription: documentUploadResponse?.originalDocumentName,
         uploadedDocument: {

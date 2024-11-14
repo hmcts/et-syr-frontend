@@ -3,6 +3,8 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { RespondentET3Model } from '../definitions/case';
 import { TranslationKeys, languages } from '../definitions/constants';
+import { TranslationKeys, et3AttachmentDocTypes, languages } from '../definitions/constants';
+import { retrieveCurrentLocale } from '../helpers/ApplicationTableRecordTranslationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import DateUtils from '../utils/DateUtils';
@@ -18,6 +20,13 @@ export default class ApplicationSubmittedController {
     const userCase = req.session?.userCase;
     const languageParam = getLanguageParam(req.url);
     const selectedRespondent: RespondentET3Model = userCase.respondents[req.session.selectedRespondentIndex];
+    const applicationDate = new Date();
+    applicationDate.setDate(applicationDate.getDate() + 7);
+    const dateString = applicationDate.toLocaleDateString(retrieveCurrentLocale(req?.url), {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
     let et3FormId = '';
     let et3FormName = '';
     if (
