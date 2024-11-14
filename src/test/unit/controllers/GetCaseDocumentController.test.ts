@@ -104,6 +104,27 @@ describe('Get case document controller', () => {
     await getCaseDocumentController.get(request, response);
     expect(response.status(200).send).toHaveBeenCalled();
   });
+  it('Should forward to not found when selected respondent not found in usercase respondents', async () => {
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 30;
+
+    request.params.docId = '916d3bc2-006a-40ee-a95e-b59eeb14e86';
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
+  });
+  it('Should forward to not found when selected respondent index is undefined', async () => {
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = undefined;
+    request.params.docId = '916d3bc2-006a-40ee-a95e-b59e';
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
+  });
   it('Should forward to not found page when respondent collection is empty', async () => {
     const request = mockRequest({});
     request.session.userCase = mockValidCaseWithId;
