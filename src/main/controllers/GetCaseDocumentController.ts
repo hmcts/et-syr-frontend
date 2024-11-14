@@ -34,7 +34,7 @@ export default class GetCaseDocumentController {
     const allDocumentSets = combineUserCaseDocuments([req?.session?.userCase]);
     const documentDetails = allDocumentSets.find(doc => doc && doc.id === docId);
     let contentType;
-    let uploadedDocumentId = docId;
+    let uploadedDocumentId = documentDetails?.id;
     if (documentDetails) {
       logger.info('requested document found in userCase fields');
       contentType = findContentTypeByDocumentDetail(documentDetails);
