@@ -48,7 +48,7 @@ export default class RespondentContestClaimReasonController {
         classes: 'govuk-label',
         labelHidden: true,
         labelSize: 'm',
-        label: (l: AnyRecord): string => l.files.uploadButton,
+        label: 'Upload Document',
         type: 'upload',
       },
       upload: {
