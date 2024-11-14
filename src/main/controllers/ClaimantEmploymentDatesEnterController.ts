@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import _ from 'lodash';
 
 import { Form } from '../components/form';
 import { convertToDateObject } from '../components/parser';
@@ -52,47 +53,29 @@ const et3_response_employment_information: FormField = {
   type: 'textarea',
 };
 
-const startDateFieldList = [
+const fieldList = [
   {
-    classes: 'govuk-input--width-4',
-    attributes: { maxLength: 4 },
-    label: (l: AnyRecord): string => l.dateFormat.year,
-    name: 'year',
-  },
-  {
-    label: (l: AnyRecord): string => l.dateFormat.month,
-    name: 'month',
-    attributes: { maxLength: 2 },
-    classes: 'govuk-input--width-2',
-  },
-  {
-    classes: 'govuk-input--width-2',
     attributes: { maxLength: 2 },
     label: (l: AnyRecord): string => l.dateFormat.day,
+    classes: 'govuk-input--width-2',
     name: 'day',
+  },
+  {
+    classes: 'govuk-input--width-2',
+    name: 'month',
+    label: (l: AnyRecord): string => l.dateFormat.month,
+    attributes: { maxLength: 2 },
+  },
+  {
+    label: (l: AnyRecord): string => l.dateFormat.year,
+    attributes: { maxLength: 4 },
+    name: 'year',
+    classes: 'govuk-input--width-4',
   },
 ];
 
-const endDateFieldList = [
-  {
-    attributes: { maxLength: 2 },
-    label: (l: AnyRecord): string => l.dateFormat.day,
-    classes: 'govuk-input--width-2',
-    name: 'day',
-  },
-  {
-    classes: 'govuk-input--width-2',
-    name: 'month',
-    label: (l: AnyRecord): string => l.dateFormat.month,
-    attributes: { maxLength: 2 },
-  },
-  {
-    label: (l: AnyRecord): string => l.dateFormat.year,
-    attributes: { maxLength: 4 },
-    name: 'year',
-    classes: 'govuk-input--width-4',
-  },
-];
+const startDateFieldList = _.cloneDeep(fieldList);
+const endDateFieldList = _.cloneDeep(fieldList);
 
 const formContentFieldsList = {
   et3ResponseEmploymentStartDate: et3_response_employment_start_date,
