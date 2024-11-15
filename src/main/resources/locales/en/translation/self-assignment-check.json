@@ -7,7 +7,7 @@
   "claimantLastName": "Claimant's Last Name",
   "confirmation": {
     "title": "I confirm all these details are accurate and match what is written on the case.",
-    "checkbox": "",
+    "checkbox": "I confirm all these details are accurate and match what is written on the case.",
     "hint": ""
   },
   "request": "Request",

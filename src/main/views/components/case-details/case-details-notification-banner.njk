@@ -23,12 +23,16 @@
     {{notificationBanner.acknowledgement.p1 + respondentResponseDeadline}}
   </p>
 
-  <p class="govuk-body">
-    <a class="govuk-link" href="{{ et1FormUrl }}"><b>{{notificationBanner.acknowledgement.link}}</b></a><br>
-    <a class="govuk-link" href="{{ respondToClaimUrl }}"><b>{{notificationBanner.acknowledgement.link2}}</b></a>
-  </p>
-
-
+  {% if showSavedResponseAlert %}
+    <p class="govuk-body">
+      <a class="govuk-link" href="{{ respondToClaimUrl }}"><b>{{notificationBanner.acknowledgement.returnToResponse}}</b></a>
+    </p>
+  {% else %}
+    <p class="govuk-body">
+      <a class="govuk-link" href="{{ et1FormUrl }}"><b>{{notificationBanner.acknowledgement.link}}</b></a><br>
+      <a class="govuk-link" href="{{ respondToClaimUrl }}"><b>{{notificationBanner.acknowledgement.link2}}</b></a>
+    </p>
+  {% endif %}
 {% endif %}
 
 {% if showViewResponseAlert %}

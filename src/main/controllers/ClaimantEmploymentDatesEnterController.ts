@@ -12,6 +12,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord, UnknownRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
+import { endSubSection } from '../helpers/RouterHelpers';
 import {
   handleEndDateBeforeStartDate,
   isEndDateBeforeStartDate,
@@ -99,6 +100,7 @@ export default class ClaimantEmploymentDatesEnterController {
     if (isEndDateBeforeStartDate(req)) {
       return handleEndDateBeforeStartDate(req, res);
     }
+    endSubSection(req);
 
     await ET3Util.updateET3ResponseWithET3Form(
       req,

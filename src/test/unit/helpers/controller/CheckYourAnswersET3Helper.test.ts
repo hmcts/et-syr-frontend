@@ -370,4 +370,38 @@ describe('CheckYourAnswersET3Helper', () => {
 
     expect(result).toEqual(expectedRows);
   });
+
+  it('should exclude "Change" links when hideChangeLink is true', () => {
+    const result = getEt3Section1(userCase, translationsMock, undefined, true);
+    const result2 = getEt3Section2(userCase, translationsMock, undefined, true);
+    const result3 = getEt3Section3(userCase, translationsMock, undefined, true);
+    const result4 = getEt3Section4(userCase, translationsMock, undefined, true);
+    const result5 = getEt3Section5(userCase, translationsMock, undefined, true);
+    const result6 = getEt3Section6(userCase, translationsMock, undefined, true);
+
+    result.forEach(row => {
+      // Ensure the action (change link) is undefined
+      expect(row.actions).toBeUndefined();
+    });
+    result2.forEach(row => {
+      // Ensure the action (change link) is undefined
+      expect(row.actions).toBeUndefined();
+    });
+    result3.forEach(row => {
+      // Ensure the action (change link) is undefined
+      expect(row.actions).toBeUndefined();
+    });
+    result4.forEach(row => {
+      // Ensure the action (change link) is undefined
+      expect(row.actions).toBeUndefined();
+    });
+    result5.forEach(row => {
+      // Ensure the action (change link) is undefined
+      expect(row.actions).toBeUndefined();
+    });
+    result6.forEach(row => {
+      // Ensure the action (change link) is undefined
+      expect(row.actions).toBeUndefined();
+    });
+  });
 });
