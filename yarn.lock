@@ -2196,15 +2196,15 @@ __metadata:
   linkType: hard
 
 "@pact-foundation/pact@npm:^13.1.1":
-  version: 13.1.4
-  resolution: "@pact-foundation/pact@npm:13.1.4"
+  version: 13.1.5
+  resolution: "@pact-foundation/pact@npm:13.1.5"
   dependencies:
     "@pact-foundation/pact-core": ^15.1.0
     "@types/express": ^4.17.11
     axios: ^1.7.4
     body-parser: ^1.20.3
     cli-color: ^2.0.1
-    express: ^4.21.0
+    express: ^4.21.1
     graphql: ^14.0.0
     graphql-tag: ^2.9.1
     http-proxy: ^1.18.1
@@ -2218,7 +2218,7 @@ __metadata:
     pkginfo: ^0.4.1
     ramda: ^0.30.0
     randexp: ^0.5.3
-  checksum: c3d9ebb83c41abd8a9c003037e409268042f9c3fab2e358c9eee82ef0250b13b632fc226d728ffa23b9e7ea83e1d77788737134e7ed301cfe266ee85685622b0
+  checksum: 20d25d105c96dd0821481fc52ae9de57bb6a55830cc71f7705e61ac734fcc82d7b6fa69ab028c1a0d32a03d628e0c60c070b24fc3a54792212343c388b85ebb9
   languageName: node
   linkType: hard
 
@@ -7479,7 +7479,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:^4.18.2, express@npm:^4.19.2, express@npm:^4.21.0":
+"express@npm:^4.18.2, express@npm:^4.19.2, express@npm:^4.21.1":
   version: 4.21.1
   resolution: "express@npm:4.21.1"
   dependencies:
