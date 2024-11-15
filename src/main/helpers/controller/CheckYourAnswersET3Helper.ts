@@ -32,7 +32,7 @@ export const getEt3Section1 = (
     ),
     addSummaryRowWithAction(
       translations.section1.organisationType,
-      userCase.et3ResponseRespondentEmployerType ?? '-',
+      userCase.et3ResponseRespondentEmployerType ?? DefaultValues.STRING_DASH,
       PageUrls.TYPE_OF_ORGANISATION,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -43,7 +43,7 @@ export const getEt3Section1 = (
     et3ResponseSection1.push(
       addSummaryRowWithAction(
         translations.section1.preferredTitleOptional,
-        userCase.et3ResponseRespondentPreferredTitle ?? '-',
+        userCase.et3ResponseRespondentPreferredTitle ?? DefaultValues.STRING_DASH,
         PageUrls.TYPE_OF_ORGANISATION,
         translations.change,
         sectionCya
@@ -55,7 +55,7 @@ export const getEt3Section1 = (
     et3ResponseSection1.push(
       addSummaryRowWithAction(
         translations.section1.companyRegistrationNumberOptional,
-        userCase.et3ResponseRespondentCompanyNumber ?? '-',
+        userCase.et3ResponseRespondentCompanyNumber ?? DefaultValues.STRING_DASH,
         PageUrls.TYPE_OF_ORGANISATION,
         translations.change,
         sectionCya
@@ -81,21 +81,21 @@ export const getEt3Section1 = (
     ),
     addSummaryRowWithAction(
       translations.section1.contactName,
-      userCase.et3ResponseRespondentContactName ?? '-',
+      userCase.et3ResponseRespondentContactName ?? DefaultValues.STRING_DASH,
       PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
     ),
     addSummaryRowWithAction(
       translations.section1.dxAddressOptional,
-      userCase.et3ResponseDXAddress ?? '-',
+      userCase.et3ResponseDXAddress ?? DefaultValues.STRING_DASH,
       PageUrls.RESPONDENT_DX_ADDRESS,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
     ),
     addSummaryRowWithAction(
       translations.section1.contactNumberOptional,
-      userCase.responseRespondentPhone1 ?? '-',
+      userCase.responseRespondentPhone1 ?? DefaultValues.STRING_DASH,
       PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -165,7 +165,7 @@ export const getEt3Section2 = (
   et3ResponseSection2.push(
     addSummaryRowWithAction(
       translations.section2.disabilitySupport,
-      translations[userCase.et3ResponseRespondentSupportNeeded] ?? '-',
+      translations[userCase.et3ResponseRespondentSupportNeeded] ?? DefaultValues.STRING_DASH,
       PageUrls.REASONABLE_ADJUSTMENTS,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -187,21 +187,21 @@ export const getEt3Section2 = (
   et3ResponseSection2.push(
     addSummaryRowWithAction(
       translations.section2.employeesInGreatBritain,
-      userCase.et3ResponseEmploymentCount ?? '-',
+      userCase.et3ResponseEmploymentCount ?? DefaultValues.STRING_DASH,
       PageUrls.RESPONDENT_EMPLOYEES,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
     ),
     addSummaryRowWithAction(
       translations.section2.multipleSites,
-      translations[userCase.et3ResponseMultipleSites] ?? '-',
+      translations[userCase.et3ResponseMultipleSites] ?? DefaultValues.STRING_DASH,
       PageUrls.RESPONDENT_SITES,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
     ),
     addSummaryRowWithAction(
       translations.section2.employeesAtSite,
-      userCase.et3ResponseSiteEmploymentCount ?? '-',
+      userCase.et3ResponseSiteEmploymentCount ?? DefaultValues.STRING_DASH,
       PageUrls.RESPONDENT_SITE_EMPLOYEES,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -222,7 +222,7 @@ export const getEt3Section3 = (
   et3ResponseSection3.push(
     addSummaryRowWithAction(
       translations.section3.et3ResponseAcasAgree,
-      translations[userCase.et3ResponseAcasAgree] ?? '-',
+      translations[userCase.et3ResponseAcasAgree] ?? DefaultValues.STRING_DASH,
       PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -233,7 +233,7 @@ export const getEt3Section3 = (
     et3ResponseSection3.push(
       addSummaryRowWithAction(
         translations.section3.et3ResponseAcasAgreeReason,
-        userCase.et3ResponseAcasAgreeReason ?? '-',
+        userCase.et3ResponseAcasAgreeReason ?? DefaultValues.STRING_DASH,
         PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE,
         translations.change,
         sectionCya
@@ -244,7 +244,7 @@ export const getEt3Section3 = (
   et3ResponseSection3.push(
     addSummaryRowWithAction(
       translations.section3.et3ResponseAreDatesCorrect,
-      translations[userCase.et3ResponseAreDatesCorrect] ?? '-',
+      translations[userCase.et3ResponseAreDatesCorrect] ?? DefaultValues.STRING_DASH,
       PageUrls.CLAIMANT_EMPLOYMENT_DATES,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -255,21 +255,21 @@ export const getEt3Section3 = (
     et3ResponseSection3.push(
       addSummaryRowWithAction(
         translations.section3.et3ResponseEmploymentStartDate,
-        DateUtils.convertCaseDateToString(userCase.et3ResponseEmploymentStartDate),
+        DateUtils.convertCaseDateToString(userCase.et3ResponseEmploymentStartDate) ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
         translations.change,
         sectionCya
       ),
       addSummaryRowWithAction(
         translations.section3.et3ResponseEmploymentEndDate,
-        DateUtils.convertCaseDateToString(userCase.et3ResponseEmploymentEndDate),
+        DateUtils.convertCaseDateToString(userCase.et3ResponseEmploymentEndDate) ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
         translations.change,
         sectionCya
       ),
       addSummaryRowWithAction(
         translations.section3.et3ResponseEmploymentInformation,
-        userCase.et3ResponseEmploymentInformation ?? '-',
+        userCase.et3ResponseEmploymentInformation ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
         translations.change,
         sectionCya
@@ -280,14 +280,14 @@ export const getEt3Section3 = (
   et3ResponseSection3.push(
     addSummaryRowWithAction(
       translations.section3.et3ResponseContinuingEmployment,
-      translations[userCase.et3ResponseContinuingEmployment] ?? '-',
+      translations[userCase.et3ResponseContinuingEmployment] ?? DefaultValues.STRING_DASH,
       PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
     ),
     addSummaryRowWithAction(
       translations.section3.et3ResponseIsJobTitleCorrect,
-      translations[userCase.et3ResponseIsJobTitleCorrect] ?? '-',
+      translations[userCase.et3ResponseIsJobTitleCorrect] ?? DefaultValues.STRING_DASH,
       PageUrls.CLAIMANT_JOB_TITLE,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -297,7 +297,7 @@ export const getEt3Section3 = (
   if (YesOrNoOrNotApplicable.NO === userCase.et3ResponseIsJobTitleCorrect) {
     et3ResponseSection3.push(
       addSummaryRowWithAction(
-        translations.section3.et3ResponseCorrectJobTitle ?? '-',
+        translations.section3.et3ResponseCorrectJobTitle ?? DefaultValues.STRING_DASH,
         userCase.et3ResponseCorrectJobTitle,
         PageUrls.CLAIMANT_JOB_TITLE,
         translations.change,
@@ -309,7 +309,7 @@ export const getEt3Section3 = (
   et3ResponseSection3.push(
     addSummaryRowWithAction(
       translations.section3.et3ResponseClaimantWeeklyHours,
-      translations[userCase.et3ResponseClaimantWeeklyHours] ?? '-',
+      translations[userCase.et3ResponseClaimantWeeklyHours] ?? DefaultValues.STRING_DASH,
       PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -320,7 +320,7 @@ export const getEt3Section3 = (
     et3ResponseSection3.push(
       addSummaryRowWithAction(
         translations.section3.et3ResponseClaimantCorrectHours,
-        userCase.et3ResponseClaimantCorrectHours ?? '-',
+        userCase.et3ResponseClaimantCorrectHours ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS,
         translations.change,
         sectionCya
@@ -342,7 +342,7 @@ export const getEt3Section4 = (
   et3ResponseSection4.push(
     addSummaryRowWithAction(
       translations.section4.payDetailsCorrect,
-      translations[userCase.et3ResponseEarningDetailsCorrect] ?? '-',
+      translations[userCase.et3ResponseEarningDetailsCorrect] ?? DefaultValues.STRING_DASH,
       PageUrls.CLAIMANT_PAY_DETAILS,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -353,21 +353,21 @@ export const getEt3Section4 = (
     et3ResponseSection4.push(
       addSummaryRowWithAction(
         translations.section4.paymentFrequency,
-        translations[userCase.et3ResponsePayFrequency] ?? '-',
+        translations[userCase.et3ResponsePayFrequency] ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
         translations.change,
         sectionCya
       ),
       addSummaryRowWithAction(
         translations.section4.claimantsPayBeforeTax,
-        userCase.et3ResponsePayBeforeTax ?? '-',
+        userCase.et3ResponsePayBeforeTax ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
         translations.change,
         sectionCya
       ),
       addSummaryRowWithAction(
         translations.section4.claimantsPayAfterTax,
-        userCase.et3ResponsePayTakehome ?? '-',
+        userCase.et3ResponsePayTakehome ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
         translations.change,
         sectionCya
@@ -378,7 +378,7 @@ export const getEt3Section4 = (
   et3ResponseSection4.push(
     addSummaryRowWithAction(
       translations.section4.noticePeriodDetailsCorrect,
-      translations[userCase.et3ResponseIsNoticeCorrect] ?? '-',
+      translations[userCase.et3ResponseIsNoticeCorrect] ?? DefaultValues.STRING_DASH,
       PageUrls.CLAIMANT_NOTICE_PERIOD,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -389,7 +389,7 @@ export const getEt3Section4 = (
     et3ResponseSection4.push(
       addSummaryRowWithAction(
         translations.section4.noticePeriodDetails,
-        userCase.et3ResponseCorrectNoticeDetails ?? '-',
+        userCase.et3ResponseCorrectNoticeDetails ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_NOTICE_PERIOD,
         translations.change,
         sectionCya
@@ -400,7 +400,7 @@ export const getEt3Section4 = (
   et3ResponseSection4.push(
     addSummaryRowWithAction(
       translations.section4.pensionAndBenefitsDetailsCorrect,
-      translations[userCase.et3ResponseIsPensionCorrect] ?? '-',
+      translations[userCase.et3ResponseIsPensionCorrect] ?? DefaultValues.STRING_DASH,
       PageUrls.CLAIMANT_PENSION_AND_BENEFITS,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -411,7 +411,7 @@ export const getEt3Section4 = (
     et3ResponseSection4.push(
       addSummaryRowWithAction(
         translations.section4.correctPensionAndBenefitsDetails,
-        userCase.et3ResponsePensionCorrectDetails ?? '-',
+        userCase.et3ResponsePensionCorrectDetails ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_PENSION_AND_BENEFITS,
         translations.change,
         sectionCya
@@ -446,13 +446,13 @@ export const getEt3Section5 = (
     const contestClaimDocumentNames =
       userCase.et3ResponseContestClaimDocument !== undefined
         ? documents.map(document => document.value.shortDescription).join(', ')
-        : '-';
+        : DefaultValues.STRING_DASH;
 
     et3ResponseSection5.push(
       addSummaryRowWithAction(
         translations.section5.contestExplanation1 + userCase.respondentName + translations.section5.contestExplanation2,
         userCase.et3ResponseContestClaimDetails,
-        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON ?? '-',
+        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON ?? DefaultValues.STRING_DASH,
         translations.change,
         sectionCya
       ),
@@ -480,7 +480,7 @@ export const getEt3Section6 = (
   et3ResponseSection6.push(
     addSummaryRowWithAction(
       translations.section6.respondentWantToMakeECC,
-      translations[userCase.et3ResponseEmployerClaim ?? '-'],
+      translations[userCase.et3ResponseEmployerClaim ?? DefaultValues.STRING_DASH],
       PageUrls.EMPLOYERS_CONTRACT_CLAIM,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -491,7 +491,7 @@ export const getEt3Section6 = (
     et3ResponseSection6.push(
       addSummaryRowWithAction(
         translations.section6.employerContractClaimDetails,
-        userCase.et3ResponseEmployerClaimDetails ?? '-',
+        userCase.et3ResponseEmployerClaimDetails ?? DefaultValues.STRING_DASH,
         PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS,
         translations.change,
         sectionCya

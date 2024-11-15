@@ -58,6 +58,7 @@
       "header": "The tribunal has acknowledged a claim against ",
       "link": "View the claimant's ET1 claim form",
       "link2": "Respond to the claim",
+      "returnToResponse": "Return to your saved response",
       "p1": "You should respond to this claim by ",
       "p2": "<span class=\"govuk-body govuk-!-font-weight-bold\">What happens next</span><br>The tribunal has asked the respondent to respond to your claim by"
     },

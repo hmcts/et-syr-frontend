@@ -7,7 +7,7 @@
   "claimantLastName": "[W]Claimant's Last Name",
   "confirmation": {
     "title": "[W]I confirm all these details are accurate and match what is written on the case.",
-    "checkbox": "[W]",
+    "checkbox": "[W]I confirm all these details are accurate and match what is written on the case.",
     "hint": "[W]"
   },
   "request": "[W]Request",

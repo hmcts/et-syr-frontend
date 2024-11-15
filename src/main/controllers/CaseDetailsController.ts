@@ -3,6 +3,7 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { ET3Status } from '../definitions/definition';
 import { SectionIndexToEt3CaseDetailsLinkNames, linkStatusColorMap } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
@@ -22,6 +23,7 @@ export default class CaseDetailsController {
     const respondToClaimUrl = setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_LANDING);
     const et3Response = setUrlLanguage(req, PageUrls.RESPONDENT_ET3_RESPONSE);
     let showAcknowledgementAlert: boolean = false;
+    let showSavedResponseAlert: boolean = false;
     let showViewResponseAlert: boolean = false;
     let respondentResponseDeadline: string = '';
     req.session.userCase = formatApiCaseDataToCaseWithId(
@@ -39,6 +41,7 @@ export default class CaseDetailsController {
     }
     respondentResponseDeadline = ET3DataModelUtil.getRespondentResponseDeadline(req);
     showAcknowledgementAlert = req.session.userCase.responseReceived !== YesOrNo.YES;
+    showSavedResponseAlert = req.session.userCase.et3Status === ET3Status.IN_PROGRESS;
     showViewResponseAlert = req.session.userCase.responseReceived === YesOrNo.YES;
     const currentState = currentET3StatusFn(selectedRespondent);
     const et3CaseDetailsLinksStatuses = selectedRespondent.et3CaseDetailsLinksStatuses;
@@ -74,6 +77,7 @@ export default class CaseDetailsController {
       hideContactUs: true,
       processingDueDate: getDueDate(formatDate(req.session.userCase.submittedDate), DAYS_FOR_PROCESSING),
       showAcknowledgementAlert,
+      showSavedResponseAlert,
       showViewResponseAlert,
       respondentResponseDeadline,
       languageParam: getLanguageParam(req.url),

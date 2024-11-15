@@ -2,6 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { ET3Status } from '../definitions/definition';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
@@ -16,6 +17,7 @@ export default class RespondentResponseLandingController {
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,
       hideContactUs: true,
+      responseSaved: req.session.userCase.et3Status === ET3Status.IN_PROGRESS,
       redirectUrl,
       languageParam: getLanguageParam(req.url),
       welshEnabled,

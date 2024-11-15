@@ -3,15 +3,6 @@
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
-{% if attachedDocuments is not defined or attachedDocuments | length == 0 %}
-  {% set documentsAttached = noAttachments %}
-{% else %}
-  {% set documentsAttached = [] %}
-  {% for document in attachedDocuments %}
-    {% set documentsAttached = documentsAttached + ["<a href=getCaseDocument/" + document.id + " target=\"_blank\">" + document.name + "</a><br>"] %}
-  {% endfor %}
-{% endif %}
-
 {% block beforeContent %}
   {{ super() }}
 {% endblock %}
@@ -74,7 +65,7 @@
             text: attachments
           },
             value: {
-            text: documentsAttached | safe
+            text: attachedDocuments | safe
           }
           }
         ]

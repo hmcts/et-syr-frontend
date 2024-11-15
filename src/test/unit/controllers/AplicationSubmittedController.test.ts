@@ -1,47 +1,91 @@
 import ApplicationSubmittedController from '../../../main/controllers/ApplicationSubmittedController';
 import { AppRequest } from '../../../main/definitions/appRequest';
 import { TranslationKeys } from '../../../main/definitions/constants';
-import { retrieveCurrentLocale } from '../../../main/helpers/ApplicationTableRecordTranslationHelper';
 import { getLanguageParam } from '../../../main/helpers/RouterHelpers';
 import { getFlagValue } from '../../../main/modules/featureFlag/launchDarkly';
+import DateUtils from '../../../main/utils/DateUtils';
+import DocumentUtils from '../../../main/utils/DocumentUtils';
+import ObjectUtils from '../../../main/utils/ObjectUtils';
+import StringUtils from '../../../main/utils/StringUtils';
+import UrlUtils from '../../../main/utils/UrlUtils';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
 jest.mock('../../../main/modules/featureFlag/launchDarkly');
-jest.mock('../../../main/helpers/ApplicationTableRecordTranslationHelper');
 jest.mock('../../../main/helpers/RouterHelpers');
+jest.mock('../../../main/utils/DateUtils');
+jest.mock('../../../main/utils/DocumentUtils');
+jest.mock('../../../main/utils/ObjectUtils');
+jest.mock('../../../main/utils/StringUtils');
+jest.mock('../../../main/utils/UrlUtils');
 
 describe('ApplicationSubmittedController', () => {
   let controller: ApplicationSubmittedController;
   let req: AppRequest;
   let res: ReturnType<typeof mockResponse>;
+  const mockDate = '12/10/2023';
+  const documentId = 'doc123';
+  const documentName = 'ET3 Form';
+  const documentNameWelsh = 'ET3 Form Welsh';
+  const employerClaimDocumentName = 'Employer Claim Document';
+  const attachedDocuments = '<a href="getCaseDocument/empDoc456" target="_blank">Document</a><br>';
 
   beforeEach(() => {
     controller = new ApplicationSubmittedController();
     req = mockRequest({
       session: {
-        userCase: {
-          id: '12345',
-        },
+        userCase: mockCaseWithIdWithRespondents,
       },
     }) as AppRequest;
-    req.session.userCase = mockCaseWithIdWithRespondents;
     req.session.selectedRespondentIndex = 0;
+    req.session.userCase.responseReceivedDate = '2023-10-12';
+    req.session.userCase.respondents = [
+      {
+        et3Form: {
+          document_url: 'https://example.com/doc123',
+          document_filename: documentName,
+          document_binary_url: '',
+          category_id: '',
+          upload_timestamp: '',
+        },
+        et3FormWelsh: {
+          document_url: '',
+          document_binary_url: '',
+          document_filename: documentNameWelsh,
+          category_id: '',
+          upload_timestamp: '',
+        },
+        et3ResponseContestClaimDocument: [],
+        et3ResponseEmployerClaimDocument: {
+          document_url: 'url',
+          document_filename: employerClaimDocumentName,
+          document_binary_url: 'b_url',
+          category_id: 'c_id',
+          upload_timestamp: 'upload_time',
+        },
+      },
+    ];
+
     res = mockResponse();
 
-    // Clear all mocks before each test
     jest.clearAllMocks();
+
+    // Common mocks
+    (DateUtils.formatDateStringToDDMMYYYY as jest.Mock).mockReturnValue(mockDate);
+    (DocumentUtils.findDocumentIdByURL as jest.Mock).mockReturnValue(documentId);
+    (DocumentUtils.getDocumentsWithTheirLinksByDocumentTypes as jest.Mock).mockReturnValue(attachedDocuments);
+    (UrlUtils.getCaseDetailsUrlByRequest as jest.Mock).mockReturnValue('/case-details/12345');
+    (ObjectUtils.isNotEmpty as jest.Mock).mockReturnValue(true);
+    (StringUtils.isNotBlank as jest.Mock).mockReturnValue(true);
   });
 
   describe('GET method', () => {
     it('should render the application submitted page with the correct data', async () => {
-      const mockDate = new Date();
-      mockDate.setDate(mockDate.getDate() + 7);
-      // Mocking external functions
       (getFlagValue as jest.Mock).mockResolvedValue(true);
-      (retrieveCurrentLocale as jest.Mock).mockReturnValue('en');
-      (getLanguageParam as jest.Mock).mockReturnValue('?lang=en');
+      (getLanguageParam as jest.Mock).mockReturnValue('?lng=en');
+
+      // Mock translations
       (req.t as unknown as jest.Mock).mockImplementation((key: string) => {
         if (key === TranslationKeys.COMMON) {
           return { common: 'Common Translation' };
@@ -51,41 +95,88 @@ describe('ApplicationSubmittedController', () => {
         }
         return {};
       });
+
       await controller.get(req, res);
 
-      // Expect the correct data to be passed to res.render
-      expect(res.render).toHaveBeenCalledWith(TranslationKeys.APPLICATION_SUBMITTED, expect.anything());
+      expect(res.render).toHaveBeenCalledWith(TranslationKeys.APPLICATION_SUBMITTED, {
+        common: 'Common Translation',
+        submitted: 'Application Submitted',
+        et3ResponseSubmitted: mockDate,
+        userCase: req.session.userCase,
+        attachedDocuments:
+          attachedDocuments +
+          '<a href="getCaseDocument/' +
+          documentId +
+          '" target="_blank">' +
+          employerClaimDocumentName +
+          '</a><br>',
+        redirectUrl: '/case-details/12345',
+        welshEnabled: true,
+        languageParam: '?lng=en',
+        selectedRespondent: req.session.userCase.respondents[0],
+        et3FormId: documentId,
+        et3FormName: documentName,
+      });
     });
 
-    it('should handle cases when the Welsh language feature flag is disabled', async () => {
-      // Mocking the flag to return false (Welsh disabled)
-      (getFlagValue as jest.Mock).mockResolvedValue(false);
-      (retrieveCurrentLocale as jest.Mock).mockReturnValue('en');
-      (getLanguageParam as jest.Mock).mockReturnValue('?lang=en');
-      (req.t as unknown as jest.Mock).mockReturnValue({});
+    it('should render the application submitted page with the correct data (welsh)', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      (getLanguageParam as jest.Mock).mockReturnValue('?lng=cy');
+
+      // Mock translations
+      (req.t as unknown as jest.Mock).mockImplementation((key: string) => {
+        if (key === TranslationKeys.COMMON) {
+          return { common: 'Common Translation' };
+        }
+        if (key === TranslationKeys.APPLICATION_SUBMITTED) {
+          return { submitted: 'Application Submitted' };
+        }
+        return {};
+      });
+
       await controller.get(req, res);
 
-      // Expect the response to have welshEnabled set to false
+      expect(res.render).toHaveBeenCalledWith(TranslationKeys.APPLICATION_SUBMITTED, {
+        common: 'Common Translation',
+        submitted: 'Application Submitted',
+        et3ResponseSubmitted: mockDate,
+        userCase: req.session.userCase,
+        attachedDocuments:
+          attachedDocuments +
+          '<a href="getCaseDocument/' +
+          documentId +
+          '" target="_blank">' +
+          employerClaimDocumentName +
+          '</a><br>',
+        redirectUrl: '/case-details/12345',
+        welshEnabled: true,
+        languageParam: '?lng=cy',
+        selectedRespondent: req.session.userCase.respondents[0],
+        et3FormId: documentId,
+        et3FormName: documentNameWelsh,
+      });
+    });
+
+    it('should render the application submitted page without the Welsh document link when Welsh is disabled', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(false);
+      (getLanguageParam as jest.Mock).mockReturnValue('?lng=en');
+      (StringUtils.isNotBlank as jest.Mock).mockReturnValue(false);
+
+      await controller.get(req, res);
+
       expect(res.render).toHaveBeenCalledWith(
         TranslationKeys.APPLICATION_SUBMITTED,
         expect.objectContaining({
           welshEnabled: false,
+          attachedDocuments:
+            attachedDocuments +
+            '<a href="getCaseDocument/' +
+            documentId +
+            '" target="_blank">' +
+            employerClaimDocumentName +
+            '</a><br>',
         })
       );
-    });
-
-    it('should use the correct locale for formatting the application date', async () => {
-      const mockDate = new Date();
-      mockDate.setDate(mockDate.getDate() + 7);
-      // Mocking the locale to return 'cy' for Welsh
-      (getFlagValue as jest.Mock).mockResolvedValue(true);
-      (retrieveCurrentLocale as jest.Mock).mockReturnValue('cy');
-      (getLanguageParam as jest.Mock).mockReturnValue('?lang=cy');
-      (req.t as unknown as jest.Mock).mockReturnValue({});
-      await controller.get(req, res);
-
-      // Expect the response to use the correct locale (Welsh in this case)
-      expect(res.render).toHaveBeenCalledWith(TranslationKeys.APPLICATION_SUBMITTED, expect.anything());
     });
   });
 });

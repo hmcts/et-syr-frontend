@@ -2,9 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { RespondentET3Model } from '../definitions/case';
-import { TranslationKeys, languages } from '../definitions/constants';
 import { TranslationKeys, et3AttachmentDocTypes, languages } from '../definitions/constants';
-import { retrieveCurrentLocale } from '../helpers/ApplicationTableRecordTranslationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import DateUtils from '../utils/DateUtils';
@@ -20,13 +18,6 @@ export default class ApplicationSubmittedController {
     const userCase = req.session?.userCase;
     const languageParam = getLanguageParam(req.url);
     const selectedRespondent: RespondentET3Model = userCase.respondents[req.session.selectedRespondentIndex];
-    const applicationDate = new Date();
-    applicationDate.setDate(applicationDate.getDate() + 7);
-    const dateString = applicationDate.toLocaleDateString(retrieveCurrentLocale(req?.url), {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
     let et3FormId = '';
     let et3FormName = '';
     if (
@@ -48,26 +39,20 @@ export default class ApplicationSubmittedController {
     }
 
     // Initialize attachedDocuments as a Map
-    const attachedDocuments = new Map<string, string>();
+    let attachedDocuments = DocumentUtils.getDocumentsWithTheirLinksByDocumentTypes(
+      selectedRespondent.et3ResponseContestClaimDocument,
+      et3AttachmentDocTypes
+    );
 
-    if (userCase.et3ResponseContestClaimDocument) {
-      for (const document of userCase.et3ResponseContestClaimDocument) {
-        // Find documentId and documentName
-        const documentId = DocumentUtils.findDocumentIdByURL(document.value.uploadedDocument.document_url);
-        const documentName = document.value.uploadedDocument.document_filename;
-
-        // Add to the attachedDocuments map
-        attachedDocuments.set(documentId, documentName);
-      }
-    }
-
-    if (userCase.et3ResponseEmployerClaimDocument) {
+    if (selectedRespondent.et3ResponseEmployerClaimDocument) {
       // Find documentId and documentName
-      const documentId = DocumentUtils.findDocumentIdByURL(userCase.et3ResponseEmployerClaimDocument.document_url);
-      const documentName = userCase.et3ResponseEmployerClaimDocument.document_filename;
+      const documentId = DocumentUtils.findDocumentIdByURL(
+        selectedRespondent.et3ResponseEmployerClaimDocument.document_url
+      );
+      const documentName = selectedRespondent.et3ResponseEmployerClaimDocument.document_filename;
 
-      // Add to the attachedDocuments map
-      attachedDocuments.set(documentId, documentName);
+      attachedDocuments =
+        attachedDocuments + '<a href="getCaseDocument/' + documentId + '" target="_blank">' + documentName + '</a><br>';
     }
 
     res.render(TranslationKeys.APPLICATION_SUBMITTED, {
@@ -75,7 +60,7 @@ export default class ApplicationSubmittedController {
       ...req.t(TranslationKeys.APPLICATION_SUBMITTED, { returnObjects: true }),
       et3ResponseSubmitted: DateUtils.formatDateStringToDDMMYYYY(userCase.responseReceivedDate),
       userCase,
-      attachedDocuments: Array.from(attachedDocuments, ([id, name]) => ({ id, name })),
+      attachedDocuments,
       redirectUrl,
       welshEnabled,
       languageParam,
