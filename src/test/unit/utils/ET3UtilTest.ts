@@ -16,6 +16,7 @@ import commonJsonRaw from '../../../main/resources/locales/en/translation/common
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
 import ET3Util from '../../../main/utils/ET3Util';
+import { mockApplications } from '../mocks/mockApplications';
 import { mockCaseWithIdWithRespondents, mockValidCaseWithId } from '../mocks/mockCaseWithId';
 import { mockedForm } from '../mocks/mockForm';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
@@ -254,6 +255,33 @@ describe('ET3lUtil tests', () => {
       respondent.respondentFirstName = undefined;
       respondent.respondentLastName = 'Respondent Last Name';
       expect(ET3Util.getUserNameByRespondent(respondent)).toEqual('Respondent Last Name');
+    });
+  });
+  describe('getUserApplicationsListItem', () => {
+    test('Should return user applications list item for the given application, respondent name and respondent', () => {
+      expect(ET3Util.getUserApplicationsListItem(mockApplications[0], 'test name', mockRespondentET3Model)).toEqual([
+        {
+          text: 'September 1, 2022',
+        },
+        {
+          text: '12345',
+        },
+        {
+          text: 'discrimination',
+        },
+        {
+          text: 'test name',
+        },
+        {},
+        {
+          text: 'September 1, 2022',
+        },
+        {
+          caseDetailsLink: '/case-details',
+          caseId: '12345',
+          respondentCcdId: '180d5b45-7925-420a-9bb4-3f6d501ca7a8',
+        },
+      ]);
     });
   });
 });
