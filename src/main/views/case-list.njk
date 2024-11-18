@@ -1,154 +1,71 @@
 {% extends "form/main/template.njk" %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
-
-{% set et3NotCompleted = [] %}
-{% set et3Completed = [] %}
-{% set respondentName =  '' %}
-{% for app in usersApplications %}
-  {% for respondent in app.userCase.respondents %}
-    {% if app.userCase.state === 'Accepted' and user.id === respondent.idamId %}
-      {% if respondent.respondentName !== null
-            and respondent.respondentName !== ""
-            and respondent.respondentName !== undefined %}
-        {% set respondentName = respondent.respondentName %}
-      {% elif respondent.respondentOrganisation !== null
-              and respondent.respondentOrganisation !== ""
-              and respondent.respondentOrganisation !== undefined %}
-        {% set respondentName = respondent.respondentOrganisation %}
-      {% else %}
-        {% if respondent.respondentFirstName !== null
-              and respondent.respondentFirstName !== ""
-              and respondent.respondentFirstName !== undefined %}
-          {% set respondentName = respondent.respondentFirstName  %}
-        {% endif %}
-        {% if respondent.respondentLastName !== null
-              and respondent.respondentLastName !== ""
-              and respondent.respondentFirstName !== undefined %}
-          {% set respondentName = respondentName + " " + respondent.respondentLastName | trim %}
-        {% endif %}
-      {% endif %}
-      {% if respondentName === undefined
-            or respondentName === null %}
-        {% set respondentName = "" %}
-      {% endif %}
-      {% if respondent.et3Status === 'inProgress' or respondent.et3Status === undefined or respondent.et3Status === '' %}
-        {% set et3NotCompleted = (et3NotCompleted.push([
-          {
-            text: app.userCase.createdDate
-          }, {
-            text: app.userCase.id
-          }, {
-            text: app.userCase.typeOfClaimString
-          }, {
-            text: respondentName
-          }, {
-            text: app.completionStatus
-          }, {
-            text: app.userCase.lastModified
-          }, {
-            html: "<a href=\"" + caseDetailsUrl + "/" + app.userCase.id + "/" + respondent.ccdId + languageParam + "\" aria-label=\"" + view + " " + col2 + ": " + app.userCase.id + "\">" + continue + "</a>"
-          }
-        ]), et3NotCompleted) %}
-      {% endif %}
-
-      {% if respondent.et3Status === 'completed' %}
-        {% set et3Completed = (et3Completed.push([
-          {
-            text: app.userCase.createdDate
-          }, {
-            text: app.userCase.id
-          }, {
-            text: app.userCase.typeOfClaimString
-          }, {
-            text: respondentName
-          }, {
-            text: app.completionStatus
-          }, {
-            text: app.userCase.lastModified
-          }, {
-            html: "<a href=\"" + caseDetailsUrl + "/" + app.userCase.id + "/" + respondent.ccdId + languageParam + "\" aria-label=\"" + view + " " + col2 + ": " + app.userCase.id + "\">" + view + "</a>"
-          }
-        ]), et3Completed) %}
-      {% endif %}
-    {% endif %}
-
-
-  {% endfor %}
-{% endfor %}
-
 {% block content %}
-
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-4">{{ title }}</h1>
     </br>
     <p class="govuk-body"><a href='{{newSelfAssignmentRequestUrl}}'>{{ p1 }}</a></p>
-    {% if et3NotCompleted.length != 0 %}
+    {% if et3NotCompleted and et3NotCompleted.length != 0 %}
       <h2 class="govuk-heading-l">{{ table1Header }}</h2>
       <div class="scrollableTable">
-      {{ govukTable({
-          caption: h2,
-          captionClasses: "govuk-visually-hidden",
-          firstCellIsHeader: false,
-          head: [
-            {
-              text: col1
-            },
-            {
-              text: col2
-            },
-            {
-              text: col3
-            },
-            {
-              text: col4
-            },
-            {
-              text: col5
-            },
-            {
-              text: col6
-            },
-            {
-              text: col7
-            }
-          ],
-          rows: et3NotCompleted
-        }) }}
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">{{ col1 }}</th>
+              <th scope="col" class="govuk-table__header">{{ col2 }}</th>
+              <th scope="col" class="govuk-table__header">{{ col3 }}</th>
+              <th scope="col" class="govuk-table__header">{{ col4 }}</th>
+              <th scope="col" class="govuk-table__header">{{ col5 }}</th>
+              <th scope="col" class="govuk-table__header">{{ col6 }}</th>
+              <th scope="col" class="govuk-table__header">{{ col7 }}</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            {% for et3NotCompletedRow in et3NotCompleted %}
+              <tr class="govuk-table__row">
+                <td class="govuk-table__cell"> {{ et3NotCompletedRow[0].text }} </td>
+                <td class="govuk-table__cell"> {{ et3NotCompletedRow[1].text }} </td>
+                <td class="govuk-table__cell"> {{ et3NotCompletedRow[2].text }} </td>
+                <td class="govuk-table__cell"> {{ et3NotCompletedRow[3].text }} </td>
+                <td class="govuk-table__cell"> {{ et3NotCompletedRow[4].text }} </td>
+                <td class="govuk-table__cell"> {{ et3NotCompletedRow[5].text }} </td>
+                <td class="govuk-table__cell"> <a href="{{ et3NotCompletedRow[6].caseDetailsLink }}/{{ et3NotCompletedRow[6].caseId }}/{{ et3NotCompletedRow[6].respondentCcdId }}{{ languageParam }}" aria-label="view {{ et3NotCompletedRow[1].text }}: {{ et3NotCompletedRow[6].caseId }}"> {{ continue }} </a></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     {% endif %}
-    {% if et3Completed.length != 0 %}
+    {% if et3Completed and et3Completed.length != 0 %}
       <h2 class="govuk-heading-l">{{ table2Header }}</h2>
       <div class="scrollableTable">
-      {{ govukTable({
-          caption: h2,
-          captionClasses: "govuk-visually-hidden",
-          firstCellIsHeader: false,
-          head: [
-            {
-              text: col1
-            },
-            {
-              text: col2
-            },
-            {
-              text: col3
-            },
-            {
-              text: col4
-            },
-            {
-              text: col5
-            },
-            {
-              text: col6
-            },
-            {
-              text: col7
-            }
-          ],
-          rows: et3Completed
-        }) }}
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">{{ col1 }}</th>
+              <th scope="col" class="govuk-table__header">{{ col2 }}</th>
+              <th scope="col" class="govuk-table__header">{{ col3 }}</th>
+              <th scope="col" class="govuk-table__header">{{ col4 }}</th>
+              <th scope="col" class="govuk-table__header">{{ col5 }}</th>
+              <th scope="col" class="govuk-table__header">{{ col6 }}</th>
+              <th scope="col" class="govuk-table__header">{{ col7 }}</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            {% for et3CompletedRow in et3Completed %}
+              <tr class="govuk-table__row">
+                <td class="govuk-table__cell"> {{ et3CompletedRow[0].text }} </td>
+                <td class="govuk-table__cell"> {{ et3CompletedRow[1].text }} </td>
+                <td class="govuk-table__cell"> {{ et3CompletedRow[2].text }} </td>
+                <td class="govuk-table__cell"> {{ et3CompletedRow[3].text }} </td>
+                <td class="govuk-table__cell"> {{ et3CompletedRow[4].text }} </td>
+                <td class="govuk-table__cell"> {{ et3CompletedRow[5].text }} </td>
+                <td class="govuk-table__cell"> <a href="{{ et3CompletedRow[6].caseDetailsLink }}/{{ et3CompletedRow[6].caseId }}/{{ et3CompletedRow[6].respondentCcdId }}{{ languageParam }}" aria-label="view {{ et3CompletedRow[1].text }}: {{ et3CompletedRow[6].caseId }}"> {{ continue }} </a></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     {% endif %}
   </div>

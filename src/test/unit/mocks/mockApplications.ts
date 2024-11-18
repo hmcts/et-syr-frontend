@@ -30,7 +30,7 @@ export const mockApplications: ApplicationTableRecord[] = [
       typeOfClaimString: 'discrimination',
     },
     respondents: 'Globo Corp<br />Mega Globo Corp',
-    completionStatus: '4 of 4 tasks completed',
+    completionStatus: undefined,
     url: '/case-details/12345?lng=en',
   },
   {
@@ -43,7 +43,7 @@ export const mockApplications: ApplicationTableRecord[] = [
       typeOfClaimString: 'discrimination',
     },
     respondents: 'undefined',
-    completionStatus: '0 of 4 tasks completed',
+    completionStatus: undefined,
     url: '/case-details/123456?lng=en',
   },
   {
@@ -67,7 +67,7 @@ export const mockApplications: ApplicationTableRecord[] = [
       typeOfClaimString: 'discrimination',
     },
     respondents: 'Globo Corp',
-    completionStatus: '0 of 4 tasks completed',
+    completionStatus: undefined,
     url: PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER + '/1234567?lng=en',
   },
 ];

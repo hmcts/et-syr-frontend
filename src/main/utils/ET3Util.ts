@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId } from '../definitions/case';
+import { CaseWithId, RespondentET3Model } from '../definitions/case';
 import {
   DefaultValues,
   ET3ModificationTypes,
@@ -11,8 +11,11 @@ import {
   PageUrls,
   ValidationErrors,
 } from '../definitions/constants';
-import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
+import { ApplicationTableRecord } from '../definitions/definition';
+import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../definitions/links';
+import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
+import { translateOverallStatus } from '../helpers/ApplicationTableRecordTranslationHelper';
 import { setUserCase } from '../helpers/CaseHelpers';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { returnNextPage, returnValidUrl } from '../helpers/RouterHelpers';
@@ -200,5 +203,88 @@ export default class ET3Util {
       req.session.userCase = userCase;
       returnNextPage(req, res, redirectUrl);
     }
+  }
+
+  public static getUserNameByRespondent(respondent: RespondentET3Model): string {
+    if (!respondent) {
+      return DefaultValues.STRING_EMPTY;
+    }
+    if (StringUtils.isNotBlank(respondent.respondentName)) {
+      return respondent.respondentName;
+    }
+    if (StringUtils.isNotBlank(respondent.respondentOrganisation)) {
+      return respondent.respondentOrganisation;
+    }
+    let respondentName: string = DefaultValues.STRING_EMPTY;
+    if (StringUtils.isNotBlank(respondent.respondentFirstName)) {
+      respondentName = respondent.respondentFirstName;
+    }
+    if (StringUtils.isNotBlank(respondent.respondentLastName)) {
+      respondentName = respondentName + DefaultValues.STRING_SPACE + respondent.respondentLastName;
+    }
+    return respondentName.trim();
+  }
+
+  public static getUserApplicationsListItem(
+    application: ApplicationTableRecord,
+    respondentName: string,
+    respondent: RespondentET3Model
+  ): { text?: string; caseId?: string; caseDetailsLink?: string; respondentCcdId?: string }[] {
+    return [
+      {
+        text: application.userCase.createdDate,
+      },
+      {
+        text: application.userCase.id,
+      },
+      {
+        text: application.userCase.typeOfClaimString,
+      },
+      {
+        text: respondentName,
+      },
+      {
+        text: application.completionStatus,
+      },
+      {
+        text: application.userCase.lastModified,
+      },
+      {
+        caseDetailsLink: PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER,
+        caseId: application.userCase.id,
+        respondentCcdId: respondent.ccdId,
+      },
+    ];
+  }
+
+  public static getOverallStatus(respondent: RespondentET3Model, translations: AnyRecord): string {
+    const totalSections: number = 5;
+    let sectionCount: number = 0;
+
+    if (respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] === LinkStatus.COMPLETED) {
+      sectionCount++;
+    }
+
+    if (respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployerDetails] === LinkStatus.COMPLETED) {
+      sectionCount++;
+    }
+
+    if (respondent.et3HubLinksStatuses[ET3HubLinkNames.ConciliationAndEmployeeDetails] === LinkStatus.COMPLETED) {
+      sectionCount++;
+    }
+
+    if (respondent.et3HubLinksStatuses[ET3HubLinkNames.PayPensionBenefitDetails] === LinkStatus.COMPLETED) {
+      sectionCount++;
+    }
+
+    if (respondent.et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] === LinkStatus.COMPLETED) {
+      sectionCount++;
+    }
+
+    const overallStatus: AnyRecord = {
+      sectionCount,
+      totalSections,
+    };
+    return translateOverallStatus(overallStatus, translations);
   }
 }
