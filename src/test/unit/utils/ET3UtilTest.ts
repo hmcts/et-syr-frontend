@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 
 import { RespondentET3Model } from '../../../main/definitions/case';
 import {
@@ -208,6 +209,51 @@ describe('ET3lUtil tests', () => {
       respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployerDetails] = LinkStatus.COMPLETED;
       respondent.et3HubLinksStatuses[ET3HubLinkNames.ConciliationAndEmployeeDetails] = LinkStatus.COMPLETED;
       expect(ET3Util.getOverallStatus(respondent, translations)).toEqual('5 of 5 tasks completed');
+    });
+  });
+  describe('getUserNameByRespondent tests', () => {
+    test('Should return empty string when respondent is not found', () => {
+      expect(ET3Util.getUserNameByRespondent(undefined)).toEqual(DefaultValues.STRING_EMPTY);
+    });
+    test('Should return respondent name when respondent name is found in respondent object', () => {
+      expect(ET3Util.getUserNameByRespondent(mockRespondentET3Model)).toEqual('Test Company');
+    });
+    test('Should return organisation name when respondent organisation name is found in respondent object', () => {
+      const respondent = _.cloneDeep(mockRespondentET3Model);
+      respondent.respondentName = undefined;
+      respondent.respondentOrganisation = 'Test Company';
+      expect(ET3Util.getUserNameByRespondent(respondent)).toEqual('Test Company');
+    });
+    test('Should return empty string when nothing found as name in respondent object', () => {
+      const respondent = _.cloneDeep(mockRespondentET3Model);
+      respondent.respondentName = undefined;
+      respondent.respondentOrganisation = undefined;
+      respondent.respondentFirstName = undefined;
+      respondent.respondentLastName = undefined;
+      expect(ET3Util.getUserNameByRespondent(respondent)).toEqual(DefaultValues.STRING_EMPTY);
+    });
+    test('Should return respondent first name when respondent first name is found in respondent object', () => {
+      const respondent = _.cloneDeep(mockRespondentET3Model);
+      respondent.respondentName = undefined;
+      respondent.respondentOrganisation = undefined;
+      respondent.respondentFirstName = 'Respondent First Name';
+      expect(ET3Util.getUserNameByRespondent(respondent)).toEqual('Respondent First Name');
+    });
+    test('Should return respondent first and last names when respondent first and last names are found in respondent object', () => {
+      const respondent = _.cloneDeep(mockRespondentET3Model);
+      respondent.respondentName = undefined;
+      respondent.respondentOrganisation = undefined;
+      respondent.respondentFirstName = 'Respondent First Name';
+      respondent.respondentLastName = 'Respondent Last Name';
+      expect(ET3Util.getUserNameByRespondent(respondent)).toEqual('Respondent First Name Respondent Last Name');
+    });
+    test('Should return respondent last name when respondent last name is found in respondent object', () => {
+      const respondent = _.cloneDeep(mockRespondentET3Model);
+      respondent.respondentName = undefined;
+      respondent.respondentOrganisation = undefined;
+      respondent.respondentFirstName = undefined;
+      respondent.respondentLastName = 'Respondent Last Name';
+      expect(ET3Util.getUserNameByRespondent(respondent)).toEqual('Respondent Last Name');
     });
   });
 });
