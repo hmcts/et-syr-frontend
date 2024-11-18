@@ -56,6 +56,7 @@ describe('Case list controller', () => {
       MockAxiosResponses.mockAxiosResponseWithCaseApiDataAcceptedValidRespondentIdResponseList
     );
     expectedValue.data[0].case_data.respondentCollection[0].value.et3Status = undefined;
+    expectedValue.data[0].case_data.respondentCollection[0].value.idamId = '1234';
     getCaseApiMock.mockReturnValue(api);
     api.getUserCases = jest.fn().mockResolvedValueOnce(Promise.resolve(expectedValue));
     await caseListController.get(request, response);
@@ -66,6 +67,7 @@ describe('Case list controller', () => {
     const expectedValue = _.cloneDeep(
       MockAxiosResponses.mockAxiosResponseWithCaseApiDataAcceptedValidRespondentIdResponseList
     );
+    expectedValue.data[0].case_data.respondentCollection[0].value.idamId = '1234';
     expectedValue.data[0].case_data.respondentCollection[0].value.et3Status = 'completed';
     getCaseApiMock.mockReturnValue(api);
     api.getUserCases = jest.fn().mockResolvedValueOnce(Promise.resolve(expectedValue));
