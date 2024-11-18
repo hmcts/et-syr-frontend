@@ -87,3 +87,65 @@ export const mockCaseApiDataResponse = <CaseApiDataResponse>{
     },
   },
 };
+
+export const mockCaseApiDataResponseAccepted = <CaseApiDataResponse>{
+  id: MockCaseApiDataResponseConstants.TEST_SUBMISSION_REFERENCE_NUMBER,
+  case_type_id: CaseTypeId.ENGLAND_WALES,
+  created_date: '2022-08-19T09:19:25.79202',
+  last_modified: '2022-08-19T09:19:25.817549',
+  state: 'Accepted',
+  case_data: {
+    respondentCollection: [
+      {
+        id: 'test',
+        value: mockEt3RespondentType,
+      },
+    ],
+    claimantIndType: {
+      claimant_first_names: MockCaseApiDataResponseConstants.TEST_CLAIMANT_NAME,
+      claimant_last_name: MockCaseApiDataResponseConstants.TEST_CLAIMANT_SURNAME,
+    },
+    hubLinksStatuses: {
+      documents: HubLinkStatus.READY_TO_VIEW,
+      et1ClaimForm: HubLinkStatus.READY_TO_VIEW,
+      hearingDetails: HubLinkStatus.READY_TO_VIEW,
+      tribunalOrders: HubLinkStatus.READY_TO_VIEW,
+      contactTribunal: HubLinkStatus.READY_TO_VIEW,
+      respondentResponse: HubLinkStatus.READY_TO_VIEW,
+      tribunalJudgements: HubLinkStatus.READY_TO_VIEW,
+      respondentApplications: HubLinkStatus.READY_TO_VIEW,
+      requestsAndApplications: HubLinkStatus.READY_TO_VIEW,
+    },
+  },
+};
+
+export const mockCaseApiDataResponseAcceptedWithValidRespondentId = <CaseApiDataResponse>{
+  id: MockCaseApiDataResponseConstants.TEST_SUBMISSION_REFERENCE_NUMBER,
+  case_type_id: CaseTypeId.ENGLAND_WALES,
+  created_date: '2022-08-19T09:19:25.79202',
+  last_modified: '2022-08-19T09:19:25.817549',
+  state: 'Accepted',
+  case_data: {
+    respondentCollection: [
+      {
+        id: '1234',
+        value: mockEt3RespondentType,
+      },
+    ],
+    claimantIndType: {
+      claimant_first_names: MockCaseApiDataResponseConstants.TEST_CLAIMANT_NAME,
+      claimant_last_name: MockCaseApiDataResponseConstants.TEST_CLAIMANT_SURNAME,
+    },
+    hubLinksStatuses: {
+      documents: HubLinkStatus.READY_TO_VIEW,
+      et1ClaimForm: HubLinkStatus.READY_TO_VIEW,
+      hearingDetails: HubLinkStatus.READY_TO_VIEW,
+      tribunalOrders: HubLinkStatus.READY_TO_VIEW,
+      contactTribunal: HubLinkStatus.READY_TO_VIEW,
+      respondentResponse: HubLinkStatus.READY_TO_VIEW,
+      tribunalJudgements: HubLinkStatus.READY_TO_VIEW,
+      respondentApplications: HubLinkStatus.READY_TO_VIEW,
+      requestsAndApplications: HubLinkStatus.READY_TO_VIEW,
+    },
+  },
+};

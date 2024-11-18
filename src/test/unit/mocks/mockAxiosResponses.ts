@@ -1,9 +1,27 @@
-import { mockCaseApiDataResponse } from './mockCaseApiDataResponse';
+import {
+  mockCaseApiDataResponse,
+  mockCaseApiDataResponseAccepted,
+  mockCaseApiDataResponseAcceptedWithValidRespondentId,
+} from './mockCaseApiDataResponse';
 import { mockDocumentUploadResponse } from './mockDocumentUploadResponse';
 
 export const MockAxiosResponses = {
   mockAxiosResponseWithCaseApiDataResponseList: {
     data: [mockCaseApiDataResponse],
+    status: 200,
+    statusText: '',
+    headers: undefined as never,
+    config: undefined as never,
+  },
+  mockAxiosResponseWithCaseApiDataAcceptedResponseList: {
+    data: [mockCaseApiDataResponseAccepted],
+    status: 200,
+    statusText: '',
+    headers: undefined as never,
+    config: undefined as never,
+  },
+  mockAxiosResponseWithCaseApiDataAcceptedValidRespondentIdResponseList: {
+    data: [mockCaseApiDataResponseAcceptedWithValidRespondentId],
     status: 200,
     statusText: '',
     headers: undefined as never,

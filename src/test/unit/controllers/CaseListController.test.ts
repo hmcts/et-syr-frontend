@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 
 import CaseListController from '../../../main/controllers/CaseListController';
 import { ServiceErrors, TranslationKeys } from '../../../main/definitions/constants';
@@ -8,6 +9,7 @@ import { mockAxiosError } from '../mocks/mockAxios';
 import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+import { mockUserDetails } from '../mocks/mockUser';
 
 jest.mock('axios');
 
@@ -18,9 +20,10 @@ describe('Case list controller', () => {
   const getCaseApiMock = jest.spyOn(caseService, 'getCaseApi');
   const api = new CaseApi(axios);
   const caseListController = new CaseListController();
+  const response = mockResponse();
+  const request = mockRequest({ t });
+  request.session.user = mockUserDetails;
   it('should render respondent replies page', async () => {
-    const response = mockResponse();
-    const request = mockRequest({ t });
     getCaseApiMock.mockReturnValue(api);
     api.getUserCases = jest
       .fn()
@@ -29,9 +32,48 @@ describe('Case list controller', () => {
 
     expect(response.render).toHaveBeenCalledWith(TranslationKeys.CASE_LIST, expect.anything());
   });
+  it('should render respondent replies page with accepted user case', async () => {
+    getCaseApiMock.mockReturnValue(api);
+    api.getUserCases = jest
+      .fn()
+      .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataAcceptedResponseList));
+    await caseListController.get(request, response);
+    expect(response.render).toHaveBeenCalledWith(TranslationKeys.CASE_LIST, expect.anything());
+  });
+  it('should render respondent replies page with accepted and valid user id user case', async () => {
+    getCaseApiMock.mockReturnValue(api);
+    api.getUserCases = jest
+      .fn()
+      .mockResolvedValueOnce(
+        Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataAcceptedValidRespondentIdResponseList)
+      );
+    await caseListController.get(request, response);
+
+    expect(response.render).toHaveBeenCalledWith(TranslationKeys.CASE_LIST, expect.anything());
+  });
+  it('should render respondent replies page with accepted and valid user id blank et3Status user case', async () => {
+    const expectedValue = _.cloneDeep(
+      MockAxiosResponses.mockAxiosResponseWithCaseApiDataAcceptedValidRespondentIdResponseList
+    );
+    expectedValue.data[0].case_data.respondentCollection[0].value.et3Status = undefined;
+    getCaseApiMock.mockReturnValue(api);
+    api.getUserCases = jest.fn().mockResolvedValueOnce(Promise.resolve(expectedValue));
+    await caseListController.get(request, response);
+
+    expect(response.render).toHaveBeenCalledWith(TranslationKeys.CASE_LIST, expect.anything());
+  });
+  it('should render respondent replies page with accepted and valid user id completed et3Status user case', async () => {
+    const expectedValue = _.cloneDeep(
+      MockAxiosResponses.mockAxiosResponseWithCaseApiDataAcceptedValidRespondentIdResponseList
+    );
+    expectedValue.data[0].case_data.respondentCollection[0].value.et3Status = 'completed';
+    getCaseApiMock.mockReturnValue(api);
+    api.getUserCases = jest.fn().mockResolvedValueOnce(Promise.resolve(expectedValue));
+    await caseListController.get(request, response);
+
+    expect(response.render).toHaveBeenCalledWith(TranslationKeys.CASE_LIST, expect.anything());
+  });
   it('should throw error when not able to get user cases', async () => {
-    const response = mockResponse();
-    const request = mockRequest({ t });
     getCaseApiMock.mockReturnValue(api);
     const mockedAxios = axios as jest.Mocked<typeof axios>;
     mockedAxios.get.mockImplementation(() => {
