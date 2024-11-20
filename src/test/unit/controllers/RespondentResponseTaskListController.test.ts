@@ -10,6 +10,8 @@ import {
   expectedRespondentHubTestStatuses,
   expectedRespondentHubTestTaskList,
   mockRespondentHubTranslations,
+  sectionTitleTranslationKeys,
+  subSectionTitleTranslationKeys,
 } from '../test-helpers/test.constants';
 
 // Define interfaces for sections and links
@@ -59,14 +61,14 @@ describe('Respondent response task list controller', () => {
     sections.forEach((section, index) => {
       // Checking titles
       expect(section.title).toBeInstanceOf(Function);
-      expect(section.title(request.t(DefaultValues.STRING_EMPTY))).toBe(
+      expect(section.title(request.t(sectionTitleTranslationKeys[index]))).toBe(
         expectedRespondentHubTestTaskList.sectionTitles[index]
       );
       expect(section.links).toHaveLength(expectedRespondentHubTestLinkTexts[index].length);
       section.links.forEach((link, linkIndex) => {
         // checking links
         expect(link.linkTxt).toBeInstanceOf(Function);
-        expect(link.linkTxt(request.t(DefaultValues.STRING_EMPTY))).toBe(
+        expect(link.linkTxt(request.t(subSectionTitleTranslationKeys[index][linkIndex]))).toBe(
           expectedRespondentHubTestLinkTexts[index][linkIndex]
         );
         // checking statuses
