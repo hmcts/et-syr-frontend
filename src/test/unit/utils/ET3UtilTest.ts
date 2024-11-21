@@ -178,38 +178,47 @@ describe('ET3lUtil tests', () => {
     };
     const respondent: RespondentET3Model = mockRespondentET3Model;
     respondent.et3HubLinksStatuses = new ET3HubLinksStatuses();
-    test('Should o of 5 tasks completed when et3 hub link statuses does not have any completed task', () => {
-      expect(ET3Util.getOverallStatus(respondent, translations)).toEqual('0 of 5 tasks completed');
+    test('Should 0 of 6 tasks completed when et3 hub link statuses does not have any completed task', () => {
+      expect(ET3Util.getOverallStatus(respondent, translations)).toEqual('0 of 6 tasks completed');
     });
-    test('Should 1 of 5 tasks completed when et3 hub link statuses have 1 completed task', () => {
+    test('Should 1 of 6 tasks completed when et3 hub link statuses have 1 completed task', () => {
       respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
-      expect(ET3Util.getOverallStatus(respondent, translations)).toEqual('1 of 5 tasks completed');
+      expect(ET3Util.getOverallStatus(respondent, translations)).toEqual('1 of 6 tasks completed');
     });
-    test('Should 2 of 5 tasks completed when et3 hub link statuses have 2 completed task', () => {
+    test('Should 2 of 6 tasks completed when et3 hub link statuses have 2 completed task', () => {
       respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
       respondent.et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] = LinkStatus.COMPLETED;
-      expect(ET3Util.getOverallStatus(respondent, translations)).toEqual('2 of 5 tasks completed');
+      expect(ET3Util.getOverallStatus(respondent, translations)).toEqual('2 of 6 tasks completed');
     });
-    test('Should 3 of 5 tasks completed when et3 hub link statuses have 3 completed task', () => {
+    test('Should 3 of 6 tasks completed when et3 hub link statuses have 3 completed task', () => {
       respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
       respondent.et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] = LinkStatus.COMPLETED;
       respondent.et3HubLinksStatuses[ET3HubLinkNames.PayPensionBenefitDetails] = LinkStatus.COMPLETED;
-      expect(ET3Util.getOverallStatus(respondent, translations)).toEqual('3 of 5 tasks completed');
+      expect(ET3Util.getOverallStatus(respondent, translations)).toEqual('3 of 6 tasks completed');
     });
-    test('Should 4 of 5 tasks completed when et3 hub link statuses have 4 completed task', () => {
+    test('Should 4 of 6 tasks completed when et3 hub link statuses have 4 completed task', () => {
       respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
       respondent.et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] = LinkStatus.COMPLETED;
       respondent.et3HubLinksStatuses[ET3HubLinkNames.PayPensionBenefitDetails] = LinkStatus.COMPLETED;
       respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployerDetails] = LinkStatus.COMPLETED;
-      expect(ET3Util.getOverallStatus(respondent, translations)).toEqual('4 of 5 tasks completed');
+      expect(ET3Util.getOverallStatus(respondent, translations)).toEqual('4 of 6 tasks completed');
     });
-    test('Should 5 of 5 tasks completed when et3 hub link statuses have 5 completed task', () => {
+    test('Should 5 of 6 tasks completed when et3 hub link statuses have 5 completed task', () => {
       respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
       respondent.et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] = LinkStatus.COMPLETED;
       respondent.et3HubLinksStatuses[ET3HubLinkNames.PayPensionBenefitDetails] = LinkStatus.COMPLETED;
       respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployerDetails] = LinkStatus.COMPLETED;
       respondent.et3HubLinksStatuses[ET3HubLinkNames.ConciliationAndEmployeeDetails] = LinkStatus.COMPLETED;
-      expect(ET3Util.getOverallStatus(respondent, translations)).toEqual('5 of 5 tasks completed');
+      expect(ET3Util.getOverallStatus(respondent, translations)).toEqual('5 of 6 tasks completed');
+    });
+    test('Should 6 of 6 tasks completed when et3 hub link statuses have 6 completed task', () => {
+      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] = LinkStatus.COMPLETED;
+      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
+      respondent.et3HubLinksStatuses[ET3HubLinkNames.PayPensionBenefitDetails] = LinkStatus.COMPLETED;
+      respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployerDetails] = LinkStatus.COMPLETED;
+      respondent.et3HubLinksStatuses[ET3HubLinkNames.ConciliationAndEmployeeDetails] = LinkStatus.COMPLETED;
+      respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployersContractClaim] = LinkStatus.COMPLETED;
+      expect(ET3Util.getOverallStatus(respondent, translations)).toEqual('6 of 6 tasks completed');
     });
   });
   describe('getUserNameByRespondent tests', () => {

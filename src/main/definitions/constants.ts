@@ -499,6 +499,7 @@ export const CallbackTestConstants = {
 } as const;
 
 export const DefaultValues = {
+  STRING_AMPERSAND: '&',
   STRING_EMPTY: '',
   STRING_DASH: '-',
   STRING_QUESTION_MARK: '?',
@@ -511,6 +512,8 @@ export const DefaultValues = {
   NUMBER_ZERO: 0,
   CONTEST_CLAIM_REASON_MAX_LENGTH: 2500,
   FILE_ID_PARAMETER: 'fileId=',
+  CLEAR_SELECTION: 'clearSelection',
+  CLEAR_SELECTION_URL_PARAMETER: 'redirect=clearSelection',
 } as const;
 
 export const FormFieldNames = {

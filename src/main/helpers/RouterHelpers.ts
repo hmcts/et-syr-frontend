@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { ErrorPages, PageUrls, languages } from '../definitions/constants';
+import { DefaultValues, ErrorPages, PageUrls, languages } from '../definitions/constants';
 import { FormFields } from '../definitions/form';
 
 export const getLanguageParam = (url: string): string => {
@@ -53,7 +53,15 @@ export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): strin
 };
 
 export const isClearSelection = (req: AppRequest): boolean => {
-  return req.query !== undefined && req.query.redirect === 'clearSelection' && req.session.userCase !== undefined;
+  return (
+    req.query !== undefined &&
+    req.query.redirect === DefaultValues.CLEAR_SELECTION &&
+    req.session.userCase !== undefined
+  );
+};
+
+export const isClearSelectionWithoutRequestUserCaseCheck = (req: AppRequest): boolean => {
+  return req.query !== undefined && req.query.redirect === DefaultValues.CLEAR_SELECTION;
 };
 
 /**

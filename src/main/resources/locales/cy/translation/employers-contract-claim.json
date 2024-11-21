@@ -4,5 +4,10 @@
     "summaryText": "[W]What is an Employer’s Contract Claim?",
     "text": "[W]A respondent can make this claim against the claimant if the claimant breached their employment terms which resulted in financial loss. This typically happens when a claimant has made a notice pay claim."
   },
-  "label": "[W]Does the respondent want to make an Employer’s Contract Claim?  (optional)"
+  "label": "[W]Does the respondent want to make an Employer’s Contract Claim?  (optional)",
+  "errors": {
+    "et3ResponseEmployerClaim": {
+      "required": "[W]Make a selection"
+    }
+  }
 }
