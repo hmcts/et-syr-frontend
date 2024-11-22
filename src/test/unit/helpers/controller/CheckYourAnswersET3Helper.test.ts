@@ -6,8 +6,12 @@ import {
   YesOrNoOrNotApplicable,
   YesOrNoOrNotSure,
 } from '../../../../main/definitions/case';
-import { PageUrls } from '../../../../main/definitions/constants';
-import { SummaryListRow, addSummaryRowWithAction } from '../../../../main/definitions/govuk/govukSummaryList';
+import { DefaultValues, PageUrls } from '../../../../main/definitions/constants';
+import {
+  SummaryListRow,
+  addSummaryRowWithAction,
+  addSummaryRowWithActionHTML,
+} from '../../../../main/definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../../../main/definitions/util-types';
 import {
   getEt3Section1,
@@ -139,11 +143,7 @@ describe('CheckYourAnswersET3Helper', () => {
     PageUrls.CLAIMANT_PENSION_AND_BENEFITS,
   ];
 
-  const section5Urls = [
-    PageUrls.RESPONDENT_CONTEST_CLAIM,
-    // PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
-    // PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, // for supporting materials
-  ];
+  const section5Urls = [PageUrls.RESPONDENT_CONTEST_CLAIM, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON];
 
   const section6Urls = [
     PageUrls.EMPLOYERS_CONTRACT_CLAIM,
@@ -339,9 +339,20 @@ describe('CheckYourAnswersET3Helper', () => {
       );
     }
 
+    // HTML action for the file links
+    expectedRows.push(
+      addSummaryRowWithActionHTML(
+        expect.any(String), // field3
+        DefaultValues.STRING_DASH, // exampleData
+        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, // URL for supportingEvidence
+        expect.any(String) // change label
+      )
+    );
+
     // Populate necessary fields for section 5 in the userCase object
-    userCase.et3ResponseRespondentContestClaim = YesOrNo.NO;
+    userCase.et3ResponseRespondentContestClaim = YesOrNo.YES;
     userCase.et3ResponseContestClaimDetails = 'We contest the claim for reason XYZ';
+    userCase.et3ResponseContestClaimDocument = undefined;
 
     const result = getEt3Section5(userCase, translationsMock);
 
