@@ -9,7 +9,11 @@ import {
   YesOrNoOrNotSure,
 } from '../../definitions/case';
 import { DefaultValues, PageUrls } from '../../definitions/constants';
-import { SummaryListRow, addSummaryRowWithAction } from '../../definitions/govuk/govukSummaryList';
+import {
+  SummaryListRow,
+  addSummaryRowWithAction,
+  addSummaryRowWithActionHTML,
+} from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import DateUtils from '../../utils/DateUtils';
 import { answersAddressFormatter } from '../AddressHelper';
@@ -443,9 +447,15 @@ export const getEt3Section5 = (
   if (YesOrNo.YES === userCase.et3ResponseRespondentContestClaim) {
     const documents = userCase.et3ResponseContestClaimDocument;
     // Join the shortDescriptions with a comma
-    const contestClaimDocumentNames =
+    // Generate HTML for individual document links
+    const contestClaimDocumentLinks =
       userCase.et3ResponseContestClaimDocument !== undefined
-        ? documents.map(document => document.value.shortDescription).join(', ')
+        ? documents
+            .map(
+              document =>
+                `<a class="govuk-link" href="getCaseDocument/${document.id}" target="_blank">${document.value.uploadedDocument.document_filename}</a>`
+            )
+            .join('<br>') // Separate links with line breaks
         : DefaultValues.STRING_DASH;
 
     et3ResponseSection5.push(
@@ -456,9 +466,9 @@ export const getEt3Section5 = (
         translations.change,
         sectionCya
       ),
-      addSummaryRowWithAction(
+      addSummaryRowWithActionHTML(
         translations.section5.supportingMaterials,
-        contestClaimDocumentNames,
+        contestClaimDocumentLinks,
         PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
         translations.change,
         sectionCya

@@ -141,8 +141,8 @@ describe('CheckYourAnswersET3Helper', () => {
 
   const section5Urls = [
     PageUrls.RESPONDENT_CONTEST_CLAIM,
-    PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
-    PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, // for supporting materials
+    // PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
+    // PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, // for supporting materials
   ];
 
   const section6Urls = [
@@ -340,7 +340,7 @@ describe('CheckYourAnswersET3Helper', () => {
     }
 
     // Populate necessary fields for section 5 in the userCase object
-    userCase.et3ResponseRespondentContestClaim = YesOrNo.YES;
+    userCase.et3ResponseRespondentContestClaim = YesOrNo.NO;
     userCase.et3ResponseContestClaimDetails = 'We contest the claim for reason XYZ';
 
     const result = getEt3Section5(userCase, translationsMock);

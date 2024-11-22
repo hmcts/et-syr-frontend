@@ -4,7 +4,12 @@ import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { ET3Status } from '../definitions/definition';
-import { SectionIndexToEt3CaseDetailsLinkNames, linkStatusColorMap } from '../definitions/links';
+import {
+  ET3CaseDetailsLinkNames,
+  LinkStatus,
+  SectionIndexToEt3CaseDetailsLinkNames,
+  linkStatusColorMap,
+} from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
@@ -22,9 +27,6 @@ export default class CaseDetailsController {
     const et1FormUrl = setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM);
     const respondToClaimUrl = setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_LANDING);
     const et3Response = setUrlLanguage(req, PageUrls.RESPONDENT_ET3_RESPONSE);
-    let showAcknowledgementAlert: boolean = false;
-    let showSavedResponseAlert: boolean = false;
-    let showViewResponseAlert: boolean = false;
     let respondentResponseDeadline: string = '';
     req.session.userCase = formatApiCaseDataToCaseWithId(
       (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseSubmissionReference)).data,
@@ -40,9 +42,6 @@ export default class CaseDetailsController {
       return res.redirect(setUrlLanguage(req, PageUrls.CASE_LIST));
     }
     respondentResponseDeadline = ET3DataModelUtil.getRespondentResponseDeadline(req);
-    showAcknowledgementAlert = req.session.userCase.responseReceived !== YesOrNo.YES;
-    showSavedResponseAlert = req.session.userCase.et3Status === ET3Status.IN_PROGRESS;
-    showViewResponseAlert = req.session.userCase.responseReceived === YesOrNo.YES;
     const currentState = currentET3StatusFn(selectedRespondent);
     const et3CaseDetailsLinksStatuses = selectedRespondent.et3CaseDetailsLinksStatuses;
     const languageParam = getLanguageParam(req.url);
@@ -76,9 +75,10 @@ export default class CaseDetailsController {
       et3Response,
       hideContactUs: true,
       processingDueDate: getDueDate(formatDate(req.session.userCase.submittedDate), DAYS_FOR_PROCESSING),
-      showAcknowledgementAlert,
-      showSavedResponseAlert,
-      showViewResponseAlert,
+      showAcknowledgementAlert:
+        et3CaseDetailsLinksStatuses[ET3CaseDetailsLinkNames.RespondentResponse] === LinkStatus.NOT_STARTED_YET,
+      showSavedResponseAlert: req.session.userCase.et3Status === ET3Status.IN_PROGRESS,
+      showViewResponseAlert: req.session.userCase.responseReceived === YesOrNo.YES,
       respondentResponseDeadline,
       languageParam: getLanguageParam(req.url),
     });

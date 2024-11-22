@@ -50,6 +50,7 @@ export default class RespondentContestClaimController {
     let nextPage = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM);
     if (formData.et3ResponseRespondentContestClaim === YesOrNo.YES) {
       nextPage = PageUrls.RESPONDENT_CONTEST_CLAIM_REASON;
+      req.session.returnUrl = nextPage; //force redirect through the flow before going back to CYA screen
     }
     await ET3Util.updateET3ResponseWithET3Form(
       req,
