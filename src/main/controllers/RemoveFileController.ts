@@ -6,11 +6,16 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import CollectionUtils from '../utils/CollectionUtils';
 import ErrorUtils from '../utils/ErrorUtils';
 import StringUtils from '../utils/StringUtils';
+import UrlUtils from '../utils/UrlUtils';
 
 export default class RemoveFileController {
   public get(req: AppRequest, res: Response): void {
     req.session.errors = [];
     const fileId = req.params.fileId;
+    req.url = UrlUtils.removeParameterFromUrl(
+      req.url,
+      UrlUtils.findParameterWithValueByParameterName(req.url, 'fileId')
+    );
     if (StringUtils.isBlank(fileId)) {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,

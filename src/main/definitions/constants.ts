@@ -502,6 +502,7 @@ export const DefaultValues = {
   STRING_AMPERSAND: '&',
   STRING_EMPTY: '',
   STRING_DASH: '-',
+  STRING_HASH: '#',
   STRING_QUESTION_MARK: '?',
   STRING_EQUALS: '=',
   STRING_SPACE: ' ',
@@ -509,8 +510,10 @@ export const DefaultValues = {
   STRING_SLASH: '/',
   STRING_SLASH_REGEX: /\//gi,
   STRING_UNDERSCORE: '_',
+  COLLECTION_EMPTY: [],
   NUMBER_ZERO: 0,
   CONTEST_CLAIM_REASON_MAX_LENGTH: 2500,
+  EMPLOYERS_CLAIM_DETAILS_MAX_LENGTH: 3000,
   FILE_ID_PARAMETER: 'fileId=',
   CLEAR_SELECTION: 'clearSelection',
   CLEAR_SELECTION_URL_PARAMETER: 'redirect=clearSelection',
@@ -535,6 +538,10 @@ export const FormFieldNames = {
   RESPONDENT_CONTEST_CLAIM_REASON: {
     ET3_RESPONSE_CONTEST_CLAIM_DETAILS: 'et3ResponseContestClaimDetails',
     CONTEST_CLAIM_DOCUMENT: 'contestClaimDocument',
+  },
+  EMPLOYERS_CONTRACT_CLAIM_DETAILS: {
+    ET3_RESPONSE_EMPLOYER_CLAIM_DETAILS: 'et3ResponseEmployerClaimDetails',
+    CLAIM_SUMMARY_FILE_NAME: 'claimSummaryFile',
   },
 } as const;
 

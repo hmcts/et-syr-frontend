@@ -28,7 +28,7 @@ export default class CheckYourAnswersContestClaimController extends BaseCYAContr
       this.form,
       ET3HubLinkNames.ContestClaim,
       linkStatus,
-      PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+      PageUrls.EMPLOYERS_CONTRACT_CLAIM
     );
   };
 

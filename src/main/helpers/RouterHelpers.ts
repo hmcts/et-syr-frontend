@@ -36,17 +36,16 @@ export const returnNextPage = (req: AppRequest, res: Response, redirectUrl: stri
 };
 
 export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): string => {
-  validUrls = validUrls ?? Object.values(PageUrls); // if undefined use PageURLs
-
+  validUrls = validUrls ?? Object.values(PageUrls);
   for (const url of validUrls) {
-    const welshUrl = url + languages.WELSH_URL_PARAMETER;
-    const englishUrl = url + languages.ENGLISH_URL_PARAMETER;
-    if (redirectUrl === url) {
-      return url;
-    } else if (redirectUrl === welshUrl) {
-      return welshUrl;
-    } else if (redirectUrl === englishUrl) {
-      return englishUrl;
+    // If URL has any parameter it was always returning not found.
+    // Check is replaced with includes instead of equals.
+    if (
+      (url !== DefaultValues.STRING_AMPERSAND && url !== DefaultValues.STRING_SLASH && redirectUrl.includes(url)) ||
+      redirectUrl === DefaultValues.STRING_HASH ||
+      redirectUrl === DefaultValues.STRING_SLASH
+    ) {
+      return redirectUrl;
     }
   }
   return ErrorPages.NOT_FOUND;
