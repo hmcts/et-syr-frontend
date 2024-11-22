@@ -284,7 +284,6 @@ export default class ET3Util {
     if (respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployersContractClaim] === LinkStatus.COMPLETED) {
       sectionCount++;
     }
-
     const overallStatus: AnyRecord = {
       sectionCount,
       totalSections,
