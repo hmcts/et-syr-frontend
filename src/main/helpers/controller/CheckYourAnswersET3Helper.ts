@@ -9,9 +9,14 @@ import {
   YesOrNoOrNotSure,
 } from '../../definitions/case';
 import { DefaultValues, PageUrls } from '../../definitions/constants';
-import { SummaryListRow, addSummaryRowWithAction } from '../../definitions/govuk/govukSummaryList';
+import {
+  SummaryListRow,
+  addSummaryHtmlRowWithAction,
+  addSummaryRowWithAction,
+} from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import DateUtils from '../../utils/DateUtils';
+import DocumentUtils from '../../utils/DocumentUtils';
 import { answersAddressFormatter } from '../AddressHelper';
 
 export const getEt3Section1 = (
@@ -445,7 +450,16 @@ export const getEt3Section5 = (
     // Join the shortDescriptions with a comma
     const contestClaimDocumentNames =
       userCase.et3ResponseContestClaimDocument !== undefined
-        ? documents.map(document => document.value.shortDescription).join(', ')
+        ? documents
+            .map(
+              document =>
+                '<a href="getCaseDocument/' +
+                document.id +
+                '" target="_blank">' +
+                document.value?.uploadedDocument?.document_filename +
+                '</a>'
+            )
+            .join(DefaultValues.HTML_NEWLINE)
         : DefaultValues.STRING_DASH;
 
     et3ResponseSection5.push(
@@ -456,7 +470,7 @@ export const getEt3Section5 = (
         translations.change,
         sectionCya
       ),
-      addSummaryRowWithAction(
+      addSummaryHtmlRowWithAction(
         translations.section5.supportingMaterials,
         contestClaimDocumentNames,
         PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
@@ -488,6 +502,14 @@ export const getEt3Section6 = (
   );
 
   if (YesOrNo.YES === userCase.et3ResponseEmployerClaim) {
+    const employerClaimDocument =
+      userCase.et3ResponseEmployerClaimDocument !== undefined
+        ? '<a href="getCaseDocument/' +
+          DocumentUtils.findDocumentIdByURL(userCase.et3ResponseEmployerClaimDocument.document_url) +
+          '" target="_blank">' +
+          userCase.et3ResponseEmployerClaimDocument.document_filename +
+          '</a>'
+        : DefaultValues.STRING_DASH;
     et3ResponseSection6.push(
       addSummaryRowWithAction(
         translations.section6.employerContractClaimDetails,
@@ -496,9 +518,9 @@ export const getEt3Section6 = (
         translations.change,
         sectionCya
       ),
-      addSummaryRowWithAction(
+      addSummaryHtmlRowWithAction(
         translations.section6.supportingMaterials,
-        translations.section6.exampleData, // todo: populate with the correct field from userCase
+        employerClaimDocument,
         PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS,
         translations.change,
         sectionCya

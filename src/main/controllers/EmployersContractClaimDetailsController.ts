@@ -3,8 +3,8 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, UploadedDocumentType } from '../definitions/case';
-import { FormFieldNames, PageUrls, TranslationKeys, et3AttachmentDocTypes } from '../definitions/constants';
+import { CaseWithId } from '../definitions/case';
+import { FormFieldNames, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
@@ -15,16 +15,15 @@ import { getLogger } from '../logger';
 import CollectionUtils from '../utils/CollectionUtils';
 import ET3Util from '../utils/ET3Util';
 import FileUtils from '../utils/FileUtils';
-import NumberUtils from '../utils/NumberUtils';
 import ObjectUtils from '../utils/ObjectUtils';
-import { isContentCharsOrLessAndNotEmpty } from '../validators/validator';
+import StringUtils from '../utils/StringUtils';
 
 const logger = getLogger('EmployersContractClaimDetailsController');
 
 export default class EmployersContractClaimDetailsController {
   private uploadedFileName = '';
   private getHint = (label: AnyRecord): string => {
-    if (this.uploadedFileName !== '') {
+    if (StringUtils.isNotBlank(this.uploadedFileName)) {
       return (label.fileUpload.hintExisting as string).replace('{{filename}}', this.uploadedFileName);
     } else {
       return label.fileUpload.hint;
@@ -39,7 +38,6 @@ export default class EmployersContractClaimDetailsController {
         label: (l: AnyRecord): string => l.et3ResponseEmployerClaimDetails.label,
         maxlength: 3000,
         attributes: { maxLength: 3000 },
-        validator: isContentCharsOrLessAndNotEmpty(3000),
       },
       claimSummaryFile: {
         id: 'claimSummaryFile',
@@ -48,6 +46,15 @@ export default class EmployersContractClaimDetailsController {
         type: 'upload',
         classes: 'govuk-label',
         hint: (l: AnyRecord) => this.getHint(l),
+      },
+      upload: {
+        label: (l: AnyRecord): string => l.files.uploadButton,
+        classes: 'govuk-button--secondary',
+        id: 'upload',
+        type: 'button',
+        name: 'upload',
+        value: 'true',
+        divider: false,
       },
     },
     submit: {
@@ -70,56 +77,48 @@ export default class EmployersContractClaimDetailsController {
       res.status(200).end('Thank you for your submission. You will be contacted in due course.');
       return;
     }
-    if (req.fileTooLarge) {
-      req.session.errors = [
-        {
-          propertyName: FormFieldNames.EMPLOYERS_CONTRACT_CLAIM_DETAILS.CLAIM_SUMMARY_FILE_NAME,
-          errorType: 'invalidFileSize',
-        },
-      ];
-      return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
-    }
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    EmployersContractClaimDetailsControllerHelper.areInputValuesValid(req, formData);
-    if (req.session.errors && req.session.errors.length === 0) {
-      req.session.userCase.et3ResponseEmployerClaimDetails = formData.et3ResponseEmployerClaimDetails;
+    if (req.body?.upload) {
+      req.session.errors = [];
+      if (req.fileTooLarge) {
+        req.session.errors = [
+          {
+            propertyName: FormFieldNames.EMPLOYERS_CONTRACT_CLAIM_DETAILS.CLAIM_SUMMARY_FILE_NAME,
+            errorType: 'invalidFileSize',
+          },
+        ];
+        return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
+      }
       if (ObjectUtils.isNotEmpty(req.file)) {
         if (!FileUtils.checkFile(req)) {
-          return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+          return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
         }
         const uploadedDocument: DocumentUploadResponse = await FileUtils.uploadFile(req);
         if (!uploadedDocument) {
-          return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+          return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
         }
-        const uploadedDocumentType: UploadedDocumentType = {
-          category_id: et3AttachmentDocTypes[0],
-          document_binary_url: uploadedDocument.uri,
-          document_filename: uploadedDocument.originalDocumentName,
-          document_url: uploadedDocument.uri,
-          upload_timestamp: uploadedDocument.createdOn,
-        };
-        req.session.userCase.et3ResponseEmployerClaimDocument = uploadedDocumentType;
-        if (
-          CollectionUtils.isNotEmpty(req.session?.userCase?.respondents) &&
-          NumberUtils.isNotEmpty(req.session?.selectedRespondentIndex) &&
-          ObjectUtils.isNotEmpty(req.session?.userCase.respondents[req.session.selectedRespondentIndex])
-        ) {
-          req.session.userCase.respondents[req.session.selectedRespondentIndex].et3ResponseEmployerClaimDocument =
-            uploadedDocumentType;
-        }
+        EmployersContractClaimDetailsControllerHelper.setEmployerClaimDocumentToUserCase(req, uploadedDocument);
       }
-      await ET3Util.updateET3ResponseWithET3Form(
-        req,
-        res,
-        this.form,
-        ET3HubLinkNames.EmployersContractClaim,
-        LinkStatus.IN_PROGRESS,
-        PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM
-      );
+      return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
     }
+    req.session.errors = [];
+    req.session.userCase.et3ResponseEmployerClaimDetails = formData.et3ResponseEmployerClaimDetails;
+    EmployersContractClaimDetailsControllerHelper.areInputValuesValid(req, formData);
+    if (CollectionUtils.isNotEmpty(req.session.errors)) {
+      return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
+    }
+    await ET3Util.updateET3ResponseWithET3Form(
+      req,
+      res,
+      this.form,
+      ET3HubLinkNames.EmployersContractClaim,
+      LinkStatus.IN_PROGRESS,
+      PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM
+    );
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    this.uploadedFileName = EmployersContractClaimDetailsControllerHelper.getET3EmployersContractClaimDocumentName(req);
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.EMPLOYERS_CONTRACT_CLAIM_DETAILS,

@@ -31,7 +31,7 @@ export default class UrlUtils {
   }
 
   /**
-   * Removed parameter from the given url. For example if url is
+   * Removes parameter from the given url. For example if url is
    * "https://localhost:3003/employers-contract-claim?redirect=clearSelection&lng=cy" and parameter is "redirect=clear"
    * returns "https://localhost:3003/employers-contract-claim?lng=cy".
    * Please be careful, if parameter to be removed is the first parameter if there is another parameter,
@@ -64,6 +64,14 @@ export default class UrlUtils {
     return url;
   }
 
+  /**
+   * Gets parameter with its value. For the url
+   * https://localhost:3003/employers-contract-claim?redirect=clearSelection&lng=cy&test=test if we send parameter name
+   * as redirect, function will return redirect=clearSelection, for lng will return lng=cy and for test will return
+   * test=test.
+   * @param url string value to search parameter in.
+   * @param parameterName string value of the parameter name that will be searched in the url.
+   */
   public static findParameterWithValueByParameterName(url: string, parameterName: string): string {
     const clonedUrl = _.cloneDeep(url);
     if (

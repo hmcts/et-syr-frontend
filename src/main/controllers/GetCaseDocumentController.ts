@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { RespondentET3Model } from '../definitions/case';
-import { PageUrls } from '../definitions/constants';
+import { PageUrls, et3AttachmentDocTypes } from '../definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import {
   combineUserCaseDocuments,
@@ -14,6 +14,7 @@ import {
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
+import DocumentUtils from '../utils/DocumentUtils';
 import ET3Util from '../utils/ET3Util';
 import NumberUtils from '../utils/NumberUtils';
 import ObjectUtils from '../utils/ObjectUtils';
@@ -53,6 +54,24 @@ export default class GetCaseDocumentController {
           documentTypeItem = selectedRespondent?.et3ResponseContestClaimDocument.find(
             doc => doc.id === req.params.docId
           );
+          if (ObjectUtils.isEmpty(documentTypeItem)) {
+            if (ObjectUtils.isNotEmpty(selectedRespondent?.et3ResponseEmployerClaimDocument)) {
+              const employerClaimDocumentId = DocumentUtils.findDocumentIdByURL(
+                selectedRespondent.et3ResponseEmployerClaimDocument.document_url
+              );
+              if (StringUtils.isNotBlank(employerClaimDocumentId) && employerClaimDocumentId === req.params.docId) {
+                documentTypeItem = {
+                  id: employerClaimDocumentId,
+                  value: {
+                    uploadedDocument: selectedRespondent.et3ResponseEmployerClaimDocument,
+                    typeOfDocument: et3AttachmentDocTypes[0],
+                    creationDate: selectedRespondent.et3ResponseEmployerClaimDocument.upload_timestamp,
+                    shortDescription: selectedRespondent.et3ResponseEmployerClaimDocument.document_filename,
+                  },
+                };
+              }
+            }
+          }
         }
       }
       if (ObjectUtils.isNotEmpty(documentTypeItem)) {

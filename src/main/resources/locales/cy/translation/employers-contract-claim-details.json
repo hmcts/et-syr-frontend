@@ -4,10 +4,15 @@
   "li1": "[W]the background and details of the claim",
   "li2": "[W]all important dates",
   "li3": "[W]the value of the claim and how you calculated it",
+  "files": {
+    "title": "[W]Upload a file (Optional)",
+    "uploadButton": "[W]Upload file",
+    "removeButton": "[W]Remove file",
+    "uploaded": "[W]Files uploaded"
+  },
   "et3ResponseEmployerClaimDetails": {
     "label": "[W]Provide the background and details of the Employer’s Contract Claim"
   },
-  "uploadButton": "Upload",
   "fileUpload": {
     "linkText": "[W]Or upload your summary as a separate document (optional)",
     "hint": "[W]<p>You can only upload 1 document of max size 80MB.</p><p>If you want to upload an email, download and convert from your email client first. Most email clients will give the option of downloading as pdf or PostScript.</p><p>Upload a file</p>",
@@ -29,7 +34,8 @@
       "sessionRespondent": "[W]Unable to find selected respondent in session",
       "userId": "[W]Invalid session user. User does not have an ID",
       "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "api": "[W]A system error occurred, Please try again later",
+      "required": "Give details of the employer's contract claim"
     }
   }
 }
