@@ -13,7 +13,6 @@ import { isClearSelectionWithoutRequestUserCaseCheck } from '../helpers/RouterHe
 import ET3Util from '../utils/ET3Util';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
-import { isOptionSelected } from '../validators/validator';
 
 export default class EmployersContractClaimController {
   private readonly form: Form;
@@ -36,7 +35,6 @@ export default class EmployersContractClaimController {
             value: YesOrNo.NO,
           },
         ],
-        validator: isOptionSelected,
       },
       clearSelection: {
         type: 'clearSelection',
