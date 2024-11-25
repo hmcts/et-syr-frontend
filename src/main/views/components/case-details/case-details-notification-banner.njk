@@ -3,7 +3,7 @@
 
 {% set htmlForAcknowledgementAlert %}
 
-{% if showAcknowledgementAlert %}
+{% if showAcknowledgementAlert or showSavedResponseAlert%}
   <h3 class="govuk-notification-banner__heading">
     {{notificationBanner.acknowledgement.header }}
     {% if selectedRespondent.respondentName !== null
@@ -23,14 +23,15 @@
     {{notificationBanner.acknowledgement.p1 + respondentResponseDeadline}}
   </p>
 
-  {% if showSavedResponseAlert %}
-    <p class="govuk-body">
-      <a class="govuk-link" href="{{ respondToClaimUrl }}"><b>{{notificationBanner.acknowledgement.returnToResponse}}</b></a>
-    </p>
-  {% else %}
+  {% if showAcknowledgementAlert %}
     <p class="govuk-body">
       <a class="govuk-link" href="{{ et1FormUrl }}"><b>{{notificationBanner.acknowledgement.link}}</b></a><br>
       <a class="govuk-link" href="{{ respondToClaimUrl }}"><b>{{notificationBanner.acknowledgement.link2}}</b></a>
+    </p>
+
+  {% elif showSavedResponseAlert and not showAcknowledgementAlert %}
+    <p class="govuk-body">
+      <a class="govuk-link" href="{{ respondToClaimUrl }}"><b>{{notificationBanner.acknowledgement.returnToResponse}}</b></a>
     </p>
   {% endif %}
 {% endif %}
@@ -51,7 +52,7 @@
 
 {% endset %}
 
-{% if showAcknowledgementAlert or showViewResponseAlert %}
+{% if showAcknowledgementAlert or showViewResponseAlert or showSavedResponseAlert %}
   {{ govukNotificationBanner({
    html: htmlForAcknowledgementAlert,
    titleText: important

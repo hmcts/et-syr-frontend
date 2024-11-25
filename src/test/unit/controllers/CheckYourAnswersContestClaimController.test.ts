@@ -6,6 +6,7 @@ import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-yo
 import commonJsonRaw from '../../../main/resources/locales/cy/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
+import { mockDocumentTypeItemFromMockDocumentUploadResponse } from '../mocks/mockDocumentUploadResponse';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import { createMockedUpdateET3ResponseWithET3FormFunction, mockFormError } from '../mocks/mockStaticFunctions';
@@ -41,7 +42,23 @@ describe('CheckYourAnswersContestClaimController', () => {
       controller.get(request, response);
 
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, expect.anything());
+    });
+
+    it('should render the page with et3ResponseContestClaimDocument', () => {
+      request = mockRequestWithTranslation({}, translationJsons);
+      request.session.userCase.et3ResponseContestClaimDocument = [
+        {
+          id: '1',
+          value: mockDocumentTypeItemFromMockDocumentUploadResponse.value,
+        },
+      ];
+
+      controller.get(request, response);
+
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, expect.anything());
+      expect(request.session.userCase.et3ResponseContestClaimDocument[0].value.shortDescription).toEqual(
+        'Screenshot 2024-11-03 at 18.53.00.png'
+      );
     });
   });
 

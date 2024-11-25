@@ -2,6 +2,12 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
+{% set acasCertLink = undefined %}
+
+{% if acasCert !== undefined and acasCert.value !== undefined and acasCert.value.uploadedDocument !== undefined %}
+    {% set acasCertLink = "<a href=getCaseDocument/" + acasCert.id + " target=\"_blank\">" + acasCert.value.uploadedDocument.document_filename + "</a>" %}
+{% endif %}
+
 {% block beforeContent %}
   {{ super() }}
   {% include "back-link.njk" %}
@@ -19,9 +25,9 @@
 
       <p class="govuk-body">{{ p1 }}</p>
 
-      {% if acasLink %}
+      {% if acasCertLink %}
       <p class="govuk-body">
-        <a href="{{ acasLink }}" class="govuk-link">{{ link }}</a>
+        {{ acasCertLink }}
       </p>
       {% endif %}
 

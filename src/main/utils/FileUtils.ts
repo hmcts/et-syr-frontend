@@ -139,7 +139,7 @@ export default class FileUtils {
             '/' +
             req.session?.userCase?.et3ResponseContestClaimDetails +
             languageParam +
-            '" target="_blank">' +
+            '">' +
             textRemove +
             '</a>',
         },

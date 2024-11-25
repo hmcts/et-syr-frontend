@@ -23,8 +23,6 @@ const titleClass = 'govuk-heading-l';
 const expectedTitle = pageJson.title;
 const pClass = 'govuk-body';
 const expectedP1 = pageJson.p1;
-const linkClass = 'govuk-link';
-const expectedLink = pageJson.link;
 const radioClass = 'govuk-radios__item';
 const expectedRadioLabel1 = commonJson.yes;
 const expectedRadioLabel2 = commonJson.no;
@@ -53,11 +51,6 @@ describe('Acas early conciliation certificate page', () => {
   it('should display paragraphs', () => {
     const p = htmlRes.getElementsByClassName(pClass);
     expect(p[6].innerHTML).contains(expectedP1, 'Paragraph does not exist');
-  });
-
-  it('should display link', () => {
-    const link = htmlRes.getElementsByClassName(linkClass);
-    expect(link[5].innerHTML).contains(expectedLink, 'Could not find the link');
   });
 
   it('should display 2 input fields', () => {

@@ -448,7 +448,8 @@ export const getEt3Section5 = (
   if (YesOrNo.YES === userCase.et3ResponseRespondentContestClaim) {
     const documents = userCase.et3ResponseContestClaimDocument;
     // Join the shortDescriptions with a comma
-    const contestClaimDocumentNames =
+    // Generate HTML for individual document links
+    const contestClaimDocumentLinks =
       userCase.et3ResponseContestClaimDocument !== undefined
         ? documents
             .map(
@@ -470,9 +471,10 @@ export const getEt3Section5 = (
         translations.change,
         sectionCya
       ),
+
       addSummaryHtmlRowWithAction(
         translations.section5.supportingMaterials,
-        contestClaimDocumentNames,
+        contestClaimDocumentLinks,
         PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
         translations.change,
         sectionCya
