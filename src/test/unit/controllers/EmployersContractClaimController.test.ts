@@ -29,6 +29,14 @@ describe('Employers Contract Claim Controller', () => {
       controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.EMPLOYERS_CONTRACT_CLAIM, expect.anything());
     });
+
+    it('should render the Employers Contract Claim and clear selection', () => {
+      request.query = {
+        redirect: 'clearSelection',
+      };
+      controller.get(request, response);
+      expect(request.session.userCase.et3ContractClaimSection7).toBeUndefined();
+    });
   });
 
   describe('POST method', () => {
