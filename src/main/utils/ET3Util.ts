@@ -188,7 +188,7 @@ export default class ET3Util {
     const formData = form.getParsedBody<CaseWithId>(req.body, form.getFormFields());
     req.session.errors = form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
-      logger.error(LoggerConstants.ERROR_FORM_INVALID_DATA + 'Form: ' + form);
+      logger.error(LoggerConstants.ERROR_FORM_INVALID_DATA + ' Form: ' + form);
       return res.redirect(returnValidUrl(req.url));
     }
     setUserCase(req, formData, fieldsToReset);
@@ -258,7 +258,7 @@ export default class ET3Util {
   }
 
   public static getOverallStatus(respondent: RespondentET3Model, translations: AnyRecord): string {
-    const totalSections: number = 5;
+    const totalSections: number = 6;
     let sectionCount: number = 0;
 
     if (respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] === LinkStatus.COMPLETED) {
@@ -281,6 +281,9 @@ export default class ET3Util {
       sectionCount++;
     }
 
+    if (respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployersContractClaim] === LinkStatus.COMPLETED) {
+      sectionCount++;
+    }
     const overallStatus: AnyRecord = {
       sectionCount,
       totalSections,

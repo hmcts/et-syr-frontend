@@ -2,31 +2,36 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, YesOrNo } from '../definitions/case';
-import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { YesOrNo } from '../definitions/case';
+import { DefaultValues, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { isClearSelection } from '../helpers/RouterHelpers';
+import { isClearSelectionWithoutRequestUserCaseCheck } from '../helpers/RouterHelpers';
 import ET3Util from '../utils/ET3Util';
+import StringUtils from '../utils/StringUtils';
+import UrlUtils from '../utils/UrlUtils';
 
 export default class EmployersContractClaimController {
   private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
       et3ResponseEmployerClaim: {
+        id: 'et3ResponseEmployerClaim',
         type: 'radios',
         classes: 'govuk-radios--inline',
         label: (l: AnyRecord): string => l.label,
         values: [
           {
+            name: 'et3ResponseEmployerClaim',
             label: (l: AnyRecord): string => l.yes,
             value: YesOrNo.YES,
           },
           {
+            name: 'et3ResponseEmployerClaim',
             label: (l: AnyRecord): string => l.no,
             value: YesOrNo.NO,
           },
@@ -34,7 +39,7 @@ export default class EmployersContractClaimController {
       },
       clearSelection: {
         type: 'clearSelection',
-        targetUrl: PageUrls.CLAIMANT_JOB_TITLE,
+        targetUrl: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
       },
     },
     submit: submitButton,
@@ -53,6 +58,10 @@ export default class EmployersContractClaimController {
       req.session.returnUrl = nextPage; //force redirect through the flow before going back to CYA screen
     }
 
+    if (StringUtils.isNotBlank(req.url)) {
+      req.url = UrlUtils.removeParameterFromUrl(req.url, DefaultValues.CLEAR_SELECTION_URL_PARAMETER);
+    }
+
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
@@ -64,8 +73,11 @@ export default class EmployersContractClaimController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    if (isClearSelection(req)) {
-      req.session.userCase.et3ContractClaimSection7 = undefined;
+    if (isClearSelectionWithoutRequestUserCaseCheck(req)) {
+      if (req.session.userCase) {
+        req.session.userCase.et3ResponseEmployerClaim = undefined;
+      }
+      req.session.errors = [];
     }
 
     const content = getPageContent(req, this.formContent, [

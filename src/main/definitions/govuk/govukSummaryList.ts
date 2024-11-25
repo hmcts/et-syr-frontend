@@ -40,7 +40,7 @@ export function addSummaryRowWithAction(
   };
 }
 
-export function addSummaryRowWithActionHTML(
+export function addSummaryHtmlRowWithAction(
   key: string,
   value: string | undefined,
   pageUrl: string | undefined,

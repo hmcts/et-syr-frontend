@@ -1,17 +1,53 @@
 import { AppRequest } from '../definitions/appRequest';
-import { languages } from '../definitions/constants';
+import { DefaultValues, languages } from '../definitions/constants';
+import CollectionUtils from '../utils/CollectionUtils';
+import StringUtils from '../utils/StringUtils';
+import UrlUtils from '../utils/UrlUtils';
 
-// Used for invoking PCQ surver.
 export const setUrlLanguage = (req: AppRequest, redirectUrl: string): string => {
-  if (req.url?.includes(languages.WELSH_URL_PARAMETER)) {
-    redirectUrl += languages.WELSH_URL_PARAMETER;
-    req.session.lang = languages.WELSH;
+  if (StringUtils.isBlank(req.url) && StringUtils.isBlank(redirectUrl)) {
+    return DefaultValues.STRING_HASH;
   }
-  if (req.url?.includes(languages.ENGLISH_URL_PARAMETER)) {
-    redirectUrl += languages.ENGLISH_URL_PARAMETER;
+  if (StringUtils.isBlank(redirectUrl)) {
+    return addLanguageParameterToUrl(req, req.url);
+  }
+  const requestParams: string[] = UrlUtils.getRequestParamsFromUrl(req.url);
+  if (CollectionUtils.isNotEmpty(requestParams)) {
+    for (const param of requestParams) {
+      if (param !== languages.WELSH_URL_POSTFIX && param !== languages.ENGLISH_URL_POSTFIX) {
+        redirectUrl = addParameterToUrl(redirectUrl, param);
+      }
+    }
+  }
+  return addLanguageParameterToUrl(req, redirectUrl);
+};
+
+export const addLanguageParameterToUrl = (req: AppRequest, redirectUrl: string): string => {
+  if (StringUtils.isNotBlank(req?.url) && req?.url.includes(languages.WELSH_URL_POSTFIX)) {
+    redirectUrl = addParameterToUrl(redirectUrl, languages.WELSH_URL_POSTFIX);
+    req.session.lang = languages.WELSH;
+  } else if (StringUtils.isNotBlank(req?.url) && req?.url.includes(languages.ENGLISH_URL_POSTFIX)) {
+    redirectUrl = addParameterToUrl(redirectUrl, languages.ENGLISH_URL_POSTFIX);
     req.session.lang = languages.ENGLISH;
   }
   return redirectUrl;
+};
+
+export const addParameterToUrl = (url: string, parameter: string): string => {
+  if (StringUtils.isBlank(url)) {
+    return DefaultValues.STRING_EMPTY;
+  }
+  if (StringUtils.isBlank(parameter)) {
+    return url;
+  }
+  if (!url.includes(parameter)) {
+    if (url.includes(DefaultValues.STRING_QUESTION_MARK)) {
+      url = url + DefaultValues.STRING_AMPERSAND + parameter;
+    } else {
+      url = url + DefaultValues.STRING_QUESTION_MARK + parameter;
+    }
+  }
+  return url;
 };
 
 export const setChangeAnswersUrlLanguage = (req: AppRequest): string => {
