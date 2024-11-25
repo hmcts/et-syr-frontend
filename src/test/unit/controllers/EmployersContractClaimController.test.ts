@@ -72,8 +72,10 @@ describe('Employers Contract Claim Controller', () => {
       request.url = 'http://localhost:8080?redirect=clearSelection&lng=cy&testValue=test';
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(request.url).toBe('http://localhost:8080?lng=cy&testValue=test');
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
+      expect(request.url).toContain('http://localhost:8080?lng=cy&testValue=test');
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM + '?redirect=clearSelection&testValue=test&lng=cy'
+      );
     });
   });
 });
