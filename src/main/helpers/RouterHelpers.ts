@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { ErrorPages, PageUrls, languages } from '../definitions/constants';
+import { DefaultValues, ErrorPages, PageUrls, languages } from '../definitions/constants';
 import { FormFields } from '../definitions/form';
 
 export const getLanguageParam = (url: string): string => {
@@ -36,24 +36,31 @@ export const returnNextPage = (req: AppRequest, res: Response, redirectUrl: stri
 };
 
 export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): string => {
-  validUrls = validUrls ?? Object.values(PageUrls); // if undefined use PageURLs
-
+  validUrls = validUrls ?? Object.values(PageUrls);
   for (const url of validUrls) {
-    const welshUrl = url + languages.WELSH_URL_PARAMETER;
-    const englishUrl = url + languages.ENGLISH_URL_PARAMETER;
-    if (redirectUrl === url) {
-      return url;
-    } else if (redirectUrl === welshUrl) {
-      return welshUrl;
-    } else if (redirectUrl === englishUrl) {
-      return englishUrl;
+    // If URL has any parameter it was always returning not found.
+    // Check is replaced with includes instead of equals.
+    if (
+      (url !== DefaultValues.STRING_AMPERSAND && url !== DefaultValues.STRING_SLASH && redirectUrl.includes(url)) ||
+      redirectUrl === DefaultValues.STRING_HASH ||
+      redirectUrl === DefaultValues.STRING_SLASH
+    ) {
+      return redirectUrl;
     }
   }
   return ErrorPages.NOT_FOUND;
 };
 
 export const isClearSelection = (req: AppRequest): boolean => {
-  return req.query !== undefined && req.query.redirect === 'clearSelection' && req.session.userCase !== undefined;
+  return (
+    req.query !== undefined &&
+    req.query.redirect === DefaultValues.CLEAR_SELECTION &&
+    req.session.userCase !== undefined
+  );
+};
+
+export const isClearSelectionWithoutRequestUserCaseCheck = (req: AppRequest): boolean => {
+  return req.query !== undefined && req.query.redirect === DefaultValues.CLEAR_SELECTION;
 };
 
 /**

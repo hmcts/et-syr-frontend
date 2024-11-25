@@ -40,6 +40,24 @@ export function addSummaryRowWithAction(
   };
 }
 
+export function addSummaryHtmlRowWithAction(
+  key: string,
+  value: string | undefined,
+  pageUrl: string | undefined,
+  linkText?: string,
+  sectionCya?: string
+): SummaryListRow {
+  return {
+    key: { text: key, classes: 'govuk-!-font-weight-regular-m' },
+    value: { html: value || '' }, // Default to empty string if undefined
+    ...(linkText && sectionCya !== undefined && pageUrl
+      ? {
+          actions: createChangeAction(pageUrl + sectionCya, linkText, key),
+        }
+      : {}),
+  };
+}
+
 export function createChangeAction(href: string, text: string, visuallyHiddenText?: string): SummaryListActions {
   return { items: [{ href, text, visuallyHiddenText: visuallyHiddenText || text }] };
 }

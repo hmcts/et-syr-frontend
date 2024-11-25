@@ -85,10 +85,17 @@ const respondentContestClaimReasonLimiter = rateLimit({
   message: 'Too many requests from this IP, please try again later.',
 });
 
+const employersContractClaimDetailsLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  message: 'Too many requests from this IP, please try again later.',
+});
+
 export class Routes {
   public enableFor(app: Application): void {
     // Singleton controllers:
     const respondentContestClaimReasonController = new RespondentContestClaimReasonController();
+    const employersContractClaimDetailsController = new EmployersContractClaimDetailsController();
     app.get(InterceptPaths.CHANGE_DETAILS, new ChangeDetailsController().get);
     // Page URLs
     app.get(PageUrls.HOME, new HomeController().get);
@@ -209,8 +216,13 @@ export class Routes {
     app.post(PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, new CheckYourAnswersContestClaimController().post);
     app.get(PageUrls.EMPLOYERS_CONTRACT_CLAIM, new EmployersContractClaimController().get);
     app.post(PageUrls.EMPLOYERS_CONTRACT_CLAIM, new EmployersContractClaimController().post);
-    app.get(PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS, new EmployersContractClaimDetailsController().get);
-    app.post(PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS, new EmployersContractClaimDetailsController().post);
+    app.get(PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS, employersContractClaimDetailsController.get);
+    app.post(
+      PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS,
+      employersContractClaimDetailsLimiter,
+      handleUploads.single('claimSummaryFile'),
+      new EmployersContractClaimDetailsController().post
+    );
     app.get(
       PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM,
       new CheckYourAnswersEmployersContractClaimController().get

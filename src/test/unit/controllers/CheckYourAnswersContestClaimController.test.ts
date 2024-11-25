@@ -68,7 +68,7 @@ describe('CheckYourAnswersContestClaimController', () => {
         expect.anything(),
         expect.anything(),
         LinkStatus.COMPLETED,
-        PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+        PageUrls.EMPLOYERS_CONTRACT_CLAIM
       );
     });
 
@@ -95,7 +95,7 @@ describe('CheckYourAnswersContestClaimController', () => {
         expect.anything(),
         expect.anything(),
         LinkStatus.IN_PROGRESS,
-        PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+        PageUrls.EMPLOYERS_CONTRACT_CLAIM
       );
     });
 

@@ -1,5 +1,6 @@
-import { languages } from '../../../main/definitions/constants';
+import { DefaultValues, PageUrls, languages } from '../../../main/definitions/constants';
 import {
+  addParameterToUrl,
   setChangeAnswersUrlLanguage,
   setCheckAnswersLanguage,
   setUrlLanguage,
@@ -100,6 +101,158 @@ describe('Language Helper Functions', () => {
       const result = setCheckAnswersLanguage(req, sessionUrl);
 
       expect(result).toBe(sessionUrl + languages.ENGLISH_URL_PARAMETER);
+    });
+  });
+  describe('addParameterToUrl', () => {
+    it.each([
+      {
+        url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&lng=cy',
+        param: 'test=test',
+        result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&lng=cy&test=test',
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&lng=cy&test=test',
+        param: 'test=test',
+        result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&lng=cy&test=test',
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection',
+        param: 'test=test',
+        result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test',
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?lng=cy&test=test&redirect=clearSelection',
+        param: 'test=test',
+        result: 'https://localhost:3003/employers-contract-claim?lng=cy&test=test&redirect=clearSelection',
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?lng=cy&redirect=clearSelection&test=test',
+        param: 'test=test',
+        result: 'https://localhost:3003/employers-contract-claim?lng=cy&redirect=clearSelection&test=test',
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?test=test&redirect=clearSelection&lng=cy',
+        param: 'test=test',
+        result: 'https://localhost:3003/employers-contract-claim?test=test&redirect=clearSelection&lng=cy',
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?lng=cy&redirect=clearSelection',
+        param: 'test=test',
+        result: 'https://localhost:3003/employers-contract-claim?lng=cy&redirect=clearSelection&test=test',
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim',
+        param: 'test=test',
+        result: 'https://localhost:3003/employers-contract-claim?test=test',
+      },
+      { url: undefined, param: 'test=test', result: DefaultValues.STRING_EMPTY },
+      { url: DefaultValues.STRING_SPACE, param: 'test=test', result: DefaultValues.STRING_EMPTY },
+      { url: DefaultValues.STRING_EMPTY, param: 'test=test', result: DefaultValues.STRING_EMPTY },
+    ])('check if given urls parameters are listed as string list: %o', ({ url, param, result }) => {
+      expect(addParameterToUrl(url, param)).toStrictEqual(result);
+    });
+  });
+  describe('setUrlLanguage version2', () => {
+    let req: ReturnType<typeof mockRequest>;
+
+    beforeEach(() => {
+      req = mockRequest({});
+    });
+    it.each([
+      {
+        url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&lng=cy',
+        redirectUrl: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+        result: '/employers-contract-claim?redirect=clearSelection&lng=cy',
+        expectedLang: languages.WELSH,
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&lng=cy&test=test',
+        redirectUrl: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+        result: '/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        expectedLang: languages.WELSH,
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection',
+        redirectUrl: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+        result: '/employers-contract-claim?redirect=clearSelection',
+        expectedLang: languages.ENGLISH,
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?lng=cy&test=test&redirect=clearSelection',
+        redirectUrl: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+        result: '/employers-contract-claim?test=test&redirect=clearSelection&lng=cy',
+        expectedLang: languages.WELSH,
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?lng=cy&redirect=clearSelection&test=test',
+        redirectUrl: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+        result: '/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        expectedLang: languages.WELSH,
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?test=test&redirect=clearSelection&lng=cy',
+        redirectUrl: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+        result: '/employers-contract-claim?test=test&redirect=clearSelection&lng=cy',
+        expectedLang: languages.WELSH,
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?lng=cy&redirect=clearSelection',
+        redirectUrl: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+        result: '/employers-contract-claim?redirect=clearSelection&lng=cy',
+        expectedLang: languages.WELSH,
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim',
+        redirectUrl: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+        result: '/employers-contract-claim',
+        expectedLang: languages.ENGLISH,
+      },
+      {
+        url: undefined,
+        redirectUrl: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+        result: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+        expectedLang: languages.ENGLISH,
+      },
+      {
+        url: DefaultValues.STRING_SPACE,
+        redirectUrl: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+        result: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+        expectedLang: languages.ENGLISH,
+      },
+      {
+        url: DefaultValues.STRING_EMPTY,
+        redirectUrl: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+        result: PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+        expectedLang: languages.ENGLISH,
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        redirectUrl: undefined,
+        result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        expectedLang: languages.WELSH,
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        redirectUrl: DefaultValues.STRING_EMPTY,
+        result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        expectedLang: languages.WELSH,
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        redirectUrl: DefaultValues.STRING_SPACE,
+        result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        expectedLang: languages.WELSH,
+      },
+      {
+        url: DefaultValues.STRING_EMPTY,
+        redirectUrl: DefaultValues.STRING_SPACE,
+        result: DefaultValues.STRING_HASH,
+        expectedLang: languages.ENGLISH,
+      },
+    ])('check if given urls parameters are listed as string list: %o', ({ url, redirectUrl, result, expectedLang }) => {
+      req.url = url;
+      expect(setUrlLanguage(req, redirectUrl)).toStrictEqual(result);
+      expect(req.session.lang).toStrictEqual(expectedLang);
     });
   });
 });

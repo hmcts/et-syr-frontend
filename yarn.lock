@@ -7328,6 +7328,7 @@ __metadata:
     swc_mut_cjs_exports: ^0.109.0
     ts-loader: ^9.4.2
     ts-node: ^10.9.1
+    ts-transformer-keys: ^0.4.4
     tsconfig-paths: ^4.2.0
     typescript: 5.0.4
     uuid: ^11.0.0
@@ -14734,6 +14735,15 @@ __metadata:
     ts-node-transpile-only: dist/bin-transpile.js
     ts-script: dist/bin-script-deprecated.js
   checksum: fde256c9073969e234526e2cfead42591b9a2aec5222bac154b0de2fa9e4ceb30efcd717ee8bc785a56f3a119bdd5aa27b333d9dbec94ed254bd26f8944c67ac
+  languageName: node
+  linkType: hard
+
+"ts-transformer-keys@npm:^0.4.4":
+  version: 0.4.4
+  resolution: "ts-transformer-keys@npm:0.4.4"
+  peerDependencies:
+    typescript: ">=2.4.1"
+  checksum: f63e9d658f992f8949ba09f7c6f3585342183efa657a16b82ca82915a9f5206bcff417437ee4ee87144ba79139373367e49b71feb19db51c61b5130c84fc6f88
   languageName: node
   linkType: hard
 

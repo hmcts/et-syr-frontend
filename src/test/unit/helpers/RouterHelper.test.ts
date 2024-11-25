@@ -1,4 +1,4 @@
-import { ErrorPages, PageUrls, languages } from '../../../main/definitions/constants';
+import { DefaultValues, ErrorPages, PageUrls, languages } from '../../../main/definitions/constants';
 import { FormFields } from '../../../main/definitions/form';
 import {
   conditionalRedirect,
@@ -6,6 +6,7 @@ import {
   getCancelLink,
   getLanguageParam,
   isClearSelection,
+  isClearSelectionWithoutRequestUserCaseCheck,
   returnNextPage,
   returnValidUrl,
   startSubSection,
@@ -223,6 +224,28 @@ describe('RouterHelper', () => {
       });
       const result = getCancelLink(request);
       expect(result).toBe('/case-details/1?lng=en');
+    });
+  });
+  describe('isClearSelectionWithoutRequestUserCaseCheck', () => {
+    it('should return false if request.query is empty', () => {
+      const request = mockRequest({
+        session: { userCase: mockUserCase },
+      });
+      expect(isClearSelectionWithoutRequestUserCaseCheck(request)).toBe(false);
+    });
+    it('should return false if request.query.redirect is empty', () => {
+      const request = mockRequest({
+        session: { userCase: mockUserCase },
+      });
+      request.query = { redirect: DefaultValues.STRING_EMPTY };
+      expect(isClearSelectionWithoutRequestUserCaseCheck(request)).toBe(false);
+    });
+    it('should return true if request.query.redirect is clearSelection', () => {
+      const request = mockRequest({
+        session: { userCase: mockUserCase },
+      });
+      request.query = { redirect: DefaultValues.CLEAR_SELECTION };
+      expect(isClearSelectionWithoutRequestUserCaseCheck(request)).toBe(true);
     });
   });
 });

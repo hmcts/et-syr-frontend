@@ -138,19 +138,6 @@ describe('CheckYourAnswersET3Helper', () => {
     PageUrls.CLAIMANT_PENSION_AND_BENEFITS, // for pension and benefits
     PageUrls.CLAIMANT_PENSION_AND_BENEFITS,
   ];
-
-  const section5Urls = [
-    PageUrls.RESPONDENT_CONTEST_CLAIM,
-    PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
-    PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, // for supporting materials
-  ];
-
-  const section6Urls = [
-    PageUrls.EMPLOYERS_CONTRACT_CLAIM,
-    PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS,
-    PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS, // for supporting materials
-  ];
-
   // Test for section 1
   it('should return correct summary list rows for section 1 when all fields are populated', () => {
     const expectedRows: SummaryListRow[] = [];
@@ -326,18 +313,35 @@ describe('CheckYourAnswersET3Helper', () => {
 
   // Tests for section 5
   it('should return correct summary list rows for section 5 when all fields are populated', () => {
-    const expectedRows: SummaryListRow[] = [];
-
-    for (const pageUrl of section5Urls) {
-      expectedRows.push(
-        addSummaryRowWithAction(
-          expect.any(String), // field1
-          expect.any(String), // exampleData
-          pageUrl, // URL
-          expect.any(String) // change label
-        )
-      );
-    }
+    const expectedRows = [
+      {
+        key: {
+          classes: 'govuk-!-font-weight-regular-m',
+          text: 'Does undefined contest the claim?',
+        },
+        value: {
+          text: '',
+        },
+      },
+      {
+        key: {
+          classes: 'govuk-!-font-weight-regular-m',
+          text: 'Explain why undefined contests the claim',
+        },
+        value: {
+          text: 'We contest the claim for reason XYZ',
+        },
+      },
+      {
+        key: {
+          classes: 'govuk-!-font-weight-regular-m',
+          text: 'Supporting material',
+        },
+        value: {
+          html: '-',
+        },
+      },
+    ];
 
     // Populate necessary fields for section 5 in the userCase object
     userCase.et3ResponseRespondentContestClaim = YesOrNo.YES;
@@ -350,18 +354,35 @@ describe('CheckYourAnswersET3Helper', () => {
 
   // Test for section 6
   it('should return correct summary list rows for section 6 when all fields are populated', () => {
-    const expectedRows: SummaryListRow[] = [];
-
-    for (const pageUrl of section6Urls) {
-      expectedRows.push(
-        addSummaryRowWithAction(
-          expect.any(String), // field1
-          expect.any(String), // exampleData
-          pageUrl, // URL
-          expect.any(String) // change label
-        )
-      );
-    }
+    const expectedRows = [
+      {
+        key: {
+          classes: 'govuk-!-font-weight-regular-m',
+          text: 'Does the respondent wish to make an Employer’s Contract Claim?',
+        },
+        value: {
+          text: '',
+        },
+      },
+      {
+        key: {
+          classes: 'govuk-!-font-weight-regular-m',
+          text: 'Provide the background and details of your Employer’s Contract Claim',
+        },
+        value: {
+          text: '-',
+        },
+      },
+      {
+        key: {
+          classes: 'govuk-!-font-weight-regular-m',
+          text: 'Supporting material',
+        },
+        value: {
+          html: '-',
+        },
+      },
+    ];
 
     // Populate necessary fields for section 6 in the userCase object
     userCase.et3ResponseEmployerClaim = YesOrNo.YES;

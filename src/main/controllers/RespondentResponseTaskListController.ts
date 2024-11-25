@@ -2,7 +2,11 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
-import { SectionIndexToEt3HubLinkNames, linkStatusColorMap } from '../definitions/links';
+import {
+  SectionIndexToEt3HubLinkNames,
+  getResponseHubLinkStatusesByRespondentHubLinkStatuses,
+  linkStatusColorMap,
+} from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getET3HubLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
@@ -14,7 +18,9 @@ export default class RespondentResponseTaskListController {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const redirectUrl = setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED);
     const selectedRespondent = req.session.userCase.respondents[req.session.selectedRespondentIndex];
-    const et3HubLinksStatuses = selectedRespondent.et3HubLinksStatuses;
+    const et3HubLinksStatuses = getResponseHubLinkStatusesByRespondentHubLinkStatuses(
+      selectedRespondent.et3HubLinksStatuses
+    );
     const languageParam = getLanguageParam(req.url);
 
     const sections = Array.from(Array(SectionIndexToEt3HubLinkNames.length)).map((__ignored, index) => {
