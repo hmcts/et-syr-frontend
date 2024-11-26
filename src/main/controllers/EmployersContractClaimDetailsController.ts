@@ -120,9 +120,6 @@ export default class EmployersContractClaimDetailsController {
       EmployersContractClaimDetailsControllerHelper.setEmployerClaimDocumentToUserCase(req, uploadedDocument);
       req.file = undefined;
     }
-    if (req.body?.upload) {
-      return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
-    }
     req.session.errors = [];
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     req.session.userCase.et3ResponseEmployerClaimDetails = formData.et3ResponseEmployerClaimDetails;
@@ -130,13 +127,17 @@ export default class EmployersContractClaimDetailsController {
     if (CollectionUtils.isNotEmpty(req.session.errors)) {
       return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
     }
+    let redirectUrl: string = PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM;
+    if (req.body?.upload) {
+      redirectUrl = PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS;
+    }
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.EmployersContractClaim,
       LinkStatus.IN_PROGRESS,
-      PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM
+      redirectUrl
     );
   };
 

@@ -55,7 +55,11 @@ export default class EmployersContractClaimController {
     let nextPage = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
     if (formData.et3ResponseEmployerClaim === YesOrNo.YES) {
       nextPage = PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS;
-      req.session.returnUrl = nextPage; //force redirect through the flow before going back to CYA screen
+      //force redirect through the flow before going back to CYA screen
+      //if not save for later
+      if (!req.body?.saveForLater) {
+        req.session.returnUrl = nextPage;
+      }
     }
 
     if (StringUtils.isNotBlank(req.url)) {
