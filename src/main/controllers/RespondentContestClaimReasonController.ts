@@ -33,8 +33,9 @@ export default class RespondentContestClaimReasonController {
         type: 'charactercount',
         label: (l: AnyRecord): string => l.textAreaLabel,
         labelHidden: false,
-        maxlength: 2500,
-        validator: isContentCharsOrLess(2500),
+        maxlength: 3000,
+        attributes: { maxLength: 3000 },
+        validator: isContentCharsOrLess(3000),
       },
       uploadDocumentTable: {
         id: 'uploadDocumentTable',
