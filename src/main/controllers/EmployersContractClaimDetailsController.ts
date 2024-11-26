@@ -57,15 +57,15 @@ export default class EmployersContractClaimDetailsController {
         value: 'true',
         divider: false,
       },
-      claimSummaryAcceptedType: {
-        id: 'claim-summary-file-accepted-type',
-        label: l => l.acceptedFormats.label,
-        labelHidden: true,
-        type: 'readonly',
-        classes: 'govuk-label',
+      claimSummaryAcceptedTypes: {
+        id: 'claimSummaryFileAcceptedType',
         isCollapsable: true,
         collapsableTitle: l => l.acceptedFormats.label,
         hint: l => l.acceptedFormats.p1,
+        labelHidden: true,
+        type: 'readonly',
+        classes: 'govuk-label',
+        label: l => l.acceptedFormats.label,
       },
     },
     submit: {
