@@ -43,15 +43,8 @@ export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): strin
   const pathWithoutQuery = parsedUrl.pathname;
 
   for (const url of validUrls) {
-    const welshUrl = url + languages.WELSH_URL_PARAMETER;
-    const englishUrl = url + languages.ENGLISH_URL_PARAMETER;
-
     if (pathWithoutQuery === url) {
       return redirectUrl; // Return the original URL with query parameters intact
-    } else if (pathWithoutQuery === welshUrl) {
-      return redirectUrl;
-    } else if (pathWithoutQuery === englishUrl) {
-      return redirectUrl;
     }
   }
 
