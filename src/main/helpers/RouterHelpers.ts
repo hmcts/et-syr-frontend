@@ -38,12 +38,8 @@ export const returnNextPage = (req: AppRequest, res: Response, redirectUrl: stri
 export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): string => {
   validUrls = validUrls ?? Object.values(PageUrls);
 
-  // Parse the redirectUrl to get the pathname without query parameters
-  const parsedUrl = new URL(redirectUrl, 'http://example.com'); // Base URL is required for parsing
-  const pathWithoutQuery = parsedUrl.pathname;
-
   for (const url of validUrls) {
-    if (pathWithoutQuery === url) {
+    if (redirectUrl.includes(url)) {
       return redirectUrl; // Return the original URL with query parameters intact
     }
   }
