@@ -17,10 +17,12 @@ import {
   mockDocumentTypeItemFromMockDocumentUploadResponseDocumentFileNameTestFilePdf,
   mockDocumentUploadResponse,
 } from '../mocks/mockDocumentUploadResponse';
+import { mockValidMulterFile } from '../mocks/mockExpressMulterFile';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
 jest.mock('../../../main/utils/ET3Util');
+jest.mock('../../../main/utils/FileUtils');
 
 describe('RespondentContestClaimReasonController', () => {
   const translationJsons = { ...pageJsonRaw, ...commonJsonRaw };
@@ -58,13 +60,6 @@ describe('RespondentContestClaimReasonController', () => {
   });
 
   describe('POST method', () => {
-    const checkFileMock = jest.spyOn(FileUtils, 'checkFile');
-    const uploadFileMock = jest.spyOn(FileUtils, 'uploadFile');
-    const fileAlreadyExistsMock = jest.spyOn(FileUtils, 'fileAlreadyExists');
-    const convertDocumentUploadResponseToDocumentTypeItem = jest.spyOn(
-      FileUtils,
-      'convertDocumentUploadResponseToDocumentTypeItem'
-    );
     const areInputValuesValidMock = jest.spyOn(RespondentContestClaimReasonControllerHelper, 'areInputValuesValid');
     const updateET3DataMock = jest.spyOn(ET3Util, 'updateET3Data');
     it('should call response.status(200).end when there is request.body.url', async () => {
@@ -85,6 +80,7 @@ describe('RespondentContestClaimReasonController', () => {
         },
       });
       request.fileTooLarge = true;
+      request.file = mockValidMulterFile;
       await controller.post(request, response);
       expect(request.session.errors).toStrictEqual([
         {
@@ -101,7 +97,7 @@ describe('RespondentContestClaimReasonController', () => {
         },
       });
       request.fileTooLarge = false;
-      checkFileMock.mockReturnValueOnce(undefined);
+      FileUtils.checkFile = jest.fn().mockReturnValueOnce(undefined);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
     });
@@ -110,10 +106,11 @@ describe('RespondentContestClaimReasonController', () => {
         body: {
           upload: true,
         },
+        file: mockValidMulterFile,
       });
       request.fileTooLarge = false;
-      checkFileMock.mockReturnValueOnce(true);
-      fileAlreadyExistsMock.mockReturnValueOnce(true);
+      FileUtils.checkFile = jest.fn().mockReturnValueOnce(true);
+      FileUtils.fileAlreadyExists = jest.fn().mockReturnValueOnce(true);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
       expect(request.session.errors).toStrictEqual([
@@ -130,8 +127,9 @@ describe('RespondentContestClaimReasonController', () => {
         },
       });
       request.fileTooLarge = false;
-      checkFileMock.mockReturnValueOnce(true);
-      uploadFileMock.mockResolvedValueOnce(undefined);
+      FileUtils.checkFile = jest.fn().mockReturnValueOnce(true);
+      FileUtils.fileAlreadyExists = jest.fn().mockReturnValueOnce(false);
+      FileUtils.uploadFile = jest.fn().mockResolvedValueOnce(undefined);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
     });
@@ -142,9 +140,10 @@ describe('RespondentContestClaimReasonController', () => {
         },
       });
       request.fileTooLarge = false;
-      checkFileMock.mockReturnValueOnce(true);
-      uploadFileMock.mockResolvedValueOnce(mockDocumentUploadResponse);
-      convertDocumentUploadResponseToDocumentTypeItem.mockReturnValueOnce(undefined);
+      FileUtils.checkFile = jest.fn().mockReturnValueOnce(true);
+      FileUtils.fileAlreadyExists = jest.fn().mockReturnValueOnce(false);
+      FileUtils.uploadFile = jest.fn().mockResolvedValueOnce(mockDocumentUploadResponse);
+      FileUtils.convertDocumentUploadResponseToDocumentTypeItem = jest.fn().mockReturnValueOnce(undefined);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
     });
@@ -155,16 +154,19 @@ describe('RespondentContestClaimReasonController', () => {
         },
       });
       request.fileTooLarge = false;
-      checkFileMock.mockReturnValueOnce(true);
-      uploadFileMock.mockResolvedValueOnce(mockDocumentUploadResponse);
-      convertDocumentUploadResponseToDocumentTypeItem.mockReturnValueOnce(
-        mockDocumentTypeItemFromMockDocumentUploadResponseDocumentFileNameTestFilePdf
-      );
+      request.file = mockValidMulterFile;
+      FileUtils.checkFile = jest.fn().mockReturnValueOnce(true);
+      FileUtils.fileAlreadyExists = jest.fn().mockReturnValueOnce(false);
+      FileUtils.uploadFile = jest.fn().mockResolvedValueOnce(mockDocumentUploadResponse);
+      FileUtils.convertDocumentUploadResponseToDocumentTypeItem = jest
+        .fn()
+        .mockReturnValueOnce(mockDocumentTypeItemFromMockDocumentUploadResponseDocumentFileNameTestFilePdf);
       request.session.userCase.et3ResponseContestClaimDocument = undefined;
       await controller.post(request, response);
       expect(request.session.userCase.et3ResponseContestClaimDocument[0]).toStrictEqual(
         mockDocumentTypeItemFromMockDocumentUploadResponseDocumentFileNameTestFilePdf
       );
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
     });
     it('should redirect to respondent contest claim reason page when there is an error in check areInputValuesValid of RespondentContestClaimReasonControllerHelper', async () => {
       request = mockRequest({

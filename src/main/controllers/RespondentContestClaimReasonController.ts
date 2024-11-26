@@ -15,10 +15,12 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import RespondentContestClaimReasonControllerHelper from '../helpers/controller/RespondentContestClaimReasonControllerHelper';
 import { getLogger } from '../logger';
+import CollectionUtils from '../utils/CollectionUtils';
 import DocumentUtils from '../utils/DocumentUtils';
 import ET3Util from '../utils/ET3Util';
 import ErrorUtils from '../utils/ErrorUtils';
 import FileUtils from '../utils/FileUtils';
+import ObjectUtils from '../utils/ObjectUtils';
 import { isContentCharsOrLess } from '../validators/validator';
 
 const logger = getLogger('RespondentContestClaimReasonController');
@@ -105,7 +107,7 @@ export default class RespondentContestClaimReasonController {
       return;
     }
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    if (req.body?.upload) {
+    if (ObjectUtils.isNotEmpty(req.file)) {
       if (req.fileTooLarge) {
         req.session.errors = [
           {
@@ -115,7 +117,7 @@ export default class RespondentContestClaimReasonController {
         ];
         return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
       }
-      if (!FileUtils.checkFile(req)) {
+      if (!FileUtils.checkFile(req, FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT)) {
         return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
       }
       if (FileUtils.fileAlreadyExists(req)) {
@@ -137,8 +139,14 @@ export default class RespondentContestClaimReasonController {
       if (!documentTypeItem) {
         return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
       }
+      if (CollectionUtils.isEmpty(req.session.userCase.et3ResponseContestClaimDocument)) {
+        req.session.userCase.et3ResponseContestClaimDocument = [];
+      }
       req.session?.userCase?.et3ResponseContestClaimDocument.push(documentTypeItem);
-      req.session.userCase.et3ResponseContestClaimDetails = formData.et3ResponseContestClaimDetails;
+      req.file = undefined;
+    }
+    req.session.userCase.et3ResponseContestClaimDetails = formData.et3ResponseContestClaimDetails;
+    if (req.body?.upload) {
       return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
     }
     RespondentContestClaimReasonControllerHelper.areInputValuesValid(req, formData);

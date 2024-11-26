@@ -144,4 +144,26 @@ describe('Document utils tests', () => {
       ).toStrictEqual(DefaultValues.STRING_EMPTY);
     });
   });
+  describe('sanitizeDocumentName', () => {
+    it.each([
+      { value: undefined, result: DefaultValues.STRING_EMPTY },
+      { value: '', result: DefaultValues.STRING_EMPTY },
+      { value: ' ', result: DefaultValues.STRING_EMPTY },
+      { value: 'test.pdf', result: 'test.pdf' },
+      { value: ' test', result: 'test' },
+      { value: 'test   ', result: 'test' },
+      { value: 'test ', result: 'test' },
+      { value: '    test', result: 'test' },
+      { value: ' test ', result: 'test' },
+      { value: '    test   ', result: 'test' },
+      { value: '     ', result: DefaultValues.STRING_EMPTY },
+      { value: null, result: DefaultValues.STRING_EMPTY },
+      {
+        value: 'test(1).pdf',
+        result: 'test1.pdf',
+      },
+    ])('check if given string value returns a valid document name: %o', ({ value, result }) => {
+      expect(DocumentUtils.sanitizeDocumentName(value)).toStrictEqual(result);
+    });
+  });
 });

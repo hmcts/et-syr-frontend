@@ -88,4 +88,15 @@ export default class DocumentUtils {
     }
     return attachmentsIncluded;
   }
+
+  public static sanitizeDocumentName(documentName: string): string {
+    if (StringUtils.isBlank(documentName)) {
+      return DefaultValues.STRING_EMPTY;
+    }
+    let sanitizedDocumentName = documentName;
+    for (const charToRemove of DefaultValues.DOCUMENT_CHARS_TO_REPLACE) {
+      sanitizedDocumentName = sanitizedDocumentName.replace(charToRemove, DefaultValues.STRING_EMPTY);
+    }
+    return sanitizedDocumentName.trim();
+  }
 }
