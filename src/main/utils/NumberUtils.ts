@@ -20,6 +20,11 @@ export default class NumberUtils {
       ? DefaultValues.STRING_EMPTY
       : acasNumber.trim().replace(DefaultValues.STRING_SLASH_REGEX, DefaultValues.STRING_UNDERSCORE);
   }
+  public static formatAcasNumberDashToEmptyString(acasNumber: string): string {
+    return StringUtils.isBlank(acasNumber)
+      ? DefaultValues.STRING_EMPTY
+      : acasNumber.trim().replace(DefaultValues.STRING_SLASH_REGEX, DefaultValues.STRING_EMPTY);
+  }
   public static isNumericValue(stringValue: string): boolean {
     return !(!stringValue || isNaN(Number(stringValue)) || !Number(stringValue));
   }

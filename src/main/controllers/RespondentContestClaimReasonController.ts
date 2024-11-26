@@ -4,16 +4,18 @@ import { Form } from '../components/form';
 import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
-import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import { ApiDocumentTypeItem, DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
+import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors, languages } from '../definitions/constants';
 import { FormContent, FormFields, FormInput } from '../definitions/form';
 import { GovukTableRow } from '../definitions/govuk/govukTable';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { getLanguageParam } from '../helpers/RouterHelpers';
 import RespondentContestClaimReasonControllerHelper from '../helpers/controller/RespondentContestClaimReasonControllerHelper';
 import { getLogger } from '../logger';
+import DocumentUtils from '../utils/DocumentUtils';
 import ET3Util from '../utils/ET3Util';
 import ErrorUtils from '../utils/ErrorUtils';
 import FileUtils from '../utils/FileUtils';
@@ -165,7 +167,19 @@ export default class RespondentContestClaimReasonController {
   public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
     const userCase = req.session.userCase;
-
+    const languageParam: string = getLanguageParam(req.url);
+    let et1Form: ApiDocumentTypeItem;
+    if (languageParam === languages.WELSH_URL_PARAMETER) {
+      et1Form = DocumentUtils.findET1DocumentByLanguage(
+        req?.session?.userCase?.documentCollection,
+        languages.WELSH_URL_PARAMETER
+      );
+    } else {
+      et1Form = DocumentUtils.findET1DocumentByLanguage(
+        req?.session?.userCase?.documentCollection,
+        languages.ENGLISH_URL_PARAMETER
+      );
+    }
     const textAreaLabel = Object.entries(this.form.getFormFields())[0][1] as FormInput;
     const uploadedDocumentListTable = Object.entries(this.form.getFormFields())[1][1] as GovukTableRow;
     if ('tableRows' in uploadedDocumentListTable) {
@@ -184,6 +198,7 @@ export default class RespondentContestClaimReasonController {
       redirectUrl,
       hideContactUs: true,
       postAddress: PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
+      et1FormId: et1Form?.id,
     });
   };
 }

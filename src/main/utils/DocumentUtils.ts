@@ -42,9 +42,12 @@ export default class DocumentUtils {
       if (
         (tmpDocument.value?.documentType === AllDocumentTypes.ACAS_CERT ||
           tmpDocument.value?.typeOfDocument === AllDocumentTypes.ACAS_CERT) &&
-        tmpDocument.value?.uploadedDocument?.document_filename?.includes(
+        (tmpDocument.value?.uploadedDocument?.document_filename?.includes(
           NumberUtils.formatAcasNumberDashToUnderscore(acasNumber)
-        )
+        ) ||
+          tmpDocument.value?.uploadedDocument?.document_filename?.includes(
+            NumberUtils.formatAcasNumberDashToEmptyString(acasNumber)
+          ))
       ) {
         return tmpDocument;
       }

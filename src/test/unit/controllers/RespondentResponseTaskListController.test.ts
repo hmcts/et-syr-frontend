@@ -1,5 +1,5 @@
 import RespondentResponseTaskListController from '../../../main/controllers/RespondentResponseTaskListController';
-import { DefaultValues, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { DefaultValues, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -78,6 +78,18 @@ describe('Respondent response task list controller', () => {
     });
   });
 
+  it('should render the Respondent Response Task List with sections for ET3 when req.url contains welsh url parameter', async () => {
+    mockWelshFlag.mockResolvedValue(true);
+    const controller = new RespondentResponseTaskListController();
+    const response = mockResponse();
+    const request = mockRequest({ session: { userCase: mockUserCaseComplete, user: mockUserDetails } });
+    request.session.selectedRespondentIndex = 0;
+    request.url = '/respondent-response-task-list' + languages.WELSH_URL_PARAMETER;
+    // Mock the translation function to return valid section data
+    (request.t as unknown as jest.Mock).mockReturnValue(mockRespondentHubTranslations);
+    await controller.get(request, response);
+    expect(response.render).toHaveBeenCalledWith(TranslationKeys.RESPONDENT_RESPONSE_TASK_LIST, expect.anything());
+  });
   it('should handle when Welsh language feature flag is disabled', async () => {
     mockWelshFlag.mockResolvedValue(false);
     const controller = new RespondentResponseTaskListController();
