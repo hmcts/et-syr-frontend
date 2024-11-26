@@ -37,17 +37,24 @@ export const returnNextPage = (req: AppRequest, res: Response, redirectUrl: stri
 
 export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): string => {
   validUrls = validUrls ?? Object.values(PageUrls);
+
+  // Parse the redirectUrl to get the pathname without query parameters
+  const parsedUrl = new URL(redirectUrl, 'http://example.com'); // Base URL is required for parsing
+  const pathWithoutQuery = parsedUrl.pathname;
+
   for (const url of validUrls) {
-    // If URL has any parameter it was always returning not found.
-    // Check is replaced with includes instead of equals.
-    if (
-      (url !== DefaultValues.STRING_AMPERSAND && url !== DefaultValues.STRING_SLASH && redirectUrl.includes(url)) ||
-      redirectUrl === DefaultValues.STRING_HASH ||
-      redirectUrl === DefaultValues.STRING_SLASH
-    ) {
+    const welshUrl = url + languages.WELSH_URL_PARAMETER;
+    const englishUrl = url + languages.ENGLISH_URL_PARAMETER;
+
+    if (pathWithoutQuery === url) {
+      return redirectUrl; // Return the original URL with query parameters intact
+    } else if (pathWithoutQuery === welshUrl) {
+      return redirectUrl;
+    } else if (pathWithoutQuery === englishUrl) {
       return redirectUrl;
     }
   }
+
   return ErrorPages.NOT_FOUND;
 };
 
