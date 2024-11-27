@@ -14990,6 +14990,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"undici@npm:^6.20.1":
+  version: 6.21.0
+  resolution: "undici@npm:6.21.0"
+  checksum: bc2eb26c4b010a4f816314d48d4529f62b1116405097b2c5f0ac68247c56049a857d11a9f05b237818f04ce4f51d6f5e8d6fcc6aae2ab816c2b7318a9706727c
+  languageName: node
+  linkType: hard
+
 "unicode-canonical-property-names-ecmascript@npm:^2.0.0":
   version: 2.0.1
   resolution: "unicode-canonical-property-names-ecmascript@npm:2.0.1"
@@ -15279,9 +15286,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webdriver@npm:9.3.1":
-  version: 9.3.1
-  resolution: "webdriver@npm:9.3.1"
+"webdriver@npm:9.4.0":
+  version: 9.4.0
+  resolution: "webdriver@npm:9.4.0"
   dependencies:
     "@types/node": ^20.1.0
     "@types/ws": ^8.5.3
@@ -15291,14 +15298,15 @@ __metadata:
     "@wdio/types": 9.2.2
     "@wdio/utils": 9.2.8
     deepmerge-ts: ^7.0.3
+    undici: ^6.20.1
     ws: ^8.8.0
-  checksum: 1dca0080bde75d398dd794bc088d54f6b274fd49bbf05cd1d1d8857b5bb5c4db70e42157199fe9a1575c81ccb8e9b6e49809d8f29ba11688e808f2add3175b57
+  checksum: bbcd9aebbd97110ef1a59fb0d221d099a142a41ceafbbdcb705146566ee6db390a92f4e485ccf89e309324a81dcd83d1d04a731fca4e050bb3cb4d67d084d4b4
   languageName: node
   linkType: hard
 
 "webdriverio@npm:^9.0.0":
-  version: 9.3.1
-  resolution: "webdriverio@npm:9.3.1"
+  version: 9.4.0
+  resolution: "webdriverio@npm:9.4.0"
   dependencies:
     "@types/node": ^20.11.30
     "@types/sinonjs__fake-timers": ^8.1.5
@@ -15326,13 +15334,13 @@ __metadata:
     rgb2hex: 0.2.5
     serialize-error: ^11.0.3
     urlpattern-polyfill: ^10.0.0
-    webdriver: 9.3.1
+    webdriver: 9.4.0
   peerDependencies:
     puppeteer-core: ^22.3.0
   peerDependenciesMeta:
     puppeteer-core:
       optional: true
-  checksum: 52f4a2ccc26f18ded0f35b45153407f81739bf43e49b16cfaf6ffcfe2a939390c0dba7ec0e7f74771cbae9e120dcd6a4a4e9ff7386a83d4f6808f91b48802976
+  checksum: d8485c6df2da51e1a8151e2cb3655027ceff40aa7fa43d2440e76c5c7ef29cc93018f6bdf1fe51ad2263cbb6658827bc396afb489cbf0a2d28a05f00dc6810b5
   languageName: node
   linkType: hard
 
