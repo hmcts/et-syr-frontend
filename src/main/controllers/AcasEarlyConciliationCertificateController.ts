@@ -3,6 +3,7 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, YesOrNo } from '../definitions/case';
+import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
@@ -10,7 +11,9 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { isClearSelection } from '../helpers/RouterHelpers';
+import DocumentUtils from '../utils/DocumentUtils';
 import ET3Util from '../utils/ET3Util';
+import ObjectUtils from '../utils/ObjectUtils';
 import { isContentCharsOrLess } from '../validators/validator';
 
 export default class AcasEarlyConciliationCertificateController {
@@ -75,6 +78,14 @@ export default class AcasEarlyConciliationCertificateController {
       req.session.userCase.et3ResponseAcasAgree = undefined;
       req.session.userCase.et3ResponseAcasAgreeReason = undefined;
     }
+    const acasCertificate: ApiDocumentTypeItem = DocumentUtils.findAcasCertificateByAcasNumber(
+      req.session?.userCase?.documentCollection as ApiDocumentTypeItem[],
+      req.session?.userCase?.acasCertNum
+    );
+    let acasCertLink: string = undefined;
+    if (ObjectUtils.isNotEmpty(acasCertificate)) {
+      acasCertLink = 'getCaseDocument/' + acasCertificate.id;
+    }
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.ACAS_EARLY_CONCILIATION_CERTIFICATE,
@@ -84,6 +95,7 @@ export default class AcasEarlyConciliationCertificateController {
       ...content,
       acasLink: PageUrls.CLAIMANT_ACAS_CERTIFICATE_DETAILS,
       hideContactUs: true,
+      acasCertLink,
     });
   };
 }

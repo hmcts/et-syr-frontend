@@ -23,8 +23,16 @@ describe('NumberUtils tests', () => {
     { value: DefaultValues.STRING_EMPTY, result: DefaultValues.STRING_EMPTY },
     { value: null, result: DefaultValues.STRING_EMPTY },
     { value: 'R123456/78/90', result: 'R123456_78_90' },
-  ])('check if Acas Number is formatted', ({ value, result }) => {
+  ])('check if Acas Number is formatted to underscore', ({ value, result }) => {
     expect(NumberUtils.formatAcasNumberDashToUnderscore(value)).toStrictEqual(result);
+  });
+  it.each([
+    { value: undefined, result: DefaultValues.STRING_EMPTY },
+    { value: DefaultValues.STRING_EMPTY, result: DefaultValues.STRING_EMPTY },
+    { value: null, result: DefaultValues.STRING_EMPTY },
+    { value: 'R123456/78/90', result: 'R1234567890' },
+  ])('check if Acas Number is formatted to empty string', ({ value, result }) => {
+    expect(NumberUtils.formatAcasNumberDashToEmptyString(value)).toStrictEqual(result);
   });
   it.each([
     { value: undefined, result: false },

@@ -27,13 +27,13 @@ import StringUtils from './StringUtils';
 const logger = getLogger('FileUtils');
 
 export default class FileUtils {
-  public static checkFile(req: AppRequest): boolean {
+  public static checkFile(req: AppRequest, formFieldName: string): boolean {
     req.session.errors = [];
     if (!req.file) {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.INVALID_FILE_NOT_SELECTED,
-        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
+        formFieldName
       );
       return false;
     }
@@ -41,7 +41,7 @@ export default class FileUtils {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.INVALID_FILE_BUFFER_EMPTY,
-        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
+        formFieldName
       );
       return false;
     }
@@ -49,7 +49,7 @@ export default class FileUtils {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.INVALID_FILE_NAME_NOT_FOUND,
-        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
+        formFieldName
       );
       return false;
     }
@@ -57,7 +57,7 @@ export default class FileUtils {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.INVALID_FILE_NAME,
-        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
+        formFieldName
       );
       return false;
     }
@@ -65,7 +65,7 @@ export default class FileUtils {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.INVALID_FILE_FORMAT,
-        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
+        formFieldName
       );
       return false;
     }
@@ -77,7 +77,7 @@ export default class FileUtils {
       return false;
     }
     for (const file of req.session.userCase.et3ResponseContestClaimDocument) {
-      if (file.value.uploadedDocument.document_filename === req.file.originalname) {
+      if (file.value.uploadedDocument.document_filename === DocumentUtils.sanitizeDocumentName(req.file.originalname)) {
         return true;
       }
     }

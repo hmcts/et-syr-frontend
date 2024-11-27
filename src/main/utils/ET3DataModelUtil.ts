@@ -544,19 +544,35 @@ export default class ET3DataModelUtil {
     req.session.userCase.et3VettingDocumentUrl = selectedRespondent.et3VettingDocumentUrl;
     req.session.userCase.et3VettingDocumentCategoryId = selectedRespondent.et3VettingDocumentCategoryId;
     req.session.userCase.et3VettingDocumentUploadTimestamp = selectedRespondent.et3VettingDocumentUploadTimestamp;
-    req.session.userCase.et3ResponseEmployerClaimDocumentBinaryUrl =
-      selectedRespondent.et3ResponseEmployerClaimDocumentBinaryUrl;
-    req.session.userCase.et3ResponseEmployerClaimDocumentUrl = selectedRespondent.et3ResponseEmployerClaimDocumentUrl;
+    // Employer Claim Document Section
+    req.session.userCase.et3ResponseEmployerClaimDocument = selectedRespondent.et3ResponseEmployerClaimDocument;
 
+    req.session.userCase.et3ResponseEmployerClaimDocumentUrl =
+      selectedRespondent.et3ResponseEmployerClaimDocument?.document_url;
     req.session.userCase.et3ResponseEmployerClaimDocumentBinaryUrl =
-      selectedRespondent.et3ResponseEmployerClaimDocumentBinaryUrl;
+      selectedRespondent.et3ResponseEmployerClaimDocument?.document_binary_url;
     req.session.userCase.et3ResponseEmployerClaimDocumentFileName =
-      selectedRespondent.et3ResponseEmployerClaimDocumentFileName;
-    req.session.userCase.et3ResponseEmployerClaimDocumentUrl = selectedRespondent.et3ResponseEmployerClaimDocumentUrl;
+      selectedRespondent.et3ResponseEmployerClaimDocument?.document_filename;
+    req.session.userCase.et3ResponseEmployerClaimDocumentUrl =
+      selectedRespondent.et3ResponseEmployerClaimDocument?.document_url;
     req.session.userCase.et3ResponseEmployerClaimDocumentCategoryId =
-      selectedRespondent.et3ResponseEmployerClaimDocumentCategoryId;
+      selectedRespondent.et3ResponseEmployerClaimDocument?.category_id;
     req.session.userCase.et3ResponseEmployerClaimDocumentUploadTimestamp =
-      selectedRespondent.et3ResponseEmployerClaimDocumentUploadTimestamp;
+      selectedRespondent.et3ResponseEmployerClaimDocument?.upload_timestamp;
+
+    selectedRespondent.et3ResponseEmployerClaimDocumentUrl =
+      selectedRespondent.et3ResponseEmployerClaimDocument?.document_url;
+    selectedRespondent.et3ResponseEmployerClaimDocumentBinaryUrl =
+      selectedRespondent.et3ResponseEmployerClaimDocument?.document_binary_url;
+    selectedRespondent.et3ResponseEmployerClaimDocumentFileName =
+      selectedRespondent.et3ResponseEmployerClaimDocument?.document_filename;
+    selectedRespondent.et3ResponseEmployerClaimDocumentUrl =
+      selectedRespondent.et3ResponseEmployerClaimDocument?.document_url;
+    selectedRespondent.et3ResponseEmployerClaimDocumentCategoryId =
+      selectedRespondent.et3ResponseEmployerClaimDocument?.category_id;
+    selectedRespondent.et3ResponseEmployerClaimDocumentUploadTimestamp =
+      selectedRespondent.et3ResponseEmployerClaimDocument?.upload_timestamp;
+    // End Of Employer Claim Document Section
     req.session.userCase.et3ResponseRespondentSupportDocumentBinaryUrl =
       selectedRespondent.et3ResponseRespondentSupportDocumentBinaryUrl;
     req.session.userCase.et3ResponseRespondentSupportDocumentUrl =
