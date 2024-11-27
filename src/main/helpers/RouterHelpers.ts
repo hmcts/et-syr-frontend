@@ -3,6 +3,9 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { DefaultValues, ErrorPages, PageUrls, languages } from '../definitions/constants';
 import { FormFields } from '../definitions/form';
+import UrlUtils from '../utils/UrlUtils';
+
+import { addParameterToUrl } from './LanguageHelper';
 
 export const getLanguageParam = (url: string): string => {
   if (url?.includes(languages.WELSH_URL_POSTFIX)) {
@@ -35,20 +38,33 @@ export const returnNextPage = (req: AppRequest, res: Response, redirectUrl: stri
   return res.redirect(returnValidUrl(nextPage));
 };
 
+/**
+ * Checks for a valid url stored within the system to avoid open redirects
+ *
+ * @param {string} redirectUrl
+ * @param {string[]} validUrls
+ * @return {string}
+ */
 export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): string => {
-  validUrls = validUrls ?? Object.values(PageUrls); // if undefined use PageURLs
+  // if undefined use PageURLs
+  validUrls = validUrls ?? Object.values(PageUrls);
+  // split url, first part will always be the url (in a format similar to that in PageUrls)
+  const urlStr = redirectUrl.split('?');
+  const baseUrl = urlStr[0];
 
-  for (const url of validUrls) {
-    const welshUrl = url + languages.WELSH_URL_PARAMETER;
-    const englishUrl = url + languages.ENGLISH_URL_PARAMETER;
-    if (redirectUrl === url) {
-      return url;
-    } else if (redirectUrl === welshUrl) {
-      return welshUrl;
-    } else if (redirectUrl === englishUrl) {
-      return englishUrl;
+  for (let validUrl of validUrls) {
+    if (baseUrl === validUrl) {
+      // get parameters as an array of strings
+      const parameters = UrlUtils.getRequestParamsFromUrl(redirectUrl);
+
+      // add params to the validUrl
+      for (const param of parameters) {
+        validUrl = addParameterToUrl(validUrl, param);
+      }
+      return validUrl;
     }
   }
+  // Return a safe fallback if no validUrl is found
   return ErrorPages.NOT_FOUND;
 };
 
