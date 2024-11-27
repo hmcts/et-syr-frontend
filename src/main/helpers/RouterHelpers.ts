@@ -36,12 +36,19 @@ export const returnNextPage = (req: AppRequest, res: Response, redirectUrl: stri
 };
 
 export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): string => {
-  validUrls = validUrls ?? Object.values(PageUrls);
+  validUrls = validUrls ?? Object.values(PageUrls); // if undefined use PageURLs
+  let isValidUrl = false;
+  const urlStr = redirectUrl.split('?');
 
   for (const url of validUrls) {
-    if (redirectUrl.includes(url)) {
-      return redirectUrl; // Return the original URL with query parameters intact
+    if (urlStr[0] === url) {
+      isValidUrl = true;
+      break;
     }
+  }
+
+  if (isValidUrl) {
+    return redirectUrl;
   }
 
   return ErrorPages.NOT_FOUND;
