@@ -87,7 +87,7 @@ export default class SelfAssignmentFormController {
       if (caseData) {
         req.session.userCase = formatApiCaseDataToCaseWithId(caseData);
         SelfAssignmentFormControllerHelper.setRespondentName(req, caseData);
-        return res.redirect(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK));
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
       } else {
         ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
           req,
