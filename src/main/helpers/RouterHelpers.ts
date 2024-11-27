@@ -37,20 +37,18 @@ export const returnNextPage = (req: AppRequest, res: Response, redirectUrl: stri
 
 export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): string => {
   validUrls = validUrls ?? Object.values(PageUrls); // if undefined use PageURLs
-  let isValidUrl = false;
-  const urlStr = redirectUrl.split('?');
 
   for (const url of validUrls) {
-    if (urlStr[0] === url) {
-      isValidUrl = true;
-      break;
+    const welshUrl = url + languages.WELSH_URL_PARAMETER;
+    const englishUrl = url + languages.ENGLISH_URL_PARAMETER;
+    if (redirectUrl === url) {
+      return url;
+    } else if (redirectUrl === welshUrl) {
+      return welshUrl;
+    } else if (redirectUrl === englishUrl) {
+      return englishUrl;
     }
   }
-
-  if (isValidUrl) {
-    return redirectUrl;
-  }
-
   return ErrorPages.NOT_FOUND;
 };
 
