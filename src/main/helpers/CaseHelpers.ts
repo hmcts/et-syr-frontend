@@ -1,10 +1,6 @@
-import { Response } from 'express';
-import { LoggerInstance } from 'winston';
-
-import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { DefaultValues, PageUrls } from '../definitions/constants';
+import { DefaultValues } from '../definitions/constants';
 import { Logger } from '../logger';
 import localesCy from '../resources/locales/cy/translation/common.json';
 import locales from '../resources/locales/en/translation/common.json';
@@ -12,10 +8,7 @@ import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
 
 import { formatApiCaseDataToCaseWithId } from './ApiFormatter';
-import { handleErrors, returnSessionErrors } from './ErrorHelpers';
 import { trimFormData } from './FormHelper';
-import { setUrlLanguage } from './LanguageHelper';
-import { returnNextPage, returnValidUrl } from './RouterHelpers';
 
 /**
  * Updates the draft case data for the current session.
@@ -68,42 +61,6 @@ export const handleUpdateDraftCase = async (req: AppRequest, logger: Logger): Pr
       req.session.save();
       logger.error(error.message);
     }
-  }
-};
-
-/**
- * Handles form submission logic. If the form is valid, it either saves the data (saveForLater)
- * or redirects to the next page.
- * If there are validation errors, they are handled and displayed to the user on their current page.
- *
- * @param {AppRequest} req
- * @param {Response} res
- * @param {Form} form
- * @param {LoggerInstance} logger
- * @param {string} redirectUrl
- * @return {Promise<void>}
- */
-export const postLogic = async (
-  req: AppRequest,
-  res: Response,
-  form: Form,
-  logger: LoggerInstance,
-  redirectUrl: string
-): Promise<void> => {
-  const errors = returnSessionErrors(req, form);
-  const { saveForLater } = req.body;
-  if (errors.length === 0) {
-    req.session.errors = [];
-    if (saveForLater) {
-      // TODO: Need to implement saveForLater screen
-      redirectUrl = setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED);
-      return res.redirect(returnValidUrl(redirectUrl));
-    } else {
-      redirectUrl = setUrlLanguage(req, redirectUrl);
-      returnNextPage(req, res, redirectUrl);
-    }
-  } else {
-    handleErrors(req, res, errors);
   }
 };
 
