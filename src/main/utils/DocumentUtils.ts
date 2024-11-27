@@ -42,9 +42,12 @@ export default class DocumentUtils {
       if (
         (tmpDocument.value?.documentType === AllDocumentTypes.ACAS_CERT ||
           tmpDocument.value?.typeOfDocument === AllDocumentTypes.ACAS_CERT) &&
-        tmpDocument.value?.uploadedDocument?.document_filename?.includes(
+        (tmpDocument.value?.uploadedDocument?.document_filename?.includes(
           NumberUtils.formatAcasNumberDashToUnderscore(acasNumber)
-        )
+        ) ||
+          tmpDocument.value?.uploadedDocument?.document_filename?.includes(
+            NumberUtils.formatAcasNumberDashToEmptyString(acasNumber)
+          ))
       ) {
         return tmpDocument;
       }
@@ -84,5 +87,16 @@ export default class DocumentUtils {
       }
     }
     return attachmentsIncluded;
+  }
+
+  public static sanitizeDocumentName(documentName: string): string {
+    if (StringUtils.isBlank(documentName)) {
+      return DefaultValues.STRING_EMPTY;
+    }
+    let sanitizedDocumentName = documentName;
+    for (const charToRemove of DefaultValues.DOCUMENT_CHARS_TO_REPLACE) {
+      sanitizedDocumentName = sanitizedDocumentName.replace(charToRemove, DefaultValues.STRING_EMPTY);
+    }
+    return sanitizedDocumentName.trim();
   }
 }

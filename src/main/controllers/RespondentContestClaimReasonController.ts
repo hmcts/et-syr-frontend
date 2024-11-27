@@ -4,20 +4,23 @@ import { Form } from '../components/form';
 import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
-import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import { ApiDocumentTypeItem, DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
+import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors, languages } from '../definitions/constants';
 import { FormContent, FormFields, FormInput } from '../definitions/form';
 import { GovukTableRow } from '../definitions/govuk/govukTable';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { returnValidUrl } from '../helpers/RouterHelpers';
+import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import RespondentContestClaimReasonControllerHelper from '../helpers/controller/RespondentContestClaimReasonControllerHelper';
 import { getLogger } from '../logger';
+import CollectionUtils from '../utils/CollectionUtils';
+import DocumentUtils from '../utils/DocumentUtils';
 import ET3Util from '../utils/ET3Util';
 import ErrorUtils from '../utils/ErrorUtils';
 import FileUtils from '../utils/FileUtils';
+import ObjectUtils from '../utils/ObjectUtils';
 import { isContentCharsOrLess } from '../validators/validator';
 
 const logger = getLogger('RespondentContestClaimReasonController');
@@ -32,8 +35,9 @@ export default class RespondentContestClaimReasonController {
         type: 'charactercount',
         label: (l: AnyRecord): string => l.textAreaLabel,
         labelHidden: false,
-        maxlength: 2500,
-        validator: isContentCharsOrLess(2500),
+        maxlength: 3000,
+        attributes: { maxLength: 3000 },
+        validator: isContentCharsOrLess(3000),
       },
       uploadDocumentTable: {
         id: 'uploadDocumentTable',
@@ -103,7 +107,7 @@ export default class RespondentContestClaimReasonController {
       return;
     }
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    if (req.body?.upload) {
+    if (ObjectUtils.isNotEmpty(req.file)) {
       if (req.fileTooLarge) {
         req.session.errors = [
           {
@@ -113,7 +117,7 @@ export default class RespondentContestClaimReasonController {
         ];
         return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
       }
-      if (!FileUtils.checkFile(req)) {
+      if (!FileUtils.checkFile(req, FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT)) {
         return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
       }
       if (FileUtils.fileAlreadyExists(req)) {
@@ -135,8 +139,14 @@ export default class RespondentContestClaimReasonController {
       if (!documentTypeItem) {
         return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
       }
+      if (CollectionUtils.isEmpty(req.session.userCase.et3ResponseContestClaimDocument)) {
+        req.session.userCase.et3ResponseContestClaimDocument = [];
+      }
       req.session?.userCase?.et3ResponseContestClaimDocument.push(documentTypeItem);
-      req.session.userCase.et3ResponseContestClaimDetails = formData.et3ResponseContestClaimDetails;
+      req.file = undefined;
+    }
+    req.session.userCase.et3ResponseContestClaimDetails = formData.et3ResponseContestClaimDetails;
+    if (req.body?.upload) {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
     }
     RespondentContestClaimReasonControllerHelper.areInputValuesValid(req, formData);
@@ -166,7 +176,19 @@ export default class RespondentContestClaimReasonController {
   public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
     const userCase = req.session.userCase;
-
+    const languageParam: string = getLanguageParam(req.url);
+    let et1Form: ApiDocumentTypeItem;
+    if (languageParam === languages.WELSH_URL_PARAMETER) {
+      et1Form = DocumentUtils.findET1DocumentByLanguage(
+        req?.session?.userCase?.documentCollection,
+        languages.WELSH_URL_PARAMETER
+      );
+    } else {
+      et1Form = DocumentUtils.findET1DocumentByLanguage(
+        req?.session?.userCase?.documentCollection,
+        languages.ENGLISH_URL_PARAMETER
+      );
+    }
     const textAreaLabel = Object.entries(this.form.getFormFields())[0][1] as FormInput;
     const uploadedDocumentListTable = Object.entries(this.form.getFormFields())[1][1] as GovukTableRow;
     if ('tableRows' in uploadedDocumentListTable) {
@@ -185,6 +207,7 @@ export default class RespondentContestClaimReasonController {
       redirectUrl,
       hideContactUs: true,
       postAddress: PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
+      et1FormId: et1Form?.id,
     });
   };
 }

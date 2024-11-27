@@ -24,7 +24,9 @@ describe('FileUtils', () => {
   const request = mockRequest({});
   describe('checkFile', () => {
     test('Should return false and set file not selected session error when there is no file in request', async () => {
-      expect(FileUtils.checkFile(request)).toStrictEqual(false);
+      expect(
+        FileUtils.checkFile(request, FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT)
+      ).toStrictEqual(false);
       expect(request.session.errors).toStrictEqual([
         {
           errorType: ValidationErrors.INVALID_FILE_NOT_SELECTED,
@@ -34,7 +36,9 @@ describe('FileUtils', () => {
     });
     test('Should return false and set empty file error when file buffer in request is empty', async () => {
       request.file = mockInvalidMulterFileWithInvalidBuffer;
-      expect(FileUtils.checkFile(request)).toStrictEqual(false);
+      expect(
+        FileUtils.checkFile(request, FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT)
+      ).toStrictEqual(false);
       expect(request.session.errors).toStrictEqual([
         {
           errorType: ValidationErrors.INVALID_FILE_BUFFER_EMPTY,
@@ -44,7 +48,9 @@ describe('FileUtils', () => {
     });
     test('Should return false and set file name not found error when file name in request not found', async () => {
       request.file = mockInvalidMulterFileWithEmptyFileName;
-      expect(FileUtils.checkFile(request)).toStrictEqual(false);
+      expect(
+        FileUtils.checkFile(request, FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT)
+      ).toStrictEqual(false);
       expect(request.session.errors).toStrictEqual([
         {
           errorType: ValidationErrors.INVALID_FILE_NAME_NOT_FOUND,
@@ -54,7 +60,9 @@ describe('FileUtils', () => {
     });
     test('Should return false and set invalid file name error when file name in request is invalid', async () => {
       request.file = mockInvalidMulterFileWithInvalidName;
-      expect(FileUtils.checkFile(request)).toStrictEqual(false);
+      expect(
+        FileUtils.checkFile(request, FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT)
+      ).toStrictEqual(false);
       expect(request.session.errors).toStrictEqual([
         {
           errorType: ValidationErrors.INVALID_FILE_NAME,
@@ -64,7 +72,9 @@ describe('FileUtils', () => {
     });
     test('Should return false and set invalid file format error when file in request has invalid format', async () => {
       request.file = mockInvalidMulterFileWithInvalidFormat;
-      expect(FileUtils.checkFile(request)).toStrictEqual(false);
+      expect(
+        FileUtils.checkFile(request, FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT)
+      ).toStrictEqual(false);
       expect(request.session.errors).toStrictEqual([
         {
           errorType: ValidationErrors.INVALID_FILE_FORMAT,
@@ -74,7 +84,9 @@ describe('FileUtils', () => {
     });
     test('Should return true when file in request is valid', async () => {
       request.file = mockValidMulterFile;
-      expect(FileUtils.checkFile(request)).toStrictEqual(true);
+      expect(
+        FileUtils.checkFile(request, FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT)
+      ).toStrictEqual(true);
       expect(request.session.errors).toStrictEqual([]);
     });
   });
