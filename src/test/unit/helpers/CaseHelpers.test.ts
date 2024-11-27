@@ -8,7 +8,12 @@ import { CaseWithId } from '../../../main/definitions/case';
 import { DefaultValues, FieldsToReset, GenericTestConstants } from '../../../main/definitions/constants';
 import { CaseState } from '../../../main/definitions/definition';
 import { FormContent, FormFields } from '../../../main/definitions/form';
-import { handleUpdateDraftCase, handleUpdateHubLinksStatuses, resetFields } from '../../../main/helpers/CaseHelpers';
+import {
+  handleUpdateDraftCase,
+  handleUpdateHubLinksStatuses,
+  resetFields,
+  setUserCase,
+} from '../../../main/helpers/CaseHelpers';
 import * as CaseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
 import { isFieldFilledIn } from '../../../main/validators/validator';
@@ -123,5 +128,32 @@ describe('reset fields', () => {
     formData.et3ResponsePensionCorrectDetails = GenericTestConstants.TEST_FIELD_VALUE;
     resetFields(formData, undefined);
     expect(formData.et3ResponsePensionCorrectDetails).toEqual(GenericTestConstants.TEST_FIELD_VALUE);
+  });
+});
+
+describe('setUserCase', () => {
+  let req: ReturnType<typeof mockRequest>;
+  const formData: Partial<CaseWithId> = {
+    et3ResponsePensionCorrectDetails: 'Some incorrect details',
+  };
+
+  beforeEach(() => {
+    req = mockRequest({ userCase: undefined, session: mockSession([], [], []) });
+  });
+
+  it('should initialize userCase if it is undefined in the session', () => {
+    setUserCase(req, formData, []);
+    expect(req.session.userCase).toBeDefined();
+    expect(req.session.userCase).toEqual(expect.objectContaining(formData));
+  });
+
+  it('should not reset any fields if fieldsToReset is empty', () => {
+    setUserCase(req, formData, []);
+    expect(req.session.userCase.et3ResponsePensionCorrectDetails).toEqual('Some incorrect details');
+  });
+
+  it('should handle undefined fieldsToReset gracefully', () => {
+    setUserCase(req, formData, undefined);
+    expect(req.session.userCase.et3ResponsePensionCorrectDetails).toEqual('Some incorrect details');
   });
 });
