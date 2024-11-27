@@ -10,6 +10,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { returnValidUrl } from '../helpers/RouterHelpers';
 import EmployersContractClaimDetailsControllerHelper from '../helpers/controller/EmployersContractClaimDetailsControllerHelper';
 import { getLogger } from '../logger';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -87,25 +88,25 @@ export default class EmployersContractClaimDetailsController {
             errorType: 'invalidFileSize',
           },
         ];
-        return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS)));
       }
       if (ObjectUtils.isNotEmpty(req.file)) {
         if (!FileUtils.checkFile(req)) {
-          return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
+          return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS)));
         }
         const uploadedDocument: DocumentUploadResponse = await FileUtils.uploadFile(req);
         if (!uploadedDocument) {
-          return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
+          return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS)));
         }
         EmployersContractClaimDetailsControllerHelper.setEmployerClaimDocumentToUserCase(req, uploadedDocument);
       }
-      return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS)));
     }
     req.session.errors = [];
     req.session.userCase.et3ResponseEmployerClaimDetails = formData.et3ResponseEmployerClaimDetails;
     EmployersContractClaimDetailsControllerHelper.areInputValuesValid(req, formData);
     if (CollectionUtils.isNotEmpty(req.session.errors)) {
-      return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS)));
     }
     await ET3Util.updateET3ResponseWithET3Form(
       req,

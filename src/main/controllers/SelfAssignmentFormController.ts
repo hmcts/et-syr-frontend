@@ -81,7 +81,7 @@ export default class SelfAssignmentFormController {
         formData.id
       );
       if (isReformCase?.data.toString() === 'false') {
-        return res.redirect(LegacyUrls.ET3);
+        return res.redirect(returnValidUrl(LegacyUrls.ET3, Object.values(LegacyUrls)));
       }
       const caseData = (await getCaseApi(req.session.user?.accessToken)?.getCaseByApplicationRequest(req))?.data;
       if (caseData) {

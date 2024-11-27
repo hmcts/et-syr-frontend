@@ -15,7 +15,7 @@ import { formatApiCaseDataToCaseWithId } from './ApiFormatter';
 import { handleErrors, returnSessionErrors } from './ErrorHelpers';
 import { trimFormData } from './FormHelper';
 import { setUrlLanguage } from './LanguageHelper';
-import { returnNextPage } from './RouterHelpers';
+import { returnNextPage, returnValidUrl } from './RouterHelpers';
 
 /**
  * Updates the draft case data for the current session.
@@ -97,7 +97,7 @@ export const postLogic = async (
     if (saveForLater) {
       // TODO: Need to implement saveForLater screen
       redirectUrl = setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED);
-      return res.redirect(redirectUrl);
+      return res.redirect(returnValidUrl(redirectUrl));
     } else {
       redirectUrl = setUrlLanguage(req, redirectUrl);
       returnNextPage(req, res, redirectUrl);

@@ -6,6 +6,7 @@ import { PageUrls, ValidationErrors } from '../../definitions/constants';
 import ErrorUtils from '../../utils/ErrorUtils';
 import { isDateEmpty, isDateInputInvalid, isFirstDateBeforeSecond } from '../../validators/dateValidators';
 import { setUrlLanguage } from '../LanguageHelper';
+import { returnValidUrl } from '../RouterHelpers';
 
 export const isEndDateBeforeStartDate = (req: AppRequest): boolean => {
   const startDate: CaseDate = {
@@ -39,5 +40,5 @@ export const handleEndDateBeforeStartDate = (req: AppRequest, res: Response): vo
     'day'
   );
   const redirectUrl = setUrlLanguage(req, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
-  return res.redirect(redirectUrl);
+  return res.redirect(returnValidUrl(redirectUrl));
 };

@@ -11,7 +11,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { answersAddressFormatter } from '../helpers/AddressHelper';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { conditionalRedirect, startSubSection } from '../helpers/RouterHelpers';
+import { conditionalRedirect, returnValidUrl, startSubSection } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
 import ErrorUtils from '../utils/ErrorUtils';
@@ -59,7 +59,7 @@ export default class RespondentAddressController {
     const errorRedirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ADDRESS);
     if (req.session.errors.length > 0) {
       logger.error(LoggerConstants.ERROR_FORM_INVALID_DATA + 'Case Id: ' + req.session?.userCase?.id);
-      return res.redirect(errorRedirectUrl);
+      return res.redirect(returnValidUrl(errorRedirectUrl));
     }
     let redirectUrl: string = setUrlLanguage(req, PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME);
     if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.NO)) {
@@ -104,7 +104,7 @@ export default class RespondentAddressController {
         ValidationErrors.SESSION_RESPONDENT,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
       );
-      return res.redirect(errorRedirectUrl);
+      return res.redirect(returnValidUrl(errorRedirectUrl));
     }
   };
 

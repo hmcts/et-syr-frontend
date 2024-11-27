@@ -49,7 +49,7 @@ export default class RespondentEnterPostCodeController {
     if (req.session.errors.length > 0) {
       logger.error(LoggerConstants.ERROR_FORM_INVALID_DATA + 'CaseId: ' + req.session?.userCase?.id);
       const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ENTER_POST_CODE);
-      return res.redirect(redirectUrl);
+      return res.redirect(returnValidUrl(redirectUrl));
     }
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_SELECT_POST_CODE);
     req.session.userCase.responseRespondentAddressPostCode = formData.responseRespondentAddressPostCode;
