@@ -9,6 +9,7 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { returnValidUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import { isValidUKPostcode } from '../validators/address_validator';
 
@@ -52,7 +53,7 @@ export default class RespondentEnterPostCodeController {
     }
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_SELECT_POST_CODE);
     req.session.userCase.responseRespondentAddressPostCode = formData.responseRespondentAddressPostCode;
-    return res.redirect(redirectUrl);
+    return res.redirect(returnValidUrl(redirectUrl));
   };
 
   public get = (req: AppRequest, res: Response): void => {

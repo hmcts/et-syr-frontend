@@ -12,6 +12,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { returnValidUrl } from '../helpers/RouterHelpers';
 import RespondentContestClaimReasonControllerHelper from '../helpers/controller/RespondentContestClaimReasonControllerHelper';
 import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
@@ -110,10 +111,10 @@ export default class RespondentContestClaimReasonController {
             errorType: ValidationErrors.INVALID_FILE_SIZE,
           },
         ];
-        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
       }
       if (!FileUtils.checkFile(req)) {
-        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
       }
       if (FileUtils.fileAlreadyExists(req)) {
         ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
@@ -121,22 +122,22 @@ export default class RespondentContestClaimReasonController {
           ValidationErrors.FILE_ALREADY_EXISTS,
           FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
         );
-        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
       }
       const uploadedDocument: DocumentUploadResponse = await FileUtils.uploadFile(req);
       if (!uploadedDocument) {
-        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
       }
       const documentTypeItem: DocumentTypeItem = FileUtils.convertDocumentUploadResponseToDocumentTypeItem(
         req,
         uploadedDocument
       );
       if (!documentTypeItem) {
-        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
       }
       req.session?.userCase?.et3ResponseContestClaimDocument.push(documentTypeItem);
       req.session.userCase.et3ResponseContestClaimDetails = formData.et3ResponseContestClaimDetails;
-      return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
     }
     RespondentContestClaimReasonControllerHelper.areInputValuesValid(req, formData);
 
@@ -149,17 +150,17 @@ export default class RespondentContestClaimReasonController {
           ValidationErrors.FILE_UPLOAD_BACKEND_ERROR,
           FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
         );
-        return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
       }
       req.session.userCase = userCase;
       if (req.body?.submit) {
-        return res.redirect(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM));
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM)));
       }
       if (req.body?.saveAsDraft) {
-        return res.redirect(setUrlLanguage(req, PageUrls.RESPONSE_SAVED));
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONSE_SAVED)));
       }
     }
-    return res.redirect(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+    return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
   };
 
   public get = (req: AppRequest, res: Response): void => {
