@@ -3,6 +3,9 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { DefaultValues, ErrorPages, PageUrls, languages } from '../definitions/constants';
 import { FormFields } from '../definitions/form';
+import UrlUtils from '../utils/UrlUtils';
+
+import { addParameterToUrl } from './LanguageHelper';
 
 export const getLanguageParam = (url: string): string => {
   if (url?.includes(languages.WELSH_URL_POSTFIX)) {
@@ -35,19 +38,33 @@ export const returnNextPage = (req: AppRequest, res: Response, redirectUrl: stri
   return res.redirect(returnValidUrl(nextPage));
 };
 
+/**
+ * Checks for a valid url stored within the system to avoid open redirects
+ *
+ * @param {string} redirectUrl
+ * @param {string[]} validUrls
+ * @return {string}
+ */
 export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): string => {
+  // if undefined use PageURLs
   validUrls = validUrls ?? Object.values(PageUrls);
+  // split url, first part will always be the url (in a format similar to that in PageUrls)
+  const urlStr = redirectUrl.split('?');
+  const baseUrl = urlStr[0];
 
-  // Parse the redirectUrl to get the pathname without query parameters
-  const parsedUrl = new URL(redirectUrl, 'http://example.com'); // Base URL is required for parsing
-  const pathWithoutQuery = parsedUrl.pathname;
+  for (let validUrl of validUrls) {
+    if (baseUrl === validUrl) {
+      // get parameters as an array of strings
+      const parameters = UrlUtils.getRequestParamsFromUrl(redirectUrl);
 
-  for (const url of validUrls) {
-    if (pathWithoutQuery === url) {
-      return redirectUrl; // Return the original URL with query parameters intact
+      // add params to the validUrl
+      for (const param of parameters) {
+        validUrl = addParameterToUrl(validUrl, param);
+      }
+      return validUrl;
     }
   }
-
+  // Return a safe fallback if no validUrl is found
   return ErrorPages.NOT_FOUND;
 };
 

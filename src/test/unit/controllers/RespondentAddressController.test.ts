@@ -1,7 +1,7 @@
 import RespondentAddressController from '../../../main/controllers/RespondentAddressController';
 import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import { conditionalRedirect } from '../../../main/helpers/RouterHelpers';
+import { conditionalRedirect, returnValidUrl } from '../../../main/helpers/RouterHelpers';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
@@ -99,6 +99,8 @@ describe('RespondentAddressController', () => {
 
     // Mock conditionalRedirect to return true for YesOrNo.NO
     (conditionalRedirect as jest.Mock).mockReturnValueOnce(false);
+    // Set up returnValidUrl mock to return the request URL as valid
+    (returnValidUrl as jest.Mock).mockReturnValue(PageUrls.RESPONDENT_ADDRESS);
 
     await controller.post(req, res);
 
@@ -114,6 +116,8 @@ describe('RespondentAddressController', () => {
 
     // Mock conditionalRedirect to return true for YesOrNo.NO
     (conditionalRedirect as jest.Mock).mockReturnValueOnce(false);
+    // Set up returnValidUrl mock to return the request URL as valid
+    (returnValidUrl as jest.Mock).mockReturnValue(PageUrls.RESPONDENT_ADDRESS);
 
     await controller.post(req, res);
 

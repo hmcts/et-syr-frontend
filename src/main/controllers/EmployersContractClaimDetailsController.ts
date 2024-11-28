@@ -10,6 +10,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { returnValidUrl } from '../helpers/RouterHelpers';
 import EmployersContractClaimDetailsControllerHelper from '../helpers/controller/EmployersContractClaimDetailsControllerHelper';
 import { getLogger } from '../logger';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -94,7 +95,7 @@ export default class EmployersContractClaimDetailsController {
         ValidationErrors.INVALID_FILE_NOT_SELECTED,
         FormFieldNames.EMPLOYERS_CONTRACT_CLAIM_DETAILS.CLAIM_SUMMARY_FILE_NAME
       );
-      return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS)));
     } else {
       req.session.errors = [];
     }
@@ -107,15 +108,15 @@ export default class EmployersContractClaimDetailsController {
             errorType: 'invalidFileSize',
           },
         ];
-        return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS)));
       }
 
       if (!FileUtils.checkFile(req, FormFieldNames.EMPLOYERS_CONTRACT_CLAIM_DETAILS.CLAIM_SUMMARY_FILE_NAME)) {
-        return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS)));
       }
       const uploadedDocument: DocumentUploadResponse = await FileUtils.uploadFile(req);
       if (!uploadedDocument) {
-        return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS)));
       }
       EmployersContractClaimDetailsControllerHelper.setEmployerClaimDocumentToUserCase(req, uploadedDocument);
       req.file = undefined;
@@ -125,7 +126,7 @@ export default class EmployersContractClaimDetailsController {
     req.session.userCase.et3ResponseEmployerClaimDetails = formData.et3ResponseEmployerClaimDetails;
     EmployersContractClaimDetailsControllerHelper.areInputValuesValid(req, formData);
     if (CollectionUtils.isNotEmpty(req.session.errors)) {
-      return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS)));
     }
     let redirectUrl: string = PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM;
     if (req.body?.upload) {

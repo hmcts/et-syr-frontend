@@ -7,6 +7,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { Applicant, ErrorPages } from '../definitions/constants';
 import { handleUpdateDraftCase } from '../helpers/CaseHelpers';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { returnValidUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 
 import { createToken } from './createToken';
@@ -72,12 +73,12 @@ export const invokePCQ = async (req: AppRequest, res: Response): Promise<void> =
     } else {
       //skip pcq
       logger.info(`PCQ status is ${healthResp} and PCQ ID is ${pcqId}`);
-      res.redirect(setUrlLanguage(req, ErrorPages.NOT_FOUND));
+      res.redirect(returnValidUrl(setUrlLanguage(req, ErrorPages.NOT_FOUND)));
     }
   } else {
     //skip pcq
     logger.info(`PCQ enabled: ${isEnabled().toString()}`);
-    res.redirect(setUrlLanguage(req, ErrorPages.NOT_FOUND));
+    res.redirect(returnValidUrl(setUrlLanguage(req, ErrorPages.NOT_FOUND)));
   }
 };
 

@@ -14,7 +14,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import { currentET3StatusFn } from '../helpers/state-sequence';
 import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -34,12 +34,12 @@ export default class CaseDetailsController {
     );
     req.session.selectedRespondentIndex = ET3Util.findSelectedRespondentIndex(req);
     if (CollectionUtils.isNotEmpty(req.session.errors)) {
-      return res.redirect(setUrlLanguage(req, PageUrls.CASE_LIST));
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CASE_LIST)));
     }
     const selectedRespondent = req.session.userCase.respondents[req.session.selectedRespondentIndex];
     ET3DataModelUtil.setSelectedRespondentDataToCaseWithId(req);
     if (CollectionUtils.isNotEmpty(req.session.errors)) {
-      return res.redirect(setUrlLanguage(req, PageUrls.CASE_LIST));
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CASE_LIST)));
     }
     respondentResponseDeadline = ET3DataModelUtil.getRespondentResponseDeadline(req);
     const currentState = currentET3StatusFn(selectedRespondent);

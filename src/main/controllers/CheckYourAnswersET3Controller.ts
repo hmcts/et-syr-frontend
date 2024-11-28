@@ -7,7 +7,7 @@ import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import {
   getEt3Section1,
   getEt3Section2,
@@ -55,10 +55,10 @@ export default class CheckYourAnswersET3Controller {
       ET3ModificationTypes.MODIFICATION_TYPE_SUBMIT
     );
     if (!userCase || req.body.saveAsDraft) {
-      return res.redirect(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3));
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3)));
     }
     if (req.body?.submit) {
-      return res.redirect(setUrlLanguage(req, PageUrls.APPLICATION_SUBMITTED));
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.APPLICATION_SUBMITTED)));
     }
   };
 
