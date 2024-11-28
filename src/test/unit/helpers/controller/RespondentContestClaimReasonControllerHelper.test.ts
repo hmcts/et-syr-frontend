@@ -40,7 +40,7 @@ describe('RespondentContestClaimReasonControllerHelper', () => {
       request.session.userCase = mockCaseWithIdWithRespondents;
       request.session.userCase.et3ResponseContestClaimDocument = [];
       const formData = mockCaseWithIdWithRespondents;
-      formData.et3ResponseContestClaimDetails = '0'.repeat(2501);
+      formData.et3ResponseContestClaimDetails = '0'.repeat(3001);
       expect(RespondentContestClaimReasonControllerHelper.areInputValuesValid(request, formData)).toEqual(false);
       expect(request.session.errors).toEqual([
         {

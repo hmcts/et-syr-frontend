@@ -43,10 +43,10 @@ export default class EmployersContractClaimDetailsController {
       },
       claimSummaryFile: {
         id: 'claimSummaryFile',
-        label: (l: AnyRecord) => l.fileUpload.label,
         labelHidden: true,
         type: 'upload',
         classes: 'govuk-label',
+        label: 'Upload Document',
         hint: (l: AnyRecord) => this.getHint(l),
       },
       upload: {
