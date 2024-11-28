@@ -11,7 +11,7 @@ import {
   PageUrls,
   ValidationErrors,
 } from '../definitions/constants';
-import { ApplicationTableRecord } from '../definitions/definition';
+import { ApplicationTableRecord, TypesOfClaim } from '../definitions/definition';
 import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
@@ -257,8 +257,18 @@ export default class ET3Util {
     ];
   }
 
-  public static getOverallStatus(respondent: RespondentET3Model, translations: AnyRecord): string {
-    const totalSections: number = 6;
+  public static getOverallStatus(
+    userCase: CaseWithId,
+    respondent: RespondentET3Model,
+    translations: AnyRecord
+  ): string {
+    let totalSections: number = 5;
+    if (
+      CollectionUtils.isNotEmpty(userCase?.typeOfClaim) &&
+      userCase.typeOfClaim.includes(TypesOfClaim.BREACH_OF_CONTRACT)
+    ) {
+      totalSections = 6;
+    }
     let sectionCount: number = 0;
 
     if (respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] === LinkStatus.COMPLETED) {
@@ -281,7 +291,11 @@ export default class ET3Util {
       sectionCount++;
     }
 
-    if (respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployersContractClaim] === LinkStatus.COMPLETED) {
+    if (
+      CollectionUtils.isNotEmpty(userCase?.typeOfClaim) &&
+      userCase.typeOfClaim.includes(TypesOfClaim.BREACH_OF_CONTRACT) &&
+      respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployersContractClaim] === LinkStatus.COMPLETED
+    ) {
       sectionCount++;
     }
     const overallStatus: AnyRecord = {

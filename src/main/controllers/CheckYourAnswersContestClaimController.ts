@@ -3,11 +3,13 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
 import { DefaultValues, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
+import { TypesOfClaim } from '../definitions/definition';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { conditionalRedirect } from '../helpers/RouterHelpers';
 import { getEt3Section5 } from '../helpers/controller/CheckYourAnswersET3Helper';
+import CollectionUtils from '../utils/CollectionUtils';
 import ET3Util from '../utils/ET3Util';
 
 import BaseCYAController from './BaseCYAController';
@@ -21,14 +23,20 @@ export default class CheckYourAnswersContestClaimController extends BaseCYAContr
     const linkStatus = conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)
       ? LinkStatus.COMPLETED
       : LinkStatus.IN_PROGRESS_CYA;
-
+    let redirectUrl: string = PageUrls.RESPONDENT_RESPONSE_TASK_LIST;
+    if (
+      CollectionUtils.isNotEmpty(req.session.userCase.typeOfClaim) &&
+      req.session.userCase.typeOfClaim.includes(TypesOfClaim.BREACH_OF_CONTRACT)
+    ) {
+      redirectUrl = PageUrls.EMPLOYERS_CONTRACT_CLAIM;
+    }
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.ContestClaim,
       linkStatus,
-      PageUrls.EMPLOYERS_CONTRACT_CLAIM
+      redirectUrl
     );
   };
 
