@@ -95,7 +95,7 @@ export default class EmployersContractClaimDetailsController {
         ValidationErrors.INVALID_FILE_NOT_SELECTED,
         FormFieldNames.EMPLOYERS_CONTRACT_CLAIM_DETAILS.CLAIM_SUMMARY_FILE_NAME
       );
-      return res.redirect(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS));
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS)));
     } else {
       req.session.errors = [];
     }
