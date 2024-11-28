@@ -97,7 +97,7 @@ describe('CheckYourAnswersEarlyConciliationAndEmployeeDetailsController', () => 
         response,
         expect.anything(),
         expect.anything(),
-        LinkStatus.IN_PROGRESS,
+        LinkStatus.IN_PROGRESS_CYA,
         PageUrls.CLAIMANT_PAY_DETAILS
       );
     });

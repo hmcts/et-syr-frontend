@@ -138,6 +138,12 @@ export const enum LinkStatus {
   UPDATED = 'updated',
   READY_TO_VIEW = 'readyToView',
   CANNOT_START_YET = 'cannotStartYet',
+  // This status is implemented as a fake status. Normally
+  // if any section status is completed we don't change it is status
+  // But if on CYA(Check Your Answers) page if it is selected as No,
+  // to section completed question, we update to inProgress again.
+  // To have that discrimination, we use this option.
+  IN_PROGRESS_CYA = 'inProgressCya',
 }
 
 export const linkStatusColorMap = new Map<LinkStatus, string>([

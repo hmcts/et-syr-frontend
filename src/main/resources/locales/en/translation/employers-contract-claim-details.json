@@ -30,7 +30,7 @@
   "errors": {
     "et3ResponseEmployerClaimDetails": {
       "required": "Give details of the Employer's Contract Claim",
-      "tooLong": "Free text details must be 2500 characters or less"
+      "tooLong": "Free text details must be 3000 characters or less"
     },
     "claimSummaryFile": {
       "invalidFileName": "The name of the file provided is invalid. A file name cannot exceed 150 characters or contain any of the following characters: \\/:*?\"|<>",
