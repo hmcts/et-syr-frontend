@@ -2,7 +2,8 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { ET3ModificationTypes, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
+import { CLAIM_TYPES, ET3ModificationTypes, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
+import { TypesOfClaim } from '../definitions/definition';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
@@ -17,6 +18,7 @@ import {
   getEt3Section6,
 } from '../helpers/controller/CheckYourAnswersET3Helper';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
+import CollectionUtils from '../utils/CollectionUtils';
 import ET3Util from '../utils/ET3Util';
 
 export default class CheckYourAnswersET3Controller {
@@ -66,7 +68,14 @@ export default class CheckYourAnswersET3Controller {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const redirectUrl = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3);
     const userCase = req.session.userCase;
-
+    let isSection6Visible = false;
+    if (
+      CollectionUtils.isNotEmpty(req.session.userCase.typeOfClaim) &&
+      (req.session.userCase.typeOfClaim.includes(CLAIM_TYPES.BREACH_OF_CONTRACT) ||
+        req.session.userCase.typeOfClaim.includes(TypesOfClaim.BREACH_OF_CONTRACT))
+    ) {
+      isSection6Visible = true;
+    }
     const sectionTranslations: AnyRecord = {
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
@@ -90,6 +99,7 @@ export default class CheckYourAnswersET3Controller {
       redirectUrl,
       languageParam: getLanguageParam(req.url),
       welshEnabled,
+      isSection6Visible,
       form: this.checkYourAnswers,
     });
   };
