@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
-import { DefaultValues, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
+import { CLAIM_TYPES, DefaultValues, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
 import { TypesOfClaim } from '../definitions/definition';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
@@ -26,7 +26,8 @@ export default class CheckYourAnswersContestClaimController extends BaseCYAContr
     let redirectUrl: string = PageUrls.RESPONDENT_RESPONSE_TASK_LIST;
     if (
       CollectionUtils.isNotEmpty(req.session.userCase.typeOfClaim) &&
-      req.session.userCase.typeOfClaim.includes(TypesOfClaim.BREACH_OF_CONTRACT)
+      (req.session.userCase.typeOfClaim.includes(CLAIM_TYPES.BREACH_OF_CONTRACT) ||
+        req.session.userCase.typeOfClaim.includes(TypesOfClaim.BREACH_OF_CONTRACT))
     ) {
       redirectUrl = PageUrls.EMPLOYERS_CONTRACT_CLAIM;
     }

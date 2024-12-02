@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
-import { PageUrls, TranslationKeys, languages } from '../definitions/constants';
+import { CLAIM_TYPES, PageUrls, TranslationKeys, languages } from '../definitions/constants';
 import { TypesOfClaim } from '../definitions/definition';
 import {
   ET3HubLinkNames,
@@ -44,7 +44,10 @@ export default class RespondentResponseTaskListController {
       req.session?.userCase?.acasCertNum
     );
     let sectionIndexToEt3HubLinkNames: ET3HubLinkNames[][] = SectionIndexToEt3HubLinkNamesWithoutEmployersContractClaim;
-    if (req.session?.userCase?.typeOfClaim?.includes(TypesOfClaim.BREACH_OF_CONTRACT)) {
+    if (
+      req.session?.userCase?.typeOfClaim?.includes(CLAIM_TYPES.BREACH_OF_CONTRACT) ||
+      req.session?.userCase?.typeOfClaim?.includes(TypesOfClaim.BREACH_OF_CONTRACT)
+    ) {
       sectionIndexToEt3HubLinkNames = SectionIndexToEt3HubLinkNamesWithEmployersContractClaim;
     }
     const sections = Array.from(Array(sectionIndexToEt3HubLinkNames.length)).map((__ignored, index) => {

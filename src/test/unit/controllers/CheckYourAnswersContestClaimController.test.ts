@@ -1,8 +1,7 @@
 import _ from 'lodash';
 
 import CheckYourAnswersContestClaimController from '../../../main/controllers/CheckYourAnswersContestClaimController';
-import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import { TypesOfClaim } from '../../../main/definitions/definition';
+import { CLAIM_TYPES, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { LinkStatus } from '../../../main/definitions/links';
 import { conditionalRedirect } from '../../../main/helpers/RouterHelpers';
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
@@ -132,7 +131,7 @@ describe('CheckYourAnswersContestClaimController', () => {
       );
       const req = _.cloneDeep(request);
       req.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
-      req.session.userCase.typeOfClaim = [TypesOfClaim.BREACH_OF_CONTRACT];
+      req.session.userCase.typeOfClaim = [CLAIM_TYPES.BREACH_OF_CONTRACT];
       await controller.post(req, response);
 
       expect(request.session.userCase).toEqual(mockCaseWithIdWithRespondents); // Validate the userCase is set

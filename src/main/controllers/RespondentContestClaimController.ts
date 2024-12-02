@@ -60,7 +60,7 @@ export default class RespondentContestClaimController {
       req,
       res,
       this.form,
-      ET3HubLinkNames.ContactDetails,
+      ET3HubLinkNames.ContestClaim,
       LinkStatus.IN_PROGRESS,
       nextPage
     );

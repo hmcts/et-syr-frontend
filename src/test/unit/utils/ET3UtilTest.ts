@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import { CaseWithId, RespondentET3Model } from '../../../main/definitions/case';
 import {
+  CLAIM_TYPES,
   DefaultValues,
   PageUrls,
   ServiceErrors,
@@ -179,7 +180,7 @@ describe('ET3lUtil tests', () => {
     };
     const respondent: RespondentET3Model = _.cloneDeep(mockRespondentET3Model);
     const userCase: CaseWithId = _.cloneDeep(mockCaseWithIdWithRespondents);
-    userCase.typeOfClaim = [TypesOfClaim.BREACH_OF_CONTRACT];
+    userCase.typeOfClaim = [CLAIM_TYPES.BREACH_OF_CONTRACT];
     respondent.et3HubLinksStatuses = new ET3HubLinksStatuses();
     test('Should 0 of 6 tasks completed when et3 hub link statuses does not have any completed task', () => {
       expect(ET3Util.getOverallStatus(userCase, respondent, translations)).toEqual('0 of 6 tasks completed');

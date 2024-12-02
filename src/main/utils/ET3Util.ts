@@ -4,6 +4,7 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, RespondentET3Model } from '../definitions/case';
 import {
+  CLAIM_TYPES,
   DefaultValues,
   ET3ModificationTypes,
   FormFieldNames,
@@ -265,7 +266,8 @@ export default class ET3Util {
     let totalSections: number = 5;
     if (
       CollectionUtils.isNotEmpty(userCase?.typeOfClaim) &&
-      userCase.typeOfClaim.includes(TypesOfClaim.BREACH_OF_CONTRACT)
+      (userCase.typeOfClaim.includes(CLAIM_TYPES.BREACH_OF_CONTRACT) ||
+        userCase.typeOfClaim.includes(TypesOfClaim.BREACH_OF_CONTRACT))
     ) {
       totalSections = 6;
     }
@@ -293,7 +295,7 @@ export default class ET3Util {
 
     if (
       CollectionUtils.isNotEmpty(userCase?.typeOfClaim) &&
-      userCase.typeOfClaim.includes(TypesOfClaim.BREACH_OF_CONTRACT) &&
+      userCase.typeOfClaim.includes(CLAIM_TYPES.BREACH_OF_CONTRACT) &&
       respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployersContractClaim] === LinkStatus.COMPLETED
     ) {
       sectionCount++;

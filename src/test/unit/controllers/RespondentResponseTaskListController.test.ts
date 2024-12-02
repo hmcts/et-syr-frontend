@@ -1,5 +1,5 @@
 import RespondentResponseTaskListController from '../../../main/controllers/RespondentResponseTaskListController';
-import { DefaultValues, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
+import { CLAIM_TYPES, DefaultValues, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import { TypesOfClaim } from '../../../main/definitions/definition';
 import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import { mockRequest } from '../mocks/mockRequest';
@@ -42,7 +42,7 @@ describe('Respondent response task list controller', () => {
     const controller = new RespondentResponseTaskListController();
     const response = mockResponse();
     const request = mockRequest({ session: { userCase: mockUserCaseComplete, user: mockUserDetails } });
-    request.session.userCase.typeOfClaim.push(TypesOfClaim.BREACH_OF_CONTRACT);
+    request.session.userCase.typeOfClaim.push(CLAIM_TYPES.BREACH_OF_CONTRACT);
     request.session.selectedRespondentIndex = 0;
     // Mock the translation function to return valid section data
     (request.t as unknown as jest.Mock).mockReturnValue(mockRespondentHubTranslations);
