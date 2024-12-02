@@ -4,6 +4,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import { DefaultValues, PageUrls } from '../definitions/constants';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { returnValidUrl } from '../helpers/RouterHelpers';
 
 export default class NewSelfAssignmentRequestController {
   /**
@@ -21,6 +22,6 @@ export default class NewSelfAssignmentRequestController {
       firstName: DefaultValues.STRING_EMPTY,
       lastName: DefaultValues.STRING_EMPTY,
     };
-    res.redirect(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_FORM));
+    res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_FORM)));
   }
 }

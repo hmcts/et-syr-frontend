@@ -118,7 +118,7 @@ export const mockGovUKTableRowArrayFromDocumentTypeItem: GovukTableRowArray[] = 
       text: 'Screenshot 2024-11-03 at 18.53.00.png',
     },
     {
-      html: '<a href="remove-file?lng=en&fileId=900d4265-aaeb-455f-9cdd-bc0bdf61c918">remove</a>',
+      html: '<a href="remove-file/900d4265-aaeb-455f-9cdd-bc0bdf61c918/undefined?lng=en">remove</a>',
     },
   ],
 ];

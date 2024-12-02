@@ -4,6 +4,11 @@
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
+{% set buttonText = startNow %}
+{% if responseSaved %}
+  {% set buttonText = continue  %}
+{% endif %}
+
 {% block beforeContent %}
   {{ super() }}
   {% include "back-link.njk"%}
@@ -34,7 +39,7 @@
       </ul>
 
       {{ govukButton({
-        text: startNow,
+        text: buttonText,
         href: redirectUrl,
         isStartButton: true
       }) }}

@@ -20,7 +20,7 @@ export default class CheckYourAnswersHearingPreferencesController extends BaseCY
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const linkStatus = conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)
       ? LinkStatus.COMPLETED
-      : LinkStatus.IN_PROGRESS;
+      : LinkStatus.IN_PROGRESS_CYA;
 
     await ET3Util.updateET3ResponseWithET3Form(
       req,

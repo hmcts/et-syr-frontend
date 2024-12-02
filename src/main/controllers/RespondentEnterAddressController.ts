@@ -9,9 +9,10 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { endSubSection } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
-import { isFieldFilledIn } from '../validators/validator';
+import { isContentCharsOrLessAndNotEmpty, isFieldFilledIn } from '../validators/validator';
 
 const logger = getLogger('RespondentEnterAddressController');
 
@@ -24,7 +25,8 @@ export default class RespondentEnterAddressController {
         type: 'text',
         label: (l: AnyRecord): string => l.addressLine1,
         classes: 'govuk-label govuk-!-width-one-half',
-        validator: isFieldFilledIn,
+        attributes: { maxLength: 100 },
+        validator: isContentCharsOrLessAndNotEmpty(100),
       },
       responseRespondentAddressLine2: {
         id: 'responseRespondentAddressLine2',
@@ -63,20 +65,22 @@ export default class RespondentEnterAddressController {
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     logger.info(LoggerConstants.INFO_LOG_UPDATING_RESPONSE_RESPONDENT_ADDRESS + req.session.userCase.id);
+    const redirectUrl = PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME;
+    endSubSection(req);
+
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.ContactDetails,
       LinkStatus.IN_PROGRESS,
-      PageUrls.RESPONDENT_PREFERRED_CONTACT_NAME
+      redirectUrl
     );
     logger.info(LoggerConstants.INFO_LOG_UPDATED_RESPONSE_RESPONDENT_ADDRESS + req.session.userCase.id);
   };
 
   public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ENTER_ADDRESS);
-
     const content = getPageContent(req, this.respondentEnterAddressContent, [
       TranslationKeys.COMMON,
       TranslationKeys.RESPONDENT_ENTER_ADDRESS,

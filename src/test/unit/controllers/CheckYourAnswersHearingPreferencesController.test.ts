@@ -98,7 +98,7 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
         response,
         expect.anything(),
         expect.anything(),
-        LinkStatus.IN_PROGRESS,
+        LinkStatus.IN_PROGRESS_CYA,
         PageUrls.RESPONDENT_RESPONSE_TASK_LIST
       );
     });

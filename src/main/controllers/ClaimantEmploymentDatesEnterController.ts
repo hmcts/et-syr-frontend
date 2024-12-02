@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import _ from 'lodash';
 
 import { Form } from '../components/form';
 import { convertToDateObject } from '../components/parser';
@@ -11,6 +12,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord, UnknownRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
+import { endSubSection } from '../helpers/RouterHelpers';
 import {
   handleEndDateBeforeStartDate,
   isEndDateBeforeStartDate,
@@ -52,7 +54,7 @@ const et3_response_employment_information: FormField = {
   type: 'textarea',
 };
 
-const dateFieldList = [
+const fieldList = [
   {
     attributes: { maxLength: 2 },
     label: (l: AnyRecord): string => l.dateFormat.day,
@@ -72,6 +74,9 @@ const dateFieldList = [
     classes: 'govuk-input--width-4',
   },
 ];
+
+const startDateFieldList = _.cloneDeep(fieldList);
+const endDateFieldList = _.cloneDeep(fieldList);
 
 const formContentFieldsList = {
   et3ResponseEmploymentStartDate: et3_response_employment_start_date,
@@ -95,6 +100,7 @@ export default class ClaimantEmploymentDatesEnterController {
     if (isEndDateBeforeStartDate(req)) {
       return handleEndDateBeforeStartDate(req, res);
     }
+    endSubSection(req);
 
     await ET3Util.updateET3ResponseWithET3Form(
       req,
@@ -107,8 +113,8 @@ export default class ClaimantEmploymentDatesEnterController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    et3_response_employment_start_date.values = dateFieldList;
-    et3_response_employment_end_date.values = dateFieldList;
+    et3_response_employment_start_date.values = startDateFieldList;
+    et3_response_employment_end_date.values = endDateFieldList;
     this.formContent.fields = formContentFieldsList;
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,

@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
-import { InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
+import { DefaultValues, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
@@ -20,7 +20,7 @@ export default class CheckYourAnswersContestClaimController extends BaseCYAContr
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const linkStatus = conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)
       ? LinkStatus.COMPLETED
-      : LinkStatus.IN_PROGRESS;
+      : LinkStatus.IN_PROGRESS_CYA;
 
     await ET3Util.updateET3ResponseWithET3Form(
       req,
@@ -28,7 +28,7 @@ export default class CheckYourAnswersContestClaimController extends BaseCYAContr
       this.form,
       ET3HubLinkNames.ContestClaim,
       linkStatus,
-      PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+      PageUrls.EMPLOYERS_CONTRACT_CLAIM
     );
   };
 
@@ -41,6 +41,13 @@ export default class CheckYourAnswersContestClaimController extends BaseCYAContr
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
     };
 
+    const documents = userCase.et3ResponseContestClaimDocument;
+    // Join the shortDescriptions with a comma
+    const contestClaimDocumentNames =
+      userCase.et3ResponseContestClaimDocument !== undefined
+        ? documents.map(document => document.value.shortDescription).join(', ')
+        : DefaultValues.STRING_DASH;
+
     res.render(TranslationKeys.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, {
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
@@ -50,6 +57,7 @@ export default class CheckYourAnswersContestClaimController extends BaseCYAContr
       PageUrls,
       sessionErrors: req.session.errors,
       form: this.formContent,
+      contestClaimDocumentNames,
       et3ResponseSection5: getEt3Section5(userCase, sectionTranslations, InterceptPaths.CONTEST_CLAIM_CHANGE),
       redirectUrl,
       hideContactUs: true,

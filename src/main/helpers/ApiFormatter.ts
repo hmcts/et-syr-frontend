@@ -416,6 +416,7 @@ function mapResponseApiDataToCaseWithId(
     selectedRespondent.value?.et3ResponseEmployerClaimDocument?.category_id;
   caseWithId.et3ResponseEmployerClaimDocumentUploadTimestamp =
     selectedRespondent.value?.et3ResponseEmployerClaimDocument?.upload_timestamp;
+  caseWithId.et3ResponseEmployerClaimDocument = selectedRespondent.value?.et3ResponseEmployerClaimDocument;
   caseWithId.et3ResponseRespondentSupportNeeded = selectedRespondent.value?.et3ResponseRespondentSupportNeeded;
   caseWithId.et3ResponseAcasAgree = selectedRespondent.value?.et3ResponseAcasAgree;
   caseWithId.et3ResponseAcasAgreeReason = selectedRespondent.value?.et3ResponseAcasAgreeReason;

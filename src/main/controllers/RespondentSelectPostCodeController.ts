@@ -19,6 +19,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { convertJsonArrayToTitleCase } from '../helpers/CaseHelpers';
 import { assignAddresses, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { returnValidUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import localesCy from '../resources/locales/cy/translation/common.json';
 import locales from '../resources/locales/en/translation/common.json';
@@ -56,7 +57,7 @@ export default class RespondentSelectPostCodeController {
     const errorRedirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_SELECT_POST_CODE);
     if (req.session.errors.length > 0) {
       logger.error(LoggerConstants.ERROR_FORM_INVALID_DATA + 'Case Id: ' + req.session?.userCase?.id);
-      return res.redirect(errorRedirectUrl);
+      return res.redirect(returnValidUrl(errorRedirectUrl));
     }
     const selectedAddressIndex = formData?.respondentAddressTypes?.toString();
     if (NumberUtils.isNonNumericValue(selectedAddressIndex) && selectedAddressIndex !== '0') {
@@ -65,7 +66,7 @@ export default class RespondentSelectPostCodeController {
         ValidationErrors.ADDRESS_NOT_SELECTED,
         'respondentAddressTypes'
       );
-      return res.redirect(errorRedirectUrl);
+      return res.redirect(returnValidUrl(errorRedirectUrl));
     }
     let selectedAddress;
     if (StringUtils.isNotBlank(selectedAddressIndex)) {
@@ -84,7 +85,7 @@ export default class RespondentSelectPostCodeController {
         ValidationErrors.SELECTED_ADDRESS_NOT_FOUND,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
       );
-      return res.redirect(errorRedirectUrl);
+      return res.redirect(returnValidUrl(errorRedirectUrl));
     }
     const userCase: CaseWithId = await ET3Util.updateET3Data(
       req,
@@ -93,14 +94,14 @@ export default class RespondentSelectPostCodeController {
     );
     if (req.session.errors?.length > 0) {
       logger.error(LoggerConstants.ERROR_API);
-      return res.redirect(errorRedirectUrl);
+      return res.redirect(returnValidUrl(errorRedirectUrl));
     } else {
       req.session.userCase = userCase;
       let redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_ENTER_ADDRESS);
       if (req.body?.saveForLater) {
         redirectUrl = setUrlLanguage(req, PageUrls.RESPONSE_SAVED);
       }
-      res.redirect(redirectUrl);
+      res.redirect(returnValidUrl(redirectUrl));
     }
   };
 

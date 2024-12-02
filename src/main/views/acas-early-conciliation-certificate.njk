@@ -18,11 +18,10 @@
       <h1 class="govuk-heading-l">{{ title }}</h1>
 
       <p class="govuk-body">{{ p1 }}</p>
-
-      {% if acasLink %}
-      <p class="govuk-body">
-        <a href="{{ acasLink }}" class="govuk-link">{{ link }}</a>
-      </p>
+      {% if acasCertLink %}
+        <p class="govuk-body">
+          <a href="{{ acasCertLink }}" target="_blank"> {{ link }} </a>
+        </p>
       {% endif %}
 
       {% block form %}

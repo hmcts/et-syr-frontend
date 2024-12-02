@@ -2,12 +2,12 @@ import { AxiosResponse } from 'axios';
 
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, RespondentET3Model, YesOrNo } from '../definitions/case';
+import { CaseWithId, RespondentET3Model } from '../definitions/case';
 import { LoggerConstants, PageUrls } from '../definitions/constants';
 import { ApplicationTableRecord } from '../definitions/definition';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
-import { translateOverallStatus, translateTypesOfClaims } from '../helpers/ApplicationTableRecordTranslationHelper';
+import { translateTypesOfClaims } from '../helpers/ApplicationTableRecordTranslationHelper';
 import { getLogger } from '../logger';
 import NumberUtils from '../utils/NumberUtils';
 import StringUtils from '../utils/StringUtils';
@@ -56,7 +56,7 @@ export const getUserApplications = (
     const rec: ApplicationTableRecord = {
       userCase: uCase,
       respondents: formatRespondents(uCase.respondents),
-      completionStatus: getOverallStatus(uCase, translations),
+      completionStatus: undefined,
       url: getRedirectUrl(uCase, languageParam),
     };
     translateTypesOfClaims(rec, translations);
@@ -70,38 +70,4 @@ export const formatRespondents = (respondents?: RespondentET3Model[]): string =>
     return 'undefined';
   }
   return respondents.map(respondent => respondent.respondentName).join('<br />');
-};
-
-export const getOverallStatus = (userCase: CaseWithId, translations: AnyRecord): string => {
-  const totalSections = 4;
-  let sectionCount = 0;
-
-  if (userCase?.personalDetailsCheck === YesOrNo.YES) {
-    sectionCount++;
-  }
-
-  if (userCase?.employmentAndRespondentCheck === YesOrNo.YES) {
-    sectionCount++;
-  }
-
-  if (userCase?.claimDetailsCheck === YesOrNo.YES) {
-    sectionCount++;
-  }
-
-  const allSectionsCompleted = !!(
-    userCase?.personalDetailsCheck === YesOrNo.YES &&
-    userCase?.employmentAndRespondentCheck === YesOrNo.YES &&
-    userCase?.claimDetailsCheck === YesOrNo.YES
-  );
-
-  if (allSectionsCompleted) {
-    sectionCount++;
-  }
-
-  const overallStatus: AnyRecord = {
-    sectionCount,
-    totalSections,
-  };
-
-  return translateOverallStatus(overallStatus, translations);
 };

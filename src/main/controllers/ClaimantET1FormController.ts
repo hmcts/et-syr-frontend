@@ -2,12 +2,13 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
-import { PageUrls, TranslationKeys, languages } from '../definitions/constants';
+import { DefaultValues, PageUrls, TranslationKeys, languages } from '../definitions/constants';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import DateUtils from '../utils/DateUtils';
 import DocumentUtils from '../utils/DocumentUtils';
+import StringUtils from '../utils/StringUtils';
 
 export default class ClaimantET1FormController {
   public async get(req: AppRequest, res: Response): Promise<void> {
@@ -38,9 +39,12 @@ export default class ClaimantET1FormController {
       req.session?.userCase?.acasCertNum
     );
     req.session.selectedAcasCertificate = acasCertificate;
-    const formattedAcasCertificateDate: string = DateUtils.formatDateStringToDDMonthYYYY(
+    let formattedAcasCertificateDate: string = DateUtils.formatDateStringToDDMonthYYYY(
       acasCertificate?.value?.dateOfCorrespondence
     );
+    if (StringUtils.isBlank(formattedAcasCertificateDate)) {
+      formattedAcasCertificateDate = DefaultValues.STRING_DASH;
+    }
 
     res.render(TranslationKeys.CLAIMANT_ET1_FORM, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),

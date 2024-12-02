@@ -1,22 +1,45 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { PageUrls, TranslationKeys } from '../definitions/constants';
-import { SectionIndexToEt3HubLinkNames, linkStatusColorMap } from '../definitions/links';
+import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
+import { PageUrls, TranslationKeys, languages } from '../definitions/constants';
+import {
+  SectionIndexToEt3HubLinkNames,
+  getResponseHubLinkStatusesByRespondentHubLinkStatuses,
+  linkStatusColorMap,
+} from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getET3HubLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
+import DocumentUtils from '../utils/DocumentUtils';
 
 export default class RespondentResponseTaskListController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const redirectUrl = setUrlLanguage(req, PageUrls.NOT_IMPLEMENTED);
     const selectedRespondent = req.session.userCase.respondents[req.session.selectedRespondentIndex];
-    const et3HubLinksStatuses = selectedRespondent.et3HubLinksStatuses;
+    const et3HubLinksStatuses = getResponseHubLinkStatusesByRespondentHubLinkStatuses(
+      selectedRespondent.et3HubLinksStatuses
+    );
     const languageParam = getLanguageParam(req.url);
-
+    let et1Form: ApiDocumentTypeItem;
+    if (languageParam === languages.WELSH_URL_PARAMETER) {
+      et1Form = DocumentUtils.findET1DocumentByLanguage(
+        req?.session?.userCase?.documentCollection,
+        languages.WELSH_URL_PARAMETER
+      );
+    } else {
+      et1Form = DocumentUtils.findET1DocumentByLanguage(
+        req?.session?.userCase?.documentCollection,
+        languages.ENGLISH_URL_PARAMETER
+      );
+    }
+    const acasCertificate: ApiDocumentTypeItem = DocumentUtils.findAcasCertificateByAcasNumber(
+      req.session?.userCase?.documentCollection as ApiDocumentTypeItem[],
+      req.session?.userCase?.acasCertNum
+    );
     const sections = Array.from(Array(SectionIndexToEt3HubLinkNames.length)).map((__ignored, index) => {
       return {
         title: (l: AnyRecord): string => l[`section${index + 1}`],
@@ -42,6 +65,8 @@ export default class RespondentResponseTaskListController {
       redirectUrl,
       languageParam: getLanguageParam(req.url),
       welshEnabled,
+      et1FormId: et1Form?.id,
+      acasCertificateId: acasCertificate?.id,
     });
   }
 }

@@ -81,13 +81,13 @@ export default class SelfAssignmentFormController {
         formData.id
       );
       if (isReformCase?.data.toString() === 'false') {
-        return res.redirect(LegacyUrls.ET3);
+        return res.redirect(returnValidUrl(LegacyUrls.ET3, Object.values(LegacyUrls)));
       }
       const caseData = (await getCaseApi(req.session.user?.accessToken)?.getCaseByApplicationRequest(req))?.data;
       if (caseData) {
         req.session.userCase = formatApiCaseDataToCaseWithId(caseData);
         SelfAssignmentFormControllerHelper.setRespondentName(req, caseData);
-        return res.redirect(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK));
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
       } else {
         ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
           req,

@@ -1,5 +1,3 @@
-import { InterceptPaths } from '../constants';
-
 export function addSummaryRow(
   key: string,
   text: SummaryListContent['text'],
@@ -34,11 +32,29 @@ export function addSummaryRowWithAction(
   return {
     key: { text: key, classes: 'govuk-!-font-weight-regular-m' },
     value: { text: value || '' }, // Default to empty string if undefined
-    actions: createChangeAction(
-      pageUrl + (sectionCya !== undefined ? sectionCya : InterceptPaths.ANSWERS_CHANGE),
-      linkText,
-      key
-    ),
+    ...(linkText && sectionCya !== undefined && pageUrl
+      ? {
+          actions: createChangeAction(pageUrl + sectionCya, linkText, key),
+        }
+      : {}),
+  };
+}
+
+export function addSummaryHtmlRowWithAction(
+  key: string,
+  value: string | undefined,
+  pageUrl: string | undefined,
+  linkText?: string,
+  sectionCya?: string
+): SummaryListRow {
+  return {
+    key: { text: key, classes: 'govuk-!-font-weight-regular-m' },
+    value: { html: value || '' }, // Default to empty string if undefined
+    ...(linkText && sectionCya !== undefined && pageUrl
+      ? {
+          actions: createChangeAction(pageUrl + sectionCya, linkText, key),
+        }
+      : {}),
   };
 }
 

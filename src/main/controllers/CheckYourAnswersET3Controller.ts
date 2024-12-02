@@ -7,7 +7,7 @@ import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import {
   getEt3Section1,
   getEt3Section2,
@@ -55,10 +55,10 @@ export default class CheckYourAnswersET3Controller {
       ET3ModificationTypes.MODIFICATION_TYPE_SUBMIT
     );
     if (!userCase || req.body.saveAsDraft) {
-      return res.redirect(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3));
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3)));
     }
     if (req.body?.submit) {
-      return res.redirect(setUrlLanguage(req, PageUrls.APPLICATION_SUBMITTED));
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.APPLICATION_SUBMITTED)));
     }
   };
 
@@ -81,12 +81,12 @@ export default class CheckYourAnswersET3Controller {
       InterceptPaths,
       PageUrls,
       hideContactUs: true,
-      et3ResponseSection1: getEt3Section1(userCase, sectionTranslations),
-      et3ResponseSection2: getEt3Section2(userCase, sectionTranslations),
-      et3ResponseSection3: getEt3Section3(userCase, sectionTranslations),
-      et3ResponseSection4: getEt3Section4(userCase, sectionTranslations),
-      et3ResponseSection5: getEt3Section5(userCase, sectionTranslations),
-      et3ResponseSection6: getEt3Section6(userCase, sectionTranslations),
+      et3ResponseSection1: getEt3Section1(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
+      et3ResponseSection2: getEt3Section2(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
+      et3ResponseSection3: getEt3Section3(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
+      et3ResponseSection4: getEt3Section4(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
+      et3ResponseSection5: getEt3Section5(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
+      et3ResponseSection6: getEt3Section6(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
       redirectUrl,
       languageParam: getLanguageParam(req.url),
       welshEnabled,

@@ -6,8 +6,12 @@ import {
   YesOrNoOrNotApplicable,
   YesOrNoOrNotSure,
 } from '../../../../main/definitions/case';
-import { PageUrls } from '../../../../main/definitions/constants';
-import { SummaryListRow, addSummaryRowWithAction } from '../../../../main/definitions/govuk/govukSummaryList';
+import { DefaultValues, PageUrls } from '../../../../main/definitions/constants';
+import {
+  SummaryListRow,
+  addSummaryHtmlRowWithAction,
+  addSummaryRowWithAction,
+} from '../../../../main/definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../../../main/definitions/util-types';
 import {
   getEt3Section1,
@@ -139,17 +143,8 @@ describe('CheckYourAnswersET3Helper', () => {
     PageUrls.CLAIMANT_PENSION_AND_BENEFITS,
   ];
 
-  const section5Urls = [
-    PageUrls.RESPONDENT_CONTEST_CLAIM,
-    PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
-    PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, // for supporting materials
-  ];
-
-  const section6Urls = [
-    PageUrls.EMPLOYERS_CONTRACT_CLAIM,
-    PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS,
-    PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS, // for supporting materials
-  ];
+  const section5Urls = [PageUrls.RESPONDENT_CONTEST_CLAIM, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON];
+  const section6Urls = [PageUrls.EMPLOYERS_CONTRACT_CLAIM, PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS];
 
   // Test for section 1
   it('should return correct summary list rows for section 1 when all fields are populated', () => {
@@ -339,9 +334,20 @@ describe('CheckYourAnswersET3Helper', () => {
       );
     }
 
+    // HTML action for the file links
+    expectedRows.push(
+      addSummaryHtmlRowWithAction(
+        expect.any(String), // field3
+        DefaultValues.STRING_DASH, // exampleData
+        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, // URL for supportingEvidence
+        expect.any(String) // change label
+      )
+    );
+
     // Populate necessary fields for section 5 in the userCase object
     userCase.et3ResponseRespondentContestClaim = YesOrNo.YES;
     userCase.et3ResponseContestClaimDetails = 'We contest the claim for reason XYZ';
+    userCase.et3ResponseContestClaimDocument = undefined;
 
     const result = getEt3Section5(userCase, translationsMock);
 
@@ -363,11 +369,55 @@ describe('CheckYourAnswersET3Helper', () => {
       );
     }
 
+    // HTML action for the file links
+    expectedRows.push(
+      addSummaryHtmlRowWithAction(
+        expect.any(String), // field3
+        DefaultValues.STRING_DASH, // exampleData
+        PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS, // URL for supportingEvidence
+        expect.any(String) // change label
+      )
+    );
+
     // Populate necessary fields for section 6 in the userCase object
     userCase.et3ResponseEmployerClaim = YesOrNo.YES;
 
     const result = getEt3Section6(userCase, translationsMock);
 
     expect(result).toEqual(expectedRows);
+  });
+
+  it('should exclude "Change" links when hideChangeLink is true', () => {
+    const result = getEt3Section1(userCase, translationsMock, undefined, true);
+    const result2 = getEt3Section2(userCase, translationsMock, undefined, true);
+    const result3 = getEt3Section3(userCase, translationsMock, undefined, true);
+    const result4 = getEt3Section4(userCase, translationsMock, undefined, true);
+    const result5 = getEt3Section5(userCase, translationsMock, undefined, true);
+    const result6 = getEt3Section6(userCase, translationsMock, undefined, true);
+
+    result.forEach(row => {
+      // Ensure the action (change link) is undefined
+      expect(row.actions).toBeUndefined();
+    });
+    result2.forEach(row => {
+      // Ensure the action (change link) is undefined
+      expect(row.actions).toBeUndefined();
+    });
+    result3.forEach(row => {
+      // Ensure the action (change link) is undefined
+      expect(row.actions).toBeUndefined();
+    });
+    result4.forEach(row => {
+      // Ensure the action (change link) is undefined
+      expect(row.actions).toBeUndefined();
+    });
+    result5.forEach(row => {
+      // Ensure the action (change link) is undefined
+      expect(row.actions).toBeUndefined();
+    });
+    result6.forEach(row => {
+      // Ensure the action (change link) is undefined
+      expect(row.actions).toBeUndefined();
+    });
   });
 });

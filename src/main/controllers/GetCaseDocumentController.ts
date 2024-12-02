@@ -1,7 +1,8 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { PageUrls } from '../definitions/constants';
+import { RespondentET3Model } from '../definitions/case';
+import { PageUrls, et3AttachmentDocTypes } from '../definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import {
   combineUserCaseDocuments,
@@ -12,7 +13,11 @@ import {
 } from '../helpers/DocumentHelpers';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
+import CollectionUtils from '../utils/CollectionUtils';
+import DocumentUtils from '../utils/DocumentUtils';
 import ET3Util from '../utils/ET3Util';
+import NumberUtils from '../utils/NumberUtils';
+import ObjectUtils from '../utils/ObjectUtils';
 import StringUtils from '../utils/StringUtils';
 
 const logger = getLogger('CaseDocumentController');
@@ -30,15 +35,51 @@ export default class GetCaseDocumentController {
     const allDocumentSets = combineUserCaseDocuments([req?.session?.userCase]);
     const documentDetails = allDocumentSets.find(doc => doc && doc.id === docId);
     let contentType;
-    let uploadedDocumentId = docId;
+    let uploadedDocumentId = documentDetails?.id;
     if (documentDetails) {
       logger.info('requested document found in userCase fields');
       contentType = findContentTypeByDocumentDetail(documentDetails);
     } else {
       logger.info('requested document not found in userCase fields checking document collection');
-      const documentTypeItem = req.session.userCase.documentCollection.find(doc => doc.id === req.params.docId);
-      uploadedDocumentId = findUploadedDocumentIdByDocumentUrl(documentTypeItem?.value?.uploadedDocument?.document_url);
-      contentType = findContentTypeByDocumentName(documentTypeItem?.value?.uploadedDocument?.document_filename);
+      let documentTypeItem = req.session.userCase.documentCollection?.find(doc => doc.id === req.params.docId);
+      let selectedRespondent: RespondentET3Model;
+      if (!documentTypeItem) {
+        if (
+          CollectionUtils.isNotEmpty(req?.session?.userCase?.respondents) &&
+          NumberUtils.isNotEmpty(req?.session?.selectedRespondentIndex)
+        ) {
+          selectedRespondent = req.session.userCase.respondents[req.session.selectedRespondentIndex];
+        }
+        if (ObjectUtils.isNotEmpty(selectedRespondent)) {
+          documentTypeItem = selectedRespondent?.et3ResponseContestClaimDocument.find(
+            doc => doc.id === req.params.docId
+          );
+          if (ObjectUtils.isEmpty(documentTypeItem)) {
+            if (ObjectUtils.isNotEmpty(selectedRespondent?.et3ResponseEmployerClaimDocument)) {
+              const employerClaimDocumentId = DocumentUtils.findDocumentIdByURL(
+                selectedRespondent.et3ResponseEmployerClaimDocument.document_url
+              );
+              if (StringUtils.isNotBlank(employerClaimDocumentId) && employerClaimDocumentId === req.params.docId) {
+                documentTypeItem = {
+                  id: employerClaimDocumentId,
+                  value: {
+                    uploadedDocument: selectedRespondent.et3ResponseEmployerClaimDocument,
+                    typeOfDocument: et3AttachmentDocTypes[0],
+                    creationDate: selectedRespondent.et3ResponseEmployerClaimDocument.upload_timestamp,
+                    shortDescription: selectedRespondent.et3ResponseEmployerClaimDocument.document_filename,
+                  },
+                };
+              }
+            }
+          }
+        }
+      }
+      if (ObjectUtils.isNotEmpty(documentTypeItem)) {
+        uploadedDocumentId = findUploadedDocumentIdByDocumentUrl(
+          documentTypeItem?.value?.uploadedDocument?.document_url
+        );
+        contentType = findContentTypeByDocumentName(documentTypeItem?.value?.uploadedDocument?.document_filename);
+      }
     }
     try {
       if (StringUtils.isBlank(uploadedDocumentId)) {

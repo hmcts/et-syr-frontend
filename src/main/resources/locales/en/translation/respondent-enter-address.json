@@ -8,7 +8,8 @@
   "postcodeOrAreaCode": "Postcode or area code (optional)",
   "errors": {
     "responseRespondentAddressLine1": {
-      "required": "Enter address"
+      "required": "Enter address",
+      "tooLong": "Address line 1 must be 100 characters or less"
     },
     "responseRespondentAddressPostTown": {
       "required": "Enter town or city"

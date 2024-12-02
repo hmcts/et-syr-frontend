@@ -10,7 +10,7 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { conditionalRedirect, isClearSelection } from '../helpers/RouterHelpers';
+import { conditionalRedirect, isClearSelection, startSubSection } from '../helpers/RouterHelpers';
 import { dateInLocale } from '../helpers/dateInLocale';
 import ET3Util from '../utils/ET3Util';
 import { convertCaseDateToDate } from '../validators/dateValidators';
@@ -56,6 +56,7 @@ export default class ClaimantEmploymentDatesController {
     let nextPage = setUrlLanguage(req, PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
     if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.NO)) {
       nextPage = setUrlLanguage(req, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
+      startSubSection(req, nextPage);
     } else {
       const { startDate, endDate } = req.session.userCase ?? {};
       if (startDate) {
@@ -65,6 +66,7 @@ export default class ClaimantEmploymentDatesController {
         req.session.userCase.et3ResponseEmploymentEndDate = endDate;
       }
     }
+
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,

@@ -89,7 +89,7 @@ export const PageUrls = {
   NOT_FOUND: '/not-found',
   CHECKLIST: '/checklist',
   CASE_NUMBER_CHECK: '/case-number-check',
-  REMOVE_FILE: '/remove-file',
+  REMOVE_FILE: '/remove-file/:fileId/:contestClaimDetails',
   SELF_ASSIGNMENT_FORM: '/self-assignment-form',
   CASE_LIST_CHECK: '/case-list-check',
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
@@ -173,6 +173,17 @@ export const InterceptPaths = {
   STORE_RESPONDENT_CYA: '/storeRespondentCya',
   SUBMIT_BUNDLES_HEARING_DOCS_CYA: '/submitBundlesHearingDocsCya',
 } as const;
+
+export const RedirectKeys = {
+  RESPONDENT_CONTACT_PREFERENCES: 'respondent-contact-preferences',
+  CONTACT_DETAILS: 'contact-details',
+  EMPLOYER_DETAILS: 'employer-details',
+  CONCILIATION_AND_EMPLOYEE_DETAILS: 'conciliation-and-employee-details',
+  PAY_PENSION_BENEFIT_DETAILS: 'pay-pension-benefit-details',
+  CONTEST_CLAIM: 'contest-claim',
+  EMPLOYERS_CONTRACT_CLAIM: 'employers-contract-claim',
+  ANSWERS: 'answers',
+};
 
 export const ErrorPages = {
   NOT_FOUND: '/not-found/:errId',
@@ -489,8 +500,10 @@ export const CallbackTestConstants = {
 } as const;
 
 export const DefaultValues = {
+  STRING_AMPERSAND: '&',
   STRING_EMPTY: '',
   STRING_DASH: '-',
+  STRING_HASH: '#',
   STRING_QUESTION_MARK: '?',
   STRING_EQUALS: '=',
   STRING_SPACE: ' ',
@@ -498,9 +511,15 @@ export const DefaultValues = {
   STRING_SLASH: '/',
   STRING_SLASH_REGEX: /\//gi,
   STRING_UNDERSCORE: '_',
+  HTML_NEWLINE: '</br>',
+  COLLECTION_EMPTY: [],
   NUMBER_ZERO: 0,
   CONTEST_CLAIM_REASON_MAX_LENGTH: 3000,
+  EMPLOYERS_CLAIM_DETAILS_MAX_LENGTH: 3000,
   FILE_ID_PARAMETER: 'fileId=',
+  CLEAR_SELECTION: 'clearSelection',
+  CLEAR_SELECTION_URL_PARAMETER: 'redirect=clearSelection',
+  DOCUMENT_CHARS_TO_REPLACE: ['@', '/', '\\', "'", ':', '(', ')'],
 } as const;
 
 export const FormFieldNames = {
@@ -522,6 +541,10 @@ export const FormFieldNames = {
   RESPONDENT_CONTEST_CLAIM_REASON: {
     ET3_RESPONSE_CONTEST_CLAIM_DETAILS: 'et3ResponseContestClaimDetails',
     CONTEST_CLAIM_DOCUMENT: 'contestClaimDocument',
+  },
+  EMPLOYERS_CONTRACT_CLAIM_DETAILS: {
+    ET3_RESPONSE_EMPLOYER_CLAIM_DETAILS: 'et3ResponseEmployerClaimDetails',
+    CLAIM_SUMMARY_FILE_NAME: 'claimSummaryFile',
   },
 } as const;
 

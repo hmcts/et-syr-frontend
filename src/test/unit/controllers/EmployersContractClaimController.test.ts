@@ -1,6 +1,6 @@
 import EmployersContractClaimController from '../../../main/controllers/EmployersContractClaimController';
 import { YesOrNo } from '../../../main/definitions/case';
-import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { DefaultValues, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/employers-contract-claim.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -29,6 +29,15 @@ describe('Employers Contract Claim Controller', () => {
       controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.EMPLOYERS_CONTRACT_CLAIM, expect.anything());
     });
+
+    it('should render the Employers Contract Claim page if req.query.redirect is clearSection', () => {
+      request = mockRequestWithTranslation({}, translationJsons);
+      request.query = { redirect: DefaultValues.CLEAR_SELECTION };
+      controller.get(request, response);
+      expect(request.session.userCase.et3ResponseEmployerClaim === undefined).toBe(true);
+      expect(request.session.errors).toHaveLength(DefaultValues.NUMBER_ZERO);
+      expect(response.render).toHaveBeenCalledWith(TranslationKeys.EMPLOYERS_CONTRACT_CLAIM, expect.anything());
+    });
   });
 
   describe('POST method', () => {
@@ -52,6 +61,21 @@ describe('Employers Contract Claim Controller', () => {
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
+    });
+
+    it('should update request url to remove redirect=clearSelection parameter', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseEmployerClaim: YesOrNo.NO,
+        },
+      });
+      request.url = 'http://localhost:8080?redirect=clearSelection&lng=cy&testValue=test';
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(request.url).toContain('http://localhost:8080?lng=cy&testValue=test');
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM + '?redirect=clearSelection&testValue=test&lng=cy'
+      );
     });
   });
 });

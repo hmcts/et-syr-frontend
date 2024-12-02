@@ -1,4 +1,3 @@
-//******************************************************************//
 //**************** ET3 CASE DETAILS LINKS CONSTANTS ****************//
 //******************************************************************//
 export enum ET3CaseDetailsLinkNames {
@@ -93,6 +92,8 @@ export class ET3HubLinksStatuses {
         this[name] = LinkStatus.NOT_STARTED_YET;
       } else if (name === ET3HubLinkNames.ContestClaim) {
         this[name] = LinkStatus.NOT_STARTED_YET;
+      } else if (name === ET3HubLinkNames.EmployersContractClaim) {
+        this[name] = LinkStatus.NOT_STARTED_YET;
       } else if (name === ET3HubLinkNames.CheckYorAnswers) {
         this[name] = LinkStatus.CANNOT_START_YET;
       } else {
@@ -105,7 +106,7 @@ export class ET3HubLinksStatuses {
 export const SectionIndexToEt3HubLinkNames: ET3HubLinkNames[][] = [
   [ET3HubLinkNames.ContactDetails, ET3HubLinkNames.EmployerDetails],
   [ET3HubLinkNames.ConciliationAndEmployeeDetails, ET3HubLinkNames.PayPensionBenefitDetails],
-  [ET3HubLinkNames.ContestClaim],
+  [ET3HubLinkNames.ContestClaim, ET3HubLinkNames.EmployersContractClaim],
   [ET3HubLinkNames.CheckYorAnswers],
 ];
 
@@ -137,6 +138,12 @@ export const enum LinkStatus {
   UPDATED = 'updated',
   READY_TO_VIEW = 'readyToView',
   CANNOT_START_YET = 'cannotStartYet',
+  // This status is implemented as a fake status. Normally
+  // if any section status is completed we don't change it is status
+  // But if on CYA(Check Your Answers) page if it is selected as No,
+  // to section completed question, we update to inProgress again.
+  // To have that discrimination, we use this option.
+  IN_PROGRESS_CYA = 'inProgressCya',
 }
 
 export const linkStatusColorMap = new Map<LinkStatus, string>([
@@ -155,3 +162,36 @@ export const linkStatusColorMap = new Map<LinkStatus, string>([
   [LinkStatus.READY_TO_VIEW, LinkColors.BLUE],
   [LinkStatus.CANNOT_START_YET, LinkColors.GREY],
 ]);
+
+export const getResponseHubLinkStatusesByRespondentHubLinkStatuses = (
+  respondentHubLinksStatuses: ET3HubLinksStatuses
+): ET3HubLinksStatuses => {
+  if (!respondentHubLinksStatuses) {
+    respondentHubLinksStatuses = new ET3HubLinksStatuses();
+  }
+  for (const hubLinkKey of Object.values(ET3HubLinkNames)) {
+    if (!respondentHubLinksStatuses[hubLinkKey]) {
+      if (ET3HubLinkNames.CheckYorAnswers === hubLinkKey) {
+        respondentHubLinksStatuses[hubLinkKey] = getCheckYourAnswersStatus(respondentHubLinksStatuses);
+      } else {
+        respondentHubLinksStatuses[hubLinkKey] = LinkStatus.NOT_STARTED_YET;
+      }
+    }
+  }
+  return respondentHubLinksStatuses;
+};
+
+export const getCheckYourAnswersStatus = (et3HubLinkStatuses: ET3HubLinksStatuses): LinkStatus => {
+  if (!et3HubLinkStatuses) {
+    return LinkStatus.CANNOT_START_YET;
+  }
+  for (const hubLinkKey of Object.values(ET3HubLinkNames)) {
+    if (
+      hubLinkKey !== ET3HubLinkNames.CheckYorAnswers &&
+      (!et3HubLinkStatuses[hubLinkKey] || et3HubLinkStatuses[hubLinkKey] !== LinkStatus.COMPLETED)
+    ) {
+      return LinkStatus.CANNOT_START_YET;
+    }
+  }
+  return LinkStatus.NOT_STARTED_YET;
+};

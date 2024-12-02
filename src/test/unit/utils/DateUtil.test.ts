@@ -82,4 +82,17 @@ describe('DateUtils tests', () => {
   ])('converts case date to string', ({ value, result }) => {
     expect(DateUtils.convertCaseDateToString(value)).toStrictEqual(result);
   });
+  it.each([
+    { value: undefined, result: undefined },
+    { value: { day: '', month: '01', year: '2024' }, result: undefined },
+    { value: { day: '01', month: undefined, year: '2024' }, result: undefined },
+    { value: { day: '01', month: '13', year: undefined }, result: undefined },
+    { value: { day: '01', month: '01', year: '024' }, result: undefined },
+    { value: { day: '35', month: '12', year: '2025' }, result: undefined },
+    { value: { day: '01', month: '13', year: '2025' }, result: undefined },
+    { value: { day: '01', month: '11', year: '2025' }, result: '2025-11-01' },
+    { value: { day: '1', month: '1', year: '2025' }, result: '2025-01-01' },
+  ])('format case date to date string with 2 chars of days and months', ({ value, result }) => {
+    expect(DateUtils.convertCaseDateToApiDateStringYYYY_MM_DD(value)).toStrictEqual(result);
+  });
 });

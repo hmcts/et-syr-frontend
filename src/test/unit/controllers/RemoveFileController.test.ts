@@ -43,6 +43,9 @@ describe('RemoveFileController', () => {
     it('should be able to find file when file in the request has the same name with file in the contest claim documents', () => {
       request.url = 'https://localhost:3003/remove-file?lng=en&fileId=900d4265-aaeb-455f-9cdd-bc0bdf61c918';
       request.session.selectedRespondentIndex = 0;
+      request.params = {
+        fileId: '900d4265-aaeb-455f-9cdd-bc0bdf61c918',
+      };
       request.session.userCase.et3ResponseContestClaimDocument = [
         mockDocumentTypeItemFromMockDocumentUploadResponseDocumentFileNameTestFilePdf,
       ];

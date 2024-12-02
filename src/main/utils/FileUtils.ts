@@ -4,7 +4,13 @@ import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { UploadedFile } from '../definitions/api/uploadedFile';
 import { AppRequest } from '../definitions/appRequest';
 import { DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
-import { DefaultValues, FormFieldNames, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import {
+  DefaultValues,
+  FormFieldNames,
+  TranslationKeys,
+  ValidationErrors,
+  et3AttachmentDocTypes,
+} from '../definitions/constants';
 import { GovukTableRowArray } from '../definitions/govuk/govukTable';
 import { AnyRecord } from '../definitions/util-types';
 import { getLanguageParam } from '../helpers/RouterHelpers';
@@ -21,13 +27,13 @@ import StringUtils from './StringUtils';
 const logger = getLogger('FileUtils');
 
 export default class FileUtils {
-  public static checkFile(req: AppRequest): boolean {
+  public static checkFile(req: AppRequest, formFieldName: string): boolean {
     req.session.errors = [];
     if (!req.file) {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.INVALID_FILE_NOT_SELECTED,
-        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
+        formFieldName
       );
       return false;
     }
@@ -35,7 +41,7 @@ export default class FileUtils {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.INVALID_FILE_BUFFER_EMPTY,
-        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
+        formFieldName
       );
       return false;
     }
@@ -43,7 +49,7 @@ export default class FileUtils {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.INVALID_FILE_NAME_NOT_FOUND,
-        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
+        formFieldName
       );
       return false;
     }
@@ -51,7 +57,7 @@ export default class FileUtils {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.INVALID_FILE_NAME,
-        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
+        formFieldName
       );
       return false;
     }
@@ -59,7 +65,7 @@ export default class FileUtils {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.INVALID_FILE_FORMAT,
-        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
+        formFieldName
       );
       return false;
     }
@@ -71,7 +77,7 @@ export default class FileUtils {
       return false;
     }
     for (const file of req.session.userCase.et3ResponseContestClaimDocument) {
-      if (file.value.uploadedDocument.document_filename === req.file.originalname) {
+      if (file.value.uploadedDocument.document_filename === DocumentUtils.sanitizeDocumentName(req.file.originalname)) {
         return true;
       }
     }
@@ -126,7 +132,16 @@ export default class FileUtils {
       govUKTableRows.push([
         { text: documentTypeItem.value?.uploadedDocument?.document_filename },
         {
-          html: '<a href="remove-file' + languageParam + '&fileId=' + documentTypeItem?.id + '">' + textRemove + '</a>',
+          html:
+            '<a href="remove-file' +
+            '/' +
+            documentTypeItem?.id +
+            '/' +
+            req.session?.userCase?.et3ResponseContestClaimDetails +
+            languageParam +
+            '">' +
+            textRemove +
+            '</a>',
         },
       ]);
     }
@@ -142,7 +157,7 @@ export default class FileUtils {
       id: DocumentUtils.findDocumentIdByURL(documentUploadResponse?._links?.self?.href),
       downloadLink: documentUploadResponse?._links?.binary?.href,
       value: {
-        typeOfDocument: 'ET3 Attachment',
+        typeOfDocument: et3AttachmentDocTypes[0],
         creationDate: documentUploadResponse?.createdOn,
         shortDescription: documentUploadResponse?.originalDocumentName,
         uploadedDocument: {
