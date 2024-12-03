@@ -8878,8 +8878,8 @@ __metadata:
   linkType: hard
 
 "i18next@npm:^24.0.0":
-  version: 24.0.2
-  resolution: "i18next@npm:24.0.2"
+  version: 24.0.4
+  resolution: "i18next@npm:24.0.4"
   dependencies:
     "@babel/runtime": ^7.23.2
   peerDependencies:
@@ -8887,7 +8887,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 4f24f74e42cccff65a589c7dc3b5b5b97511ec4a6a59f57033300cebe79248200a946da26f5282e693b5b4ce2979341f58fc27354c8e4e1ba472874625ae5806
+  checksum: 5ded3757ccff4a797c32dccc8f21adaef987a82f01481ce0a80e0c736cfb771eea6c5aeec7d1ba7c70b4a0ca46dcdf135c2cc535a993977a4d9a314085ded5eb
   languageName: node
   linkType: hard
 
@@ -13486,8 +13486,8 @@ __metadata:
   linkType: hard
 
 "sass@npm:^1.65.1":
-  version: 1.81.0
-  resolution: "sass@npm:1.81.0"
+  version: 1.81.1
+  resolution: "sass@npm:1.81.1"
   dependencies:
     "@parcel/watcher": ^2.4.1
     chokidar: ^4.0.0
@@ -13498,7 +13498,7 @@ __metadata:
       optional: true
   bin:
     sass: sass.js
-  checksum: 93db5b342c3b0449af2b08123ed4c0793643bd3a30f78e4e0686a1aa991ad640e0d9bc8da09aa5d7ff313bbd317b3be9c827cca60fb33b07d9f4b14b001eccfe
+  checksum: 50e356450ab2d156bf2c9eb5bb59666bfb54074f449f88f64a0ef3b19e70da2ea42ce7e58a70b3a4e9e20f9c519bd17b9900621a1bbe6fbdec287080d55f5f3b
   languageName: node
   linkType: hard
 

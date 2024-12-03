@@ -1,5 +1,7 @@
+import _ from 'lodash';
+
 import CheckYourAnswersContestClaimController from '../../../main/controllers/CheckYourAnswersContestClaimController';
-import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { CLAIM_TYPES, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { LinkStatus } from '../../../main/definitions/links';
 import { conditionalRedirect } from '../../../main/helpers/RouterHelpers';
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
@@ -85,7 +87,7 @@ describe('CheckYourAnswersContestClaimController', () => {
         expect.anything(),
         expect.anything(),
         LinkStatus.COMPLETED,
-        PageUrls.EMPLOYERS_CONTRACT_CLAIM
+        PageUrls.RESPONDENT_RESPONSE_TASK_LIST
       );
     });
 
@@ -112,10 +114,37 @@ describe('CheckYourAnswersContestClaimController', () => {
         expect.anything(),
         expect.anything(),
         LinkStatus.IN_PROGRESS_CYA,
+        PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+      );
+    });
+    it('should redirect to employers contract claim on valid submission and user case has breach of contract as type of claim', async () => {
+      (conditionalRedirect as jest.Mock).mockReturnValue(true);
+
+      updateET3ResponseWithET3FormMock.mockImplementation(
+        createMockedUpdateET3ResponseWithET3FormFunction(
+          PageUrls.EMPLOYERS_CONTRACT_CLAIM,
+          request,
+          response,
+          [],
+          mockCaseWithIdWithRespondents
+        )
+      );
+      const req = _.cloneDeep(request);
+      req.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      req.session.userCase.typeOfClaim = [CLAIM_TYPES.BREACH_OF_CONTRACT];
+      await controller.post(req, response);
+
+      expect(request.session.userCase).toEqual(mockCaseWithIdWithRespondents); // Validate the userCase is set
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.EMPLOYERS_CONTRACT_CLAIM); // Ensure the correct redirect occurs
+      expect(updateET3ResponseWithET3FormMock).toHaveBeenCalledWith(
+        req,
+        response,
+        expect.anything(),
+        expect.anything(),
+        LinkStatus.COMPLETED,
         PageUrls.EMPLOYERS_CONTRACT_CLAIM
       );
     });
-
     it('should redirect back to Check Contest Claim if ET3 data update fails', async () => {
       updateET3ResponseWithET3FormMock.mockImplementation(
         createMockedUpdateET3ResponseWithET3FormFunction(
