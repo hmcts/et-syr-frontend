@@ -12,6 +12,7 @@ import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { isClearSelectionWithoutRequestUserCaseCheck } from '../helpers/RouterHelpers';
 import ET3Util from '../utils/ET3Util';
+import ObjectUtils from '../utils/ObjectUtils';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
 
@@ -55,6 +56,10 @@ export default class EmployersContractClaimController {
     let nextPage = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
     if (formData.et3ResponseEmployerClaim === YesOrNo.YES) {
       nextPage = PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS;
+      if (ObjectUtils.isNotEmpty(req?.session?.userCase)) {
+        req.session.userCase.et3ResponseEmployerClaimDetails = DefaultValues.STRING_EMPTY;
+        req.session.userCase.et3ResponseEmployerClaimDocument = undefined;
+      }
       //force redirect through the flow before going back to CYA screen
       //if not save for later
       if (!req.body?.saveForLater) {
