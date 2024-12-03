@@ -43,7 +43,7 @@
         rows: et3ResponseSection5
       }) }}
 
-      {% if userCase.typeOfClaimString === TypesOfClaim.BREACH_OF_CONTRACT %}
+      {% if userCase.typeOfClaim === CLAIM_TYPES.BREACH_OF_CONTRACT %}
         <h2 class="govuk-heading-m">{{ section6.header }}</h2>
         {{ govukSummaryList({
           classes: "govuk-!-margin-bottom-9",

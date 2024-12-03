@@ -103,10 +103,17 @@ export class ET3HubLinksStatuses {
   }
 }
 
-export const SectionIndexToEt3HubLinkNames: ET3HubLinkNames[][] = [
+export const SectionIndexToEt3HubLinkNamesWithEmployersContractClaim: ET3HubLinkNames[][] = [
   [ET3HubLinkNames.ContactDetails, ET3HubLinkNames.EmployerDetails],
   [ET3HubLinkNames.ConciliationAndEmployeeDetails, ET3HubLinkNames.PayPensionBenefitDetails],
   [ET3HubLinkNames.ContestClaim, ET3HubLinkNames.EmployersContractClaim],
+  [ET3HubLinkNames.CheckYorAnswers],
+];
+
+export const SectionIndexToEt3HubLinkNamesWithoutEmployersContractClaim: ET3HubLinkNames[][] = [
+  [ET3HubLinkNames.ContactDetails, ET3HubLinkNames.EmployerDetails],
+  [ET3HubLinkNames.ConciliationAndEmployeeDetails, ET3HubLinkNames.PayPensionBenefitDetails],
+  [ET3HubLinkNames.ContestClaim],
   [ET3HubLinkNames.CheckYorAnswers],
 ];
 

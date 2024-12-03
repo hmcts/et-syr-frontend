@@ -609,3 +609,12 @@ export const FieldsToReset = {
   ET3_RESPONSE_PENSION_CORRECT_DETAILS: 'et3ResponsePensionCorrectDetails',
   TEST_DUMMY_FIELD_NAME: 'dummyFieldName',
 };
+
+export const CLAIM_TYPES = {
+  BREACH_OF_CONTRACT: 'Breach of contract',
+  DISCRIMINATION: 'Discrimination',
+  PAY_RELATED: 'Pay-related',
+  UNFAIR_DISMISSAL: 'Unfair dismissal',
+  WHISTLEBLOWING: 'Whistleblowing',
+  OTHER: 'Other type of claim',
+};
