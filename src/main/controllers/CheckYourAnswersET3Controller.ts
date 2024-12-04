@@ -56,7 +56,7 @@ export default class CheckYourAnswersET3Controller {
     const userCase = await ET3Util.updateET3Data(
       req,
       ET3HubLinkNames.CheckYorAnswers,
-      LinkStatus.SUBMITTED,
+      LinkStatus.COMPLETED,
       ET3ModificationTypes.MODIFICATION_TYPE_SUBMIT
     );
     if (!userCase) {
