@@ -77,7 +77,16 @@ export default class FileUtils {
       return false;
     }
     for (const file of req.session.userCase.et3ResponseContestClaimDocument) {
-      if (file.value.uploadedDocument.document_filename === DocumentUtils.sanitizeDocumentName(req.file.originalname)) {
+      const sanitizedFileName: string = DocumentUtils.sanitizeDocumentName(req.file.originalname);
+      const sanitizedDocumentName: string = DocumentUtils.sanitizeDocumentName(
+        file.value.uploadedDocument.document_filename
+      );
+      if (
+        file.value.uploadedDocument.document_filename === req.file.originalname ||
+        file.value.uploadedDocument.document_filename === sanitizedFileName ||
+        req.file.originalname === sanitizedDocumentName ||
+        sanitizedDocumentName === sanitizedFileName
+      ) {
         return true;
       }
     }

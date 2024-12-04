@@ -10,6 +10,7 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import RespondentContestClaimControllerHelper from '../helpers/controller/RespondentContestClaimControllerHelper';
 import ET3Util from '../utils/ET3Util';
 import { isOptionSelected } from '../validators/validator';
 
@@ -55,6 +56,8 @@ export default class RespondentContestClaimController {
       if (!req.body?.saveForLater) {
         req.session.returnUrl = nextPage;
       }
+    } else {
+      RespondentContestClaimControllerHelper.resetRespondentContestClaimDetails(req);
     }
     await ET3Util.updateET3ResponseWithET3Form(
       req,

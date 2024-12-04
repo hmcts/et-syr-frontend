@@ -86,7 +86,7 @@ describe('EmployersContractClaimControllerHelper tests', () => {
       expect(expectResultsForSelectedRespondent(selectedRespondent)).toStrictEqual(true);
       expect(expectResultsForUserCase(request.session.userCase)).toStrictEqual(true);
     });
-    it('resets user case employer contract claim when request has user case but user case not has any employer claim details and selected respondent', () => {
+    it('resets user case employer contract claim when request has user case but user case not has any employer claim details', () => {
       request.session.userCase = _.cloneDeep(mockValidCaseWithIdWithFullRespondentDetails);
       request.session.selectedRespondentIndex = 0;
       request.session.userCase.et3ResponseEmployerClaimDocument = undefined;
@@ -123,7 +123,7 @@ describe('EmployersContractClaimControllerHelper tests', () => {
       expect(request.session.userCase.documentCollection).toContain(mockDocumentTypeItemFromMockDocumentUploadResponse);
       expect(expectResultsForUserCase(request.session.userCase)).toStrictEqual(true);
     });
-    it('should not remove employer contract claim document from document collection when uploaded document name matches with the file name in the document collection', () => {
+    it('should remove employer contract claim document from document collection when uploaded document name matches with the file name in the document collection', () => {
       request.session.userCase = _.cloneDeep(mockValidCaseWithIdWithFullRespondentDetails);
       request.session.selectedRespondentIndex = 0;
       const documentTypeItem = _.cloneDeep(mockDocumentTypeItemFromMockDocumentUploadResponse);

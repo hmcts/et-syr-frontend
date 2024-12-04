@@ -1,5 +1,6 @@
 import { ApiDocumentTypeItem } from '../../../main/definitions/complexTypes/documentTypeItem';
 import { DefaultValues, et3AttachmentDocTypes, languages } from '../../../main/definitions/constants';
+import CollectionUtils from '../../../main/utils/CollectionUtils';
 import DocumentUtils from '../../../main/utils/DocumentUtils';
 import { mockDocumentTypeItemFromMockDocumentUploadResponse } from '../mocks/mockDocumentUploadResponse';
 import { mockedAcasForm, mockedET1FormEnglish, mockedET1FormWelsh } from '../mocks/mockDocuments';
@@ -165,5 +166,35 @@ describe('Document utils tests', () => {
     ])('check if given string value returns a valid document name: %o', ({ value, result }) => {
       expect(DocumentUtils.sanitizeDocumentName(value)).toStrictEqual(result);
     });
+  });
+  describe('removeFileFromDocumentCollectionByFileName', () => {
+    it.each([
+      { tmpDocumentCollection: undefined, fileName: 'test.pdf', result: undefined },
+      { documentCollection: [], fileName: 'test.pdf', result: undefined },
+      {
+        tmpDocumentCollection: [mockDocumentTypeItemFromMockDocumentUploadResponse],
+        fileName: undefined,
+        result: [mockDocumentTypeItemFromMockDocumentUploadResponse],
+      },
+      {
+        tmpDocumentCollection: [mockDocumentTypeItemFromMockDocumentUploadResponse],
+        fileName: 'test.pdf',
+        result: [mockDocumentTypeItemFromMockDocumentUploadResponse],
+      },
+      {
+        tmpDocumentCollection: [mockDocumentTypeItemFromMockDocumentUploadResponse],
+        fileName: 'Screenshot 2024-11-03 at 18.53.00.png',
+        result: [],
+      },
+    ])(
+      'check if given string value returns a valid document name: %o',
+      ({ tmpDocumentCollection, fileName, result }) => {
+        if (CollectionUtils.isNotEmpty(tmpDocumentCollection)) {
+          tmpDocumentCollection[0].value.uploadedDocument.document_filename = 'Screenshot 2024-11-03 at 18.53.00.png';
+        }
+        DocumentUtils.removeFileFromDocumentCollectionByFileName(tmpDocumentCollection, fileName);
+        expect(tmpDocumentCollection).toStrictEqual(result);
+      }
+    );
   });
 });
