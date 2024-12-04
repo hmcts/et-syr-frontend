@@ -12,7 +12,7 @@
   },
   "request": "[W]Request",
   "submit": "[W]Submit",
-  "caseNumber": "[W]Case Number",
+  "caseReferenceId": "[W]Submission Reference",
   "caseAssignment": "[W]Case assignment",
   "tick": "[W]You should tick to 'sign' when:",
   "satisfied": "[W]You're satisfied that all these details are accurate and match what is written on the case",
