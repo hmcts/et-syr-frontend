@@ -33,15 +33,6 @@ export default class CheckYourAnswersET3Controller {
         value: 'true',
         divider: false,
       },
-      saveAsDraft: {
-        label: (l: AnyRecord): string => l.saveForLater,
-        id: 'saveAsDraft',
-        type: 'button',
-        name: 'saveAsDraft',
-        value: 'true',
-        divider: false,
-        classes: 'govuk-button--secondary',
-      },
     },
   };
 

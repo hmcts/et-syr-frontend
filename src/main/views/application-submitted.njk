@@ -41,7 +41,7 @@
             text: caseNumber
           },
             value: {
-            text: userCase.id
+            text: userCase.ethosCaseReference
           }
           },
           {
@@ -73,17 +73,7 @@
 
     <h2 class="govuk-heading-m">{{ heading3 }}</h2>
     <div class="govuk-body">
-      <a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank"> {{ linkText }}</a>
-    </div>
-
-    <h2 class="govuk-heading-m">{{ heading4 }}</h2>
-    <div class="govuk-body">
-      <p>{{ contactUsForeword }}</p>
-      {{ contactDuration }}<br/>
-      {{ mainTelephone }}<br/>
-      {{ welshTelephone }}<br/>
-      {{ scotlandTelephone }}
-      <p><a href="https://www.gov.uk/call-charges" class="govuk-link">{{ contactCharges }}</a></p>
+      <p><a href="#" class="govuk-link" rel="noreferrer noopener" target="_blank"> {{ linkText }}</a></p>
     </div>
 
     <div class="govuk-button-group">
@@ -94,8 +84,4 @@
     </div>
   </div>
 </div>
-{% endblock %}
-
-{% block footer %}
-  {% include "form/main/footer.njk" %}
 {% endblock %}
