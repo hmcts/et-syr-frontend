@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { RespondentET3Model } from '../definitions/case';
-import { TranslationKeys, et3AttachmentDocTypes, languages } from '../definitions/constants';
+import { DefaultValues, TranslationKeys, et3AttachmentDocTypes, languages } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import DateUtils from '../utils/DateUtils';
@@ -60,7 +60,7 @@ export default class ApplicationSubmittedController {
       ...req.t(TranslationKeys.APPLICATION_SUBMITTED, { returnObjects: true }),
       et3ResponseSubmitted: DateUtils.formatDateStringToDDMMYYYY(userCase.responseReceivedDate),
       userCase,
-      attachedDocuments,
+      attachedDocuments: attachedDocuments.length > 0 ? attachedDocuments : DefaultValues.STRING_DASH,
       redirectUrl,
       welshEnabled,
       languageParam,
