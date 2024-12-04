@@ -4443,13 +4443,13 @@ __metadata:
   linkType: hard
 
 "axios@npm:^1.7.4":
-  version: 1.7.8
-  resolution: "axios@npm:1.7.8"
+  version: 1.7.9
+  resolution: "axios@npm:1.7.9"
   dependencies:
     follow-redirects: ^1.15.6
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
-  checksum: 3d21652faf8e29fb36c47517d2872bb5e2285127a24f5c53ce23082c4eac7f5a88de84dd49d4a1a83068e5301dcfd9067b41e5fbd00b0d20ab7b0a843559273d
+  checksum: cb8ce291818effda09240cb60f114d5625909b345e10f389a945320e06acf0bc949d0f8422d25720f5dd421362abee302c99f5e97edec4c156c8939814b23d19
   languageName: node
   linkType: hard
 
@@ -8878,8 +8878,8 @@ __metadata:
   linkType: hard
 
 "i18next@npm:^24.0.0":
-  version: 24.0.4
-  resolution: "i18next@npm:24.0.4"
+  version: 24.0.5
+  resolution: "i18next@npm:24.0.5"
   dependencies:
     "@babel/runtime": ^7.23.2
   peerDependencies:
@@ -8887,7 +8887,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 5ded3757ccff4a797c32dccc8f21adaef987a82f01481ce0a80e0c736cfb771eea6c5aeec7d1ba7c70b4a0ca46dcdf135c2cc535a993977a4d9a314085ded5eb
+  checksum: ae5bc37682f14f4ee44450e10598d32edd324edba2d0980339aa232cdfd506174a2e2dd7b9204d2882c28ddc37261c26c6b7b153ff586e54be71e27599d3dbf8
   languageName: node
   linkType: hard
 
