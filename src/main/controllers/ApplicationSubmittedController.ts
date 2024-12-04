@@ -8,6 +8,7 @@ import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import DateUtils from '../utils/DateUtils';
 import DocumentUtils from '../utils/DocumentUtils';
 import ObjectUtils from '../utils/ObjectUtils';
+import RespondentUtils from '../utils/RespondentUtils';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
 
@@ -17,7 +18,7 @@ export default class ApplicationSubmittedController {
     const welshEnabled = await getFlagValue('welsh-language', null);
     const userCase = req.session?.userCase;
     const languageParam = getLanguageParam(req.url);
-    const selectedRespondent: RespondentET3Model = userCase.respondents[req.session.selectedRespondentIndex];
+    const selectedRespondent: RespondentET3Model = RespondentUtils.findSelectedRespondentByRequest(req);
     let et3FormId = '';
     let et3FormName = '';
     if (

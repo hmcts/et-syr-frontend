@@ -2,5 +2,11 @@
   "title": "[W]Check your answers (ET3)",
   "h1": "[W]Check your answers",
   "h2": "[W]Submit your response",
-  "p1": "[W]By submitting your response you are confirming that the details you are providing are correct. You will not be able to change your response after you submit it. You can view your submitted response on the Case overview page."
+  "p1": "[W]By submitting your response you are confirming that the details you are providing are correct. You will not be able to change your response after you submit it. You can view your submitted response on the Case overview page.",
+  "submit": "[W]Submit",
+  "errors": {
+    "hiddenErrorField": {
+      "api": "[W]A system error occurred, Please try again later"
+    }
+  }
 }

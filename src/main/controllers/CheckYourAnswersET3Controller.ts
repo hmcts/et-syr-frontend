@@ -43,22 +43,26 @@ export default class CheckYourAnswersET3Controller {
         classes: 'govuk-button--secondary',
       },
     },
-  } as never;
+  };
 
   constructor() {
     this.form = new Form(<FormFields>this.checkYourAnswers.fields);
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    if (req.body.saveAsDraft) {
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONSE_SAVED)));
+    }
     const userCase = await ET3Util.updateET3Data(
       req,
       ET3HubLinkNames.CheckYorAnswers,
-      LinkStatus.COMPLETED,
+      LinkStatus.SUBMITTED,
       ET3ModificationTypes.MODIFICATION_TYPE_SUBMIT
     );
-    if (!userCase || req.body.saveAsDraft) {
+    if (!userCase) {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3)));
     }
+    req.session.userCase = userCase;
     if (req.body?.submit) {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.APPLICATION_SUBMITTED)));
     }
@@ -90,6 +94,7 @@ export default class CheckYourAnswersET3Controller {
       InterceptPaths,
       PageUrls,
       hideContactUs: true,
+      sessionErrors: req.session.errors,
       et3ResponseSection1: getEt3Section1(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
       et3ResponseSection2: getEt3Section2(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
       et3ResponseSection3: getEt3Section3(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
