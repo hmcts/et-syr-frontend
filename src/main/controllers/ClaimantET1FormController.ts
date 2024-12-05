@@ -31,7 +31,7 @@ export default class ClaimantET1FormController {
     } else {
       et1FormDocument = req.session.et1FormEnglish;
     }
-    const formattedEt1FormDate: string = DateUtils.formatDateStringToDDMonthYYYY(
+    const formattedEt1FormDate: string = DateUtils.formatDateStringToDDMMMYYYY(
       et1FormDocument?.value?.dateOfCorrespondence
     );
     const acasCertificate: ApiDocumentTypeItem = DocumentUtils.findAcasCertificateByAcasNumber(
@@ -39,7 +39,7 @@ export default class ClaimantET1FormController {
       req.session?.userCase?.acasCertNum
     );
     req.session.selectedAcasCertificate = acasCertificate;
-    let formattedAcasCertificateDate: string = DateUtils.formatDateStringToDDMonthYYYY(
+    let formattedAcasCertificateDate: string = DateUtils.formatDateStringToDDMMMYYYY(
       acasCertificate?.value?.dateOfCorrespondence
     );
     if (StringUtils.isBlank(formattedAcasCertificateDate)) {

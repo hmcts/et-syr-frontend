@@ -16,9 +16,13 @@ export const mockApplications: ApplicationTableRecord[] = [
       personalDetailsCheck: YesOrNo.YES,
       employmentAndRespondentCheck: YesOrNo.YES,
       claimDetailsCheck: YesOrNo.YES,
+      ethosCaseReference: '1000000/2024',
+      firstName: 'Test',
+      lastName: 'Tester',
       typeOfClaim: ['discrimination'],
       createdDate: 'September 1, 2022',
       lastModified: 'September 1, 2022',
+      responseReceivedDate: '01/01/2024',
       respondents: [
         {
           respondentName: 'Globo Corp',
