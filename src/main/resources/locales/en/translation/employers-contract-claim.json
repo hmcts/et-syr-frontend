@@ -8,6 +8,10 @@
   "errors": {
     "et3ResponseEmployerClaim": {
       "required": "Make a selection"
+    },
+    "hiddenErrorField": {
+      "required": "Make a selection",
+      "api": "A system error occurred, Please try again later"
     }
   }
 }
