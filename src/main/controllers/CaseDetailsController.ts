@@ -54,7 +54,10 @@ export default class CaseDetailsController {
             linkTxt: (l: AnyRecord): string => l[linkName],
             status: (l: AnyRecord): string => l[status],
             shouldShow: shouldCaseDetailsLinkBeClickable(status),
-            url: () => getET3CaseDetailsLinksUrlMap(languageParam, req.session.userCase).get(linkName),
+            url: () =>
+              getET3CaseDetailsLinksUrlMap(languageParam, selectedRespondent.et3Status, req.session.userCase).get(
+                linkName
+              ),
             statusColor: () => linkStatusColorMap.get(status),
           };
         }),

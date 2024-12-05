@@ -163,7 +163,7 @@
     "@faker-js/faker": "^5.5.3 || ^8.0.0 || ^9.0.0"
   },
   "resolutions": {
-    "@opentelemetry/instrumentation": "^0.55.0",
+    "@opentelemetry/instrumentation": "^0.56.0",
     "axios": "^1.7.4",
     "pino-std-serializers": "^7.0.0",
     "tough-cookie": "^5.0.0",
@@ -176,5 +176,5 @@
     "shelljs": "^0.8.5",
     "cross-spawn": "^7.0.5"
   },
-  "packageManager": "yarn@3.8.6"
+  "packageManager": "yarn@3.8.7"
 }

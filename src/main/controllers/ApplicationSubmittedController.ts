@@ -2,12 +2,13 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { RespondentET3Model } from '../definitions/case';
-import { TranslationKeys, et3AttachmentDocTypes, languages } from '../definitions/constants';
+import { DefaultValues, TranslationKeys, et3AttachmentDocTypes, languages } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import DateUtils from '../utils/DateUtils';
 import DocumentUtils from '../utils/DocumentUtils';
 import ObjectUtils from '../utils/ObjectUtils';
+import RespondentUtils from '../utils/RespondentUtils';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
 
@@ -17,7 +18,7 @@ export default class ApplicationSubmittedController {
     const welshEnabled = await getFlagValue('welsh-language', null);
     const userCase = req.session?.userCase;
     const languageParam = getLanguageParam(req.url);
-    const selectedRespondent: RespondentET3Model = userCase.respondents[req.session.selectedRespondentIndex];
+    const selectedRespondent: RespondentET3Model = RespondentUtils.findSelectedRespondentByRequest(req);
     let et3FormId = '';
     let et3FormName = '';
     if (
@@ -60,7 +61,7 @@ export default class ApplicationSubmittedController {
       ...req.t(TranslationKeys.APPLICATION_SUBMITTED, { returnObjects: true }),
       et3ResponseSubmitted: DateUtils.formatDateStringToDDMMYYYY(userCase.responseReceivedDate),
       userCase,
-      attachedDocuments,
+      attachedDocuments: attachedDocuments.length > 0 ? attachedDocuments : DefaultValues.STRING_DASH,
       redirectUrl,
       welshEnabled,
       languageParam,

@@ -35,11 +35,15 @@ export const getET3HubLinksUrlMap = (languageParam: string): Map<string, string>
   ]);
 };
 
-export const getET3CaseDetailsLinksUrlMap = (languageParam: string, userCase?: CaseWithId): Map<string, string> => {
+export const getET3CaseDetailsLinksUrlMap = (
+  languageParam: string,
+  respondentEt3Status: string,
+  userCase: CaseWithId
+): Map<string, string> => {
   const caseDetailsLinksMap = new Map<string, string>();
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.PersonalDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.ET1ClaimForm, PageUrls.CLAIMANT_ET1_FORM + baseUrls[languageParam]);
-  if (userCase && LinkStatus.COMPLETED === userCase.et3Status) {
+  if (userCase && LinkStatus.COMPLETED === respondentEt3Status) {
     caseDetailsLinksMap.set(
       ET3CaseDetailsLinkNames.RespondentResponse,
       PageUrls.APPLICATION_SUBMITTED + baseUrls[languageParam]

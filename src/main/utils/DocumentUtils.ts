@@ -99,4 +99,20 @@ export default class DocumentUtils {
     }
     return sanitizedDocumentName.trim();
   }
+
+  public static removeFileFromDocumentCollectionByFileName(
+    documentCollection: ApiDocumentTypeItem[],
+    fileName: string
+  ): void {
+    if (StringUtils.isBlank(fileName)) {
+      return;
+    }
+    if (CollectionUtils.isEmpty(documentCollection)) {
+      documentCollection = [];
+    }
+    const uploadedDocumentIndex: number = documentCollection
+      .map(document => document?.value?.uploadedDocument?.document_filename)
+      .indexOf(fileName);
+    CollectionUtils.removeItemFromCollectionByIndex(documentCollection, uploadedDocumentIndex);
+  }
 }

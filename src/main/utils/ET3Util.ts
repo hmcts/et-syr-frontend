@@ -115,7 +115,7 @@ export default class ET3Util {
   ): Promise<CaseWithId> {
     let caseWithId: CaseWithId;
     try {
-      let caseDetailsLinkStatus = LinkStatus.COMPLETED;
+      let caseDetailsLinkStatus = LinkStatus.SUBMITTED;
       if (!modificationType) {
         modificationType = ET3ModificationTypes.MODIFICATION_TYPE_UPDATE;
         caseDetailsLinkStatus = LinkStatus.IN_PROGRESS;

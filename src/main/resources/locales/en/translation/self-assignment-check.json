@@ -12,7 +12,7 @@
   },
   "request": "Request",
   "submit": "Submit",
-  "caseNumber": "Case Number",
+  "caseReferenceId": "Submission Reference",
   "caseAssignment": "Case assignment",
   "tick": "You should tick to 'sign' when:",
   "satisfied": "You're satisfied that all these details are accurate and match what is written on the case",
