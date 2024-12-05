@@ -93,18 +93,26 @@ describe('getET3CaseDetailsLinksUrlMap', () => {
     [ET3CaseDetailsLinkNames.Documents, PageUrls.NOT_IMPLEMENTED],
   ]);
   it('returns correct links when respondent is system user in English', () => {
-    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER)).toEqual(et3CaseDetailsLinksMapEnglish);
+    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, undefined, undefined)).toEqual(
+      et3CaseDetailsLinksMapEnglish
+    );
   });
 
   it('returns correct links when respondent is system user in Welsh', () => {
-    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER)).toEqual(et3CaseDetailsLinksMapWelsh);
+    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, undefined, undefined)).toEqual(
+      et3CaseDetailsLinksMapWelsh
+    );
   });
 
   it('returns correct links when respondent is non-system user in English', () => {
-    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER)).toEqual(et3CaseDetailsLinksMapEnglish);
+    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, undefined, undefined)).toEqual(
+      et3CaseDetailsLinksMapEnglish
+    );
   });
 
   it('returns correct links when respondent is non-system user in Welsh', () => {
-    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER)).toEqual(et3CaseDetailsLinksMapWelsh);
+    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, undefined, undefined)).toEqual(
+      et3CaseDetailsLinksMapWelsh
+    );
   });
 });

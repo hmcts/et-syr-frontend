@@ -11,6 +11,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { isClearSelectionWithoutRequestUserCaseCheck } from '../helpers/RouterHelpers';
+import EmployersContractClaimDetailsControllerHelper from '../helpers/controller/EmployersContractClaimControllerHelper';
 import ET3Util from '../utils/ET3Util';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
@@ -60,8 +61,9 @@ export default class EmployersContractClaimController {
       if (!req.body?.saveForLater) {
         req.session.returnUrl = nextPage;
       }
+    } else {
+      EmployersContractClaimDetailsControllerHelper.resetEmployersContractClaimDetails(req);
     }
-
     if (StringUtils.isNotBlank(req.url)) {
       req.url = UrlUtils.removeParameterFromUrl(req.url, DefaultValues.CLEAR_SELECTION_URL_PARAMETER);
     }

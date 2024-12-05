@@ -518,7 +518,7 @@ export const DefaultValues = {
   FILE_ID_PARAMETER: 'fileId=',
   CLEAR_SELECTION: 'clearSelection',
   CLEAR_SELECTION_URL_PARAMETER: 'redirect=clearSelection',
-  DOCUMENT_CHARS_TO_REPLACE: ['@', '/', '\\', "'", ':', '(', ')'],
+  DOCUMENT_CHARS_TO_REPLACE: ['@', '/', '\\', "'", ':', '(', ')', '#'],
 } as const;
 
 export const FormFieldNames = {

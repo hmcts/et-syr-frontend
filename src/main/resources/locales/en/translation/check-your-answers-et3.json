@@ -3,5 +3,10 @@
   "h1": "Check your answers",
   "h2": "Submit your response",
   "p1": "By submitting your response you are confirming that the details you are providing are correct. You will not be able to change your response after you submit it. You can view your submitted response on the Case overview page.",
-  "submit": "Submit"
+  "submit": "Submit",
+  "errors": {
+    "hiddenErrorField": {
+      "api": "A system error occurred, Please try again later"
+    }
+  }
 }
