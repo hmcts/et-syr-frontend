@@ -53,7 +53,32 @@ export default class DateUtils {
   }
 
   /**
-   * Formats input date string to DD/Month/YYYY like 01 Jan 2025
+   * Formats input date string to DD/MMM/YYYY like 01 Jan 2025
+   * @param dateString
+   */
+  public static formatDateStringToDDMMMYYYY(dateString: string): string {
+    const date: Date = this.convertStringToDate(dateString);
+    return this.formatDateToDDMMMYYYY(date);
+  }
+
+  /**
+   * Formats input date string to DD/MMM/YYYY like 01 Jan 2025
+   * @param dateVal
+   */
+  public static formatDateToDDMMMYYYY(dateVal: Date): string {
+    if (dateVal) {
+      return new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        timeZone: 'Europe/London',
+      }).format(dateVal);
+    }
+    return DefaultValues.STRING_EMPTY;
+  }
+
+  /**
+   * Formats input date string to DD/Month/YYYY like 01 January 2025
    * @param dateString
    */
   public static formatDateStringToDDMonthYYYY(dateString: string): string {
@@ -62,14 +87,14 @@ export default class DateUtils {
   }
 
   /**
-   * Formats input date string to DD/Month/YYYY like 01 Jan 2025
+   * Formats input date string to DD/Month/YYYY like 01 January 2025
    * @param dateVal
    */
   public static formatDateToDDMonthYYYY(dateVal: Date): string {
     if (dateVal) {
       return new Intl.DateTimeFormat('en-GB', {
         day: '2-digit',
-        month: 'short',
+        month: 'long',
         year: 'numeric',
         timeZone: 'Europe/London',
       }).format(dateVal);
@@ -101,7 +126,7 @@ export default class DateUtils {
     if (!date) {
       return DefaultValues.STRING_EMPTY;
     }
-    return this.formatDateToDDMonthYYYY(date);
+    return this.formatDateToDDMMMYYYY(date);
   }
 
   public static convertCaseDateToDateStringDD_MM_YYYY(caseDate: CaseDate): string {
