@@ -49,6 +49,46 @@ export const mockValidCaseWithId = <CaseWithId>{
   typeOfClaim: [TypesOfClaim.DISCRIMINATION],
 };
 
+export const mockValidCaseWithIdWithResponseRespondentAddress = <CaseWithId>{
+  createdDate: DefaultValues.STRING_EMPTY,
+  lastModified: DefaultValues.STRING_EMPTY,
+  ethosCaseReference: MockCaseWithIdConstants.TEST_ETHOS_CASE_REFERENCE,
+  state: undefined,
+  id: MockCaseWithIdConstants.TEST_SUBMISSION_REFERENCE_NUMBER,
+  respondentName: MockCaseWithIdConstants.TEST_RESPONDENT_NAME,
+  firstName: MockCaseWithIdConstants.TEST_CLAIMANT_NAME,
+  lastName: MockCaseWithIdConstants.TEST_CLAIMANT_SURNAME,
+  typeOfClaim: [TypesOfClaim.DISCRIMINATION],
+  responseRespondentAddress: {
+    Country: 'England',
+    PostCode: 'SL6 2DE',
+    PostTown: 'Maidenhead',
+    County: 'Berkshire',
+    AddressLine1: '48, Tithe Barn Drive',
+    AddressLine2: '49, Tithe Barn Drive',
+    AddressLine3: '50, Tithe Barn Drive',
+  }
+};
+
+export const mockValidCaseWithIdWithResponseRespondentAddressFields = <CaseWithId>{
+  createdDate: DefaultValues.STRING_EMPTY,
+  lastModified: DefaultValues.STRING_EMPTY,
+  ethosCaseReference: MockCaseWithIdConstants.TEST_ETHOS_CASE_REFERENCE,
+  state: undefined,
+  id: MockCaseWithIdConstants.TEST_SUBMISSION_REFERENCE_NUMBER,
+  respondentName: MockCaseWithIdConstants.TEST_RESPONDENT_NAME,
+  firstName: MockCaseWithIdConstants.TEST_CLAIMANT_NAME,
+  lastName: MockCaseWithIdConstants.TEST_CLAIMANT_SURNAME,
+  typeOfClaim: [TypesOfClaim.DISCRIMINATION],
+  responseRespondentAddressLine1: '48, Tithe Barn Drive',
+  responseRespondentAddressLine2: '49, Tithe Barn Drive',
+  responseRespondentAddressLine3: '50, Tithe Barn Drive',
+  responseRespondentAddressPostCode: 'SL6 2DE',
+  responseRespondentAddressPostTown: 'Maidenhead',
+  responseRespondentAddressCounty: 'Berkshire',
+  responseRespondentAddressCountry: 'England',
+};
+
 export const mockInvalidCaseWithId = <CaseWithId>{
   createdDate: DefaultValues.STRING_EMPTY,
   lastModified: DefaultValues.STRING_EMPTY,

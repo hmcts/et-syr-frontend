@@ -46,7 +46,7 @@ export const getET3CaseDetailsLinksUrlMap = (
   if (userCase && LinkStatus.COMPLETED === respondentEt3Status) {
     caseDetailsLinksMap.set(
       ET3CaseDetailsLinkNames.RespondentResponse,
-      PageUrls.APPLICATION_SUBMITTED + baseUrls[languageParam]
+      PageUrls.YOUR_RESPONSE_FORM + baseUrls[languageParam]
     );
   } else {
     caseDetailsLinksMap.set(
