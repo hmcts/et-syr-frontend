@@ -34,7 +34,7 @@ export default class ET3ResponseController {
       PageUrls,
       hideContactUs: true,
       userCase,
-      et3ResponseSection1: getEt3Section1(userCase, sectionTranslations, undefined, true),
+      et3ResponseSection1: getEt3Section1(req, sectionTranslations, undefined, true),
       et3ResponseSection2: getEt3Section2(userCase, sectionTranslations, undefined, true),
       et3ResponseSection3: getEt3Section3(userCase, sectionTranslations, undefined, true),
       et3ResponseSection4: getEt3Section4(userCase, sectionTranslations, undefined, true),

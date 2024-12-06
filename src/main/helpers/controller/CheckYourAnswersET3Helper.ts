@@ -1,3 +1,4 @@
+import { AppRequest } from '../../definitions/appRequest';
 import {
   CaseWithId,
   EmailOrPost,
@@ -8,6 +9,7 @@ import {
   YesOrNoOrNotApplicable,
   YesOrNoOrNotSure,
 } from '../../definitions/case';
+import { Et1Address } from '../../definitions/complexTypes/et1Address';
 import { DefaultValues, PageUrls } from '../../definitions/constants';
 import {
   SummaryListRow,
@@ -15,18 +17,20 @@ import {
   addSummaryRowWithAction,
 } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
+import AddressUtils from '../../utils/AddressUtils';
 import DateUtils from '../../utils/DateUtils';
 import DocumentUtils from '../../utils/DocumentUtils';
+import RespondentUtils from '../../utils/RespondentUtils';
 import { answersAddressFormatter } from '../AddressHelper';
 
 export const getEt3Section1 = (
-  userCase: CaseWithId,
+  request: AppRequest,
   translations: AnyRecord,
   sectionCya?: string,
   hideChangeLink?: boolean
 ): SummaryListRow[] => {
   const et3ResponseSection1: SummaryListRow[] = [];
-
+  const userCase = request.session.userCase;
   et3ResponseSection1.push(
     addSummaryRowWithAction(
       translations.section1.respondentName,
@@ -50,8 +54,8 @@ export const getEt3Section1 = (
         translations.section1.preferredTitleOptional,
         userCase.et3ResponseRespondentPreferredTitle ?? DefaultValues.STRING_DASH,
         PageUrls.TYPE_OF_ORGANISATION,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       )
     );
   }
@@ -62,23 +66,27 @@ export const getEt3Section1 = (
         translations.section1.companyRegistrationNumberOptional,
         userCase.et3ResponseRespondentCompanyNumber ?? DefaultValues.STRING_DASH,
         PageUrls.TYPE_OF_ORGANISATION,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       )
     );
   }
-
+  const responseRespondentAddress: Et1Address =
+    AddressUtils.findResponseRespondentAddressByEt3IsRespondentAddressCorrectField(
+      userCase,
+      RespondentUtils.findSelectedRespondentByRequest(request)
+    );
   et3ResponseSection1.push(
     addSummaryRowWithAction(
       translations.section1.address,
       answersAddressFormatter(
-        userCase.responseRespondentAddressLine1,
-        userCase.responseRespondentAddressLine2,
-        userCase.responseRespondentAddressLine3,
-        userCase.responseRespondentAddressPostTown,
-        userCase.responseRespondentAddressCounty,
-        userCase.responseRespondentAddressCountry,
-        userCase.responseRespondentAddressPostCode
+        responseRespondentAddress?.AddressLine1,
+        responseRespondentAddress?.AddressLine2,
+        responseRespondentAddress?.AddressLine3,
+        responseRespondentAddress?.PostTown,
+        responseRespondentAddress?.County,
+        responseRespondentAddress?.Country,
+        responseRespondentAddress?.PostCode
       ),
       PageUrls.RESPONDENT_ADDRESS,
       hideChangeLink ? undefined : translations.change,
@@ -124,8 +132,8 @@ export const getEt3Section1 = (
         translations.section1.reasonForPost,
         userCase.et3ResponseContactReason,
         PageUrls.RESPONDENT_CONTACT_PREFERENCES,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       )
     );
   }
@@ -140,8 +148,8 @@ export const getEt3Section1 = (
           ? translations.welsh
           : DefaultValues.STRING_DASH,
         PageUrls.RESPONDENT_CONTACT_PREFERENCES,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       )
     );
   }
@@ -183,8 +191,8 @@ export const getEt3Section2 = (
         translations.section2.supportRequest,
         userCase.et3ResponseRespondentSupportDetails,
         PageUrls.REASONABLE_ADJUSTMENTS,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       )
     );
   }
@@ -240,8 +248,8 @@ export const getEt3Section3 = (
         translations.section3.et3ResponseAcasAgreeReason,
         userCase.et3ResponseAcasAgreeReason ?? DefaultValues.STRING_DASH,
         PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       )
     );
   }
@@ -262,22 +270,22 @@ export const getEt3Section3 = (
         translations.section3.et3ResponseEmploymentStartDate,
         DateUtils.convertCaseDateToString(userCase.et3ResponseEmploymentStartDate) ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       ),
       addSummaryRowWithAction(
         translations.section3.et3ResponseEmploymentEndDate,
         DateUtils.convertCaseDateToString(userCase.et3ResponseEmploymentEndDate) ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       ),
       addSummaryRowWithAction(
         translations.section3.et3ResponseEmploymentInformation,
         userCase.et3ResponseEmploymentInformation ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       )
     );
   }
@@ -305,8 +313,8 @@ export const getEt3Section3 = (
         translations.section3.et3ResponseCorrectJobTitle ?? DefaultValues.STRING_DASH,
         userCase.et3ResponseCorrectJobTitle,
         PageUrls.CLAIMANT_JOB_TITLE,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       )
     );
   }
@@ -327,8 +335,8 @@ export const getEt3Section3 = (
         translations.section3.et3ResponseClaimantCorrectHours,
         userCase.et3ResponseClaimantCorrectHours ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       )
     );
   }
@@ -360,22 +368,22 @@ export const getEt3Section4 = (
         translations.section4.paymentFrequency,
         translations[userCase.et3ResponsePayFrequency] ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       ),
       addSummaryRowWithAction(
         translations.section4.claimantsPayBeforeTax,
         userCase.et3ResponsePayBeforeTax ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       ),
       addSummaryRowWithAction(
         translations.section4.claimantsPayAfterTax,
         userCase.et3ResponsePayTakehome ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       )
     );
   }
@@ -396,8 +404,8 @@ export const getEt3Section4 = (
         translations.section4.noticePeriodDetails,
         userCase.et3ResponseCorrectNoticeDetails ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_NOTICE_PERIOD,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       )
     );
   }
@@ -418,8 +426,8 @@ export const getEt3Section4 = (
         translations.section4.correctPensionAndBenefitsDetails,
         userCase.et3ResponsePensionCorrectDetails ?? DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_PENSION_AND_BENEFITS,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       )
     );
   }
@@ -468,16 +476,16 @@ export const getEt3Section5 = (
         translations.section5.contestExplanation1 + userCase.respondentName + translations.section5.contestExplanation2,
         userCase.et3ResponseContestClaimDetails,
         PageUrls.RESPONDENT_CONTEST_CLAIM_REASON ?? DefaultValues.STRING_DASH,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       ),
 
       addSummaryHtmlRowWithAction(
         translations.section5.supportingMaterials,
         contestClaimDocumentLinks,
         PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       )
     );
   }
@@ -517,15 +525,15 @@ export const getEt3Section6 = (
         translations.section6.employerContractClaimDetails,
         userCase.et3ResponseEmployerClaimDetails ?? DefaultValues.STRING_DASH,
         PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       ),
       addSummaryHtmlRowWithAction(
         translations.section6.supportingMaterials,
         employerClaimDocument,
         PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS,
-        translations.change,
-        sectionCya
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
       )
     );
   }

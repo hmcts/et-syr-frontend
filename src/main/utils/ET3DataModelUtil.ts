@@ -1,10 +1,12 @@
 import { ET3RequestModel } from '../definitions/ET3RequestModel';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, RespondentET3Model } from '../definitions/case';
+import { Et1Address } from '../definitions/complexTypes/et1Address';
 import { RespondentSumType, RespondentType } from '../definitions/complexTypes/respondent';
 import { FormFieldNames, LoggerConstants, ServiceErrors, ValidationErrors } from '../definitions/constants';
 import { getLogger } from '../logger';
 
+import AddressUtils from './AddressUtils';
 import CollectionUtils from './CollectionUtils';
 import DateUtils from './DateUtils';
 import ErrorUtils from './ErrorUtils';
@@ -379,14 +381,7 @@ export default class ET3DataModelUtil {
     req.session.userCase.responseStruckOutDate = selectedRespondent.responseStruckOutDate;
     req.session.userCase.responseStruckOutChairman = selectedRespondent.responseStruckOutChairman;
     req.session.userCase.responseStruckOutReason = selectedRespondent.responseStruckOutReason;
-    req.session.userCase.responseRespondentAddress = selectedRespondent.responseRespondentAddress;
-    req.session.userCase.responseRespondentAddressLine1 = selectedRespondent.responseRespondentAddressLine1;
-    req.session.userCase.responseRespondentAddressLine2 = selectedRespondent.responseRespondentAddressLine2;
-    req.session.userCase.responseRespondentAddressLine3 = selectedRespondent.responseRespondentAddressLine3;
-    req.session.userCase.responseRespondentAddressPostTown = selectedRespondent.responseRespondentAddressPostTown;
-    req.session.userCase.responseRespondentAddressCounty = selectedRespondent.responseRespondentAddressCounty;
-    req.session.userCase.responseRespondentAddressPostCode = selectedRespondent.responseRespondentAddressPostCode;
-    req.session.userCase.responseRespondentAddressCountry = selectedRespondent.responseRespondentAddressCountry;
+    this.setResponseRespondentAddress(req.session.userCase, selectedRespondent);
     req.session.userCase.responseRespondentPhone1 = selectedRespondent.responseRespondentPhone1;
     req.session.userCase.responseRespondentPhone2 = selectedRespondent.responseRespondentPhone2;
     req.session.userCase.responseRespondentEmail = selectedRespondent.responseRespondentEmail;
@@ -546,7 +541,6 @@ export default class ET3DataModelUtil {
     req.session.userCase.et3VettingDocumentUploadTimestamp = selectedRespondent.et3VettingDocumentUploadTimestamp;
     // Employer Claim Document Section
     req.session.userCase.et3ResponseEmployerClaimDocument = selectedRespondent.et3ResponseEmployerClaimDocument;
-
     req.session.userCase.et3ResponseEmployerClaimDocumentUrl =
       selectedRespondent.et3ResponseEmployerClaimDocument?.document_url;
     req.session.userCase.et3ResponseEmployerClaimDocumentBinaryUrl =
@@ -559,7 +553,6 @@ export default class ET3DataModelUtil {
       selectedRespondent.et3ResponseEmployerClaimDocument?.category_id;
     req.session.userCase.et3ResponseEmployerClaimDocumentUploadTimestamp =
       selectedRespondent.et3ResponseEmployerClaimDocument?.upload_timestamp;
-
     selectedRespondent.et3ResponseEmployerClaimDocumentUrl =
       selectedRespondent.et3ResponseEmployerClaimDocument?.document_url;
     selectedRespondent.et3ResponseEmployerClaimDocumentBinaryUrl =
@@ -595,6 +588,15 @@ export default class ET3DataModelUtil {
     req.session.userCase.et3FormCategoryId = selectedRespondent.et3FormCategoryId;
     req.session.userCase.et3FormUploadTimestamp = selectedRespondent.et3FormUploadTimestamp;
     req.session.userCase.idamId = selectedRespondent.idamId;
+  }
+
+  public static setResponseRespondentAddress(userCase: CaseWithId, selectedRespondent: RespondentET3Model): void {
+    const responseRespondentAddress: Et1Address =
+      AddressUtils.findResponseRespondentAddressByEt3IsRespondentAddressCorrectField(userCase, selectedRespondent);
+    if (ObjectUtils.isEmpty(responseRespondentAddress)) {
+      return;
+    }
+    AddressUtils.setResponseRespondentAddress(userCase, selectedRespondent, responseRespondentAddress);
   }
 
   public static getRespondentResponseDeadline(req: AppRequest): string {
