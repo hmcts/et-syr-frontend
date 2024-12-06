@@ -35,6 +35,7 @@ import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPens
 import ContactTribunalController from '../../controllers/ContactTribunalController';
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
+import CopyToOtherPartyController from '../../controllers/CopyToOtherPartyController';
 import ET3ResponseController from '../../controllers/ET3ResponseController';
 import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
@@ -235,6 +236,9 @@ export class Routes {
     app.get(PageUrls.CONTACT_TRIBUNAL, new ContactTribunalController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL_SELECTED, new ContactTribunalSelectedController().get);
     app.post(PageUrls.CONTACT_TRIBUNAL_SELECTED, new ContactTribunalSelectedController().post);
+    app.get(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().get);
+    app.post(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().post);
+    // others
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);
     app.post(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().post);

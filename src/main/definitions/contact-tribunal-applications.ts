@@ -72,11 +72,3 @@ export const application: { [key: string]: Application } = {
     type: ApplicationType.A,
   },
 };
-
-export const isTypeAOrB = (app: Application): boolean => {
-  return app.type === ApplicationType.A || app.type === ApplicationType.B;
-};
-
-export const getApplicationByUrl = (url: string): Application | undefined => {
-  return Object.values(application).find(app => app.url === url);
-};

@@ -77,6 +77,7 @@ export const TranslationKeys = {
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: 'employers-contract-claim-details',
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: 'check-your-answers-employers-contract-claim',
   // Contact Tribunal
+  APPLICATION_TYPE: 'application-type',
   CONTACT_TRIBUNAL: 'contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: 'contact-tribunal-selected',
   COPY_TO_OTHER_PARTY: 'copy-to-other-party',
