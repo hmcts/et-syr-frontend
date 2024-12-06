@@ -174,7 +174,8 @@
     "ws": "^8.17.1",
     "cookie": "^1.0.0",
     "shelljs": "^0.8.5",
-    "cross-spawn": "^7.0.5"
+    "cross-spawn": "^7.0.5",
+    "path-to-regexp": "^0.1.12"
   },
   "packageManager": "yarn@3.8.7"
 }
