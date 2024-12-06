@@ -24,6 +24,7 @@ import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 
 import CollectionUtils from './CollectionUtils';
+import DateUtils from './DateUtils';
 import ErrorUtils from './ErrorUtils';
 import ObjectUtils from './ObjectUtils';
 import StringUtils from './StringUtils';
@@ -233,13 +234,16 @@ export default class ET3Util {
   ): { text?: string; caseId?: string; caseDetailsLink?: string; respondentCcdId?: string }[] {
     return [
       {
-        text: application.userCase.createdDate,
+        text: DateUtils.formatDateStringToDDMonthYYYY(application.userCase.responseReceivedDate), //todo: FIX NEEDED: doesn't show welsh date for some reason?
+      },
+      {
+        text: application.userCase.ethosCaseReference,
       },
       {
         text: application.userCase.id,
       },
       {
-        text: application.userCase.typeOfClaimString,
+        text: application.userCase.firstName + ' ' + application.userCase.lastName,
       },
       {
         text: respondentName,

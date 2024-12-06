@@ -27,7 +27,7 @@ describe('DateUtils tests', () => {
     { value: '2024-01-01   ', result: '01 Jan 2024' },
     { value: '2025-12-30', result: '30 Dec 2025' },
   ])('check if given string is correctly parsed to date like 01 Jan 2024', ({ value, result }) => {
-    expect(DateUtils.formatDateStringToDDMonthYYYY(value)).toStrictEqual(result);
+    expect(DateUtils.formatDateStringToDDMMMYYYY(value)).toStrictEqual(result);
   });
 
   it.each([

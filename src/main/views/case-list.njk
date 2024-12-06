@@ -12,25 +12,25 @@
         <table class="govuk-table">
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-              <th scope="col" class="govuk-table__header">{{ col1 }}</th>
-              <th scope="col" class="govuk-table__header">{{ col2 }}</th>
-              <th scope="col" class="govuk-table__header">{{ col3 }}</th>
-              <th scope="col" class="govuk-table__header">{{ col4 }}</th>
-              <th scope="col" class="govuk-table__header">{{ col5 }}</th>
-              <th scope="col" class="govuk-table__header">{{ col6 }}</th>
-              <th scope="col" class="govuk-table__header">{{ col7 }}</th>
+              <th scope="col" class="govuk-table__header">{{ caseNumber }}</th>
+              <th scope="col" class="govuk-table__header">{{ digitalReference }}</th>
+              <th scope="col" class="govuk-table__header">{{ claimant }}</th>
+              <th scope="col" class="govuk-table__header">{{ respondent }}</th>
+              <th scope="col" class="govuk-table__header">{{ completionStatus }}</th>
+              <th scope="col" class="govuk-table__header">{{ lastUpdated }}</th>
+              <th scope="col" class="govuk-table__header">{{ options }}</th>
             </tr>
           </thead>
           <tbody class="govuk-table__body">
             {% for et3NotCompletedRow in et3NotCompleted %}
               <tr class="govuk-table__row">
-                <td class="govuk-table__cell"> {{ et3NotCompletedRow[0].text }} </td>
                 <td class="govuk-table__cell"> {{ et3NotCompletedRow[1].text }} </td>
                 <td class="govuk-table__cell"> {{ et3NotCompletedRow[2].text }} </td>
                 <td class="govuk-table__cell"> {{ et3NotCompletedRow[3].text }} </td>
                 <td class="govuk-table__cell"> {{ et3NotCompletedRow[4].text }} </td>
                 <td class="govuk-table__cell"> {{ et3NotCompletedRow[5].text }} </td>
-                <td class="govuk-table__cell"> <a href="{{ et3NotCompletedRow[6].caseDetailsLink }}/{{ et3NotCompletedRow[6].caseId }}/{{ et3NotCompletedRow[6].respondentCcdId }}{{ languageParam }}" aria-label="view {{ et3NotCompletedRow[1].text }}: {{ et3NotCompletedRow[6].caseId }}"> {{ continue }} </a></td>
+                <td class="govuk-table__cell"> {{ et3NotCompletedRow[6].text }} </td>
+                <td class="govuk-table__cell"> <a href="{{ et3NotCompletedRow[7].caseDetailsLink }}/{{ et3NotCompletedRow[7].caseId }}/{{ et3NotCompletedRow[7].respondentCcdId }}{{ languageParam }}" aria-label="view {{ et3NotCompletedRow[1].text }}: {{ et3NotCompletedRow[7].caseId }}"> {{ continue }} </a></td>
               </tr>
             {% endfor %}
           </tbody>
@@ -43,13 +43,13 @@
         <table class="govuk-table">
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-              <th scope="col" class="govuk-table__header">{{ col1 }}</th>
-              <th scope="col" class="govuk-table__header">{{ col2 }}</th>
-              <th scope="col" class="govuk-table__header">{{ col3 }}</th>
-              <th scope="col" class="govuk-table__header">{{ col4 }}</th>
-              <th scope="col" class="govuk-table__header">{{ col5 }}</th>
-              <th scope="col" class="govuk-table__header">{{ col6 }}</th>
-              <th scope="col" class="govuk-table__header">{{ col7 }}</th>
+              <th scope="col" class="govuk-table__header">{{ dateSubmitted }}</th>
+              <th scope="col" class="govuk-table__header">{{ caseNumber }}</th>
+              <th scope="col" class="govuk-table__header">{{ digitalReference }}</th>
+              <th scope="col" class="govuk-table__header">{{ claimant }}</th>
+              <th scope="col" class="govuk-table__header">{{ respondent }}</th>
+              <th scope="col" class="govuk-table__header">{{ lastUpdated }}</th>
+              <th scope="col" class="govuk-table__header">{{ options }}</th>
             </tr>
           </thead>
           <tbody class="govuk-table__body">
@@ -60,8 +60,8 @@
                 <td class="govuk-table__cell"> {{ et3CompletedRow[2].text }} </td>
                 <td class="govuk-table__cell"> {{ et3CompletedRow[3].text }} </td>
                 <td class="govuk-table__cell"> {{ et3CompletedRow[4].text }} </td>
-                <td class="govuk-table__cell"> {{ et3CompletedRow[5].text }} </td>
-                <td class="govuk-table__cell"> <a href="{{ et3CompletedRow[6].caseDetailsLink }}/{{ et3CompletedRow[6].caseId }}/{{ et3CompletedRow[6].respondentCcdId }}{{ languageParam }}" aria-label="view {{ et3CompletedRow[1].text }}: {{ et3CompletedRow[6].caseId }}"> {{ continue }} </a></td>
+                <td class="govuk-table__cell"> {{ et3CompletedRow[6].text }} </td>
+                <td class="govuk-table__cell"> <a href="{{ et3CompletedRow[7].caseDetailsLink }}/{{ et3CompletedRow[7].caseId }}/{{ et3CompletedRow[7].respondentCcdId }}{{ languageParam }}" aria-label="view {{ et3CompletedRow[1].text }}: {{ et3CompletedRow[7].caseId }}"> {{ continue }} </a></td>
               </tr>
             {% endfor %}
           </tbody>
