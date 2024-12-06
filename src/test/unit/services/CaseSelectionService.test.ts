@@ -131,8 +131,12 @@ describe('Get User applications', () => {
         personalDetailsCheck: YesOrNo.YES,
         employmentAndRespondentCheck: YesOrNo.YES,
         claimDetailsCheck: YesOrNo.YES,
+        ethosCaseReference: '1000000/2024',
+        firstName: 'Test',
+        lastName: 'Tester',
         createdDate: 'September 1, 2022',
         lastModified: 'September 1, 2022',
+        responseReceivedDate: '01/01/2024',
         typeOfClaim: ['discrimination'],
         respondents: [
           {
