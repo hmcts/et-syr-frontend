@@ -1,0 +1,25 @@
+{
+  "title": "[W]Postpone a hearing",
+  "applicationType": "[W]Postpone a hearing",
+  "applicationTitle": "[W]Postpone a hearing",
+  "content": [
+    {
+      "type": "[W]paragraph",
+      "text": "[W]Use this form to ask the tribunal to postpone a hearing to a later date."
+    },
+    {
+      "type": "[W]bold-paragraph",
+      "text": "[W]Details to include in your application:"
+    },
+    {
+      "type": "[W]list",
+      "items": [
+        "which hearing you want to postpone. If the hearing you want to postpone is listed over multiple days, tell us which day or days you are applying to postpone",
+        "the reason you want to postpone. The tribunal will use this to decide whether to grant your application",
+        "any essential documents to support your application",
+        "weekday dates within the next 3 months that you, your witnesses or representatives cannot attend a rescheduled hearing",
+        "the reason you cannot attend on those dates"
+      ]
+    }
+  ]
+}
