@@ -234,7 +234,7 @@ export default class ET3Util {
   ): { text?: string; caseId?: string; caseDetailsLink?: string; respondentCcdId?: string }[] {
     return [
       {
-        text: DateUtils.formatDateStringToDDMonthYYYY(application.userCase.responseReceivedDate), //todo: FIX NEEDED: doesn't show welsh date for some reason?
+        text: DateUtils.formatDateStringToDDMonthYYYY(respondent.responseReceivedDate),
       },
       {
         text: application.userCase.ethosCaseReference,
