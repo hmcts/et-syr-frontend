@@ -3,7 +3,6 @@ import { FormFields } from '../../../main/definitions/form';
 import {
   conditionalRedirect,
   endSubSection,
-  getCancelLink,
   getLanguageParam,
   isClearSelection,
   isClearSelectionWithoutRequestUserCaseCheck,
@@ -217,15 +216,6 @@ describe('RouterHelper', () => {
     });
   });
 
-  describe('getCancelLink', () => {
-    it('should return cancel URL', () => {
-      const request = mockRequest({
-        session: { userCase: mockUserCase },
-      });
-      const result = getCancelLink(request);
-      expect(result).toBe('/case-details/1?lng=en');
-    });
-  });
   describe('isClearSelectionWithoutRequestUserCaseCheck', () => {
     it('should return false if request.query is empty', () => {
       const request = mockRequest({
