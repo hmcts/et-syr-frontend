@@ -69,6 +69,7 @@ import SessionTimeoutController from '../../controllers/SessionTimeoutController
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
 import { AppRequest } from '../../definitions/appRequest';
 import { FILE_SIZE_LIMIT, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
+import YourResponseFormController from "../../controllers/YourResponseFormController";
 
 const handleUploads = multer({
   limits: {
@@ -102,6 +103,7 @@ export class Routes {
     app.get(PageUrls.HOME, new HomeController().get);
     app.get(PageUrls.CHECKLIST, new ChecklistController().get);
     app.get(PageUrls.CASE_LIST_CHECK, new CaseListCheckController().get);
+    app.get(PageUrls.YOUR_RESPONSE_FORM, new YourResponseFormController().get);
     app.get(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().get);
     app.post(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().post);
     app.get(PageUrls.SELF_ASSIGNMENT_CHECK, new SelfAssignmentCheckController().get);

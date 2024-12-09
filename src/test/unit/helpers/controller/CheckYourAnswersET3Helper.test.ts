@@ -21,6 +21,8 @@ import {
   getEt3Section5,
   getEt3Section6,
 } from '../../../../main/helpers/controller/CheckYourAnswersET3Helper';
+import {mockRequest} from "../../mocks/mockRequest";
+import {AppRequest} from "../../../../main/definitions/appRequest";
 
 describe('CheckYourAnswersET3Helper', () => {
   const userCase: CaseWithId = {
@@ -160,8 +162,9 @@ describe('CheckYourAnswersET3Helper', () => {
         )
       );
     }
-
-    const result = getEt3Section1(userCase, translationsMock);
+    const request: AppRequest = mockRequest({});
+    request.session.userCase = userCase;
+    const result = getEt3Section1(request, translationsMock);
 
     expect(result).toEqual(expectedRows);
   });
@@ -184,8 +187,9 @@ describe('CheckYourAnswersET3Helper', () => {
     }
 
     userCase.et3ResponseRespondentEmployerType = TypeOfOrganisation.INDIVIDUAL;
-
-    const result = getEt3Section1(userCase, translationsMock);
+    const request: AppRequest = mockRequest({});
+    request.session.userCase = userCase;
+    const result = getEt3Section1(request, translationsMock);
 
     expect(result).toEqual(expectedRows);
   });
@@ -206,10 +210,11 @@ describe('CheckYourAnswersET3Helper', () => {
         )
       );
     }
-
+    const request: AppRequest = mockRequest({});
+    request.session.userCase = userCase;
     userCase.et3ResponseRespondentEmployerType = TypeOfOrganisation.LIMITED_COMPANY;
 
-    const result = getEt3Section1(userCase, translationsMock);
+    const result = getEt3Section1(request, translationsMock);
 
     expect(result).toEqual(expectedRows);
   });
@@ -388,7 +393,9 @@ describe('CheckYourAnswersET3Helper', () => {
   });
 
   it('should exclude "Change" links when hideChangeLink is true', () => {
-    const result = getEt3Section1(userCase, translationsMock, undefined, true);
+    const request: AppRequest = mockRequest({});
+    request.session.userCase = userCase;
+    const result = getEt3Section1(request, translationsMock, undefined, true);
     const result2 = getEt3Section2(userCase, translationsMock, undefined, true);
     const result3 = getEt3Section3(userCase, translationsMock, undefined, true);
     const result4 = getEt3Section4(userCase, translationsMock, undefined, true);

@@ -1,0 +1,67 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block beforeContent %}
+  {{ super() }}
+  {% include "back-link.njk" %}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ h1 }}</h1>
+
+      <h2 class="govuk-heading-m">{{ section1.header }}</h2>
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-9",
+        rows: et3ResponseSection1
+      }) }}
+
+      <h2 class="govuk-heading-m">{{ section2.header }}</h2>
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-9",
+        rows: et3ResponseSection2
+      }) }}
+
+      <h2 class="govuk-heading-m">{{ section3.header }}</h2>
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-9",
+        rows: et3ResponseSection3
+      }) }}
+
+      <h2 class="govuk-heading-m">{{ section4.header }}</h2>
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-9",
+        rows: et3ResponseSection4
+      }) }}
+
+      <h2 class="govuk-heading-m">{{ section5.header }}</h2>
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-9",
+        rows: et3ResponseSection5
+      }) }}
+
+      {% if isSection6Visible %}
+        <h2 class="govuk-heading-m">{{ section6.header }}</h2>
+        {{ govukSummaryList({
+          classes: "govuk-!-margin-bottom-9",
+          rows: et3ResponseSection6
+        }) }}
+      {% endif %}
+    </div>
+
+    <div class="govuk-grid-column-one-third-from-desktop">
+      {% set sideBarContent %}
+        {% include "./components/sidebar/sidebar.njk" %}
+      {% endset %}
+
+      {{ govukDetails({
+        summaryHtml: "<span id='contact-us-sidebar'>" + contact + "</span>",
+        html: sideBarContent
+      }) }}
+    </div>
+  </div>
+{% endblock %}
