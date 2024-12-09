@@ -4,23 +4,23 @@
   "applicationTitle": "[W]Vary or revoke an order",
   "content": [
     {
-      "type": "[W]paragraph",
+      "type": "paragraph",
       "text": "[W]Use this form to apply to vary or revoke an order the tribunal has issued."
     },
     {
-      "type": "[W]paragraph",
+      "type": "paragraph",
       "text": "[W]Tribunal orders will not usually be varied or revoked unless there has been a material change in circumstances since the order was made, which make the variation in the interests of justice."
     },
     {
-      "type": "[W]paragraph",
+      "type": "paragraph",
       "text": "[W]The tribunal will consider your reasons for varying or revoking the order and any supporting materials you provide then make a decision."
     },
     {
-      "type": "[W]bold-paragraph",
+      "type": "bold-paragraph",
       "text": "[W]Details to include in your application:"
     },
     {
-      "type": "[W]list",
+      "type": "list",
       "items": [
         "the order you want to vary or revoke",
         "the date the tribunal issued the order",

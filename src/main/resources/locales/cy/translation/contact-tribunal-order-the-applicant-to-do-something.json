@@ -4,15 +4,15 @@
   "applicationTitle": "[W]Order other party",
   "content": [
     {
-      "type": "[W]paragraph",
+      "type": "paragraph",
       "text": "[W]Use this form to ask the tribunal to order the claimant to do or provide something."
     },
     {
-      "type": "[W]bold-paragraph",
+      "type": "bold-paragraph",
       "text": "[W]Details to include in your application:"
     },
     {
-      "type": "[W]list",
+      "type": "list",
       "items": [
         "what you want the claimant to do",
         "why it is relevant to your response",

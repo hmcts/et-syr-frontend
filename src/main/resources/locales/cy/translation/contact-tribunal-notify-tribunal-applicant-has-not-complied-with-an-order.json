@@ -4,19 +4,19 @@
   "applicationTitle": "[W]Claimant not complied",
   "content": [
     {
-      "type": "[W]paragraph",
+      "type": "paragraph",
       "text": "[W]Use this form to tell us that the claimant has not complied with all or part of an order from the tribunal."
     },
     {
-      "type": "[W]paragraph",
+      "type": "paragraph",
       "text": "[W]You should try to resolve your complaint with the claimant. Only use this form if that is not possible."
     },
     {
-      "type": "[W]bold-paragraph",
+      "type": "bold-paragraph",
       "text": "[W]Details to include in your application:"
     },
     {
-      "type": "[W]list",
+      "type": "list",
       "items": [
         "which order has not been complied with",
         "the date the tribunal issued the order",

@@ -4,27 +4,27 @@
   "applicationTitle": "[W]Restrict publicity",
   "content": [
     {
-      "type": "[W]paragraph",
+      "type": "paragraph",
       "text": "[W]Use this form to apply to prevent or restrict publicity in this case."
     },
     {
-      "type": "[W]paragraph",
+      "type": "paragraph",
       "text": "[W]It is an important principle that justice should normally be delivered in public."
     },
     {
-      "type": "[W]paragraph",
+      "type": "paragraph",
       "text": "[W]However, the tribunal has the power to prevent or restrict the public disclosure of any aspect of this case if necessary in the interests of justice or to protect the Convention rights of any person."
     },
     {
-      "type": "[W]paragraph",
+      "type": "paragraph",
       "text": "[W]The tribunal also has certain other powers to sit in private or to restrict publicity in accordance with sections 10A, 10B, 11 and 12 of the Employment Tribunals Act 1996."
     },
     {
-      "type": "[W]paragraph",
+      "type": "paragraph",
       "text": "[W]The tribunal may issue an order:"
     },
     {
-      "type": "[W]list",
+      "type": "list",
       "items": [
         "that a hearing that would otherwise be in public be conducted, in whole or in part, in private",
         "that the identities of specified parties, witnesses or other persons referred to in the proceedings should not be disclosed to the public, by the use of anonymisation or otherwise",
@@ -33,11 +33,11 @@
       ]
     },
     {
-      "type": "[W]bold-paragraph",
+      "type": "bold-paragraph",
       "text": "[W]Details to include in your application:"
     },
     {
-      "type": "[W]list",
+      "type": "list",
       "items": [
         "how the tribunal should prevent or restrict publicity in this case",
         "why the restrictions you want are needed. The tribunal must make the least restrictive order possible. Tell us why fewer restrictions would not be enough",
