@@ -13,6 +13,7 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { isClearSelectionWithoutRequestUserCaseCheck } from '../helpers/RouterHelpers';
 import EmployersContractClaimDetailsControllerHelper from '../helpers/controller/EmployersContractClaimControllerHelper';
 import ET3Util from '../utils/ET3Util';
+import ErrorUtils from '../utils/ErrorUtils';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
 
@@ -85,7 +86,10 @@ export default class EmployersContractClaimController {
       }
       req.session.errors = [];
     }
-
+    // Removes all errors that remains in request session except api for hidden field errors.
+    // Because for this screen is optional
+    // That remaining errors were coming from other pages.
+    ErrorUtils.removeErrorsFromRequestExceptHiddenErrorFieldApiErrors(req);
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.EMPLOYERS_CONTRACT_CLAIM,

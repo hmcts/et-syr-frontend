@@ -34,12 +34,11 @@ export default class CheckYourAnswersContactDetailsController extends BaseCYACon
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const redirectUrl = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS);
-    const userCase = req.session.userCase;
     const sectionTranslations: AnyRecord = {
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
     };
-    const et3ResponseSection1 = getEt3Section1(userCase, sectionTranslations, InterceptPaths.CONTACT_DETAILS_CHANGE);
+    const et3ResponseSection1 = getEt3Section1(req, sectionTranslations, InterceptPaths.CONTACT_DETAILS_CHANGE);
     res.render(TranslationKeys.CHECK_YOUR_ANSWERS_CONTACT_DETAILS, {
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
