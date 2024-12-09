@@ -31,7 +31,7 @@ export class ET3CaseDetailsLinksStatuses {
       } else if (name === ET3CaseDetailsLinkNames.ClaimantApplications) {
         this[name] = LinkStatus.NOT_YET_AVAILABLE;
       } else if (name === ET3CaseDetailsLinkNames.ContactTribunal) {
-        this[name] = LinkStatus.OPTIONAL;
+        this[name] = LinkStatus.NOT_YET_AVAILABLE;
       } else if (name === ET3CaseDetailsLinkNames.TribunalOrders) {
         this[name] = LinkStatus.NOT_YET_AVAILABLE;
       } else if (name === ET3CaseDetailsLinkNames.TribunalJudgements) {

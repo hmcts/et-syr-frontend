@@ -60,14 +60,10 @@ export const getET3CaseDetailsLinksUrlMap = (
     PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]
   );
   caseDetailsLinksMap.set(
-    ET3CaseDetailsLinkNames.RespondentRequestsAndApplications,
-    PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]
-  );
-  caseDetailsLinksMap.set(
     ET3CaseDetailsLinkNames.ClaimantApplications,
     PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]
   );
-  caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.ContactTribunal, PageUrls.CONTACT_TRIBUNAL + baseUrls[languageParam]);
+  caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.ContactTribunal, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.TribunalOrders, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
   caseDetailsLinksMap.set(
     ET3CaseDetailsLinkNames.TribunalJudgements,
