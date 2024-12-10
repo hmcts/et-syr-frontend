@@ -1,6 +1,7 @@
 {% extends "form/main/template.njk" %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
 {% block beforeContent %}
     {{ super() }}
@@ -15,30 +16,12 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
             <span class="govuk-caption-l">{{ applicationType }}</span>
-            <h1 class="govuk-heading-l">{{ applicationTitle }}</h1>
+            <h1 class="govuk-heading-l">{{ title }}</h1>
 
-            {% for item in content %}
-                {% if item.type == 'paragraph' %}
-                    <p class="govuk-body">{{ item.text }}</p>
-                {% elif item.type == 'bold-paragraph' %}
-                    <p class="govuk-body-m govuk-!-font-weight-bold">{{ item.text }}</p>
-                {% elif item.type == 'list' %}
-                    <ul class="govuk-list govuk-list--bullet">
-                    {% for listItem in item.items %}
-                        <li>{{ listItem }}</li>
-                    {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endfor %}
+            {{ govukInsetText({
+                text: inset
+            }) }}
 
-            <p class="govuk-body-m govuk-!-font-weight-bold">{{ genericGuidance }}</p>
-            <ul class="govuk-list govuk-list--bullet">
-                <li>{{ genericGuidanceItem1 }}</li>
-                <li>{{ genericGuidanceItem2 }}</li>
-                <li>{{ genericGuidanceItem3 }}</li>
-            </ul>
-
-            <p class="govuk-body-m govuk-!-font-weight-bold">{{ formHearing }}</p>
             {% block form %}
                 {% include "form/form.njk" %}
             {% endblock %}
