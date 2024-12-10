@@ -1,7 +1,5 @@
 {
   "title": "Order other party",
-  "applicationType": "Order the claimant",
-  "applicationTitle": "Order other party",
   "content": [
     {
       "type": "paragraph",

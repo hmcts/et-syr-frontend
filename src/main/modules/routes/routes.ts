@@ -36,6 +36,7 @@ import ContactTribunalController from '../../controllers/ContactTribunalControll
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import CopyToOtherPartyController from '../../controllers/CopyToOtherPartyController';
+import CopyToOtherPartyOfflineController from '../../controllers/CopyToOtherPartyOfflineController';
 import ET3ResponseController from '../../controllers/ET3ResponseController';
 import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
@@ -67,9 +68,9 @@ import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheck
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
+import YourResponseFormController from '../../controllers/YourResponseFormController';
 import { AppRequest } from '../../definitions/appRequest';
 import { FILE_SIZE_LIMIT, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
-import YourResponseFormController from "../../controllers/YourResponseFormController";
 
 const handleUploads = multer({
   limits: {
@@ -240,6 +241,8 @@ export class Routes {
     app.post(PageUrls.CONTACT_TRIBUNAL_SELECTED, new ContactTribunalSelectedController().post);
     app.get(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().get);
     app.post(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().post);
+    app.get(PageUrls.COPY_TO_OTHER_PARTY_OFFLINE, new CopyToOtherPartyOfflineController().get);
+    app.post(PageUrls.COPY_TO_OTHER_PARTY_OFFLINE, new CopyToOtherPartyOfflineController().post);
     // others
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);
