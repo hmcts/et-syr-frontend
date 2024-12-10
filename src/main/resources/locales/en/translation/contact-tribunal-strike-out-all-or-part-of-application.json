@@ -1,0 +1,35 @@
+{
+  "title": "Strike out all or part of the claim",
+  "applicationType": "Strike out the claim",
+  "applicationTitle": "Strike out all or part of the claim",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "You can request that the tribunal strike out all or parts of the claim."
+    },
+    {
+      "type": "paragraph",
+      "text": "If something is ‘struck out’ it is removed from the claim or response and cannot be relied upon."
+    },
+    {
+      "type": "paragraph",
+      "text": "The tribunal can strike out all or parts of the claimant’s claim on their own initiative or after a request from the respondent."
+    },
+    {
+      "type": "paragraph",
+      "text": "A strike out request must be based on at least one of the grounds of Rule 37 of the Employment Tribunals Rules of Procedure."
+    },
+    {
+      "type": "bold-paragraph",
+      "text": "Details to include in your application:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "why you think the claim (or parts of it) should be struck out",
+        "which ground or grounds in Rule 37 you say applies in this case",
+        "if you are referring to numbered points or paragraphs in a claim, include these numbers or other references"
+      ]
+    }
+  ]
+}
