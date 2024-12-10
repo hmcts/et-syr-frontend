@@ -12,12 +12,13 @@ import { getLanguageParam } from '../helpers/RouterHelpers';
 import UrlUtils from '../utils/UrlUtils';
 import { isContentCharsOrLessAndNotEmpty, isOptionSelected } from '../validators/validator';
 
-export default class CopyToOtherPartyController {
+export default class CopyToOtherPartyOfflineController {
   private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
       copyToOtherPartyYesOrNo: {
         type: 'radios',
+        label: (l: AnyRecord): string => l.copyToOtherPartyYesOrNo.label,
         values: [
           {
             label: (l: AnyRecord): string => l.copyToOtherPartyYesOrNo.yes,
@@ -55,7 +56,7 @@ export default class CopyToOtherPartyController {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     req.session.errors = this.form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
-      return res.redirect(PageUrls.COPY_TO_OTHER_PARTY + getLanguageParam(req.url));
+      return res.redirect(PageUrls.COPY_TO_OTHER_PARTY_OFFLINE + getLanguageParam(req.url));
     }
 
     req.session.userCase.copyToOtherPartyYesOrNo = formData.copyToOtherPartyYesOrNo;
@@ -66,10 +67,10 @@ export default class CopyToOtherPartyController {
   public get = (req: AppRequest, res: Response): void => {
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
-      TranslationKeys.COPY_TO_OTHER_PARTY,
+      TranslationKeys.COPY_TO_OTHER_PARTY_OFFLINE,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    res.render(TranslationKeys.COPY_TO_OTHER_PARTY, {
+    res.render(TranslationKeys.COPY_TO_OTHER_PARTY_OFFLINE, {
       ...content,
       hideContactUs: true,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
