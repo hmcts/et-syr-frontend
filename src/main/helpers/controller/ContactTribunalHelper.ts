@@ -35,9 +35,10 @@ export const getNextPage = (app: Application): string => {
 };
 
 export const isClaimantSystemUser = (userCase: CaseWithId): boolean => {
-  // TODO: need to check if the claim was submitted through MyHMCTS as those would also be counted as online claims
+  // TODO: check if the claim was submitted through MyHMCTS as those would also be counted as online claims
+  // TODO: refer to isClaimantNonSystemUser and isRepresentedClaimantWithMyHmctsCase
   if (userCase) {
-    return userCase.et1OnlineSubmission !== undefined || userCase.hubLinksStatuses !== undefined;
+    return true;
   }
   return false;
 };
