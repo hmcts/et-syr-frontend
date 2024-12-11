@@ -1,8 +1,9 @@
 import CopyToOtherPartyController from '../../../main/controllers/CopyToOtherPartyController';
-import { YesOrNo } from '../../../main/definitions/case';
+import { CaseWithId, YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+import mockUserCase from '../mocks/mockUserCase';
 
 describe('Copy to Other Party Controller', () => {
   let controller: CopyToOtherPartyController;
@@ -16,9 +17,20 @@ describe('Copy to Other Party Controller', () => {
   });
 
   describe('GET method', () => {
-    it('should render the page', () => {
+    it('should render the page COPY_TO_OTHER_PARTY', () => {
+      request.session.userCase = mockUserCase;
       controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.COPY_TO_OTHER_PARTY, expect.anything());
+    });
+
+    it('should render the page COPY_TO_OTHER_PARTY_OFFLINE', () => {
+      request.session.userCase = {
+        id: 'case123',
+        et1OnlineSubmission: undefined,
+        hubLinksStatuses: undefined,
+      } as CaseWithId;
+      controller.get(request, response);
+      expect(response.render).toHaveBeenCalledWith(TranslationKeys.COPY_TO_OTHER_PARTY_OFFLINE, expect.anything());
     });
   });
 

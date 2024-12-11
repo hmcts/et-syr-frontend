@@ -30,15 +30,11 @@ export const getApplicationsAccordionItems = (url: string, translations: AnyReco
   });
 };
 
-export const getNextPage = (app: Application, userCase: CaseWithId): string => {
-  return isTypeAOrB(app) ? getNextCopyPage(userCase) : PageUrls.CONTACT_TRIBUNAL_CYA;
+export const getNextPage = (app: Application): string => {
+  return isTypeAOrB(app) ? PageUrls.COPY_TO_OTHER_PARTY : PageUrls.CONTACT_TRIBUNAL_CYA;
 };
 
-const getNextCopyPage = (userCase: CaseWithId): string => {
-  return isClaimantSystemUser(userCase) ? PageUrls.COPY_TO_OTHER_PARTY : PageUrls.COPY_TO_OTHER_PARTY_OFFLINE;
-};
-
-const isClaimantSystemUser = (userCase: CaseWithId): boolean => {
+export const isClaimantSystemUser = (userCase: CaseWithId): boolean => {
   // TODO: need to check if the claim was submitted through MyHMCTS as those would also be counted as online claims
   if (userCase) {
     return userCase.et1OnlineSubmission !== undefined || userCase.hubLinksStatuses !== undefined;

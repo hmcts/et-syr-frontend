@@ -41,9 +41,7 @@ describe('Contact Tribunal Selected Controller', () => {
       request = mockRequest({ body: { contactApplicationText: 'Test' } });
       request.params.selectedOption = application.CHANGE_PERSONAL_DETAILS.url;
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.COPY_TO_OTHER_PARTY_OFFLINE + languages.ENGLISH_URL_PARAMETER
-      );
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.COPY_TO_OTHER_PARTY + languages.ENGLISH_URL_PARAMETER);
     });
 
     it('should redirect to cya page when type C', async () => {
