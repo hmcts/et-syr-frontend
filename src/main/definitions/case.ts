@@ -322,7 +322,6 @@ export interface Case {
   et1SubmittedForm?: DocumentDetail;
   submittedDate?: CaseDate;
   et3ResponseReceived?: boolean;
-  et1OnlineSubmission?: string;
   hubLinksStatuses?: HubLinksStatuses;
   allEt1DocumentDetails?: DocumentDetail[];
   acknowledgementOfClaimLetterDetail?: DocumentDetail[];

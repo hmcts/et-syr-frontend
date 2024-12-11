@@ -50,7 +50,7 @@ describe('Contact Tribunal Helper', () => {
     });
 
     it('should return false when claimant is offline', () => {
-      const userCase = { id: 'case123', et1OnlineSubmission: undefined, hubLinksStatuses: undefined } as CaseWithId;
+      const userCase = { id: 'case123', hubLinksStatuses: undefined } as CaseWithId;
       const nextPage = isClaimantSystemUser(userCase);
       expect(nextPage).toBe(false);
     });

@@ -26,7 +26,6 @@ describe('Copy to Other Party Controller', () => {
     it('should render the page COPY_TO_OTHER_PARTY_OFFLINE', () => {
       request.session.userCase = {
         id: 'case123',
-        et1OnlineSubmission: undefined,
         hubLinksStatuses: undefined,
       } as CaseWithId;
       controller.get(request, response);

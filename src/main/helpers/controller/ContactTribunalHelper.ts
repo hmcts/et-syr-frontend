@@ -38,7 +38,7 @@ export const isClaimantSystemUser = (userCase: CaseWithId): boolean => {
   // TODO: check if the claim was submitted through MyHMCTS as those would also be counted as online claims
   // TODO: refer to isClaimantNonSystemUser and isRepresentedClaimantWithMyHmctsCase
   if (userCase) {
-    return true;
+    return userCase.hubLinksStatuses !== undefined;
   }
   return false;
 };
