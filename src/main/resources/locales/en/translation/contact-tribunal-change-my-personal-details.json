@@ -1,7 +1,5 @@
 {
   "title": "Change personal details",
-  "applicationType": "Change my personal details",
-  "applicationTitle": "Change personal details",
   "content": [
     {
       "type": "paragraph",

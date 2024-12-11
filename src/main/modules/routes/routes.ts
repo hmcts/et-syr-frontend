@@ -67,9 +67,9 @@ import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheck
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
+import YourResponseFormController from '../../controllers/YourResponseFormController';
 import { AppRequest } from '../../definitions/appRequest';
 import { FILE_SIZE_LIMIT, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
-import YourResponseFormController from "../../controllers/YourResponseFormController";
 
 const handleUploads = multer({
   limits: {

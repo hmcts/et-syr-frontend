@@ -1,6 +1,7 @@
 import ContactTribunalSelectedController from '../../../main/controllers/ContactTribunalSelectedController';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import { application } from '../../../main/definitions/contact-tribunal-applications';
+import { HubLinksStatuses } from '../../../main/definitions/hub';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
@@ -31,7 +32,7 @@ describe('Contact Tribunal Selected Controller', () => {
   describe('POST method', () => {
     it('should redirect to next page when type B and other party online', async () => {
       request = mockRequest({ body: { contactApplicationText: 'Test' } });
-      request.session.userCase.et1OnlineSubmission = 'Yes';
+      request.session.userCase.hubLinksStatuses = new HubLinksStatuses();
       request.params.selectedOption = application.CHANGE_PERSONAL_DETAILS.url;
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.COPY_TO_OTHER_PARTY + languages.ENGLISH_URL_PARAMETER);
@@ -41,9 +42,7 @@ describe('Contact Tribunal Selected Controller', () => {
       request = mockRequest({ body: { contactApplicationText: 'Test' } });
       request.params.selectedOption = application.CHANGE_PERSONAL_DETAILS.url;
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.COPY_TO_OTHER_PARTY_OFFLINE + languages.ENGLISH_URL_PARAMETER
-      );
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.COPY_TO_OTHER_PARTY + languages.ENGLISH_URL_PARAMETER);
     });
 
     it('should redirect to cya page when type C', async () => {

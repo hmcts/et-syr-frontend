@@ -59,7 +59,7 @@ export default class ContactTribunalSelectedController {
     req.session.userCase.contactApplicationType = selectedApplication.code;
     req.session.userCase.contactApplicationFile = formData.contactApplicationFile;
     req.session.userCase.contactApplicationText = formData.contactApplicationText;
-    res.redirect(getNextPage(selectedApplication, req.session.userCase) + getLanguageParam(req.url));
+    res.redirect(getNextPage(selectedApplication) + getLanguageParam(req.url));
   };
 
   public get = (req: AppRequest, res: Response): void => {

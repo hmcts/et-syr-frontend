@@ -9,6 +9,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { getApplicationTypeByCode } from '../helpers/ApplicationHelper';
 import { getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
+import { isClaimantSystemUser } from '../helpers/controller/ContactTribunalHelper';
 import UrlUtils from '../utils/UrlUtils';
 import { isContentCharsOrLessAndNotEmpty, isOptionSelected } from '../validators/validator';
 
@@ -18,6 +19,7 @@ export default class CopyToOtherPartyController {
     fields: {
       copyToOtherPartyYesOrNo: {
         type: 'radios',
+        label: (l: AnyRecord): string => l.copyToOtherPartyYesOrNo.label,
         values: [
           {
             label: (l: AnyRecord): string => l.copyToOtherPartyYesOrNo.yes,
@@ -53,18 +55,26 @@ export default class CopyToOtherPartyController {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     // TODO: Get values from inputs and Save them
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    req.session.errors = this.form.getValidatorErrors(formData);
+    if (req.session.errors.length > 0) {
+      return res.redirect(PageUrls.COPY_TO_OTHER_PARTY + getLanguageParam(req.url));
+    }
+
     req.session.userCase.copyToOtherPartyYesOrNo = formData.copyToOtherPartyYesOrNo;
     req.session.userCase.copyToOtherPartyText = formData.copyToOtherPartyText;
     res.redirect(PageUrls.CONTACT_TRIBUNAL_CYA + getLanguageParam(req.url));
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    const fileName = isClaimantSystemUser(req.session.userCase)
+      ? TranslationKeys.COPY_TO_OTHER_PARTY
+      : TranslationKeys.COPY_TO_OTHER_PARTY_OFFLINE;
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
-      TranslationKeys.COPY_TO_OTHER_PARTY,
+      fileName,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    res.render(TranslationKeys.COPY_TO_OTHER_PARTY, {
+    res.render(fileName, {
       ...content,
       hideContactUs: true,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
