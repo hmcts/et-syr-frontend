@@ -64,6 +64,8 @@ export default class RespondentNameController {
     if (YesOrNo.NO !== formData.responseRespondentNameQuestion) {
       fieldsToReset.push('responseRespondentName');
     }
+    // This field is mandatory. While updating respondent name in the backend assigns the respondent email.
+    ET3Util.setResponseRespondentEmail(req.session.user, req);
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
@@ -74,7 +76,6 @@ export default class RespondentNameController {
       fieldsToReset
     );
   };
-
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_NAME);
     const userCase = req.session.userCase;

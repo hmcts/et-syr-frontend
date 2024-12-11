@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { Form } from '../components/form';
-import { AppRequest } from '../definitions/appRequest';
+import { AppRequest, UserDetails } from '../definitions/appRequest';
 import { CaseWithId, RespondentET3Model } from '../definitions/case';
 import {
   CLAIM_TYPES,
@@ -27,6 +27,7 @@ import CollectionUtils from './CollectionUtils';
 import DateUtils from './DateUtils';
 import ErrorUtils from './ErrorUtils';
 import ObjectUtils from './ObjectUtils';
+import RespondentUtils from './RespondentUtils';
 import StringUtils from './StringUtils';
 
 const logger = getLogger('ET3Util');
@@ -309,5 +310,27 @@ export default class ET3Util {
       totalSections,
     };
     return translateOverallStatus(overallStatus, translations);
+  }
+
+  /**
+   * Sets session user's email to respondent's email field which is respondentEmail.
+   * If session user, respondent or session user email is not found doesn't assign email address to respondentEmail
+   * field.
+   * @param user in the session which is expected to have email address.
+   * @param request request object of session
+   */
+  public static setResponseRespondentEmail(user: UserDetails, request: AppRequest): void {
+    if (
+      ObjectUtils.isEmpty(request?.session?.userCase) ||
+      ObjectUtils.isEmpty(user) ||
+      StringUtils.isBlank(user.email)
+    ) {
+      return;
+    }
+    request.session.userCase.responseRespondentEmail = user.email;
+    const respondent: RespondentET3Model = RespondentUtils.findSelectedRespondentByRequest(request);
+    if (ObjectUtils.isNotEmpty(respondent)) {
+      respondent.responseRespondentEmail = user.email;
+    }
   }
 }

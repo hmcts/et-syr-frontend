@@ -59,12 +59,12 @@ export default class RespondentContactPreferencesController {
         labelHidden: false,
         values: [
           {
-            name: 'et3ResponseLanguagePreferenceEnglish',
+            name: 'et3ResponseLanguagePreference',
             label: (l: AnyRecord): string => l.english,
             value: EnglishOrWelsh.ENGLISH,
           },
           {
-            name: 'et3ResponseLanguagePreferenceWelsh',
+            name: 'et3ResponseLanguagePreference',
             label: (l: AnyRecord): string => l.cymraeg,
             value: EnglishOrWelsh.WELSH,
           },
