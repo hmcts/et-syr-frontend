@@ -102,10 +102,10 @@ export default class UrlUtils {
       return [];
     }
     const params: string[] = [];
-    let clonedUrl = _.cloneDeep(url);
+    let clonedUrl: string = _.cloneDeep(url);
     clonedUrl = clonedUrl.substring(clonedUrl.indexOf(DefaultValues.STRING_QUESTION_MARK));
     while (StringUtils.isNotBlank(clonedUrl)) {
-      let indexOfAmpersand = clonedUrl.indexOf(DefaultValues.STRING_AMPERSAND);
+      let indexOfAmpersand: number = clonedUrl.indexOf(DefaultValues.STRING_AMPERSAND);
       if (indexOfAmpersand === -1) {
         indexOfAmpersand = clonedUrl.length;
       }

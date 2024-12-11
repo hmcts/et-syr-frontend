@@ -207,7 +207,15 @@ export default class ET3Util {
       returnNextPage(req, res, redirectUrl);
     }
   }
-
+  /**
+   * Tries to find the respondent name by using respondent et3 model. First checks respondent et3Model. If it is empty
+   * returns an empty string, if not, checks respondent name field, if it is not
+   * blank, returns that field, if blank, checks respondent's organisation name if it is not blank returns
+   * organisation name, if blank, checks both respondent first and last name and if they are not empty combines them
+   * with a space and returns the new value, else returns empty string.
+   * @param respondent is the type which has the respondent's information that we use to find the name.
+   * @return the name according to the fields, respondent name, organisation name or first and last name.
+   */
   public static getUserNameByRespondent(respondent: RespondentET3Model): string {
     if (!respondent) {
       return DefaultValues.STRING_EMPTY;
@@ -320,6 +328,28 @@ export default class ET3Util {
    * @param request request object of session
    */
   public static setResponseRespondentEmail(user: UserDetails, request: AppRequest): void {
+    if (
+      ObjectUtils.isEmpty(request?.session?.userCase) ||
+      ObjectUtils.isEmpty(user) ||
+      StringUtils.isBlank(user.email)
+    ) {
+      return;
+    }
+    request.session.userCase.responseRespondentEmail = user.email;
+    const respondent: RespondentET3Model = RespondentUtils.findSelectedRespondentByRequest(request);
+    if (ObjectUtils.isNotEmpty(respondent)) {
+      respondent.responseRespondentEmail = user.email;
+    }
+  }
+
+  /**
+   * Sets session user's email to respondent's email field which is respondentEmail.
+   * If session user, respondent or session user email is not found doesn't assign email address to respondentEmail
+   * field.
+   * @param user in the session which is expected to have email address.
+   * @param request request object of session
+   */
+  public static setResponseRespondentName(user: UserDetails, request: AppRequest): void {
     if (
       ObjectUtils.isEmpty(request?.session?.userCase) ||
       ObjectUtils.isEmpty(user) ||
