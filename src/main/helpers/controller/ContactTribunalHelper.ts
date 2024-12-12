@@ -30,6 +30,22 @@ export const getApplicationsAccordionItems = (url: string, translations: AnyReco
   });
 };
 
+export const getApplicationDisplayByUrl = (url: string, translations: AnyRecord): string => {
+  if (!url) {
+    return '';
+  }
+  const appKey = Object.keys(application).find(key => application[key].url === url);
+  return appKey ? translations[appKey] : '';
+};
+
+export const getApplicationDisplayByCode = (appCode: string, translations: AnyRecord): string => {
+  if (!appCode) {
+    return '';
+  }
+  const appKey = Object.keys(application).find(key => application[key].code === appCode);
+  return appKey ? translations[appKey] : '';
+};
+
 export const getNextPage = (app: Application): string => {
   return isTypeAOrB(app) ? PageUrls.COPY_TO_OTHER_PARTY : PageUrls.CONTACT_TRIBUNAL_CYA;
 };
