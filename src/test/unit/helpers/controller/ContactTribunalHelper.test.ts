@@ -59,7 +59,7 @@ describe('Contact Tribunal Helper', () => {
       const userCase = {
         id: 'case123',
         hubLinksStatuses: undefined,
-        caseSource: 'MY_HMCTS',
+        caseSource: 'MyHMCTS',
         claimantRepresentedQuestion: 'Yes',
         representativeClaimantType: {
           myHmctsOrganisation: {
