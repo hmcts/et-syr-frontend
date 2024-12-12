@@ -54,5 +54,22 @@ describe('Contact Tribunal Helper', () => {
       const nextPage = isClaimantSystemUser(userCase);
       expect(nextPage).toBe(false);
     });
+
+    it('should return false when claimant is represented by HMCTS', () => {
+      const userCase = {
+        id: 'case123',
+        hubLinksStatuses: undefined,
+        caseSource: 'MY_HMCTS',
+        claimantRepresentedQuestion: 'Yes',
+        representativeClaimantType: {
+          myHmctsOrganisation: {
+            organisationID: 'orgId',
+            organisationName: 'orgName',
+          },
+        },
+      } as CaseWithId;
+      const nextPage = isClaimantSystemUser(userCase);
+      expect(nextPage).toBe(false);
+    });
   });
 });

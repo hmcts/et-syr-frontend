@@ -244,6 +244,8 @@ export interface Case {
   claimantContactLanguagePreference?: EnglishOrWelsh;
   claimantHearingLanguagePreference?: EnglishOrWelsh;
   claimantRepresentedQuestion?: YesOrNo;
+  caseSource?: string;
+  representativeClaimantType?: RepresentedTypeC;
   caseType?: CaseType;
   caseTypeId?: CaseTypeId;
   telNumber?: string;
@@ -322,6 +324,7 @@ export interface Case {
   et1SubmittedForm?: DocumentDetail;
   submittedDate?: CaseDate;
   et3ResponseReceived?: boolean;
+  et1OnlineSubmission?: string;
   hubLinksStatuses?: HubLinksStatuses;
   allEt1DocumentDetails?: DocumentDetail[];
   acknowledgementOfClaimLetterDetail?: DocumentDetail[];
@@ -540,4 +543,28 @@ export const enum TypeOfOrganisation {
   PARTNERSHIP = 'Partnership',
   UNINCORPORATED_ASSOCIATION = 'Unincorporated association',
   OTHER = 'Other',
+}
+
+export interface RepresentedTypeC {
+  representativeId?: string;
+  nameOfRepresentative?: string;
+  nameOfOrganisation?: string;
+  representativeReference?: string;
+  representativeOccupation?: string;
+  representativeOccupationOther?: string;
+  representativeAddress?: Et1Address;
+  representativePhoneNumber?: string;
+  representativeMobileNumber?: string;
+  representativeEmailAddress?: string;
+  representativePreference?: string;
+  organisationId?: string;
+  myHmctsOrganisation?: Organisation;
+  hearingContactLanguage?: string[];
+  contactLanguageQuestion?: string[];
+  representativeAttendHearing?: string[];
+}
+
+export interface Organisation {
+  organisationID?: string;
+  organisationName?: string;
 }
