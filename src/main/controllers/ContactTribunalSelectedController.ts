@@ -8,8 +8,9 @@ import { getApplicationByUrl } from '../definitions/contact-tribunal-application
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
-import { getCancelLink, getLanguageParam } from '../helpers/RouterHelpers';
+import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFormDataError, getNextPage } from '../helpers/controller/ContactTribunalSelectedHelper';
+import UrlUtils from '../utils/UrlUtils';
 
 export default class ContactTribunalSelectedController {
   private readonly form: Form;
@@ -76,7 +77,7 @@ export default class ContactTribunalSelectedController {
     res.render(TranslationKeys.CONTACT_TRIBUNAL_SELECTED, {
       ...content,
       hideContactUs: true,
-      cancelLink: getCancelLink(req),
+      cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
     });
   };
 }

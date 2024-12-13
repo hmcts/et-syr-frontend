@@ -125,9 +125,3 @@ export const endSubSection = (req: AppRequest): void => {
     }
   }
 };
-
-export const getCancelLink = (req: AppRequest): string => {
-  const userCase = req.session?.userCase;
-  const languageParam = getLanguageParam(req.url);
-  return PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER + '/' + userCase?.id + languageParam;
-};
