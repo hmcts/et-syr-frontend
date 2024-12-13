@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { RespondentET3Model } from '../definitions/case';
-import { DefaultValues, TranslationKeys, et3AttachmentDocTypes, languages } from '../definitions/constants';
+import { DefaultValues, PageUrls, TranslationKeys, et3AttachmentDocTypes, languages } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import DateUtils from '../utils/DateUtils';
@@ -68,6 +68,7 @@ export default class ApplicationSubmittedController {
       selectedRespondent,
       et3FormId,
       et3FormName,
+      contactTribunalUrl: PageUrls.HOLDING_PAGE + languageParam,
     });
   };
 }
