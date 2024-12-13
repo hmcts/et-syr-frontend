@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNo } from '../definitions/case';
+import { RespondentET3Model, YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { ET3Status } from '../definitions/definition';
 import {
@@ -36,7 +36,8 @@ export default class CaseDetailsController {
     if (CollectionUtils.isNotEmpty(req.session.errors)) {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CASE_LIST)));
     }
-    const selectedRespondent = req.session.userCase.respondents[req.session.selectedRespondentIndex];
+    const selectedRespondent: RespondentET3Model =
+      req.session.userCase.respondents[req.session.selectedRespondentIndex];
     ET3DataModelUtil.setSelectedRespondentDataToCaseWithId(req);
     if (CollectionUtils.isNotEmpty(req.session.errors)) {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CASE_LIST)));

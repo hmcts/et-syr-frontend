@@ -792,6 +792,7 @@ export const mapRespondent = (respondent: RespondentType): RespondentET3Model =>
     et3ResponseRespondentSupportDetails: respondent?.et3ResponseRespondentSupportDetails,
     et3ResponseRespondentSupportDocument: respondent?.et3ResponseRespondentSupportDocument,
     et3Form: respondent?.et3Form,
+    et3FormWelsh: respondent?.et3FormWelsh,
     contactDetailsSection: respondent?.contactDetailsSection,
     employerDetailsSection: respondent?.employerDetailsSection,
     conciliationAndEmployeeDetailsSection: respondent?.conciliationAndEmployeeDetailsSection,
