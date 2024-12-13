@@ -8,6 +8,7 @@ export const mockRespondentET3Model: RespondentET3Model = {
   respondentAddressPostCode: 'SL6 2DE',
   respondentEnterPostcode: 'SL6 2DE',
   acasCertNum: 'R123456/78/90',
+  responseReceivedDate: '01/01/2024',
   respondentAddress: {
     Country: 'England',
     PostCode: 'SL6 2DE',

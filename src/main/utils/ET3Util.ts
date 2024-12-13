@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { Form } from '../components/form';
-import { AppRequest } from '../definitions/appRequest';
+import { AppRequest, UserDetails } from '../definitions/appRequest';
 import { CaseWithId, RespondentET3Model } from '../definitions/case';
 import {
   CLAIM_TYPES,
@@ -27,6 +27,7 @@ import CollectionUtils from './CollectionUtils';
 import DateUtils from './DateUtils';
 import ErrorUtils from './ErrorUtils';
 import ObjectUtils from './ObjectUtils';
+import RespondentUtils from './RespondentUtils';
 import StringUtils from './StringUtils';
 
 const logger = getLogger('ET3Util');
@@ -206,7 +207,15 @@ export default class ET3Util {
       returnNextPage(req, res, redirectUrl);
     }
   }
-
+  /**
+   * Tries to find the respondent name by using respondent et3 model. First checks respondent et3Model. If it is empty
+   * returns an empty string, if not, checks respondent name field, if it is not
+   * blank, returns that field, if blank, checks respondent's organisation name if it is not blank returns
+   * organisation name, if blank, checks both respondent first and last name and if they are not empty combines them
+   * with a space and returns the new value, else returns empty string.
+   * @param respondent is the type which has the respondent's information that we use to find the name.
+   * @return the name according to the fields, respondent name, organisation name or first and last name.
+   */
   public static getUserNameByRespondent(respondent: RespondentET3Model): string {
     if (!respondent) {
       return DefaultValues.STRING_EMPTY;
@@ -234,7 +243,7 @@ export default class ET3Util {
   ): { text?: string; caseId?: string; caseDetailsLink?: string; respondentCcdId?: string }[] {
     return [
       {
-        text: DateUtils.formatDateStringToDDMonthYYYY(application.userCase.responseReceivedDate), //todo: FIX NEEDED: doesn't show welsh date for some reason?
+        text: DateUtils.formatDateStringToDDMonthYYYY(respondent.responseReceivedDate),
       },
       {
         text: application.userCase.ethosCaseReference,
@@ -309,5 +318,27 @@ export default class ET3Util {
       totalSections,
     };
     return translateOverallStatus(overallStatus, translations);
+  }
+
+  /**
+   * Sets session user's email to respondent's email field which is respondentEmail.
+   * If session user, respondent or session user email is not found doesn't assign email address to respondentEmail
+   * field.
+   * @param user in the session which is expected to have email address.
+   * @param request request object of session
+   */
+  public static setResponseRespondentEmail(user: UserDetails, request: AppRequest): void {
+    if (
+      ObjectUtils.isEmpty(request?.session?.userCase) ||
+      ObjectUtils.isEmpty(user) ||
+      StringUtils.isBlank(user.email)
+    ) {
+      return;
+    }
+    request.session.userCase.responseRespondentEmail = user.email;
+    const respondent: RespondentET3Model = RespondentUtils.findSelectedRespondentByRequest(request);
+    if (ObjectUtils.isNotEmpty(respondent)) {
+      respondent.responseRespondentEmail = user.email;
+    }
   }
 }
