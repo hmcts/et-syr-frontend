@@ -2,15 +2,19 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, YesOrNo } from '../definitions/case';
+import { CaseWithId, RespondentET3Model, YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields, FormInput } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
+import { setUserCase } from '../helpers/CaseHelpers';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { returnValidUrl } from '../helpers/RouterHelpers';
+import CollectionUtils from '../utils/CollectionUtils';
 import ET3Util from '../utils/ET3Util';
+import RespondentUtils from '../utils/RespondentUtils';
 import { isContentCharsOrLessAndNotEmpty, isOptionSelected } from '../validators/validator';
 
 export default class RespondentNameController {
@@ -59,20 +63,22 @@ export default class RespondentNameController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    const fieldsToReset: string[] = [];
+    const formData: Partial<CaseWithId> = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    setUserCase(req, formData, []);
     if (YesOrNo.NO !== formData.responseRespondentNameQuestion) {
-      fieldsToReset.push('responseRespondentName');
+      const selectedRespondent: RespondentET3Model = RespondentUtils.findSelectedRespondentByRequest(req);
+      const existingRespondentName: string = ET3Util.getUserNameByRespondent(selectedRespondent);
+      req.session.userCase.responseRespondentName = existingRespondentName;
+      selectedRespondent.responseRespondentName = existingRespondentName;
     }
-    await ET3Util.updateET3ResponseWithET3Form(
-      req,
-      res,
-      this.form,
-      ET3HubLinkNames.ContactDetails,
-      LinkStatus.IN_PROGRESS,
-      PageUrls.TYPE_OF_ORGANISATION,
-      fieldsToReset
-    );
+    // This field is mandatory. While updating respondent name in the backend also assigns the respondent email.
+    ET3Util.setResponseRespondentEmail(req.session.user, req);
+    let nextPage: string = PageUrls.TYPE_OF_ORGANISATION;
+    req.session.userCase = await ET3Util.updateET3Data(req, ET3HubLinkNames.ContactDetails, LinkStatus.IN_PROGRESS);
+    if (CollectionUtils.isNotEmpty(req?.session?.errors)) {
+      nextPage = PageUrls.RESPONDENT_NAME;
+    }
+    res.redirect(returnValidUrl(nextPage));
   };
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {

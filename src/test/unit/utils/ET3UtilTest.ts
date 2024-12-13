@@ -1,6 +1,7 @@
 import axios from 'axios';
 import _ from 'lodash';
 
+import { AppRequest, UserDetails } from '../../../main/definitions/appRequest';
 import { CaseWithId, RespondentET3Model } from '../../../main/definitions/case';
 import {
   CLAIM_TYPES,
@@ -374,6 +375,68 @@ describe('ET3lUtil tests', () => {
           respondentCcdId: '180d5b45-7925-420a-9bb4-3f6d501ca7a8',
         },
       ]);
+    });
+  });
+  describe('setResponseRespondentEmail', () => {
+    const TEST_RESPONSE_RESPONDENT_EMAIL = 'bobby@gmail.com';
+    test('Should not set response respondent email when request is undefined', () => {
+      const user: UserDetails = _.cloneDeep(mockUserDetails);
+      const req: AppRequest = undefined;
+      ET3Util.setResponseRespondentEmail(user, req);
+      expect(req).toStrictEqual(undefined);
+    });
+    test('Should not set response respondent email when request session value is undefined', () => {
+      const user: UserDetails = _.cloneDeep(mockUserDetails);
+      const req: AppRequest = mockRequest({});
+      req.session = undefined;
+      ET3Util.setResponseRespondentEmail(user, req);
+      expect(req).toBeDefined();
+      expect(req.session).toStrictEqual(undefined);
+    });
+    test('Should not set response respondent email when request session user case is undefined', () => {
+      const user: UserDetails = _.cloneDeep(mockUserDetails);
+      const req: AppRequest = mockRequest({});
+      req.session.userCase = undefined;
+      ET3Util.setResponseRespondentEmail(user, req);
+      expect(req.session).toBeDefined();
+      expect(req.session.userCase).toStrictEqual(undefined);
+    });
+    test('Should not set response respondent email when user is undefined', () => {
+      const user: UserDetails = undefined;
+      const req: AppRequest = mockRequest({});
+      ET3Util.setResponseRespondentEmail(user, req);
+      expect(req.session.userCase).toBeDefined();
+      expect(user).toStrictEqual(undefined);
+    });
+    test('Should not set response respondent email when user email is undefined', () => {
+      const user: UserDetails = _.cloneDeep(mockUserDetails);
+      user.email = undefined;
+      const req: AppRequest = mockRequest({});
+      ET3Util.setResponseRespondentEmail(user, req);
+      expect(req.session.userCase).toBeDefined();
+      expect(user).toBeDefined();
+      expect(user.email).toStrictEqual(undefined);
+    });
+    test('Should set response respondent email to user case when user email and request session user case exists but there is no respondent in user case', () => {
+      const user: UserDetails = _.cloneDeep(mockUserDetails);
+      const req: AppRequest = mockRequest({});
+      ET3Util.setResponseRespondentEmail(user, req);
+      expect(req.session.userCase).toBeDefined();
+      expect(user.email).toStrictEqual(TEST_RESPONSE_RESPONDENT_EMAIL);
+      expect(req.session.userCase.respondents).toStrictEqual(undefined);
+      expect(req.session.userCase.responseRespondentEmail).toStrictEqual(TEST_RESPONSE_RESPONDENT_EMAIL);
+    });
+    test('Should set response respondent email to both user case and respondent when user email, request session user case and user case respondent exists', () => {
+      const user: UserDetails = _.cloneDeep(mockUserDetails);
+      const req: AppRequest = mockRequest({});
+      req.session.userCase.respondents = [mockRespondentET3Model];
+      req.session.selectedRespondentIndex = 0;
+      expect(req.session.userCase).toBeDefined();
+      expect(user.email).toStrictEqual(TEST_RESPONSE_RESPONDENT_EMAIL);
+      expect(req.session.userCase.respondents).toBeDefined();
+      ET3Util.setResponseRespondentEmail(user, req);
+      expect(req.session.userCase.responseRespondentEmail).toStrictEqual(TEST_RESPONSE_RESPONDENT_EMAIL);
+      expect(req.session.userCase.respondents[0].responseRespondentEmail).toStrictEqual(TEST_RESPONSE_RESPONDENT_EMAIL);
     });
   });
 });
