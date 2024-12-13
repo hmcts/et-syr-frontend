@@ -341,26 +341,4 @@ export default class ET3Util {
       respondent.responseRespondentEmail = user.email;
     }
   }
-
-  /**
-   * Sets session user's email to respondent's email field which is respondentEmail.
-   * If session user, respondent or session user email is not found doesn't assign email address to respondentEmail
-   * field.
-   * @param user in the session which is expected to have email address.
-   * @param request request object of session
-   */
-  public static setResponseRespondentName(user: UserDetails, request: AppRequest): void {
-    if (
-      ObjectUtils.isEmpty(request?.session?.userCase) ||
-      ObjectUtils.isEmpty(user) ||
-      StringUtils.isBlank(user.email)
-    ) {
-      return;
-    }
-    request.session.userCase.responseRespondentEmail = user.email;
-    const respondent: RespondentET3Model = RespondentUtils.findSelectedRespondentByRequest(request);
-    if (ObjectUtils.isNotEmpty(respondent)) {
-      respondent.responseRespondentEmail = user.email;
-    }
-  }
 }
