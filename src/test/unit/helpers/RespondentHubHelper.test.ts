@@ -1,29 +1,6 @@
 import { PageUrls, languages } from '../../../main/definitions/constants';
-import { HubLinkNames } from '../../../main/definitions/hub';
-import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
-import {
-  getET3CaseDetailsLinksUrlMap,
-  getET3HubLinksUrlMap,
-  shouldHubLinkBeClickable,
-} from '../../../main/helpers/ResponseHubHelper';
-
-describe('shouldHubLinkBeClickable', () => {
-  it('should not be clickable if not yet available', () => {
-    expect(shouldHubLinkBeClickable(LinkStatus.NOT_YET_AVAILABLE, undefined)).toBe(false);
-  });
-
-  it('should not be clickable if awaiting tribunal and not respondent applications', () => {
-    expect(shouldHubLinkBeClickable(LinkStatus.WAITING_FOR_TRIBUNAL, HubLinkNames.Documents)).toBe(false);
-  });
-
-  it('should be clickable if awaiting tribunal and not respondent applications', () => {
-    expect(shouldHubLinkBeClickable(LinkStatus.WAITING_FOR_TRIBUNAL, HubLinkNames.RespondentApplications)).toBe(false);
-  });
-
-  it('should not be clickable otherwise', () => {
-    expect(shouldHubLinkBeClickable(LinkStatus.IN_PROGRESS, undefined)).toBe(true);
-  });
-});
+import { ET3CaseDetailsLinkNames, ET3HubLinkNames } from '../../../main/definitions/links';
+import { getET3CaseDetailsLinksUrlMap, getET3HubLinksUrlMap } from '../../../main/helpers/ResponseHubHelper';
 
 describe('getET3HubLinksUrlMap', () => {
   const et3HubLinksMapWelsh: Map<string, string> = new Map<string, string>([

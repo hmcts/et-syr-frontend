@@ -1,18 +1,9 @@
 import { CaseWithId } from '../definitions/case';
 import { PageUrls, languages } from '../definitions/constants';
-import { HubLinkNames } from '../definitions/hub';
 import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../definitions/links';
 
 export const shouldCaseDetailsLinkBeClickable = (status: LinkStatus): boolean => {
   return status !== LinkStatus.NOT_YET_AVAILABLE && status !== LinkStatus.CANNOT_START_YET;
-};
-
-export const shouldHubLinkBeClickable = (status: LinkStatus, linkName: string): boolean => {
-  if (status === LinkStatus.NOT_YET_AVAILABLE || status === LinkStatus.CANNOT_START_YET) {
-    return false;
-  }
-
-  return !(status === LinkStatus.WAITING_FOR_TRIBUNAL && linkName !== HubLinkNames.RequestsAndApplications);
 };
 
 const baseUrls = {
