@@ -39,7 +39,7 @@ export const getNextPage = (app: Application): string => {
  * @param userCase
  * @returns boolean
  */
-export const isClaimantRepresentedWithMyHMCTSCase = (userCase: CaseWithId): boolean => {
+const isClaimantRepresentedWithMyHMCTSCase = (userCase: CaseWithId): boolean => {
   return (
     MY_HMCTS === userCase.caseSource &&
     YES === userCase.claimantRepresentedQuestion &&
@@ -55,7 +55,11 @@ export const isClaimantRepresentedWithMyHMCTSCase = (userCase: CaseWithId): bool
  */
 export const isClaimantSystemUser = (userCase: CaseWithId): boolean => {
   if (userCase) {
-    return userCase.et1OnlineSubmission !== undefined && userCase.hubLinksStatuses !== undefined;
+    return (
+      userCase.et1OnlineSubmission !== undefined ||
+      userCase.hubLinksStatuses !== undefined ||
+      isClaimantRepresentedWithMyHMCTSCase(userCase)
+    );
   }
   return false;
 };
