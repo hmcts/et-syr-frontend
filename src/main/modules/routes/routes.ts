@@ -41,6 +41,7 @@ import EmployersContractClaimController from '../../controllers/EmployersContrac
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
 import GetCaseDocumentController from '../../controllers/GetCaseDocumentController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
+import HoldingPageController from '../../controllers/HoldingPageController';
 import HomeController from '../../controllers/HomeController';
 import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
@@ -235,6 +236,7 @@ export class Routes {
       new CheckYourAnswersEmployersContractClaimController().post
     );
     // Contact Tribunal
+    app.get(PageUrls.HOLDING_PAGE, new HoldingPageController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL, new ContactTribunalController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL_SELECTED, new ContactTribunalSelectedController().get);
     app.post(PageUrls.CONTACT_TRIBUNAL_SELECTED, new ContactTribunalSelectedController().post);

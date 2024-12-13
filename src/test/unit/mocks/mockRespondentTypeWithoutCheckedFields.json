@@ -15,7 +15,7 @@
   "employersContractClaimSection": "employersContractClaimSection",
   "et3CaseDetailsLinksStatuses": {
     "claimantApplications": "notAvailableYet",
-    "contactTribunal": "notAvailableYet",
+    "contactTribunal": "optional",
     "documents": "optional",
     "et1ClaimForm": "notViewedYet",
     "hearingDetails": "notAvailableYet",
