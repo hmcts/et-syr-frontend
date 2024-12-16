@@ -470,6 +470,7 @@ export const DOCUMENT_CONTENT_TYPES = {
 
 export const YES = 'Yes';
 export const NO = 'No';
+export const MY_HMCTS = 'MyHMCTS';
 
 export const TseStatus = {
   OPEN_STATE: 'Open',

@@ -7,5 +7,14 @@ export default {
   createdDate: 'August 19, 2022',
   lastModified: 'August 19, 2022',
   respondents: undefined,
+  et1OnlineSubmission: 'submitted Et1 Form',
   hubLinksStatuses: {},
+  caseSource: undefined,
+  claimantRepresentedQuestion: 'No',
+  representativeClaimantType: {
+    myHmctsOrganisation: {
+      organisationID: undefined,
+      organisationName: undefined,
+    },
+  },
 } as CaseWithId;
