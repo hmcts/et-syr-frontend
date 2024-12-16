@@ -79,9 +79,11 @@ export const TranslationKeys = {
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: 'employers-contract-claim-details',
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: 'check-your-answers-employers-contract-claim',
   // Contact Tribunal
+  APPLICATION_TYPE: 'application-type',
   CONTACT_TRIBUNAL: 'contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: 'contact-tribunal-selected',
   COPY_TO_OTHER_PARTY: 'copy-to-other-party',
+  COPY_TO_OTHER_PARTY_OFFLINE: 'copy-to-other-party-offline',
 } as const;
 
 export const PageUrls = {
@@ -151,7 +153,6 @@ export const PageUrls = {
   CONTACT_TRIBUNAL: '/contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: '/contact-tribunal/:selectedOption',
   COPY_TO_OTHER_PARTY: '/copy-to-other-party',
-  COPY_TO_OTHER_PARTY_OFFLINE: '/copy-to-other-party-offline',
   CONTACT_TRIBUNAL_CYA: '/contact-the-tribunal-cya',
 } as const;
 
@@ -468,6 +469,7 @@ export const DOCUMENT_CONTENT_TYPES = {
 
 export const YES = 'Yes';
 export const NO = 'No';
+export const MY_HMCTS = 'MyHMCTS';
 
 export const TseStatus = {
   OPEN_STATE: 'Open',
