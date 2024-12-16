@@ -16,12 +16,14 @@ import {
 } from '../helpers/controller/CheckYourAnswersET3Helper';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import CollectionUtils from '../utils/CollectionUtils';
+import DocumentUtils from '../utils/DocumentUtils';
 
 export default class YourResponseFormController {
   constructor() {}
   public get = async (req: AppRequest, res: Response): Promise<void> => {
-    const redirectUrl = setUrlLanguage(req, PageUrls.YOUR_RESPONSE_FORM);
+    const redirectUrl: string = setUrlLanguage(req, PageUrls.YOUR_RESPONSE_FORM);
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
+    const et3FormId: string = DocumentUtils.findET3FormIdByRequest(req);
     let isSection6Visible = false;
     if (
       CollectionUtils.isNotEmpty(req.session.userCase.typeOfClaim) &&
@@ -38,7 +40,6 @@ export default class YourResponseFormController {
     res.render(TranslationKeys.YOUR_RESPONSE_FORM, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.YOUR_RESPONSE_FORM as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       InterceptPaths,
       PageUrls,
@@ -54,6 +55,7 @@ export default class YourResponseFormController {
       languageParam: getLanguageParam(req.url),
       welshEnabled,
       isSection6Visible,
+      et3FormId,
     });
   };
 }

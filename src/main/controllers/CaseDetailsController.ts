@@ -26,7 +26,7 @@ export default class CaseDetailsController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const et1FormUrl = setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM);
     const respondToClaimUrl = setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_LANDING);
-    const et3Response = setUrlLanguage(req, PageUrls.RESPONDENT_ET3_RESPONSE);
+    const et3Response = setUrlLanguage(req, PageUrls.YOUR_RESPONSE_FORM);
     let respondentResponseDeadline: string = '';
     req.session.userCase = formatApiCaseDataToCaseWithId(
       (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseSubmissionReference)).data,

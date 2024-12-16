@@ -1,9 +1,13 @@
-import { EnglishOrWelsh } from '../definitions/case';
+import { AppRequest } from '../definitions/appRequest';
+import { EnglishOrWelsh, RespondentET3Model } from '../definitions/case';
 import { ApiDocumentTypeItem, DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
 import { AllDocumentTypes, DefaultValues, languages } from '../definitions/constants';
+import { getLanguageParam } from '../helpers/RouterHelpers';
 
 import CollectionUtils from './CollectionUtils';
 import NumberUtils from './NumberUtils';
+import ObjectUtils from './ObjectUtils';
+import RespondentUtils from './RespondentUtils';
 import StringUtils from './StringUtils';
 
 export default class DocumentUtils {
@@ -61,6 +65,37 @@ export default class DocumentUtils {
       return undefined;
     }
     return url?.substring(url?.lastIndexOf('/') + 1);
+  }
+
+  /**
+   * Finds ET3 Form id with the given request. First checks if request has a selected respondent.
+   * If not returns undefined value. Then gets language parameter. If language parameter is Welsh (lng=cy?)
+   * then checks selected respondent has Welsh form or not. If selected respondent has Welsh form returns this form's
+   * id. If not has Welsh form or selected language is not Welsh then checks if selected respondent has et3 form in
+   * English. If it has English et3 form returns this form if not returns undefined.
+   * @param req request object in the session.
+   * @return et3 form id if found, else undefined.
+   */
+  public static findET3FormIdByRequest(req: AppRequest): string {
+    const selectedRespondent: RespondentET3Model = RespondentUtils.findSelectedRespondentByRequest(req);
+    if (ObjectUtils.isEmpty(selectedRespondent)) {
+      return undefined;
+    }
+    const languageParam: string = getLanguageParam(req.url);
+    if (
+      languages.WELSH_URL_PARAMETER === languageParam &&
+      ObjectUtils.isNotEmpty(selectedRespondent.et3FormWelsh) &&
+      StringUtils.isNotBlank(selectedRespondent.et3FormWelsh.document_url)
+    ) {
+      return DocumentUtils.findDocumentIdByURL(selectedRespondent.et3FormWelsh.document_url);
+    }
+    if (
+      ObjectUtils.isNotEmpty(selectedRespondent.et3Form) &&
+      StringUtils.isNotBlank(selectedRespondent.et3Form.document_url)
+    ) {
+      return DocumentUtils.findDocumentIdByURL(selectedRespondent.et3Form.document_url);
+    }
+    return undefined;
   }
 
   public static getDocumentsWithTheirLinksByDocumentTypes(
