@@ -13,9 +13,11 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ h1 }}</h1>
-      <p class="govuk-body">
-        <a href="getCaseDocument/{{ et3FormId }}" target="_blank">{{ downloadYourResponse }}</a>
-      </p>
+      {% if et3FormId !== undefined %}
+        <p class="govuk-body">
+          <a href="getCaseDocument/{{ et3FormId }}" target="_blank">{{ downloadYourResponse }}</a>
+        </p>
+      {% endif %}
       <h2 class="govuk-heading-m">{{ section1.header }}</h2>
       {{ govukSummaryList({
         classes: "govuk-!-margin-bottom-9",

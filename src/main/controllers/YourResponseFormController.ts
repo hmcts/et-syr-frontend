@@ -1,8 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { RespondentET3Model } from '../definitions/case';
-import { CLAIM_TYPES, InterceptPaths, PageUrls, TranslationKeys, languages } from '../definitions/constants';
+import { CLAIM_TYPES, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
 import { TypesOfClaim } from '../definitions/definition';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
@@ -18,33 +17,13 @@ import {
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import CollectionUtils from '../utils/CollectionUtils';
 import DocumentUtils from '../utils/DocumentUtils';
-import ObjectUtils from '../utils/ObjectUtils';
-import RespondentUtils from '../utils/RespondentUtils';
-import StringUtils from '../utils/StringUtils';
 
 export default class YourResponseFormController {
   constructor() {}
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const redirectUrl: string = setUrlLanguage(req, PageUrls.YOUR_RESPONSE_FORM);
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
-    const languageParam: string = getLanguageParam(req.url);
-    const selectedRespondent: RespondentET3Model = RespondentUtils.findSelectedRespondentByRequest(req);
-    let et3FormId: string = '';
-    if (
-      ObjectUtils.isNotEmpty(selectedRespondent) &&
-      languages.WELSH_URL_PARAMETER === languageParam &&
-      ObjectUtils.isNotEmpty(selectedRespondent.et3FormWelsh) &&
-      StringUtils.isNotBlank(selectedRespondent.et3FormWelsh.document_url)
-    ) {
-      et3FormId = DocumentUtils.findDocumentIdByURL(selectedRespondent.et3FormWelsh.document_url);
-    } else if (
-      ObjectUtils.isNotEmpty(selectedRespondent) &&
-      languages.ENGLISH_URL_PARAMETER === languageParam &&
-      ObjectUtils.isNotEmpty(selectedRespondent.et3Form) &&
-      StringUtils.isNotBlank(selectedRespondent.et3Form.document_url)
-    ) {
-      et3FormId = DocumentUtils.findDocumentIdByURL(selectedRespondent.et3Form.document_url);
-    }
+    const et3FormId: string = DocumentUtils.findET3FormIdByRequest(req);
     let isSection6Visible = false;
     if (
       CollectionUtils.isNotEmpty(req.session.userCase.typeOfClaim) &&
