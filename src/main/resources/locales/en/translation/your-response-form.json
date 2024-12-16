@@ -1,9 +1,27 @@
 {
   "title": "Your response form (ET3)",
-  "h1": "Check your answers",
+  "h1": "Your response form",
   "h2": "Submit your response",
-  "p1": "By submitting your response you are confirming that the details you are providing are correct. You will not be able to change your response after you submit it. You can view your submitted response on the Case overview page.",
+  "downloadYourResponse": "Download your response",
   "submit": "Submit",
+  "section1": {
+    "header": "Contact details"
+  },
+  "section2": {
+    "header": "Hearing format and employer details"
+  },
+  "section3": {
+    "header": "Early conciliation and employee details"
+  },
+  "section4": {
+    "header": "Pay, pension and benefits details"
+  },
+  "section5": {
+    "header": "Contest the claim"
+  },
+  "section6": {
+    "header": "Employer’s contract claim"
+  },
   "errors": {
     "hiddenErrorField": {
       "api": "A system error occurred, Please try again later"

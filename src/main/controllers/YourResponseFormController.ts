@@ -1,7 +1,8 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { CLAIM_TYPES, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
+import { RespondentET3Model } from '../definitions/case';
+import { CLAIM_TYPES, InterceptPaths, PageUrls, TranslationKeys, languages } from '../definitions/constants';
 import { TypesOfClaim } from '../definitions/definition';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
@@ -16,12 +17,34 @@ import {
 } from '../helpers/controller/CheckYourAnswersET3Helper';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import CollectionUtils from '../utils/CollectionUtils';
+import DocumentUtils from '../utils/DocumentUtils';
+import ObjectUtils from '../utils/ObjectUtils';
+import RespondentUtils from '../utils/RespondentUtils';
+import StringUtils from '../utils/StringUtils';
 
 export default class YourResponseFormController {
   constructor() {}
   public get = async (req: AppRequest, res: Response): Promise<void> => {
-    const redirectUrl = setUrlLanguage(req, PageUrls.YOUR_RESPONSE_FORM);
+    const redirectUrl: string = setUrlLanguage(req, PageUrls.YOUR_RESPONSE_FORM);
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
+    const languageParam: string = getLanguageParam(req.url);
+    const selectedRespondent: RespondentET3Model = RespondentUtils.findSelectedRespondentByRequest(req);
+    let et3FormId: string = '';
+    if (
+      ObjectUtils.isNotEmpty(selectedRespondent) &&
+      languages.WELSH_URL_PARAMETER === languageParam &&
+      ObjectUtils.isNotEmpty(selectedRespondent.et3FormWelsh) &&
+      StringUtils.isNotBlank(selectedRespondent.et3FormWelsh.document_url)
+    ) {
+      et3FormId = DocumentUtils.findDocumentIdByURL(selectedRespondent.et3FormWelsh.document_url);
+    } else if (
+      ObjectUtils.isNotEmpty(selectedRespondent) &&
+      languages.ENGLISH_URL_PARAMETER === languageParam &&
+      ObjectUtils.isNotEmpty(selectedRespondent.et3Form) &&
+      StringUtils.isNotBlank(selectedRespondent.et3Form.document_url)
+    ) {
+      et3FormId = DocumentUtils.findDocumentIdByURL(selectedRespondent.et3Form.document_url);
+    }
     let isSection6Visible = false;
     if (
       CollectionUtils.isNotEmpty(req.session.userCase.typeOfClaim) &&
@@ -38,7 +61,6 @@ export default class YourResponseFormController {
     res.render(TranslationKeys.YOUR_RESPONSE_FORM, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.YOUR_RESPONSE_FORM as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       InterceptPaths,
       PageUrls,
@@ -54,6 +76,7 @@ export default class YourResponseFormController {
       languageParam: getLanguageParam(req.url),
       welshEnabled,
       isSection6Visible,
+      et3FormId,
     });
   };
 }
