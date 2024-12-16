@@ -1,5 +1,5 @@
 import { CaseWithId } from '../../definitions/case';
-import { PageUrls, ValidationErrors } from '../../definitions/constants';
+import { MY_HMCTS, PageUrls, ValidationErrors, YES } from '../../definitions/constants';
 import { Application, application } from '../../definitions/contact-tribunal-applications';
 import { FormError } from '../../definitions/form';
 import { AccordionItem, addAccordionRow } from '../../definitions/govuk/govukAccordion';
@@ -34,11 +34,32 @@ export const getNextPage = (app: Application): string => {
   return isTypeAOrB(app) ? PageUrls.COPY_TO_OTHER_PARTY : PageUrls.CONTACT_TRIBUNAL_CYA;
 };
 
+/**
+ * Check if Claimant is represented with MyHMCTS
+ * @param userCase
+ * @returns boolean
+ */
+const isClaimantRepresentedWithMyHMCTSCase = (userCase: CaseWithId): boolean => {
+  return (
+    MY_HMCTS === userCase.caseSource &&
+    YES === userCase.claimantRepresentedQuestion &&
+    userCase.representativeClaimantType !== undefined &&
+    userCase.representativeClaimantType.myHmctsOrganisation !== undefined
+  );
+};
+
+/**
+ * Check if Claimant is a system user
+ * @param userCase
+ * @returns boolean
+ */
 export const isClaimantSystemUser = (userCase: CaseWithId): boolean => {
-  // TODO: check if the claim was submitted through MyHMCTS as those would also be counted as online claims
-  // TODO: refer to isClaimantNonSystemUser and isRepresentedClaimantWithMyHmctsCase
   if (userCase) {
-    return userCase.hubLinksStatuses !== undefined;
+    return (
+      userCase.et1OnlineSubmission !== undefined ||
+      userCase.hubLinksStatuses !== undefined ||
+      isClaimantRepresentedWithMyHMCTSCase(userCase)
+    );
   }
   return false;
 };
