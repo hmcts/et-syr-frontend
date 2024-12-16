@@ -33,6 +33,7 @@ export const TranslationKeys = {
   APPLICATION_SUBMITTED: 'application-submitted',
   RESPONSE_SAVED: 'response-saved',
   RESPONDENT_ET3_COMMON: 'et3-common',
+  RESPONDENT_ET3_RESPONSE: 'et3-response',
   CHECK_YOUR_ANSWERS_ET3: 'check-your-answers-et3',
   CLAIMANT_ET1_FORM: 'claimant-et1-form',
   RESPONDENT_RESPONSE_LANDING: 'respondent-response-landing',
@@ -83,6 +84,7 @@ export const TranslationKeys = {
   CONTACT_TRIBUNAL_SELECTED: 'contact-tribunal-selected',
   COPY_TO_OTHER_PARTY: 'copy-to-other-party',
   COPY_TO_OTHER_PARTY_OFFLINE: 'copy-to-other-party-offline',
+  CONTACT_TRIBUNAL_CYA: 'contact-tribunal-check-your-answers',
 } as const;
 
 export const PageUrls = {
@@ -103,6 +105,7 @@ export const PageUrls = {
   COOKIE_PREFERENCES: '/cookies',
   APPLICATION_SUBMITTED: '/application-submitted',
   RESPONSE_SAVED: '/response-saved',
+  RESPONDENT_ET3_RESPONSE: '/et3-response',
   CHECK_YOUR_ANSWERS_ET3: '/check-your-answers-et3',
   NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
   CLAIMANT_ET1_FORM: '/claimant-et1-form',
@@ -151,7 +154,7 @@ export const PageUrls = {
   CONTACT_TRIBUNAL: '/contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: '/contact-tribunal/:selectedOption',
   COPY_TO_OTHER_PARTY: '/copy-to-other-party',
-  CONTACT_TRIBUNAL_CYA: '/contact-the-tribunal-cya',
+  CONTACT_TRIBUNAL_CYA: '/contact-tribunal-check-your-answers',
 } as const;
 
 export const InterceptPaths = {

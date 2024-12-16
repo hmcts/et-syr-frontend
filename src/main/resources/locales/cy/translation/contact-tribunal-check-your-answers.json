@@ -1,0 +1,9 @@
+{
+  "title": "[W]Check your answers",
+  "caseNumber": "[W]Case number",
+  "applicationType": "[W]Application type",
+  "legend": "[W]What do you want to tell or ask the tribunal?",
+  "supportingMaterial": "[W]Supporting material",
+  "copyToOtherPartyYesOrNo": "[W]Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?",
+  "copyToOtherPartyText": "[W]Reason for not informing other party"
+}

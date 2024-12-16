@@ -32,10 +32,12 @@ import ClaimantNoticePeriodController from '../../controllers/ClaimantNoticePeri
 import ClaimantPayDetailsController from '../../controllers/ClaimantPayDetailsController';
 import ClaimantPayDetailsEnterController from '../../controllers/ClaimantPayDetailsEnterController';
 import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPensionAndBenefitsController';
+import ContactTribunalCYAController from '../../controllers/ContactTribunalCYAController';
 import ContactTribunalController from '../../controllers/ContactTribunalController';
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import CopyToOtherPartyController from '../../controllers/CopyToOtherPartyController';
+import ET3ResponseController from '../../controllers/ET3ResponseController';
 import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
 import GetCaseDocumentController from '../../controllers/GetCaseDocumentController';
@@ -114,6 +116,7 @@ export class Routes {
     app.get(PageUrls.COOKIE_PREFERENCES, new CookiePreferencesController().get);
     app.get(PageUrls.APPLICATION_SUBMITTED, new ApplicationSubmittedController().get);
     app.get(PageUrls.RESPONSE_SAVED, new ResponseSavedController().get);
+    app.get(PageUrls.RESPONDENT_ET3_RESPONSE, new ET3ResponseController().get);
     app.get(PageUrls.CHECK_YOUR_ANSWERS_ET3, new CheckYourAnswersET3Controller().get);
     app.post(PageUrls.CHECK_YOUR_ANSWERS_ET3, new CheckYourAnswersET3Controller().post);
     // hub links
@@ -240,6 +243,7 @@ export class Routes {
     app.post(PageUrls.CONTACT_TRIBUNAL_SELECTED, new ContactTribunalSelectedController().post);
     app.get(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().get);
     app.post(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().post);
+    app.get(PageUrls.CONTACT_TRIBUNAL_CYA, new ContactTribunalCYAController().get);
     // others
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);
