@@ -244,6 +244,8 @@ export interface Case {
   claimantContactLanguagePreference?: EnglishOrWelsh;
   claimantHearingLanguagePreference?: EnglishOrWelsh;
   claimantRepresentedQuestion?: YesOrNo;
+  caseSource?: string;
+  representativeClaimantType?: RepresentedTypeC;
   caseType?: CaseType;
   caseTypeId?: CaseTypeId;
   telNumber?: string;
@@ -541,4 +543,28 @@ export const enum TypeOfOrganisation {
   PARTNERSHIP = 'Partnership',
   UNINCORPORATED_ASSOCIATION = 'Unincorporated association',
   OTHER = 'Other',
+}
+
+export interface RepresentedTypeC {
+  representativeId?: string;
+  nameOfRepresentative?: string;
+  nameOfOrganisation?: string;
+  representativeReference?: string;
+  representativeOccupation?: string;
+  representativeOccupationOther?: string;
+  representativeAddress?: Et1Address;
+  representativePhoneNumber?: string;
+  representativeMobileNumber?: string;
+  representativeEmailAddress?: string;
+  representativePreference?: string;
+  organisationId?: string;
+  myHmctsOrganisation?: Organisation;
+  hearingContactLanguage?: string[];
+  contactLanguageQuestion?: string[];
+  representativeAttendHearing?: string[];
+}
+
+export interface Organisation {
+  organisationID?: string;
+  organisationName?: string;
 }

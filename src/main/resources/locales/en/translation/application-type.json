@@ -1,0 +1,14 @@
+{
+  "CHANGE_PERSONAL_DETAILS": "Change my personal details",
+  "POSTPONE_HEARING": "Postpone a hearing",
+  "VARY_OR_REVOKE_ORDER": "Vary or revoke an order",
+  "CONSIDER_DECISION_AFRESH": "Consider a decision afresh",
+  "AMEND_RESPONSE": "Amend my response",
+  "ORDER_OTHER_PARTY": "Order the claimant",
+  "ORDER_WITNESS_ATTEND": "Order a witness to attend",
+  "CLAIMANT_NOT_COMPLIED": "Claimant has not complied",
+  "RESTRICT_PUBLICITY": "Restrict publicity",
+  "STRIKE_OUT_CLAIM": "Strike out the claim",
+  "RECONSIDER_JUDGMENT": "Reconsider a judgment",
+  "CONTACT_TRIBUNAL": "Contact the tribunal"
+}
