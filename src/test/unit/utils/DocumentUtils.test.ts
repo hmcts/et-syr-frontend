@@ -443,7 +443,7 @@ describe('DocumentUtils', () => {
       const documentTypeItems: ApiDocumentTypeItem[] = [et1FormEnglish];
       expect(DocumentUtils.convertDocumentListToGovUkTableRows(documentTypeItems)).toStrictEqual([
         {
-          text: '05 Aug 2024',
+          html: '05 Aug 2024',
         },
         {
           html: '<a href="getCaseDocument/900d4265-aaeb-455f-9cdd-bc0bdf61c918" target="_blank">ET1_Form_English.pdf</a>',
