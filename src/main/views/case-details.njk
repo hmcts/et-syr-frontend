@@ -90,20 +90,21 @@
             </ol>
           </div>
         </div>
+
         <div class="govuk-grid-column-one-third-from-desktop">
           <div class="top-border-blue">
             <h2 class="govuk-heading-s">
-              {{iWantTo}}
+              {{ iWantTo }}
             </h2>
             <p class="govuk-body">
-              <a href="#">
-                {{contactTribunalAboutTheCase}}
+              <a href="{{ PageUrls.HOLDING_PAGE + languageParam }}">
+                {{ contactTribunalAboutTheCase }}
               </a>
             </p>
 
             <p class="govuk-body">
-              <a href="#">
-                {{findLegalAdvice}}
+              <a href="https://www.gov.uk/find-legal-advice" target="_blank">
+                {{ findLegalAdvice }}
               </a>
             </p>
 
