@@ -1,11 +1,7 @@
 {
-  "title": "[W]Claimant ET1 Form",
-  "h1": "[W]The claimant’s ET1 claim form",
-  "tableTitle": "[W]Claim related information",
+  "title": "[W]Claimant ET1 Documents",
+  "h1": "[W]The claimant’s ET1 claim documents",
   "et1Form": "[W]ET1 Form",
   "acasCert": "[W]Acas certificate",
-  "attachments": "[W]Attachments included",
-  "dateServed": "[W][Date served]",
-  "notExists": "[W]Not exists",
-  "attachmentNotFound": "[W]Attachment not found"
+  "et1Attachments": "[W]ET1 Attachments"
 }

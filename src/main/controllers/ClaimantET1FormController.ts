@@ -2,50 +2,30 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
-import { DefaultValues, PageUrls, TranslationKeys, languages } from '../definitions/constants';
+import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
-import DateUtils from '../utils/DateUtils';
 import DocumentUtils from '../utils/DocumentUtils';
-import StringUtils from '../utils/StringUtils';
 
 export default class ClaimantET1FormController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const redirectUrl: string = setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM);
-    const et1FormUrlValue: string = setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM_DETAILS);
-    const acasCertUrlValue: string = setUrlLanguage(req, PageUrls.CLAIMANT_ACAS_CERTIFICATE_DETAILS);
     const languageParam: string = getLanguageParam(req.url);
-    let et1FormDocument: ApiDocumentTypeItem;
-    req.session.et1FormEnglish = DocumentUtils.findET1DocumentByLanguage(
-      req.session?.userCase?.documentCollection as ApiDocumentTypeItem[],
-      languages.ENGLISH_URL_PARAMETER
+    const et1FormDocument: ApiDocumentTypeItem = DocumentUtils.findET1FormByRequestAndUrlLanguage(req);
+    const et1FormDocumentAsGovUkTableRow: { html?: string }[] = DocumentUtils.convertDocumentListToGovUkTableRows([
+      et1FormDocument,
+    ]);
+    const acasCertificate: ApiDocumentTypeItem = DocumentUtils.findAcasCertificateByRequest(req);
+    const acasCertificateToGovUkTableRow: { html?: string }[] = DocumentUtils.convertDocumentListToGovUkTableRows([
+      acasCertificate,
+    ]);
+    const et1Attachments: ApiDocumentTypeItem[] = DocumentUtils.findET1AttachmentsInDocumentCollection(
+      req?.session?.userCase?.documentCollection
     );
-    req.session.et1FormWelsh = DocumentUtils.findET1DocumentByLanguage(
-      req.session?.userCase?.documentCollection as ApiDocumentTypeItem[],
-      languages.WELSH_URL_PARAMETER
-    );
-    if (languages.WELSH_URL_PARAMETER === languageParam && req.session.et1FormWelsh !== undefined) {
-      et1FormDocument = req.session.et1FormWelsh;
-    } else {
-      et1FormDocument = req.session.et1FormEnglish;
-    }
-    const formattedEt1FormDate: string = DateUtils.formatDateStringToDDMMMYYYY(
-      et1FormDocument?.value?.dateOfCorrespondence
-    );
-    const acasCertificate: ApiDocumentTypeItem = DocumentUtils.findAcasCertificateByAcasNumber(
-      req.session?.userCase?.documentCollection as ApiDocumentTypeItem[],
-      req.session?.userCase?.acasCertNum
-    );
-    req.session.selectedAcasCertificate = acasCertificate;
-    let formattedAcasCertificateDate: string = DateUtils.formatDateStringToDDMMMYYYY(
-      acasCertificate?.value?.dateOfCorrespondence
-    );
-    if (StringUtils.isBlank(formattedAcasCertificateDate)) {
-      formattedAcasCertificateDate = DefaultValues.STRING_DASH;
-    }
-
+    const et1AttachmentsAsGovUkTableRow: { html?: string }[] =
+      DocumentUtils.convertDocumentListToGovUkTableRows(et1Attachments);
     res.render(TranslationKeys.CLAIMANT_ET1_FORM, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CLAIMANT_ET1_FORM as never, { returnObjects: true } as never),
@@ -54,12 +34,9 @@ export default class ClaimantET1FormController {
       hideContactUs: true,
       useCase: req.session.userCase,
       redirectUrl,
-      et1FormUrlValue,
-      acasCertUrlValue,
-      et1FormDocument,
-      acasCertificate,
-      formattedEt1FormDate,
-      formattedAcasCertificateDate,
+      et1FormDocumentAsGovUkTableRow,
+      acasCertificateToGovUkTableRow,
+      et1AttachmentsAsGovUkTableRow,
       languageParam,
       welshEnabled,
     });

@@ -1,5 +1,5 @@
 import { DocumentUploadResponse } from '../../../main/definitions/api/documentApiResponse';
-import { DocumentTypeItem } from '../../../main/definitions/complexTypes/documentTypeItem';
+import { ApiDocumentTypeItem, DocumentTypeItem } from '../../../main/definitions/complexTypes/documentTypeItem';
 import { GovukTableRowArray } from '../../../main/definitions/govuk/govukTable';
 export const mockDocumentUploadResponseMain = {
   uri: 'http://localhost:5005/documents/900d4265-aaeb-455f-9cdd-bc0bdf61c918',
@@ -122,3 +122,35 @@ export const mockGovUKTableRowArrayFromDocumentTypeItem: GovukTableRowArray[] = 
     },
   ],
 ];
+
+export const mockET1FormEnglish: ApiDocumentTypeItem = {
+  id: '900d4265-aaeb-455f-9cdd-bc0bdf61c918',
+  downloadLink: 'http://localhost:5005/documents/900d4265-aaeb-455f-9cdd-bc0bdf61c918/binary',
+  value: {
+    typeOfDocument: 'ET1',
+    shortDescription: mockDocumentUploadResponse.originalDocumentName,
+    dateOfCorrespondence: '2024-08-05',
+    uploadedDocument: {
+      document_filename: 'ET1_Form_English.pdf',
+      document_url: 'http://localhost:5005/documents/900d4265-aaeb-455f-9cdd-bc0bdf61c918',
+      document_binary_url: 'http://localhost:5005/documents/900d4265-aaeb-455f-9cdd-bc0bdf61c918/binary',
+      category_id: 'test_category_id',
+    },
+  },
+};
+
+export const mockET1FormWelsh: ApiDocumentTypeItem = {
+  id: '900d4265-aaeb-455f-9cdd-bc0bdf61c918',
+  downloadLink: 'http://localhost:5005/documents/900d4265-aaeb-455f-9cdd-bc0bdf61c918/binary',
+  value: {
+    typeOfDocument: 'ET1',
+    shortDescription: mockDocumentUploadResponse.originalDocumentName,
+    dateOfCorrespondence: '2024-08-05',
+    uploadedDocument: {
+      document_filename: 'ET1_Form_Welsh.pdf',
+      document_url: 'http://localhost:5005/documents/900d4265-aaeb-455f-9cdd-bc0bdf61c918',
+      document_binary_url: 'http://localhost:5005/documents/900d4265-aaeb-455f-9cdd-bc0bdf61c918/binary',
+      category_id: 'test_category_id',
+    },
+  },
+};

@@ -11,72 +11,45 @@
 {% set et1FormUrl = '' %}
 {% set acasCertDate = '' %}
 {% set acasCertUrl = '' %}
-{% set acasAttachmentInfo = '' %}
 
-{% if et1FormDocument === 'undefined' %}
-  {% set et1FormDate = '-' %}
-  {% set et1FormUrl = 'Not exists' %}
-{% else  %}
+{% if et1FormDocument !== 'undefined' %}
   {% set et1FormDate = formattedEt1FormDate %}
-  {% set et1FormUrl = "<a href=" + et1FormUrlValue + ">" + et1Form + "</a>" %}
+  {% set et1FormUrl = "<a href=" + et1FormUrlValue + ">" + et1FormDocument.value.uploadedDocument.document_filename + "</a>" %}
 {% endif %}
-{% if acasCertificate === undefined %}
-  {% set acasCertDate = '-' %}
-  {% set acasCertUrl = notExists %}
-  {% set acasAttachmentInfo = attachmentNotFound %}
-{% else %}
+{% if acasCertificate !== undefined %}
   {% set acasCertDate = formattedAcasCertificateDate %}
-  {% set acasCertUrl = "<a href=" + acasCertUrlValue + ">" + acasCert + "</a>" %}
-   {% set acasAttachmentInfo = attachments %}
+  {% set acasCertUrl = "<a href=" + acasCertUrlValue + ">" + acasCertificate.value.uploadedDocument.document_filename + "</a>" %}
 {% endif %}
 {% block content %}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-      <h1 class="govuk-heading-xl govuk-!-margin-bottom-4 ">{{ h1 }}</h1>
-      {% if acasCertificate !== undefined %}
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-4">{{ h1 }}</h1>
+      {% if et1FormDocumentAsGovUkTableRow !== undefined %}
         {{ govukTable({
-          caption: tableTitle,
+          caption: et1Form,
           captionClasses: "govuk-table__caption--m",
           firstCellIsHeader: false,
-          rows: [
-            [
-              {
-                text: et1FormDate
-              },
-              {
-                html: et1FormUrl
-              }
-            ],
-            [
-              {
-                text: acasCertDate
-              },
-              {
-                html: acasCertUrl
-              }
-            ]
-          ]
+          rows: [ et1FormDocumentAsGovUkTableRow ]
         }) }}
-      {% else %}
+     {% endif %}
+     {% if acasCertificateToGovUkTableRow !== undefined %}
         {{ govukTable({
-          caption: tableTitle,
+          caption: acasCert,
           captionClasses: "govuk-table__caption--m",
           firstCellIsHeader: false,
-          rows: [
-            [
-              {
-                text: et1FormDate
-              },
-              {
-                html: et1FormUrl
-              }
-            ]
-          ]
+          rows: [ acasCertificateToGovUkTableRow ]
         }) }}
-      {% endif %}
+     {% endif %}
+     {% if et1AttachmentsAsGovUkTableRow !== undefined %}
+       {{ govukTable({
+         caption: et1Attachments,
+         captionClasses: "govuk-table__caption--m",
+         firstCellIsHeader: false,
+         rows: [ et1AttachmentsAsGovUkTableRow ]
+       }) }}
+    {% endif %}
     </div>
-
     <div class="govuk-grid-column-one-third-from-desktop">
       {% set sideBarContent %}
         {% include "./components/sidebar/sidebar.njk" %}

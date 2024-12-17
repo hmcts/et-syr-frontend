@@ -55,6 +55,7 @@ describe('Claimant ET1 Form Controller', () => {
       mockedET1FormWelsh as ApiDocumentTypeItem,
       mockedAcasForm as ApiDocumentTypeItem,
     ];
+    request.session.userCase.acasCertNum = 'R123456_78_90';
     await controller.get(request, response);
 
     // Expect that res.render was called with the right template and object

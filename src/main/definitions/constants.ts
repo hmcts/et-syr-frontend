@@ -403,6 +403,7 @@ export const Applicant = {
 
 export const AllDocumentTypes = {
   ET1: 'ET1',
+  ET1_ATTACHMENT: 'ET1 Attachment',
   CLAIMANT_CORRESPONDENCE: 'Claimant correspondence',
   ACAS_CERT: 'ACAS Certificate',
   RESPONDENT_CORRESPONDENCE: 'Respondent correspondence',
@@ -515,6 +516,7 @@ export const DefaultValues = {
   STRING_SLASH_REGEX: /\//gi,
   STRING_UNDERSCORE: '_',
   HTML_NEWLINE: '</br>',
+  HTML_SPACE: '&nbsp;',
   COLLECTION_EMPTY: [],
   NUMBER_ZERO: 0,
   CONTEST_CLAIM_REASON_MAX_LENGTH: 3000,
