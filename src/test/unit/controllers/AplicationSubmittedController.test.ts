@@ -116,7 +116,7 @@ describe('ApplicationSubmittedController', () => {
         selectedRespondent: req.session.userCase.respondents[0],
         et3FormId: documentId,
         et3FormName: documentName,
-        contactTribunalUrl: '/holding-page?lng=en',
+        contactTribunalUrl: '/contact-tribunal?lng=en',
       });
     });
 
@@ -155,7 +155,7 @@ describe('ApplicationSubmittedController', () => {
         selectedRespondent: req.session.userCase.respondents[0],
         et3FormId: documentId,
         et3FormName: documentNameWelsh,
-        contactTribunalUrl: '/holding-page?lng=cy',
+        contactTribunalUrl: '/contact-tribunal?lng=cy',
       });
     });
 

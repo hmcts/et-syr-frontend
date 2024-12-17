@@ -6,10 +6,10 @@ import { CaseWithId } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
-import { getApplicationByUrl, getApplicationTypeByUrl } from '../helpers/ApplicationHelper';
+import { getApplicationByUrl } from '../helpers/ApplicationHelper';
 import { getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getFormDataError, getNextPage } from '../helpers/controller/ContactTribunalHelper';
+import { getApplicationDisplayByUrl, getFormDataError, getNextPage } from '../helpers/controller/ContactTribunalHelper';
 import UrlUtils from '../utils/UrlUtils';
 
 export default class ContactTribunalSelectedController {
@@ -77,8 +77,9 @@ export default class ContactTribunalSelectedController {
     res.render(TranslationKeys.CONTACT_TRIBUNAL_SELECTED, {
       ...content,
       hideContactUs: true,
+      ethosCaseReference: req.session.userCase.ethosCaseReference,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
-      applicationType: getApplicationTypeByUrl(req.params?.selectedOption, {
+      applicationType: getApplicationDisplayByUrl(req.params?.selectedOption, {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
       }),
     });
