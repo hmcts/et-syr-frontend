@@ -1,11 +1,18 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { TranslationKeys } from '../definitions/constants';
+import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getApplicationsAccordionItems } from '../helpers/controller/ContactTribunalHelper';
+import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 
 export default class ContactTribunalController {
-  public get(req: AppRequest, res: Response): void {
+  public async get(req: AppRequest, res: Response): Promise<void> {
+    const isContactTribunalEnabled = await getFlagValue('contact-tribunal-enabled', null);
+    if (!isContactTribunalEnabled) {
+      return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
+    }
+
     res.render(TranslationKeys.CONTACT_TRIBUNAL, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
       ...req.t(TranslationKeys.CONTACT_TRIBUNAL, { returnObjects: true }),
