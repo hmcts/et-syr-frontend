@@ -77,6 +77,11 @@ export default class DateUtils {
     return DefaultValues.STRING_EMPTY;
   }
 
+  public static getCurrentDate(): string {
+    const date = new Date();
+    return `${date.getFullYear()}-${this.padStart(date.getMonth() + 1)}-${this.padStart(date.getDate())}`;
+  }
+
   /**
    * Formats input date string to DD/Month/YYYY like 01 January 2025
    * @param dateString
