@@ -4,6 +4,7 @@ import { ApiDocumentTypeItem, DocumentTypeItem } from '../definitions/complexTyp
 import { AllDocumentTypes, DefaultValues, languages } from '../definitions/constants';
 import { DocumentRow } from '../definitions/document';
 import { getLanguageParam } from '../helpers/RouterHelpers';
+import { dateInLocale } from '../helpers/dateInLocale';
 
 import CollectionUtils from './CollectionUtils';
 import DateUtils from './DateUtils';
@@ -233,10 +234,12 @@ export default class DocumentUtils {
    * Converts {@link ApiDocumentTypeItem} list to {@link DocumentRow} to show in Documents page and claimant et1
    * documents page. Gets list of document. Checks if document in document list has id. If document has id adds
    * new document row item to document rows.
+   * @param req its url value is used to format date of documents
    * @param apiDocumentTypeItems list of items that should be converted to {@link DocumentRow} type.
    * @response list of items in DocumentRow format
    */
   public static convertApiDocumentTypeItemListToDocumentRows(
+    req: AppRequest,
     apiDocumentTypeItems: ApiDocumentTypeItem[]
   ): DocumentRow[] {
     if (CollectionUtils.isEmpty(apiDocumentTypeItems)) {
@@ -244,7 +247,7 @@ export default class DocumentUtils {
     }
     const documentRows: DocumentRow[] = [];
     for (const apiDocumentTypeItem of apiDocumentTypeItems) {
-      const documentRow: DocumentRow = this.convertApiDocumentTypeItemToDocumentRow(apiDocumentTypeItem);
+      const documentRow: DocumentRow = this.convertApiDocumentTypeItemToDocumentRow(req, apiDocumentTypeItem);
       if (ObjectUtils.isNotEmpty(documentRow)) {
         documentRows.push(documentRow);
       }
@@ -256,10 +259,14 @@ export default class DocumentUtils {
    * Converts {@link ApiDocumentTypeItem} to {@link DocumentRow} to show in Documents page and claimant et1
    * documents page. Gets api document type item. Checks if api document type item has id. If document has id converts
    * it to DocumentRow. If not returns undefined.
+   * @param req its url value is used to format date of documents
    * @param apiDocumentTypeItem {@link ApiDocumentTypeItem} that should be converted to {@link DocumentRow} type.
    * @response item in {@link DocumentRow} format
    */
-  public static convertApiDocumentTypeItemToDocumentRow(apiDocumentTypeItem: ApiDocumentTypeItem): DocumentRow {
+  public static convertApiDocumentTypeItemToDocumentRow(
+    req: AppRequest,
+    apiDocumentTypeItem: ApiDocumentTypeItem
+  ): DocumentRow {
     if (StringUtils.isBlank(apiDocumentTypeItem?.id)) {
       return undefined;
     }
@@ -267,7 +274,7 @@ export default class DocumentUtils {
       id: apiDocumentTypeItem.id,
       name: this.findDocumentNameByApiDocumentTypeItem(apiDocumentTypeItem),
       type: this.findDocumentTypeByApiDocumentTypeItem(apiDocumentTypeItem),
-      date: this.findDocumentDateByApiDocumentTypeItem(apiDocumentTypeItem),
+      date: this.findDocumentDateByApiDocumentTypeItem(req, apiDocumentTypeItem),
     };
   }
 
@@ -305,11 +312,15 @@ export default class DocumentUtils {
    * If it is empty returns - and 22 spaces (to show date field formatted in the frontend). If document value is not
    * empty checks dateOfCorrespondence field. If dateOfCorrespondence is not empty returns this value in date format
    * like 05 Aug 1979. If dateOfCorrespondence is empty checks creationDate and uploaded document's createdOn fields.
+   * @param req its url value is used to format date of documents
    * @param apiDocumentTypeItem {@link ApiDocumentTypeItem} which should have document date.
    * @return document date as string or empty response according to existence of document date in
    *         api document type item.
    */
-  public static findDocumentDateByApiDocumentTypeItem(apiDocumentTypeItem: ApiDocumentTypeItem): string {
+  public static findDocumentDateByApiDocumentTypeItem(
+    req: AppRequest,
+    apiDocumentTypeItem: ApiDocumentTypeItem
+  ): string {
     if (ObjectUtils.isEmpty(apiDocumentTypeItem?.value)) {
       return DefaultValues.STRING_DASH;
     }
@@ -317,19 +328,19 @@ export default class DocumentUtils {
       StringUtils.isNotBlank(apiDocumentTypeItem.value.dateOfCorrespondence) &&
       DateUtils.isDateStringValid(apiDocumentTypeItem.value.dateOfCorrespondence)
     ) {
-      return DateUtils.formatDateStringToDDMMMYYYY(apiDocumentTypeItem.value.dateOfCorrespondence);
+      return dateInLocale(DateUtils.convertStringToDate(apiDocumentTypeItem.value.dateOfCorrespondence), req.url);
     }
     if (
       StringUtils.isNotBlank(apiDocumentTypeItem.value.creationDate) &&
       DateUtils.isDateStringValid(apiDocumentTypeItem.value.creationDate)
     ) {
-      return DateUtils.formatDateStringToDDMMMYYYY(apiDocumentTypeItem.value.creationDate);
+      return dateInLocale(DateUtils.convertStringToDate(apiDocumentTypeItem.value.creationDate), req.url);
     }
     if (
       StringUtils.isNotBlank(apiDocumentTypeItem.value.uploadedDocument.createdOn) &&
       DateUtils.isDateStringValid(apiDocumentTypeItem.value.uploadedDocument.createdOn)
     ) {
-      return DateUtils.formatDateStringToDDMMMYYYY(apiDocumentTypeItem.value.uploadedDocument.createdOn);
+      return dateInLocale(DateUtils.convertStringToDate(apiDocumentTypeItem.value.uploadedDocument.createdOn), req.url);
     }
     return DefaultValues.STRING_DASH;
   }

@@ -16,6 +16,7 @@ export default class ClaimantET1FormController {
     const redirectUrl: string = setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM);
     const languageParam: string = getLanguageParam(req.url);
     const et1FormDocumentRow: DocumentRow = DocumentUtils.convertApiDocumentTypeItemToDocumentRow(
+      req,
       DocumentUtils.findET1FormByRequestAndUrlLanguage(req)
     );
     const documentRows: DocumentRow[] = [];
@@ -23,12 +24,14 @@ export default class ClaimantET1FormController {
       documentRows.push(et1FormDocumentRow);
     }
     const acasCertificateRow: DocumentRow = DocumentUtils.convertApiDocumentTypeItemToDocumentRow(
+      req,
       DocumentUtils.findAcasCertificateByRequest(req)
     );
     if (ObjectUtils.isNotEmpty(acasCertificateRow)) {
       documentRows.push(acasCertificateRow);
     }
     const et1AttachmentRows: DocumentRow[] = DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(
+      req,
       DocumentUtils.findET1AttachmentsInDocumentCollection(req?.session?.userCase?.documentCollection)
     );
 

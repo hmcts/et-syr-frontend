@@ -407,45 +407,55 @@ describe('DocumentUtils', () => {
   });
   describe('convertApiDocumentTypeItemListToDocumentRows', () => {
     const expectedDocumentRow: DocumentRow = {
-      date: '05 Aug 2024',
+      date: '5 August 2024',
       id: '900d4265-aaeb-455f-9cdd-bc0bdf61c918',
       name: 'ET1_Form_English.pdf',
       type: 'ET1',
     };
     test('should return undefined when document list is undefined', () => {
-      expect(DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(undefined)).toStrictEqual(undefined);
+      expect(DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(mockRequest({}), undefined)).toStrictEqual(
+        undefined
+      );
     });
     test('should return undefined when document in document list is undefined', () => {
       const et1FormEnglish: DocumentTypeItem = _.cloneDeep(mockET1FormEnglish);
       et1FormEnglish.value = undefined;
       const documentTypeItems: DocumentTypeItem[] = [undefined];
-      expect(DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(documentTypeItems)).toStrictEqual(undefined);
+      expect(
+        DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(mockRequest({}), documentTypeItems)
+      ).toStrictEqual(undefined);
     });
     test('should return undefined when document id in document list is undefined', () => {
       const et1FormEnglish: DocumentTypeItem = _.cloneDeep(mockET1FormEnglish);
       et1FormEnglish.id = undefined;
       const documentTypeItems: DocumentTypeItem[] = [et1FormEnglish];
-      expect(DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(documentTypeItems)).toStrictEqual(undefined);
+      expect(
+        DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(mockRequest({}), documentTypeItems)
+      ).toStrictEqual(undefined);
     });
     test('should return govUkTableRow when document list has a valid document', () => {
       const et1FormEnglish: DocumentTypeItem = _.cloneDeep(mockET1FormEnglish);
       const documentTypeItems: ApiDocumentTypeItem[] = [et1FormEnglish];
-      expect(DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(documentTypeItems)).toStrictEqual([
-        expectedDocumentRow,
-      ]);
+      expect(
+        DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(mockRequest({}), documentTypeItems)
+      ).toStrictEqual([expectedDocumentRow]);
     });
     describe('generateGovUkTableRowByApiDocumentTypeItem', () => {
       test('should return undefined when document type item is undefined', () => {
-        expect(DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(undefined)).toStrictEqual(undefined);
+        expect(DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(mockRequest({}), undefined)).toStrictEqual(
+          undefined
+        );
       });
       test('should return undefined when document type item id is undefined', () => {
         const et1FormEnglish: ApiDocumentTypeItem = _.cloneDeep(mockET1FormEnglish);
         et1FormEnglish.id = undefined;
-        expect(DocumentUtils.convertApiDocumentTypeItemToDocumentRow(et1FormEnglish)).toStrictEqual(undefined);
+        expect(DocumentUtils.convertApiDocumentTypeItemToDocumentRow(mockRequest({}), et1FormEnglish)).toStrictEqual(
+          undefined
+        );
       });
       test('should return a valid list of { html?: string } when document type item is valid', () => {
         const et1FormEnglish: ApiDocumentTypeItem = _.cloneDeep(mockET1FormEnglish);
-        expect(DocumentUtils.convertApiDocumentTypeItemToDocumentRow(et1FormEnglish)).toStrictEqual(
+        expect(DocumentUtils.convertApiDocumentTypeItemToDocumentRow(mockRequest({}), et1FormEnglish)).toStrictEqual(
           expectedDocumentRow
         );
       });
@@ -519,28 +529,30 @@ describe('DocumentUtils', () => {
   describe('findDocumentDateByApiDocumentTypeItem', () => {
     const invalidDate: string = '2021/14/33';
     const validDate: string = '1979-08-05';
-    const expectedValueWhenDateFound: string = '05 Aug 1979';
+    const expectedValueWhenDateFound: string = '5 August 1979';
     test('should return not found expected value when document type item is undefined', () => {
-      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(undefined)).toStrictEqual(DefaultValues.STRING_DASH);
+      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(mockRequest({}), undefined)).toStrictEqual(
+        DefaultValues.STRING_DASH
+      );
     });
     test('should return not found expected value when document type item value is undefined', () => {
       const et1FormEnglish: ApiDocumentTypeItem = _.cloneDeep(mockET1FormEnglish);
       et1FormEnglish.value = undefined;
-      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(et1FormEnglish)).toStrictEqual(
+      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(mockRequest({}), et1FormEnglish)).toStrictEqual(
         DefaultValues.STRING_DASH
       );
     });
     test('should return not found expected value when documents date of correspondence is not a valid date and document value creation date and uploaded document createdOn values are undefined', () => {
       const et1FormEnglish: ApiDocumentTypeItem = _.cloneDeep(mockET1FormEnglish);
       et1FormEnglish.value.dateOfCorrespondence = invalidDate;
-      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(et1FormEnglish)).toStrictEqual(
+      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(mockRequest({}), et1FormEnglish)).toStrictEqual(
         DefaultValues.STRING_DASH
       );
     });
     test('should return date of correspondence in dd mmm yyyy format when documents date of correspondence is a valid date', () => {
       const et1FormEnglish: ApiDocumentTypeItem = _.cloneDeep(mockET1FormEnglish);
       et1FormEnglish.value.dateOfCorrespondence = validDate;
-      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(et1FormEnglish)).toStrictEqual(
+      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(mockRequest({}), et1FormEnglish)).toStrictEqual(
         expectedValueWhenDateFound
       );
     });
@@ -549,7 +561,7 @@ describe('DocumentUtils', () => {
       et1FormEnglish.value.dateOfCorrespondence = undefined;
       et1FormEnglish.value.creationDate = invalidDate;
       et1FormEnglish.value.uploadedDocument.createdOn = undefined;
-      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(et1FormEnglish)).toStrictEqual(
+      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(mockRequest({}), et1FormEnglish)).toStrictEqual(
         DefaultValues.STRING_DASH
       );
     });
@@ -558,7 +570,7 @@ describe('DocumentUtils', () => {
       et1FormEnglish.value.dateOfCorrespondence = undefined;
       et1FormEnglish.value.dateOfCorrespondence = validDate;
       et1FormEnglish.value.uploadedDocument.createdOn = undefined;
-      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(et1FormEnglish)).toStrictEqual(
+      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(mockRequest({}), et1FormEnglish)).toStrictEqual(
         expectedValueWhenDateFound
       );
     });
@@ -567,7 +579,7 @@ describe('DocumentUtils', () => {
       et1FormEnglish.value.dateOfCorrespondence = undefined;
       et1FormEnglish.value.creationDate = undefined;
       et1FormEnglish.value.uploadedDocument.createdOn = invalidDate;
-      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(et1FormEnglish)).toStrictEqual(
+      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(mockRequest({}), et1FormEnglish)).toStrictEqual(
         DefaultValues.STRING_DASH
       );
     });
@@ -576,7 +588,7 @@ describe('DocumentUtils', () => {
       et1FormEnglish.value.dateOfCorrespondence = undefined;
       et1FormEnglish.value.dateOfCorrespondence = undefined;
       et1FormEnglish.value.uploadedDocument.createdOn = validDate;
-      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(et1FormEnglish)).toStrictEqual(
+      expect(DocumentUtils.findDocumentDateByApiDocumentTypeItem(mockRequest({}), et1FormEnglish)).toStrictEqual(
         expectedValueWhenDateFound
       );
     });

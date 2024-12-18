@@ -349,9 +349,11 @@ describe('ET3lUtil tests', () => {
   });
   describe('getUserApplicationsListItem', () => {
     test('Should return user applications list item for the given application, respondent name and respondent', () => {
-      expect(ET3Util.getUserApplicationsListItem(mockApplications[0], 'test name', mockRespondentET3Model)).toEqual([
+      expect(
+        ET3Util.getUserApplicationsListItem(mockRequest({}), mockApplications[0], 'test name', mockRespondentET3Model)
+      ).toEqual([
         {
-          text: '01 January 2024',
+          text: '1 January 2024',
         },
         {
           text: '1000000/2024',

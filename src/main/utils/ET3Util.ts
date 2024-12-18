@@ -20,6 +20,7 @@ import { translateOverallStatus } from '../helpers/ApplicationTableRecordTransla
 import { setUserCase } from '../helpers/CaseHelpers';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { returnNextPage, returnValidUrl } from '../helpers/RouterHelpers';
+import { dateInLocale } from '../helpers/dateInLocale';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 
@@ -237,13 +238,16 @@ export default class ET3Util {
   }
 
   public static getUserApplicationsListItem(
+    req: AppRequest,
     application: ApplicationTableRecord,
     respondentName: string,
     respondent: RespondentET3Model
   ): { text?: string; caseId?: string; caseDetailsLink?: string; respondentCcdId?: string }[] {
     return [
       {
-        text: DateUtils.formatDateStringToDDMonthYYYY(respondent.responseReceivedDate),
+        text: DateUtils.isDateStringValid(respondent.responseReceivedDate)
+          ? dateInLocale(DateUtils.convertStringToDate(respondent.responseReceivedDate), req.url)
+          : DefaultValues.STRING_DASH,
       },
       {
         text: application.userCase.ethosCaseReference,
