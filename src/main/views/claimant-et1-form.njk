@@ -7,10 +7,7 @@
   {{ super() }}
   {% include "back-link.njk" %}
 {% endblock %}
-{% set et1FormDate = '' %}
-{% set et1FormUrl = '' %}
-{% set acasCertDate = '' %}
-{% set acasCertUrl = '' %}
+{% set iterator = 1 %}
 
 {% if et1FormDocument !== 'undefined' %}
   {% set et1FormDate = formattedEt1FormDate %}
@@ -23,34 +20,36 @@
 {% block content %}
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds-from-desktop">
+    <div class="govuk-grid-column">
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-4">{{ h1 }}</h1>
-      {% if et1FormDocumentAsGovUkTableRow !== undefined %}
-        {{ govukTable({
-          caption: et1Form,
-          captionClasses: "govuk-table__caption--m",
-          firstCellIsHeader: false,
-          rows: [ et1FormDocumentAsGovUkTableRow ]
-        }) }}
-     {% endif %}
-     {% if acasCertificateToGovUkTableRow !== undefined %}
-        {{ govukTable({
-          caption: acasCert,
-          captionClasses: "govuk-table__caption--m",
-          firstCellIsHeader: false,
-          rows: [ acasCertificateToGovUkTableRow ]
-        }) }}
-     {% endif %}
-     {% if et1AttachmentsAsGovUkTableRow !== undefined %}
-       {{ govukTable({
-         caption: et1Attachments,
-         captionClasses: "govuk-table__caption--m",
-         firstCellIsHeader: false,
-         rows: [ et1AttachmentsAsGovUkTableRow ]
-       }) }}
-    {% endif %}
+      {% if documentRows and documentRows.length != 0 %}
+        <h2 class="govuk-heading-l">{{ table1Header }}</h2>
+            <div class="scrollableTable">
+              <table class="govuk-table">
+                <thead class="govuk-table__head">
+                  <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header"></th>
+                    <th scope="col" class="govuk-table__header">{{ tableHeaderDocument }}</th>
+                    <th scope="col" class="govuk-table__header">{{ tableHeaderType }}</th>
+                    <th scope="col" class="govuk-table__header">{{ tableHeaderDate }}</th>
+                  </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                  {% for documentRow in documentRows %}
+                    <tr class="govuk-table__row">
+                      <td class="govuk-table__cell"> {{ iterator }} </td>
+                      <td class="govuk-table__cell"> <a href="getCaseDocument/{{ documentRow.id }}" aria-label="view {{ documentRow.name }}" target="_blank"> {{ documentRow.name }} </a></td>
+                      <td class="govuk-table__cell"> {{ documentRow.type }} </td>
+                      <td class="govuk-table__cell"> {{ documentRow.date }} </td>
+                      {% set iterator = iterator + 1 %}
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+      {% endif %}
     </div>
-    <div class="govuk-grid-column-one-third-from-desktop">
+    <div class="govuk-grid-column">
       {% set sideBarContent %}
         {% include "./components/sidebar/sidebar.njk" %}
       {% endset %}

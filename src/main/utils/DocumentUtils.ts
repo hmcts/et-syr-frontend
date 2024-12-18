@@ -2,6 +2,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { EnglishOrWelsh, RespondentET3Model } from '../definitions/case';
 import { ApiDocumentTypeItem, DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
 import { AllDocumentTypes, DefaultValues, languages } from '../definitions/constants';
+import { DocumentRow } from '../definitions/document';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 
 import CollectionUtils from './CollectionUtils';
@@ -229,61 +230,74 @@ export default class DocumentUtils {
   }
 
   /**
-   * Converts document list to gov uk table rows to show in Documents page or claimant et1 documents page.
-   * Gets list of document. Checks if document has value, id, document file name. If document list has those values
-   * adds new item to gov uk table rows in {text?: date of correspondence, html?: link to document} format.
-   * @param documentList list of documents that needs to be converted.
-   * @response list of items in gov uk table rows format which is
-   *           {text?: date of correspondence, html?: link to document}
+   * Converts {@link ApiDocumentTypeItem} list to {@link DocumentRow} to show in Documents page and claimant et1
+   * documents page. Gets list of document. Checks if document in document list has id. If document has id adds
+   * new document row item to document rows.
+   * @param apiDocumentTypeItems list of items that should be converted to {@link DocumentRow} type.
+   * @response list of items in DocumentRow format
    */
-  public static convertDocumentListToGovUkTableRows(documentList: ApiDocumentTypeItem[]): { html?: string }[] {
-    if (CollectionUtils.isEmpty(documentList)) {
+  public static convertApiDocumentTypeItemListToDocumentRows(
+    apiDocumentTypeItems: ApiDocumentTypeItem[]
+  ): DocumentRow[] {
+    if (CollectionUtils.isEmpty(apiDocumentTypeItems)) {
       return undefined;
     }
-    const govUkTableRows: { html?: string }[] = [];
-    for (const documentTypeItem of documentList) {
-      const govUkTableRow: { html?: string }[] = this.generateGovUkTableRowByApiDocumentTypeItem(documentTypeItem);
-      if (CollectionUtils.isEmpty(govUkTableRow)) {
-        continue;
+    const documentRows: DocumentRow[] = [];
+    for (const apiDocumentTypeItem of apiDocumentTypeItems) {
+      const documentRow: DocumentRow = this.convertApiDocumentTypeItemToDocumentRow(apiDocumentTypeItem);
+      if (ObjectUtils.isNotEmpty(documentRow)) {
+        documentRows.push(documentRow);
       }
-      govUkTableRows.push(govUkTableRow[0], govUkTableRow[1]);
     }
-    return CollectionUtils.isEmpty(govUkTableRows) ? undefined : govUkTableRows;
+    return CollectionUtils.isEmpty(documentRows) ? undefined : documentRows;
   }
 
   /**
-   * Generates gov uk table row with the given api document type item. First checks if api document type item,
-   * it's value, it's id, it's value's uploaded document and uploaded document's document file name fields.
-   * If any of those fields is empty returns undefined. If not empty returns an array of { html?: string } object
-   * with document date and link.
-   * @param apiDocumentTypeItem is the item that gov uk table row is created by.
-   * @return an array of { html?: string } object.
+   * Converts {@link ApiDocumentTypeItem} to {@link DocumentRow} to show in Documents page and claimant et1
+   * documents page. Gets api document type item. Checks if api document type item has id. If document has id converts
+   * it to DocumentRow. If not returns undefined.
+   * @param apiDocumentTypeItem {@link ApiDocumentTypeItem} that should be converted to {@link DocumentRow} type.
+   * @response item in {@link DocumentRow} format
    */
-  public static generateGovUkTableRowByApiDocumentTypeItem(
-    apiDocumentTypeItem: ApiDocumentTypeItem
-  ): { html?: string }[] {
-    if (
-      ObjectUtils.isEmpty(apiDocumentTypeItem) ||
-      ObjectUtils.isEmpty(apiDocumentTypeItem.value) ||
-      StringUtils.isBlank(apiDocumentTypeItem.id) ||
-      ObjectUtils.isEmpty(apiDocumentTypeItem.value.uploadedDocument) ||
-      StringUtils.isBlank(apiDocumentTypeItem.value.uploadedDocument.document_filename)
-    ) {
+  public static convertApiDocumentTypeItemToDocumentRow(apiDocumentTypeItem: ApiDocumentTypeItem): DocumentRow {
+    if (StringUtils.isBlank(apiDocumentTypeItem?.id)) {
       return undefined;
     }
-    return [
-      {
-        html: this.findDocumentDateByApiDocumentTypeItem(apiDocumentTypeItem),
-      },
-      {
-        html:
-          '<a href="getCaseDocument/' +
-          apiDocumentTypeItem.id +
-          '" target="_blank">' +
-          apiDocumentTypeItem.value.uploadedDocument.document_filename +
-          '</a>',
-      },
-    ];
+    return {
+      id: apiDocumentTypeItem.id,
+      name: this.findDocumentNameByApiDocumentTypeItem(apiDocumentTypeItem),
+      type: this.findDocumentTypeByApiDocumentTypeItem(apiDocumentTypeItem),
+      date: this.findDocumentDateByApiDocumentTypeItem(apiDocumentTypeItem),
+    };
+  }
+
+  /**
+   * Tries to find document type of {@link ApiDocumentTypeItem}. Checks if item has value, uploaded document and
+   * document file name. If document file name exists returns this value else returns an empty string.
+   * @param apiDocumentTypeItem {@link ApiDocumentTypeItem} which should have document file name.
+   * @return document file name as string or undefined according to existence of document file name in api document
+   *         type item.
+   */
+  public static findDocumentNameByApiDocumentTypeItem(apiDocumentTypeItem: ApiDocumentTypeItem): string {
+    return StringUtils.isNotBlank(apiDocumentTypeItem?.value?.uploadedDocument?.document_filename)
+      ? apiDocumentTypeItem?.value?.uploadedDocument?.document_filename
+      : DefaultValues.STRING_EMPTY;
+  }
+
+  /**
+   * Tries to find document type of {@link ApiDocumentTypeItem}. Checks if item has value and document type. If not
+   * checks item has type of document. If any of those two fields exist returns the existing one else returns an
+   * empty string.
+   * @param apiDocumentTypeItem {@link ApiDocumentTypeItem} which should have document type or type of document.
+   * @return document type as string or undefined according to existence of document type or type of document in
+   *         api document type item.
+   */
+  public static findDocumentTypeByApiDocumentTypeItem(apiDocumentTypeItem: ApiDocumentTypeItem): string {
+    return StringUtils.isNotBlank(apiDocumentTypeItem?.value?.documentType)
+      ? apiDocumentTypeItem.value.documentType
+      : StringUtils.isNotBlank(apiDocumentTypeItem?.value?.typeOfDocument)
+      ? apiDocumentTypeItem.value.typeOfDocument
+      : DefaultValues.STRING_EMPTY;
   }
 
   /**
@@ -291,31 +305,33 @@ export default class DocumentUtils {
    * If it is empty returns - and 22 spaces (to show date field formatted in the frontend). If document value is not
    * empty checks dateOfCorrespondence field. If dateOfCorrespondence is not empty returns this value in date format
    * like 05 Aug 1979. If dateOfCorrespondence is empty checks creationDate and uploaded document's createdOn fields.
-   * @param document
+   * @param apiDocumentTypeItem {@link ApiDocumentTypeItem} which should have document date.
+   * @return document date as string or empty response according to existence of document date in
+   *         api document type item.
    */
-  public static findDocumentDateByApiDocumentTypeItem(document: ApiDocumentTypeItem): string {
-    if (ObjectUtils.isEmpty(document?.value)) {
-      return '-' + DefaultValues.HTML_SPACE.repeat(25);
+  public static findDocumentDateByApiDocumentTypeItem(apiDocumentTypeItem: ApiDocumentTypeItem): string {
+    if (ObjectUtils.isEmpty(apiDocumentTypeItem?.value)) {
+      return DefaultValues.STRING_DASH;
     }
     if (
-      StringUtils.isNotBlank(document.value.dateOfCorrespondence) &&
-      DateUtils.isDateStringValid(document.value.dateOfCorrespondence)
+      StringUtils.isNotBlank(apiDocumentTypeItem.value.dateOfCorrespondence) &&
+      DateUtils.isDateStringValid(apiDocumentTypeItem.value.dateOfCorrespondence)
     ) {
-      return DateUtils.formatDateStringToDDMMMYYYY(document.value.dateOfCorrespondence);
+      return DateUtils.formatDateStringToDDMMMYYYY(apiDocumentTypeItem.value.dateOfCorrespondence);
     }
     if (
-      StringUtils.isNotBlank(document.value.creationDate) &&
-      DateUtils.isDateStringValid(document.value.creationDate)
+      StringUtils.isNotBlank(apiDocumentTypeItem.value.creationDate) &&
+      DateUtils.isDateStringValid(apiDocumentTypeItem.value.creationDate)
     ) {
-      return DateUtils.formatDateStringToDDMMMYYYY(document.value.creationDate);
+      return DateUtils.formatDateStringToDDMMMYYYY(apiDocumentTypeItem.value.creationDate);
     }
     if (
-      StringUtils.isNotBlank(document.value.uploadedDocument.createdOn) &&
-      DateUtils.isDateStringValid(document.value.uploadedDocument.createdOn)
+      StringUtils.isNotBlank(apiDocumentTypeItem.value.uploadedDocument.createdOn) &&
+      DateUtils.isDateStringValid(apiDocumentTypeItem.value.uploadedDocument.createdOn)
     ) {
-      return DateUtils.formatDateStringToDDMMMYYYY(document.value.uploadedDocument.createdOn);
+      return DateUtils.formatDateStringToDDMMMYYYY(apiDocumentTypeItem.value.uploadedDocument.createdOn);
     }
-    return DefaultValues.STRING_DASH + DefaultValues.HTML_SPACE.repeat(25);
+    return DefaultValues.STRING_DASH;
   }
 
   /**
