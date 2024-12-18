@@ -460,7 +460,7 @@ function mapResponseApiDataToCaseWithId(
   caseWithId.payPensionBenefitDetailsSection = selectedRespondent.value?.payPensionBenefitDetailsSection;
   caseWithId.contestClaimSection = selectedRespondent.value?.contestClaimSection;
   caseWithId.employersContractClaimSection = selectedRespondent.value?.employersContractClaimSection;
-  caseWithId.respondentEnterPostcode = selectedRespondent.value?.respondent_address.PostCode;
+  caseWithId.respondentEnterPostcode = selectedRespondent.value?.respondent_address?.PostCode;
   caseWithId.responseRespondentEmail = selectedRespondent.value?.responseRespondentEmail;
   caseWithId.responseRespondentContactPreference = selectedRespondent.value?.responseRespondentContactPreference;
   caseWithId.responseReceivedDate = selectedRespondent.value?.responseReceivedDate;

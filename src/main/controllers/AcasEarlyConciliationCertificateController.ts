@@ -90,7 +90,6 @@ export default class AcasEarlyConciliationCertificateController {
     ]);
     res.render(TranslationKeys.ACAS_EARLY_CONCILIATION_CERTIFICATE, {
       ...content,
-      acasLink: PageUrls.CLAIMANT_ACAS_CERTIFICATE_DETAILS,
       hideContactUs: true,
       acasCertLink,
     });

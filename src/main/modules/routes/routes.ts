@@ -21,10 +21,8 @@ import CheckYourAnswersEmployersContractClaimController from '../../controllers/
 import CheckYourAnswersHearingPreferencesController from '../../controllers/CheckYourAnswersHearingPreferencesController';
 import CheckYourAnswersPayPensionAndBenefitsController from '../../controllers/CheckYourAnswersPayPensionAndBenefitsController';
 import ChecklistController from '../../controllers/ChecklistController';
-import ClaimantAcasCertificateDetailsController from '../../controllers/ClaimantAcasCertificateDetailsController';
 import ClaimantAverageWeeklyWorkHoursController from '../../controllers/ClaimantAverageWeeklyWorkHoursController';
 import ClaimantET1FormController from '../../controllers/ClaimantET1FormController';
-import ClaimantET1FormDetailsController from '../../controllers/ClaimantET1FormDetailsController';
 import ClaimantEmploymentDatesController from '../../controllers/ClaimantEmploymentDatesController';
 import ClaimantEmploymentDatesEnterController from '../../controllers/ClaimantEmploymentDatesEnterController';
 import ClaimantJobTitleController from '../../controllers/ClaimantJobTitleController';
@@ -120,9 +118,6 @@ export class Routes {
     // hub links
     app.get(PageUrls.CLAIMANT_ET1_FORM, new ClaimantET1FormController().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_LANDING, new RespondentResponseLandingController().get);
-    // Claimant Form & Cert
-    app.get(PageUrls.CLAIMANT_ET1_FORM_DETAILS, new ClaimantET1FormDetailsController().get);
-    app.get(PageUrls.CLAIMANT_ACAS_CERTIFICATE_DETAILS, new ClaimantAcasCertificateDetailsController().get);
     // ET3 task list
     app.get(PageUrls.RESPONDENT_RESPONSE_TASK_LIST, new RespondentResponseTaskListController().get);
     // 1. Tell us about the respondent (contact-details)
