@@ -16,7 +16,6 @@ import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import RespondentContestClaimReasonControllerHelper from '../helpers/controller/RespondentContestClaimReasonControllerHelper';
 import { getLogger } from '../logger';
 import CollectionUtils from '../utils/CollectionUtils';
-import DateUtils from '../utils/DateUtils';
 import DocumentUtils from '../utils/DocumentUtils';
 import ET3Util from '../utils/ET3Util';
 import ErrorUtils from '../utils/ErrorUtils';
@@ -140,8 +139,6 @@ export default class RespondentContestClaimReasonController {
       if (!documentTypeItem) {
         return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
       }
-      documentTypeItem.value.creationDate = DateUtils.getCurrentDate();
-      documentTypeItem.value.uploadedDocument.createdOn = DateUtils.getCurrentDate();
       if (CollectionUtils.isEmpty(req.session.userCase.et3ResponseContestClaimDocument)) {
         req.session.userCase.et3ResponseContestClaimDocument = [];
       }

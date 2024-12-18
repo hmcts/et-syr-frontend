@@ -18,6 +18,7 @@ import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import { hasInvalidFileFormat, hasInvalidFileName } from '../validators/validator';
 
+import DateUtils from './DateUtils';
 import DocumentUtils from './DocumentUtils';
 import ErrorUtils from './ErrorUtils';
 import NumberUtils from './NumberUtils';
@@ -167,7 +168,7 @@ export default class FileUtils {
       downloadLink: documentUploadResponse?._links?.binary?.href,
       value: {
         typeOfDocument: et3AttachmentDocTypes[0],
-        creationDate: documentUploadResponse?.createdOn,
+        creationDate: documentUploadResponse?.createdOn ? documentUploadResponse.createdOn : DateUtils.getCurrentDate(),
         shortDescription: documentUploadResponse?.originalDocumentName,
         uploadedDocument: {
           document_filename: documentUploadResponse?.originalDocumentName,
@@ -176,7 +177,7 @@ export default class FileUtils {
           document_size: NumberUtils.isNumericValue(documentUploadResponse?.size)
             ? Number(documentUploadResponse?.size)
             : 0,
-          createdOn: documentUploadResponse?.createdOn,
+          createdOn: documentUploadResponse?.createdOn ? documentUploadResponse.createdOn : DateUtils.getCurrentDate(),
           document_binary_url: documentUploadResponse?._links?.binary.href,
         },
       },
