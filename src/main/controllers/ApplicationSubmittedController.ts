@@ -68,7 +68,7 @@ export default class ApplicationSubmittedController {
       selectedRespondent,
       et3FormId,
       et3FormName,
-      contactTribunalUrl: PageUrls.HOLDING_PAGE + languageParam,
+      contactTribunalUrl: PageUrls.CONTACT_TRIBUNAL + languageParam,
     });
   };
 }

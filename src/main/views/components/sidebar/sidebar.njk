@@ -3,42 +3,42 @@
 {% endif %}
 
 <p class='govuk-body'>
-  {{callEmployer}}
+  {{ callEmployer }}
 </p>
 
 <p class='govuk-body'>
-  {{contactText}}
-  <a href="{{PageUrls.CONTACT_THE_TRIBUNAL + languageParam}}">
-    {{contactLink}}
+  {{ contactText }}
+  <a href="{{ PageUrls.CONTACT_TRIBUNAL + languageParam }}">
+    {{ contactLink }}
   </a>
 </p>
 
 <h2 class="govuk-heading-s">
-  {{englandWales}}
+  {{ englandWales }}
 </h2>
 
 <p class='govuk-body'>
-  {{ewNumbers | safe}}
+  {{ ewNumbers }}
 </p>
 
 <h2 class="govuk-heading-s">
-  {{welsh}}
+  {{ welsh }}
 </h2>
 
 <p class='govuk-body'>
-  {{welshNumber}}
+  {{ welshNumber }}
 </p>
 
 <h2 class="govuk-heading-s">
-  {{scotland}}
+  {{ scotland }}
 </h2>
 
 <p class='govuk-body'>
-  {{scotlandNumbers | safe}}
+  {{ scotlandNumbers }}
 </p>
 
 <p class='govuk-body'>
-  {{hours | safe}}
+  {{ hours }}
 </p>
 
-<a href="https://www.gov.uk/call-charges" target="_blank" class="govuk-link">{{callCharges}}</a>
+<a href="https://www.gov.uk/call-charges" target="_blank" class="govuk-link">{{ callCharges }}</a>
