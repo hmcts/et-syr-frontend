@@ -84,6 +84,8 @@ export const TranslationKeys = {
   COPY_TO_OTHER_PARTY: 'copy-to-other-party',
   COPY_TO_OTHER_PARTY_OFFLINE: 'copy-to-other-party-offline',
   CONTACT_TRIBUNAL_CYA: 'contact-tribunal-check-your-answers',
+  CONTACT_TRIBUNAL_STORE_CONFIRMATION: '/contact-tribunal-store-confirmation',
+  CONTACT_TRIBUNAL_SUBMIT_CONFIRMATION: '/contact-tribunal-submit-confirmation',
 } as const;
 
 export const PageUrls = {
@@ -153,6 +155,8 @@ export const PageUrls = {
   CONTACT_TRIBUNAL_SELECTED: '/contact-tribunal/:selectedOption',
   COPY_TO_OTHER_PARTY: '/copy-to-other-party',
   CONTACT_TRIBUNAL_CYA: '/contact-tribunal-check-your-answers',
+  CONTACT_TRIBUNAL_STORE_CONFIRMATION: '/contact-tribunal-store-confirmation',
+  CONTACT_TRIBUNAL_SUBMIT_CONFIRMATION: '/contact-tribunal-submit-confirmation',
 } as const;
 
 export const InterceptPaths = {
@@ -168,13 +172,9 @@ export const InterceptPaths = {
   EMPLOYERS_CONTRACT_CLAIM_CHANGE: '/change?redirect=employers-contract-claim',
   SUBMIT_CASE: '/submitDraftCase',
   REMOVE_FILE: '/remove-uploaded-file',
-  SUBMIT_TRIBUNAL_CYA: '/submitTribunalCya',
-  SUBMIT_RESPONDENT_CYA: '/submitRespondentCya',
-  TRIBUNAL_RESPONSE_SUBMIT_CYA: '/tribunalResponseSubmitCya',
-  STORE_TRIBUNAL_CYA: '/storeTribunalCya',
-  TRIBUNAL_RESPONSE_STORE_CYA: '/tribunalResponseStoreCya',
-  STORE_RESPONDENT_CYA: '/storeRespondentCya',
-  SUBMIT_BUNDLES_HEARING_DOCS_CYA: '/submitBundlesHearingDocsCya',
+  // Contact Tribunal
+  CONTACT_TRIBUNAL_STORE: '/storeContactTribunal',
+  CONTACT_TRIBUNAL_SUBMIT: '/submitContactTribunal',
 } as const;
 
 export const RedirectKeys = {
