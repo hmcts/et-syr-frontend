@@ -35,6 +35,7 @@ export const TranslationKeys = {
   RESPONDENT_ET3_COMMON: 'et3-common',
   CHECK_YOUR_ANSWERS_ET3: 'check-your-answers-et3',
   CLAIMANT_ET1_FORM: 'claimant-et1-form',
+  DOCUMENTS: 'documents',
   RESPONDENT_RESPONSE_LANDING: 'respondent-response-landing',
   RESPONDENT_RESPONSE_TASK_LIST: 'respondent-response-task-list',
   RESPONDENT_NAME: 'respondent-name',
@@ -96,6 +97,7 @@ export const PageUrls = {
   CASE_LIST_CHECK: '/case-list-check',
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
   CASE_LIST: '/case-list',
+  DOCUMENTS: '/documents',
   YOUR_RESPONSE_FORM: '/your-response-form',
   CASE_DETAILS_WITH_CASE_ID_RESPONDENT_CCD_ID_PARAMETERS: '/case-details/:caseSubmissionReference/:ccdId',
   CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER: '/case-details',
@@ -401,6 +403,7 @@ export const Applicant = {
 export const AllDocumentTypes = {
   ET1: 'ET1',
   ET1_ATTACHMENT: 'ET1 Attachment',
+  ET3_ATTACHMENT: 'ET3 Attachment',
   CLAIMANT_CORRESPONDENCE: 'Claimant correspondence',
   ACAS_CERT: 'ACAS Certificate',
   RESPONDENT_CORRESPONDENCE: 'Respondent correspondence',

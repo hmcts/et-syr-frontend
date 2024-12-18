@@ -345,4 +345,35 @@ export default class ET3Util {
       respondent.responseRespondentEmail = user.email;
     }
   }
+
+  /**
+   * Sets latest user case info to the request to have most recent user case data. First checks if user case id exists
+   * in request object. If not does, nothing end returns. If exists tries to get user case by calling get user case api.
+   * If user case is found assigns new value to request's user case object. It is for now being used for getting the
+   * most recent document list of any case.
+   * @param request object to be assigned new user case. It also has existing user case's case id (submission reference)
+   *                value.
+   */
+  public static async refreshRequestUserCase(request: AppRequest): Promise<void> {
+    if (
+      ObjectUtils.isEmpty(request?.session?.userCase) ||
+      StringUtils.isBlank(request.session.userCase.id + DefaultValues.STRING_SPACE) ||
+      StringUtils.isBlank(request?.session?.user?.accessToken)
+    ) {
+      return;
+    }
+    let userCase: CaseWithId;
+    try {
+      userCase = formatApiCaseDataToCaseWithId(
+        (await getCaseApi(request.session.user.accessToken).getUserCase(request.session.userCase.id)).data,
+        request
+      );
+    } catch (error) {
+      logger.error('unable to find user case for case id: ' + request.session.userCase.id);
+      return;
+    }
+    if (ObjectUtils.isNotEmpty(userCase)) {
+      request.session.userCase = userCase;
+    }
+  }
 }

@@ -35,6 +35,7 @@ import ContactTribunalController from '../../controllers/ContactTribunalControll
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import CopyToOtherPartyController from '../../controllers/CopyToOtherPartyController';
+import DocumentsController from '../../controllers/DocumentsController';
 import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
 import GetCaseDocumentController from '../../controllers/GetCaseDocumentController';
@@ -242,6 +243,7 @@ export class Routes {
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);
     app.post(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().post);
     app.get(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().get);
+    app.get(PageUrls.DOCUMENTS, new DocumentsController().get);
     app.get(PageUrls.REMOVE_FILE, new RemoveFileController().get);
     app.get(
       Urls.INFO,

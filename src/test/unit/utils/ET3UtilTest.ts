@@ -27,6 +27,8 @@ import { mockRespondentET3Model } from '../mocks/mockRespondentET3Model';
 import { mockResponse } from '../mocks/mockResponse';
 import { mockUserDetails } from '../mocks/mockUser';
 
+jest.mock('axios');
+
 let request: ReturnType<typeof mockRequest>;
 const getCaseApiMock = jest.spyOn(caseService, 'getCaseApi');
 const api = new CaseApi(axios);
@@ -439,6 +441,62 @@ describe('ET3lUtil tests', () => {
       ET3Util.setResponseRespondentEmail(user, req);
       expect(req.session.userCase.responseRespondentEmail).toStrictEqual(TEST_RESPONSE_RESPONDENT_EMAIL);
       expect(req.session.userCase.respondents[0].responseRespondentEmail).toStrictEqual(TEST_RESPONSE_RESPONDENT_EMAIL);
+    });
+  });
+  describe('refreshRequestUserCase', () => {
+    const existingUserCaseId: string = '1234';
+    const newUserCaseId: string = '1234567890123456';
+    const refreshRequestUserCaseMock = jest.spyOn(ET3Util, 'refreshRequestUserCase');
+    test('Should not set user case if request is undefined', () => {
+      const req: AppRequest = undefined;
+      ET3Util.refreshRequestUserCase(req);
+      expect(req).toStrictEqual(undefined);
+    });
+    test('Should not set user case if request session is undefined', () => {
+      const req: AppRequest = mockRequest({});
+      req.session = undefined;
+      ET3Util.refreshRequestUserCase(req);
+      expect(req.session).toStrictEqual(undefined);
+    });
+    test('Should not set user case if request session user case is undefined', () => {
+      const req: AppRequest = mockRequest({});
+      req.session.userCase = undefined;
+      ET3Util.refreshRequestUserCase(req);
+      expect(req.session.userCase).toStrictEqual(undefined);
+    });
+    test('Should not set user case if request session user case id is undefined', () => {
+      const req: AppRequest = mockRequest({});
+      req.session.userCase.id = undefined;
+      ET3Util.refreshRequestUserCase(req);
+      expect(req.session.userCase.id).toStrictEqual(undefined);
+    });
+    test('Should not set user case if request session user is undefined', () => {
+      const req: AppRequest = mockRequest({});
+      ET3Util.refreshRequestUserCase(req);
+      expect(req.session.userCase.id).toStrictEqual(existingUserCaseId);
+    });
+    test('Should not set user case if request session user access token is undefined', () => {
+      const req: AppRequest = mockRequest({});
+      req.session.user = _.cloneDeep(mockUserDetails);
+      req.session.user.accessToken = undefined;
+      ET3Util.refreshRequestUserCase(req);
+      expect(req.session.userCase.id).toStrictEqual(existingUserCaseId);
+    });
+    test('Should not set user case if getUserCase throws an exception', () => {
+      const req: AppRequest = mockRequest({});
+      req.session.user = _.cloneDeep(mockUserDetails);
+      ET3Util.refreshRequestUserCase(req);
+      expect(req.session.userCase.id).toStrictEqual(existingUserCaseId);
+    });
+    test('Should set user case', () => {
+      const req: AppRequest = mockRequest({});
+      req.session.user = _.cloneDeep(mockUserDetails);
+      refreshRequestUserCaseMock.mockImplementationOnce((): Promise<void> => {
+        req.session.userCase = mockValidCaseWithId;
+        return undefined;
+      });
+      ET3Util.refreshRequestUserCase(req);
+      expect(req.session.userCase.id).toStrictEqual(newUserCaseId);
     });
   });
 });
