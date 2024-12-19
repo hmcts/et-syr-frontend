@@ -15,19 +15,14 @@ import StringUtils from './StringUtils';
 
 export default class DocumentUtils {
   /**
- * Attempts to find the ET1 form based on the given language and document collection.
- *
- * First, it checks if the document collection is empty. If it is empty, it returns undefined.
- * If the document collection is not empty, it tries to find the ET1 form by the given language.
- * To identify the ET1 form, it checks if the document type is ET1.
- * If it finds any document with the type ET1 according to the selected language, it returns the document.
- * If the selected language is Welsh and it cannot find any ET1 form in Welsh but finds one in English,
- * it returns the ET1 form in English.
-
-   * or not. If empty returns undefined. If not empty tries to find ET1 form by given language. To discriminate ET1 form
-   * checks if document type is ET1 or not. If it finds any document with type ET1 according to selected language
-   * returns document. If selected language is Welsh and not able to find any ET1 form in Welsh but finds in English
-   * returns ET1 form in english.
+   * Attempts to find the ET1 form based on the given language and document collection.
+   *
+   * First, it checks if the document collection is empty. If it is empty, it returns undefined.
+   * If the document collection is not empty, it tries to find the ET1 form by the given language.
+   * To identify the ET1 form, it checks if the document type is ET1.
+   * If it finds any document with the type ET1 according to the selected language, it returns the document.
+   * If the selected language is Welsh and it cannot find any ET1 form in Welsh but finds one in English,
+   * it returns the ET1 form in English.
    * @param documentCollection is the all case documents that should have ET1 form.
    * @param language is the parameter that we check for the document language.
    * @return ET1 form by the given language in ApiDocumentTypeItemFormat.
