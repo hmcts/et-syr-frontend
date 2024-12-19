@@ -7,7 +7,7 @@ import { getApplicationsAccordionItems } from '../helpers/controller/ContactTrib
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 
 export default class ContactTribunalController {
-  public async get(req: AppRequest, res: Response): Promise<void> {
+  public get = async (req: AppRequest, res: Response): Promise<void> => {
     const isContactTribunalEnabled = await getFlagValue('et3-contact-tribunal', null);
     if (!isContactTribunalEnabled) {
       return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
@@ -22,5 +22,5 @@ export default class ContactTribunalController {
         ...req.t(TranslationKeys.CONTACT_TRIBUNAL, { returnObjects: true }),
       }),
     });
-  }
+  };
 }

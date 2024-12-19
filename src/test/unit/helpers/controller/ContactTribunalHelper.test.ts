@@ -1,11 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 
-import { CaseWithId } from '../../../../main/definitions/case';
+import { CaseWithId, YesOrNo } from '../../../../main/definitions/case';
 import { PageUrls } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import { AnyRecord } from '../../../../main/definitions/util-types';
 import {
+  clearTempFields,
   getApplicationDisplayByCode,
   getApplicationDisplayByUrl,
   getApplicationsAccordionItems,
@@ -139,6 +140,33 @@ describe('Contact Tribunal Helper', () => {
       } as CaseWithId;
       const result = isClaimantSystemUser(userCase);
       expect(result).toBe(false);
+    });
+  });
+
+  describe('clearTempFields', () => {
+    it('should clear all temporary fields from userCase', () => {
+      const userCase = {
+        id: 'case123',
+        contactApplicationType: 'witness',
+        contactApplicationText: 'Change claim',
+        contactApplicationFile: {
+          document_url: '12345',
+          document_filename: 'test.pdf',
+          document_binary_url: '',
+          document_size: 1000,
+          document_mime_type: 'pdf',
+        },
+        copyToOtherPartyYesOrNo: YesOrNo.NO,
+        copyToOtherPartyText: 'No reason',
+      } as CaseWithId;
+
+      clearTempFields(userCase);
+
+      expect(userCase.contactApplicationType).toBeUndefined();
+      expect(userCase.contactApplicationText).toBeUndefined();
+      expect(userCase.contactApplicationFile).toBeUndefined();
+      expect(userCase.copyToOtherPartyYesOrNo).toBeUndefined();
+      expect(userCase.copyToOtherPartyText).toBeUndefined();
     });
   });
 });
