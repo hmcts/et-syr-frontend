@@ -95,4 +95,7 @@ describe('DateUtils tests', () => {
   ])('format case date to date string with 2 chars of days and months', ({ value, result }) => {
     expect(DateUtils.convertCaseDateToApiDateStringYYYY_MM_DD(value)).toStrictEqual(result);
   });
+  test('should return current date', () => {
+    expect(DateUtils.getCurrentDate()).toHaveLength(10);
+  });
 });

@@ -1,51 +1,50 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
-import { DefaultValues, PageUrls, TranslationKeys, languages } from '../definitions/constants';
+import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { DocumentRow } from '../definitions/document';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
-import DateUtils from '../utils/DateUtils';
+import CollectionUtils from '../utils/CollectionUtils';
 import DocumentUtils from '../utils/DocumentUtils';
-import StringUtils from '../utils/StringUtils';
+import ET3Util from '../utils/ET3Util';
+import ObjectUtils from '../utils/ObjectUtils';
 
 export default class ClaimantET1FormController {
-  public async get(req: AppRequest, res: Response): Promise<void> {
+  public get = async (req: AppRequest, res: Response): Promise<void> => {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const redirectUrl: string = setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM);
-    const et1FormUrlValue: string = setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM_DETAILS);
-    const acasCertUrlValue: string = setUrlLanguage(req, PageUrls.CLAIMANT_ACAS_CERTIFICATE_DETAILS);
     const languageParam: string = getLanguageParam(req.url);
-    let et1FormDocument: ApiDocumentTypeItem;
-    req.session.et1FormEnglish = DocumentUtils.findET1DocumentByLanguage(
-      req.session?.userCase?.documentCollection as ApiDocumentTypeItem[],
-      languages.ENGLISH_URL_PARAMETER
+    await ET3Util.refreshRequestUserCase(req);
+    const et1FormDocumentRow: DocumentRow = DocumentUtils.convertApiDocumentTypeItemToDocumentRow(
+      req,
+      DocumentUtils.findET1FormByRequestAndUrlLanguage(req)
     );
-    req.session.et1FormWelsh = DocumentUtils.findET1DocumentByLanguage(
-      req.session?.userCase?.documentCollection as ApiDocumentTypeItem[],
-      languages.WELSH_URL_PARAMETER
-    );
-    if (languages.WELSH_URL_PARAMETER === languageParam && req.session.et1FormWelsh !== undefined) {
-      et1FormDocument = req.session.et1FormWelsh;
-    } else {
-      et1FormDocument = req.session.et1FormEnglish;
+    let documentRows: DocumentRow[] = [];
+    if (ObjectUtils.isNotEmpty(et1FormDocumentRow)) {
+      documentRows.push(et1FormDocumentRow);
     }
-    const formattedEt1FormDate: string = DateUtils.formatDateStringToDDMMMYYYY(
-      et1FormDocument?.value?.dateOfCorrespondence
+    const acasCertificateRow: DocumentRow = DocumentUtils.convertApiDocumentTypeItemToDocumentRow(
+      req,
+      DocumentUtils.findAcasCertificateByRequest(req)
     );
-    const acasCertificate: ApiDocumentTypeItem = DocumentUtils.findAcasCertificateByAcasNumber(
-      req.session?.userCase?.documentCollection as ApiDocumentTypeItem[],
-      req.session?.userCase?.acasCertNum
-    );
-    req.session.selectedAcasCertificate = acasCertificate;
-    let formattedAcasCertificateDate: string = DateUtils.formatDateStringToDDMMMYYYY(
-      acasCertificate?.value?.dateOfCorrespondence
-    );
-    if (StringUtils.isBlank(formattedAcasCertificateDate)) {
-      formattedAcasCertificateDate = DefaultValues.STRING_DASH;
+    if (ObjectUtils.isNotEmpty(acasCertificateRow)) {
+      documentRows.push(acasCertificateRow);
     }
+    const et1AttachmentRows: DocumentRow[] = DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(
+      req,
+      DocumentUtils.findET1AttachmentsInDocumentCollection(req?.session?.userCase?.documentCollection)
+    );
 
+    if (CollectionUtils.isNotEmpty(et1AttachmentRows)) {
+      for (const et1AttachmentRow of et1AttachmentRows) {
+        documentRows.push(et1AttachmentRow);
+      }
+    }
+    if (CollectionUtils.isEmpty(documentRows)) {
+      documentRows = undefined;
+    }
     res.render(TranslationKeys.CLAIMANT_ET1_FORM, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CLAIMANT_ET1_FORM as never, { returnObjects: true } as never),
@@ -54,14 +53,9 @@ export default class ClaimantET1FormController {
       hideContactUs: true,
       useCase: req.session.userCase,
       redirectUrl,
-      et1FormUrlValue,
-      acasCertUrlValue,
-      et1FormDocument,
-      acasCertificate,
-      formattedEt1FormDate,
-      formattedAcasCertificateDate,
+      documentRows,
       languageParam,
       welshEnabled,
     });
-  }
+  };
 }

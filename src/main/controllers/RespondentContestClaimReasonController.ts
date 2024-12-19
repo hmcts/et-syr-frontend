@@ -174,17 +174,17 @@ export default class RespondentContestClaimReasonController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
-    const userCase = req.session.userCase;
+    const redirectUrl: string = setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
+    const userCase: CaseWithId = req.session.userCase;
     const languageParam: string = getLanguageParam(req.url);
     let et1Form: ApiDocumentTypeItem;
     if (languageParam === languages.WELSH_URL_PARAMETER) {
-      et1Form = DocumentUtils.findET1DocumentByLanguage(
+      et1Form = DocumentUtils.findET1FormByLanguageAsApiDocumentTypeItem(
         req?.session?.userCase?.documentCollection,
         languages.WELSH_URL_PARAMETER
       );
     } else {
-      et1Form = DocumentUtils.findET1DocumentByLanguage(
+      et1Form = DocumentUtils.findET1FormByLanguageAsApiDocumentTypeItem(
         req?.session?.userCase?.documentCollection,
         languages.ENGLISH_URL_PARAMETER
       );

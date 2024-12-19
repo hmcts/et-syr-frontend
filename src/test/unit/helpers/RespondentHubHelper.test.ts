@@ -55,7 +55,7 @@ describe('getET3CaseDetailsLinksUrlMap', () => {
     [ET3CaseDetailsLinkNames.ContactTribunal, PageUrls.CONTACT_TRIBUNAL + languages.WELSH_URL_PARAMETER],
     [ET3CaseDetailsLinkNames.TribunalOrders, PageUrls.NOT_IMPLEMENTED + languages.WELSH_URL_PARAMETER],
     [ET3CaseDetailsLinkNames.TribunalJudgements, PageUrls.NOT_IMPLEMENTED + languages.WELSH_URL_PARAMETER],
-    [ET3CaseDetailsLinkNames.Documents, PageUrls.NOT_IMPLEMENTED + languages.WELSH_URL_PARAMETER],
+    [ET3CaseDetailsLinkNames.Documents, PageUrls.DOCUMENTS + languages.WELSH_URL_PARAMETER],
   ]);
   const et3CaseDetailsLinksMapEnglish: Map<string, string> = new Map<string, string>([
     [ET3CaseDetailsLinkNames.PersonalDetails, PageUrls.NOT_IMPLEMENTED],
@@ -67,7 +67,7 @@ describe('getET3CaseDetailsLinksUrlMap', () => {
     [ET3CaseDetailsLinkNames.ContactTribunal, PageUrls.CONTACT_TRIBUNAL],
     [ET3CaseDetailsLinkNames.TribunalOrders, PageUrls.NOT_IMPLEMENTED],
     [ET3CaseDetailsLinkNames.TribunalJudgements, PageUrls.NOT_IMPLEMENTED],
-    [ET3CaseDetailsLinkNames.Documents, PageUrls.NOT_IMPLEMENTED],
+    [ET3CaseDetailsLinkNames.Documents, PageUrls.DOCUMENTS],
   ]);
   it('returns correct links when respondent is system user in English', () => {
     expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, undefined, undefined)).toEqual(

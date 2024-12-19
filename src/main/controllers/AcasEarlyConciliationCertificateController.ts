@@ -78,10 +78,7 @@ export default class AcasEarlyConciliationCertificateController {
       req.session.userCase.et3ResponseAcasAgree = undefined;
       req.session.userCase.et3ResponseAcasAgreeReason = undefined;
     }
-    const acasCertificate: ApiDocumentTypeItem = DocumentUtils.findAcasCertificateByAcasNumber(
-      req.session?.userCase?.documentCollection as ApiDocumentTypeItem[],
-      req.session?.userCase?.acasCertNum
-    );
+    const acasCertificate: ApiDocumentTypeItem = DocumentUtils.findAcasCertificateByRequest(req);
     let acasCertLink: string = undefined;
     if (ObjectUtils.isNotEmpty(acasCertificate)) {
       acasCertLink = 'getCaseDocument/' + acasCertificate.id;
@@ -93,7 +90,6 @@ export default class AcasEarlyConciliationCertificateController {
     ]);
     res.render(TranslationKeys.ACAS_EARLY_CONCILIATION_CERTIFICATE, {
       ...content,
-      acasLink: PageUrls.CLAIMANT_ACAS_CERTIFICATE_DETAILS,
       hideContactUs: true,
       acasCertLink,
     });

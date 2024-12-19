@@ -60,6 +60,6 @@ export const getET3CaseDetailsLinksUrlMap = (
     ET3CaseDetailsLinkNames.TribunalJudgements,
     PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]
   );
-  caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.Documents, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
+  caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.Documents, PageUrls.DOCUMENTS + baseUrls[languageParam]);
   return caseDetailsLinksMap;
 };

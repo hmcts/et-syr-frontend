@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { RespondentET3Model } from '../definitions/case';
-import { PageUrls, et3AttachmentDocTypes } from '../definitions/constants';
+import { AllDocumentTypes, PageUrls, et3AttachmentDocTypes } from '../definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import {
   combineUserCaseDocuments,
@@ -36,7 +36,9 @@ export default class GetCaseDocumentController {
     const documentDetails = allDocumentSets.find(doc => doc && doc.id === docId);
     let contentType;
     let uploadedDocumentId = documentDetails?.id;
-    if (documentDetails) {
+    let isET1Form = false;
+    if (ObjectUtils.isNotEmpty(documentDetails)) {
+      isET1Form = documentDetails.originalDocumentName.startsWith('ET1 -');
       logger.info('requested document found in userCase fields');
       contentType = findContentTypeByDocumentDetail(documentDetails);
     } else {
@@ -79,6 +81,9 @@ export default class GetCaseDocumentController {
           documentTypeItem?.value?.uploadedDocument?.document_url
         );
         contentType = findContentTypeByDocumentName(documentTypeItem?.value?.uploadedDocument?.document_filename);
+        isET1Form =
+          documentTypeItem?.value?.typeOfDocument === AllDocumentTypes.ET1 ||
+          documentTypeItem?.value?.uploadedDocument?.document_filename.startsWith('ET1 -');
       }
     }
     try {
@@ -102,15 +107,17 @@ export default class GetCaseDocumentController {
         logger.error('Failed to download document with id: ' + documentDetails.id);
         res.setHeader('Content-Type', 'application/pdf');
       }
+      if (isET1Form) {
+        req.session.userCase = await ET3Util.updateCaseDetailsLinkStatuses(
+          req,
+          ET3CaseDetailsLinkNames.ET1ClaimForm,
+          LinkStatus.VIEWED
+        );
+      }
       res.status(200).send(Buffer.from(document.data, 'binary'));
     } catch (error) {
       logger.error(error.message);
       return res.redirect(PageUrls.NOT_FOUND);
     }
-    req.session.userCase = await ET3Util.updateCaseDetailsLinkStatuses(
-      req,
-      ET3CaseDetailsLinkNames.ET1ClaimForm,
-      LinkStatus.VIEWED
-    );
   }
 }

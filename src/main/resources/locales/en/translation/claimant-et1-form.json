@@ -1,11 +1,10 @@
 {
-  "title": "Claimant ET1 Form",
-  "h1": "The claimant’s ET1 claim form",
-  "tableTitle": "Claim related information",
+  "title": "Claimant ET1 Documents",
+  "h1": "The claimant’s ET1 claim documents",
   "et1Form": "ET1 Form",
   "acasCert": "Acas certificate",
-  "attachments": "Attachments included",
-  "dateServed": "[Date served]",
-  "notExists": "Not exists",
-  "attachmentNotFound": "Attachment not found"
+  "et1Attachments": "ET1 Attachments",
+  "tableHeaderDocument": "Document (the documents below open in a new tab)",
+  "tableHeaderType": "Type",
+  "tableHeaderDate": "Date"
 }

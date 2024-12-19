@@ -29,9 +29,9 @@ export default class CaseListController {
             const respondentName = ET3Util.getUserNameByRespondent(respondent);
             application.completionStatus = ET3Util.getOverallStatus(application.userCase, respondent, translations);
             if (StringUtils.isBlank(respondent.et3Status) || respondent.et3Status === ET3Status.IN_PROGRESS) {
-              et3NotCompleted.push(ET3Util.getUserApplicationsListItem(application, respondentName, respondent));
+              et3NotCompleted.push(ET3Util.getUserApplicationsListItem(req, application, respondentName, respondent));
             } else {
-              et3Completed.push(ET3Util.getUserApplicationsListItem(application, respondentName, respondent));
+              et3Completed.push(ET3Util.getUserApplicationsListItem(req, application, respondentName, respondent));
             }
           }
         }
