@@ -18,11 +18,6 @@ export default class DocumentUtils {
  * Attempts to find the ET1 form based on the given language and document collection.
  * First, it checks if the document collection is empty. If it is empty, it returns undefined.
  * If the document collection is not empty, it tries to find the ET1 form by the given language.
- * To identify the ET1 form, it checks if the document type is ET1.
- * If it finds any document with the type ET1 according to the selected language, it returns the document.
- * If the selected language is Welsh and it cannot find any ET1 form in Welsh but finds one in English,
- * it returns the ET1 form in English.
-
    * or not. If empty returns undefined. If not empty tries to find ET1 form by given language. To discriminate ET1 form
    * checks if document type is ET1 or not. If it finds any document with type ET1 according to selected language
    * returns document. If selected language is Welsh and not able to find any ET1 form in Welsh but finds in English
@@ -383,55 +378,5 @@ export default class DocumentUtils {
       }
     }
     return CollectionUtils.isEmpty(et1AttachedDocuments) ? undefined : et1AttachedDocuments;
-  }
-
-  /**
-   * Generates document rows for listing them on Documents page. First gets all documents in document collection.
-   * Then gets all ET3 Contest Claim documents and at the end gets ET3 Contract Claim document if exists.
-   * @param req request object of the session to be searched for documents.
-   */
-  public static generateDocumentRowsForDocumentsController(req: AppRequest): DocumentRow[] {
-    let documentRows: DocumentRow[] = [];
-    const documentCollectionAsDocumentRows: DocumentRow[] = DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(
-      req,
-      req.session.userCase.documentCollection as ApiDocumentTypeItem[]
-    );
-    if (CollectionUtils.isNotEmpty(documentCollectionAsDocumentRows)) {
-      for (const documentRow of documentCollectionAsDocumentRows) {
-        documentRows.push(documentRow);
-      }
-    }
-    const selectedRespondent: RespondentET3Model = RespondentUtils.findSelectedRespondentByRequest(req);
-    const et3Attachments: DocumentRow[] = DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(
-      req,
-      selectedRespondent?.et3ResponseContestClaimDocument
-    );
-    if (CollectionUtils.isNotEmpty(et3Attachments)) {
-      for (const documentRow of et3Attachments) {
-        documentRows.push(documentRow);
-      }
-    }
-    if (ObjectUtils.isNotEmpty(selectedRespondent?.et3ResponseEmployerClaimDocument)) {
-      let documentDate: string = DefaultValues.STRING_DASH;
-      if (
-        StringUtils.isNotBlank(selectedRespondent?.et3ResponseEmployerClaimDocument.upload_timestamp) &&
-        DateUtils.isDateStringValid(selectedRespondent?.et3ResponseEmployerClaimDocument.upload_timestamp)
-      ) {
-        documentDate = dateInLocale(
-          DateUtils.convertStringToDate(selectedRespondent?.et3ResponseEmployerClaimDocument.upload_timestamp),
-          req.url
-        );
-      }
-      documentRows.push({
-        type: AllDocumentTypes.ET3_ATTACHMENT,
-        name: selectedRespondent.et3ResponseEmployerClaimDocument.document_filename,
-        date: documentDate,
-        id: DocumentUtils.findDocumentIdByURL(selectedRespondent.et3ResponseEmployerClaimDocument.document_url),
-      });
-    }
-    if (CollectionUtils.isEmpty(documentRows)) {
-      documentRows = undefined;
-    }
-    return documentRows;
   }
 }
