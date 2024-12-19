@@ -378,4 +378,54 @@ export default class DocumentUtils {
     }
     return CollectionUtils.isEmpty(et1AttachedDocuments) ? undefined : et1AttachedDocuments;
   }
+
+  /**
+   * Generates document rows for listing them on Documents page. First gets all documents in document collection.
+   * Then gets all ET3 Contest Claim documents and at the end gets ET3 Contract Claim document if exists.
+   * @param req request object that document attachments will be searched for.
+   */
+  public static generateDocumentRowsForDocumentsController(req: AppRequest): DocumentRow[] {
+    let documentRows: DocumentRow[] = [];
+    const documentCollectionAsDocumentRows: DocumentRow[] = DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(
+      req,
+      req.session.userCase.documentCollection as ApiDocumentTypeItem[]
+    );
+    if (CollectionUtils.isNotEmpty(documentCollectionAsDocumentRows)) {
+      for (const documentRow of documentCollectionAsDocumentRows) {
+        documentRows.push(documentRow);
+      }
+    }
+    const selectedRespondent: RespondentET3Model = RespondentUtils.findSelectedRespondentByRequest(req);
+    const et3Attachments: DocumentRow[] = DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(
+      req,
+      selectedRespondent?.et3ResponseContestClaimDocument
+    );
+    if (CollectionUtils.isNotEmpty(et3Attachments)) {
+      for (const documentRow of et3Attachments) {
+        documentRows.push(documentRow);
+      }
+    }
+    if (ObjectUtils.isNotEmpty(selectedRespondent?.et3ResponseEmployerClaimDocument)) {
+      let documentDate: string = DefaultValues.STRING_DASH;
+      if (
+        StringUtils.isNotBlank(selectedRespondent?.et3ResponseEmployerClaimDocument.upload_timestamp) &&
+        DateUtils.isDateStringValid(selectedRespondent?.et3ResponseEmployerClaimDocument.upload_timestamp)
+      ) {
+        documentDate = dateInLocale(
+          DateUtils.convertStringToDate(selectedRespondent?.et3ResponseEmployerClaimDocument.upload_timestamp),
+          req.url
+        );
+      }
+      documentRows.push({
+        type: AllDocumentTypes.ET3_ATTACHMENT,
+        name: selectedRespondent.et3ResponseEmployerClaimDocument.document_filename,
+        date: documentDate,
+        id: DocumentUtils.findDocumentIdByURL(selectedRespondent.et3ResponseEmployerClaimDocument.document_url),
+      });
+    }
+    if (CollectionUtils.isEmpty(documentRows)) {
+      documentRows = undefined;
+    }
+    return documentRows;
+  }
 }
