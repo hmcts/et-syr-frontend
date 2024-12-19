@@ -8,7 +8,7 @@ import { isClaimantSystemUser } from '../helpers/controller/ContactTribunalHelpe
 import UrlUtils from '../utils/UrlUtils';
 
 export default class ContactTribunalCYAController {
-  public get(req: AppRequest, res: Response): void {
+  public get = (req: AppRequest, res: Response): void => {
     res.render(TranslationKeys.CONTACT_TRIBUNAL_CYA, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
       ...req.t(TranslationKeys.CONTACT_TRIBUNAL_CYA, { returnObjects: true }),
@@ -25,5 +25,5 @@ export default class ContactTribunalCYAController {
       InterceptPaths,
       languageParam: getLanguageParam(req.url),
     });
-  }
+  };
 }
