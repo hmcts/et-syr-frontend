@@ -4,11 +4,11 @@ import { AppRequest } from '../definitions/appRequest';
 import { TranslationKeys } from '../definitions/constants';
 import UrlUtils from '../utils/UrlUtils';
 
-export default class ContactTribunalSubmitConfirmController {
+export default class ContactTribunalStoreCompleteController {
   public get = (req: AppRequest, res: Response): void => {
-    res.render(TranslationKeys.CONTACT_TRIBUNAL_SUBMIT_CONFIRMATION, {
+    res.render(TranslationKeys.CONTACT_TRIBUNAL_STORE_COMPLETE, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
-      ...req.t(TranslationKeys.CONTACT_TRIBUNAL_SUBMIT_CONFIRMATION, { returnObjects: true }),
+      ...req.t(TranslationKeys.CONTACT_TRIBUNAL_STORE_COMPLETE, { returnObjects: true }),
       redirectUrl: UrlUtils.getCaseDetailsUrlByRequest(req),
     });
   };

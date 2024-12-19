@@ -33,9 +33,9 @@ import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPens
 import ContactTribunalCYAController from '../../controllers/ContactTribunalCYAController';
 import ContactTribunalController from '../../controllers/ContactTribunalController';
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
-import ContactTribunalStoreConfirmController from '../../controllers/ContactTribunalStoreConfirmController';
+import ContactTribunalStoreCompleteController from '../../controllers/ContactTribunalStoreCompleteController';
 import ContactTribunalStoreController from '../../controllers/ContactTribunalStoreController';
-import ContactTribunalSubmitConfirmController from '../../controllers/ContactTribunalSubmitConfirmController';
+import ContactTribunalSubmitCompleteController from '../../controllers/ContactTribunalSubmitCompleteController';
 import ContactTribunalSubmitController from '../../controllers/ContactTribunalSubmitController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import CopyToOtherPartyController from '../../controllers/CopyToOtherPartyController';
@@ -244,8 +244,8 @@ export class Routes {
     app.get(PageUrls.CONTACT_TRIBUNAL_CYA, new ContactTribunalCYAController().get);
     app.get(InterceptPaths.CONTACT_TRIBUNAL_STORE, new ContactTribunalStoreController().get);
     app.get(InterceptPaths.CONTACT_TRIBUNAL_SUBMIT, new ContactTribunalSubmitController().get);
-    app.get(PageUrls.CONTACT_TRIBUNAL_STORE_CONFIRMATION, new ContactTribunalStoreConfirmController().get);
-    app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_CONFIRMATION, new ContactTribunalSubmitConfirmController().get);
+    app.get(PageUrls.CONTACT_TRIBUNAL_STORE_COMPLETE, new ContactTribunalStoreCompleteController().get);
+    app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
     // others
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);

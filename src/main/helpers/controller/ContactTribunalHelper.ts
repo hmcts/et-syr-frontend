@@ -8,6 +8,19 @@ import { isContentCharsOrLess, isFieldFilledIn } from '../../validators/validato
 import { isTypeAOrB } from '../ApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
+/**
+ * List all applications in the Contact Tribunal page
+ * @param url request url for getting language param
+ * @param translations translation of the page
+ */
+export const getApplicationsAccordionItems = (url: string, translations: AnyRecord): AccordionItem[] => {
+  return (Object.keys(application) as (keyof typeof application)[]).map(key => {
+    const applicationHeading = translations.sections[key].label;
+    const applicationContent = getContentHtml(key, translations, getLanguageParam(url));
+    return addAccordionRow(applicationHeading, applicationContent);
+  });
+};
+
 const getContentHtml = (key: keyof typeof application, translations: AnyRecord, languageParam: string): string => {
   return (
     '<p class="govuk-body">' +
@@ -22,14 +35,11 @@ const getContentHtml = (key: keyof typeof application, translations: AnyRecord, 
   );
 };
 
-export const getApplicationsAccordionItems = (url: string, translations: AnyRecord): AccordionItem[] => {
-  return (Object.keys(application) as (keyof typeof application)[]).map(key => {
-    const applicationHeading = translations.sections[key].label;
-    const applicationContent = getContentHtml(key, translations, getLanguageParam(url));
-    return addAccordionRow(applicationHeading, applicationContent);
-  });
-};
-
+/**
+ * Get Application Type as heading by url
+ * @param url url of application
+ * @param translations translation of the page
+ */
 export const getApplicationDisplayByUrl = (url: string, translations: AnyRecord): string => {
   if (!url) {
     return '';
@@ -38,6 +48,11 @@ export const getApplicationDisplayByUrl = (url: string, translations: AnyRecord)
   return appKey ? translations[appKey] : '';
 };
 
+/**
+ * Get Application Type as heading by application code
+ * @param appCode code of application
+ * @param translations translation of the page
+ */
 export const getApplicationDisplayByCode = (appCode: string, translations: AnyRecord): string => {
   if (!appCode) {
     return '';
@@ -46,6 +61,10 @@ export const getApplicationDisplayByCode = (appCode: string, translations: AnyRe
   return appKey ? translations[appKey] : '';
 };
 
+/**
+ * Return COPY_TO_OTHER_PARTY when Type A or B, otherwise return CONTACT_TRIBUNAL_CYA
+ * @param app selected application
+ */
 export const getNextPage = (app: Application): string => {
   return isTypeAOrB(app) ? PageUrls.COPY_TO_OTHER_PARTY : PageUrls.CONTACT_TRIBUNAL_CYA;
 };
@@ -80,6 +99,10 @@ export const isClaimantSystemUser = (userCase: CaseWithId): boolean => {
   return false;
 };
 
+/**
+ * Check and return errors in Contact Tribunal page
+ * @param formData form data from Contact Tribunal input
+ */
 export const getFormDataError = (formData: Partial<CaseWithId>): FormError => {
   const file = formData.contactApplicationFile;
   const text = formData.contactApplicationText;
@@ -93,4 +116,12 @@ export const getFormDataError = (formData: Partial<CaseWithId>): FormError => {
   if (isContentCharsOrLess(2500)(text)) {
     return { propertyName: 'contactApplicationText', errorType: ValidationErrors.TOO_LONG };
   }
+};
+
+export const clearTempFields = (userCase: CaseWithId): void => {
+  userCase.contactApplicationType = undefined;
+  userCase.contactApplicationText = undefined;
+  userCase.contactApplicationFile = undefined;
+  userCase.copyToOtherPartyYesOrNo = undefined;
+  userCase.copyToOtherPartyText = undefined;
 };
