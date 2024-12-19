@@ -118,6 +118,10 @@ export const getFormDataError = (formData: Partial<CaseWithId>): FormError => {
   }
 };
 
+/**
+ * Clear temporary fields stored in session
+ * @param userCase session userCase
+ */
 export const clearTempFields = (userCase: CaseWithId): void => {
   userCase.contactApplicationType = undefined;
   userCase.contactApplicationText = undefined;
