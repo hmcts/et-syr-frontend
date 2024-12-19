@@ -31,7 +31,7 @@ export const mockET1SubmittedForm: DocumentDetail = {
   createdOn: '2024-10-21',
   type: 'ET1',
   description: 'ET1 submitted form',
-  originalDocumentName: 'test_document.pdf',
+  originalDocumentName: 'ET1 -test_document.pdf',
 };
 
 export const mockedET1FormWelsh: ApiDocumentTypeItem = {

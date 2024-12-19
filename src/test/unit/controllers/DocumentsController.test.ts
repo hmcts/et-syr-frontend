@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
-import ClaimantET1FormController from '../../../main/controllers/ClaimantET1FormController';
-import { ApiDocumentTypeItem } from '../../../main/definitions/complexTypes/documentTypeItem';
-import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import DocumentsController from '../../../main/controllers/DocumentsController';
+import { CaseWithId, RespondentET3Model } from '../../../main/definitions/case';
+import { AllDocumentTypes, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { DocumentRow } from '../../../main/definitions/document';
 import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
 import { getLanguageParam } from '../../../main/helpers/RouterHelpers';
@@ -10,6 +10,10 @@ import { getFlagValue } from '../../../main/modules/featureFlag/launchDarkly';
 import DocumentUtils from '../../../main/utils/DocumentUtils';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockValidCaseWithId } from '../mocks/mockCaseWithId';
+import {
+  mockedET1FormEnglishDocumentApiModel,
+  mockedET1FormWelshDocumentApiModel,
+} from '../mocks/mockDocumentApiModel';
 import { mockET1FormEnglish, mockET1FormWelsh } from '../mocks/mockDocumentUploadResponse';
 import { mockedAcasForm } from '../mocks/mockDocuments';
 import { mockRequest } from '../mocks/mockRequest';
@@ -20,26 +24,26 @@ jest.mock('../../../main/helpers/LanguageHelper');
 jest.mock('../../../main/modules/featureFlag/launchDarkly');
 jest.mock('../../../main/helpers/RouterHelpers');
 
-const refreshRequestUserCaseMock = jest.spyOn(ET3Util, 'refreshRequestUserCase');
-
-describe('Claimant ET1 Form Controller', () => {
-  let controller: ClaimantET1FormController;
+describe('Documents Controller', () => {
+  let controller: DocumentsController;
   let request: ReturnType<typeof mockRequest>;
   let response: ReturnType<typeof mockResponse>;
 
   beforeEach(() => {
-    controller = new ClaimantET1FormController();
-    request = mockRequest({});
+    controller = new DocumentsController();
     response = mockResponse();
+    request = mockRequest({});
 
     // Mocking external dependencies
-    (setUrlLanguage as jest.Mock).mockReturnValue(PageUrls.CLAIMANT_ET1_FORM);
+    (setUrlLanguage as jest.Mock).mockReturnValue(PageUrls.DOCUMENTS);
     (getFlagValue as jest.Mock).mockResolvedValue(true); // Assume Welsh is enabled for the test
     (getLanguageParam as jest.Mock).mockReturnValue('en');
   });
 
   describe('GET method', () => {
-    it('should call res.render with the correct parameters', async () => {
+    const refreshRequestUserCaseMock = jest.spyOn(ET3Util, 'refreshRequestUserCase');
+    it('should call res.render of documents controller without any documentRows', async () => {
+      // Call the controller's GET method
       refreshRequestUserCaseMock.mockImplementationOnce((): Promise<void> => {
         request.session.userCase = mockValidCaseWithId;
         return undefined;
@@ -48,12 +52,12 @@ describe('Claimant ET1 Form Controller', () => {
 
       // Expect that res.render was called with the right template and object
       expect(response.render).toHaveBeenCalledWith(
-        TranslationKeys.CLAIMANT_ET1_FORM,
+        TranslationKeys.DOCUMENTS,
         expect.objectContaining({
           PageUrls,
           hideContactUs: true,
           useCase: request.session.userCase,
-          redirectUrl: PageUrls.CLAIMANT_ET1_FORM,
+          redirectUrl: PageUrls.DOCUMENTS,
           languageParam: 'en',
           welshEnabled: true,
           documentRows: undefined,
@@ -61,33 +65,48 @@ describe('Claimant ET1 Form Controller', () => {
       );
     });
 
-    it('should set acas certificate and both english and welsh et1forms to session and res.render is called with mockedET1FormEnglish', async () => {
-      const documentRows: DocumentRow[] = DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(request, [
-        mockET1FormEnglish,
-        mockedAcasForm,
-      ]);
+    it('should set all documents', async () => {
       refreshRequestUserCaseMock.mockImplementationOnce((): Promise<void> => {
-        const userCase = _.cloneDeep(mockValidCaseWithId);
+        const userCase: CaseWithId = _.cloneDeep(mockValidCaseWithId);
         userCase.documentCollection = [mockET1FormEnglish, mockET1FormWelsh, mockedAcasForm];
-        userCase.respondents = [mockRespondentET3Model];
-        userCase.acasCertNum = 'R123456_78_90';
-        request.session.selectedRespondentIndex = 0;
+        const respondent: RespondentET3Model = _.cloneDeep(mockRespondentET3Model);
+        respondent.et3ResponseEmployerClaimDocument = {
+          upload_timestamp: '2024-11-04T13:53:43.000+00:00',
+          document_binary_url: 'https://document/asdjfasdfasdfads/binary',
+          document_url: 'https://document/asdjfasdfasdfads',
+          document_filename: 'dummy_document_file_name',
+          category_id: AllDocumentTypes.ET3_ATTACHMENT,
+        };
+        respondent.et3ResponseContestClaimDocument = [
+          mockedET1FormWelshDocumentApiModel,
+          mockedET1FormEnglishDocumentApiModel,
+        ];
+        userCase.respondents = [respondent];
         request.session.userCase = userCase;
+        request.session.selectedRespondentIndex = 0;
         return undefined;
       });
-
+      const documentRows: DocumentRow[] = DocumentUtils.convertApiDocumentTypeItemListToDocumentRows(request, [
+        mockET1FormEnglish,
+        mockET1FormWelsh,
+        mockedAcasForm,
+        mockedET1FormWelshDocumentApiModel,
+        mockedET1FormEnglishDocumentApiModel,
+      ]);
+      documentRows.push({
+        id: 'asdjfasdfasdfads',
+        type: AllDocumentTypes.ET3_ATTACHMENT,
+        date: '4 November 2024',
+        name: 'dummy_document_file_name',
+      });
       await controller.get(request, response);
-      // Expect that res.render was called with the right template and object
-      expect(request.session.et1FormWelsh).toStrictEqual(mockET1FormWelsh as ApiDocumentTypeItem);
-      expect(request.session.et1FormEnglish).toStrictEqual(mockET1FormEnglish as ApiDocumentTypeItem);
-      expect(request.session.selectedAcasCertificate).toStrictEqual(mockedAcasForm as ApiDocumentTypeItem);
       expect(response.render).toHaveBeenCalledWith(
-        TranslationKeys.CLAIMANT_ET1_FORM,
+        TranslationKeys.DOCUMENTS,
         expect.objectContaining({
           PageUrls,
           hideContactUs: true,
           useCase: request.session.userCase,
-          redirectUrl: PageUrls.CLAIMANT_ET1_FORM,
+          redirectUrl: PageUrls.DOCUMENTS,
           languageParam: 'en',
           welshEnabled: true,
           documentRows,

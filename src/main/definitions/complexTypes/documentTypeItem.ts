@@ -21,11 +21,13 @@ export interface ApiDocumentTypeItem {
     documentType?: string;
     typeOfDocument?: string;
     shortDescription?: string;
+    creationDate?: string;
     uploadedDocument?: {
       category_id?: string;
       document_url: string;
       document_filename: string;
       document_binary_url: string;
+      createdOn?: string;
     };
     topLevelDocuments?: string;
     dateOfCorrespondence?: string;

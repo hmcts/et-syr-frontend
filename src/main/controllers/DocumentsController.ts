@@ -2,29 +2,31 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { DocumentRow } from '../definitions/document';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
-import DateUtils from '../utils/DateUtils';
+import DocumentUtils from '../utils/DocumentUtils';
+import ET3Util from '../utils/ET3Util';
 
-export default class ClaimantAcasCertificateDetailsController {
-  public async get(req: AppRequest, res: Response): Promise<void> {
+export default class DocumentsController {
+  public get = async (req: AppRequest, res: Response): Promise<void> => {
+    const redirectUrl: string = setUrlLanguage(req, PageUrls.DOCUMENTS);
+    const languageParam: string = getLanguageParam(req.url);
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
-    const redirectUrl = setUrlLanguage(req, PageUrls.CLAIMANT_ACAS_CERTIFICATE_DETAILS);
-    const acasCert = req.session.selectedAcasCertificate;
-    const formattedAcasCertificateDate = DateUtils.formatDateStringToDDMMMYYYY(acasCert?.value?.dateOfCorrespondence);
-    res.render(TranslationKeys.CLAIMANT_ACAS_CERTIFICATE_DETAILS, {
+    await ET3Util.refreshRequestUserCase(req);
+    const documentRows: DocumentRow[] = DocumentUtils.generateDocumentRowsForDocumentsController(req);
+    res.render(TranslationKeys.DOCUMENTS, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.CLAIMANT_ACAS_CERTIFICATE_DETAILS as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.DOCUMENTS as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,
       hideContactUs: true,
       useCase: req.session.userCase,
       redirectUrl,
-      acasCert,
-      formattedAcasCertificateDate,
-      languageParam: getLanguageParam(req.url),
+      documentRows,
+      languageParam,
       welshEnabled,
     });
-  }
+  };
 }

@@ -1,6 +1,8 @@
 import axios from 'axios';
 
 import GetCaseDocumentController from '../../../main/controllers/GetCaseDocumentController';
+import { AppRequest } from '../../../main/definitions/appRequest';
+import { ApiDocumentTypeItem } from '../../../main/definitions/complexTypes/documentTypeItem';
 import { PageUrls, ServiceErrors } from '../../../main/definitions/constants';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
@@ -83,12 +85,15 @@ describe('Get case document controller', () => {
     expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
   });
   it('Should get content type from document data when there is no content type in documents', async () => {
-    const et1Form = mockedET1FormWelsh;
+    const et1Form: ApiDocumentTypeItem = mockedET1FormWelsh;
     et1Form.value.uploadedDocument.document_filename = 'dummy_document_file_name';
-    requestWithDocIdUserCase.session.userCase.documentCollection = [et1Form];
+    const requestWithUserCase: AppRequest = mockRequest({});
+    requestWithUserCase.session.userCase = mockValidCaseWithId;
+    requestWithUserCase.session.userCase.documentCollection = [et1Form];
+    requestWithUserCase.params.docId = '916d3bc2-006a-40ee-a95e-b59eeb14e865';
     getCaseApiMock.mockReturnValue(api);
     api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
-    await getCaseDocumentController.get(requestWithDocIdUserCase, response);
+    await getCaseDocumentController.get(requestWithUserCase, response);
     expect(response.status(200).send).toHaveBeenCalled();
   });
   it('Should find document in selected respondent et3ResponseContestClaimDocument list when not found in document collection', async () => {

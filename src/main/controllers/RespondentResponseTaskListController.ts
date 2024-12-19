@@ -29,20 +29,17 @@ export default class RespondentResponseTaskListController {
     const languageParam = getLanguageParam(req.url);
     let et1Form: ApiDocumentTypeItem;
     if (languageParam === languages.WELSH_URL_PARAMETER) {
-      et1Form = DocumentUtils.findET1DocumentByLanguage(
+      et1Form = DocumentUtils.findET1FormByLanguageAsApiDocumentTypeItem(
         req?.session?.userCase?.documentCollection,
         languages.WELSH_URL_PARAMETER
       );
     } else {
-      et1Form = DocumentUtils.findET1DocumentByLanguage(
+      et1Form = DocumentUtils.findET1FormByLanguageAsApiDocumentTypeItem(
         req?.session?.userCase?.documentCollection,
         languages.ENGLISH_URL_PARAMETER
       );
     }
-    const acasCertificate: ApiDocumentTypeItem = DocumentUtils.findAcasCertificateByAcasNumber(
-      req.session?.userCase?.documentCollection as ApiDocumentTypeItem[],
-      req.session?.userCase?.acasCertNum
-    );
+    const acasCertificate: ApiDocumentTypeItem = DocumentUtils.findAcasCertificateByRequest(req);
     let sectionIndexToEt3HubLinkNames: ET3HubLinkNames[][] = SectionIndexToEt3HubLinkNamesWithoutEmployersContractClaim;
     if (
       req.session?.userCase?.typeOfClaim?.includes(CLAIM_TYPES.BREACH_OF_CONTRACT) ||
