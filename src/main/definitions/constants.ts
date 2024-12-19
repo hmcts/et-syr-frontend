@@ -84,8 +84,8 @@ export const TranslationKeys = {
   COPY_TO_OTHER_PARTY: 'copy-to-other-party',
   COPY_TO_OTHER_PARTY_OFFLINE: 'copy-to-other-party-offline',
   CONTACT_TRIBUNAL_CYA: 'contact-tribunal-check-your-answers',
-  CONTACT_TRIBUNAL_STORE_CONFIRMATION: '/contact-tribunal-store-confirmation',
-  CONTACT_TRIBUNAL_SUBMIT_CONFIRMATION: '/contact-tribunal-submit-confirmation',
+  CONTACT_TRIBUNAL_STORE_CONFIRMATION: 'contact-tribunal-store-confirmation',
+  CONTACT_TRIBUNAL_SUBMIT_CONFIRMATION: 'contact-tribunal-submit-confirmation',
 } as const;
 
 export const PageUrls = {
