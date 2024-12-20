@@ -4,7 +4,6 @@ import { AppRequest } from '../definitions/appRequest';
 import { InterceptPaths, TranslationKeys } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getCyaContent } from '../helpers/controller/ContactTribunalCYAHelper';
-import { isClaimantSystemUser } from '../helpers/controller/ContactTribunalHelper';
 import UrlUtils from '../utils/UrlUtils';
 
 export default class ContactTribunalCYAController {
@@ -21,9 +20,7 @@ export default class ContactTribunalCYAController {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
         ...req.t(TranslationKeys.CONTACT_TRIBUNAL_CYA, { returnObjects: true }),
       }),
-      isOnline: isClaimantSystemUser(req.session.userCase),
-      InterceptPaths,
-      languageParam: getLanguageParam(req.url),
+      submitLink: InterceptPaths.CONTACT_TRIBUNAL_SUBMIT + getLanguageParam(req.url),
     });
   };
 }

@@ -81,9 +81,7 @@ export const TranslationKeys = {
   CONTACT_TRIBUNAL: 'contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: 'contact-tribunal-selected',
   COPY_TO_OTHER_PARTY: 'copy-to-other-party',
-  COPY_TO_OTHER_PARTY_OFFLINE: 'copy-to-other-party-offline',
   CONTACT_TRIBUNAL_CYA: 'contact-tribunal-check-your-answers',
-  CONTACT_TRIBUNAL_STORE_COMPLETE: 'contact-tribunal-store-complete',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: 'contact-tribunal-submit-complete',
 } as const;
 
@@ -153,7 +151,6 @@ export const PageUrls = {
   CONTACT_TRIBUNAL_SELECTED: '/contact-tribunal/:selectedOption',
   COPY_TO_OTHER_PARTY: '/copy-to-other-party',
   CONTACT_TRIBUNAL_CYA: '/contact-tribunal-check-your-answers',
-  CONTACT_TRIBUNAL_STORE_COMPLETE: '/contact-tribunal-store-complete/:appId',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
 } as const;
 
@@ -171,7 +168,6 @@ export const InterceptPaths = {
   SUBMIT_CASE: '/submitDraftCase',
   REMOVE_FILE: '/remove-uploaded-file',
   // Contact Tribunal
-  CONTACT_TRIBUNAL_STORE: '/storeContactTribunal',
   CONTACT_TRIBUNAL_SUBMIT: '/submitContactTribunal',
 } as const;
 
@@ -255,20 +251,6 @@ export const JavaApiUrls = {
   UPDATE_CASE_DRAFT: 'cases/update-case',
   SUBMIT_CASE: 'cases/submit-case',
   UPDATE_CASE_SUBMITTED: 'cases/update-hub-links-statuses',
-  RESPOND_TO_APPLICATION: 'cases/respond-to-application',
-  CHANGE_APPLICATION_STATUS: 'cases/change-application-status',
-  SUBMIT_CLAIMANT_APPLICATION: 'cases/submit-claimant-application',
-  STORE_CLAIMANT_APPLICATION: 'store/store-claimant-application',
-  STORE_RESPOND_TO_APPLICATION: 'store/store-respond-to-application',
-  SUBMIT_STORED_CLAIMANT_APPLICATION: 'store/submit-stored-claimant-application',
-  SUBMIT_STORED_RESPOND_TO_APPLICATION: 'store/submit-stored-respond-to-application',
-  TRIBUNAL_RESPONSE_VIEWED: 'cases/tribunal-response-viewed',
-  ADD_RESPONSE_TO_SEND_NOTIFICATION: '/sendNotification/add-response-send-notification',
-  UPDATE_NOTIFICATION_STATE: '/sendNotification/update-notification-state',
-  STORE_RESPOND_TO_TRIBUNAL: 'store/store-respond-to-tribunal',
-  SUBMIT_STORED_RESPOND_TO_TRIBUNAL: 'store/submit-stored-respond-to-tribunal',
-  UPDATE_ADMIN_DECISION_STATE: '/tseAdmin/update-admin-decision-state',
-  SUBMIT_BUNDLES: 'bundles/submit-bundles',
   ROLE_PARAM_NAME: 'case_user_role',
   MODIFY_ET3_DATA: '/et3/modifyEt3Data',
   FIND_CASE_BY_ETHOS_CASE_REFERENCE_PARAM_NAME: 'ethosCaseReference',

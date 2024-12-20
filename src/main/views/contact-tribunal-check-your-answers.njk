@@ -19,24 +19,12 @@
         rows: cyaContent
       }) }}
 
-      {% if not isOnline %}
-        <p class="govuk-body">{{ offlineNote }}</p>
-      {% endif %}
-
       <div class="govuk-button-group">
-        {% if isOnline %}
-          {{ govukButton({
-            text: submit,
-            href: InterceptPaths.CONTACT_TRIBUNAL_SUBMIT + languageParam,
-            preventDoubleClick: true
-          }) }}
-        {% else %}
-          {{ govukButton({
-            text: storeButton,
-            href: InterceptPaths.CONTACT_TRIBUNAL_STORE + languageParam,
-            preventDoubleClick: true
-          }) }}
-        {% endif %}
+        {{ govukButton({
+          text: submit,
+          href: submitLink,
+          preventDoubleClick: true
+        }) }}
         <a class="govuk-link" href={{ cancelLink }}>{{ cancel }}</a>
       </div>
     </div>

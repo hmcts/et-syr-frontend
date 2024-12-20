@@ -1,5 +1,5 @@
 import CopyToOtherPartyController from '../../../main/controllers/CopyToOtherPartyController';
-import { CaseWithId, YesOrNo } from '../../../main/definitions/case';
+import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -21,15 +21,6 @@ describe('Copy to Other Party Controller', () => {
       request.session.userCase = mockUserCase;
       controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.COPY_TO_OTHER_PARTY, expect.anything());
-    });
-
-    it('should render the page COPY_TO_OTHER_PARTY_OFFLINE', () => {
-      request.session.userCase = {
-        id: 'case123',
-        hubLinksStatuses: undefined,
-      } as CaseWithId;
-      controller.get(request, response);
-      expect(response.render).toHaveBeenCalledWith(TranslationKeys.COPY_TO_OTHER_PARTY_OFFLINE, expect.anything());
     });
   });
 

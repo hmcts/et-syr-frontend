@@ -33,8 +33,6 @@ import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPens
 import ContactTribunalCYAController from '../../controllers/ContactTribunalCYAController';
 import ContactTribunalController from '../../controllers/ContactTribunalController';
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
-import ContactTribunalStoreCompleteController from '../../controllers/ContactTribunalStoreCompleteController';
-import ContactTribunalStoreController from '../../controllers/ContactTribunalStoreController';
 import ContactTribunalSubmitCompleteController from '../../controllers/ContactTribunalSubmitCompleteController';
 import ContactTribunalSubmitController from '../../controllers/ContactTribunalSubmitController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
@@ -242,9 +240,7 @@ export class Routes {
     app.get(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().get);
     app.post(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().post);
     app.get(PageUrls.CONTACT_TRIBUNAL_CYA, new ContactTribunalCYAController().get);
-    app.get(InterceptPaths.CONTACT_TRIBUNAL_STORE, new ContactTribunalStoreController().get);
     app.get(InterceptPaths.CONTACT_TRIBUNAL_SUBMIT, new ContactTribunalSubmitController().get);
-    app.get(PageUrls.CONTACT_TRIBUNAL_STORE_COMPLETE, new ContactTribunalStoreCompleteController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
     // others
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
