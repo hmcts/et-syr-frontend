@@ -33,6 +33,8 @@ import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPens
 import ContactTribunalCYAController from '../../controllers/ContactTribunalCYAController';
 import ContactTribunalController from '../../controllers/ContactTribunalController';
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
+import ContactTribunalSubmitCompleteController from '../../controllers/ContactTribunalSubmitCompleteController';
+import ContactTribunalSubmitController from '../../controllers/ContactTribunalSubmitController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import CopyToOtherPartyController from '../../controllers/CopyToOtherPartyController';
 import DocumentsController from '../../controllers/DocumentsController';
@@ -238,6 +240,8 @@ export class Routes {
     app.get(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().get);
     app.post(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().post);
     app.get(PageUrls.CONTACT_TRIBUNAL_CYA, new ContactTribunalCYAController().get);
+    app.get(InterceptPaths.CONTACT_TRIBUNAL_SUBMIT, new ContactTribunalSubmitController().get);
+    app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
     // others
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);

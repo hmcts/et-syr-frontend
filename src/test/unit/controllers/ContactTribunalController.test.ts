@@ -1,28 +1,38 @@
 import ContactTribunalController from '../../../main/controllers/ContactTribunalController';
-import { TranslationKeys } from '../../../main/definitions/constants';
+import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
-import contactTribunal from '../../../main/resources/locales/en/translation/contact-tribunal.json';
+import contactTribunalJson from '../../../main/resources/locales/en/translation/contact-tribunal.json';
 import { mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
 describe('Contact Tribunal Controller', () => {
-  const mockLdClient = jest.spyOn(LaunchDarkly, 'getFlagValue');
-  mockLdClient.mockResolvedValue(true);
+  let controller: ContactTribunalController;
+  let request: ReturnType<typeof mockRequestWithTranslation>;
+  let response: ReturnType<typeof mockResponse>;
 
-  it('should render contact application page', async () => {
-    const controller = new ContactTribunalController();
-    const response = mockResponse();
-    const request = mockRequestWithTranslation({}, contactTribunal);
-
-    await controller.get(request, response);
-    expect(response.render).toHaveBeenCalledWith(TranslationKeys.CONTACT_TRIBUNAL, expect.anything());
+  beforeEach(() => {
+    controller = new ContactTribunalController();
+    request = mockRequestWithTranslation({}, contactTribunalJson);
+    response = mockResponse();
   });
 
-  it('should render accordion items', async () => {
-    const controller = new ContactTribunalController();
-    const response = mockResponse();
-    const request = mockRequestWithTranslation({}, contactTribunal);
+  it('should redirect to holding page if feature flag is disabled', async () => {
+    jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(false);
+    await controller.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.HOLDING_PAGE + languages.ENGLISH_URL_PARAMETER);
+    expect(response.render).not.toHaveBeenCalled();
+  });
 
+  it('should redirect to holding page if other party is offline', async () => {
+    jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(true);
+    await controller.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.HOLDING_PAGE + languages.ENGLISH_URL_PARAMETER);
+    expect(response.render).not.toHaveBeenCalled();
+  });
+
+  it('should render contact application page', async () => {
+    jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(true);
+    request.session.userCase.et1OnlineSubmission = 'submitted Et1 Form';
     await controller.get(request, response);
     expect(response.render).toHaveBeenCalledWith(
       TranslationKeys.CONTACT_TRIBUNAL,
