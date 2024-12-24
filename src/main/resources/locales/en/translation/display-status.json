@@ -1,0 +1,15 @@
+{
+  "completed": "Completed",
+  "submitted": "Submitted",
+  "optional": "Optional",
+  "viewed": "Viewed",
+  "important": "Important",
+  "notViewedYet": "Not viewed yet",
+  "notStartedYet": "Not started yet",
+  "notAvailableYet": "Not available yet",
+  "inProgress": "In progress",
+  "waitingForTheTribunal": "Waiting for the tribunal",
+  "submittedAndViewed": "Submitted",
+  "updated": "Updated",
+  "readyToView": "Ready to view"
+}
