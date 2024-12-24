@@ -38,7 +38,9 @@
 </p>
 
 <p class='govuk-body'>
-  {{ hours | safe }}
+  {{ hours.line1 }} <br/>
+  {{ hours.line2 }} <br/>
+  {{ hours.line3 }}
 </p>
 
 <a href="https://www.gov.uk/call-charges" target="_blank" class="govuk-link">{{ callCharges }}</a>
