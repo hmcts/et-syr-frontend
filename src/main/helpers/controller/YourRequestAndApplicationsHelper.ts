@@ -12,14 +12,14 @@ export const getApplicationCollection = (
   url: string,
   translations: AnyRecord
 ): GenericTseApplicationTypeItem[] => {
-  const claimantItems = (userCase.genericTseApplicationCollection || []).filter(
-    item => item.value?.applicant === Applicant.RESPONDENT
+  const claimantApps = (userCase.genericTseApplicationCollection || []).filter(
+    app => app.value?.applicant === Applicant.RESPONDENT
   );
-  claimantItems.forEach(item => {
-    item.linkValue = getApplicationDisplayByCode(item.value.type, translations);
-    item.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', item.id) + getLanguageParam(url);
-    item.statusColor = linkStatusColorMap.get(<LinkStatus>item.value.status);
-    item.displayStatus = translations[item.value.status];
+  claimantApps.forEach(app => {
+    app.linkValue = getApplicationDisplayByCode(app.value.type, translations);
+    app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
+    app.statusColor = linkStatusColorMap.get(<LinkStatus>app.value.status);
+    app.displayStatus = translations[app.value.status];
   });
-  return claimantItems;
+  return claimantApps;
 };
