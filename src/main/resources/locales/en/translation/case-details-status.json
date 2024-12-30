@@ -3,13 +3,14 @@
   "submitted": "Submitted",
   "optional": "Optional",
   "viewed": "Viewed",
-  "important": "Important",
   "notViewedYet": "Not viewed yet",
-  "notStartedYet": "Not started yet",
   "notAvailableYet": "Not available yet",
-  "inProgress": "In progress",
   "waitingForTheTribunal": "Waiting for the tribunal",
-  "submittedAndViewed": "Submitted",
+  "submittedAndViewed": "Submitted and viewed",
+  "inProgress": "In progress",
+  "stored": "Stored",
+  "notStartedYet": "Not started yet",
   "updated": "Updated",
-  "readyToView": "Ready to view"
+  "readyToView": "Ready to view",
+  "cannotStartYet": "Cannot start yet"
 }

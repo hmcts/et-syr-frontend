@@ -3,7 +3,7 @@ import { application } from '../../../../main/definitions/contact-tribunal-appli
 import { LinkStatus, linkStatusColorMap } from '../../../../main/definitions/links';
 import { getApplicationCollection } from '../../../../main/helpers/controller/YourRequestAndApplicationsHelper';
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
-import displayStatusJson from '../../../../main/resources/locales/en/translation/display-status.json';
+import caseDetailsStatusJson from '../../../../main/resources/locales/en/translation/case-details-status.json';
 import mockUserCase from '../../mocks/mockUserCase';
 
 describe('getApplicationCollection', () => {
@@ -11,7 +11,7 @@ describe('getApplicationCollection', () => {
   const reqUrl = '/url';
   const translations = {
     ...applicationTypeJson,
-    ...displayStatusJson,
+    ...caseDetailsStatusJson,
   };
 
   it('should return filtered and formatted claimant items', () => {

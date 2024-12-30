@@ -3,13 +3,14 @@
   "submitted": "[W]Submitted",
   "optional": "[W]Optional",
   "viewed": "[W]Viewed",
-  "important": "[W]Important",
   "notViewedYet": "[W]Not viewed yet",
-  "notStartedYet": "[W]Not started yet",
   "notAvailableYet": "[W]Not available yet",
-  "inProgress": "[W]In progress",
   "waitingForTheTribunal": "[W]Waiting for the tribunal",
-  "submittedAndViewed": "[W]Submitted",
+  "submittedAndViewed": "[W]Submitted and viewed",
+  "inProgress": "[W]In progress",
+  "stored": "[W]Stored",
+  "notStartedYet": "[W]Not started yet",
   "updated": "[W]Updated",
-  "readyToView": "[W]Ready to view"
+  "readyToView": "[W]Ready to view",
+  "cannotStartYet": "[W]Cannot start yet"
 }
