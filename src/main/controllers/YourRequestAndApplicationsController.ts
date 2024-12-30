@@ -13,7 +13,7 @@ export default class YourRequestAndApplicationsController {
       hideContactUs: true,
       appList: getApplicationCollection(req.session.userCase, req.url, {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
-        ...req.t(TranslationKeys.DISPLAY_STATUS, { returnObjects: true }),
+        ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
       }),
     });
   };
