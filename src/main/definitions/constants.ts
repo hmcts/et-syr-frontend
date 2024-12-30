@@ -31,7 +31,6 @@ export const TranslationKeys = {
   YOUR_RESPONSE_FORM: 'your-response-form',
   APPLICATION_SUBMITTED: 'application-submitted',
   RESPONSE_SAVED: 'response-saved',
-  RESPONDENT_ET3_COMMON: 'et3-common',
   CHECK_YOUR_ANSWERS_ET3: 'check-your-answers-et3',
   CLAIMANT_ET1_FORM: 'claimant-et1-form',
   DOCUMENTS: 'documents',
