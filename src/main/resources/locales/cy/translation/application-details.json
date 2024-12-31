@@ -1,0 +1,12 @@
+{
+  "title": "[W]Application details",
+  "applicationTo": "[W]Application to ",
+  "applicant": "[W]Applicant",
+  "requestDate": "[W]Application date",
+  "applicationType": "[W]Application type",
+  "Respondent": "[W]Respondent",
+  "legend": "[W]What do you want to tell or ask the tribunal?",
+  "supportingMaterial": "[W]Supporting material",
+  "copyCorrespondence": "[W]Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?",
+  "copyToOtherPartyText": "[W]Reason for not informing other party"
+}
