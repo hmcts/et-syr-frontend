@@ -21,9 +21,8 @@ export const TranslationKeys = {
   HOLDING_PAGE: 'holding-page',
   CHECKLIST: 'checklist',
   COOKIE_PREFERENCES: 'cookie-preferences',
-  RESPONDENT_APPLICATION_DETAILS: 'respondent-application-details',
   CASE_DETAILS_WITH_CASE_ID_PARAMETER: 'case-details',
-  YOUR_APPLICATIONS: 'your-applications',
+  CASE_DETAILS_STATUS: 'case-details-status',
   SIDEBAR_CONTACT_US: 'sidebar-contact-us',
   SELF_ASSIGNMENT_FORM: 'self-assignment-form',
   SELF_ASSIGNMENT_CHECK: 'self-assignment-check',
@@ -32,7 +31,6 @@ export const TranslationKeys = {
   YOUR_RESPONSE_FORM: 'your-response-form',
   APPLICATION_SUBMITTED: 'application-submitted',
   RESPONSE_SAVED: 'response-saved',
-  RESPONDENT_ET3_COMMON: 'et3-common',
   CHECK_YOUR_ANSWERS_ET3: 'check-your-answers-et3',
   CLAIMANT_ET1_FORM: 'claimant-et1-form',
   DOCUMENTS: 'documents',
@@ -76,13 +74,17 @@ export const TranslationKeys = {
   EMPLOYERS_CONTRACT_CLAIM: 'employers-contract-claim',
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: 'employers-contract-claim-details',
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: 'check-your-answers-employers-contract-claim',
-  // Contact Tribunal
+  // Contact the tribunal about your case
   APPLICATION_TYPE: 'application-type',
   CONTACT_TRIBUNAL: 'contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: 'contact-tribunal-selected',
   COPY_TO_OTHER_PARTY: 'copy-to-other-party',
   CONTACT_TRIBUNAL_CYA: 'contact-tribunal-check-your-answers',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: 'contact-tribunal-submit-complete',
+  // Your request and applications
+  YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
+  APPLICATION_DETAILS: 'application-details',
+  RESPOND_TO_APPLICATION: 'respond-to-application',
 } as const;
 
 export const PageUrls = {
@@ -146,12 +148,17 @@ export const PageUrls = {
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: '/employers-contract-claim-details',
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: '/check-your-answers-employers-contract-claim',
   GET_CASE_DOCUMENT: '/getCaseDocument/:docId',
-  // Contact Tribunal
+  // Contact the tribunal about your case
   CONTACT_TRIBUNAL: '/contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: '/contact-tribunal/:selectedOption',
   COPY_TO_OTHER_PARTY: '/copy-to-other-party',
   CONTACT_TRIBUNAL_CYA: '/contact-tribunal-check-your-answers',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
+  // Your request and applications
+  YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
+  APPLICATION_DETAILS: '/application-details/:appId',
+  RESPOND_TO_APPLICATION: '/respond-to-application/:appId',
+  RESPOND_TO_APPLICATION_COMPLETE: 'respond-to-application-complete',
 } as const;
 
 export const InterceptPaths = {

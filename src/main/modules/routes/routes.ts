@@ -69,6 +69,7 @@ import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheck
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
+import YourRequestAndApplicationsController from '../../controllers/YourRequestAndApplicationsController';
 import YourResponseFormController from '../../controllers/YourResponseFormController';
 import { AppRequest } from '../../definitions/appRequest';
 import { FILE_SIZE_LIMIT, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
@@ -232,7 +233,7 @@ export class Routes {
       PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM,
       new CheckYourAnswersEmployersContractClaimController().post
     );
-    // Contact Tribunal
+    // Contact the tribunal about your case
     app.get(PageUrls.HOLDING_PAGE, new HoldingPageController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL, new ContactTribunalController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL_SELECTED, new ContactTribunalSelectedController().get);
@@ -242,6 +243,8 @@ export class Routes {
     app.get(PageUrls.CONTACT_TRIBUNAL_CYA, new ContactTribunalCYAController().get);
     app.get(InterceptPaths.CONTACT_TRIBUNAL_SUBMIT, new ContactTribunalSubmitController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
+    // Your request and applications
+    app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
     // others
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);
