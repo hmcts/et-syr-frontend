@@ -1,4 +1,4 @@
-import { CaseWithId } from '../definitions/case';
+import {CaseWithId, YesOrNo} from '../definitions/case';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../definitions/util-types';
@@ -16,7 +16,7 @@ export const findSelectedGenericTseApplication = (
 
 export const getAllTseApplicationCollection = (userCase: CaseWithId): GenericTseApplicationTypeItem[] => {
   const returnCollection: GenericTseApplicationTypeItem[] = [];
-  if (userCase.genericTseApplicationCollection !== undefined) {
+  if (userCase?.genericTseApplicationCollection !== undefined) {
     returnCollection.push(...userCase.genericTseApplicationCollection);
   }
   return returnCollection;
@@ -54,4 +54,8 @@ export const getTseApplicationDetails = (
   }
 
   return rows;
+};
+
+export const isResponseToTribunalRequired = (selectedApplication: GenericTseApplicationTypeItem): boolean => {
+  return selectedApplication.value.claimantResponseRequired === YesOrNo.YES;
 };
