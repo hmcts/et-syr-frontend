@@ -39,7 +39,7 @@ describe('getApplicationCollection', () => {
         id: '1',
         value: {
           applicant: Applicant.RESPONDENT,
-          type: 'Change personal details',
+          type: application.CHANGE_PERSONAL_DETAILS.code,
           status: 'inProgress',
         },
         linkValue: 'Change my personal details',
