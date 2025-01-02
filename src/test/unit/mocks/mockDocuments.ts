@@ -68,20 +68,3 @@ export const mockedAcasForm: ApiDocumentTypeItem = {
     startingClaimDocuments: 'ACAS Certificate',
   },
 };
-
-export const mockedAcasFormWithDateOfCorrespondence: ApiDocumentTypeItem = {
-  id: '1b8d3315-cc8a-4197-9bc0-376744693499',
-  value: {
-    docNumber: '4',
-    documentType: 'ACAS Certificate',
-    dateOfCorrespondence: '2024-11-04',
-    uploadedDocument: {
-      category_id: 'C13',
-      document_url: 'http://localhost:5005/documents/3f48b0fd-a52a-4118-8b07-c98ebb019689',
-      document_filename: 'TEST_ACAS_CERTIFICATE_R123456_78_90.docx',
-      document_binary_url: 'http://localhost:5005/documents/3f48b0fd-a52a-4118-8b07-c98ebb019689/binary',
-    },
-    topLevelDocuments: 'Starting a Claim',
-    startingClaimDocuments: 'ACAS Certificate',
-  },
-};
