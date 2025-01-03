@@ -12,8 +12,8 @@ import { getPageContent } from '../helpers/FormHelper';
 import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
+import { getFormDataError } from '../helpers/controller/RespondToApplicationHelper';
 import UrlUtils from '../utils/UrlUtils';
-import { isContentCharsOrLessAndNotEmpty, isFieldFilledIn } from '../validators/validator';
 
 export default class RespondToApplicationController {
   private readonly form: Form;
@@ -24,7 +24,6 @@ export default class RespondToApplicationController {
         label: (l: AnyRecord): string => l.responseText.label,
         hint: (l: AnyRecord): string => l.responseText.hint,
         maxlength: 2500,
-        validator: isContentCharsOrLessAndNotEmpty(2500),
       },
       hasSupportingMaterial: {
         type: 'radios',
@@ -42,7 +41,6 @@ export default class RespondToApplicationController {
             value: YesOrNo.NO,
           },
         ],
-        validator: isFieldFilledIn,
       },
     },
     submit: {
@@ -60,9 +58,11 @@ export default class RespondToApplicationController {
       return res.redirect(ErrorPages.NOT_FOUND + getLanguageParam(req.url));
     }
 
+    req.session.errors = [];
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    req.session.errors = this.form.getValidatorErrors(formData);
-    if (req.session.errors.length > 0) {
+    const errors = getFormDataError(formData);
+    if (errors) {
+      req.session.errors.push(...errors);
       return res.redirect(
         PageUrls.RESPOND_TO_APPLICATION.replace(':appId', selectedApplication.id) + getLanguageParam(req.url)
       );

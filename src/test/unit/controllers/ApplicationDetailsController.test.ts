@@ -7,7 +7,7 @@ import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import mockUserCase from '../mocks/mockUserCase';
 
-describe('Your Request and Applications Controller', () => {
+describe('Application Details Controller', () => {
   const translationJsons = { ...applicationTypeJson, ...commonJson };
   let controller: ApplicationDetailsController;
   let request: ReturnType<typeof mockRequest>;
@@ -20,7 +20,7 @@ describe('Your Request and Applications Controller', () => {
   });
 
   describe('GET method', () => {
-    it('should render the page YOUR_REQUEST_AND_APPLICATIONS', () => {
+    it('should render the page APPLICATION_DETAILS', () => {
       request = mockRequestWithTranslation({}, translationJsons);
       request.session.userCase = mockUserCase;
       request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;

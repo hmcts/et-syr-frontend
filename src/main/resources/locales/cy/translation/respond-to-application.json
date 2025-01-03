@@ -1,23 +1,22 @@
 {
-  "title": "Respond to an application",
-  "caption": "Respond to an application",
-  "h1": "Your response",
+  "title": "Ymateb i gais",
+  "caption": "Ymateb i gais",
+  "h1": "Eich ymateb",
   "responseText": {
-    "label": "What's your response to the tribunal?",
-    "hint": "Use this box to respond or you can upload material at the next step."
+    "label": "Beth yw eich ymateb i’r tribiwnlys",
+    "hint": "Defnyddiwch y blwch hwn i ymateb neu gallwch uwchlwytho deunydd yn y cam nesaf."
   },
   "hasSupportingMaterial": {
-    "label": "Supporting material",
-    "hint": "Do you have any supporting material you want to provide?"
+    "label": "Ddeunydd ategol",
+    "hint": "A oes gennych unrhyw ddeunydd ategol yr hoffech ei ddarparu?"
   },
   "errors": {
     "hasSupportingMaterial": {
-      "required": "Tell us if you also want to upload supporting material?"
+      "required": "Dywedwch wrthym os ydych eisiau llwytho deunydd ategol hefyd"
     },
     "responseText": {
-      "required": "Provide details of your response &/or upload supporting material",
-      "requiredFile": "Provide details of your response &/or upload a file",
-      "tooLong": "Response details must be 2500 characters or less"
+      "required": "Darparwch fanylion eich ymateb a/neu llwythwch ddeunydd ategol",
+      "tooLong": "Rhaid i’r ymateb fod yn 2500 nod neu lai"
     }
   }
 }

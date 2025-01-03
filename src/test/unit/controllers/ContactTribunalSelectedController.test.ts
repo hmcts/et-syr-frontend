@@ -1,5 +1,5 @@
 import ContactTribunalSelectedController from '../../../main/controllers/ContactTribunalSelectedController';
-import {PageUrls, TranslationKeys, languages, ErrorPages} from '../../../main/definitions/constants';
+import { ErrorPages, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import { application } from '../../../main/definitions/contact-tribunal-applications';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
