@@ -16,28 +16,23 @@ export default class ApplicationDetailsController {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
-    const applicationType = getApplicationDisplayByCode(selectedApplication.value.type, {
-      ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
-    });
-
     const appContent: SummaryListRow[] = getApplicationContent(selectedApplication, req);
     if (!appContent) {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
-
-    const isRespondButton = isResponseToTribunalRequired(selectedApplication);
-    const respondRedirectUrl =
-      PageUrls.RESPOND_TO_APPLICATION.replace(':appId', selectedApplication.id) + getLanguageParam(req.url);
 
     res.render(TranslationKeys.APPLICATION_DETAILS, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
       ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
-      applicationType,
+      applicationType: getApplicationDisplayByCode(selectedApplication.value.type, {
+        ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
+      }),
       appContent,
-      isRespondButton,
-      respondRedirectUrl,
+      isRespondButton: isResponseToTribunalRequired(selectedApplication),
+      respondRedirectUrl:
+        PageUrls.RESPOND_TO_APPLICATION.replace(':appId', selectedApplication.id) + getLanguageParam(req.url),
     });
   };
 }
