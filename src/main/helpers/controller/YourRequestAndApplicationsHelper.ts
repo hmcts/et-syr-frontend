@@ -1,17 +1,19 @@
-import { CaseWithId } from '../../definitions/case';
+import { AppRequest } from '../../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, PageUrls } from '../../definitions/constants';
+import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constants';
 import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import { getLanguageParam } from '../RouterHelpers';
 
 import { getApplicationDisplayByCode } from './ContactTribunalHelper';
 
-export const getApplicationCollection = (
-  userCase: CaseWithId,
-  url: string,
-  translations: AnyRecord
-): GenericTseApplicationTypeItem[] => {
+export const getApplicationCollection = (req: AppRequest): GenericTseApplicationTypeItem[] => {
+  const userCase = req.session.userCase;
+  const url = req.url;
+  const translations: AnyRecord = {
+    ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
+    ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
+  };
   const claimantApps = (userCase.genericTseApplicationCollection || []).filter(
     app => app.value?.applicant === Applicant.RESPONDENT
   );

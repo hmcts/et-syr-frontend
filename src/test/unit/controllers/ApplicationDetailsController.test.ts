@@ -1,5 +1,5 @@
 import ApplicationDetailsController from '../../../main/controllers/ApplicationDetailsController';
-import { ErrorPages, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { ErrorPages, TranslationKeys } from '../../../main/definitions/constants';
 import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
 import commonJson from '../../../main/resources/locales/en/translation/common.json';
 import { mockGenericTseCollection } from '../mocks/mockGenericTseCollection';
@@ -31,7 +31,7 @@ describe('Your Request and Applications Controller', () => {
         expect.objectContaining({
           applicationType: 'Amend my response',
           isRespondButton: true,
-          respondRedirectUrl: `${PageUrls.RESPOND_TO_APPLICATION.replace(':appId', '1')}?lng=en`,
+          respondRedirectUrl: '/respond-to-application/1?lng=en',
         })
       );
     });
