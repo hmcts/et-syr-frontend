@@ -109,6 +109,7 @@ export const getFormDataError = (formData: Partial<CaseWithId>): FormError => {
 
   const fileProvided = file !== undefined && false; // TODO: Fix fileProvided checking
   const textProvided = isFieldFilledIn(text) === undefined;
+
   if (!textProvided && !fileProvided) {
     return { propertyName: 'contactApplicationText', errorType: ValidationErrors.REQUIRED };
   }

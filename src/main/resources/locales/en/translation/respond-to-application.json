@@ -1,0 +1,22 @@
+{
+  "title": "Respond to an application",
+  "caption": "Respond to an application",
+  "h1": "Your response",
+  "responseText": {
+    "label": "What's your response to the tribunal?",
+    "hint": "Use this box to respond or you can upload material at the next step."
+  },
+  "hasSupportingMaterial": {
+    "label": "Supporting material",
+    "hint": "Do you have any supporting material you want to provide?"
+  },
+  "errors": {
+    "hasSupportingMaterial": {
+      "required": "Tell us if you also want to upload supporting material?"
+    },
+    "responseText": {
+      "required": "Provide details of your response &/or upload supporting material",
+      "tooLong": "Response details must be 2500 characters or less"
+    }
+  }
+}

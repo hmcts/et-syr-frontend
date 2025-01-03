@@ -4,18 +4,19 @@ import { LinkStatus, linkStatusColorMap } from '../../../../main/definitions/lin
 import { getApplicationCollection } from '../../../../main/helpers/controller/YourRequestAndApplicationsHelper';
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
 import caseDetailsStatusJson from '../../../../main/resources/locales/en/translation/case-details-status.json';
+import { mockRequestWithTranslation } from '../../mocks/mockRequest';
 import mockUserCase from '../../mocks/mockUserCase';
 
 describe('getApplicationCollection', () => {
-  const userCase = mockUserCase;
-  const reqUrl = '/url';
   const translations = {
     ...applicationTypeJson,
     ...caseDetailsStatusJson,
   };
 
   it('should return filtered and formatted claimant items', () => {
-    userCase.genericTseApplicationCollection = [
+    const request = mockRequestWithTranslation({ session: { userCase: mockUserCase } }, translations);
+    request.url = '/url';
+    request.session.userCase.genericTseApplicationCollection = [
       {
         id: '1',
         value: {
@@ -49,13 +50,15 @@ describe('getApplicationCollection', () => {
       },
     ];
 
-    const result = getApplicationCollection(userCase, reqUrl, translations);
+    const result = getApplicationCollection(request);
 
     expect(result).toEqual(expectedOutput);
   });
 
   it('should return an empty array if no Respondent application exist', () => {
-    userCase.genericTseApplicationCollection = [
+    const request = mockRequestWithTranslation({ session: { userCase: mockUserCase } }, translations);
+    request.url = '/url';
+    request.session.userCase.genericTseApplicationCollection = [
       {
         id: '1',
         value: {
@@ -66,7 +69,7 @@ describe('getApplicationCollection', () => {
       },
     ];
 
-    const result = getApplicationCollection(userCase, reqUrl, translations);
+    const result = getApplicationCollection(request);
 
     expect(result).toEqual([]);
   });

@@ -1,5 +1,5 @@
 import ContactTribunalSelectedController from '../../../main/controllers/ContactTribunalSelectedController';
-import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
+import { ErrorPages, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import { application } from '../../../main/definitions/contact-tribunal-applications';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -46,7 +46,7 @@ describe('Contact Tribunal Selected Controller', () => {
     it('should redirect to error page when application invalid', async () => {
       request = mockRequest({ body: {} });
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_IMPLEMENTED);
+      expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
     });
 
     it('should render the same page when text and file empty', async () => {

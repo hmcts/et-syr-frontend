@@ -158,7 +158,8 @@ export const PageUrls = {
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
   APPLICATION_DETAILS: '/application-details/:appId',
   RESPOND_TO_APPLICATION: '/respond-to-application/:appId',
-  RESPOND_TO_APPLICATION_COMPLETE: 'respond-to-application-complete',
+  RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: '/respond-to-application-supporting-material/:appId',
+  RESPOND_TO_APPLICATION_COMPLETE: '/respond-to-application-complete',
 } as const;
 
 export const InterceptPaths = {

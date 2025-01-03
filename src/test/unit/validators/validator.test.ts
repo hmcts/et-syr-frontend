@@ -51,7 +51,7 @@ describe('Validation', () => {
     });
   });
 
-  describe('isContentCharsOrLessOrEmpty()', () => {
+  describe('isContentCharsOrLessAndNotEmpty()', () => {
     it('should not warn when content is 2500 characters or less', () => {
       expect(isContentCharsOrLessAndNotEmpty(2500)('1'.repeat(2500))).toStrictEqual(undefined);
     });
