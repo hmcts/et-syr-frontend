@@ -8,7 +8,6 @@ import {
 } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import { getApplicationByCode, getApplicationKey, isTypeAOrB } from '../ApplicationHelper';
-import { createDownloadLink } from '../DocumentHelpers';
 
 export const getCyaContent = (request: AppRequest, translations: AnyRecord): SummaryListRow[] => {
   const rows: SummaryListRow[] = [];
@@ -38,10 +37,12 @@ export const getCyaContent = (request: AppRequest, translations: AnyRecord): Sum
   }
 
   if (userCase.contactApplicationFile) {
+    // TODO: Create Download Link
+    const downloadLink = 'Create Download Link';
     rows.push(
       addSummaryHtmlRowWithAction(
         translations.supportingMaterial,
-        createDownloadLink(userCase.contactApplicationFile),
+        downloadLink,
         PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url),
         translations.change,
         ''

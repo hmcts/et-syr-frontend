@@ -1,12 +1,10 @@
 // Used in API formatter
 import { AxiosResponse } from 'axios';
 
-import { CaseWithId, Document } from '../definitions/case';
+import { CaseWithId } from '../definitions/case';
 import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
 import { DOCUMENT_CONTENT_TYPES, DefaultValues } from '../definitions/constants';
 import { DocumentDetail } from '../definitions/definition';
-
-import { getDocId, getFileExtension } from './ApiFormatter';
 
 export const combineDocuments = <T>(...arrays: T[][]): T[] =>
   [].concat(...arrays.filter(Array.isArray)).filter(doc => doc !== undefined);
@@ -98,28 +96,4 @@ export const formatDocumentDetailToApiDocumentTypeItem = (form: DocumentDetail):
       },
     },
   };
-};
-
-export function formatBytes(bytes: number, decimals = 2): string {
-  if (!+bytes) {
-    return '0 Bytes';
-  }
-
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))}${sizes[i]}`;
-}
-
-export const createDownloadLink = (file: Document): string => {
-  if (!file?.document_size || !file.document_mime_type || !file.document_filename) {
-    return '';
-  }
-  const mimeType = getFileExtension(file.document_filename);
-  const href = `/getSupportingMaterial/${getDocId(file.document_url)}`;
-  const size = formatBytes(file.document_size);
-  return `<a href='${href}' target='_blank' class='govuk-link'>${file.document_filename} (${mimeType}, ${size})</a>`;
 };

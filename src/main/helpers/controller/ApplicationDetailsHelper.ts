@@ -4,7 +4,6 @@ import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/ge
 import { TranslationKeys } from '../../definitions/constants';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
-import { createDownloadLink } from '../DocumentHelpers';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
 import { getApplicationDisplayByCode } from './ContactTribunalHelper';
@@ -48,7 +47,8 @@ const getTseApplicationDetails = (
   }
 
   if (application.documentUpload) {
-    const downloadLink = createDownloadLink(application.documentUpload);
+    // TODO: Create Download Link
+    const downloadLink = 'Create Download Link';
     rows.push(addSummaryHtmlRow(translations.supportingMaterial, downloadLink));
   }
 
