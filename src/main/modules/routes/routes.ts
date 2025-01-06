@@ -50,6 +50,7 @@ import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignm
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
 import RespondToApplicationController from '../../controllers/RespondToApplicationController';
+import RespondToApplicationSupportingMaterialController from '../../controllers/RespondToApplicationSupportingMaterialController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
@@ -250,6 +251,14 @@ export class Routes {
     app.get(PageUrls.APPLICATION_DETAILS, new ApplicationDetailsController().get);
     app.get(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().get);
     app.post(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().post);
+    app.get(
+      PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
+      new RespondToApplicationSupportingMaterialController().get
+    );
+    app.post(
+      PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
+      new RespondToApplicationSupportingMaterialController().post
+    );
     // others
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);

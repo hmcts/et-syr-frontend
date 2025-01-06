@@ -1,0 +1,29 @@
+{
+  "title": "[W]Respondent supporting material",
+  "caption": "[W]Respond to an application",
+  "h1": "[W]Provide supporting material",
+  "p1": "[W]Consider when providing material that:",
+  "li1": "[W]you can upload letters, photos or documents to support your response",
+  "li2": "[W]if you are taking a picture of a letter, place it on a flat surface and take the picture from above",
+  "li3": "[W]if you are uploading written documents with tracked changes, make sure that tracked changes are turned on",
+  "responseText": {
+    "hint": "[W]Use this box to provide any supporting material. You can also upload a file if you wish."
+  },
+  "files": {
+    "title": "[W]Upload a file",
+    "button": "[W]Upload file",
+    "uploaded": "[W]Files uploaded"
+  },
+  "errors": {
+    "responseText": {
+      "required": "[W]Use the text box or file upload to give details",
+      "tooLong": "[W]Give details (free text) must be entered as 2500 characters or less"
+    },
+    "supportingMaterialFile": {
+      "invalidFileFormat": "[W]The type of file you are trying to upload is not supported by our system. Please convert it into a common supported file type for example word, excel, pdf.",
+      "invalidFileName": "[W]The name of the file provided is invalid. A file name cannot exceed 150 characters or contain any of the following characters: \\/:*?\"|<>",
+      "invalidFileSize": "[W]The file you are trying to upload has exceeded the maximum file size limit, please reduce the size of the file.",
+      "backEndError": "[W]There was an error uploading your file. Please try again. If this error persists please contact support."
+    }
+  }
+}
