@@ -64,7 +64,7 @@ describe('Respond to Application Controller', () => {
       request.params.appId = '1';
       controller.post(request, response);
       expect(request.session.userCase.hasSupportingMaterial).toEqual(YesOrNo.YES);
-      expect(response.redirect).toHaveBeenCalledWith('/respond-to-application-supporting-material/1?lng=en');
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL + '?lng=en');
     });
 
     it('should redirect to COPY_TO_OTHER_PARTY page if hasSupportingMaterial is NO', async () => {
@@ -80,7 +80,7 @@ describe('Respond to Application Controller', () => {
       controller.post(request, response);
       expect(request.session.userCase.responseText).toEqual('Test response');
       expect(request.session.userCase.hasSupportingMaterial).toEqual(YesOrNo.NO);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.COPY_TO_OTHER_PARTY + '?lng=en');
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + '?lng=en');
     });
 
     it('should redirect to RESPOND_TO_APPLICATION if nothing is selected', async () => {
