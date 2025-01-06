@@ -73,8 +73,8 @@ export default class RespondToApplicationController {
 
     const redirectUrl =
       formData.hasSupportingMaterial === YesOrNo.YES
-        ? PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL.replace(':appId', selectedApplication.id)
-        : PageUrls.COPY_TO_OTHER_PARTY;
+        ? PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL
+        : PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY;
     return res.redirect(redirectUrl + getLanguageParam(req.url));
   };
 
