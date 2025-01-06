@@ -11,10 +11,7 @@ export default class YourRequestAndApplicationsController {
       ...req.t(TranslationKeys.YOUR_REQUEST_AND_APPLICATIONS, { returnObjects: true }),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
-      appList: getApplicationCollection(req.session.userCase, req.url, {
-        ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
-        ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
-      }),
+      appList: getApplicationCollection(req),
     });
   };
 }

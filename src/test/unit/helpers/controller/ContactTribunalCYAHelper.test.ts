@@ -70,7 +70,7 @@ describe('getCyaContent', () => {
           text: translations.supportingMaterial,
         },
         value: {
-          html: "<a href='/getSupportingMaterial/test-url' target='_blank' class='govuk-link'>test-file.pdf (pdf, 1KB)</a>",
+          html: 'link',
         },
         actions: {
           items: [
