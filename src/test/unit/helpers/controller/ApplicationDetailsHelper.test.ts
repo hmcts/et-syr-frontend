@@ -74,9 +74,7 @@ describe('getApplicationContent', () => {
     const result = getApplicationContent(mockApp, mockReq);
     expect(result).toHaveLength(6);
     expect(result[3].key).toEqual({ classes: summaryListClass, text: 'Supporting material' });
-    expect(result[3].value).toEqual({
-      html: "<a href='/getSupportingMaterial/uuid1' target='_blank' class='govuk-link'>mockApplicationDocumentUpload (mockApplicationDocumentUpload, 5Bytes)</a>",
-    });
+    expect(result[3].value).toEqual({ html: 'link' });
     expect(result[4].key).toEqual({
       classes: summaryListClass,
       text: 'Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?',

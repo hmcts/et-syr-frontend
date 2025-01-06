@@ -38,7 +38,7 @@ export const getCyaContent = (request: AppRequest, translations: AnyRecord): Sum
 
   if (userCase.contactApplicationFile) {
     // TODO: Create Download Link
-    const downloadLink = 'Create Download Link';
+    const downloadLink = 'link';
     rows.push(
       addSummaryHtmlRowWithAction(
         translations.supportingMaterial,

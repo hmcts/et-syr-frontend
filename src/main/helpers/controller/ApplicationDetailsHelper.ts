@@ -48,7 +48,7 @@ const getTseApplicationDetails = (
 
   if (application.documentUpload) {
     // TODO: Create Download Link
-    const downloadLink = 'Create Download Link';
+    const downloadLink = 'link';
     rows.push(addSummaryHtmlRow(translations.supportingMaterial, downloadLink));
   }
 
