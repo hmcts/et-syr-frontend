@@ -10,7 +10,7 @@ import { getLanguageParam } from '../helpers/RouterHelpers';
 import UrlUtils from '../utils/UrlUtils';
 import { isContentCharsOrLessAndNotEmpty } from '../validators/validator';
 
-export default class RespondToApplicationSupportingMaterialController {
+export default class RespondToTribunalSupportingMaterialController {
   private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
@@ -61,16 +61,16 @@ export default class RespondToApplicationSupportingMaterialController {
     // TODO: Upload Supporting Material
     const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
     req.session.errors = this.form.getValidatorErrors(formData);
-    return res.redirect(PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + getLanguageParam(req.url));
+    return res.redirect(PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY + getLanguageParam(req.url));
   };
 
   public get = (req: AppRequest, res: Response): void => {
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
-      TranslationKeys.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
+      TranslationKeys.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    res.render(TranslationKeys.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL, {
+    res.render(TranslationKeys.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL, {
       ...content,
       hideContactUs: true,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),

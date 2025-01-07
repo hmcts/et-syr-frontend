@@ -31,7 +31,7 @@ describe('Application Details Controller', () => {
         expect.objectContaining({
           applicationType: 'Amend my response',
           isRespondButton: true,
-          respondRedirectUrl: '/respond-to-application/1?lng=en',
+          respondRedirectUrl: '/respond-to-tribunal/1?lng=en',
         })
       );
     });

@@ -1,4 +1,4 @@
-import RespondToApplicationController from '../../../main/controllers/RespondToApplicationController';
+import RespondToTribunalController from '../../../main/controllers/RespondToTribunalController';
 import { YesOrNo } from '../../../main/definitions/case';
 import { ErrorPages, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
@@ -8,26 +8,26 @@ import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import mockUserCase from '../mocks/mockUserCase';
 
-describe('Respond to Application Controller', () => {
+describe('Respond to Tribunal Controller', () => {
   const translationJsons = { ...applicationTypeJson, ...commonJson };
-  let controller: RespondToApplicationController;
+  let controller: RespondToTribunalController;
   let request: ReturnType<typeof mockRequest>;
   let response: ReturnType<typeof mockResponse>;
 
   beforeEach(() => {
-    controller = new RespondToApplicationController();
+    controller = new RespondToTribunalController();
     request = mockRequest({});
     response = mockResponse();
   });
 
   describe('GET method', () => {
-    it('should render the page RESPOND_TO_APPLICATION', () => {
+    it('should render the page RESPOND_TO_TRIBUNAL', () => {
       request = mockRequestWithTranslation({}, translationJsons);
       request.session.userCase = mockUserCase;
       request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
       request.params.appId = '1';
       controller.get(request, response);
-      expect(response.render).toHaveBeenCalledWith(TranslationKeys.RESPOND_TO_APPLICATION, expect.anything());
+      expect(response.render).toHaveBeenCalledWith(TranslationKeys.RESPOND_TO_TRIBUNAL, expect.anything());
     });
 
     it('should redirect to NOT_FOUND page if missing appId', async () => {
@@ -64,7 +64,7 @@ describe('Respond to Application Controller', () => {
       request.params.appId = '1';
       controller.post(request, response);
       expect(request.session.userCase.hasSupportingMaterial).toEqual(YesOrNo.YES);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL + '?lng=en');
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL + '?lng=en');
     });
 
     it('should redirect to COPY_TO_OTHER_PARTY page if hasSupportingMaterial is NO', async () => {
@@ -80,16 +80,16 @@ describe('Respond to Application Controller', () => {
       controller.post(request, response);
       expect(request.session.userCase.responseText).toEqual('Test response');
       expect(request.session.userCase.hasSupportingMaterial).toEqual(YesOrNo.NO);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + '?lng=en');
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY + '?lng=en');
     });
 
-    it('should redirect to RESPOND_TO_APPLICATION if nothing is selected', async () => {
+    it('should redirect to RESPOND_TO_TRIBUNAL if nothing is selected', async () => {
       request = mockRequest({ body: {} });
       request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
       request.session.errors = [];
       request.params.appId = '1';
       controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith('/respond-to-application/1?lng=en');
+      expect(response.redirect).toHaveBeenCalledWith('/respond-to-tribunal/1?lng=en');
       const errors = [
         { propertyName: 'responseText', errorType: 'required' },
         { propertyName: 'hasSupportingMaterial', errorType: 'required' },
@@ -97,7 +97,7 @@ describe('Respond to Application Controller', () => {
       expect(request.session.errors).toEqual(errors);
     });
 
-    it('should redirect to RESPOND_TO_APPLICATION if responseText exceeds 2500 characters', async () => {
+    it('should redirect to RESPOND_TO_TRIBUNAL if responseText exceeds 2500 characters', async () => {
       request = mockRequest({
         body: {
           responseText: '1'.repeat(2501),
@@ -108,7 +108,7 @@ describe('Respond to Application Controller', () => {
       request.session.errors = [];
       request.params.appId = '1';
       controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith('/respond-to-application/1?lng=en');
+      expect(response.redirect).toHaveBeenCalledWith('/respond-to-tribunal/1?lng=en');
       const errors = [{ propertyName: 'responseText', errorType: 'tooLong' }];
       expect(request.session.errors).toEqual(errors);
     });
