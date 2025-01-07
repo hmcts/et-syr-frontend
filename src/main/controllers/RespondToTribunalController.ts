@@ -12,10 +12,10 @@ import { getPageContent } from '../helpers/FormHelper';
 import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
-import { getFormDataError } from '../helpers/controller/RespondToApplicationHelper';
+import { getFormDataError } from '../helpers/controller/RespondToTribunalHelper';
 import UrlUtils from '../utils/UrlUtils';
 
-export default class RespondToApplicationController {
+export default class RespondToTribunalController {
   private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
@@ -64,7 +64,7 @@ export default class RespondToApplicationController {
     if (errors) {
       req.session.errors.push(...errors);
       return res.redirect(
-        PageUrls.RESPOND_TO_APPLICATION.replace(':appId', selectedApplication.id) + getLanguageParam(req.url)
+        PageUrls.RESPOND_TO_TRIBUNAL.replace(':appId', selectedApplication.id) + getLanguageParam(req.url)
       );
     }
 
@@ -73,8 +73,8 @@ export default class RespondToApplicationController {
 
     const redirectUrl =
       formData.hasSupportingMaterial === YesOrNo.YES
-        ? PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL
-        : PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY;
+        ? PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL
+        : PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY;
     return res.redirect(redirectUrl + getLanguageParam(req.url));
   };
 
@@ -91,10 +91,10 @@ export default class RespondToApplicationController {
 
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
-      TranslationKeys.RESPOND_TO_APPLICATION,
+      TranslationKeys.RESPOND_TO_TRIBUNAL,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    res.render(TranslationKeys.RESPOND_TO_APPLICATION, {
+    res.render(TranslationKeys.RESPOND_TO_TRIBUNAL, {
       ...content,
       hideContactUs: true,
       appContent,

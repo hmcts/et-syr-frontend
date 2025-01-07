@@ -32,7 +32,7 @@ export default class ApplicationDetailsController {
       appContent,
       isRespondButton: isResponseToTribunalRequired(selectedApplication),
       respondRedirectUrl:
-        PageUrls.RESPOND_TO_APPLICATION.replace(':appId', selectedApplication.id) + getLanguageParam(req.url),
+        PageUrls.RESPOND_TO_TRIBUNAL.replace(':appId', selectedApplication.id) + getLanguageParam(req.url),
     });
   };
 }

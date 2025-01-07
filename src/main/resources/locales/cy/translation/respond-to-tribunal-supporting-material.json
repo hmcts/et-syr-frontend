@@ -1,0 +1,29 @@
+{
+  "title": "Darparu deunydd ategol",
+  "caption": "Ymateb i'r tribiwnlys",
+  "h1": "Darparu deunydd ategol",
+  "p1": "Ystyriwch y canlynol wrth ddarparu deunyddiau:",
+  "li1": "Gallwch lwytho llythyrau, lluniau neu ddogfennau i gefnogi eich ymateb",
+  "li2": "Os ydych yn tynnu llun o lythyr, rhowch ef ar arwyneb gwastad a dal y camera yn union uwch ei ben",
+  "li3": "Os ydych yn llwytho dogfennau ysgrifenedig gyda newidiadau wedi’u marcio, gwnewch yn siŵr bod y nodwedd hon ymlaen ar eich cyfrifiadur",
+  "responseText": {
+    "hint": "Defnyddiwch y blwch hwn i ddarparu unrhyw ddeunydd ategol. Gallwch lwytho ffeil hefyd os ydych yn dymuno gwneud hynny."
+  },
+  "files": {
+    "title": "Llwytho ffeil",
+    "button": "Llwytho ffeil",
+    "uploaded": "Ffeiliau sydd wedi’u llwytho"
+  },
+  "errors": {
+    "responseText": {
+      "required": "Defnyddiwch y blwch testun neu’r cyfleuster llwytho ffeil i roi manylion",
+      "tooLong": "Rhaid i’r disgrifiad fod yn 2500 llythyren neu lai"
+    },
+    "supportingMaterialFile": {
+      "invalidFileFormat": "Nid yw'r math o ffeil rydych chi'n ceisio ei uwchlwytho yn cael ei gefnogi gan ein system. Byddwch cystal a newid hon i ffeil gyffredin, e.e. Word, Excel, pdf. os gwelwch yn dda.",
+      "invalidFileName": "Mae enw’r ffeil a ddarparwyd yn annilys. Ni all enw’r ffeil fod yn fwy na 150 llythyren ac ni all gynnwys unrhyw un o’r nodau canlynol: \\\\/:*?\\\"|<>",
+      "invalidFileSize": "Mae'r ffeil rydych chi'n ceisio ei lwytho wedi mynd y tu hwnt i'r terfyn maint, ceisiwch leihau maint y ffeil.",
+      "backEndError": "Cafwyd problem wrth geisio llwytho eich ffeil. Rhowch gynnig arni. Os yw hyn yn parhau, cysylltwch â’r adran gefnogaeth."
+    }
+  }
+}

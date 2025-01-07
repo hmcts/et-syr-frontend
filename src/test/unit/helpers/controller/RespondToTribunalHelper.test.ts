@@ -1,6 +1,6 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import { ValidationErrors } from '../../../../main/definitions/constants';
-import { getFormDataError } from '../../../../main/helpers/controller/RespondToApplicationHelper';
+import { getFormDataError } from '../../../../main/helpers/controller/RespondToTribunalHelper';
 
 describe('getFormDataError', () => {
   it('should return errors when both responseText and hasSupportingMaterial are not provided', () => {
