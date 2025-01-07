@@ -1,29 +1,29 @@
 {
-  "title": "[W]Respondent supporting material",
-  "caption": "[W]Respond to an application",
-  "h1": "[W]Provide supporting material",
-  "p1": "[W]Consider when providing material that:",
-  "li1": "[W]you can upload letters, photos or documents to support your response",
-  "li2": "[W]if you are taking a picture of a letter, place it on a flat surface and take the picture from above",
-  "li3": "[W]if you are uploading written documents with tracked changes, make sure that tracked changes are turned on",
+  "title": "Darparu deunydd ategol",
+  "caption": "Ymateb i'r tribiwnlys",
+  "h1": "Darparu deunydd ategol",
+  "p1": "Ystyriwch y canlynol wrth ddarparu deunyddiau:",
+  "li1": "Gallwch lwytho llythyrau, lluniau neu ddogfennau i gefnogi eich ymateb",
+  "li2": "Os ydych yn tynnu llun o lythyr, rhowch ef ar arwyneb gwastad a dal y camera yn union uwch ei ben",
+  "li3": "Os ydych yn llwytho dogfennau ysgrifenedig gyda newidiadau wedi’u marcio, gwnewch yn siŵr bod y nodwedd hon ymlaen ar eich cyfrifiadur",
   "responseText": {
-    "hint": "[W]Use this box to provide any supporting material. You can also upload a file if you wish."
+    "hint": "Defnyddiwch y blwch hwn i ddarparu unrhyw ddeunydd ategol. Gallwch lwytho ffeil hefyd os ydych yn dymuno gwneud hynny."
   },
   "files": {
-    "title": "[W]Upload a file",
-    "button": "[W]Upload file",
-    "uploaded": "[W]Files uploaded"
+    "title": "Llwytho ffeil",
+    "button": "Llwytho ffeil",
+    "uploaded": "Ffeiliau sydd wedi’u llwytho"
   },
   "errors": {
     "responseText": {
-      "required": "[W]Use the text box or file upload to give details",
-      "tooLong": "[W]Give details (free text) must be entered as 2500 characters or less"
+      "required": "Defnyddiwch y blwch testun neu’r cyfleuster llwytho ffeil i roi manylion",
+      "tooLong": "Rhaid i’r disgrifiad fod yn 2500 llythyren neu lai"
     },
     "supportingMaterialFile": {
-      "invalidFileFormat": "[W]The type of file you are trying to upload is not supported by our system. Please convert it into a common supported file type for example word, excel, pdf.",
-      "invalidFileName": "[W]The name of the file provided is invalid. A file name cannot exceed 150 characters or contain any of the following characters: \\/:*?\"|<>",
-      "invalidFileSize": "[W]The file you are trying to upload has exceeded the maximum file size limit, please reduce the size of the file.",
-      "backEndError": "[W]There was an error uploading your file. Please try again. If this error persists please contact support."
+      "invalidFileFormat": "Nid yw'r math o ffeil rydych chi'n ceisio ei uwchlwytho yn cael ei gefnogi gan ein system. Byddwch cystal a newid hon i ffeil gyffredin, e.e. Word, Excel, pdf. os gwelwch yn dda.",
+      "invalidFileName": "Mae enw’r ffeil a ddarparwyd yn annilys. Ni all enw’r ffeil fod yn fwy na 150 llythyren ac ni all gynnwys unrhyw un o’r nodau canlynol: \\\\/:*?\\\"|<>",
+      "invalidFileSize": "Mae'r ffeil rydych chi'n ceisio ei lwytho wedi mynd y tu hwnt i'r terfyn maint, ceisiwch leihau maint y ffeil.",
+      "backEndError": "Cafwyd problem wrth geisio llwytho eich ffeil. Rhowch gynnig arni. Os yw hyn yn parhau, cysylltwch â’r adran gefnogaeth."
     }
   }
 }
