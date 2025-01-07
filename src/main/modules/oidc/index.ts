@@ -87,7 +87,7 @@ export class Oidc {
         // a nunjucks global variable 'isLoggedIn' has been created for the views
         // it is assigned the value of res.locals.isLoggedIn
         res.locals.isLoggedIn = true;
-        if (validateNotAllowedEndpointsAfterSubmission(req.url)) {
+        if (validateNotAllowedEndpointsAfterSubmission(req)) {
           return res.redirect(PageUrls.CASE_LIST + getLanguageParam(req.url));
         }
         next();

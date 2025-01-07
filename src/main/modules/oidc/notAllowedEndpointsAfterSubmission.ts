@@ -1,3 +1,5 @@
+import { AppRequest } from '../../definitions/appRequest';
+import { YesOrNo } from '../../definitions/case';
 import { PageUrls, languages } from '../../definitions/constants';
 
 export const notAllowedEndpointsAfterSubmission: string[] = [
@@ -42,13 +44,15 @@ export const notAllowedEndpointsAfterSubmission: string[] = [
   PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM,
 ];
 
-export const validateNotAllowedEndpointsAfterSubmission = (url: string): boolean => {
-  const removeWelshQueryString = url.replace(languages.WELSH_URL_PARAMETER, '');
-  const removeEnglishQueryString = url.replace(languages.ENGLISH_URL_PARAMETER, '');
-  if (notAllowedEndpointsAfterSubmission.includes(removeWelshQueryString)) {
-    return true;
-  } else if (notAllowedEndpointsAfterSubmission.includes(removeEnglishQueryString)) {
-    return true;
+export const validateNotAllowedEndpointsAfterSubmission = (req: AppRequest): boolean => {
+  const removeWelshQueryString = req.url.replace(languages.WELSH_URL_PARAMETER, '');
+  const removeEnglishQueryString = req.url.replace(languages.ENGLISH_URL_PARAMETER, '');
+  if (YesOrNo.YES === req.session?.userCase?.responseReceived) {
+    if (notAllowedEndpointsAfterSubmission.includes(removeWelshQueryString)) {
+      return true;
+    } else if (notAllowedEndpointsAfterSubmission.includes(removeEnglishQueryString)) {
+      return true;
+    }
   }
   return false;
 };
