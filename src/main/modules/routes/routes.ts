@@ -49,7 +49,11 @@ import IsClaimantEmploymentWithRespondentContinuingController from '../../contro
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
+import RespondToTribunalCYAController from '../../controllers/RespondToTribunalCYAController';
 import RespondToTribunalController from '../../controllers/RespondToTribunalController';
+import RespondToTribunalCopyToOtherPartyController from '../../controllers/RespondToTribunalCopyToOtherPartyController';
+import RespondToTribunalSubmitCompleteController from '../../controllers/RespondToTribunalSubmitCompleteController';
+import RespondToTribunalSubmitController from '../../controllers/RespondToTribunalSubmitController';
 import RespondToTribunalSupportingMaterialController from '../../controllers/RespondToTribunalSupportingMaterialController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
@@ -251,14 +255,16 @@ export class Routes {
     app.get(PageUrls.APPLICATION_DETAILS, new ApplicationDetailsController().get);
     app.get(PageUrls.RESPOND_TO_TRIBUNAL, new RespondToTribunalController().get);
     app.post(PageUrls.RESPOND_TO_TRIBUNAL, new RespondToTribunalController().post);
-    app.get(
-      PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL,
-      new RespondToTribunalSupportingMaterialController().get
-    );
+    app.get(PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL, new RespondToTribunalSupportingMaterialController().get);
     app.post(
       PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL,
       new RespondToTribunalSupportingMaterialController().post
     );
+    app.get(PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY, new RespondToTribunalCopyToOtherPartyController().get);
+    app.post(PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY, new RespondToTribunalCopyToOtherPartyController().post);
+    app.get(PageUrls.RESPOND_TO_TRIBUNAL_CYA, new RespondToTribunalCYAController().get);
+    app.get(InterceptPaths.RESPOND_TO_TRIBUNAL_SUBMIT, new RespondToTribunalSubmitController().get);
+    app.get(PageUrls.RESPOND_TO_TRIBUNAL_COMPLETE, new RespondToTribunalSubmitCompleteController().get);
     // others
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);
