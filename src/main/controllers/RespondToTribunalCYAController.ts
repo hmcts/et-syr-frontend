@@ -8,19 +8,17 @@ import UrlUtils from '../utils/UrlUtils';
 
 export default class RespondToTribunalCYAController {
   public get = (req: AppRequest, res: Response): void => {
-    res.render(TranslationKeys.CONTACT_TRIBUNAL_CYA, {
+    res.render(TranslationKeys.RESPOND_TO_TRIBUNAL_CYA, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
-      ...req.t(TranslationKeys.CONTACT_TRIBUNAL_CYA, { returnObjects: true }),
+      ...req.t(TranslationKeys.RESPOND_TO_TRIBUNAL_CYA, { returnObjects: true }),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
-      ethosCaseReference: req.session.userCase.ethosCaseReference,
-      cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
       cyaContent: getCyaContent(req, {
         ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
-        ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
-        ...req.t(TranslationKeys.CONTACT_TRIBUNAL_CYA, { returnObjects: true }),
+        ...req.t(TranslationKeys.RESPOND_TO_TRIBUNAL_CYA, { returnObjects: true }),
       }),
       submitLink: InterceptPaths.RESPOND_TO_TRIBUNAL_SUBMIT + getLanguageParam(req.url),
+      cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
     });
   };
 }
