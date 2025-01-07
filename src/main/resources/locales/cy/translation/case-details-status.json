@@ -1,0 +1,16 @@
+{
+  "completed": "[W]Completed",
+  "submitted": "[W]Submitted",
+  "optional": "[W]Optional",
+  "viewed": "[W]Viewed",
+  "notViewedYet": "[W]Not viewed yet",
+  "notAvailableYet": "[W]Not available yet",
+  "waitingForTheTribunal": "[W]Waiting for the tribunal",
+  "submittedAndViewed": "[W]Submitted and viewed",
+  "inProgress": "[W]In progress",
+  "stored": "[W]Stored",
+  "notStartedYet": "[W]Not started yet",
+  "updated": "[W]Updated",
+  "readyToView": "[W]Ready to view",
+  "cannotStartYet": "[W]Cannot start yet"
+}

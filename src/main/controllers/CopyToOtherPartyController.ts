@@ -8,7 +8,7 @@ import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getApplicationDisplayByCode, isClaimantSystemUser } from '../helpers/controller/ContactTribunalHelper';
+import { getApplicationDisplayByCode } from '../helpers/controller/ContactTribunalHelper';
 import UrlUtils from '../utils/UrlUtils';
 import { isContentCharsOrLessAndNotEmpty, isOptionSelected } from '../validators/validator';
 
@@ -65,15 +65,12 @@ export default class CopyToOtherPartyController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const fileName = isClaimantSystemUser(req.session.userCase)
-      ? TranslationKeys.COPY_TO_OTHER_PARTY
-      : TranslationKeys.COPY_TO_OTHER_PARTY_OFFLINE;
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
-      fileName,
+      TranslationKeys.COPY_TO_OTHER_PARTY,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    res.render(fileName, {
+    res.render(TranslationKeys.COPY_TO_OTHER_PARTY, {
       ...content,
       hideContactUs: true,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),

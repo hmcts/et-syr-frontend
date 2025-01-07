@@ -67,7 +67,7 @@ export const mockValidCaseWithIdWithResponseRespondentAddress = <CaseWithId>{
     AddressLine1: '48, Tithe Barn Drive',
     AddressLine2: '49, Tithe Barn Drive',
     AddressLine3: '50, Tithe Barn Drive',
-  }
+  },
 };
 
 export const mockValidCaseWithIdWithResponseRespondentAddressFields = <CaseWithId>{
