@@ -12,11 +12,13 @@ import {
   SessionErrors,
   languages,
 } from '../../definitions/constants';
+import { getLanguageParam } from '../../helpers/RouterHelpers';
 import { getLogger } from '../../logger';
 import { cachePreLoginUrl, generatePreLoginUrl, getPreLoginUrl, setPreLoginUrl } from '../../services/CacheService';
 import ErrorUtils from '../../utils/ErrorUtils';
 
 import { validateNoSignInEndpoints } from './noSignInRequiredEndpoints';
+import { validateNotAllowedEndpointsAfterSubmission } from './notAllowedEndpointsAfterSubmission';
 
 const logger = getLogger('oidc');
 
@@ -85,6 +87,9 @@ export class Oidc {
         // a nunjucks global variable 'isLoggedIn' has been created for the views
         // it is assigned the value of res.locals.isLoggedIn
         res.locals.isLoggedIn = true;
+        if (validateNotAllowedEndpointsAfterSubmission(req.url)) {
+          return res.redirect(PageUrls.CASE_LIST + getLanguageParam(req.url));
+        }
         next();
       } else if (validateNoSignInEndpoints(req.url) || process.env.IN_TEST || '/extend-session' === req.url) {
         next();
