@@ -1,6 +1,8 @@
 import { AppRequest } from '../../definitions/appRequest';
 import { YesOrNo } from '../../definitions/case';
 import { PageUrls, languages } from '../../definitions/constants';
+import ObjectUtils from '../../utils/ObjectUtils';
+import StringUtils from '../../utils/StringUtils';
 
 export const notAllowedEndpointsAfterSubmission: string[] = [
   PageUrls.RESPONSE_SAVED,
@@ -44,15 +46,15 @@ export const notAllowedEndpointsAfterSubmission: string[] = [
   PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM,
 ];
 
-export const validateNotAllowedEndpointsAfterSubmission = (req: AppRequest): boolean => {
+export const isRequestedUrlNotAllowedAfterSubmission = (req: AppRequest): boolean => {
+  if (StringUtils.isBlank(req?.url)) {
+    return false;
+  }
   const removeWelshQueryString = req.url.replace(languages.WELSH_URL_PARAMETER, '');
   const removeEnglishQueryString = req.url.replace(languages.ENGLISH_URL_PARAMETER, '');
-  if (YesOrNo.YES === req.session?.userCase?.responseReceived) {
-    if (notAllowedEndpointsAfterSubmission.includes(removeWelshQueryString)) {
-      return true;
-    } else if (notAllowedEndpointsAfterSubmission.includes(removeEnglishQueryString)) {
-      return true;
-    }
-  }
-  return false;
+  return (
+    (ObjectUtils.isEmpty(req?.session?.userCase) || YesOrNo.YES === req.session?.userCase?.responseReceived) &&
+    (notAllowedEndpointsAfterSubmission.includes(removeWelshQueryString) ||
+      notAllowedEndpointsAfterSubmission.includes(removeEnglishQueryString))
+  );
 };

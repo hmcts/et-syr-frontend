@@ -1,5 +1,7 @@
+import _ from 'lodash';
+
 import { AppRequest } from '../../../main/definitions/appRequest';
-import { DefaultValues, PageUrls } from '../../../main/definitions/constants';
+import { DefaultValues, PageUrls, languages } from '../../../main/definitions/constants';
 import UrlUtils from '../../../main/utils/UrlUtils';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
@@ -11,12 +13,12 @@ describe('UrlUtils tests', () => {
   const request: AppRequest = mockRequest({ t });
   request.url = 'http://localhost:8080';
   test('getCaseDetailsUrlByRequest returns a valid URL', () => {
-    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
     request.session.selectedRespondentIndex = 0;
     expect(UrlUtils.getCaseDetailsUrlByRequest(request)).toStrictEqual('/case-details/1234/3453xaa?lng=en');
   });
   test('getCaseDetailsUrlByRequest returns empty string when request.session does not have selected index', () => {
-    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
     request.session.selectedRespondentIndex = undefined;
     expect(UrlUtils.getCaseDetailsUrlByRequest(request)).toStrictEqual(PageUrls.NOT_IMPLEMENTED);
   });
@@ -26,13 +28,13 @@ describe('UrlUtils tests', () => {
     expect(UrlUtils.getCaseDetailsUrlByRequest(request)).toStrictEqual(PageUrls.NOT_IMPLEMENTED);
   });
   test('getCaseDetailsUrlByRequest returns empty string when request.session.userCase respondents are empty', () => {
-    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
     request.session.selectedRespondentIndex = 0;
     request.session.userCase.respondents = [];
     expect(UrlUtils.getCaseDetailsUrlByRequest(request)).toStrictEqual(PageUrls.NOT_IMPLEMENTED);
   });
   test('getCaseDetailsUrlByRequest returns empty string when request.session.userCase respondent not found by selected index', () => {
-    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
     request.session.selectedRespondentIndex = 110;
     expect(UrlUtils.getCaseDetailsUrlByRequest(request)).toStrictEqual(PageUrls.NOT_IMPLEMENTED);
   });
@@ -198,6 +200,66 @@ describe('UrlUtils tests', () => {
       },
     ])('check if given urls parameters are listed as string list: %o', ({ url, parameterName, result }) => {
       expect(UrlUtils.findParameterWithValueByParameterName(url, parameterName)).toStrictEqual(result);
+    });
+  });
+  describe('getNotAllowedEndPointsForwardingUrlByRequest tests', () => {
+    test('getNotAllowedEndPointsForwardingUrlByRequest returns case list page when request is undefined', () => {
+      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(undefined)).toStrictEqual(PageUrls.CASE_LIST);
+    });
+    test('getNotAllowedEndPointsForwardingUrlByRequest returns case list page when request session is undefined', () => {
+      const req: AppRequest = mockRequest({});
+      req.session = undefined;
+      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(PageUrls.CASE_LIST);
+    });
+    test('getNotAllowedEndPointsForwardingUrlByRequest returns case list page when request session user case is undefined', () => {
+      const req: AppRequest = mockRequest({});
+      req.session.userCase = undefined;
+      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(PageUrls.CASE_LIST);
+    });
+    test('getNotAllowedEndPointsForwardingUrlByRequest returns case list page when request session user case id is empty', () => {
+      const req: AppRequest = mockRequest({});
+      req.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      req.session.userCase.id = undefined;
+      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(PageUrls.CASE_LIST);
+    });
+    test('getNotAllowedEndPointsForwardingUrlByRequest returns case list page when selected respondent is undefined', () => {
+      const req: AppRequest = mockRequest({});
+      req.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(PageUrls.CASE_LIST);
+    });
+    test('getNotAllowedEndPointsForwardingUrlByRequest returns case list page when selected respondent ccdId is undefined', () => {
+      const req: AppRequest = mockRequest({});
+      req.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      req.session.selectedRespondentIndex = 0;
+      req.session.userCase.respondents[0].ccdId = undefined;
+      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(PageUrls.CASE_LIST);
+    });
+    test('getNotAllowedEndPointsForwardingUrlByRequest returns case details page', () => {
+      const req: AppRequest = mockRequest({});
+      req.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      req.session.selectedRespondentIndex = 0;
+      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(
+        PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER +
+          DefaultValues.STRING_SLASH +
+          req.session.userCase.id +
+          DefaultValues.STRING_SLASH +
+          req.session.userCase.respondents[0].ccdId +
+          languages.ENGLISH_URL_PARAMETER
+      );
+    });
+    test('getNotAllowedEndPointsForwardingUrlByRequest returns case details page with welsh language parameter if request url is welsh', () => {
+      const req: AppRequest = mockRequest({});
+      req.url = 'https://localhost:8080?lng=cy';
+      req.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      req.session.selectedRespondentIndex = 0;
+      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(
+        PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER +
+          DefaultValues.STRING_SLASH +
+          req.session.userCase.id +
+          DefaultValues.STRING_SLASH +
+          req.session.userCase.respondents[0].ccdId +
+          languages.WELSH_URL_PARAMETER
+      );
     });
   });
 });

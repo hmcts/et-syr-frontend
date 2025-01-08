@@ -12,13 +12,13 @@ import {
   SessionErrors,
   languages,
 } from '../../definitions/constants';
-import { getLanguageParam } from '../../helpers/RouterHelpers';
 import { getLogger } from '../../logger';
 import { cachePreLoginUrl, generatePreLoginUrl, getPreLoginUrl, setPreLoginUrl } from '../../services/CacheService';
 import ErrorUtils from '../../utils/ErrorUtils';
+import UrlUtils from '../../utils/UrlUtils';
 
 import { validateNoSignInEndpoints } from './noSignInRequiredEndpoints';
-import { validateNotAllowedEndpointsAfterSubmission } from './notAllowedEndpointsAfterSubmission';
+import { isRequestedUrlNotAllowedAfterSubmission } from './notAllowedEndpointsAfterSubmission';
 
 const logger = getLogger('oidc');
 
@@ -87,8 +87,8 @@ export class Oidc {
         // a nunjucks global variable 'isLoggedIn' has been created for the views
         // it is assigned the value of res.locals.isLoggedIn
         res.locals.isLoggedIn = true;
-        if (validateNotAllowedEndpointsAfterSubmission(req)) {
-          return res.redirect(PageUrls.CASE_LIST + getLanguageParam(req.url));
+        if (isRequestedUrlNotAllowedAfterSubmission(req)) {
+          return res.redirect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req));
         }
         next();
       } else if (validateNoSignInEndpoints(req.url) || process.env.IN_TEST || '/extend-session' === req.url) {
