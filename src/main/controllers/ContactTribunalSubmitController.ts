@@ -27,7 +27,7 @@ export default class ContactTribunalSubmitController {
       clearTempFields(req.session.userCase);
 
       // Redirect to next page
-      return res.redirect(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE + getLanguageParam(req.url));
+      return res.redirect(PageUrls.CONTACT_TRIBUNAL_COMPLETE + getLanguageParam(req.url));
     } catch (error) {
       return res.redirect(ErrorPages.NOT_FOUND);
     }

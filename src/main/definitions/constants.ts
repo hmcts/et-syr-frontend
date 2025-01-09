@@ -80,7 +80,7 @@ export const TranslationKeys = {
   CONTACT_TRIBUNAL_SELECTED: 'contact-tribunal-selected',
   COPY_TO_OTHER_PARTY: 'copy-to-other-party',
   CONTACT_TRIBUNAL_CYA: 'contact-tribunal-check-your-answers',
-  CONTACT_TRIBUNAL_SUBMIT_COMPLETE: 'contact-tribunal-submit-complete',
+  CONTACT_TRIBUNAL_COMPLETE: 'contact-tribunal-complete',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
   APPLICATION_DETAILS: 'application-details',
@@ -156,7 +156,7 @@ export const PageUrls = {
   CONTACT_TRIBUNAL_SELECTED: '/contact-tribunal/:selectedOption',
   COPY_TO_OTHER_PARTY: '/copy-to-other-party',
   CONTACT_TRIBUNAL_CYA: '/contact-tribunal-check-your-answers',
-  CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
+  CONTACT_TRIBUNAL_COMPLETE: '/contact-tribunal-complete',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
   APPLICATION_DETAILS: '/application-details/:appId',

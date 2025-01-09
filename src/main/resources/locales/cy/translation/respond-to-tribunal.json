@@ -16,6 +16,7 @@
     },
     "responseText": {
       "required": "Darparwch fanylion eich ymateb a/neu llwythwch ddeunydd ategol",
+      "requiredFile": "[W]Provide details of your response &/or upload a file",
       "tooLong": "Rhaid i’r ymateb fod yn 2500 nod neu lai"
     }
   }
