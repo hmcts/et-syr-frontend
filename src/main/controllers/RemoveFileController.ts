@@ -33,7 +33,9 @@ export default class RemoveFileController {
       );
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
     }
-    req.session.userCase.et3ResponseContestClaimDetails = req.params.contestClaimDetails;
+    if (req.params.contestClaimDetails !== 'undefined' && StringUtils.isBlank(req.params.contestClaimDetails)) {
+      req.session.userCase.et3ResponseContestClaimDetails = req.params.contestClaimDetails;
+    }
     let itemRemoved = false;
     for (const file of req.session.userCase.et3ResponseContestClaimDocument) {
       if (file.id === fileId) {
