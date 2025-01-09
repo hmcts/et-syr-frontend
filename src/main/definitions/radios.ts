@@ -46,7 +46,7 @@ export const SupportingMaterialYesNoRadioValues = [
 ];
 
 export const submitButton: SubmitButton = {
-  text: (l: AnyRecord): string => l.submit,
+  text: (l: AnyRecord): string => l.saveAndContinue,
   classes: 'govuk-!-margin-right-2',
 };
 
