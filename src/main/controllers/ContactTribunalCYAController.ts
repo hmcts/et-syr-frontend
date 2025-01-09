@@ -3,8 +3,8 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { InterceptPaths, TranslationKeys } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getCyaContent } from '../helpers/controller/ContactTribunalCYAHelper';
 import UrlUtils from '../utils/UrlUtils';
+import {getCyaContent} from "../helpers/controller/ContactTribunalHelper";
 
 export default class ContactTribunalCYAController {
   public get = (req: AppRequest, res: Response): void => {

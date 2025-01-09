@@ -9,6 +9,7 @@ import {
 } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import { isContentCharsOrLess, isFieldFilledIn, isOptionSelected } from '../../validators/validator';
+import { getLanguageParam } from '../RouterHelpers';
 
 /**
  * Check and return errors in Respond to Tribunal page
@@ -42,18 +43,19 @@ export const getFormDataError = (formData: Partial<CaseWithId>): FormError => {
 
 /**
  * Get Respond to Tribunal Check your answer content
- * @param request request
+ * @param req request
  * @param translations translations
  */
-export const getCyaContent = (request: AppRequest, translations: AnyRecord): SummaryListRow[] => {
+export const getCyaContent = (req: AppRequest, translations: AnyRecord): SummaryListRow[] => {
   const rows: SummaryListRow[] = [];
-  const userCase = request.session.userCase;
+  const userCase = req.session.userCase;
+  const languageParam = getLanguageParam(req.url);
 
   rows.push(
     addSummaryRowWithAction(
       translations.legend,
       userCase.responseText,
-      PageUrls.RESPOND_TO_TRIBUNAL,
+      PageUrls.RESPOND_TO_TRIBUNAL.replace(':appId', userCase.selectedGenericTseApplication.id) + languageParam,
       translations.change,
       ''
     )
@@ -66,7 +68,7 @@ export const getCyaContent = (request: AppRequest, translations: AnyRecord): Sum
       addSummaryHtmlRowWithAction(
         translations.supportingMaterial,
         downloadLink,
-        PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL,
+        PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL + languageParam,
         translations.change,
         ''
       )
@@ -77,7 +79,7 @@ export const getCyaContent = (request: AppRequest, translations: AnyRecord): Sum
     addSummaryRowWithAction(
       translations.copyToOtherPartyYesOrNo,
       userCase.copyToOtherPartyYesOrNo === YesOrNo.YES ? translations.yes : translations.no,
-      PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY,
+      PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY + languageParam,
       translations.change,
       ''
     )
@@ -88,7 +90,7 @@ export const getCyaContent = (request: AppRequest, translations: AnyRecord): Sum
       addSummaryRowWithAction(
         translations.copyToOtherPartyText,
         userCase.copyToOtherPartyText,
-        PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY,
+        PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY + languageParam,
         translations.change,
         ''
       )

@@ -10,9 +10,14 @@ import {
   getApplicationDisplayByCode,
   getApplicationDisplayByUrl,
   getApplicationsAccordionItems,
+  getCyaContent,
   getNextPage,
   isClaimantSystemUser,
 } from '../../../../main/helpers/controller/ContactTribunalHelper';
+import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
+import commonJson from '../../../../main/resources/locales/en/translation/common.json';
+import contactTribunalCyaJson from '../../../../main/resources/locales/en/translation/contact-tribunal-check-your-answers.json';
+import { mockRequestWithTranslation } from '../../mocks/mockRequest';
 
 const contactTribunalPageJson = JSON.parse(
   fs.readFileSync(
@@ -140,6 +145,127 @@ describe('Contact Tribunal Helper', () => {
       } as CaseWithId;
       const result = isClaimantSystemUser(userCase);
       expect(result).toBe(false);
+    });
+  });
+
+  describe('getCyaContent', () => {
+    it('should generate the correct summary list for a complete case', () => {
+      const translations = {
+        ...commonJson,
+        ...applicationTypeJson,
+        ...contactTribunalCyaJson,
+      };
+      const req = mockRequestWithTranslation({}, translations);
+
+      const userCase = req.session.userCase;
+      userCase.contactApplicationType = 'Strike out all or part of a claim';
+      userCase.contactApplicationText = 'Test';
+      userCase.contactApplicationFile = {
+        document_binary_url: 'test-binary-url',
+        document_size: 1024,
+        document_mime_type: 'application/pdf',
+        document_filename: 'test-file.pdf',
+        document_url: 'test-url',
+      };
+      userCase.copyToOtherPartyYesOrNo = YesOrNo.NO;
+      userCase.copyToOtherPartyText = 'No Reason';
+
+      const expectedRows = [
+        {
+          key: {
+            classes: 'govuk-!-font-weight-regular-m',
+            text: translations.applicationType,
+          },
+          value: {
+            text: 'Strike out the claim',
+          },
+          actions: {
+            items: [
+              {
+                href: '/contact-tribunal?lng=en',
+                text: translations.change,
+                visuallyHiddenText: translations.applicationType,
+              },
+            ],
+          },
+        },
+        {
+          key: {
+            classes: 'govuk-!-font-weight-regular-m',
+            text: translations.legend,
+          },
+          value: {
+            text: userCase.contactApplicationText,
+          },
+          actions: {
+            items: [
+              {
+                href: '/contact-tribunal/strike-out-all-or-part-of-application?lng=en',
+                text: translations.change,
+                visuallyHiddenText: translations.legend,
+              },
+            ],
+          },
+        },
+        {
+          key: {
+            classes: 'govuk-!-font-weight-regular-m',
+            text: translations.supportingMaterial,
+          },
+          value: {
+            html: 'link',
+          },
+          actions: {
+            items: [
+              {
+                href: '/contact-tribunal/strike-out-all-or-part-of-application?lng=en',
+                text: translations.change,
+                visuallyHiddenText: translations.supportingMaterial,
+              },
+            ],
+          },
+        },
+        {
+          key: {
+            classes: 'govuk-!-font-weight-regular-m',
+            text: translations.copyToOtherPartyYesOrNo,
+          },
+          value: {
+            text: 'No',
+          },
+          actions: {
+            items: [
+              {
+                href: '/copy-to-other-party?lng=en',
+                text: translations.change,
+                visuallyHiddenText: translations.copyToOtherPartyYesOrNo,
+              },
+            ],
+          },
+        },
+        {
+          key: {
+            classes: 'govuk-!-font-weight-regular-m',
+            text: translations.copyToOtherPartyText,
+          },
+          value: {
+            text: userCase.copyToOtherPartyText,
+          },
+          actions: {
+            items: [
+              {
+                href: '/copy-to-other-party?lng=en',
+                text: translations.change,
+                visuallyHiddenText: translations.copyToOtherPartyText,
+              },
+            ],
+          },
+        },
+      ];
+
+      const cyaContent = getCyaContent(req, translations);
+
+      expect(cyaContent).toEqual(expectedRows);
     });
   });
 

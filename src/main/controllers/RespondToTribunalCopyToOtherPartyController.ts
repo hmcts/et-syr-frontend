@@ -6,7 +6,7 @@ import { CaseWithId, YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
-import { getPageContent } from '../helpers/FormHelper';
+import {assignFormData, getPageContent} from '../helpers/FormHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import UrlUtils from '../utils/UrlUtils';
 import { isContentCharsOrLessAndNotEmpty, isOptionSelected } from '../validators/validator';
@@ -64,6 +64,7 @@ export default class RespondToTribunalCopyToOtherPartyController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    assignFormData(req.session.userCase, this.form.getFormFields());
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.COPY_TO_OTHER_PARTY,

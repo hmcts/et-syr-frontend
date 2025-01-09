@@ -1,11 +1,17 @@
-import { CaseWithId } from '../../definitions/case';
+import { AppRequest } from '../../definitions/appRequest';
+import { CaseWithId, YesOrNo } from '../../definitions/case';
 import { MY_HMCTS, PageUrls, ValidationErrors, YES } from '../../definitions/constants';
 import { Application, application } from '../../definitions/contact-tribunal-applications';
 import { FormError } from '../../definitions/form';
 import { AccordionItem, addAccordionRow } from '../../definitions/govuk/govukAccordion';
+import {
+  SummaryListRow,
+  addSummaryHtmlRowWithAction,
+  addSummaryRowWithAction,
+} from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import { isContentCharsOrLess, isFieldFilledIn } from '../../validators/validator';
-import { isTypeAOrB } from '../ApplicationHelper';
+import { getApplicationByCode, getApplicationKey, isTypeAOrB } from '../ApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
@@ -129,4 +135,78 @@ export const clearTempFields = (userCase: CaseWithId): void => {
   userCase.contactApplicationFile = undefined;
   userCase.copyToOtherPartyYesOrNo = undefined;
   userCase.copyToOtherPartyText = undefined;
+};
+
+/**
+ * Get Contact Tribunal Check your answer content
+ * @param req request
+ * @param translations translations
+ * */
+export const getCyaContent = (req: AppRequest, translations: AnyRecord): SummaryListRow[] => {
+  const rows: SummaryListRow[] = [];
+  const userCase = req.session.userCase;
+  const selectedApplication = getApplicationByCode(userCase.contactApplicationType);
+  const languageParam = getLanguageParam(req.url);
+
+  rows.push(
+    addSummaryRowWithAction(
+      translations.applicationType,
+      translations[getApplicationKey(selectedApplication)],
+      PageUrls.CONTACT_TRIBUNAL + languageParam,
+      translations.change,
+      ''
+    )
+  );
+
+  if (userCase.contactApplicationText) {
+    rows.push(
+      addSummaryRowWithAction(
+        translations.legend,
+        userCase.contactApplicationText,
+        PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) + languageParam,
+        translations.change,
+        ''
+      )
+    );
+  }
+
+  if (userCase.contactApplicationFile) {
+    // TODO: Create Download Link
+    const downloadLink = 'link';
+    rows.push(
+      addSummaryHtmlRowWithAction(
+        translations.supportingMaterial,
+        downloadLink,
+        PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) + languageParam,
+        translations.change,
+        ''
+      )
+    );
+  }
+
+  if (isTypeAOrB(selectedApplication)) {
+    rows.push(
+      addSummaryRowWithAction(
+        translations.copyToOtherPartyYesOrNo,
+        userCase.copyToOtherPartyYesOrNo === YesOrNo.YES ? translations.yes : translations.no,
+        PageUrls.COPY_TO_OTHER_PARTY + languageParam,
+        translations.change,
+        ''
+      )
+    );
+
+    if (userCase.copyToOtherPartyYesOrNo === YesOrNo.NO) {
+      rows.push(
+        addSummaryRowWithAction(
+          translations.copyToOtherPartyText,
+          userCase.copyToOtherPartyText,
+          PageUrls.COPY_TO_OTHER_PARTY + languageParam,
+          translations.change,
+          ''
+        )
+      );
+    }
+  }
+
+  return rows;
 };
