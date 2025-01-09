@@ -1,0 +1,54 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{%- from "govuk/components/tag/macro.njk" import govukTag -%}
+
+{% block beforeContent %}
+  {{ super() }}
+  {% include "back-link.njk" %}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <table class="govuk-table">
+        <caption class="govuk-table__caption govuk-table__caption--m">{{ title }}</caption>
+        <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">{{ submitDate }}</th>
+          <th scope="col" class="govuk-table__header">{{ application }}</th>
+          <th scope="col" class="govuk-table__header">{{ status }}</th>
+        </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+        {% for app in appList %}
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">
+            {{ dateToLocale(app.value.date) }}
+          </td>
+          <td class="govuk-table__cell">
+            <a href="{{ getContent(app.redirectUrl) }}" class="govuk-link"> {{ app.linkValue }} </a>
+          </td>
+          <td class="govuk-table__cell">
+            {{ govukTag({
+              text: app.displayStatus,
+              classes: "no-text-transform govuk-tag" + app.statusColor
+            }) }}
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="govuk-grid-column-one-third-from-desktop">
+      {% set sideBarContent %}
+        {% include "./components/sidebar/sidebar.njk" %}
+      {% endset %}
+
+      {{ govukDetails({
+        summaryHtml: "<span id='contact-us-sidebar'>" + contact + "</span>",
+        html: sideBarContent
+      }) }}
+    </div>
+  </div>
+{% endblock %}

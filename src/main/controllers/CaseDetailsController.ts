@@ -67,6 +67,7 @@ export default class CaseDetailsController {
 
     res.render(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
+      ...req.t(TranslationKeys.CASE_DETAILS_STATUS as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,

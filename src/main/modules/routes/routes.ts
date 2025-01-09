@@ -7,6 +7,7 @@ import rateLimit from 'express-rate-limit';
 import multer, { FileFilterCallback } from 'multer';
 
 import AcasEarlyConciliationCertificateController from '../../controllers/AcasEarlyConciliationCertificateController';
+import ApplicationDetailsController from '../../controllers/ApplicationDetailsController';
 import ApplicationSubmittedController from '../../controllers/ApplicationSubmittedController';
 import CaseDetailsController from '../../controllers/CaseDetailsController';
 import CaseListCheckController from '../../controllers/CaseListCheckController';
@@ -33,6 +34,8 @@ import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPens
 import ContactTribunalCYAController from '../../controllers/ContactTribunalCYAController';
 import ContactTribunalController from '../../controllers/ContactTribunalController';
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
+import ContactTribunalSubmitCompleteController from '../../controllers/ContactTribunalSubmitCompleteController';
+import ContactTribunalSubmitController from '../../controllers/ContactTribunalSubmitController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import CopyToOtherPartyController from '../../controllers/CopyToOtherPartyController';
 import DocumentsController from '../../controllers/DocumentsController';
@@ -46,6 +49,8 @@ import IsClaimantEmploymentWithRespondentContinuingController from '../../contro
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
+import RespondToTribunalController from '../../controllers/RespondToTribunalController';
+import RespondToTribunalSupportingMaterialController from '../../controllers/RespondToTribunalSupportingMaterialController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
@@ -67,6 +72,7 @@ import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheck
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
+import YourRequestAndApplicationsController from '../../controllers/YourRequestAndApplicationsController';
 import YourResponseFormController from '../../controllers/YourResponseFormController';
 import { AppRequest } from '../../definitions/appRequest';
 import { FILE_SIZE_LIMIT, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
@@ -230,7 +236,7 @@ export class Routes {
       PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM,
       new CheckYourAnswersEmployersContractClaimController().post
     );
-    // Contact Tribunal
+    // Contact the tribunal about your case
     app.get(PageUrls.HOLDING_PAGE, new HoldingPageController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL, new ContactTribunalController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL_SELECTED, new ContactTribunalSelectedController().get);
@@ -238,6 +244,21 @@ export class Routes {
     app.get(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().get);
     app.post(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().post);
     app.get(PageUrls.CONTACT_TRIBUNAL_CYA, new ContactTribunalCYAController().get);
+    app.get(InterceptPaths.CONTACT_TRIBUNAL_SUBMIT, new ContactTribunalSubmitController().get);
+    app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
+    // Your request and applications
+    app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
+    app.get(PageUrls.APPLICATION_DETAILS, new ApplicationDetailsController().get);
+    app.get(PageUrls.RESPOND_TO_TRIBUNAL, new RespondToTribunalController().get);
+    app.post(PageUrls.RESPOND_TO_TRIBUNAL, new RespondToTribunalController().post);
+    app.get(
+      PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL,
+      new RespondToTribunalSupportingMaterialController().get
+    );
+    app.post(
+      PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL,
+      new RespondToTribunalSupportingMaterialController().post
+    );
     // others
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);

@@ -25,15 +25,3 @@ export const mockedET1FormWelshDocumentApiModel: DocumentApiModel = {
     },
   },
 };
-
-export const mockedAcasFormDocumentApiModel: DocumentApiModel = {
-  id: '1b8d3315-cc8a-4197-9bc0-376744693499',
-  value: {
-    typeOfDocument: 'ACAS Certificate',
-    uploadedDocument: {
-      document_url: 'http://localhost:5005/documents/3f48b0fd-a52a-4118-8b07-c98ebb019689',
-      document_filename: 'TEST_ACAS_CERTIFICATE_R123456_78_90.docx',
-      document_binary_url: 'http://localhost:5005/documents/3f48b0fd-a52a-4118-8b07-c98ebb019689/binary',
-    },
-  },
-};

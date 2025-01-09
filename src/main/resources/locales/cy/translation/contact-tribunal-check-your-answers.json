@@ -5,5 +5,7 @@
   "legend": "[W]What do you want to tell or ask the tribunal?",
   "supportingMaterial": "[W]Supporting material",
   "copyToOtherPartyYesOrNo": "[W]Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?",
-  "copyToOtherPartyText": "[W]Reason for not informing other party"
+  "copyToOtherPartyText": "[W]Reason for not informing other party",
+  "offlineNote": "[W]You cannot make further changes to this correspondence after you store it",
+  "storeButton": "[W]Store application"
 }

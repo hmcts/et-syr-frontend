@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { getApplicationByUrl } from '../helpers/ApplicationHelper';
@@ -41,7 +41,7 @@ export default class ContactTribunalSelectedController {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const selectedApplication = getApplicationByUrl(req.params.selectedOption);
     if (!selectedApplication) {
-      return res.redirect(PageUrls.NOT_IMPLEMENTED);
+      return res.redirect(ErrorPages.NOT_FOUND);
     }
 
     req.session.errors = [];
