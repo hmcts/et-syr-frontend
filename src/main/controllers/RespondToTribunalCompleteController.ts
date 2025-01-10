@@ -2,17 +2,15 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { TranslationKeys } from '../definitions/constants';
-import { returnTodayPlus7 } from '../helpers/DateHelper';
 import UrlUtils from '../utils/UrlUtils';
 
-export default class ContactTribunalSubmitCompleteController {
+export default class RespondToTribunalCompleteController {
   public get = (req: AppRequest, res: Response): void => {
-    res.render(TranslationKeys.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, {
+    res.render(TranslationKeys.RESPOND_TO_TRIBUNAL_COMPLETE, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
-      ...req.t(TranslationKeys.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, { returnObjects: true }),
-      todayPlus7: returnTodayPlus7(req.url),
-      rule91state: req.session?.userCase.rule91state,
+      ...req.t(TranslationKeys.RESPOND_TO_TRIBUNAL_COMPLETE, { returnObjects: true }),
       redirectUrl: UrlUtils.getCaseDetailsUrlByRequest(req),
+      rule91state: req.session?.userCase?.rule91state,
     });
   };
 }

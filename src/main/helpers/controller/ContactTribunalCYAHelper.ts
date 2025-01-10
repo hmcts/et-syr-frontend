@@ -8,17 +8,24 @@ import {
 } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import { getApplicationByCode, getApplicationKey, isTypeAOrB } from '../ApplicationHelper';
+import { getLanguageParam } from '../RouterHelpers';
 
-export const getCyaContent = (request: AppRequest, translations: AnyRecord): SummaryListRow[] => {
+/**
+ * Get Contact Tribunal Check your answer content
+ * @param req request
+ * @param translations translations
+ * */
+export const getCyaContent = (req: AppRequest, translations: AnyRecord): SummaryListRow[] => {
   const rows: SummaryListRow[] = [];
-  const userCase = request.session.userCase;
+  const userCase = req.session.userCase;
   const selectedApplication = getApplicationByCode(userCase.contactApplicationType);
+  const languageParam = getLanguageParam(req.url);
 
   rows.push(
     addSummaryRowWithAction(
       translations.applicationType,
       translations[getApplicationKey(selectedApplication)],
-      PageUrls.CONTACT_TRIBUNAL,
+      PageUrls.CONTACT_TRIBUNAL + languageParam,
       translations.change,
       ''
     )
@@ -29,7 +36,7 @@ export const getCyaContent = (request: AppRequest, translations: AnyRecord): Sum
       addSummaryRowWithAction(
         translations.legend,
         userCase.contactApplicationText,
-        PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url),
+        PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) + languageParam,
         translations.change,
         ''
       )
@@ -43,7 +50,7 @@ export const getCyaContent = (request: AppRequest, translations: AnyRecord): Sum
       addSummaryHtmlRowWithAction(
         translations.supportingMaterial,
         downloadLink,
-        PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url),
+        PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) + languageParam,
         translations.change,
         ''
       )
@@ -55,7 +62,7 @@ export const getCyaContent = (request: AppRequest, translations: AnyRecord): Sum
       addSummaryRowWithAction(
         translations.copyToOtherPartyYesOrNo,
         userCase.copyToOtherPartyYesOrNo === YesOrNo.YES ? translations.yes : translations.no,
-        PageUrls.COPY_TO_OTHER_PARTY,
+        PageUrls.COPY_TO_OTHER_PARTY + languageParam,
         translations.change,
         ''
       )
@@ -66,7 +73,7 @@ export const getCyaContent = (request: AppRequest, translations: AnyRecord): Sum
         addSummaryRowWithAction(
           translations.copyToOtherPartyText,
           userCase.copyToOtherPartyText,
-          PageUrls.COPY_TO_OTHER_PARTY,
+          PageUrls.COPY_TO_OTHER_PARTY + languageParam,
           translations.change,
           ''
         )

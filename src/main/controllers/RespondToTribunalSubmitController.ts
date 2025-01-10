@@ -5,15 +5,14 @@ import { YesOrNo } from '../definitions/case';
 import { ErrorPages, PageUrls } from '../definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { clearTempFields } from '../helpers/controller/ContactTribunalHelper';
 import ET3Util from '../utils/ET3Util';
 
-export default class ContactTribunalSubmitController {
+export default class RespondToTribunalSubmitController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const userCase = req.session?.userCase;
     try {
       // Update Hub Links Statuses
-      await ET3Util.updateCaseDetailsLinkStatuses(
+      req.session.userCase = await ET3Util.updateCaseDetailsLinkStatuses(
         req,
         ET3CaseDetailsLinkNames.RespondentRequestsAndApplications,
         LinkStatus.IN_PROGRESS
@@ -24,10 +23,9 @@ export default class ContactTribunalSubmitController {
 
       // Clear temporary fields
       userCase.rule91state = userCase.copyToOtherPartyYesOrNo && userCase.copyToOtherPartyYesOrNo === YesOrNo.YES;
-      clearTempFields(req.session.userCase);
+      // TODO
 
-      // Redirect to next page
-      return res.redirect(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE + getLanguageParam(req.url));
+      return res.redirect(PageUrls.RESPOND_TO_TRIBUNAL_COMPLETE + getLanguageParam(req.url));
     } catch (error) {
       return res.redirect(ErrorPages.NOT_FOUND);
     }

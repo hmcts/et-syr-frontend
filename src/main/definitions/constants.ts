@@ -86,7 +86,8 @@ export const TranslationKeys = {
   APPLICATION_DETAILS: 'application-details',
   RESPOND_TO_TRIBUNAL: 'respond-to-tribunal',
   RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL: 'respond-to-tribunal-supporting-material',
-  RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY: 'respond-to-tribunal-copy-to-other-party',
+  RESPOND_TO_TRIBUNAL_CYA: 'respond-to-tribunal-check-your-answers',
+  RESPOND_TO_TRIBUNAL_COMPLETE: 'respond-to-tribunal-complete',
 } as const;
 
 export const PageUrls = {
@@ -181,6 +182,7 @@ export const InterceptPaths = {
   REMOVE_FILE: '/remove-uploaded-file',
   // Contact Tribunal
   CONTACT_TRIBUNAL_SUBMIT: '/submitContactTribunal',
+  RESPOND_TO_TRIBUNAL_SUBMIT: '/submitRespondToTribunal',
 } as const;
 
 export const RedirectKeys = {

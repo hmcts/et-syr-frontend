@@ -6,13 +6,12 @@ import { CaseWithId, YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
-import { getPageContent } from '../helpers/FormHelper';
+import {assignFormData, getPageContent} from '../helpers/FormHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getApplicationDisplayByCode } from '../helpers/controller/ContactTribunalHelper';
 import UrlUtils from '../utils/UrlUtils';
 import { isContentCharsOrLessAndNotEmpty, isOptionSelected } from '../validators/validator';
 
-export default class CopyToOtherPartyController {
+export default class RespondToTribunalCopyToOtherPartyController {
   private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
@@ -51,32 +50,34 @@ export default class CopyToOtherPartyController {
     this.form = new Form(<FormFields>this.formContent.fields);
   }
 
-  public post = async (req: AppRequest, res: Response): Promise<void> => {
+  public post = (req: AppRequest, res: Response): void => {
     // TODO: Get values from inputs and Save them
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     req.session.errors = this.form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
-      return res.redirect(PageUrls.COPY_TO_OTHER_PARTY + getLanguageParam(req.url));
+      return res.redirect(PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY + getLanguageParam(req.url));
     }
 
     req.session.userCase.copyToOtherPartyYesOrNo = formData.copyToOtherPartyYesOrNo;
     req.session.userCase.copyToOtherPartyText = formData.copyToOtherPartyText;
-    res.redirect(PageUrls.CONTACT_TRIBUNAL_CYA + getLanguageParam(req.url));
+    res.redirect(PageUrls.RESPOND_TO_TRIBUNAL_CYA + getLanguageParam(req.url));
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    assignFormData(req.session.userCase, this.form.getFormFields());
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.COPY_TO_OTHER_PARTY,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
+    const captionTranslation: AnyRecord = {
+      ...req.t(TranslationKeys.RESPOND_TO_TRIBUNAL, { returnObjects: true }),
+    };
     res.render(TranslationKeys.COPY_TO_OTHER_PARTY, {
       ...content,
       hideContactUs: true,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
-      caption: getApplicationDisplayByCode(req.session.userCase?.contactApplicationType, {
-        ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
-      }),
+      caption: captionTranslation.caption,
     });
   };
 }
