@@ -6,7 +6,7 @@ import { CaseWithId, YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
-import {assignFormData, getPageContent} from '../helpers/FormHelper';
+import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import UrlUtils from '../utils/UrlUtils';
 import { isContentCharsOrLessAndNotEmpty, isOptionSelected } from '../validators/validator';
