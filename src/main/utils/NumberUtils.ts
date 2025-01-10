@@ -31,4 +31,16 @@ export default class NumberUtils {
   public static isNonNumericValue(stringValue: string): boolean {
     return !this.isNumericValue(stringValue);
   }
+
+  /**
+   * Converts string value to number. If string value is not a numeric value returns undefined.
+   * @param stringValue value that will be converted to number type
+   * @return numeric correspondence of the given string value
+   */
+  public static convertStringToNumber(stringValue: string): number {
+    if (this.isNonNumericValue(stringValue)) {
+      return undefined;
+    }
+    return Number(stringValue);
+  }
 }
