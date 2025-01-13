@@ -95,7 +95,6 @@ export default class ClaimantPayDetailsEnterController {
     } else {
       req.session.userCase.et3ResponsePayTakehome = DefaultValues.STRING_EMPTY;
     }
-    logger.info('******' + formData.et3ResponsePayFrequency);
     if (StringUtils.isNotBlank(formData.et3ResponsePayFrequency)) {
       req.session.userCase.et3ResponsePayFrequency = formData.et3ResponsePayFrequency;
     }
