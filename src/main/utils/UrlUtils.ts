@@ -121,12 +121,11 @@ export default class UrlUtils {
     const selectedRespondent = RespondentUtils.findSelectedRespondentByRequest(req);
     if (
       ObjectUtils.isEmpty(req?.session?.userCase) ||
-      req.session.userCase.id === undefined ||
       StringUtils.isBlank(req.session.userCase.id) ||
       ObjectUtils.isEmpty(selectedRespondent) ||
       StringUtils.isBlank(selectedRespondent.ccdId)
     ) {
-      return PageUrls.CASE_LIST;
+      return PageUrls.CASE_LIST + getLanguageParam(req?.url);
     }
     return (
       PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER +

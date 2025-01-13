@@ -204,35 +204,47 @@ describe('UrlUtils tests', () => {
   });
   describe('getNotAllowedEndPointsForwardingUrlByRequest tests', () => {
     test('getNotAllowedEndPointsForwardingUrlByRequest returns case list page when request is undefined', () => {
-      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(undefined)).toStrictEqual(PageUrls.CASE_LIST);
+      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(undefined)).toStrictEqual(
+        PageUrls.CASE_LIST + languages.ENGLISH_URL_PARAMETER
+      );
     });
     test('getNotAllowedEndPointsForwardingUrlByRequest returns case list page when request session is undefined', () => {
       const req: AppRequest = mockRequest({});
       req.session = undefined;
-      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(PageUrls.CASE_LIST);
+      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(
+        PageUrls.CASE_LIST + languages.ENGLISH_URL_PARAMETER
+      );
     });
     test('getNotAllowedEndPointsForwardingUrlByRequest returns case list page when request session user case is undefined', () => {
       const req: AppRequest = mockRequest({});
       req.session.userCase = undefined;
-      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(PageUrls.CASE_LIST);
+      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(
+        PageUrls.CASE_LIST + languages.ENGLISH_URL_PARAMETER
+      );
     });
     test('getNotAllowedEndPointsForwardingUrlByRequest returns case list page when request session user case id is empty', () => {
       const req: AppRequest = mockRequest({});
       req.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
       req.session.userCase.id = undefined;
-      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(PageUrls.CASE_LIST);
+      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(
+        PageUrls.CASE_LIST + languages.ENGLISH_URL_PARAMETER
+      );
     });
     test('getNotAllowedEndPointsForwardingUrlByRequest returns case list page when selected respondent is undefined', () => {
       const req: AppRequest = mockRequest({});
       req.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
-      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(PageUrls.CASE_LIST);
+      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(
+        PageUrls.CASE_LIST + languages.ENGLISH_URL_PARAMETER
+      );
     });
     test('getNotAllowedEndPointsForwardingUrlByRequest returns case list page when selected respondent ccdId is undefined', () => {
       const req: AppRequest = mockRequest({});
       req.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
       req.session.selectedRespondentIndex = 0;
       req.session.userCase.respondents[0].ccdId = undefined;
-      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(PageUrls.CASE_LIST);
+      expect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req)).toStrictEqual(
+        PageUrls.CASE_LIST + languages.ENGLISH_URL_PARAMETER
+      );
     });
     test('getNotAllowedEndPointsForwardingUrlByRequest returns case details page', () => {
       const req: AppRequest = mockRequest({});
