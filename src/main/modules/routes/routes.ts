@@ -32,9 +32,9 @@ import ClaimantPayDetailsController from '../../controllers/ClaimantPayDetailsCo
 import ClaimantPayDetailsEnterController from '../../controllers/ClaimantPayDetailsEnterController';
 import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPensionAndBenefitsController';
 import ContactTribunalCYAController from '../../controllers/ContactTribunalCYAController';
-import ContactTribunalSubmitCompleteController from '../../controllers/ContactTribunalSubmitCompleteController';
 import ContactTribunalController from '../../controllers/ContactTribunalController';
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
+import ContactTribunalSubmitCompleteController from '../../controllers/ContactTribunalSubmitCompleteController';
 import ContactTribunalSubmitController from '../../controllers/ContactTribunalSubmitController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import CopyToOtherPartyController from '../../controllers/CopyToOtherPartyController';

@@ -15,6 +15,13 @@
         rows: appContent
       }) }}
 
+      {% for response in allResponses %}
+        <h2 class="govuk-heading-m">{{ responseItem }} {{ loop.index }}</h2>
+        {{ govukSummaryList({
+          rows: response
+        }) }}
+      {% endfor %}
+
       {% if isRespondButton %}
         <p class="govuk-body">{{ mustRespond }}</p>
         {{ govukButton({

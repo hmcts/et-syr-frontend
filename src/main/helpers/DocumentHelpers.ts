@@ -1,10 +1,11 @@
 // Used in API formatter
 import { AxiosResponse } from 'axios';
 
-import { CaseWithId } from '../definitions/case';
-import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
-import { DOCUMENT_CONTENT_TYPES, DefaultValues } from '../definitions/constants';
+import { CaseWithId, Document } from '../definitions/case';
+import { ApiDocumentTypeItem, DocumentType, DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
+import { DOCUMENT_CONTENT_TYPES, DefaultValues, PageUrls } from '../definitions/constants';
 import { DocumentDetail } from '../definitions/definition';
+import DocumentUtils from '../utils/DocumentUtils';
 
 export const combineDocuments = <T>(...arrays: T[][]): T[] =>
   [].concat(...arrays.filter(Array.isArray)).filter(doc => doc !== undefined);
@@ -96,4 +97,27 @@ export const formatDocumentDetailToApiDocumentTypeItem = (form: DocumentDetail):
       },
     },
   };
+};
+
+export const getDocumentFromDocumentTypeItems = (docs: DocumentTypeItem[]): DocumentType => {
+  return docs.find(element => element)?.value;
+};
+
+export const getLinkFromDocument = (doc: Document): string => {
+  if (!doc) {
+    return '';
+  }
+  const documentId = DocumentUtils.findDocumentIdByURL(doc.document_url);
+  const documentName = doc.document_filename;
+  return getCaseDocumentLink(documentId, documentName);
+};
+
+const getCaseDocumentLink = (documentId: string, documentName: string): string => {
+  return (
+    '<a href="' +
+    PageUrls.GET_CASE_DOCUMENT.replace(':docId', documentId) +
+    '" target="_blank">' +
+    documentName +
+    '</a><br>'
+  );
 };

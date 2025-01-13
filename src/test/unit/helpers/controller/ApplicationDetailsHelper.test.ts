@@ -9,7 +9,6 @@ import applicationDetailsJson from '../../../../main/resources/locales/en/transl
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
 import commonJson from '../../../../main/resources/locales/en/translation/common.json';
 import { mockRequestWithTranslation } from '../../mocks/mockRequest';
-import { applicationUploadedDoc } from '../../mocks/mockUserCaseWithDecisionsAndJudgments';
 
 describe('getApplicationContent', () => {
   const translations = {
@@ -68,13 +67,22 @@ describe('getApplicationContent', () => {
         status: 'notViewedYet',
         dueDate: '2022-05-12',
         applicationState: 'notViewedYet',
-        documentUpload: applicationUploadedDoc,
+        documentUpload: {
+          document_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa',
+          document_filename: 'test-file.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa/binary',
+          createdOn: 'Test date',
+          document_size: 5,
+          document_mime_type: 'pdf',
+        },
       },
     };
     const result = getApplicationContent(mockApp, mockReq);
     expect(result).toHaveLength(6);
     expect(result[3].key).toEqual({ classes: summaryListClass, text: 'Supporting material' });
-    expect(result[3].value).toEqual({ html: 'link' });
+    expect(result[3].value).toEqual({
+      html: '<a href="/getCaseDocument/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa" target="_blank">ET1_WELSH_Sunday_Ayeni_R600227_21_75.pdf</a><br>',
+    });
     expect(result[4].key).toEqual({
       classes: summaryListClass,
       text: 'Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?',

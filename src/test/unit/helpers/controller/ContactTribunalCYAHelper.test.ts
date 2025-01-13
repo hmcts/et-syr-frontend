@@ -19,11 +19,11 @@ describe('Contact Tribunal CYA Helper', () => {
       userCase.contactApplicationType = 'Strike out all or part of a claim';
       userCase.contactApplicationText = 'Test';
       userCase.contactApplicationFile = {
-        document_binary_url: 'test-binary-url',
+        document_binary_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa/binary',
         document_size: 1024,
         document_mime_type: 'application/pdf',
         document_filename: 'test-file.pdf',
-        document_url: 'test-url',
+        document_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa',
       };
       userCase.copyToOtherPartyYesOrNo = YesOrNo.NO;
       userCase.copyToOtherPartyText = 'No Reason';
@@ -71,7 +71,7 @@ describe('Contact Tribunal CYA Helper', () => {
             text: translations.supportingMaterial,
           },
           value: {
-            html: 'link',
+            html: '<a href="/getCaseDocument/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa" target="_blank">test-file.pdf</a><br>',
           },
           actions: {
             items: [
