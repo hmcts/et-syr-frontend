@@ -33,8 +33,8 @@ export default class UrlUtils {
 
   /**
    * Removes parameter from the given url. For example if url is
-   * "https://localhost:3003/employers-contract-claim?redirect=clearSelection&lng=cy" and parameter is "redirect=clear"
-   * returns "https://localhost:3003/employers-contract-claim?lng=cy".
+   * "https://localhost:3003/employers-contract-claim?redirect=clearSelection&lng=cy" and parameter is
+   * "redirect=clearSelection" returns "https://localhost:3003/employers-contract-claim?lng=cy".
    * Please be careful, if parameter to be removed is the first parameter if there is another parameter,
    * then makes that parameter as the first parameter and replaces ampersand (&) with (?).
    * If parameter to be removed is not the first parameter then it simply removes it.
