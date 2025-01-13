@@ -2,6 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
+import { continueButton } from '../definitions/buttons';
 import { CaseWithId } from '../definitions/case';
 import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
@@ -28,10 +29,7 @@ export default class ContactTribunalSelectedController {
         labelAsHint: true,
       },
     },
-    submit: {
-      text: (l: AnyRecord): string => l.continue,
-      classes: 'govuk-!-margin-right-2',
-    },
+    submit: continueButton,
   };
 
   constructor() {
