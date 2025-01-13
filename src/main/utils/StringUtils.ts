@@ -8,7 +8,7 @@ export default class StringUtils {
    * @param value to be checked if blank or not.
    */
   public static isBlank(value: string): boolean {
-    return !value || value.trim().length === 0;
+    return !value || String(value).trim().length === 0;
   }
   /**
    * Checks if the given string value is not blank. It first checks if value is not undefined or null.

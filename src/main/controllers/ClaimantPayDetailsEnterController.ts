@@ -2,16 +2,27 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { PayFrequency } from '../definitions/case';
-import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { CaseWithId, PayFrequency } from '../definitions/case';
+import { DefaultValues, FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
+import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { getPageContent } from '../helpers/FormHelper';
-import { isClearSelection } from '../helpers/RouterHelpers';
+import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { isClearSelection, returnValidUrl } from '../helpers/RouterHelpers';
+import { getLogger } from '../logger';
+import { getCaseApi } from '../services/CaseService';
+import CollectionUtils from '../utils/CollectionUtils';
 import ET3Util from '../utils/ET3Util';
+import ErrorUtils from '../utils/ErrorUtils';
+import NumberUtils from '../utils/NumberUtils';
+import ObjectUtils from '../utils/ObjectUtils';
+import StringUtils from '../utils/StringUtils';
 import { isValidCurrency } from '../validators/validator';
+
+const logger = getLogger('ClaimantPayDetailsEnterController');
 
 export default class ClaimantPayDetailsEnterController {
   private readonly form: Form;
@@ -70,19 +81,67 @@ export default class ClaimantPayDetailsEnterController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    await ET3Util.updateET3ResponseWithET3Form(
+    req.session.errors = [];
+    const formData: Partial<CaseWithId> = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    const et3ResponsePayBeforeTax: number = NumberUtils.convertStringToNumber(formData.et3ResponsePayBeforeTax);
+    const et3ResponsePayTakeHome: number = NumberUtils.convertStringToNumber(formData.et3ResponsePayTakehome);
+    if (NumberUtils.isNotEmpty(et3ResponsePayBeforeTax)) {
+      req.session.userCase.et3ResponsePayBeforeTax = String((et3ResponsePayBeforeTax * 100).toFixed(0));
+    } else {
+      req.session.userCase.et3ResponsePayBeforeTax = DefaultValues.STRING_EMPTY;
+    }
+    if (NumberUtils.isNotEmpty(et3ResponsePayTakeHome)) {
+      req.session.userCase.et3ResponsePayTakehome = String((et3ResponsePayTakeHome * 100).toFixed(0));
+    } else {
+      req.session.userCase.et3ResponsePayTakehome = DefaultValues.STRING_EMPTY;
+    }
+    if (StringUtils.isNotBlank(formData.et3ResponsePayFrequency)) {
+      req.session.userCase.et3ResponsePayFrequency = formData.et3ResponsePayFrequency;
+    }
+    const userCase: CaseWithId = await ET3Util.updateET3Data(
       req,
-      res,
-      this.form,
       ET3HubLinkNames.PayPensionBenefitDetails,
-      LinkStatus.IN_PROGRESS,
-      PageUrls.CLAIMANT_NOTICE_PERIOD
+      LinkStatus.IN_PROGRESS
     );
+    if (CollectionUtils.isEmpty(req.session.errors) && ObjectUtils.isNotEmpty(userCase)) {
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CLAIMANT_NOTICE_PERIOD)));
+    }
+    if (ObjectUtils.isEmpty(userCase)) {
+      ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
+        req,
+        ValidationErrors.FILE_UPLOAD_BACKEND_ERROR,
+        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+      );
+    }
+    req.session.userCase = userCase;
+    return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CLAIMANT_PAY_DETAILS_ENTER)));
   };
 
-  public get = (req: AppRequest, res: Response): void => {
+  public get = async (req: AppRequest, res: Response): Promise<void> => {
+    let userCase = undefined;
+    try {
+      userCase = formatApiCaseDataToCaseWithId(
+        (await getCaseApi(req.session.user?.accessToken).getUserCase(req?.session?.userCase?.id)).data,
+        req
+      );
+    } catch (error) {
+      logger.error('Unable to retrieve user info from get user api. Error is: ' + error.message);
+    }
+    if (ObjectUtils.isNotEmpty(userCase)) {
+      req.session.userCase = userCase;
+    }
     if (isClearSelection(req)) {
       req.session.userCase.et3ResponsePayFrequency = undefined;
+    }
+    if (NumberUtils.isNumericValue(req?.session?.userCase?.et3ResponsePayBeforeTax)) {
+      req.session.userCase.et3ResponsePayBeforeTax = String(
+        NumberUtils.convertStringToNumber(req.session.userCase.et3ResponsePayBeforeTax) / 100
+      );
+    }
+    if (NumberUtils.isNumericValue(req?.session?.userCase?.et3ResponsePayTakehome)) {
+      req.session.userCase.et3ResponsePayTakehome = String(
+        NumberUtils.convertStringToNumber(req.session.userCase.et3ResponsePayTakehome) / 100
+      );
     }
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
