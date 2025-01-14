@@ -8,12 +8,13 @@ import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants'
 import { FormContent, FormFields } from '../definitions/form';
 import { SummaryListRow } from '../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../definitions/util-types';
-import { getPageContent } from '../helpers/FormHelper';
+import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
 import { getFormDataError } from '../helpers/controller/RespondToTribunalHelper';
 import UrlUtils from '../utils/UrlUtils';
+import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
 
 export default class RespondToTribunalController {
   private readonly form: Form;
@@ -24,6 +25,7 @@ export default class RespondToTribunalController {
         label: (l: AnyRecord): string => l.responseText.label,
         hint: (l: AnyRecord): string => l.responseText.hint,
         maxlength: 2500,
+        validator: isFieldFilledIn,
       },
       hasSupportingMaterial: {
         type: 'radios',
@@ -41,6 +43,7 @@ export default class RespondToTribunalController {
             value: YesOrNo.NO,
           },
         ],
+        validator: isOptionSelected,
       },
     },
     submit: {
@@ -58,18 +61,19 @@ export default class RespondToTribunalController {
       return res.redirect(ErrorPages.NOT_FOUND + getLanguageParam(req.url));
     }
 
-    req.session.errors = [];
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    const errors = getFormDataError(formData);
-    if (errors) {
-      req.session.errors.push(...errors);
+    req.session.userCase.selectedGenericTseApplication = selectedApplication;
+    req.session.userCase.responseText = formData.responseText;
+    req.session.userCase.hasSupportingMaterial = formData.hasSupportingMaterial;
+
+    req.session.errors = [];
+    const error = getFormDataError(formData);
+    if (error) {
+      req.session.errors.push(error);
       return res.redirect(
         PageUrls.RESPOND_TO_TRIBUNAL.replace(':appId', selectedApplication.id) + getLanguageParam(req.url)
       );
     }
-
-    req.session.userCase.responseText = formData.responseText;
-    req.session.userCase.hasSupportingMaterial = formData.hasSupportingMaterial;
 
     const redirectUrl =
       formData.hasSupportingMaterial === YesOrNo.YES
@@ -89,6 +93,7 @@ export default class RespondToTribunalController {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
+    assignFormData(req.session.userCase, this.form.getFormFields());
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.RESPOND_TO_TRIBUNAL,

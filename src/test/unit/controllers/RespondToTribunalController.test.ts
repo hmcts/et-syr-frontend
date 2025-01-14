@@ -90,10 +90,7 @@ describe('Respond to Tribunal Controller', () => {
       request.params.appId = '1';
       controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith('/respond-to-tribunal/1?lng=en');
-      const errors = [
-        { propertyName: 'responseText', errorType: 'required' },
-        { propertyName: 'hasSupportingMaterial', errorType: 'required' },
-      ];
+      const errors = [{ propertyName: 'responseText', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
 
