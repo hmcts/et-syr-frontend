@@ -1,19 +1,19 @@
 {
-  "title": "[W]Name of contact",
-  "h1": "[W]Name of contact (optional)",
-  "respondentPreferredContactName": "[W]If you are not the person who will be the primary contact for the tribunal, enter the full name of the person who is.",
+  "title": "Enw’r unigolyn cyswllt",
+  "h1": "Enw’r unigolyn cyswllt (dewisol)",
+  "respondentPreferredContactName": "Os nad chi yw’r unigolyn fydd y prif gyswllt i’r tribiwnlys, rhowch enw llawn yr unigolyn a fydd yn brif gyswllt y tribiwnlys.",
   "errors": {
     "et3ResponseRespondentContactName": {
-      "invalidName": "[W]Enter a valid name",
-      "tooLong": "[W]The 'Name of contact' must be less than 60 characters"
+      "invalidName": "Rhowch enw dilys",
+      "tooLong": "Rhaid i’r ‘enw cyswllt’ fod yn llai na 60 o nodau"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

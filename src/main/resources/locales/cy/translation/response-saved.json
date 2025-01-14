@@ -1,12 +1,12 @@
 {
-  "title": "[W]Response saved",
-  "titleText": "[W]Response saved",
-  "heading1": "[W]What happens next",
-  "p1": "[W]You can return to your saved response from the case overview page at any time. ",
+  "title": "Ymateb wedi’i gadw",
+  "titleText": "Ymateb wedi’i gadw",
+  "heading1": "Beth fydd yn digwydd nesaf",
+  "p1": "Gallwch ddychwelyd i’ch ymateb a gadwyd o’r dudalen trosolwg o’r achos ar unrhyw adeg. ",
   "deadline": {
-    "p1": "[W]You have until ",
-    "p2": "[W]to submit your response."
+    "p1": "Mae gennych hyd nes ",
+    "p2": "i gyflwyno eich ymateb."
   },
-  "returnToResponse": "[W]Return to response",
-  "returnToCaseList": "[W]Return to case list"
+  "returnToResponse": "Dychwelyd i'r ymateb",
+  "returnToCaseList": "Dychwelyd at restr yr achos"
 }

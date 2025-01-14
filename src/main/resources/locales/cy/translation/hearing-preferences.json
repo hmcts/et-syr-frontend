@@ -1,26 +1,26 @@
 {
-  "title": "[W]Hearing preference",
-  "h1": "[W]Hearing format",
-  "legend": "[W]Would you be able to take part in hearings by video and phone? (optional)",
-  "hearingText1": "[W]If your case goes to a hearing, it can take place either:",
-  "hearingBullet1": "[W]in person, in a room at a tribunal (‘face-to-face’)",
-  "hearingBullet2": "[W]by video (where you can join from a place suitable to you)",
-  "hearingBullet3": "[W]by phone",
-  "hearingText2": "[W]Some hearings use a combination of these methods. The approach taken will be decided by a judge. It may depend on the type of claim.",
-  "checkboxVideo": "[W]Yes, I can take part in video hearings",
-  "checkboxPhone": "[W]Yes, I can take part in phone hearings",
-  "selectAllHint": "[W]Select all that apply",
+  "title": "Y math o wrandawiad fyddai orau gennych",
+  "h1": "Fformat y gwrandawiad",
+  "legend": "A fyddech chi’n gallu cymryd rhan mewn gwrandawiadau drwy fideo a dros y ffôn? (dewisol)",
+  "hearingText1": "Os bydd eich achos yn mynd i wrandawiad, gellir ei gynnal naill ai:",
+  "hearingBullet1": "yn bersonol, mewn ystafell mewn tribiwnlys ('wyneb yn wyneb')",
+  "hearingBullet2": "trwy fideo (lle gallwch ymuno o le sy'n addas i chi)",
+  "hearingBullet3": "dros y ffôn",
+  "hearingText2": "Mae rhai gwrandawiadau yn defnyddio cyfuniad o'r dulliau hyn. Barnwr fydd yn penderfynu pa ddull fydd yn cael ei ddefnyddio. Gall ddibynnu ar y math o hawliad.",
+  "checkboxVideo": "Gallaf, mi fedra’i gymryd rhan mewn gwrandawiad fideo",
+  "checkboxPhone": "Gallaf, mi fedra’i gymryd rhan mewn gwrandawiad dros y ffôn",
+  "selectAllHint": "Dewiswch bob un sy'n berthnasol",
   "errors": {
     "hearingPreference": {
-      "required": "[W]Select whether you can take part in video or phone hearings"
+      "required": "Dewiswch a allwch chi gymryd rhan mewn gwrandawiad fideo neu ffôn"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

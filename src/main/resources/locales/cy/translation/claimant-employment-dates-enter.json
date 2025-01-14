@@ -1,53 +1,53 @@
 {
-  "title": "[W]Claimant employment dates",
-  "p1": "[W]It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
+  "title": "Dyddiadau cyflogaeth yr hawlydd",
+  "p1": "Gall helpu'r tribiwnlys os gallwch ddarparu'r manylion hyn. Ni chewch eich cosbi am beidio â’u darparu.",
   "et3ResponseEmploymentStartDate": {
-    "label": "[W]Employment start date (optional)",
-    "hint": "[W]For example, 23 4 2011"
+    "label": "Dyddiad cychwyn y gyflogaeth (dewisol)",
+    "hint": "Er enghraifft, 23 4 2011"
   },
   "et3ResponseEmploymentEndDate": {
-    "label": "[W]Employment end date (optional)",
-    "hint": "[W]For example, 23 4 2022"
+    "label": "Dyddiad terfyn y gyflogaeth (dewisol)",
+    "hint": "Er enghraifft, 23 4 2022"
   },
   "et3ResponseEmploymentInformation": {
-    "label": "[W]Do you want to provide any further information about the claimant's employment dates? (optional)"
+    "label": "Ydych chi eisiau darparu unrhyw wybodaeth bellach am ddyddiadau cyflogaeth yr hawlydd? (dewisol)"
   },
   "errors": {
     "et3ResponseEmploymentStartDate": {
-      "dayNotANumber": "[W]Enter a date in the correct format",
-      "monthNotANumber": "[W]Enter a date in the correct format",
-      "yearNotANumber": "[W]Enter a date in the correct format",
-      "dayRequired": "[W]Enter a date in the correct format",
-      "monthRequired": "[W]Enter a date in the correct format",
-      "yearRequired": "[W]Enter a date in the correct format",
-      "dayInvalid": "[W]Enter a date in the correct format",
-      "monthInvalid": "[W]Enter a date in the correct format",
-      "yearInvalid": "[W]Enter a date in the correct format",
-      "invalidDateTooFarInPast": "[W]Enter a date in the correct format",
-      "invalidDate": "[W]Enter a date in the correct format",
-      "invalidDateInFuture": "[W]Enter a date in the past"
+      "dayNotANumber": "Rhowch ddyddiad yn y fformat cywir",
+      "monthNotANumber": "Rhowch ddyddiad yn y fformat cywir",
+      "yearNotANumber": "Rhowch ddyddiad yn y fformat cywir",
+      "dayRequired": "Rhowch ddyddiad yn y fformat cywir",
+      "monthRequired": "Rhowch ddyddiad yn y fformat cywir",
+      "yearRequired": "Rhowch ddyddiad yn y fformat cywir",
+      "dayInvalid": "Rhowch ddyddiad yn y fformat cywir",
+      "monthInvalid": "Rhowch ddyddiad yn y fformat cywir",
+      "yearInvalid": "Rhowch ddyddiad yn y fformat cywir",
+      "invalidDateTooFarInPast": "Rhowch ddyddiad yn y fformat cywir",
+      "invalidDate": "Rhowch ddyddiad yn y fformat cywir",
+      "invalidDateInFuture": "Nodwch ddyddiad yn y gorffennol"
     },
     "et3ResponseEmploymentEndDate": {
-      "dayNotANumber": "[W]Enter a date in the correct format",
-      "monthNotANumber": "[W]Enter a date in the correct format",
-      "yearNotANumber": "[W]Enter a date in the correct format",
-      "dayRequired": "[W]Enter a date in the correct format",
-      "monthRequired": "[W]Enter a date in the correct format",
-      "yearRequired": "[W]Enter a date in the correct format",
-      "dayInvalid": "[W]Enter a date in the correct format",
-      "monthInvalid": "[W]Enter a date in the correct format",
-      "yearInvalid": "[W]Enter a date in the correct format",
-      "invalidDateTooFarInPast": "[W]Enter a date in the correct format",
-      "invalidDate": "[W]Enter a date in the correct format",
-      "invalidEndDateBeforeStartDate": "[W]This date must be later than the start date"
+      "dayNotANumber": "Rhowch ddyddiad yn y fformat cywir",
+      "monthNotANumber": "Rhowch ddyddiad yn y fformat cywir",
+      "yearNotANumber": "Rhowch ddyddiad yn y fformat cywir",
+      "dayRequired": "Rhowch ddyddiad yn y fformat cywir",
+      "monthRequired": "Rhowch ddyddiad yn y fformat cywir",
+      "yearRequired": "Rhowch ddyddiad yn y fformat cywir",
+      "dayInvalid": "Rhowch ddyddiad yn y fformat cywir",
+      "monthInvalid": "Rhowch ddyddiad yn y fformat cywir",
+      "yearInvalid": "Rhowch ddyddiad yn y fformat cywir",
+      "invalidDateTooFarInPast": "Rhowch ddyddiad yn y fformat cywir",
+      "invalidDate": "Rhowch ddyddiad yn y fformat cywir",
+      "invalidEndDateBeforeStartDate": "Rhaid i'r dyddiad hwn fod yn hwyrach na'r dyddiad cychwyn"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "User case not found in session",
-      "sessionUser": "User not found in session",
-      "sessionRespondent": "No respondent found in user case",
-      "userId": "Invalid session user. User does not have an ID",
-      "respondentNotFound": "Unable to find respondent",
-      "api": "A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Ni ddaethpwyd o hyd i atebydd yn achos y defnyddiwr",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

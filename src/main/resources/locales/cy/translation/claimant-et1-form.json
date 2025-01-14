@@ -1,10 +1,10 @@
 {
-  "title": "[W]Claimant ET1 Documents",
-  "h1": "[W]The claimant’s ET1 claim documents",
-  "et1Form": "[W]ET1 Form",
-  "acasCert": "[W]Acas certificate",
-  "et1Attachments": "[W]ET1 Attachments",
-  "tableHeaderDocument": "[W]Document (the documents below open in a new tab)",
-  "tableHeaderType": "[W]Type",
-  "tableHeaderDate": "[W]Date"
+  "title": "Dogfennau ET1 yr hawlydd",
+  "h1": "Dogfennau hawlio ET1 yr hawlydd",
+  "et1Form": "Ffurflen ET1",
+  "acasCert": "Tystysgrif Acas",
+  "et1Attachments": "Atodiadau ET1",
+  "tableHeaderDocument": "Dogfen (bydd y dogfennau isod yn agor mewn tab newydd)",
+  "tableHeaderType": "Math",
+  "tableHeaderDate": "Dyddiad"
 }

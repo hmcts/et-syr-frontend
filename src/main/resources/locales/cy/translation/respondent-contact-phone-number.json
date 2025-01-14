@@ -1,18 +1,18 @@
 {
-  "title": "[W]Respondent contact phone number",
-  "h1": "[W]What is your contact phone number? (optional)",
-  "respondentContactPhoneNumber": "[W]Where we can contact you during the day. For international numbers include the country code.",
+  "title": "Rhif ffôn yr Atebydd",
+  "h1": "Beth yw rhif ffôn eich unigolyn cyswllt? (dewisol)",
+  "respondentContactPhoneNumber": "Sut allwn ni gysylltu â chi yn ystod y dydd. Ar gyfer rhifau rhyngwladol, nodwch god y wlad",
   "errors": {
     "responseRespondentPhone1": {
-      "invalidPhoneNumber": "[W][If Telephone Number contains alpha- numeric chars] Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192"
+      "invalidPhoneNumber": "[Os yw Rhif Ffôn yn cynnwys swyn alffa-rhifol] Rhowch rif ffôn, fel 01632 960 001, 07700 900 982 neu +44 808 157 0192"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

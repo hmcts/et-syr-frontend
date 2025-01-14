@@ -1,17 +1,17 @@
 {
-  "title": "[W]Employer’s Contract Claim",
+  "title": "Hawliad contract y cyflogwr",
   "details": {
-    "summaryText": "[W]What is an Employer’s Contract Claim?",
-    "text": "[W]A respondent can make this claim against the claimant if the claimant breached their employment terms which resulted in financial loss. This typically happens when a claimant has made a notice pay claim."
+    "summaryText": "Beth yw Hawliad Contract y Cyflogwr?",
+    "text": "Gall atebydd wneud yr hawliad hwn yn erbyn yr hawlydd pe bai’r hawlydd yn torri ei delerau cyflogaeth a arweiniodd at golled ariannol. Mae hyn fel arfer yn digwydd pan fydd hawlydd wedi gwneud hawliad cyfnod rhybudd."
   },
-  "label": "[W]Does the respondent want to make an Employer’s Contract Claim?  (optional)",
+  "label": "A yw’r atebydd eisiau gwneud Hawliad Contract y Cyflogwr?  (dewisol)",
   "errors": {
     "et3ResponseEmployerClaim": {
-      "required": "[W]Make a selection"
+      "required": "Dewiswch"
     },
     "hiddenErrorField": {
-      "required": "[W]Make a selection",
-      "api": "[W]A system error occurred, Please try again later"
+      "required": "Dewiswch",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

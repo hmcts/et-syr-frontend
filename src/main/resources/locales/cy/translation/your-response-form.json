@@ -1,30 +1,30 @@
 {
-  "title": "[W]Your response form (ET3)",
-  "h1": "[W]Your response form",
-  "h2": "[W]Submit your response",
-  "downloadYourResponse": "[W]Download your response",
-  "submit": "[W]Submit",
+  "title": "Eich ffurflen ymateb (ET3)",
+  "h1": "Eich ffurflen ymateb",
+  "h2": "Cyflwyno eich ymateb",
+  "downloadYourResponse": "Lawrlwytho eich ymateb",
+  "submit": "Cyflwyno",
   "section1": {
-    "header": "[W]Contact details"
+    "header": "Manylion cyswllt"
   },
   "section2": {
-    "header": "[W]Hearing format and employer details"
+    "header": "Fformat y gwrandawiad a manylion y cyflogwyr"
   },
   "section3": {
-    "header": "[W]Early conciliation and employee details"
+    "header": "Cymodi cynnar a manylion gweithiwr"
   },
   "section4": {
-    "header": "[W]Pay, pension and benefits details"
+    "header": "Manylion cyflog, pensiwn a budd-daliadau"
   },
   "section5": {
-    "header": "[W]Contest the claim"
+    "header": "Herio’r hawliad"
   },
   "section6": {
-    "header": "[W]Employer’s contract claim"
+    "header": "Hawliad contract y cyflogwr"
   },
   "errors": {
     "hiddenErrorField": {
-      "api": "[W]A system error occurred, Please try again later"
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

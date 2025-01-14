@@ -1,15 +1,15 @@
 {
-  "caseNumber": "[W]Case number",
-  "genericGuidance": "[W]Consider when providing material that:",
-  "genericGuidanceItem1": "[W]you can upload letters, photos or documents if they are relevant to what you want to tell or ask the tribunal. Please do not upload any other material at this stage. If the tribunal needs to see documents before making a decision then you may be asked to provide them at a later stage",
-  "genericGuidanceItem2": "[W]if you are taking a picture of a letter, place it on a flat surface and take the picture from above",
-  "genericGuidanceItem3": "[W]if you are uploading written documents with tracked changes, make sure that tracked changes are turned on",
-  "formHearing": "[W]Give details of your application in the text box or upload a file",
+  "caseNumber": "Rhif yr achos",
+  "genericGuidance": "Ystyriwch y canlynol wrth ddarparu deunyddiau:",
+  "genericGuidanceItem1": "gallwch uwchlwytho llythyrau, lluniau neu ddogfennau os ydynt yn berthnasol i’r hyn yr ydych eisiau ei ddweud neu ofyn i'r tribiwnlys. Peidiwch ag uwchlwytho unrhyw ddeunydd arall ar hyn o bryd. Os oes angen i'r tribiwnlys weld dogfennau cyn gwneud penderfyniad yna mae'n bosib y gofynnir i chi eu darparu yn ddiweddarach",
+  "genericGuidanceItem2": "os ydych yn tynnu llun o lythyr, rhowch ef ar arwyneb gwastad a thynnwch lun o uchder",
+  "genericGuidanceItem3": "os byddwch yn uwchlwytho dogfen ysgrifenedig gyda tracked changes, gwnewch yn siŵr eich bod wedi clicio ar yr opsiwn tracked changes.",
+  "formHearing": "Rhowch fanylion eich cais yn y blwch testun neu uwchlwythwch ffeil",
   "contactApplicationFile": {
-    "label": "[W]Document"
+    "label": "Dogfen"
   },
   "contactApplicationText": {
-    "label": "[W]Use this box for any accompanying information (Optional)"
+    "label": "Defnyddiwch y blwch hwn ar gyfer unrhyw wybodaeth gysylltiedig (Dewisol)"
   },
   "errors": {
     "contactApplicationText": {

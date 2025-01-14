@@ -1,31 +1,31 @@
 {
-  "title": "[W]Reasonable Adjustments",
-  "h1": "[W]Extra support during the case",
-  "reasonableAdjustments": "[W]Do you have a physical, mental or learning disability or health condition that means you need support during the case? (optional)",
-  "insetText": "[W]We know some people need support to access information and use our services. We call this a reasonable adjustment. Some reasonable adjustments need to be agreed by a judge or HMCTS. You can discuss with the tribunal if your needs change.",
-  "additionalInfo": "[W]What support is available?",
-  "additionalText": "[W]Reasonable adjustments can include:",
-  "bullet1": "[W]documents in alternative formats, colours and fonts",
-  "bullet2": "[W]help with communicating, sight, hearing, speaking and interpretation",
-  "bullet3": "[W]access and mobility support if a hearing takes place in person",
-  "radioNo": "[W]No - I do not need any support at this time",
-  "radioNotSure": "[W]I'm not sure yet",
-  "yesDetail": "[W]Tell us what support you need",
+  "title": "Addasiadau Rhesymol",
+  "h1": "Cymorth ychwanegol yn ystod yr achos",
+  "reasonableAdjustments": "A oes gennych chi anabledd corfforol, meddyliol neu addysgol neu gyflwr iechyd sy’n golygu bod angen cymorth arnoch yn ystod eich achos? (dewisol)",
+  "insetText": "Gwyddwn fod rhai pobl angen cymorth i gael mynediad at wybodaeth ac i ddefnyddio ein gwasanaethau. Gelwir hyn yn aml yn addasiad rhesymol. Rhaid i rai addasiadau rhesymol gael eu cytuno arnynt gan farnwr neu GLlTEF. Gallwch drafod gyda’r tribiwnlys os bydd eich anghenion yn newid.",
+  "additionalInfo": "Pa gymorth sydd ar gael?",
+  "additionalText": "Gall addasiadau rhesymol gynnwys:",
+  "bullet1": "dogfennau mewn fformatau, lliwiau a ffontiau eraill",
+  "bullet2": "help i gyfathrebu, gweld, gwrando, siarad neu gymorth gan gyfieithydd/dehonglydd",
+  "bullet3": "cymorth gyda mynediad a symudedd, os bydd gwrandawiad yn cael ei gynnal wyneb yn wyneb",
+  "radioNo": "Nac oes, nid oes arnaf angen unrhyw gymorth ar hyn o bryd",
+  "radioNotSure": "Nid wyf yn siŵr ar hyn o bryd",
+  "yesDetail": "Dywedwch wrthym pa gymorth sydd ei angen arnoch",
   "errors": {
     "et3ResponseRespondentSupportNeeded": {
-      "required": "[W]Make a selection"
+      "required": "Dewiswch"
     },
     "et3ResponseRespondentSupportDetails": {
-      "required": "[W]Give details of the support you need",
-      "tooLong": "[W]The details given for support needed must be less than 400 characters"
+      "required": "Rhowch fanylion y gefnogaeth y mae arnoch ei hangen",
+      "tooLong": "Rhaid i’r manylion a roddir ar gyfer y cymorth sydd ei angen fod yn llai na 400 o nodau"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

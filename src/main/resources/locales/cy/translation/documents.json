@@ -1,7 +1,7 @@
 {
-  "title": "[W]Claimant ET1 Documents",
-  "h1": "[W]The claimant’s ET1 claim documents",
-  "tableHeaderDocument": "[W]Document (the documents below open in a new tab)",
-  "tableHeaderType": "[W]Type",
-  "tableHeaderDate": "[W]Date"
+  "title": "Dogfennau ET1 yr hawlydd",
+  "h1": "Dogfennau hawlio ET1 yr hawlydd",
+  "tableHeaderDocument": "Dogfen (bydd y dogfennau isod yn agor mewn tab newydd)",
+  "tableHeaderType": "Math",
+  "tableHeaderDate": "Dyddiad"
 }
