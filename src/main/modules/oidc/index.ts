@@ -12,6 +12,7 @@ import {
   SessionErrors,
   languages,
 } from '../../definitions/constants';
+import { returnValidNotAllowedEndPointsForwardingUrl } from '../../helpers/RouterHelpers';
 import { getLogger } from '../../logger';
 import { cachePreLoginUrl, generatePreLoginUrl, getPreLoginUrl, setPreLoginUrl } from '../../services/CacheService';
 import ErrorUtils from '../../utils/ErrorUtils';
@@ -88,7 +89,9 @@ export class Oidc {
         // it is assigned the value of res.locals.isLoggedIn
         res.locals.isLoggedIn = true;
         if (isRequestedUrlNotAllowedAfterSubmission(req)) {
-          return res.redirect(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req));
+          return res.redirect(
+            returnValidNotAllowedEndPointsForwardingUrl(UrlUtils.getNotAllowedEndPointsForwardingUrlByRequest(req), req)
+          );
         }
         next();
       } else if (validateNoSignInEndpoints(req.url) || process.env.IN_TEST || '/extend-session' === req.url) {

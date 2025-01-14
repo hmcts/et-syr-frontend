@@ -3,6 +3,9 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { DefaultValues, ErrorPages, PageUrls, languages } from '../definitions/constants';
 import { FormFields } from '../definitions/form';
+import ObjectUtils from '../utils/ObjectUtils';
+import RespondentUtils from '../utils/RespondentUtils';
+import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
 
 import { addParameterToUrl } from './LanguageHelper';
@@ -69,6 +72,51 @@ export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): strin
   }
   // Return a safe fallback if no validUrl is found
   return ErrorPages.NOT_FOUND;
+};
+
+/**
+ * Checks for a valid case details url stored within the system to avoid open redirects
+ *
+ * @param {string} redirectUrl
+ * @param request
+ * @return {string}
+ */
+export const returnValidNotAllowedEndPointsForwardingUrl = (redirectUrl: string, request: AppRequest): string => {
+  if (
+    StringUtils.isBlank(redirectUrl) ||
+    (!redirectUrl.includes(PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER) &&
+      !redirectUrl.includes(PageUrls.CASE_LIST))
+  ) {
+    return ErrorPages.NOT_FOUND;
+  }
+  if (redirectUrl.includes(PageUrls.CASE_LIST)) {
+    return PageUrls.CASE_LIST + getLanguageParam(redirectUrl);
+  }
+  const selectedRespondent = RespondentUtils.findSelectedRespondentByRequest(request);
+  if (ObjectUtils.isEmpty(selectedRespondent)) {
+    return ErrorPages.NOT_FOUND;
+  }
+  const urlStr = redirectUrl.split(DefaultValues.STRING_QUESTION_MARK);
+  // removing the first / from string value
+  const baseUrl: string = urlStr[0];
+  const allParams: string[] = baseUrl
+    .substring(baseUrl.lastIndexOf(PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER) + 14)
+    .split(DefaultValues.STRING_SLASH);
+  if (
+    allParams.length !== 2 ||
+    allParams[0] !== String(request?.session?.userCase?.id) ||
+    allParams[1] !== selectedRespondent.ccdId
+  ) {
+    return ErrorPages.NOT_FOUND;
+  }
+  return (
+    PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER +
+    DefaultValues.STRING_SLASH +
+    allParams[0] +
+    DefaultValues.STRING_SLASH +
+    allParams[1] +
+    getLanguageParam(redirectUrl)
+  );
 };
 
 export const isClearSelection = (req: AppRequest): boolean => {

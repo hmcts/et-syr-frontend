@@ -1,3 +1,6 @@
+import _ from 'lodash';
+
+import { AppRequest } from '../../../main/definitions/appRequest';
 import { DefaultValues, ErrorPages, PageUrls, languages } from '../../../main/definitions/constants';
 import { FormFields } from '../../../main/definitions/form';
 import {
@@ -7,9 +10,11 @@ import {
   isClearSelection,
   isClearSelectionWithoutRequestUserCaseCheck,
   returnNextPage,
+  returnValidNotAllowedEndPointsForwardingUrl,
   returnValidUrl,
   startSubSection,
 } from '../../../main/helpers/RouterHelpers';
+import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import mockUserCase from '../mocks/mockUserCase';
@@ -236,6 +241,65 @@ describe('RouterHelper', () => {
       });
       request.query = { redirect: DefaultValues.CLEAR_SELECTION };
       expect(isClearSelectionWithoutRequestUserCaseCheck(request)).toBe(true);
+    });
+  });
+  describe('returnValidNotAllowedEndPointsForwardingUrl', () => {
+    it('should return not found page when redirect url is undefined', () => {
+      const request: AppRequest = mockRequest({});
+      const redirectUrl: string = undefined;
+      expect(returnValidNotAllowedEndPointsForwardingUrl(redirectUrl, request)).toStrictEqual(ErrorPages.NOT_FOUND);
+    });
+    it('should return not found page when redirect url does not contain case details or case list url', () => {
+      const request: AppRequest = mockRequest({});
+      const redirectUrl: string = 'https://localhost:3003/dummy-page';
+      expect(returnValidNotAllowedEndPointsForwardingUrl(redirectUrl, request)).toStrictEqual(ErrorPages.NOT_FOUND);
+    });
+    it('should return case list page with the given language parameter when redirect url includes case list url', () => {
+      const request: AppRequest = mockRequest({});
+      const redirectUrl: string = 'https://localhost:3003/case-list';
+      expect(returnValidNotAllowedEndPointsForwardingUrl(redirectUrl, request)).toStrictEqual(
+        PageUrls.CASE_LIST + languages.ENGLISH_URL_PARAMETER
+      );
+    });
+    it('should return not found page when redirect url includes case details but there is no selected respondent', () => {
+      const request: AppRequest = mockRequest({});
+      const redirectUrl: string = 'https://localhost:3003/case-details';
+      expect(returnValidNotAllowedEndPointsForwardingUrl(redirectUrl, request)).toStrictEqual(ErrorPages.NOT_FOUND);
+    });
+    it('should return not found page when there is no parameter for case-details', () => {
+      const request: AppRequest = mockRequest({});
+      request.session.selectedRespondentIndex = 0;
+      request.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      const redirectUrl: string = 'https://localhost:3003/case-details';
+      expect(returnValidNotAllowedEndPointsForwardingUrl(redirectUrl, request)).toStrictEqual(ErrorPages.NOT_FOUND);
+    });
+    it('should return not found page when first parameter not equals to case id', () => {
+      const request: AppRequest = mockRequest({});
+      request.session.selectedRespondentIndex = 0;
+      request.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      const redirectUrl: string = 'https://localhost:3003/case-details/123456/abcdefg';
+      expect(returnValidNotAllowedEndPointsForwardingUrl(redirectUrl, request)).toStrictEqual(ErrorPages.NOT_FOUND);
+    });
+    it('should return not found page when second parameter not equals to respondent ccdId', () => {
+      const request: AppRequest = mockRequest({});
+      request.session.selectedRespondentIndex = 0;
+      request.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      const redirectUrl: string = 'https://localhost:3003/case-details/1234/abcdef';
+      expect(returnValidNotAllowedEndPointsForwardingUrl(redirectUrl, request)).toStrictEqual(ErrorPages.NOT_FOUND);
+    });
+    it('should return case details page when all parameters are valid', () => {
+      const request: AppRequest = mockRequest({});
+      request.session.selectedRespondentIndex = 0;
+      request.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      const redirectUrl: string = 'https://localhost:3003/case-details/1234/3453xaa';
+      expect(returnValidNotAllowedEndPointsForwardingUrl(redirectUrl, request)).toStrictEqual(
+        PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER +
+          DefaultValues.STRING_SLASH +
+          request.session.userCase.id +
+          DefaultValues.STRING_SLASH +
+          request.session.userCase.respondents[0].ccdId +
+          languages.ENGLISH_URL_PARAMETER
+      );
     });
   });
 });
