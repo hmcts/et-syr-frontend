@@ -1,27 +1,27 @@
 {
-  "title": "[W]Respondent contact preferences",
-  "h1": "[W]Respondent contact preferences",
-  "postalAddress": "[W]Postal address",
-  "dxAddress": "[W]DX address (optional)",
-  "contactPhoneNumber": "[W]Contact phone number (optional)",
-  "emailAddress": "[W]Email address",
-  "sectionText1": "[W]Normally the tribunal will contact you by email. If you need contact by post, you must explain why.",
-  "contactPreferenceQuestion": "[W]How would you prefer to be contacted? (optional)",
-  "email": "[W]Email",
-  "post": "[W]Post",
-  "postHintText": "[W]Explain why you have selected post.",
-  "tribunalContactYouQuestion": "[W]Which language should the tribunal use to contact you? (optional)",
+  "title": "Dewisiadau cyswllt yr atebydd",
+  "h1": "Dewisiadau cyswllt yr atebydd",
+  "postalAddress": "Cyfeiriad post",
+  "dxAddress": "Cyfeiriad DX (dewisol)",
+  "contactPhoneNumber": "Rhif ffôn cyswllt (dewisol)",
+  "emailAddress": "cyfeiriad e-bost",
+  "sectionText1": "Fel arfer, bydd y tribiwnlys yn cysylltu â chi drwy e-bost. Os oes angen cyswllt arnoch drwy'r post, rhaid i chi egluro pam.",
+  "contactPreferenceQuestion": "Sut hoffech inni gysylltu â chi? (dewisol)",
+  "email": "E-bost",
+  "post": "Post",
+  "postHintText": "Esboniwch pam y dewisoch chi yr opsiwn drwy’r post",
+  "tribunalContactYouQuestion": "Pa iaith ddylai'r tribiwnlys ei defnyddio i gysylltu â chi? (dewisol)",
   "errors": {
     "et3ResponseContactReason": {
-      "required": "[W]Explain why you selected post"
+      "required": "Esboniwch pam y dewisoch chi yr opsiwn drwy’r post"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

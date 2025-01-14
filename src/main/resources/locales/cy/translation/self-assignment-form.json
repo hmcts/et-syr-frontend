@@ -1,36 +1,36 @@
 {
-  "title": "[W]Case Details - Form",
-  "pageTitle": "[W]Case Details",
-  "respondentSelfAssignmentInfo": "[W]You can use this self assignment page to get access to the details of the digital case and it's contents.",
-  "p1": "[W]Enter the details below to access the response form for this case.",
-  "caseReferenceId": "[W]Submission Reference",
-  "respondentName": "[W]Respondent's name",
-  "claimantFirstName": "[W]Claimant's first name(s)",
-  "claimantLastName": "[W]Claimant's last name",
+  "title": "Manylion yr Achos - Ffurflen",
+  "pageTitle": "Manylion yr Achos",
+  "respondentSelfAssignmentInfo": "Gallwch ddefnyddio’r dudalen hunan-aseiniad hon i gael mynediad at fanylion yr achos digidol a’i gynnwys.",
+  "p1": "Rhowch y manylion isod i gael mynediad i'r ffurflen ymateb ar gyfer yr achos hwn.",
+  "caseReferenceId": "Y Cyfeirnod ar gyfer Cyflwyno",
+  "respondentName": "Enw’r Atebydd",
+  "claimantFirstName": "Enw(au) cyntaf yr Hawlydd",
+  "claimantLastName": "Enw Olaf yr Hawlydd",
   "errors": {
     "id": {
-      "required": "[W]Enter an online case reference number that exactly matches the case details",
-      "invalid": "[W]You entered an invalid submission reference. Submission reference should be 16 numeric characters in 123456789123456 or 1234-5678-9123-4567 formats"
+      "required": "Rhowch gyfeirnod achos ar-lein sy'n cyfateb yn union i fanylion yr achos",
+      "invalid": "Rydych chi wedi rhoi cyfeirnod cyflwyno annilys. Dylai’r cyfeirnod cyflwyno fod yn 16 o nodau mewn fformatau 123456789123456 neu 1234-5678-9123-4567"
     },
     "respondentName": {
-      "required": "[W]Enter respondent name that exactly matches the case details"
+      "required": "Rhowch enw’r atebydd sy'n cyfateb yn union i fanylion yr achos"
     },
     "firstName": {
-      "required": "[W]Enter claimant name that exactly matches the case details"
+      "required": "Rhowch enw’r hawlydd sy'n cyfateb yn union i fanylion yr achos"
     },
     "lastName": {
-      "required": "[W]Enter claimant last name that exactly matches the case details"
+      "required": "Rhowch enw olaf yr hawlydd sy'n cyfateb yn union i fanylion yr achos"
     },
     "hiddenErrorField": {
-      "api": "[W]Unable to assign role. Please try again later",
-      "caseAlreadyAssignedToSameUser": "[W]You have already assigned to this case",
-      "caseAlreadyAssigned": "[W]Case has already assigned to a respondent",
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "invalidCaseDetails": "[W]Please enter the details exactly as they are written on the case, including any mistakes"
+      "api": "Rydym yn methu â neilltuo rôl. Rhowch gynnig arall arni hwyrach ymlaen.",
+      "caseAlreadyAssignedToSameUser": "Rydych eisoes wedi eich neilltuo i’r achos hwn",
+      "caseAlreadyAssigned": "Mae’r achos eisoes wedi’i neilltuo i atebydd",
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "invalidCaseDetails": "Rhowch y manylion yn union fel y maent wedi'u hysgrifennu ar yr achos, gan gynnwys unrhyw gamgymeriadau"
     }
   }
 }

@@ -1,24 +1,24 @@
 {
-  "title": "[W]Claimant job title",
-  "jobTitleLabel": "[W]Job title provided on ET1",
-  "p1": "[W]It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
+  "title": "Teitl swydd yr hawlydd",
+  "jobTitleLabel": "Teitl y swydd a ddarparwyd ar ET1",
+  "p1": "Gall helpu'r tribiwnlys os gallwch ddarparu'r manylion hyn. Ni chewch eich cosbi am beidio â’u darparu.",
   "et3ResponseIsJobTitleCorrect": {
-    "label": "[W]Is the claimant’s job title correct?"
+    "label": "A yw teitl swydd yr hawlydd yn gywir?"
   },
   "et3ResponseCorrectJobTitle": {
-    "label": "[W]What is or was the claimant’s correct job title? (optional)"
+    "label": "Beth yw neu beth oedd teitl cywir swydd yr hawlydd? (dewisol)"
   },
   "errors": {
     "et3ResponseCorrectJobTitle": {
-      "tooLong": "[W]The job title entered must be less than 100 characters"
+      "tooLong": "Rhaid i deitl y swydd fod yn llai na 100 o nodau"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

@@ -1,14 +1,14 @@
 {
-  "title": "[W]Claimant employment dates",
-  "startDateLabel": "[W]Start date provided on ET1",
-  "endDateLabel": "[W]End date provided on ET1",
+  "title": "Dyddiadau cyflogaeth yr hawlydd",
+  "startDateLabel": "Y dyddiad cychwyn a ddarperir ar ET1",
+  "endDateLabel": "Y dyddiad gorffen a ddarperir ar ET1",
   "et3ResponseAreDatesCorrect": {
-    "label": "[W]Are the dates of employment given by the claimant correct?",
+    "label": "A yw'r dyddiadau cyflogaeth a roddwyd gan yr hawlydd yn gywir?",
     "no": {
-      "hint": "[W]You will be able to enter correct employment dates at the next step."
+      "hint": "Byddwch yn gallu nodi dyddiadau cyflogaeth cywir yn y cam nesaf."
     },
     "notApplicable": {
-      "hint": "[W]If you select 'Not applicable', you will not be able to enter employment dates."
+      "hint": "Os byddwch yn dewis ‘ddim yn berthnasol’, ni fyddwch yn gallu nodi dyddiadau cyflogaeth."
     }
   }
 }

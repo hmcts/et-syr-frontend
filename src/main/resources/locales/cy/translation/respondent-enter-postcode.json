@@ -1,22 +1,22 @@
 {
-  "title": "[W]Respondent address",
-  "h1": "[W]Respondent address",
-  "enterPostcode": "[W]Enter a UK postcode",
-  "cannotEnterPostcode": "[W]I cannot enter a UK postcode",
-  "findAddress": "[W]Find address",
+  "title": "Cyfeiriad yr atebydd",
+  "h1": "Cyfeiriad yr atebydd",
+  "enterPostcode": "Nodwch god post yn y DU",
+  "cannotEnterPostcode": "Nid wyf yn gallu rhoi cod post yn y DU",
+  "findAddress": "Dod o hyd i gyfeiriad",
   "manualAddressLink": "/respondent-enter-address",
   "errors": {
     "responseRespondentAddressPostCode": {
-      "required": "Enter a UK postcode",
-      "invalid": "Enter a UK postcode, like AA1 1AA"
+      "required": "Nodwch god post yn y DU",
+      "invalid": "[W]Enter a UK postcode, like AA1 1AA"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }
