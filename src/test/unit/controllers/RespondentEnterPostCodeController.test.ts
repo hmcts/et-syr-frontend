@@ -1,6 +1,6 @@
 import RespondentEnterPostCodeController from '../../../main/controllers/RespondentEnterPostCodeController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import { saveForLaterButton, submitButton } from '../../../main/definitions/radios';
+import { saveForLaterButton, saveAndContinueButton } from '../../../main/definitions/radios';
 import { isValidUKPostcode } from '../../../main/validators/address_validator';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -59,7 +59,7 @@ describe('RespondentEnterPostCodeController', () => {
               }),
             }),
             submit: expect.objectContaining({
-              type: submitButton,
+              type: saveAndContinueButton,
               text: expect.any(Function), // Text is a function
             }),
             saveForLater: saveForLaterButton,

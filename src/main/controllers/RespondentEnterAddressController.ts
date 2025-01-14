@@ -5,7 +5,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { LoggerConstants, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
-import { saveForLaterButton, submitButton } from '../definitions/radios';
+import { saveForLaterButton, saveAndContinueButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
@@ -55,7 +55,7 @@ export default class RespondentEnterAddressController {
         classes: 'govuk-label govuk-!-width-one-half',
       },
     },
-    submit: submitButton,
+    submit: saveAndContinueButton,
     saveForLater: saveForLaterButton,
   } as never;
 

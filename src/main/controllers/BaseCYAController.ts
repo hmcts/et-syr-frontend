@@ -1,7 +1,7 @@
 import { Form } from '../components/form';
 import { YesOrNo } from '../definitions/case';
 import { FormContent, FormFields } from '../definitions/form';
-import { saveForLaterButton, submitButton } from '../definitions/radios';
+import { saveForLaterButton, saveAndContinueButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { isOptionSelected } from '../validators/validator';
 
@@ -34,7 +34,7 @@ export default abstract class BaseCYAController {
           validator: isOptionSelected,
         },
       },
-      submit: submitButton,
+      submit: saveAndContinueButton,
       saveForLater: saveForLaterButton,
     } as never;
 

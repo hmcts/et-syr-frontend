@@ -9,7 +9,7 @@ import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { DateFormFields, DateValues } from '../definitions/dates';
 import { FormContent, FormField, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
-import { saveForLaterButton, submitButton } from '../definitions/radios';
+import { saveForLaterButton, saveAndContinueButton } from '../definitions/radios';
 import { AnyRecord, UnknownRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { endSubSection } from '../helpers/RouterHelpers';
@@ -88,7 +88,7 @@ export default class ClaimantEmploymentDatesEnterController {
   private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: formContentFieldsList,
-    submit: submitButton,
+    submit: saveAndContinueButton,
     saveForLater: saveForLaterButton,
   } as never;
 

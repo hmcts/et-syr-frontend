@@ -70,7 +70,7 @@ export default class EmployersContractClaimDetailsController {
       },
     },
     submit: {
-      text: (l: AnyRecord): string => l.submit,
+      text: (l: AnyRecord): string => l.saveAndContinue,
       classes: 'govuk-!-margin-right-2',
     },
     saveForLater: {

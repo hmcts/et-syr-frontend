@@ -14,7 +14,7 @@ import {
 } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
-import { saveForLaterButton, submitButton } from '../definitions/radios';
+import { saveForLaterButton, saveAndContinueButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { convertJsonArrayToTitleCase } from '../helpers/CaseHelpers';
 import { assignAddresses, getPageContent } from '../helpers/FormHelper';
@@ -43,7 +43,7 @@ export default class RespondentSelectPostCodeController {
         validator: isOptionSelected,
       },
     },
-    submit: submitButton,
+    submit: saveAndContinueButton,
     saveForLater: saveForLaterButton,
   };
 
