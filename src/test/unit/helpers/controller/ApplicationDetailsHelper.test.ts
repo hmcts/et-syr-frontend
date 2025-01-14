@@ -81,7 +81,7 @@ describe('getApplicationContent', () => {
     expect(result).toHaveLength(6);
     expect(result[3].key).toEqual({ classes: summaryListClass, text: 'Supporting material' });
     expect(result[3].value).toEqual({
-      html: '<a href="/getCaseDocument/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa" target="_blank">ET1_WELSH_Sunday_Ayeni_R600227_21_75.pdf</a><br>',
+      html: '<a href="/getCaseDocument/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa" target="_blank">test-file.pdf</a><br>',
     });
     expect(result[4].key).toEqual({
       classes: summaryListClass,
