@@ -2,7 +2,7 @@
   "title": "Gwirio Rhif yr Achos",
   "pageTitle": "Rhif yr achos",
   "caseNumber": "Beth yw rhif achos yr achos yr ydych yn ymateb iddo?",
-  "hint": "[W]This will appear on the letter sent to you from the employment tribunal.",
+  "hint": "Bydd hyn yn ymddangos ar y llythyr a anfonir atoch gan y tribiwnlys cyflogaeth.",
   "errors": {
     "ethosCaseReference": {
       "required": "Nodwch rif yr achos. Sampl o fformat rhif achos yw 1111111/2020",

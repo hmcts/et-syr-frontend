@@ -8,7 +8,7 @@
   "errors": {
     "responseRespondentAddressPostCode": {
       "required": "Nodwch god post yn y DU",
-      "invalid": "[W]Enter a UK postcode, like AA1 1AA"
+      "invalid": "Rhowch god post yn y DU, fel AA1 1AA"
     },
     "hiddenErrorField": {
       "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",

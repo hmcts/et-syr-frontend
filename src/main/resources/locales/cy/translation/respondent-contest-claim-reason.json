@@ -32,7 +32,7 @@
   },
   "errors": {
     "et3ResponseContestClaimDetails": {
-      "required": "[W]Give details of why you contest the claim. You can give details by filling the text area or uploading a document.",
+      "required": "Rhowch fanylion dros pam eich bod yn herio'r hawliad. Gallwch roi manylion drwy lenwi'r ardal destun neu uwchlwytho dogfen.",
       "tooLong": "Rhaid i fanylion yr hyn yr ydych yn ei herio fod yn 3000 o nodau neu lai",
       "textAndFile": "Rhowch grynodeb testun rhydd neu uwchlwytho fel dogfen ar wahân. Ni allwch gael y ddau"
     },
@@ -55,7 +55,7 @@
       "fileUploadBackendError": "Roedd yna wall wrth uwchlwytho eich ffeil. Rhowch gynnig arall arni. Os yw’r gwall hwn yn parhau, cysylltwch â'r adran gymorth.",
       "invalidFileCreated": "Crëwyd ffeil annilys.",
       "unableToRemoveFile": "Methu â dileu’r ffeil. Rhowch gynnig arall arni nes ymlaen.",
-      "required": "[W]Give details of why you contest the claim. You can give details by filling the text area or uploading a document.",
+      "required": "Rhowch fanylion dros pam eich bod yn herio'r hawliad. Gallwch roi manylion drwy lenwi'r ardal destun neu uwchlwytho dogfen.",
       "updateRespondentError": "Methu diweddaru gwybodaeth yr atebydd. Rhowch gynnig arall arni nes ymlaen."
     }
   }
