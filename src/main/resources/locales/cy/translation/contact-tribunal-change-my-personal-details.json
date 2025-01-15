@@ -15,11 +15,17 @@
     },
     {
       "type": "bold-paragraph",
-      "text": "[W]Details you can apply to change:"
+      "text": "Manylion y gellid gwneud cais i’w newid:"
     },
     {
       "type": "list",
-      "items": ["[W]name", "[W]sex and preferred title", "[W]address", "[W]telephone number", "[W]email address"]
+      "items": [
+        "enw",
+        "rhyw a’r teitl sydd orau gennych",
+        "[W]address",
+        "rhif ffôn",
+        "cyfeiriad e-bost"
+      ]
     }
   ]
 }

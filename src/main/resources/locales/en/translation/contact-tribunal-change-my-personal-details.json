@@ -19,7 +19,13 @@
     },
     {
       "type": "list",
-      "items": ["name", "sex and preferred title", "address", "telephone number", "email address"]
+      "items": [
+        "name",
+        "sex and preferred title",
+        "address",
+        "telephone number",
+        "email address"
+      ]
     }
   ]
 }

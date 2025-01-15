@@ -1,5 +1,5 @@
 {
-  "title": "[W]Contact the tribunal",
+  "title": "Cysylltu â’r tribiwnlys",
   "content": [
     {
       "type": "paragraph",
@@ -7,13 +7,13 @@
     },
     {
       "type": "bold-paragraph",
-      "text": "[W]Do not use this form to:"
+      "text": "Peidiwch â defnyddio'r ffurflen hon i:"
     },
     {
       "type": "list",
       "items": [
-        "seek legal advice from the tribunal. The tribunal is an independent judicial body and cannot give legal advice",
-        "tell us about settlement offers or discussions, which are private and confidential to the parties"
+        "geisio cyngor cyfreithiol gan y tribiwnlys. Mae’r tribiwnlys yn gorff barnwrol annibynnol ac ni all roi cyngor cyfreithiol i chi",
+        "dweud wrthym am gynigion neu drafodaethau setlo, sy’n breifat ac yn gyfrinachol i’r partïon"
       ]
     }
   ]

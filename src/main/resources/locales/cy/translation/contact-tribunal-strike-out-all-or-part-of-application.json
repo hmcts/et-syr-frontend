@@ -19,14 +19,14 @@
     },
     {
       "type": "bold-paragraph",
-      "text": "[W]Details to include in your application:"
+      "text": "Manylion i’w cynnwys yn eich cais:"
     },
     {
       "type": "list",
       "items": [
-        "why you think the claim (or parts of it) should be struck out",
-        "which ground or grounds in Rule 37 you say applies in this case",
-        "if you are referring to numbered points or paragraphs in a claim, include these numbers or other references"
+        "[W]why you think the claim (or parts of it) should be struck out",
+        "[W]which ground or grounds in Rule 37 you say applies in this case",
+        "[W]if you are referring to numbered points or paragraphs in a claim, include these numbers or other references"
       ]
     }
   ]
