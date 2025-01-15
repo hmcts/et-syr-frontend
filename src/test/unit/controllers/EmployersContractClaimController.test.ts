@@ -74,7 +74,7 @@ describe('Employers Contract Claim Controller', () => {
       await controller.post(request, response);
       expect(request.url).toContain('http://localhost:8080?lng=cy&testValue=test');
       expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM + '?redirect=clearSelection&testValue=test&lng=cy'
+        PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM + '?testValue=test&lng=cy'
       );
     });
   });

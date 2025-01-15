@@ -32,7 +32,7 @@
   },
   "errors": {
     "et3ResponseContestClaimDetails": {
-      "required": "Give details of Employer’s contract claim. You can give details by filling the text area or uploading a document.",
+      "required": "Give details of why you contest the claim. You can give details by filling the text area or uploading a document.",
       "tooLong": "Details of the contest must be 3000 characters or less",
       "textAndFile": "Enter a free text summary or upload as a separate document. You cannot have both"
     },
@@ -55,7 +55,7 @@
       "fileUploadBackendError": "There was an error uploading your file. Please try again. If this error persists please contact support.",
       "invalidFileCreated": "Invalid file was created.",
       "unableToRemoveFile": "Unable to remove file. Please try again later.",
-      "required": "Give details of Employer’s contract claim. You can give details by filling the text area or uploading a document.",
+      "required": "Give details of why you contest the claim. You can give details by filling the text area or uploading a document.",
       "updateRespondentError": "Unable to update respondent info. Please try again later."
     }
   }

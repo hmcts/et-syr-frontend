@@ -137,6 +137,11 @@ export default class FileUtils {
       return [];
     }
     const textRemove = translationFunction.remove ? translationFunction.remove : 'remove';
+    const et3ResponseContestClaimDetails: string = StringUtils.isBlank(
+      req.session?.userCase?.et3ResponseContestClaimDetails
+    )
+      ? 'undefined'
+      : req.session.userCase.et3ResponseContestClaimDetails;
     for (const documentTypeItem of req.session.userCase.et3ResponseContestClaimDocument) {
       govUKTableRows.push([
         { text: documentTypeItem.value?.uploadedDocument?.document_filename },
@@ -146,7 +151,7 @@ export default class FileUtils {
             '/' +
             documentTypeItem?.id +
             '/' +
-            req.session?.userCase?.et3ResponseContestClaimDetails +
+            et3ResponseContestClaimDetails +
             languageParam +
             '">' +
             textRemove +
