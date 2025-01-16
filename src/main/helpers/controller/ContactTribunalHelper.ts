@@ -70,20 +70,6 @@ export const getNextPage = (app: Application): string => {
 };
 
 /**
- * Check if Claimant is represented with MyHMCTS
- * @param userCase
- * @returns boolean
- */
-const isClaimantRepresentedWithMyHMCTSCase = (userCase: CaseWithId): boolean => {
-  return (
-    MY_HMCTS === userCase.caseSource &&
-    YES === userCase.claimantRepresentedQuestion &&
-    userCase.representativeClaimantType !== undefined &&
-    userCase.representativeClaimantType.myHmctsOrganisation !== undefined
-  );
-};
-
-/**
  * Check if Claimant is a system user
  * @param userCase
  * @returns boolean
@@ -97,6 +83,15 @@ export const isClaimantSystemUser = (userCase: CaseWithId): boolean => {
     );
   }
   return false;
+};
+
+const isClaimantRepresentedWithMyHMCTSCase = (userCase: CaseWithId): boolean => {
+  return (
+    MY_HMCTS === userCase.caseSource &&
+    YES === userCase.claimantRepresentedQuestion &&
+    userCase.representativeClaimantType !== undefined &&
+    userCase.representativeClaimantType.myHmctsOrganisation !== undefined
+  );
 };
 
 /**
