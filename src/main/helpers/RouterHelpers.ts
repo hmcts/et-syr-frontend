@@ -51,7 +51,7 @@ export const returnNextPage = (req: AppRequest, res: Response, redirectUrl: stri
 export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): string => {
   // if undefined use PageURLs
   validUrls = validUrls ?? Object.values(PageUrls);
-  validUrls.push(LegacyUrls.ET3);
+  validUrls.push(LegacyUrls.SIGN_IN);
   // split url, first part will always be the url (in a format similar to that in PageUrls)
   const urlStr = redirectUrl.split('?');
   const baseUrl = urlStr[0];

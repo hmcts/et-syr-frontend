@@ -11,7 +11,8 @@ import {
 } from './postcode';
 
 export const LegacyUrls = {
-  ET3: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_up',
+  SIGN_UP: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_up',
+  SIGN_IN: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_in',
 } as const;
 
 export const TranslationKeys = {

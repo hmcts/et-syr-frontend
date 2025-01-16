@@ -34,7 +34,7 @@ describe('ReturnToExistingResponseController', () => {
         returnToExisting: YesOrNo.YES,
       };
       returnToExistingResponseController.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(LegacyUrls.ET3);
+      expect(response.redirect).toHaveBeenCalledWith(LegacyUrls.SIGN_IN);
     });
     it('should forward to case list when request body returnToExisting is No', () => {
       const response = mockResponse();

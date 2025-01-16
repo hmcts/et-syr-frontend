@@ -59,7 +59,7 @@ export default class CaseNumberCheckController {
         req.session.caseNumberChecked = true;
         return res.redirect(PageUrls.CHECKLIST + languageParam);
       } else {
-        return res.redirect(LegacyUrls.ET3);
+        return res.redirect(LegacyUrls.SIGN_UP);
       }
     } catch (error) {
       ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(

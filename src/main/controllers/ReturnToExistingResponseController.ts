@@ -59,7 +59,7 @@ export default class ReturnToExistingResponseController {
       return res.redirect(returnValidUrl(PageUrls.RETURN_TO_EXISTING_RESPONSE + getLanguageParam(req.url)));
     }
     const redirectUrl = conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)
-      ? LegacyUrls.ET3
+      ? LegacyUrls.SIGN_IN
       : PageUrls.CASE_LIST + getLanguageParam(req.url);
     res.redirect(returnValidUrl(redirectUrl));
   };
