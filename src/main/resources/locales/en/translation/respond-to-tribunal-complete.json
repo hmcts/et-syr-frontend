@@ -1,7 +1,7 @@
 {
   "title": "Respond to the tribunal",
   "titleText": "You have sent your response to the tribunal",
-  "h1": "What happens next",
+  "pHead": "What happens next",
   "p1": {
     "no": "You have sent your response to the tribunal.",
     "yes": "You have sent your response to the tribunal and copied it to the respondent."

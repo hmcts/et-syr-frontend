@@ -1,7 +1,7 @@
 {
   "title": "Ymateb wedi'i gwblhau",
   "titleText": "Rydych wedi anfon eich ymateb i’r tribiwnlys",
-  "h1": "Beth fydd yn digwydd nesaf",
+  "pHead": "Beth fydd yn digwydd nesaf",
   "p1": {
     "no": "Rydych wedi anfon eich ymateb i’r tribiwnlys.",
     "yes": "Rydych wedi anfon eich ymateb i’r tribiwnlys ac anfon copi at yr atebydd."

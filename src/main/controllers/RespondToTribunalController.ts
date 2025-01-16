@@ -6,12 +6,11 @@ import { CaseWithId, YesOrNo } from '../definitions/case';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
-import { SummaryListRow } from '../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
+import { getAllResponses, getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
 import { getFormDataError } from '../helpers/controller/RespondToTribunalHelper';
 import UrlUtils from '../utils/UrlUtils';
 import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
@@ -88,11 +87,6 @@ export default class RespondToTribunalController {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
-    const appContent: SummaryListRow[] = getApplicationContent(selectedApplication, req);
-    if (!appContent) {
-      return res.redirect(ErrorPages.NOT_FOUND);
-    }
-
     assignFormData(req.session.userCase, this.form.getFormFields());
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
@@ -102,7 +96,8 @@ export default class RespondToTribunalController {
     res.render(TranslationKeys.RESPOND_TO_TRIBUNAL, {
       ...content,
       hideContactUs: true,
-      appContent,
+      appContent: getApplicationContent(selectedApplication, req),
+      allResponses: getAllResponses(selectedApplication, req),
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
     });
   };

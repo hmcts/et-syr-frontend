@@ -2,6 +2,7 @@
   "title": "Ymateb i'r tribiwnlys",
   "caption": "Ymateb i'r tribiwnlys",
   "h1": "Eich ymateb",
+  "responseItem": "Ymateb",
   "responseText": {
     "label": "Beth yw eich ymateb i’r tribiwnlys",
     "hint": "Defnyddiwch y blwch hwn i ymateb neu gallwch uwchlwytho deunydd yn y cam nesaf."

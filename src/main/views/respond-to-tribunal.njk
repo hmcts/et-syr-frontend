@@ -21,6 +21,13 @@
         rows: appContent
       }) }}
 
+      {% for response in allResponses %}
+        <h2 class="govuk-heading-m">{{ responseItem }} {{ loop.index }}</h2>
+        {{ govukSummaryList({
+          rows: response
+        }) }}
+      {% endfor %}
+
       {% block form %}
         {% include "form/form.njk"%}
       {% endblock %}
