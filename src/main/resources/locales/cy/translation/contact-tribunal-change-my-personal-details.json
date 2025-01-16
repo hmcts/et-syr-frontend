@@ -19,13 +19,7 @@
     },
     {
       "type": "list",
-      "items": [
-        "enw",
-        "rhyw a’r teitl sydd orau gennych",
-        "[W]address",
-        "rhif ffôn",
-        "cyfeiriad e-bost"
-      ]
+      "items": ["[W]name", "[W]sex and preferred title", "[W]address", "[W]telephone number", "[W]email address"]
     }
   ]
 }
