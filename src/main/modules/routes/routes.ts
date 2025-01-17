@@ -76,6 +76,7 @@ import YourRequestAndApplicationsController from '../../controllers/YourRequestA
 import YourResponseFormController from '../../controllers/YourResponseFormController';
 import { AppRequest } from '../../definitions/appRequest';
 import { FILE_SIZE_LIMIT, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
+import ReturnToExistingResponseController from '../../controllers/ReturnToExistingResponseController';
 
 const handleUploads = multer({
   limits: {
@@ -251,6 +252,8 @@ export class Routes {
     app.get(PageUrls.APPLICATION_DETAILS, new ApplicationDetailsController().get);
     app.get(PageUrls.RESPOND_TO_TRIBUNAL, new RespondToTribunalController().get);
     app.post(PageUrls.RESPOND_TO_TRIBUNAL, new RespondToTribunalController().post);
+    app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
+    app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);
     app.get(
       PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL,
       new RespondToTribunalSupportingMaterialController().get

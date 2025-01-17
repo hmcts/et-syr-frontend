@@ -1,0 +1,24 @@
+{
+  "title": "Return to an existing response",
+  "h1": "Return to an existing response",
+  "p1": {
+    "t1": "You’ll need to use either a",
+    "t2": "‘save and return number’",
+    "t3": "or your new",
+    "t4": "‘Employment Tribunal account’",
+    "t5": "to return to an existing response."
+  },
+  "p2": "Have you got a ‘save and return number’ or a new ‘Employment Tribunal account’? ",
+  "p3": {
+    "t1": "Don't have these details",
+    "t2": "respond to a new claim.",
+    "t3": ""
+  },
+  "optionText1": "I’ve got a <span class=\"govuk-!-font-weight-bold\">‘save and return number’</span>",
+  "optionText2": "I’ve got a new <span class=\"govuk-!-font-weight-bold\">‘Employment Tribunal account’</span>",
+  "errors": {
+    "returnToExisting": {
+      "required": "Tell us if you have a save and return number or an Employment Tribunal account"
+    }
+  }
+}
