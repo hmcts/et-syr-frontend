@@ -180,5 +180,5 @@ const addAdminResponse = (response: TseRespondTypeItem, translations: AnyRecord,
  * @param app selected application
  */
 export const isResponseToTribunalRequired = (app: GenericTseApplicationTypeItem): boolean => {
-  return app.value.claimantResponseRequired === YesOrNo.YES;
+  return app.value.respondentResponseRequired === YesOrNo.YES;
 };
