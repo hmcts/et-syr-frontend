@@ -11,7 +11,8 @@ import {
 } from './postcode';
 
 export const LegacyUrls = {
-  ET3: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_up',
+  SIGN_UP: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_up',
+  SIGN_IN: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_in',
 } as const;
 
 export const TranslationKeys = {
@@ -87,6 +88,7 @@ export const TranslationKeys = {
   RESPOND_TO_TRIBUNAL: 'respond-to-tribunal',
   RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL: 'respond-to-tribunal-supporting-material',
   RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY: 'respond-to-tribunal-copy-to-other-party',
+  RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
 } as const;
 
 export const PageUrls = {
@@ -164,6 +166,7 @@ export const PageUrls = {
   RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY: '/respond-to-tribunal-copy-to-other-party',
   RESPOND_TO_TRIBUNAL_CYA: '/respond-to-tribunal-check-your-answers',
   RESPOND_TO_TRIBUNAL_COMPLETE: '/respond-to-tribunal-complete',
+  RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
 } as const;
 
 export const InterceptPaths = {
@@ -544,6 +547,9 @@ export const FormFieldNames = {
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: {
     ET3_RESPONSE_EMPLOYER_CLAIM_DETAILS: 'et3ResponseEmployerClaimDetails',
     CLAIM_SUMMARY_FILE_NAME: 'claimSummaryFile',
+  },
+  RETURN_TO_EXISTING: {
+    RETURN_TO_EXISTING_RADIOBUTTON: 'returnToExisting',
   },
 } as const;
 

@@ -85,7 +85,7 @@ describe('Self assignment form controller', () => {
       .fn()
       .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithStringFalseResponse));
     await new SelfAssignmentFormController().post(request, response);
-    expect(response.redirect).toHaveBeenCalledWith(LegacyUrls.ET3);
+    expect(response.redirect).toHaveBeenCalledWith(LegacyUrls.SIGN_UP);
   });
   it('should show an error if there is no case returned', async () => {
     const request = mockRequest({ t });
