@@ -3,7 +3,6 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { ErrorPages, TranslationKeys } from '../definitions/constants';
-import { SummaryListRow } from '../definitions/govuk/govukSummaryList';
 import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
 import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
 import { getApplicationDisplayByCode } from '../helpers/controller/ContactTribunalHelper';
@@ -15,11 +14,6 @@ export default class ApplicationDetailsController {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
-    const appContent: SummaryListRow[] = getApplicationContent(selectedApplication, req);
-    if (!appContent) {
-      return res.redirect(ErrorPages.NOT_FOUND);
-    }
-
     res.render(TranslationKeys.APPLICATION_DETAILS, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
       ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
@@ -28,7 +22,7 @@ export default class ApplicationDetailsController {
       applicationType: getApplicationDisplayByCode(selectedApplication.value.type, {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
       }),
-      appContent,
+      appContent: getApplicationContent(selectedApplication, req),
     });
   };
 }

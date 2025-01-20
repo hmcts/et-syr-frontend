@@ -18,11 +18,7 @@ export const getApplicationContent = (app: GenericTseApplicationTypeItem, req: A
     ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
     ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
   };
-  try {
-    return getTseApplicationDetails(app, req.url, translations);
-  } catch (error) {
-    return undefined;
-  }
+  return getTseApplicationDetails(app, req.url, translations);
 };
 
 const getTseApplicationDetails = (
