@@ -1,10 +1,12 @@
 {
-  "title": "Tystysgrif Cymodi Cynnar Acas",
+  "title": "Tystysgrif Cymodi Cynnar Acas (dewisol)",
   "p1": "Dylech wirio rhif tystysgrif Acas a’r dyddiad, neu p’un a oedd yr hawlydd yn gywir i ddweud ei fod wedi’i eithrio rhag cymodi cynnar.",
   "link": "Gweld tystysgrif Acas (yn agor yn tab newydd)",
   "et3ResponseAcasAgree": {
     "label": "A ydych chi’n cytuno â’r manylion a roddodd yr hawlydd ynghylch cymodi cynnar gyda Acas?"
   },
+  "yes": "Ydw",
+  "no": "Nac ydw",
   "et3ResponseAcasAgreeReason": {
     "label": "Pam rydych chi’n anghytuno â’r manylion a ddarparwyd ynghylch cymodi cynnar Acas? (dewisol)"
   },

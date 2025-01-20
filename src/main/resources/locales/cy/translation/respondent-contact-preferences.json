@@ -4,7 +4,7 @@
   "postalAddress": "Cyfeiriad post",
   "dxAddress": "Cyfeiriad DX (dewisol)",
   "contactPhoneNumber": "Rhif ffôn cyswllt (dewisol)",
-  "emailAddress": "cyfeiriad e-bost",
+  "emailAddress": "Cyfeiriad e-bost",
   "sectionText1": "Fel arfer, bydd y tribiwnlys yn cysylltu â chi drwy e-bost. Os oes angen cyswllt arnoch drwy'r post, rhaid i chi egluro pam.",
   "contactPreferenceQuestion": "Sut hoffech inni gysylltu â chi? (dewisol)",
   "email": "E-bost",

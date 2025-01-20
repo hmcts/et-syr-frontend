@@ -7,6 +7,8 @@
   "et3ResponseIsNoticeCorrect": {
     "label": "Are the claimant’s notice period details correct?"
   },
+  "yes": "Yes",
+  "no": "No",
   "et3ResponseCorrectNoticeDetails": {
     "label": "What are the claimant’s correct notice details? (optional)",
     "hint": "For example, you may wish to clarify that the claimant was dismissed without notice or paid them a sum in lieu of notice."

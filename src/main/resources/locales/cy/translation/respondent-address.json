@@ -3,6 +3,8 @@
   "h1": "Cyfeiriad yr atebydd",
   "addressText": "Cyfeiriad a ddarperir ar ET1",
   "correctAddressQuestion": "Ai dyma gyfeiriad cywir yr atebydd?",
+  "yes": "Ie",
+  "no": "Na",
   "errors": {
     "et3IsRespondentAddressCorrect": {
       "required": "Dewiswch"

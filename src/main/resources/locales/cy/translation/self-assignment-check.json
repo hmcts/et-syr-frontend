@@ -4,7 +4,7 @@
   "respondentSelfAssignmentInfo": "Mae’n rhaid i chi nodi manylion yr hawlydd a’r atebydd yn union fel y maent wedi'u hysgrifennu ar yr achos, gan gynnwys unrhyw gamgymeriadau. Er enghraifft, os mai enw olaf y cleient yw Smyth ond ei fod wedi’i sillafu fel ‘Smith’, dylech nodi Smith.",
   "respondentName": "Enw’r Atebydd",
   "claimantFirstName": "Enw Cyntaf yr Hawlydd",
-  "claimantLastName": "Enw Olaf yr Hawlydd",
+  "claimantLastName": "Enw olaf yr Hawlydd",
   "confirmation": {
     "title": "Gallaf gadarnhau bod yr holl fanylion hyn yn gywir ac yn cyd-fynd â’r hyn sydd wedi’i ysgrifennu ar yr achos",
     "checkbox": "Gallaf gadarnhau bod yr holl fanylion hyn yn gywir ac yn cyd-fynd â’r hyn sydd wedi’i ysgrifennu ar yr achos",
@@ -12,7 +12,7 @@
   },
   "request": "Cais",
   "submit": "Cyflwyno",
-  "caseReferenceId": "Y Cyfeirnod ar gyfer Cyflwyno",
+  "caseReferenceId": "Y Cyfeirnod Cyflwyno",
   "caseAssignment": "Aseiniad yr achos",
   "tick": "Dylech chi glicio i 'arwyddo' pan:",
   "satisfied": "Rydych yn fodlon bod yr holl fanylion hyn yn gywir ac yn cyd-fynd â’r hyn sydd wedi’i ysgrifennu ar yr achos",

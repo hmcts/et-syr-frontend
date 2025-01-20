@@ -1,12 +1,14 @@
 {
-  "title": "Pensiwn a budd-daliadau'r hawlydd",
-  "p1": "Gall helpu’r tribiwnlys os gallwch ddarparu’r manylion hyn. Ni chewch eich cosbi am beidio â'i ddarparu.",
-  "tableHeader": "Manylion pensiwn a budd-daliadau a ddarparwyd ar ET1",
-  "anyContributionsLabel": "A wnaeth yr atebydd unrhyw gyfraniadau i’r pensiwn?",
+  "title": "Pensiwn a buddion yr hawlydd (dewisol)",
+  "p1": "Gall helpu’r tribiwnlys os gallwch ddarparu’r manylion hyn. Ni chewch eich cosbi am beidio â’u darparu.",
+  "tableHeader": "Manylion pensiwn a buddion a ddarparwyd ar ET1",
+  "anyContributionsLabel": "A wnaeth yr atebydd unrhyw gyfraniadau i gynllun pensiwn?",
   "receiveBenefitsLabel": "Ydych yn cael unrhyw fuddion ar gyfer cyflogeion?",
   "et3ResponseIsPensionCorrect": {
     "label": "A yw manylion pensiwn a buddion yr hawlydd yn gywir?"
   },
+  "yes": "Ydy",
+  "no": "Nac ydy",
   "et3ResponsePensionCorrectDetails": {
     "label": "Beth yw manylion pensiwn a budd-daliadau cywir yr hawlydd? (dewisol)"
   },

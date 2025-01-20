@@ -3,10 +3,10 @@
   "pageTitle": "Manylion yr Achos",
   "respondentSelfAssignmentInfo": "Gallwch ddefnyddio’r dudalen hunan-aseiniad hon i gael mynediad at fanylion yr achos digidol a’i gynnwys.",
   "p1": "Rhowch y manylion isod i gael mynediad i'r ffurflen ymateb ar gyfer yr achos hwn.",
-  "caseReferenceId": "Y Cyfeirnod ar gyfer Cyflwyno",
+  "caseReferenceId": "Y Cyfeirnod Cyflwyno",
   "respondentName": "Enw’r Atebydd",
   "claimantFirstName": "Enw(au) cyntaf yr Hawlydd",
-  "claimantLastName": "Enw Olaf yr Hawlydd",
+  "claimantLastName": "Enw olaf yr Hawlydd",
   "errors": {
     "id": {
       "required": "Rhowch gyfeirnod achos ar-lein sy'n cyfateb yn union i fanylion yr achos",

@@ -1,10 +1,12 @@
 {
-  "title": "Teitl swydd yr hawlydd",
+  "title": "Teitl swydd yr hawlydd (dewisol)",
   "jobTitleLabel": "Teitl y swydd a ddarparwyd ar ET1",
   "p1": "Gall helpu'r tribiwnlys os gallwch ddarparu'r manylion hyn. Ni chewch eich cosbi am beidio â’u darparu.",
   "et3ResponseIsJobTitleCorrect": {
     "label": "A yw teitl swydd yr hawlydd yn gywir?"
   },
+  "yes": "Ydy",
+  "no": "Nac ydy",
   "et3ResponseCorrectJobTitle": {
     "label": "Beth yw neu beth oedd teitl cywir swydd yr hawlydd? (dewisol)"
   },

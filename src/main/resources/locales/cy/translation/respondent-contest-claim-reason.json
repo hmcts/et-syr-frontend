@@ -5,11 +5,11 @@
   "p1": "Dyma eich ymateb i hawliad yr hawlydd. Dylech gyfeirio at y ffurflen hawlio ET1 yn eich ymateb.",
   "p2": "Dywedwch wrthym beth ddigwyddodd yn eich geiriau eich hun. Does dim angen i chi ddefnyddio iaith gyfreithiol ffurfiol.  ",
   "bulletTitle": "Ystyriwch yn eich ymateb:",
-  "bullet1": "nodi’r agweddau yn yr hawliad yr ydych yn cytuno neu’n anghytuno â nhw, gan gynnwys os ydych chi’n herio dim ond rhan o'r hawliad",
+  "bullet1": "agweddau yn yr hawliad yr ydych yn cytuno neu’n anghytuno â nhw, gan gynnwys os ydych chi’n herio dim ond rhan o’r hawliad",
   "bullet2": "sicrhau bod unrhyw ffeithiau neu ddigwyddiadau yn cael eu trefnu yn ôl dyddiad",
   "bullet3": "p’un a ydych yn credu y gallai unigolyn neu gwmni arall fod yn atebol a pham",
   "p3": "Gallwch ddefnyddio'r blwch testun neu uwchlwytho ffeil sy'n cynnwys manylion eich ymateb.",
-  "p4": "Dylai pob ffeil fod yn uchafswm o 80MB o ran maint (rhaid rhannu ffeiliau mwy ar wahân).",
+  "p4": "Dylai pob ffeil fod yn uchafswm o 80MB o ran maint (rhaid rhannu ffeiliau mwy yn ffeiliau llai).",
   "textAreaLabel1": "Eglurwch pam fod ",
   "textAreaLabel2": " yn herio’r hawliad",
   "remove": "dileu",
@@ -20,7 +20,7 @@
     "uploaded": "Ffeiliau sydd wedi’u huwchlwytho"
   },
   "fileUploadTable": {
-    "hint": "<p class=’govuk-hint’>Gallwch uwchlwytho sawl dogfen. </p><p class=’govuk-hint’>Os ydych chi eisiau uwchlwytho e-bost, dylech lawrlwytho a throsglwyddo o e-bost eich cleient yn gyntaf. Bydd y rhan fwyaf o gleientiaid e-bost yn rhoi'r opsiwn o lawrlwytho fel pdf neu PostScript.</p>"
+    "hint": "<p class=’govuk-hint’>Gallwch uwchlwytho sawl dogfen. </p><p class=’govuk-hint’>Os ydych chi eisiau uwchlwytho e-bost, dylech lawrlwytho a throsglwyddo’r e-bost yn gyntaf. Bydd y rhan fwyaf o gleientiaid e-bost yn rhoi'r opsiwn o lawrlwytho fel pdf neu PostScript.</p>"
   },
   "fileUpload": {
     "linkText": "Neu uwchlwythwch eich crynodeb fel dogfen ar wahân (dewisol)",

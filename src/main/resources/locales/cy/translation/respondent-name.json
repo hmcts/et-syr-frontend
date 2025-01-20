@@ -5,6 +5,8 @@
   "insetTxt2": "Bydd gennych gyfle ar y ffurflen hon i esbonio pam rydych chi'n meddwl y gallai rhywun arall fod yn atebol.",
   "label1": "Ai ",
   "label2": " yw enw cywir yr atebydd?",
+  "yes": "Ie",
+  "no": "Na",
   "respondentNameTextLabel": "Rhowch enw cywir",
   "errors": {
     "responseRespondentNameQuestion": {

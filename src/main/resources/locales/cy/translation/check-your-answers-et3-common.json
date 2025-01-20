@@ -1,5 +1,5 @@
 {
-  "title": "Gwirio eich atebion",
+  "title": "Gwiriwch eich atebion",
   "section1": {
     "header": "Manylion cyswllt",
     "respondentName": "Enw’r atebydd",
@@ -12,16 +12,16 @@
     "contactNumberOptional": "Rhif ffôn cyswllt (dewisol)",
     "contactFormat": "Sut hoffech inni gysylltu â chi? (dewisol)",
     "reasonForPost": "Esboniwch pam y dewisoch chi’r opsiwn i gyfathrebu â chi drwy’r post",
-    "contactLanguage": "Pa iaith yr hoffech chi inni ei ddefnyddio i gysylltu â chi? (dewisol)"
+    "contactLanguage": "Pa iaith yr hoffech chi inni ei defnyddio i gysylltu â chi? (dewisol)"
   },
   "section2": {
-    "header": "Fformat y gwrandawiad a manylion y cyflogwyr",
+    "header": "Fformat y gwrandawiad a manylion y cyflogwr",
     "participateInHearings": "A fyddech chi’n gallu cymryd rhan mewn gwrandawiadau drwy fideo a dros y ffôn? (dewisol)",
     "explainReason": "Eglurwch pam na allwch gymryd rhan mewn gwrandawiadau fideo neu wrandawiadau dros y ffôn",
     "disabilitySupport": "A oes gennych anabledd corfforol, meddyliol neu addysgol neu gyflwr iechyd sy’n golygu bod angen cymorth arnoch yn ystod eich achos? (dewisol)",
     "supportRequest": "Dywedwch wrthym pa gymorth sydd ei angen arnoch",
     "employeesInGreatBritain": "Faint o bobl sy’n gyflogedig gan yr atebydd hwn ym Mhrydain Fawr? (dewisol)",
-    "multipleSites": "A oes gan yr atebydd hwn fwy nac un safle ym Mhrydain Fawr? (dewisol)",
+    "multipleSites": "A oes gan yr atebydd hwn fwy nag un safle ym Mhrydain Fawr? (dewisol)",
     "employeesAtSite": "Faint oedd yn cael eu cyflogi ar y safle y bu'r hawlydd yn gweithio ynddo? (dewisol)"
   },
   "section3": {
@@ -39,14 +39,14 @@
     "et3ResponseClaimantCorrectHours": "Beth yw oriau gwaith wythnosol cyfartalog cywir yr hawlydd? (dewisol)"
   },
   "section4": {
-    "header": "Manylion cyflog, pensiwn a budd-daliadau",
+    "header": "Manylion cyflog, pensiwn a buddion",
     "payDetailsCorrect": "A yw manylion y cyflog a roddwyd gan yr hawlydd yn gywir?",
     "paymentFrequency": "Pa mor aml oedd yr hawlydd yn cael ei dalu? (dewisol)",
     "claimantsPayBeforeTax": "Cyflog yr hawlydd CYN treth (dewisol)",
     "claimantsPayAfterTax": "Cyflog yr hawlydd AR ÔL treth (dewisol)",
     "noticePeriodDetailsCorrect": "A yw manylion cyfnod rhybudd yr hawlydd yn gywir?",
     "noticePeriodDetails": "Beth yw manylion rhybudd cywir yr hawlydd? (dewisol)",
-    "pensionAndBenefitsDetailsCorrect": "A yw manylion pensiwn a budd-daliadau'r hawlydd yn gywir?",
+    "pensionAndBenefitsDetailsCorrect": "A yw manylion pensiwn a buddion yr hawlydd yn gywir?",
     "correctPensionAndBenefitsDetails": "Beth yw manylion pensiwn a budd-daliadau cywir yr hawlydd? (dewisol)"
   },
   "section5": {

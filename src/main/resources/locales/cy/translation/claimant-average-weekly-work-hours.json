@@ -1,10 +1,12 @@
 {
-  "title": "Oriau gwaith wythnosol cyfartalog yr hawlydd",
+  "title": "Oriau gwaith wythnosol cyfartalog yr hawlydd (dewisol)",
   "avgWeeklyHrsLabel": "Oriau gwaith wythnosol cyfartalog a ddarparwyd ar ET1",
-  "p1": "Gall helpu'r tribiwnlys os gallwch ddarparu'r manylion hyn. Ni chewch eich cosbi am beidio â'i ddarparu.",
+  "p1": "Gall helpu'r tribiwnlys os gallwch ddarparu'r manylion hyn. Ni chewch eich cosbi am beidio â’u darparu.",
   "et3ResponseClaimantWeeklyHours": {
     "label": "A yw oriau gwaith wythnosol cyfartalog yr hawlydd yn gywir? "
   },
+  "yes": "Ydy",
+  "no": "Nac ydy",
   "et3ResponseClaimantCorrectHours": {
     "label": "Beth yw oriau gwaith wythnosol cyfartalog cywir yr hawlydd? (dewisol)",
     "hint": "Rhowch oriau cyfartalog yr hawlydd a weithiwyd bob wythnos mewn digidau."

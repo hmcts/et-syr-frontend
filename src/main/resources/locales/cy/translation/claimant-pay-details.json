@@ -1,5 +1,5 @@
 {
-  "title": "Manylion cyflog yr hawlydd",
+  "title": "Manylion cyflog yr hawlydd (dewisol)",
   "subtitle": "Manylion cyflog ar ddarparwyd ar ET1",
   "periodPayLabel": "Cyflog wythnosol, misol neu flynyddol?",
   "payBeforeTaxLabel": "Tâl CYN treth ac Yswiriant Gwladol",
@@ -10,7 +10,9 @@
       "hint": "Byddwch yn gallu rhoi manylion cyflog cywir yn y cam nesaf."
     },
     "notApplicable": {
-      "hint": "Os byddwch yn dewis ‘ddim yn berthnasol’, ni fyddwch yn gallu nodi manylion cyflog."
+      "hint": "Os byddwch yn dewis ‘Amherthnasol’, ni fyddwch yn gallu nodi manylion cyflog."
     }
-  }
+  },
+  "yes": "Ydy",
+  "no": "Nac ydy"
 }

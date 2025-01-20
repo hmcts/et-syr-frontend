@@ -159,10 +159,10 @@
     "s3": "Adran 3. Rhowch eich ymateb i ni"
   },
   "cya": {
-    "title": "Gwirio eich atebion",
-    "label": "Ydych chi wedi llenwi'r adran hon?",
+    "title": "Gwiriwch eich atebion",
+    "label": "Ydych chi wedi cwblhau’r adran hon?",
     "hint": "Gallwch newid eich atebion yn hwyrach ymlaen.",
-    "yes": "Do, rwyf wedi llenwi'r adran hon",
+    "yes": "Do, rwyf wedi cwblhau’r adran hon",
     "no": "Naddo, rwyf am ddychwelyd hwyrach ymlaen"
   },
   "notProvided": "Dim byd wedi ei ddarparu",

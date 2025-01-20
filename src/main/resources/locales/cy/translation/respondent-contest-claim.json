@@ -2,10 +2,10 @@
   "title": "Mae’r atebydd yn herio’r hawliad",
   "h1": "A yw ",
   "h1Extra": " yn herio’r hawliad?",
-  "yes1": "Ydy - ",
-  "yes2": "  mae’n herio’r hawliad i gyd neu ran ohono",
-  "no1": "Nac ydy - ",
-  "no2": " nid yw’n herio unrhyw ran o'r hawliad",
+  "yes1": "Ydy, mae ",
+  "yes2": " yn herio’r hawliad i gyd neu ran ohono",
+  "no1": "Nac ydy, nid yw ",
+  "no2": " yn herio unrhyw ran o’r hawliad",
   "errors": {
     "et3ResponseRespondentContestClaim": {
       "required": "Dewiswch"

@@ -1,4 +1,6 @@
 {
   "title": "Is the claimant’s employment with the respondent continuing? (optional)",
-  "hint": "It may help the tribunal if you can provide these details. You will not be penalised for not providing them."
+  "hint": "It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
+  "yes": "Yes",
+  "no": "No"
 }

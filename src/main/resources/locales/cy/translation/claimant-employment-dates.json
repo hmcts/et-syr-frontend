@@ -1,5 +1,5 @@
 {
-  "title": "Dyddiadau cyflogaeth yr hawlydd",
+  "title": "Dyddiadau cyflogaeth yr hawlydd (dewisol)",
   "startDateLabel": "Y dyddiad cychwyn a ddarperir ar ET1",
   "endDateLabel": "Y dyddiad gorffen a ddarperir ar ET1",
   "et3ResponseAreDatesCorrect": {
@@ -8,7 +8,9 @@
       "hint": "Byddwch yn gallu nodi dyddiadau cyflogaeth cywir yn y cam nesaf."
     },
     "notApplicable": {
-      "hint": "Os byddwch yn dewis ‘ddim yn berthnasol’, ni fyddwch yn gallu nodi dyddiadau cyflogaeth."
+      "hint": "Os byddwch yn dewis ‘Amherthnasol’, ni fyddwch yn gallu nodi dyddiadau cyflogaeth."
     }
-  }
+  },
+  "yes": "Ydy",
+  "no": "Nac ydy"
 }

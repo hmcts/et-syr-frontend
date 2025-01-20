@@ -3,6 +3,8 @@
   "h1": "Respondent address",
   "addressText": "Address provided on ET1",
   "correctAddressQuestion": "Is this the respondent’s correct address?",
+  "yes": "Yes",
+  "no": "No",
   "errors": {
     "et3IsRespondentAddressCorrect": {
       "required": "Make a selection"

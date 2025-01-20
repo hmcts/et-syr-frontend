@@ -1,5 +1,7 @@
 {
   "title": "Safleoedd yr atebydd",
-  "h1": "A oes gan yr atebydd hwn fwy nac un safle ym Mhrydain Fawr? (dewisol)",
-  "hint": "Gall helpu'r tribiwnlys i gael syniad o faint y cyflogwr."
+  "h1": "A oes gan yr atebydd hwn fwy nag un safle ym Mhrydain Fawr? (dewisol)",
+  "hint": "Gall helpu'r tribiwnlys i gael syniad o faint y cyflogwr.",
+  "yes": "Oes",
+  "no": "Nac oes"
 }

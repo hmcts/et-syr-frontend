@@ -1,4 +1,6 @@
 {
-  "title": "A yw cyflogaeth yr hawlydd gyda'r atebydd yn parhau?",
-  "hint": "Gall helpu'r tribiwnlys os gallwch ddarparu'r manylion hyn. Ni chewch eich cosbi am beidio â’u darparu."
+  "title": "A yw cyflogaeth yr hawlydd gyda'r atebydd yn parhau? (dewisol)",
+  "hint": "Gall helpu'r tribiwnlys os gallwch ddarparu'r manylion hyn. Ni chewch eich cosbi am beidio â’u darparu.",
+  "yes": "Ydy",
+  "no": "Nac ydy"
 }
