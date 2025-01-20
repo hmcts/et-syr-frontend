@@ -36,7 +36,7 @@ describe('Case number check controller', () => {
         .fn()
         .mockResolvedValueOnce(MockAxiosResponses.mockAxiosResponseWithStringFalseResponse);
       await new CaseNumberCheckController().post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(LegacyUrls.ET3);
+      expect(response.redirect).toHaveBeenCalledWith(LegacyUrls.SIGN_UP);
     });
     it('should forward to checklist controller when case reference check is string true', async () => {
       const request = mockRequest({ t });
@@ -58,7 +58,7 @@ describe('Case number check controller', () => {
         .fn()
         .mockResolvedValueOnce(MockAxiosResponses.mockAxiosResponseWithBooleanFalseResponse);
       await new CaseNumberCheckController().post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(LegacyUrls.ET3);
+      expect(response.redirect).toHaveBeenCalledWith(LegacyUrls.SIGN_UP);
     });
     it('should forward to checklist controller when case reference check is boolean true', async () => {
       const request = mockRequest({ t });

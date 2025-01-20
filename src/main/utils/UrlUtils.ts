@@ -117,6 +117,15 @@ export default class UrlUtils {
     return params;
   }
 
+  /**
+   * Finds not allowed end points forwarding URL by the given request object. This method is used in oidc module.
+   * If a case status is submitted but after submission a ET3-Form url page is requested, it should not be shown to
+   * the respondent and needs to be forwarded to case details or case list page. This function checks request object
+   * and if it finds any userCase and selected respondent, forwards to case details page else forwards to case list
+   * page.
+   * @param req is the object that has user case, selected respondent.
+   * @return url value of case list or case details.
+   */
   public static getNotAllowedEndPointsForwardingUrlByRequest(req: AppRequest): string {
     const selectedRespondent = RespondentUtils.findSelectedRespondentByRequest(req);
     if (

@@ -72,6 +72,7 @@ import RespondentSelectPostCodeController from '../../controllers/RespondentSele
 import RespondentSiteEmployeesController from '../../controllers/RespondentSiteEmployeesController';
 import RespondentSitesController from '../../controllers/RespondentSitesController';
 import ResponseSavedController from '../../controllers/ResponseSavedController';
+import ReturnToExistingResponseController from '../../controllers/ReturnToExistingResponseController';
 import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheckController';
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
@@ -266,6 +267,8 @@ export class Routes {
     app.get(InterceptPaths.RESPOND_TO_TRIBUNAL_SUBMIT, new RespondToTribunalSubmitController().get);
     app.get(PageUrls.RESPOND_TO_TRIBUNAL_COMPLETE, new RespondToTribunalCompleteController().get);
     // others
+    app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
+    app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);
     app.post(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().post);
