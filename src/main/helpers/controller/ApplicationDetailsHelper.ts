@@ -1,5 +1,4 @@
 import { AppRequest } from '../../definitions/appRequest';
-import { YesOrNo } from '../../definitions/case';
 import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { TranslationKeys } from '../../definitions/constants';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
@@ -59,12 +58,4 @@ const getTseApplicationDetails = (
   }
 
   return rows;
-};
-
-/**
- * Boolean if respond to Tribunal is required.
- * @param app selected application
- */
-export const isResponseToTribunalRequired = (app: GenericTseApplicationTypeItem): boolean => {
-  return app.value.claimantResponseRequired === YesOrNo.YES;
 };

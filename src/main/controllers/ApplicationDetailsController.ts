@@ -2,11 +2,10 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
-import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants';
+import { ErrorPages, TranslationKeys } from '../definitions/constants';
 import { SummaryListRow } from '../definitions/govuk/govukSummaryList';
 import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getApplicationContent, isResponseToTribunalRequired } from '../helpers/controller/ApplicationDetailsHelper';
+import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
 import { getApplicationDisplayByCode } from '../helpers/controller/ContactTribunalHelper';
 
 export default class ApplicationDetailsController {
@@ -30,9 +29,6 @@ export default class ApplicationDetailsController {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
       }),
       appContent,
-      isRespondButton: isResponseToTribunalRequired(selectedApplication),
-      respondRedirectUrl:
-        PageUrls.RESPOND_TO_TRIBUNAL.replace(':appId', selectedApplication.id) + getLanguageParam(req.url),
     });
   };
 }
