@@ -11,6 +11,7 @@ import {
   linkStatusColorMap,
 } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
+import { getApplicationRequestFromAdmin } from '../helpers/AdminNotificationHelper';
 import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
@@ -85,6 +86,7 @@ export default class CaseDetailsController {
       showSavedResponseAlert: req.session.userCase.et3Status === ET3Status.IN_PROGRESS,
       showViewResponseAlert: req.session.userCase.responseReceived === YesOrNo.YES,
       respondentResponseDeadline,
+      adminNotifications: getApplicationRequestFromAdmin(req.session.userCase.genericTseApplicationCollection, req),
       languageParam: getLanguageParam(req.url),
     });
   }
