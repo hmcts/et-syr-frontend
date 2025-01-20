@@ -20,7 +20,13 @@
   {% if userCase.noticePeriodUnit === "Weeks" %}
     {% set periodUnit = weeks %}
   {% elseif userCase.noticePeriodUnit === "Months" %}
-    {% set periodUnit = months %}
+    {% if userCase.noticePeriodLength === "1" %}
+      {% set periodUnit = months1 %}
+    {% elseif userCase.noticePeriodLength === "2" %}
+      {% set periodUnit = months2 %}
+    {% else %}
+      {% set periodUnit = months3 %}
+    {% endif %}
   {% endif %}
   {% set noticePeriod = userCase.noticePeriodLength + " " + periodUnit %}
 {% else %}
