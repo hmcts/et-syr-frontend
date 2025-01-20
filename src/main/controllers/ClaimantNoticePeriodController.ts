@@ -22,11 +22,11 @@ export default class ClaimantNoticePeriodController {
         label: (l: AnyRecord): string => l.et3ResponseIsNoticeCorrect.label,
         values: [
           {
-            label: (l: AnyRecord): string => l.yes,
+            label: (l: AnyRecord): string => l.et3ResponseIsNoticeCorrect.yes,
             value: YesOrNoOrNotApplicable.YES,
           },
           {
-            label: (l: AnyRecord): string => l.no,
+            label: (l: AnyRecord): string => l.et3ResponseIsNoticeCorrect.no,
             value: YesOrNoOrNotApplicable.NO,
             subFields: {
               et3ResponseCorrectNoticeDetails: {
