@@ -20,7 +20,7 @@
     "uploaded": "Ffeiliau sydd wedi’u huwchlwytho"
   },
   "fileUploadTable": {
-    "hint": "<p class=’govuk-hint’>Gallwch uwchlwytho sawl dogfen. </p><p class=’govuk-hint’>Os ydych chi eisiau uwchlwytho e-bost, dylech lawrlwytho a throsglwyddo’r e-bost yn gyntaf. Bydd y rhan fwyaf o gleientiaid e-bost yn rhoi'r opsiwn o lawrlwytho fel pdf neu PostScript.</p>"
+    "hint": "<p class='govuk-hint'>Gallwch uwchlwytho sawl dogfen.</p><p class='govuk-hint'>Os ydych chi eisiau uwchlwytho e-bost, dylech lawrlwytho a throsglwyddo’r e-bost yn gyntaf. Bydd y rhan fwyaf o gleientiaid e-bost yn rhoi'r opsiwn o lawrlwytho fel pdf neu PostScript.</p>"
   },
   "fileUpload": {
     "linkText": "Neu uwchlwythwch eich crynodeb fel dogfen ar wahân (dewisol)",
