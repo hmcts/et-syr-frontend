@@ -171,5 +171,17 @@
     "video": "Fideo",
     "phone": "Ffôn"
   },
-  "hiddenErrorFieldLabel": "Maes Gwall Cudd"
+  "hiddenErrorFieldLabel": "Maes Gwall Cudd",
+  "oesYesOrNo": {
+    "yes": "Oes",
+    "no": "Nac oes"
+  },
+  "ydwYesOrNo": {
+    "yes": "Ydw",
+    "no": "Nac ydw"
+  },
+  "ydyYesOrNo": {
+    "yes": "Ydy",
+    "no": "Nac ydy"
+  }
 }
