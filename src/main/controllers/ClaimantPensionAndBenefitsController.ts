@@ -10,6 +10,7 @@ import { saveForLaterButton, submitButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { isClearSelection } from '../helpers/RouterHelpers';
+import { getAnyContributions, getReceiveBenefits } from '../helpers/controller/ClaimantPensionAndBenefitsHelper';
 import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
 import { isContentCharsOrLess } from '../validators/validator';
@@ -99,6 +100,8 @@ export default class ClaimantPensionAndBenefitsController {
       ...content,
       hideContactUs: true,
       userCase: req.session.userCase,
+      anyContributions: getAnyContributions(req),
+      receiveBenefits: getReceiveBenefits(req),
     });
   };
 }
