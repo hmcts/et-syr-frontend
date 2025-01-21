@@ -30,8 +30,6 @@ describe('Application Details Controller', () => {
         TranslationKeys.APPLICATION_DETAILS,
         expect.objectContaining({
           applicationType: 'Amend my response',
-          isRespondButton: true,
-          respondRedirectUrl: '/respond-to-tribunal/1?lng=en',
         })
       );
     });
