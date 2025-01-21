@@ -1,7 +1,12 @@
+import axios from 'axios';
+
 import ClaimantPayDetailsEnterController from '../../../main/controllers/ClaimantPayDetailsEnterController';
 import { PayFrequency } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { CaseApi } from '../../../main/services/CaseService';
+import * as caseService from '../../../main/services/CaseService';
 import ET3Util from '../../../main/utils/ET3Util';
+import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -21,17 +26,23 @@ describe('Claimant pay details enter details Controller', () => {
   });
 
   describe('GET method', () => {
-    it('should render the page', () => {
-      controller.get(request, response);
+    it('should render the page', async () => {
+      const getCaseApiMock = jest.spyOn(caseService, 'getCaseApi');
+      const api = new CaseApi(axios);
+      getCaseApiMock.mockReturnValue(api);
+      api.getUserCase = jest
+        .fn()
+        .mockReturnValue(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse));
+      await controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.CLAIMANT_PAY_DETAILS_ENTER, expect.anything());
     });
 
-    it('should render the page when clear selection', () => {
+    it('should render the page when clear selection', async () => {
       request.session.userCase.et3ResponsePayFrequency = PayFrequency.WEEKLY;
       request.query = {
         redirect: 'clearSelection',
       };
-      controller.get(request, response);
+      await controller.get(request, response);
       expect(request.session.userCase.et3ResponsePayFrequency).toStrictEqual(undefined);
     });
   });

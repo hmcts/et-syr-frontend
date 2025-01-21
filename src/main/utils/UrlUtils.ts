@@ -8,6 +8,7 @@ import { getLanguageParam } from '../helpers/RouterHelpers';
 import CollectionUtils from './CollectionUtils';
 import NumberUtils from './NumberUtils';
 import ObjectUtils from './ObjectUtils';
+import RespondentUtils from './RespondentUtils';
 import StringUtils from './StringUtils';
 
 export default class UrlUtils {
@@ -32,8 +33,8 @@ export default class UrlUtils {
 
   /**
    * Removes parameter from the given url. For example if url is
-   * "https://localhost:3003/employers-contract-claim?redirect=clearSelection&lng=cy" and parameter is "redirect=clear"
-   * returns "https://localhost:3003/employers-contract-claim?lng=cy".
+   * "https://localhost:3003/employers-contract-claim?redirect=clearSelection&lng=cy" and parameter is
+   * "redirect=clearSelection" returns "https://localhost:3003/employers-contract-claim?lng=cy".
    * Please be careful, if parameter to be removed is the first parameter if there is another parameter,
    * then makes that parameter as the first parameter and replaces ampersand (&) with (?).
    * If parameter to be removed is not the first parameter then it simply removes it.
@@ -114,5 +115,34 @@ export default class UrlUtils {
       clonedUrl = this.removeParameterFromUrl(clonedUrl, parameter);
     }
     return params;
+  }
+
+  /**
+   * Finds not allowed end points forwarding URL by the given request object. This method is used in oidc module.
+   * If a case status is submitted but after submission a ET3-Form url page is requested, it should not be shown to
+   * the respondent and needs to be forwarded to case details or case list page. This function checks request object
+   * and if it finds any userCase and selected respondent, forwards to case details page else forwards to case list
+   * page.
+   * @param req is the object that has user case, selected respondent.
+   * @return url value of case list or case details.
+   */
+  public static getNotAllowedEndPointsForwardingUrlByRequest(req: AppRequest): string {
+    const selectedRespondent = RespondentUtils.findSelectedRespondentByRequest(req);
+    if (
+      ObjectUtils.isEmpty(req?.session?.userCase) ||
+      StringUtils.isBlank(req.session.userCase.id) ||
+      ObjectUtils.isEmpty(selectedRespondent) ||
+      StringUtils.isBlank(selectedRespondent.ccdId)
+    ) {
+      return PageUrls.CASE_LIST + getLanguageParam(req?.url);
+    }
+    return (
+      PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER +
+      DefaultValues.STRING_SLASH +
+      req.session.userCase.id +
+      DefaultValues.STRING_SLASH +
+      selectedRespondent.ccdId +
+      getLanguageParam(req.url)
+    );
   }
 }

@@ -38,7 +38,7 @@ export default class GetCaseDocumentController {
     let uploadedDocumentId = documentDetails?.id;
     let isET1Form = false;
     if (ObjectUtils.isNotEmpty(documentDetails)) {
-      isET1Form = documentDetails.originalDocumentName.startsWith('ET1 -');
+      isET1Form = documentDetails?.originalDocumentName?.startsWith('ET1 -');
       logger.info('requested document found in userCase fields');
       contentType = findContentTypeByDocumentDetail(documentDetails);
     } else {

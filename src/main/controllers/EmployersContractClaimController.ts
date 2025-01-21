@@ -87,8 +87,8 @@ export default class EmployersContractClaimController {
       req.session.errors = [];
     }
     // Removes all errors that remains in request session except api for hidden field errors.
-    // Because for this screen is optional
-    // That remaining errors were coming from other pages.
+    // Because this screen is optional
+    // That is why errors are the remaining errors of other pages.
     ErrorUtils.removeErrorsFromRequestExceptHiddenErrorFieldApiErrors(req);
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,

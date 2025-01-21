@@ -20,6 +20,7 @@ import { AnyRecord } from '../../definitions/util-types';
 import AddressUtils from '../../utils/AddressUtils';
 import DateUtils from '../../utils/DateUtils';
 import DocumentUtils from '../../utils/DocumentUtils';
+import NumberUtils from '../../utils/NumberUtils';
 import RespondentUtils from '../../utils/RespondentUtils';
 import { answersAddressFormatter } from '../AddressHelper';
 
@@ -373,14 +374,18 @@ export const getEt3Section4 = (
       ),
       addSummaryRowWithAction(
         translations.section4.claimantsPayBeforeTax,
-        userCase.et3ResponsePayBeforeTax ?? DefaultValues.STRING_DASH,
+        NumberUtils.isNumericValue(userCase.et3ResponsePayBeforeTax)
+          ? String(NumberUtils.convertStringToNumber(userCase.et3ResponsePayBeforeTax) / 100)
+          : DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
         hideChangeLink ? undefined : translations.change,
         hideChangeLink ? undefined : sectionCya
       ),
       addSummaryRowWithAction(
         translations.section4.claimantsPayAfterTax,
-        userCase.et3ResponsePayTakehome ?? DefaultValues.STRING_DASH,
+        NumberUtils.isNumericValue(userCase.et3ResponsePayTakehome)
+          ? String(NumberUtils.convertStringToNumber(userCase.et3ResponsePayTakehome) / 100)
+          : DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
         hideChangeLink ? undefined : translations.change,
         hideChangeLink ? undefined : sectionCya
