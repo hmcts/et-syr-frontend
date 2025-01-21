@@ -53,7 +53,7 @@ export const getEt3Section1 = (
   et3ResponseSection1.push(
     addSummaryRowWithAction(
       translations.section1.organisationType,
-      organisationTypeMap[userCase.et3ResponseRespondentEmployerType] || DefaultValues.STRING_DASH,
+      organisationTypeMap[userCase.et3ResponseRespondentEmployerType] ?? DefaultValues.STRING_DASH,
       PageUrls.TYPE_OF_ORGANISATION,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
