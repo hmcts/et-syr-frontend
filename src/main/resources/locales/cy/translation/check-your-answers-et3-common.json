@@ -4,13 +4,11 @@
     "header": "Manylion cyswllt",
     "respondentName": "Enw’r atebydd",
     "organisationType": "Pa fath o sefydliad yw’r atebydd?",
-    "et3ResponseRespondentEmployerType": {
-      "individual": "Unigolyn",
-      "limitedCompany": "Cwmni Cyfyngedig",
-      "partnership": "Partneriaeth",
-      "unincorporatedAssociation": "Cymdeithas heb ei hymgorffori (megis clwb chwaraeon)",
-      "other": "Arall"
-    },
+    "individual": "Unigolyn",
+    "limitedCompany": "Cwmni Cyfyngedig",
+    "partnership": "Partneriaeth",
+    "unincorporatedAssociation": "Cymdeithas heb ei hymgorffori (megis clwb chwaraeon)",
+    "other": "Arall",
     "preferredTitleOptional": "Y teitl sydd orau gennych (dewisol)",
     "companyRegistrationNumberOptional": "Rhif cofrestru’r cwmni (dewisol)",
     "address": "Cyfeiriad",

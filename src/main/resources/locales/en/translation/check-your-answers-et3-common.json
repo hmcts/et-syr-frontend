@@ -4,13 +4,11 @@
     "header": "Contact details",
     "respondentName": "Respondent name",
     "organisationType": "What type of organisation is the respondent?",
-    "et3ResponseRespondentEmployerType": {
-      "individual": "Individual",
-      "limitedCompany": "Limited Company",
-      "partnership": "Partnership",
-      "unincorporatedAssociation": "Unincorporated association (such as a sports club)",
-      "other": "Other"
-    },
+    "individual": "Individual",
+    "limitedCompany": "Limited Company",
+    "partnership": "Partnership",
+    "unincorporatedAssociation": "Unincorporated association (such as a sports club)",
+    "other": "Other",
     "preferredTitleOptional": "Preferred title (optional)",
     "companyRegistrationNumberOptional": "Company registration number (optional)",
     "address": "Address",

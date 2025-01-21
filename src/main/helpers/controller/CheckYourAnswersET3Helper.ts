@@ -32,6 +32,7 @@ export const getEt3Section1 = (
 ): SummaryListRow[] => {
   const et3ResponseSection1: SummaryListRow[] = [];
   const userCase = request.session.userCase;
+
   et3ResponseSection1.push(
     addSummaryRowWithAction(
       translations.section1.respondentName,
@@ -39,12 +40,20 @@ export const getEt3Section1 = (
       PageUrls.RESPONDENT_NAME,
       hideChangeLink === true ? undefined : translations.change,
       hideChangeLink === true ? undefined : sectionCya
-    ),
+    )
+  );
+
+  const organisationTypeMap: { [key: string]: string } = {
+    [TypeOfOrganisation.INDIVIDUAL]: translations.section1.individual,
+    [TypeOfOrganisation.LIMITED_COMPANY]: translations.section1.limitedCompany,
+    [TypeOfOrganisation.PARTNERSHIP]: translations.section1.partnership,
+    [TypeOfOrganisation.UNINCORPORATED_ASSOCIATION]: translations.section1.unincorporatedAssociation,
+    [TypeOfOrganisation.OTHER]: translations.section1.other,
+  };
+  et3ResponseSection1.push(
     addSummaryRowWithAction(
       translations.section1.organisationType,
-      userCase.et3ResponseRespondentEmployerType
-        ? translations.section1.et3ResponseRespondentEmployerType[userCase.et3ResponseRespondentEmployerType]
-        : DefaultValues.STRING_DASH,
+      organisationTypeMap[userCase.et3ResponseRespondentEmployerType] || DefaultValues.STRING_DASH,
       PageUrls.TYPE_OF_ORGANISATION,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
