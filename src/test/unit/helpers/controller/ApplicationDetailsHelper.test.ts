@@ -1,7 +1,10 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import { GenericTseApplicationTypeItem } from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant } from '../../../../main/definitions/constants';
-import { getApplicationContent } from '../../../../main/helpers/controller/ApplicationDetailsHelper';
+import {
+  getApplicationContent,
+  isResponseToTribunalRequired,
+} from '../../../../main/helpers/controller/ApplicationDetailsHelper';
 import applicationDetailsJson from '../../../../main/resources/locales/en/translation/application-details.json';
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
 import commonJson from '../../../../main/resources/locales/en/translation/common.json';
@@ -90,5 +93,17 @@ describe('getApplicationContent', () => {
       text: 'Reason for not informing other party',
     });
     expect(result[5].value).toEqual({ text: 'No details' });
+  });
+});
+
+describe('isResponseToTribunalRequired', () => {
+  it('should return true if claimantResponseRequired is YES', () => {
+    const mockApp = { value: { respondentResponseRequired: YesOrNo.YES } };
+    expect(isResponseToTribunalRequired(mockApp)).toBe(true);
+  });
+
+  it('should return false if claimantResponseRequired is not YES', () => {
+    const mockApp = { value: { respondentResponseRequired: YesOrNo.NO } };
+    expect(isResponseToTribunalRequired(mockApp)).toBe(false);
   });
 });

@@ -24,12 +24,15 @@ describe('Application Details Controller', () => {
       request = mockRequestWithTranslation({}, translationJsons);
       request.session.userCase = mockUserCase;
       request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
+      request.session.userCase.genericTseApplicationCollection[0].value.respondentResponseRequired = 'Yes';
       request.params.appId = '1';
       controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(
         TranslationKeys.APPLICATION_DETAILS,
         expect.objectContaining({
           applicationType: 'Amend my response',
+          isRespondButton: true,
+          respondRedirectUrl: '/respond-to-tribunal/1?lng=en',
         })
       );
     });
