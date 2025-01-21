@@ -49,8 +49,6 @@ import IsClaimantEmploymentWithRespondentContinuingController from '../../contro
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
-import RespondToTribunalController from '../../controllers/RespondToTribunalController';
-import RespondToTribunalSupportingMaterialController from '../../controllers/RespondToTribunalSupportingMaterialController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
@@ -68,6 +66,7 @@ import RespondentSelectPostCodeController from '../../controllers/RespondentSele
 import RespondentSiteEmployeesController from '../../controllers/RespondentSiteEmployeesController';
 import RespondentSitesController from '../../controllers/RespondentSitesController';
 import ResponseSavedController from '../../controllers/ResponseSavedController';
+import ReturnToExistingResponseController from '../../controllers/ReturnToExistingResponseController';
 import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheckController';
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
@@ -76,7 +75,6 @@ import YourRequestAndApplicationsController from '../../controllers/YourRequestA
 import YourResponseFormController from '../../controllers/YourResponseFormController';
 import { AppRequest } from '../../definitions/appRequest';
 import { FILE_SIZE_LIMIT, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
-import ReturnToExistingResponseController from '../../controllers/ReturnToExistingResponseController';
 
 const handleUploads = multer({
   limits: {
@@ -250,19 +248,9 @@ export class Routes {
     // Your request and applications
     app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
     app.get(PageUrls.APPLICATION_DETAILS, new ApplicationDetailsController().get);
-    app.get(PageUrls.RESPOND_TO_TRIBUNAL, new RespondToTribunalController().get);
-    app.post(PageUrls.RESPOND_TO_TRIBUNAL, new RespondToTribunalController().post);
+    // others
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);
-    app.get(
-      PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL,
-      new RespondToTribunalSupportingMaterialController().get
-    );
-    app.post(
-      PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL,
-      new RespondToTribunalSupportingMaterialController().post
-    );
-    // others
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);
     app.post(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().post);

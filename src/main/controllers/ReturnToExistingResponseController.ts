@@ -73,7 +73,7 @@ export default class ReturnToExistingResponseController {
     assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.RETURN_TO_EXISTING_RESPONSE, {
       ...content,
-      respondNewClaimUrl: PageUrls.SELF_ASSIGNMENT_FORM + getLanguageParam(req.url),
+      respondNewClaimUrl: PageUrls.CASE_NUMBER_CHECK + getLanguageParam(req.url),
     });
   };
 }
