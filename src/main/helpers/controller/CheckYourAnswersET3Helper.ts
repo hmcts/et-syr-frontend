@@ -278,11 +278,7 @@ export const getEt3Section3 = (
   et3ResponseSection3.push(
     addSummaryRowWithAction(
       translations.section3.et3ResponseAreDatesCorrect,
-      {
-        [YesOrNoOrNotApplicable.YES]: translations.ydyYesOrNo.yes,
-        [YesOrNoOrNotApplicable.NO]: translations.ydyYesOrNo.no,
-        [YesOrNoOrNotApplicable.NOT_APPLICABLE]: translations[YesOrNoOrNotApplicable.NOT_APPLICABLE],
-      }[userCase.et3ResponseAreDatesCorrect] ?? DefaultValues.STRING_DASH,
+      ydyYesOrNoOrNotApplicableMap(translations)[userCase.et3ResponseAreDatesCorrect] ?? DefaultValues.STRING_DASH,
       PageUrls.CLAIMANT_EMPLOYMENT_DATES,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -318,22 +314,14 @@ export const getEt3Section3 = (
   et3ResponseSection3.push(
     addSummaryRowWithAction(
       translations.section3.et3ResponseContinuingEmployment,
-      {
-        [YesOrNoOrNotApplicable.YES]: translations.ydyYesOrNo.yes,
-        [YesOrNoOrNotApplicable.NO]: translations.ydyYesOrNo.no,
-        [YesOrNoOrNotApplicable.NOT_APPLICABLE]: translations[YesOrNoOrNotApplicable.NOT_APPLICABLE],
-      }[userCase.et3ResponseContinuingEmployment] ?? DefaultValues.STRING_DASH,
+      ydyYesOrNoOrNotApplicableMap(translations)[userCase.et3ResponseContinuingEmployment] ?? DefaultValues.STRING_DASH,
       PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
     ),
     addSummaryRowWithAction(
       translations.section3.et3ResponseIsJobTitleCorrect,
-      {
-        [YesOrNoOrNotApplicable.YES]: translations.ydyYesOrNo.yes,
-        [YesOrNoOrNotApplicable.NO]: translations.ydyYesOrNo.no,
-        [YesOrNoOrNotApplicable.NOT_APPLICABLE]: translations[YesOrNoOrNotApplicable.NOT_APPLICABLE],
-      }[userCase.et3ResponseIsJobTitleCorrect] ?? DefaultValues.STRING_DASH,
+      ydyYesOrNoOrNotApplicableMap(translations)[userCase.et3ResponseIsJobTitleCorrect] ?? DefaultValues.STRING_DASH,
       PageUrls.CLAIMANT_JOB_TITLE,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -355,11 +343,7 @@ export const getEt3Section3 = (
   et3ResponseSection3.push(
     addSummaryRowWithAction(
       translations.section3.et3ResponseClaimantWeeklyHours,
-      {
-        [YesOrNoOrNotApplicable.YES]: translations.ydyYesOrNo.yes,
-        [YesOrNoOrNotApplicable.NO]: translations.ydyYesOrNo.no,
-        [YesOrNoOrNotApplicable.NOT_APPLICABLE]: translations[YesOrNoOrNotApplicable.NOT_APPLICABLE],
-      }[userCase.et3ResponseClaimantWeeklyHours] ?? DefaultValues.STRING_DASH,
+      ydyYesOrNoOrNotApplicableMap(translations)[userCase.et3ResponseClaimantWeeklyHours] ?? DefaultValues.STRING_DASH,
       PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -432,11 +416,7 @@ export const getEt3Section4 = (
   et3ResponseSection4.push(
     addSummaryRowWithAction(
       translations.section4.noticePeriodDetailsCorrect,
-      {
-        [YesOrNoOrNotApplicable.YES]: translations.ydyYesOrNo.yes,
-        [YesOrNoOrNotApplicable.NO]: translations.ydyYesOrNo.no,
-        [YesOrNoOrNotApplicable.NOT_APPLICABLE]: translations[YesOrNoOrNotApplicable.NOT_APPLICABLE],
-      }[userCase.et3ResponseIsNoticeCorrect] ?? DefaultValues.STRING_DASH,
+      ydyYesOrNoOrNotApplicableMap(translations)[userCase.et3ResponseIsNoticeCorrect] ?? DefaultValues.STRING_DASH,
       PageUrls.CLAIMANT_NOTICE_PERIOD,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -458,11 +438,7 @@ export const getEt3Section4 = (
   et3ResponseSection4.push(
     addSummaryRowWithAction(
       translations.section4.pensionAndBenefitsDetailsCorrect,
-      {
-        [YesOrNoOrNotApplicable.YES]: translations.ydyYesOrNo.yes,
-        [YesOrNoOrNotApplicable.NO]: translations.ydyYesOrNo.no,
-        [YesOrNoOrNotApplicable.NOT_APPLICABLE]: translations[YesOrNoOrNotApplicable.NOT_APPLICABLE],
-      }[userCase.et3ResponseIsPensionCorrect] ?? DefaultValues.STRING_DASH,
+      ydyYesOrNoOrNotApplicableMap(translations)[userCase.et3ResponseIsPensionCorrect] ?? DefaultValues.STRING_DASH,
       PageUrls.CLAIMANT_PENSION_AND_BENEFITS,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -605,4 +581,12 @@ const getTranslationsForHearingPreferences = function (userCase: CaseWithId, tra
     hearingPreferences.push(translations.notProvided);
   }
   return hearingPreferences;
+};
+
+const ydyYesOrNoOrNotApplicableMap = (translations: AnyRecord): { [key: string]: string } => {
+  return {
+    [YesOrNoOrNotApplicable.YES]: translations.ydyYesOrNo.yes,
+    [YesOrNoOrNotApplicable.NO]: translations.ydyYesOrNo.no,
+    [YesOrNoOrNotApplicable.NOT_APPLICABLE]: translations[YesOrNoOrNotApplicable.NOT_APPLICABLE],
+  };
 };
