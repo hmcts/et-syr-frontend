@@ -23,6 +23,7 @@ import DocumentUtils from '../../utils/DocumentUtils';
 import NumberUtils from '../../utils/NumberUtils';
 import RespondentUtils from '../../utils/RespondentUtils';
 import { answersAddressFormatter } from '../AddressHelper';
+import { oesYesOrNoMap, ydwYesOrNoMap, ydyYesOrNoMap, ydyYesOrNoOrNotApplicableMap } from '../TranslationMapHelper';
 
 export const getEt3Section1 = (
   request: AppRequest,
@@ -222,10 +223,7 @@ export const getEt3Section2 = (
     ),
     addSummaryRowWithAction(
       translations.section2.multipleSites,
-      {
-        [YesOrNo.YES]: translations.oesYesOrNo.yes,
-        [YesOrNo.NO]: translations.oesYesOrNo.no,
-      }[userCase.et3ResponseMultipleSites] ?? DefaultValues.STRING_DASH,
+      oesYesOrNoMap(translations)[userCase.et3ResponseMultipleSites] ?? DefaultValues.STRING_DASH,
       PageUrls.RESPONDENT_SITES,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -253,10 +251,7 @@ export const getEt3Section3 = (
   et3ResponseSection3.push(
     addSummaryRowWithAction(
       translations.section3.et3ResponseAcasAgree,
-      {
-        [YesOrNo.YES]: translations.ydwYesOrNo.yes,
-        [YesOrNo.NO]: translations.ydwYesOrNo.no,
-      }[userCase.et3ResponseAcasAgree] ?? DefaultValues.STRING_DASH,
+      ydwYesOrNoMap(translations)[userCase.et3ResponseAcasAgree] ?? DefaultValues.STRING_DASH,
       PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -376,7 +371,8 @@ export const getEt3Section4 = (
   et3ResponseSection4.push(
     addSummaryRowWithAction(
       translations.section4.payDetailsCorrect,
-      translations[userCase.et3ResponseEarningDetailsCorrect] ?? DefaultValues.STRING_DASH,
+      ydyYesOrNoOrNotApplicableMap(translations)[userCase.et3ResponseEarningDetailsCorrect] ??
+        DefaultValues.STRING_DASH,
       PageUrls.CLAIMANT_PAY_DETAILS,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -471,7 +467,7 @@ export const getEt3Section5 = (
   et3ResponseSection5.push(
     addSummaryRowWithAction(
       translations.section5.contestClaim1 + userCase.respondentName + translations.section5.contestClaim2,
-      translations[userCase.et3ResponseRespondentContestClaim],
+      ydyYesOrNoMap(translations)[userCase.et3ResponseRespondentContestClaim],
       PageUrls.RESPONDENT_CONTEST_CLAIM,
       hideChangeLink ? undefined : translations.change,
       hideChangeLink ? undefined : sectionCya
@@ -581,12 +577,4 @@ const getTranslationsForHearingPreferences = function (userCase: CaseWithId, tra
     hearingPreferences.push(translations.notProvided);
   }
   return hearingPreferences;
-};
-
-const ydyYesOrNoOrNotApplicableMap = (translations: AnyRecord): { [key: string]: string } => {
-  return {
-    [YesOrNoOrNotApplicable.YES]: translations.ydyYesOrNo.yes,
-    [YesOrNoOrNotApplicable.NO]: translations.ydyYesOrNo.no,
-    [YesOrNoOrNotApplicable.NOT_APPLICABLE]: translations[YesOrNoOrNotApplicable.NOT_APPLICABLE],
-  };
 };
