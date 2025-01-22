@@ -23,7 +23,7 @@ export const getReceiveBenefits = (req: AppRequest): string => {
   const userCase = req.session.userCase;
   const translations = getTranslations(req);
   if (userCase?.employeeBenefits === 'Yes') {
-    return translations.yes + ' - ' + userCase.benefitsCharCount;
+    return userCase.benefitsCharCount ? translations.yes + ' - ' + userCase.benefitsCharCount : translations.yes;
   } else if (userCase?.employeeBenefits === 'No') {
     return translations.no;
   } else {
