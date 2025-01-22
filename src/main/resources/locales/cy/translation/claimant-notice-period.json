@@ -2,13 +2,17 @@
   "title": "Cyfnod rhybudd yr hawlydd (dewisol)",
   "p1": "Gall helpu’r tribiwnlys os gallwch ddarparu’r manylion hyn. Ni chewch eich cosbi am beidio â’u darparu.",
   "tableHeader": "Manylion y cyfnod rhybudd a ddarparwyd ar ET1",
+  "months1": "Is",
+  "months2": "Fis",
+  "months3": "Mis",
+  "weeks": "Wythnos",
   "writtenContractLabel": "A oes cyfnod rhybudd ar y contract ysgrifenedig?",
   "noticePeriodLabel": "Cyfnod rhybudd",
   "et3ResponseIsNoticeCorrect": {
-    "label": "A yw manylion cyfnod rhybudd yr hawlydd yn gywir?"
+    "label": "A yw manylion cyfnod rhybudd yr hawlydd yn gywir?",
+    "yes": "Ydy",
+    "no": "Nac ydy"
   },
-  "yes": "Ydy",
-  "no": "Nac ydy",
   "et3ResponseCorrectNoticeDetails": {
     "label": "Beth yw manylion rhybudd cywir yr hawlydd? (dewisol)",
     "hint": "Er enghraifft, efallai yr hoffech egluro bod yr hawlydd wedi ei ddiswyddo heb rybudd neu ei fod wedi cael swm o arian yn hytrach na chael rhybudd."
