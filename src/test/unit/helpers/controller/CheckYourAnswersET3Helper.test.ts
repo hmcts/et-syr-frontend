@@ -232,12 +232,14 @@ describe('CheckYourAnswersET3Helper', () => {
       );
     }
 
+    const request: AppRequest = mockRequest({});
+    request.session.userCase = userCase;
     userCase.et3ResponseAcasAgree = YesOrNo.NO;
     userCase.et3ResponseAreDatesCorrect = YesOrNoOrNotApplicable.NO;
     userCase.et3ResponseIsJobTitleCorrect = YesOrNoOrNotApplicable.NO;
     userCase.et3ResponseClaimantWeeklyHours = YesOrNoOrNotApplicable.NO;
 
-    const result = getEt3Section3(userCase, translationsMock);
+    const result = getEt3Section3(request, translationsMock);
 
     expect(result).toEqual(expectedRows);
   });
@@ -339,7 +341,7 @@ describe('CheckYourAnswersET3Helper', () => {
     request.session.userCase = userCase;
     const result = getEt3Section1(request, translationsMock, undefined, true);
     const result2 = getEt3Section2(userCase, translationsMock, undefined, true);
-    const result3 = getEt3Section3(userCase, translationsMock, undefined, true);
+    const result3 = getEt3Section3(request, translationsMock, undefined, true);
     const result4 = getEt3Section4(userCase, translationsMock, undefined, true);
     const result5 = getEt3Section5(userCase, translationsMock, undefined, true);
     const result6 = getEt3Section6(userCase, translationsMock, undefined, true);

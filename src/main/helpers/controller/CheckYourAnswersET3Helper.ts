@@ -18,7 +18,6 @@ import {
 } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import AddressUtils from '../../utils/AddressUtils';
-import DateUtils from '../../utils/DateUtils';
 import DocumentUtils from '../../utils/DocumentUtils';
 import NumberUtils from '../../utils/NumberUtils';
 import RespondentUtils from '../../utils/RespondentUtils';
@@ -28,7 +27,9 @@ import {
   ydyYesOrNoMap,
   ydyYesOrNoOrNotApplicableMap,
 } from '../../utils/TranslationUtils';
+import { convertCaseDateToDate } from '../../validators/dateValidators';
 import { answersAddressFormatter } from '../AddressHelper';
+import { dateInLocale } from '../dateInLocale';
 
 export const getEt3Section1 = (
   request: AppRequest,
@@ -246,12 +247,13 @@ export const getEt3Section2 = (
 };
 
 export const getEt3Section3 = (
-  userCase: CaseWithId,
+  request: AppRequest,
   translations: AnyRecord,
   sectionCya?: string,
   hideChangeLink?: boolean
 ): SummaryListRow[] => {
   const et3ResponseSection3: SummaryListRow[] = [];
+  const userCase = request.session.userCase;
 
   et3ResponseSection3.push(
     addSummaryRowWithAction(
@@ -289,14 +291,18 @@ export const getEt3Section3 = (
     et3ResponseSection3.push(
       addSummaryRowWithAction(
         translations.section3.et3ResponseEmploymentStartDate,
-        DateUtils.convertCaseDateToString(userCase.et3ResponseEmploymentStartDate) ?? DefaultValues.STRING_DASH,
+        userCase.et3ResponseEmploymentStartDate
+          ? dateInLocale(convertCaseDateToDate(userCase.et3ResponseEmploymentStartDate), request.url)
+          : DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
         hideChangeLink ? undefined : translations.change,
         hideChangeLink ? undefined : sectionCya
       ),
       addSummaryRowWithAction(
         translations.section3.et3ResponseEmploymentEndDate,
-        DateUtils.convertCaseDateToString(userCase.et3ResponseEmploymentEndDate) ?? DefaultValues.STRING_DASH,
+        userCase.et3ResponseEmploymentEndDate
+          ? dateInLocale(convertCaseDateToDate(userCase.et3ResponseEmploymentEndDate), request.url)
+          : DefaultValues.STRING_DASH,
         PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER,
         hideChangeLink ? undefined : translations.change,
         hideChangeLink ? undefined : sectionCya
