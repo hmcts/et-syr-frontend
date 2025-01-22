@@ -26,7 +26,7 @@ export const getReceiveBenefits = (req: AppRequest): string => {
   if (userCase?.employeeBenefits === YesOrNo.YES) {
     return userCase.benefitsCharCount
       ? translations.ydwYesOrNo.yes + ' - ' + userCase.benefitsCharCount
-      : translations.yes;
+      : translations.ydwYesOrNo.yes;
   } else if (userCase?.employeeBenefits === YesOrNo.NO) {
     return translations.ydwYesOrNo.no;
   } else {
