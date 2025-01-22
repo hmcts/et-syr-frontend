@@ -22,8 +22,13 @@ import DateUtils from '../../utils/DateUtils';
 import DocumentUtils from '../../utils/DocumentUtils';
 import NumberUtils from '../../utils/NumberUtils';
 import RespondentUtils from '../../utils/RespondentUtils';
+import {
+  oesYesOrNoMap,
+  ydwYesOrNoMap,
+  ydyYesOrNoMap,
+  ydyYesOrNoOrNotApplicableMap,
+} from '../../utils/TranslationUtils';
 import { answersAddressFormatter } from '../AddressHelper';
-import { oesYesOrNoMap, ydwYesOrNoMap, ydyYesOrNoMap, ydyYesOrNoOrNotApplicableMap } from '../TranslationMapHelper';
 
 export const getEt3Section1 = (
   request: AppRequest,
