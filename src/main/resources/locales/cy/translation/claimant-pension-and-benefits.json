@@ -5,10 +5,10 @@
   "anyContributionsLabel": "A wnaeth yr atebydd unrhyw gyfraniadau i gynllun pensiwn?",
   "receiveBenefitsLabel": "Ydych yn cael unrhyw fuddion ar gyfer cyflogeion?",
   "et3ResponseIsPensionCorrect": {
-    "label": "A yw manylion pensiwn a buddion yr hawlydd yn gywir?"
+    "label": "A yw manylion pensiwn a buddion yr hawlydd yn gywir?",
+    "yes": "Ydy",
+    "no": "Nac ydy"
   },
-  "yes": "Ydy",
-  "no": "Nac ydy",
   "et3ResponsePensionCorrectDetails": {
     "label": "Beth yw manylion pensiwn a budd-daliadau cywir yr hawlydd? (dewisol)"
   },

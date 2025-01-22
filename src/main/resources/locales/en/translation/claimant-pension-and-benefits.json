@@ -5,10 +5,10 @@
   "anyContributionsLabel": "Did the respondent make any contributions to pension?",
   "receiveBenefitsLabel": "Receive any employee benefits?",
   "et3ResponseIsPensionCorrect": {
-    "label": "Are the claimant’s pension and benefits details correct?"
+    "label": "Are the claimant’s pension and benefits details correct?",
+    "yes": "Yes",
+    "no": "No"
   },
-  "yes": "Yes",
-  "no": "No",
   "et3ResponsePensionCorrectDetails": {
     "label": "What are the claimant’s correct pension and benefits details? (optional)"
   },

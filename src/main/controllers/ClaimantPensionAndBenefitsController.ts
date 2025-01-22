@@ -26,11 +26,11 @@ export default class ClaimantPensionAndBenefitsController {
         label: (l: AnyRecord): string => l.et3ResponseIsPensionCorrect.label,
         values: [
           {
-            label: (l: AnyRecord): string => l.yes,
+            label: (l: AnyRecord): string => l.et3ResponseIsPensionCorrect.yes,
             value: YesOrNoOrNotApplicable.YES,
           },
           {
-            label: (l: AnyRecord): string => l.no,
+            label: (l: AnyRecord): string => l.et3ResponseIsPensionCorrect.no,
             value: YesOrNoOrNotApplicable.NO,
             subFields: {
               et3ResponsePensionCorrectDetails: {
