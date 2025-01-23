@@ -1,22 +1,22 @@
 {
-  "title": "[W]Respondent contest claim",
-  "h1": "[W]Does ",
-  "h1Extra": "[W] contest the claim?",
-  "yes1": "[W]Yes - ",
-  "yes2": "[W]  contests all or part of the claim",
-  "no1": "[W]No - ",
-  "no2": "[W] does not contest any of the claim",
+  "title": "Mae’r atebydd yn herio’r hawliad",
+  "h1": "A yw ",
+  "h1Extra": " yn herio’r hawliad?",
+  "yes1": "Ydy, mae ",
+  "yes2": " yn herio’r hawliad i gyd neu ran ohono",
+  "no1": "Nac ydy, nid yw ",
+  "no2": " yn herio unrhyw ran o’r hawliad",
   "errors": {
     "et3ResponseRespondentContestClaim": {
-      "required": "[W]Make a selection"
+      "required": "Dewiswch"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

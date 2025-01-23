@@ -1,26 +1,28 @@
 {
-  "title": "[W]Respondent name",
-  "h1": "[W]Respondent name",
-  "insetTxt1": "[W]If you consider another person or company may be liable, you should still submit a response.",
-  "insetTxt2": "[W]You will have a chance in this form to explain why you think someone else may be liable.",
-  "label1": "[W]Is ",
-  "label2": "[W] the respondent’s correct name?",
-  "respondentNameTextLabel": "[W]Enter correct name",
+  "title": "Enw’r atebydd",
+  "h1": "Enw’r atebydd",
+  "insetTxt1": "Os ydych chi’n ystyried y gallai unigolyn neu gwmni arall fod yn atebol, dylech ddal i gyflwyno ymateb.",
+  "insetTxt2": "Bydd gennych gyfle ar y ffurflen hon i esbonio pam rydych chi'n meddwl y gallai rhywun arall fod yn atebol.",
+  "label1": "Ai ",
+  "label2": " yw enw cywir yr atebydd?",
+  "yes": "Ie",
+  "no": "Na",
+  "respondentNameTextLabel": "Rhowch enw cywir",
   "errors": {
     "responseRespondentNameQuestion": {
-      "required": "[W]Select whether this is the correct name"
+      "required": "Dewiswch os mai hwn yw'r enw cywir"
     },
     "responseRespondentName": {
-      "required": "[W]Enter correct name",
-      "tooLong": "[W]The 'Respondent Name' must be less than 60 characters"
+      "required": "Rhowch enw cywir",
+      "tooLong": "Rhaid i ‘Enw'r Atebydd’ fod yn llai na 60 o nodau"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

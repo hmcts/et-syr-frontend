@@ -10,6 +10,7 @@ import { saveForLaterButton, saveAndContinueButton } from '../definitions/radios
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { isClearSelection } from '../helpers/RouterHelpers';
+import { getNoticePeriod, getWrittenContract } from '../helpers/controller/ClaimantNoticePeriodHelper';
 import ET3Util from '../utils/ET3Util';
 import { isContentCharsOrLess } from '../validators/validator';
 
@@ -22,11 +23,11 @@ export default class ClaimantNoticePeriodController {
         label: (l: AnyRecord): string => l.et3ResponseIsNoticeCorrect.label,
         values: [
           {
-            label: (l: AnyRecord): string => l.yes,
+            label: (l: AnyRecord): string => l.et3ResponseIsNoticeCorrect.yes,
             value: YesOrNoOrNotApplicable.YES,
           },
           {
-            label: (l: AnyRecord): string => l.no,
+            label: (l: AnyRecord): string => l.et3ResponseIsNoticeCorrect.no,
             value: YesOrNoOrNotApplicable.NO,
             subFields: {
               et3ResponseCorrectNoticeDetails: {
@@ -88,6 +89,8 @@ export default class ClaimantNoticePeriodController {
     res.render(TranslationKeys.CLAIMANT_NOTICE_PERIOD, {
       ...content,
       hideContactUs: true,
+      writtenContract: getWrittenContract(req),
+      noticePeriod: getNoticePeriod(req),
     });
   };
 }

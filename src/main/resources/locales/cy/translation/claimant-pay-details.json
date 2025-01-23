@@ -1,16 +1,18 @@
 {
-  "title": "[W]Claimant pay details",
-  "subtitle": "[W]Pay details provided on ET1",
-  "periodPayLabel": "[W]Weekly, monthly or annual pay?",
-  "payBeforeTaxLabel": "[W]Pay BEFORE tax and National Insurance",
-  "payAfterTaxLabel": "[W]Pay AFTER tax and National Insurance",
+  "title": "Manylion cyflog yr hawlydd (dewisol)",
+  "subtitle": "Manylion cyflog ar ddarparwyd ar ET1",
+  "periodPayLabel": "Cyflog wythnosol, misol neu flynyddol?",
+  "payBeforeTaxLabel": "Tâl CYN treth ac Yswiriant Gwladol",
+  "payAfterTaxLabel": "Tâl AR ÔL treth ac Yswiriant Gwladol",
   "et3ResponseEarningDetailsCorrect": {
-    "label": "[W]Are the pay details given by the claimant correct?",
+    "label": "A yw manylion y cyflog a roddwyd gan yr hawlydd yn gywir?",
     "no": {
-      "hint": "[W]You will be able to enter correct pay details at the next step."
+      "hint": "Byddwch yn gallu rhoi manylion cyflog cywir yn y cam nesaf."
     },
     "notApplicable": {
-      "hint": "[W]If you select 'Not applicable', you will not be able to enter pay details."
+      "hint": "Os byddwch yn dewis ‘Amherthnasol’, ni fyddwch yn gallu nodi manylion cyflog."
     }
-  }
+  },
+  "yes": "Ydy",
+  "no": "Nac ydy"
 }

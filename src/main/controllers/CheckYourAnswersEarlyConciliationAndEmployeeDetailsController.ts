@@ -34,7 +34,6 @@ export default class CheckYourAnswersEarlyConciliationAndEmployeeDetailsControll
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const redirectUrl = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_EARLY_CONCILIATION_AND_EMPLOYEE_DETAILS);
-    const userCase = req.session.userCase;
 
     const sectionTranslations: AnyRecord = {
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
@@ -54,7 +53,7 @@ export default class CheckYourAnswersEarlyConciliationAndEmployeeDetailsControll
       sessionErrors: req.session.errors,
       form: this.formContent,
       et3ResponseSection3: getEt3Section3(
-        userCase,
+        req,
         sectionTranslations,
         InterceptPaths.CONCILIATION_AND_EMPLOYEE_DETAILS_CHANGE
       ),

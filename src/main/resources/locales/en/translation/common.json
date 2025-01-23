@@ -171,5 +171,17 @@
     "video": "Video",
     "phone": "Phone"
   },
-  "hiddenErrorFieldLabel": "Hidden Error Field"
+  "hiddenErrorFieldLabel": "Hidden Error Field",
+  "oesYesOrNo": {
+    "yes": "Yes",
+    "no": "No"
+  },
+  "ydwYesOrNo": {
+    "yes": "Yes",
+    "no": "No"
+  },
+  "ydyYesOrNo": {
+    "yes": "Yes",
+    "no": "No"
+  }
 }

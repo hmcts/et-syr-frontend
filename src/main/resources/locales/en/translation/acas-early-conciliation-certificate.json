@@ -5,6 +5,8 @@
   "et3ResponseAcasAgree": {
     "label": "Do you agree with the details given by the claimant about early conciliation with Acas?"
   },
+  "yes": "Yes",
+  "no": "No",
   "et3ResponseAcasAgreeReason": {
     "label": "Why do you disagree with the Acas conciliation details given? (optional)"
   },
