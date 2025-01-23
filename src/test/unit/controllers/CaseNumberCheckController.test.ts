@@ -106,5 +106,18 @@ describe('Case number check controller', () => {
       expect(request.session.errors).toHaveLength(1);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CASE_NUMBER_CHECK);
     });
+    it('should forward to self assignment form when req session isSelfAssignment value is true', async () => {
+      const request = mockRequest({ t });
+      const response = mockResponse();
+      request.body = mockValidCaseWithId;
+      request.body.ethosCaseReference = '6010106/2024';
+      request.session.isSelfAssignment = true;
+      getCaseApiMock.mockReturnValue(api);
+      api.checkEthosCaseReference = jest
+        .fn()
+        .mockResolvedValueOnce(MockAxiosResponses.mockAxiosResponseWithBooleanTrueResponse);
+      await new CaseNumberCheckController().post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_FORM + languages.ENGLISH_URL_PARAMETER);
+    });
   });
 });
