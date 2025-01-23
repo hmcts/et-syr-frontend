@@ -10,5 +10,7 @@
     "notApplicable": {
       "hint": "If you select 'Not applicable', you will not be able to enter employment dates."
     }
-  }
+  },
+  "yes": "Yes",
+  "no": "No"
 }

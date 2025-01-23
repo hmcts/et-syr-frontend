@@ -7,7 +7,7 @@
   "cancel": "Canslo",
   "saveForLater": "Cadw fel drafft",
   "saveAndContinue": "Cadw a pharhau",
-  "submit": "Cadw a pharhau",
+  "submit": "Cyflwyno",
   "required": "Nid ydych wedi ateb y cwestiwn. Mae angen ichi ddewis ateb cyn parhau.",
   "notAnswered": "Nid ydych wedi ateb y cwestiwn.",
   "errorSaving": "Mae’n ddrwg gennym, rydym yn cael problemau technegol wrth geisio prosesu eich hawliad. Rhowch gynnig arall arni ymhen ychydig o funudau.",
@@ -37,7 +37,7 @@
   "no": "Naddo",
   "Yes": "Do",
   "No": "Naddo",
-  "Not applicable": "[W]Not applicable",
+  "Not applicable": "Amherthnasol",
   "supportingMaterialYesNo": {
     "yes": "Oes",
     "no": "Nac oes"
@@ -51,11 +51,11 @@
   "weekly": "Wythnosol",
   "monthly": "Misol",
   "annual": "Blynyddol",
-  "annually": "[W]Annually",
+  "annually": "Yn flynyddol",
   "Weekly": "Wythnosol",
   "Monthly": "Misol",
   "Annual": "Blynyddol",
-  "Annually": "[W]Annually",
+  "Annually": "Yn flynyddol",
   "selectAllHint": "Dewiswch bob un sy'n berthnasol.",
   "claimTypes": {
     "breachOfContract": "Torri contract",
@@ -96,20 +96,20 @@
   "workAddressPageHeader": "Beth yw cod post y lle yr oeddech yn gweithio neu’r lle yr ydych yn gweithio?",
   "workAddressPageText1": "Rydym angen hwn i benderfynu pa swyddfa Tribiwnlys Cyflogaeth fydd yn delio â’ch hawliad. Os oeddech yn gweithio o adref, rhowch god post eich cartref.",
   "workAddressPageText2": "Os ydych yn gwneud hawliad yn erbyn rhywun nad ydych wedi gweithio iddynt, rhowch god post ble maent wedi’u lleoli.",
-  "email": "[W]Email",
-  "post": "[W]Post",
+  "email": "E-bost",
+  "post": "Post",
   "errors": {
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]No respondent found in user case",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later",
-      "sessionNotFound": "[W]Session not found. Please login again.",
-      "respondentIndexNotFound": "[W]Respondent index not found",
-      "respondentCCDIdParameterNotReceived": "[W]Unable to receive respondent CCD ID parameter",
-      "respondentNotFoundByRespondentIndex": "[W]Unable to receive respondent"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Ni ddaethpwyd o hyd i atebydd yn achos y defnyddiwr",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen.",
+      "sessionNotFound": "Sesiwn heb ei ganfod. Mewngofnodwch eto.",
+      "respondentIndexNotFound": "Ni ddaethpwyd o hyd i fynegai’r atebydd",
+      "respondentCCDIdParameterNotReceived": "Methu derbyn paramedr ID CCD yr atebydd",
+      "respondentNotFoundByRespondentIndex": "Methu derbyn yr atebydd"
     },
     "addressEnterPostcode": {
       "required": "Rhowch god post. Er enghraifft, SW1 1AA",
@@ -157,22 +157,34 @@
   "Case management order": "Gorchymyn rheoli achos",
   "Request": "Cais",
   "sectionTitle": {
-    "s1": "[W]Section 1. Tell us about the respondent",
-    "s2": "[W]Section 2. Tell us about the claimant",
-    "s3": "[W]Section 3. Give us your response"
+    "s1": "Adran 1. Dywedwch wrthym am yr atebydd",
+    "s2": "Adran 2. Dywedwch wrthym am yr hawlydd",
+    "s3": "Adran 3. Rhowch eich ymateb i ni"
   },
   "cya": {
-    "title": "[W]Check your answers",
-    "label": "[W]Have you completed this section?",
-    "hint": "[W]You can change your answers later.",
-    "yes": "[W]Yes, I’ve completed this section",
-    "no": "[W]No, I’ll come back later"
+    "title": "Gwiriwch eich atebion",
+    "label": "Ydych chi wedi cwblhau’r adran hon?",
+    "hint": "Gallwch newid eich atebion yn hwyrach ymlaen.",
+    "yes": "Do, rwyf wedi cwblhau’r adran hon",
+    "no": "Naddo, rwyf am ddychwelyd hwyrach ymlaen"
   },
-  "notProvided": "[W]Not provided",
-  "notApplicable": "[W]Not applicable",
+  "notProvided": "Dim byd wedi ei ddarparu",
+  "notApplicable": "Amherthnasol",
   "hearings": {
-    "video": "[W]Video",
-    "phone": "[W]Phone"
+    "video": "Fideo",
+    "phone": "Ffôn"
   },
-  "hiddenErrorFieldLabel": "[W]Hidden Error Field"
+  "hiddenErrorFieldLabel": "Maes Gwall Cudd",
+  "oesYesOrNo": {
+    "yes": "Oes",
+    "no": "Nac oes"
+  },
+  "ydwYesOrNo": {
+    "yes": "Ydw",
+    "no": "Nac ydw"
+  },
+  "ydyYesOrNo": {
+    "yes": "Ydy",
+    "no": "Nac ydy"
+  }
 }

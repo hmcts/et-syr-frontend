@@ -1,32 +1,32 @@
 {
-  "title": "[W]Claimant pay details",
-  "p1": "[W]It may help the tribunal if you can provide these details. You will not be penalised for not providing them.",
+  "title": "Manylion cyflog yr hawlydd",
+  "p1": "Gall helpu'r tribiwnlys os gallwch ddarparu'r manylion hyn. Ni chewch eich cosbi am beidio â’u darparu.",
   "et3ResponsePayFrequency": {
-    "label": "[W]How often was the claimant paid?",
-    "hintLabel": "[W]Use the same time period (weekly, monthly or annual) that the claimant used on the ET1 form."
+    "label": "Pa mor aml oedd yr hawlydd yn cael ei dalu?",
+    "hintLabel": "Defnyddiwch yr un cyfnod amser (wythnosol, misol neu flynyddol) a ddefnyddiodd yr hawlydd ar ffurflen ET1."
   },
   "et3ResponsePayBeforeTax": {
-    "label": "[W]Enter the claimant’s pay BEFORE tax (optional)",
-    "hintLabel": "[W]Include overtime, commission and bonuses."
+    "label": "Rhowch gyflog yr hawlydd CYN treth (dewisol)",
+    "hintLabel": "Dylech gynnwys goramser, comisiwn a bonysau."
   },
   "et3ResponsePayTakehome": {
-    "label": "[W]Enter the claimant’s normal take-home pay (optional)",
-    "hintLabel": "[W]Take-home pay is the pay after tax and insurance deductions.<br><br>Include overtime, commission and bonuses."
+    "label": "Nodwch gyflog terfynol arferol yr hawlydd (dewisol)",
+    "hintLabel": "Cyflog terfynol arferol yw’r cyflog ar ôl didyniadau treth ac yswiriant. <br><br>Mae’n cynnwys goramser, comisiwn a bonysau."
   },
   "errors": {
     "et3ResponsePayBeforeTax": {
-      "invalidCurrency": "[W]Pay before tax must be entered as a number and a minimum of double figures. For example 10"
+      "invalidCurrency": "Rhaid i dâl cyn treth fod yn rhif ac yn ffigyrau dwbl o leiaf. Er enghraifft 10"
     },
     "et3ResponsePayTakehome": {
-      "invalidCurrency": "[W]Pay after tax must be entered as a number and a minimum of double figures. For example 10"
+      "invalidCurrency": "Rhaid i dâl ar ôl treth fod yn rhif ac yn ffigyrau dwbl o leiaf. Er enghraifft 10"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

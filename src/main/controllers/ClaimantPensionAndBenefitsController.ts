@@ -6,10 +6,11 @@ import { CaseWithId, YesOrNoOrNotApplicable } from '../definitions/case';
 import { ControllerNames, FieldsToReset, LoggerConstants, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
-import { saveForLaterButton, submitButton } from '../definitions/radios';
+import { saveForLaterButton, saveAndContinueButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { isClearSelection } from '../helpers/RouterHelpers';
+import { getAnyContributions, getReceiveBenefits } from '../helpers/controller/ClaimantPensionAndBenefitsHelper';
 import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
 import { isContentCharsOrLess } from '../validators/validator';
@@ -25,11 +26,11 @@ export default class ClaimantPensionAndBenefitsController {
         label: (l: AnyRecord): string => l.et3ResponseIsPensionCorrect.label,
         values: [
           {
-            label: (l: AnyRecord): string => l.yes,
+            label: (l: AnyRecord): string => l.et3ResponseIsPensionCorrect.yes,
             value: YesOrNoOrNotApplicable.YES,
           },
           {
-            label: (l: AnyRecord): string => l.no,
+            label: (l: AnyRecord): string => l.et3ResponseIsPensionCorrect.no,
             value: YesOrNoOrNotApplicable.NO,
             subFields: {
               et3ResponsePensionCorrectDetails: {
@@ -52,7 +53,7 @@ export default class ClaimantPensionAndBenefitsController {
         targetUrl: PageUrls.CLAIMANT_PENSION_AND_BENEFITS,
       },
     },
-    submit: submitButton,
+    submit: saveAndContinueButton,
     saveForLater: saveForLaterButton,
   } as never;
 
@@ -99,6 +100,8 @@ export default class ClaimantPensionAndBenefitsController {
       ...content,
       hideContactUs: true,
       userCase: req.session.userCase,
+      anyContributions: getAnyContributions(req),
+      receiveBenefits: getReceiveBenefits(req),
     });
   };
 }

@@ -1,29 +1,29 @@
 {
-  "title": "[W]Respondent address",
-  "h1": "[W]Respondent address",
-  "addressLine1": "[W]Address line 1",
-  "addressLine2": "[W]Address line 2 (optional)",
-  "townOrCity": "[W]Town or city",
-  "country": "[W]Country",
-  "postcodeOrAreaCode": "[W]Postcode or area code (optional)",
+  "title": "Cyfeiriad yr atebydd",
+  "h1": "Cyfeiriad yr atebydd",
+  "addressLine1": "Llinell 1 y cyfeiriad",
+  "addressLine2": "Llinell 2 y cyfeiriad (dewisol)",
+  "townOrCity": "Tref neu ddinas",
+  "country": "Gwlad",
+  "postcodeOrAreaCode": "Cod post neu god ardal (dewisol)",
   "errors": {
     "responseRespondentAddressLine1": {
-      "required": "[W]Enter address",
-      "tooLong": "[W]Address line 1 must be 100 characters or less"
+      "required": "Nodwch eich cyfeiriad",
+      "tooLong": "Rhaid i linell 1 y cyfeiriad fod yn 100 o nodau neu’n llai"
     },
     "responseRespondentAddressPostTown": {
-      "required": "[W]Enter town or city"
+      "required": "Nodwch tref neu ddinas"
     },
     "responseRespondentAddressCountry": {
-      "required": "[W]Enter country"
+      "required": "Nodwch y wlad"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

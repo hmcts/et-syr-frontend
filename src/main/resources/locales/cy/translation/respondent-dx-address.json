@@ -1,5 +1,5 @@
 {
-  "title": "[W]Respondent preferred contact name",
-  "h1": "[W]DX address (optional)",
-  "respondentDxAddress": "[W]This is a document exchange address used by solicitors and other legal professionals. For example: DX 123456"
+  "title": "Enw cyswllt a ffefrir gan yr atebydd",
+  "h1": "Cyfeiriad DX (dewisol)",
+  "respondentDxAddress": "Cyfeiriad cyfnewid dogfennau yw hwn a ddefnyddir gan gyfreithwyr a gweithwyr proffesiynol cyfreithiol eraill. Er enghraifft: DX 123456"
 }

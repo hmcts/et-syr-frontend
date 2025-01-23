@@ -1,20 +1,20 @@
 {
-  "title": "[W]Respondent employees",
-  "h1": "[W]Respondent employees",
-  "info": "[W]It can help the tribunal to have an indication of the employer’s size.",
-  "label": "[W]How many people does the respondent employ in Great Britain? (optional)",
-  "hint": "[W]Enter a number or leave blank if you're not sure.",
+  "title": "Gweithwyr cyflogedig yr atebydd",
+  "h1": "Gweithwyr cyflogedig yr atebydd",
+  "info": "Gall helpu'r tribiwnlys i gael syniad o faint y cyflogwr.",
+  "label": "Faint o bobl sy’n gyflogedig gan yr atebydd hwn ym Mhrydain Fawr? (dewisol)",
+  "hint": "Rhowch rif neu gadewch yn wag os nad ydych yn siŵr.",
   "errors": {
     "et3ResponseEmploymentCount": {
-      "notANumber": "[W]Enter a valid number"
+      "notANumber": "Rhowch rif dilys"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

@@ -12,5 +12,7 @@
     "notApplicable": {
       "hint": "If you select 'Not applicable', you will not be able to enter pay details."
     }
-  }
+  },
+  "yes": "Yes",
+  "no": "No"
 }
