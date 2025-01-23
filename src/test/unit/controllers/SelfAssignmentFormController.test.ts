@@ -105,4 +105,21 @@ describe('Self assignment form controller', () => {
       },
     ]);
   });
+  it('should show an error if unable to check case number', async () => {
+    const request = mockRequest({ t });
+    const response = mockResponse();
+    request.body = mockValidCaseWithId;
+    getCaseApiMock.mockReturnValue(api);
+    api.checkIdAndState = jest.fn().mockImplementationOnce(() => {
+      throw 'test error';
+    });
+    await new SelfAssignmentFormController().post(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_FORM);
+    expect(request.session.errors).toStrictEqual([
+      {
+        errorType: ValidationErrors.API,
+        propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
+      },
+    ]);
+  });
 });
