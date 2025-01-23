@@ -128,6 +128,10 @@ export const isClearSelection = (req: AppRequest): boolean => {
   );
 };
 
+export const isSelfAssignment = (req: AppRequest): boolean => {
+  return req.query !== undefined && req.query.redirect === DefaultValues.SELF_ASSIGNMENT;
+};
+
 export const isClearSelectionWithoutRequestUserCaseCheck = (req: AppRequest): boolean => {
   return req.query !== undefined && req.query.redirect === DefaultValues.CLEAR_SELECTION;
 };

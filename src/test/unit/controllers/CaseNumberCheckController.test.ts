@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import CaseNumberCheckController from '../../../main/controllers/CaseNumberCheckController';
-import { LegacyUrls, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
+import { DefaultValues, LegacyUrls, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
 import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
@@ -25,6 +25,19 @@ describe('Case number check controller', () => {
     request.session.userCase = mockValidCaseWithId;
     new CaseNumberCheckController().get(request, response);
     expect(response.render).toHaveBeenCalledWith(TranslationKeys.CASE_NUMBER_CHECK, expect.anything());
+    expect(request.session.isSelfAssignment).toBe(false);
+  });
+  it('should render the Case Number Check  Form and set request session isSelfAssignment parameter to true when req.body has redirect of self assignment', () => {
+    const request = mockRequest({ t });
+    request.query = {
+      redirect: DefaultValues.SELF_ASSIGNMENT,
+    };
+    request.session.caseNumberChecked = false;
+    const response = mockResponse();
+    request.session.userCase = mockValidCaseWithId;
+    new CaseNumberCheckController().get(request, response);
+    expect(response.render).toHaveBeenCalledWith(TranslationKeys.CASE_NUMBER_CHECK, expect.anything());
+    expect(request.session.isSelfAssignment).toBe(true);
   });
   describe('post()', () => {
     it('should forward to legacy url when case reference check is string false', async () => {
