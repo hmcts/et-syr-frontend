@@ -515,6 +515,8 @@ export const DefaultValues = {
   FILE_ID_PARAMETER: 'fileId=',
   CLEAR_SELECTION: 'clearSelection',
   CLEAR_SELECTION_URL_PARAMETER: 'redirect=clearSelection',
+  SELF_ASSIGNMENT: 'selfAssignment',
+  SELF_ASSIGNMENT_URL_PARAMETER: 'redirect=selfAssignment',
   DOCUMENT_CHARS_TO_REPLACE: ['@', '/', '\\', "'", ':', '(', ')', '#'],
 } as const;
 

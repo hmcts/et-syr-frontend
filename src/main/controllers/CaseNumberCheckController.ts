@@ -9,7 +9,7 @@ import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
+import { getLanguageParam, isSelfAssignment, returnValidUrl } from '../helpers/RouterHelpers';
 import { getCaseApi } from '../services/CaseService';
 import ErrorUtils from '../utils/ErrorUtils';
 import { isValidEthosCaseReference } from '../validators/validator';
@@ -56,6 +56,10 @@ export default class CaseNumberCheckController {
         req.session.user?.accessToken
       ).checkEthosCaseReference(formData.ethosCaseReference);
       if ((isReformCase?.data && isReformCase.data !== 'false') || isReformCase?.data === 'true') {
+        if (req?.session?.isSelfAssignment) {
+          req.session.isSelfAssignment = false;
+          return res.redirect(PageUrls.SELF_ASSIGNMENT_FORM + languageParam);
+        }
         req.session.caseNumberChecked = true;
         return res.redirect(PageUrls.CHECKLIST + languageParam);
       } else {
@@ -75,6 +79,7 @@ export default class CaseNumberCheckController {
   public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.CASE_NUMBER_CHECK);
     const caseReferenceIdContentForm = this.ethosCaseReferenceContent;
+    req.session.isSelfAssignment = isSelfAssignment(req);
     assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.CASE_NUMBER_CHECK, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
