@@ -1,4 +1,6 @@
 {
-  "title": "[W]Is the claimant’s employment with the respondent continuing?",
-  "hint": "[W]It may help the tribunal if you can provide these details. You will not be penalised for not providing them."
+  "title": "A yw cyflogaeth yr hawlydd gyda'r atebydd yn parhau? (dewisol)",
+  "hint": "Gall helpu'r tribiwnlys os gallwch ddarparu'r manylion hyn. Ni chewch eich cosbi am beidio â’u darparu.",
+  "yes": "Ydy",
+  "no": "Nac ydy"
 }

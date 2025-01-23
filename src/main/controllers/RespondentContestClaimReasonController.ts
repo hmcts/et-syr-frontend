@@ -76,7 +76,7 @@ export default class RespondentContestClaimReasonController {
         hint: l => l.acceptedFormats.p1,
       },
       submit: {
-        label: (l: AnyRecord): string => l.submit,
+        label: (l: AnyRecord): string => l.saveAndContinue,
         id: 'submit',
         type: 'button',
         name: 'submit',

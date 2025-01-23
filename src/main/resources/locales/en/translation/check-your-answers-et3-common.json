@@ -4,6 +4,11 @@
     "header": "Contact details",
     "respondentName": "Respondent name",
     "organisationType": "What type of organisation is the respondent?",
+    "individual": "Individual",
+    "limitedCompany": "Limited Company",
+    "partnership": "Partnership",
+    "unincorporatedAssociation": "Unincorporated association (such as a sports club)",
+    "other": "Other",
     "preferredTitleOptional": "Preferred title (optional)",
     "companyRegistrationNumberOptional": "Company registration number (optional)",
     "address": "Address",
@@ -19,6 +24,7 @@
     "participateInHearings": "Would you be able to take part in hearings by video and phone? (optional)",
     "explainReason": "Explain why you are unable to take part in video or phone hearings",
     "disabilitySupport": "Do you have a physical, mental or learning disability or health condition that means you need support during your case? (optional)",
+    "disabilitySupportNotSure": "I'm not sure yet",
     "supportRequest": "Tell us what support you need to request",
     "employeesInGreatBritain": "How many people does the respondent employ in Great Britain? (optional)",
     "multipleSites": "Does the respondent have more than one site in Great Britain? (optional)",
@@ -46,7 +52,7 @@
     "claimantsPayAfterTax": "Claimant’s pay AFTER tax (optional)",
     "noticePeriodDetailsCorrect": "Are the claimant’s notice period details correct?",
     "noticePeriodDetails": "What are the claimant’s correct notice details? (optional)",
-    "pensionAndBenefitsDetailsCorrect": "Are the claimants pension and benefits details correct?",
+    "pensionAndBenefitsDetailsCorrect": "Are the claimant’s pension and benefits details correct?",
     "correctPensionAndBenefitsDetails": "What are the claimant’s correct pension and benefits details? (optional)"
   },
   "section5": {

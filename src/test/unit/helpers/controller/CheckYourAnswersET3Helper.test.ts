@@ -1,3 +1,4 @@
+import { AppRequest } from '../../../../main/definitions/appRequest';
 import {
   CaseWithId,
   HearingPreferenceET3,
@@ -21,8 +22,9 @@ import {
   getEt3Section5,
   getEt3Section6,
 } from '../../../../main/helpers/controller/CheckYourAnswersET3Helper';
-import {mockRequest} from "../../mocks/mockRequest";
-import {AppRequest} from "../../../../main/definitions/appRequest";
+import checkYourAnswerET3CommonJson from '../../../../main/resources/locales/en/translation/check-your-answers-et3-common.json';
+import commonJson from '../../../../main/resources/locales/en/translation/common.json';
+import { mockRequest } from '../../mocks/mockRequest';
 
 describe('CheckYourAnswersET3Helper', () => {
   const userCase: CaseWithId = {
@@ -36,68 +38,8 @@ describe('CheckYourAnswersET3Helper', () => {
   };
 
   const translationsMock: AnyRecord = {
-    section1: {
-      respondentName: 'Respondent Name',
-      organisationType: 'Organisation Type',
-      preferredTitleOptional: 'Preferred Title (Optional)',
-      companyRegistrationNumberOptional: 'Company Registration Number (Optional)',
-      address: 'Address',
-      contactName: 'Contact Name',
-      dxAddressOptional: 'DX Address (Optional)',
-      contactFormat: 'Preferred Contact Format',
-      reasonForPost: 'Reason for Postal Communication',
-      contactLanguage: 'Preferred Language',
-      contactNumberOptional: 'Contact Number (Optional)',
-    },
-    section2: {
-      participateInHearings: 'Would you be able to take part in hearings by video and phone?',
-      disabilitySupport:
-        'Do you have a physical, mental or learning disability or health condition that means you need support during your case?',
-      supportRequest: 'Tell us what support you need to request',
-      employeesInGreatBritain: 'How many people does Redde Ltd employ in Great Britain? (optional)',
-      multipleSites: 'Does the respondent have more than one site in Great Britain?',
-      employeesAtSite: 'How many employed at the site the claimant worked at? (optional)',
-    },
-    section3: {
-      et3ResponseAcasAgree: 'Do you agree with the details given by the claimant about early conciliation with Acas?',
-      et3ResponseAcasAgreeReason: 'Why do you disagree with the Acas conciliation details given? (optional)',
-      et3ResponseAreDatesCorrect: 'Are the dates of employment given by the claimant correct?',
-      et3ResponseEmploymentStartDate: 'Employment start date (optional)',
-      et3ResponseEmploymentEndDate: 'Employment end date (optional)',
-      et3ResponseEmploymentInformation:
-        "Do you want to provide any further information about the claimant's employment dates? (optional)",
-      et3ResponseContinuingEmployment: 'Is the claimant’s employment with the respondent continuing?',
-      et3ResponseIsJobTitleCorrect: 'Is the claimant’s job title correct?',
-      et3ResponseCorrectJobTitle: 'What is or was the claimant’s correct job title? (optional)',
-      et3ResponseClaimantWeeklyHours: 'Are the claimant’s average weekly work hours correct?',
-      et3ResponseClaimantCorrectHours: 'What are the claimant’s correct average weekly work hours? (optional)',
-    },
-    section4: {
-      payDetailsCorrect: 'Are the pay details given by the claimant correct?',
-      paymentFrequency: 'How often was the claimant paid?',
-      claimantsPayBeforeTax: 'Enter the claimant’s pay BEFORE tax (optional)',
-      claimantsPayAfterTax: 'Enter the claimant’s pay AFTER tax (optional)',
-      noticePeriodDetailsCorrect: 'Are the claimant’s notice period details correct?',
-      noticePeriodDetails: 'What are the claimant’s correct notice details? (optional)',
-      pensionAndBenefitsDetailsCorrect: 'Are the claimants pension and benefits details correct?',
-      correctPensionAndBenefitsDetails: 'What are the claimant’s correct pension and benefits details? (optional)',
-    },
-    section5: {
-      contestClaim1: 'Does ',
-      contestClaim2: ' contest the claim?',
-      contestExplanation1: 'Explain why ',
-      contestExplanation2: ' contests the claim',
-      supportingMaterials: 'Supporting material',
-    },
-    section6: {
-      respondentWantToMakeECC: 'Does the respondent wish to make an Employer’s Contract Claim?',
-      employerContractClaimDetails: 'Provide the background and details of your Employer’s Contract Claim',
-      supportingMaterials: 'Supporting material',
-    },
-    change: 'Change',
-    hearings: {
-      phone: 'Phone',
-    },
+    ...checkYourAnswerET3CommonJson,
+    ...commonJson,
   };
 
   const section1Urls = [
@@ -290,12 +232,14 @@ describe('CheckYourAnswersET3Helper', () => {
       );
     }
 
+    const request: AppRequest = mockRequest({});
+    request.session.userCase = userCase;
     userCase.et3ResponseAcasAgree = YesOrNo.NO;
     userCase.et3ResponseAreDatesCorrect = YesOrNoOrNotApplicable.NO;
     userCase.et3ResponseIsJobTitleCorrect = YesOrNoOrNotApplicable.NO;
     userCase.et3ResponseClaimantWeeklyHours = YesOrNoOrNotApplicable.NO;
 
-    const result = getEt3Section3(userCase, translationsMock);
+    const result = getEt3Section3(request, translationsMock);
 
     expect(result).toEqual(expectedRows);
   });
@@ -397,7 +341,7 @@ describe('CheckYourAnswersET3Helper', () => {
     request.session.userCase = userCase;
     const result = getEt3Section1(request, translationsMock, undefined, true);
     const result2 = getEt3Section2(userCase, translationsMock, undefined, true);
-    const result3 = getEt3Section3(userCase, translationsMock, undefined, true);
+    const result3 = getEt3Section3(request, translationsMock, undefined, true);
     const result4 = getEt3Section4(userCase, translationsMock, undefined, true);
     const result5 = getEt3Section5(userCase, translationsMock, undefined, true);
     const result6 = getEt3Section6(userCase, translationsMock, undefined, true);

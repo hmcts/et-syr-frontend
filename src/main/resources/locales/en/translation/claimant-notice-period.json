@@ -2,10 +2,16 @@
   "title": "Claimant notice period (optional)",
   "p1": "It may help the tribunal if you can provide this detail. You will not be penalised for not providing it.",
   "tableHeader": "Notice period details provided in ET1",
+  "months1": "Month",
+  "months2": "Months",
+  "months3": "Months",
+  "weeks": "Weeks",
   "writtenContractLabel": "Written contract with a notice period?",
   "noticePeriodLabel": "Notice period",
   "et3ResponseIsNoticeCorrect": {
-    "label": "Are the claimant’s notice period details correct?"
+    "label": "Are the claimant’s notice period details correct?",
+    "yes": "Yes",
+    "no": "No"
   },
   "et3ResponseCorrectNoticeDetails": {
     "label": "What are the claimant’s correct notice details? (optional)",
