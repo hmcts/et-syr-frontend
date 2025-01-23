@@ -1,62 +1,62 @@
 {
-  "title": "[W]Respondent contest claim",
-  "h1": "[W]Contest the claim",
-  "et1Form": "[W]ET1 claim form (opens in new tab)",
-  "p1": "[W]This is your response to the claimant’s claim. You should refer to the ET1 claim form in your response.",
-  "p2": "[W]Tell us what happened in your own words. You do not need to use formal legal language.  ",
-  "bulletTitle": "[W]Consider in your response:",
-  "bullet1": "[W]setting out the aspects of the claim you agree or disagree with, including if you’re contesting only part of the claim",
-  "bullet2": "[W]making sure that any facts or events are in date order",
-  "bullet3": "[W]whether you think another person or company may be liable and why",
-  "p3": "[W]You can use the text box or upload a file containing the details of your response.",
-  "p4": "[W]Each file should be a maximum of 80MB in size (larger files must be split).",
-  "textAreaLabel1": "[W]Explain why ",
-  "textAreaLabel2": "[W] contests the claim",
-  "remove": "[W]remove",
+  "title": "Mae’r atebydd yn herio’r hawliad",
+  "h1": "Herio’r hawliad",
+  "et1Form": "Ffurflen hawlio ET1 (yn agor mewn tab newydd)",
+  "p1": "Dyma eich ymateb i hawliad yr hawlydd. Dylech gyfeirio at y ffurflen hawlio ET1 yn eich ymateb.",
+  "p2": "Dywedwch wrthym beth ddigwyddodd yn eich geiriau eich hun. Does dim angen i chi ddefnyddio iaith gyfreithiol ffurfiol.  ",
+  "bulletTitle": "Ystyriwch yn eich ymateb:",
+  "bullet1": "agweddau yn yr hawliad yr ydych yn cytuno neu’n anghytuno â nhw, gan gynnwys os ydych chi’n herio dim ond rhan o’r hawliad",
+  "bullet2": "sicrhau bod unrhyw ffeithiau neu ddigwyddiadau yn cael eu trefnu yn ôl dyddiad",
+  "bullet3": "p’un a ydych yn credu y gallai unigolyn neu gwmni arall fod yn atebol a pham",
+  "p3": "Gallwch ddefnyddio'r blwch testun neu uwchlwytho ffeil sy'n cynnwys manylion eich ymateb.",
+  "p4": "Dylai pob ffeil fod yn uchafswm o 80MB o ran maint (rhaid rhannu ffeiliau mwy yn ffeiliau llai).",
+  "textAreaLabel1": "Eglurwch pam fod ",
+  "textAreaLabel2": " yn herio’r hawliad",
+  "remove": "dileu",
   "files": {
-    "title": "[W]Upload a file (Optional)",
-    "uploadButton": "[W]Upload file",
-    "removeButton": "[W]Remove file",
-    "uploaded": "[W]Files uploaded"
+    "title": "Uwchlwytho ffeil (dewisol)",
+    "uploadButton": "Uwchlwytho ffeil",
+    "removeButton": "Dileu ffeil",
+    "uploaded": "Ffeiliau sydd wedi’u huwchlwytho"
   },
   "fileUploadTable": {
-    "hint": "[W]<p class='govuk-hint'>You can upload multiple documents.</p><p class='govuk-hint'>If you want to upload an email, download and convert from your email client first. Most email clients will give the option of downloading as pdf or PostScript.</p>"
+    "hint": "<p class='govuk-hint'>Gallwch uwchlwytho sawl dogfen.</p><p class='govuk-hint'>Os ydych chi eisiau uwchlwytho e-bost, dylech lawrlwytho a throsglwyddo’r e-bost yn gyntaf. Bydd y rhan fwyaf o gleientiaid e-bost yn rhoi'r opsiwn o lawrlwytho fel pdf neu PostScript.</p>"
   },
   "fileUpload": {
-    "linkText": "[W]Or upload your summary as a separate document (optional)",
-    "hint": "[W]<p>Upload a file</p>"
+    "linkText": "Neu uwchlwythwch eich crynodeb fel dogfen ar wahân (dewisol)",
+    "hint": "<p>Uwchlwytho ffeil</p>"
   },
   "acceptedFormats": {
-    "label": "[W]Accepted formats",
-    "p1": "[W]Accepted file formats are pdf, doc, docx, txt, dot, jpg, jpeg, bmp, tif, tiff, png, xls, xlt, xla, xlsx, xltx, ppt, pot, pps, ppa, pptx, potx, ppsx, rtf, csv."
+    "label": "Fformatau derbyniol",
+    "p1": "Mae’r canlynol yn fformatau ffeiliau derbyniol: pdf, doc, docx, txt, dot, jpg, jpeg, bmp, tif, tiff, png, xls, xlt, xla, xlsx, xltx, ppt, pot, pps, ppa, pptx, potx, ppsx, rtf, csv."
   },
   "errors": {
     "et3ResponseContestClaimDetails": {
-      "required": "[W]Give details of why you contest the claim. You can give details by filling the text area or uploading a document.",
-      "tooLong": "[W]Details of the contest must be 3000 characters or less",
-      "textAndFile": "[W]Enter a free text summary or upload as a separate document. You cannot have both"
+      "required": "Rhowch fanylion dros pam eich bod yn herio'r hawliad. Gallwch roi manylion drwy lenwi'r ardal destun neu uwchlwytho dogfen.",
+      "tooLong": "Rhaid i fanylion yr hyn yr ydych yn ei herio fod yn 3000 o nodau neu lai",
+      "textAndFile": "Rhowch grynodeb testun rhydd neu uwchlwytho fel dogfen ar wahân. Ni allwch gael y ddau"
     },
     "contestClaimDocument": {
-      "invalidFileName": "[W]The name of the file provided is invalid. A file name cannot exceed 150 characters or contain any of the following characters: \\/:*?\"|<>",
-      "invalidFileFormat": "[W]The type of file(s) you are trying to upload is not supported by our system. Please convert this into one of the supported file types listed below.",
-      "invalidFileSize": "[W]The file you are trying to upload has exceeded the maximum file size limit of 80MB, please reduce the size of the file.",
-      "fileNameNotFound": "[W]The file you are trying to upload does not have name.",
-      "fileBufferEmpty": "[W]The file you are trying to upload is empty.",
-      "fileNameNotSelected": "[W]Please select a file.",
-      "fileAlreadyExists": "[W]The file you are trying to upload already exists. Please remove existing one first."
+      "invalidFileName": "Mae enw’r ffeil a ddarparwyd yn annilys. Ni all enw’r ffeil fod yn fwy na 150 o nodau ac ni all gynnwys unrhyw un o’r nodau canlynol: \\/:*?\"|<>",
+      "invalidFileFormat": "Nid yw’r math o ffeil(iau) rydych chi'n ceisio ei huwchlwytho yn cael ei chefnogi gan ein system. Trosglwyddwch hwn i un o'r mathau o ffeiliau a gefnogir a restrir isod.",
+      "invalidFileSize": "Mae’r ffeil rydych chi’n ceisio ei huwchlwytho yn uwch na’r terfyn maint uchaf o 80MB, ceisiwch leihau maint y ffeil.",
+      "fileNameNotFound": "Nid oes gan y ffeil rydych chi’n ceisio ei huwchlwytho enw.",
+      "fileBufferEmpty": "Mae’r ffeil rydych chi’n ceisio ei huwchlwytho yn wag.",
+      "fileNameNotSelected": "Dewiswch ffeil.",
+      "fileAlreadyExists": "Mae’r ffeil rydych chi’n ceisio ei huwchlwytho eisoes yn bodoli. Tynnwch yr un sy’n bodoli eisoes yn gyntaf."
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent in the session. Please logout and login again.",
-      "api": "[W]A system error occurred, Please try again later",
-      "fileUploadBackendError": "[W]There was an error uploading your file. Please try again. If this error persists please contact support.",
-      "invalidFileCreated": "[W]Invalid file was created.",
-      "unableToRemoveFile": "[W]Unable to remove file. Please try again later.",
-      "required": "[W]Give details of why you contest the claim. You can give details by filling the text area or uploading a document.",
-      "updateRespondentError": "[W]Unable to update respondent info. Please try again later."
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i’r atebydd yn y sesiwn. Logiwch allan a mewngofnodwch eto.",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen.",
+      "fileUploadBackendError": "Roedd yna wall wrth uwchlwytho eich ffeil. Rhowch gynnig arall arni. Os yw’r gwall hwn yn parhau, cysylltwch â'r adran gymorth.",
+      "invalidFileCreated": "Crëwyd ffeil annilys.",
+      "unableToRemoveFile": "Methu â dileu’r ffeil. Rhowch gynnig arall arni nes ymlaen.",
+      "required": "Rhowch fanylion dros pam eich bod yn herio'r hawliad. Gallwch roi manylion drwy lenwi'r ardal destun neu uwchlwytho dogfen.",
+      "updateRespondentError": "Methu diweddaru gwybodaeth yr atebydd. Rhowch gynnig arall arni nes ymlaen."
     }
   }
 }

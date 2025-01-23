@@ -8,25 +8,6 @@
   {% include "back-link.njk" %}
 {% endblock %}
 
-{% set anyContributions =  '' %}
-{% set receiveBenefits =  '' %}
-
-{% if userCase.claimantPensionContribution === 'Yes' %}
-  {% set anyContributions = yes + " - " + weekly + ": £" + userCase.claimantPensionWeeklyContribution %}
-{% elif userCase.claimantPensionContribution === 'No' %}
-  {% set anyContributions = no %}
-{% else %}
-  {% set anyContributions = notSure %}
-{% endif %}
-
-{% if userCase.employeeBenefits === 'Yes' %}
-  {% set receiveBenefits = yes + " - " + userCase.benefitsCharCount %}
-{% elif userCase.employeeBenefits === 'No' %}
-  {% set receiveBenefits = no %}
-{% else %}
-  {% set receiveBenefits = notSure %}
-{% endif %}
-
 {% block content %}
   {% block errorSummary %}
     {% include "./form/main/error-summary.njk" %}

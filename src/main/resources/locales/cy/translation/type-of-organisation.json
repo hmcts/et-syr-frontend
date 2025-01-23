@@ -1,27 +1,27 @@
 {
-  "title": "[W]Type of Organisation",
-  "h1": "[W]What type of organisation is the respondent? (optional)",
-  "individual": "[W]Individual",
-  "limitedCompany": "[W]Limited Company",
-  "partnership": "[W]Partnership",
-  "unincorporatedAssociation": "[W]Unincorporated association (such as a sports club)",
-  "other": "[W]Other",
-  "individualTextLabel": "[W]Preferred title (optional)",
-  "limitedCompanyTextLabel": "[W]Company registration number (optional)",
+  "title": "Math o Sefydliad",
+  "h1": "Pa fath o sefydliad yw’r atebydd? (dewisol)",
+  "individual": "Unigolyn",
+  "limitedCompany": "Cwmni Cyfyngedig",
+  "partnership": "Partneriaeth",
+  "unincorporatedAssociation": "Cymdeithas heb ei hymgorffori (megis clwb chwaraeon)",
+  "other": "Arall",
+  "individualTextLabel": "Y teitl sydd orau gennych (dewisol)",
+  "limitedCompanyTextLabel": "Rhif cofrestru’r cwmni (dewisol)",
   "errors": {
     "et3ResponseRespondentEmployerType": {
-      "required": "[W]Select an organisation type"
+      "required": "Nodwch math o sefydliad"
     },
     "et3ResponseRespondentCompanyNumber": {
-      "invalidCompanyRegistrationNumber": "[W]Enter a valid Company Registration number"
+      "invalidCompanyRegistrationNumber": "Rhowch rif cofrestru cwmni dilys"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }

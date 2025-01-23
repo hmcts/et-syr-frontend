@@ -1,11 +1,11 @@
 {
-  "title": "[W]Check your answers",
-  "caseNumber": "[W]Case number",
-  "applicationType": "[W]Application type",
-  "legend": "[W]What do you want to tell or ask the tribunal?",
-  "supportingMaterial": "[W]Supporting material",
-  "copyToOtherPartyYesOrNo": "[W]Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?",
-  "copyToOtherPartyText": "[W]Reason for not informing other party",
-  "offlineNote": "[W]You cannot make further changes to this correspondence after you store it",
-  "storeButton": "[W]Store application"
+  "title": "Gwirio eich atebion",
+  "caseNumber": "Rhif yr achos",
+  "applicationType": "Math o gais",
+  "legend": "Beth ydych chi eisiau ei ddweud neu ofyn i’r tribiwnlys?",
+  "supportingMaterial": "Deunydd ategol",
+  "copyToOtherPartyYesOrNo": "[W]Ydych chi eisiau cynnwys y parti arall yn yr ohebiaeth hon i fodloni’r Rheolau Trefniadaeth?",
+  "copyToOtherPartyText": "Rheswm dros beidio â hysbysu’r parti arall",
+  "offlineNote": "Ni allwch wneud newidiadau pellach i'r ohebiaeth hon ar ôl i chi ei storio",
+  "storeButton": "Storio’r cais"
 }

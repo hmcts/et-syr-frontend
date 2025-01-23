@@ -5,6 +5,8 @@
   "et3ResponseClaimantWeeklyHours": {
     "label": "Are the claimant’s average weekly work hours correct? "
   },
+  "yes": "Yes",
+  "no": "No",
   "et3ResponseClaimantCorrectHours": {
     "label": "What are the claimant’s correct average weekly work hours? (optional)",
     "hint": "Enter the claimant’s average hours worked each week in digits."
