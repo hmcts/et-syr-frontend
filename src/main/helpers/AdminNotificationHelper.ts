@@ -35,7 +35,7 @@ const getRequestFromAdmin = (
   languageParam: string
 ): AdminNotification[] => {
   const adminNotifications: AdminNotification[] = [];
-  if (!app.value.respondCollection?.length) {
+  if (!app.value?.respondCollection?.length) {
     return adminNotifications;
   }
   for (const response of app.value.respondCollection) {
