@@ -6,7 +6,7 @@ import { CaseWithId, YesOrNoOrNotApplicable } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
-import { saveForLaterButton, submitButton } from '../definitions/radios';
+import { saveForLaterButton, saveAndContinueButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { isClearSelection } from '../helpers/RouterHelpers';
@@ -51,7 +51,7 @@ export default class ClaimantNoticePeriodController {
         targetUrl: PageUrls.CLAIMANT_NOTICE_PERIOD,
       },
     },
-    submit: submitButton,
+    submit: saveAndContinueButton,
     saveForLater: saveForLaterButton,
   } as never;
 
