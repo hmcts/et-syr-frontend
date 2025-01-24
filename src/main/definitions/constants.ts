@@ -545,6 +545,9 @@ export const FormFieldNames = {
   RETURN_TO_EXISTING: {
     RETURN_TO_EXISTING_RADIOBUTTON: 'returnToExisting',
   },
+  CONTACT_TRIBUNAL_SELECTED: {
+    CONTACT_APPLICATION_FILE_NAME: 'contactApplicationFile',
+  },
 } as const;
 
 export const ServiceErrors = {
