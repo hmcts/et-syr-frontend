@@ -161,6 +161,7 @@ export const PageUrls = {
   APPLICATION_DETAILS: '/application-details/:appId',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
+  TESTING_REDIRECT_URL: '/redirect-url',
 } as const;
 
 export const InterceptPaths = {

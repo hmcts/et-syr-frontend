@@ -1,7 +1,7 @@
 import CheckYourAnswersContactDetailsController from '../../../main/controllers/CheckYourAnswersContactDetailsController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { LinkStatus } from '../../../main/definitions/links';
-import { conditionalRedirect } from '../../../main/helpers/RouterHelpers'; // Ensure this import is correct
+import { conditionalRedirect, returnValidUrl } from '../../../main/helpers/RouterHelpers'; // Ensure this import is correct
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
 import commonJsonRaw from '../../../main/resources/locales/cy/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -12,6 +12,7 @@ import { createMockedUpdateET3ResponseWithET3FormFunction, mockFormError } from 
 
 jest.mock('../../../main/helpers/RouterHelpers', () => ({
   conditionalRedirect: jest.fn(),
+  returnValidUrl: jest.fn(),
 }));
 
 describe('CheckYourAnswersContactDetailsController', () => {
@@ -41,6 +42,7 @@ describe('CheckYourAnswersContactDetailsController', () => {
       request = mockRequestWithTranslation({}, translationJsons);
       request.url = '/check-your-answers';
       request.session.userCase = mockCaseWithIdWithRespondents;
+      (returnValidUrl as jest.Mock).mockReturnValue(PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS);
       controller.get(request, response);
 
       expect(response.render).toHaveBeenCalledWith(

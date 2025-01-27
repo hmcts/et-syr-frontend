@@ -1,7 +1,7 @@
 import CheckYourAnswersHearingPreferencesController from '../../../main/controllers/CheckYourAnswersHearingPreferencesController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { LinkStatus } from '../../../main/definitions/links';
-import { conditionalRedirect } from '../../../main/helpers/RouterHelpers'; // Ensure this import is correct
+import { conditionalRedirect, returnValidUrl } from '../../../main/helpers/RouterHelpers'; // Ensure this import is correct
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
 import commonJsonRaw from '../../../main/resources/locales/cy/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -12,6 +12,7 @@ import { createMockedUpdateET3ResponseWithET3FormFunction, mockFormError } from 
 
 jest.mock('../../../main/helpers/RouterHelpers', () => ({
   conditionalRedirect: jest.fn(),
+  returnValidUrl: jest.fn(),
 }));
 
 describe('CheckYourAnswersHearingPreferencesController', () => {
@@ -39,6 +40,7 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
   describe('GET method', () => {
     it('should render the page', () => {
       request = mockRequestWithTranslation({}, translationJsons);
+      (returnValidUrl as jest.Mock).mockReturnValue(PageUrls.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES);
       controller.get(request, response);
 
       expect(response.render).toHaveBeenCalledWith(

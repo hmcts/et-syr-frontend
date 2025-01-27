@@ -3,7 +3,7 @@ import _ from 'lodash';
 import CheckYourAnswersContestClaimController from '../../../main/controllers/CheckYourAnswersContestClaimController';
 import { CLAIM_TYPES, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { LinkStatus } from '../../../main/definitions/links';
-import { conditionalRedirect } from '../../../main/helpers/RouterHelpers';
+import { conditionalRedirect, returnValidUrl } from '../../../main/helpers/RouterHelpers';
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
 import commonJsonRaw from '../../../main/resources/locales/cy/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -15,6 +15,7 @@ import { createMockedUpdateET3ResponseWithET3FormFunction, mockFormError } from 
 
 jest.mock('../../../main/helpers/RouterHelpers', () => ({
   conditionalRedirect: jest.fn(),
+  returnValidUrl: jest.fn(),
 }));
 
 describe('CheckYourAnswersContestClaimController', () => {
@@ -41,6 +42,7 @@ describe('CheckYourAnswersContestClaimController', () => {
   describe('GET method', () => {
     it('should render the page', () => {
       request = mockRequestWithTranslation({}, translationJsons);
+      (returnValidUrl as jest.Mock).mockReturnValue(PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
       controller.get(request, response);
 
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, expect.anything());
@@ -54,7 +56,7 @@ describe('CheckYourAnswersContestClaimController', () => {
           value: mockDocumentTypeItemFromMockDocumentUploadResponse.value,
         },
       ];
-
+      (returnValidUrl as jest.Mock).mockReturnValue(PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
       controller.get(request, response);
 
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, expect.anything());

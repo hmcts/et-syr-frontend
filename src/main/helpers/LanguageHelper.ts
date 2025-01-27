@@ -4,6 +4,8 @@ import CollectionUtils from '../utils/CollectionUtils';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
 
+import { returnValidUrl } from './RouterHelpers';
+
 export const setUrlLanguage = (req: AppRequest, redirectUrl: string): string => {
   if (StringUtils.isBlank(req.url) && StringUtils.isBlank(redirectUrl)) {
     return DefaultValues.STRING_HASH;
@@ -30,7 +32,7 @@ export const addLanguageParameterToUrl = (req: AppRequest, redirectUrl: string):
     redirectUrl = addParameterToUrl(redirectUrl, languages.ENGLISH_URL_POSTFIX);
     req.session.lang = languages.ENGLISH;
   }
-  return redirectUrl;
+  return returnValidUrl(redirectUrl);
 };
 
 export const addParameterToUrl = (url: string, parameter: string): string => {

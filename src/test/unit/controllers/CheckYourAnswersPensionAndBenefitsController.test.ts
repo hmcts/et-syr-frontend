@@ -1,6 +1,6 @@
 import CheckYourAnswersPayPensionAndBenefitsController from '../../../main/controllers/CheckYourAnswersPayPensionAndBenefitsController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import { conditionalRedirect } from '../../../main/helpers/RouterHelpers';
+import { conditionalRedirect, returnValidUrl } from '../../../main/helpers/RouterHelpers';
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
 import commonJsonRaw from '../../../main/resources/locales/cy/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -11,6 +11,7 @@ import { createMockedUpdateET3ResponseWithET3FormFunction, mockFormError } from 
 
 jest.mock('../../../main/helpers/RouterHelpers', () => ({
   conditionalRedirect: jest.fn(),
+  returnValidUrl: jest.fn(),
 }));
 
 describe('CheckYourAnswersPayPensionAndBenefitsController', () => {
@@ -39,6 +40,7 @@ describe('CheckYourAnswersPayPensionAndBenefitsController', () => {
   describe('GET method', () => {
     it('should render the page', () => {
       request = mockRequestWithTranslation({}, translationJsons);
+      (returnValidUrl as jest.Mock).mockReturnValue(PageUrls.CHECK_YOUR_ANSWERS_PAY_PENSION_AND_BENEFITS);
       controller.get(request, response);
 
       expect(response.render).toHaveBeenCalledWith(
