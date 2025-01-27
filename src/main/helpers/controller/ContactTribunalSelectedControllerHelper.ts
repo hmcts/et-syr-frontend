@@ -1,46 +1,15 @@
 import { DocumentUploadResponse } from '../../definitions/api/documentApiResponse';
 import { AppRequest } from '../../definitions/appRequest';
 import { CaseWithId } from '../../definitions/case';
-import { DefaultValues, PageUrls, ValidationErrors } from '../../definitions/constants';
+import { PageUrls, ValidationErrors } from '../../definitions/constants';
 import { Application } from '../../definitions/contact-tribunal-applications';
 import { FormError } from '../../definitions/form';
-import { AnyRecord } from '../../definitions/util-types';
 import FileUtils from '../../utils/FileUtils';
 import ObjectUtils from '../../utils/ObjectUtils';
 import StringUtils from '../../utils/StringUtils';
 import { fromApiFormatDocument } from '../ApiFormatter';
 import { isTypeAOrB } from '../ApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
-
-/**
- * Update uploadedFileName in ContactTribunalSelectedController
- * @param req request
- */
-export const getContactApplicationFileName = (req: AppRequest): string => {
-  if (ObjectUtils.isEmpty(req?.session?.userCase)) {
-    return DefaultValues.STRING_EMPTY;
-  }
-  if (
-    req.session.userCase.contactApplicationFile &&
-    StringUtils.isNotBlank(req.session.userCase.contactApplicationFile.document_filename)
-  ) {
-    return req.session.userCase.contactApplicationFile.document_filename;
-  }
-  return DefaultValues.STRING_EMPTY;
-};
-
-/**
- * Get file hint display
- * @param label translation
- * @param uploadedFileName uploadedFileName in ContactTribunalSelectedController
- */
-export const getFileHint = (label: AnyRecord, uploadedFileName: string): string => {
-  if (StringUtils.isNotBlank(uploadedFileName)) {
-    return (label.contactApplicationFile.hintExisting as string).replace('{{filename}}', uploadedFileName);
-  } else {
-    return label.contactApplicationFile.hint;
-  }
-};
 
 /**
  * Handle file upload. Return true when error occur.

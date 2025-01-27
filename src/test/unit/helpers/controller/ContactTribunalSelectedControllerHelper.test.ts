@@ -1,8 +1,7 @@
 import { AppRequest } from '../../../../main/definitions/appRequest';
-import { DefaultValues, PageUrls, ValidationErrors, languages } from '../../../../main/definitions/constants';
+import { PageUrls, ValidationErrors, languages } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import {
-  getContactApplicationFileName,
   getFormError,
   getNextPage,
   getThisPage,
@@ -14,34 +13,6 @@ import { mockValidMulterFile } from '../../mocks/mockExpressMulterFile';
 import { mockRequest } from '../../mocks/mockRequest';
 
 describe('Contact Tribunal Selected Controller Helper', () => {
-  describe('getContactApplicationFileName', () => {
-    it('should return empty string if userCase is empty', () => {
-      const req: AppRequest = mockRequest({});
-      req.session.userCase = undefined;
-      expect(getContactApplicationFileName(req)).toBe(DefaultValues.STRING_EMPTY);
-    });
-
-    it('should return document filename if it exists', () => {
-      const req: AppRequest = mockRequest({});
-      req.session.userCase.contactApplicationFile = {
-        document_binary_url: 'https://dummy.document.url/binary',
-        document_url: 'https://dummy.document.url',
-        document_filename: 'test.pdf',
-      };
-      expect(getContactApplicationFileName(req)).toBe('test.pdf');
-    });
-
-    it('should return empty string if document filename is blank', () => {
-      const req: AppRequest = mockRequest({});
-      req.session.userCase.contactApplicationFile = {
-        document_binary_url: 'https://dummy.document.url/binary',
-        document_url: 'https://dummy.document.url',
-        document_filename: '',
-      };
-      expect(getContactApplicationFileName(req)).toBe(DefaultValues.STRING_EMPTY);
-    });
-  });
-
   describe('handleFileUpload', () => {
     it('should set an error if no file is uploaded', async () => {
       const req = mockRequest({
