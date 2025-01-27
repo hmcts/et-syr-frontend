@@ -11,7 +11,7 @@ export const setUrlLanguage = (req: AppRequest, redirectUrl: string): string => 
     return DefaultValues.STRING_HASH;
   }
   if (StringUtils.isBlank(redirectUrl)) {
-    return addLanguageParameterToUrl(req, req.url);
+    return returnValidUrl(addLanguageParameterToUrl(req, req.url));
   }
   const requestParams: string[] = UrlUtils.getRequestParamsFromUrl(req.url);
   if (CollectionUtils.isNotEmpty(requestParams)) {
@@ -21,7 +21,7 @@ export const setUrlLanguage = (req: AppRequest, redirectUrl: string): string => 
       }
     }
   }
-  return addLanguageParameterToUrl(req, redirectUrl);
+  return returnValidUrl(addLanguageParameterToUrl(req, redirectUrl));
 };
 
 export const addLanguageParameterToUrl = (req: AppRequest, redirectUrl: string): string => {
