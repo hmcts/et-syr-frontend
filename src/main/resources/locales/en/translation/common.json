@@ -6,7 +6,8 @@
   "change": "Change",
   "cancel": "Cancel",
   "saveForLater": "Save as draft",
-  "submit": "Save and continue",
+  "saveAndContinue": "Save and continue",
+  "submit": "Submit",
   "required": "You have not answered the question. You need to select an answer before continuing.",
   "notAnswered": "You have not answered the question.",
   "errorSaving": "Sorry, we’re having technical problems saving your application. Please try again in a few minutes.",
@@ -55,7 +56,6 @@
   "Monthly": "Monthly",
   "Annual": "Annual",
   "Annually": "Annually",
-  "saveAndContinue": "Save and continue",
   "selectAllHint": "Select all that apply.",
   "claimTypes": {
     "breachOfContract": "Breach of contract",
@@ -171,5 +171,17 @@
     "video": "Video",
     "phone": "Phone"
   },
-  "hiddenErrorFieldLabel": "Hidden Error Field"
+  "hiddenErrorFieldLabel": "Hidden Error Field",
+  "oesYesOrNo": {
+    "yes": "Yes",
+    "no": "No"
+  },
+  "ydwYesOrNo": {
+    "yes": "Yes",
+    "no": "No"
+  },
+  "ydyYesOrNo": {
+    "yes": "Yes",
+    "no": "No"
+  }
 }

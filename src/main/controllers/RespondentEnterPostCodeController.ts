@@ -5,7 +5,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import { LoggerConstants, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
-import { saveForLaterButton, submitButton } from '../definitions/radios';
+import { saveForLaterButton, saveAndContinueButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
@@ -33,7 +33,7 @@ export default class RespondentEnterPostCodeController {
       },
     },
     submit: {
-      type: submitButton,
+      type: saveAndContinueButton,
       text: (l: AnyRecord): string => l.findAddress,
     },
     saveForLater: saveForLaterButton,

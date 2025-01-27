@@ -47,7 +47,7 @@ export default class YourResponseFormController {
       sessionErrors: req.session.errors,
       et3ResponseSection1: getEt3Section1(req, sectionTranslations, InterceptPaths.ANSWERS_CHANGE, true),
       et3ResponseSection2: getEt3Section2(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE, true),
-      et3ResponseSection3: getEt3Section3(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE, true),
+      et3ResponseSection3: getEt3Section3(req, sectionTranslations, InterceptPaths.ANSWERS_CHANGE, true),
       et3ResponseSection4: getEt3Section4(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE, true),
       et3ResponseSection5: getEt3Section5(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE, true),
       et3ResponseSection6: getEt3Section6(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE, true),

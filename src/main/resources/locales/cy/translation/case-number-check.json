@@ -1,20 +1,20 @@
 {
-  "title": "[W]Case Number Check",
-  "pageTitle": "[W]Case Number",
-  "caseNumber": "[W]What is the case number of the case you are responding to?",
-  "hint": "This will appear on the letter sent to you from the employment tribunal.",
+  "title": "Gwirio Rhif yr Achos",
+  "pageTitle": "Rhif yr achos",
+  "caseNumber": "Beth yw rhif achos yr achos yr ydych yn ymateb iddo?",
+  "hint": "Bydd hyn yn ymddangos ar y llythyr a anfonir atoch gan y tribiwnlys cyflogaeth.",
   "errors": {
     "ethosCaseReference": {
-      "required": "[W]Enter case number. Sample case number format is 1111111/2020",
-      "invalid": "[W]Invalid case number. Sample Case number format is 1111111/2020"
+      "required": "Nodwch rif yr achos. Sampl o fformat rhif achos yw 1111111/2020",
+      "invalid": "Rhif achos annilys. Sampl fformat rhif achos yw 1111111/2020"
     },
     "hiddenErrorField": {
-      "sessionUserCase": "[W]User case not found in session",
-      "sessionUser": "[W]User not found in session",
-      "sessionRespondent": "[W]Unable to find selected respondent in session",
-      "userId": "[W]Invalid session user. User does not have an ID",
-      "respondentNotFound": "[W]Unable to find respondent",
-      "api": "[W]A system error occurred, Please try again later"
+      "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionUser": "Defnyddiwr heb ei ganfod yn y sesiwn",
+      "sessionRespondent": "Methu dod o hyd i’r cyfryw atebydd yn y sesiwn",
+      "userId": "Defnyddiwr annilys yn y sesiwn. Nid oes gan y defnyddiwr ID",
+      "respondentNotFound": "Methu dod o hyd i atebydd",
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
     }
   }
 }
