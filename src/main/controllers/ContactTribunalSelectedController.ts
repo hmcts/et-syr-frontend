@@ -1,39 +1,26 @@
 import { Response } from 'express';
 
 import { Form } from '../components/form';
-import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { getApplicationByUrl } from '../helpers/ApplicationHelper';
 import { getPageContent } from '../helpers/FormHelper';
 import { getApplicationDisplayByUrl } from '../helpers/controller/ContactTribunalHelper';
 import {
-  getFormDataError,
+  getFormError,
   getNextPage,
   getThisPage,
-  setFileToUserCase,
+  handleFileUpload,
 } from '../helpers/controller/ContactTribunalSelectedControllerHelper';
 import { getLogger } from '../logger';
-import ErrorUtils from '../utils/ErrorUtils';
-import FileUtils from '../utils/FileUtils';
-import ObjectUtils from '../utils/ObjectUtils';
-import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
 
 const logger = getLogger('ContactTribunalSelectedController');
 
 export default class ContactTribunalSelectedController {
-  private uploadedFileName = '';
-  private getHint = (label: AnyRecord): string => {
-    if (StringUtils.isNotBlank(this.uploadedFileName)) {
-      return (label.fileUpload.hintExisting as string).replace('{{filename}}', this.uploadedFileName);
-    } else {
-      return label.fileUpload.hint;
-    }
-  };
   private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
@@ -43,7 +30,6 @@ export default class ContactTribunalSelectedController {
         type: 'upload',
         classes: 'govuk-label',
         label: (l: AnyRecord): string => l.contactApplicationFile.label,
-        hint: (l: AnyRecord) => this.getHint(l),
       },
       upload: {
         label: (l: AnyRecord): string => l.files.uploadButton,
@@ -83,55 +69,25 @@ export default class ContactTribunalSelectedController {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
-    const thisPage = getThisPage(selectedApplication, req);
-
-    if (req.body?.upload && ObjectUtils.isEmpty(req?.file)) {
-      ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
+    if (req.body?.upload) {
+      const fileErrorRedirect = handleFileUpload(
         req,
-        ValidationErrors.INVALID_FILE_NOT_SELECTED,
         FormFieldNames.CONTACT_TRIBUNAL_SELECTED.CONTACT_APPLICATION_FILE_NAME
       );
-      return res.redirect(thisPage);
-    } else {
-      req.session.errors = [];
-    }
-
-    if (ObjectUtils.isNotEmpty(req?.file)) {
-      req.session.errors = [];
-      if (req.fileTooLarge) {
-        req.session.errors = [
-          {
-            propertyName: FormFieldNames.CONTACT_TRIBUNAL_SELECTED.CONTACT_APPLICATION_FILE_NAME,
-            errorType: ValidationErrors.INVALID_FILE_SIZE,
-          },
-        ];
-        return res.redirect(thisPage);
+      if (fileErrorRedirect) {
+        return res.redirect(getThisPage(selectedApplication, req));
       }
-
-      if (!FileUtils.checkFile(req, FormFieldNames.CONTACT_TRIBUNAL_SELECTED.CONTACT_APPLICATION_FILE_NAME)) {
-        return res.redirect(thisPage);
-      }
-
-      const uploadedDocument: DocumentUploadResponse = await FileUtils.uploadFile(req);
-      if (!uploadedDocument) {
-        return res.redirect(thisPage);
-      }
-
-      setFileToUserCase(req, uploadedDocument);
-      req.file = undefined;
     }
 
     req.session.errors = [];
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-
-    const contactApplicationError = getFormDataError(formData);
+    const contactApplicationError = getFormError(req, formData);
     if (contactApplicationError) {
       req.session.errors.push(contactApplicationError);
-      return res.redirect(thisPage);
+      return res.redirect(getThisPage(selectedApplication, req));
     }
 
     req.session.userCase.contactApplicationType = selectedApplication.code;
-    req.session.userCase.contactApplicationFile = formData.contactApplicationFile;
     req.session.userCase.contactApplicationText = formData.contactApplicationText;
 
     res.redirect(getNextPage(selectedApplication, req));

@@ -1,137 +1,107 @@
 import { DocumentUploadResponse } from '../../definitions/api/documentApiResponse';
 import { AppRequest } from '../../definitions/appRequest';
-import { CaseWithId, RespondentET3Model, UploadedDocumentType } from '../../definitions/case';
-import { DocumentTypeItem } from '../../definitions/complexTypes/documentTypeItem';
-import {
-  DefaultValues,
-  FormFieldNames,
-  PageUrls,
-  ValidationErrors,
-  et3AttachmentDocTypes,
-} from '../../definitions/constants';
+import { CaseWithId } from '../../definitions/case';
+import { DefaultValues, PageUrls, ValidationErrors } from '../../definitions/constants';
 import { Application } from '../../definitions/contact-tribunal-applications';
 import { FormError } from '../../definitions/form';
-import CollectionUtils from '../../utils/CollectionUtils';
-import ErrorUtils from '../../utils/ErrorUtils';
+import { AnyRecord } from '../../definitions/util-types';
 import FileUtils from '../../utils/FileUtils';
-import NumberUtils from '../../utils/NumberUtils';
 import ObjectUtils from '../../utils/ObjectUtils';
 import StringUtils from '../../utils/StringUtils';
-import { isContentCharsOrLess, isFieldFilledIn } from '../../validators/validator';
+import { fromApiFormatDocument } from '../ApiFormatter';
 import { isTypeAOrB } from '../ApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
- * Set Contact Application File to UserCase
- * @param req Request
- * @param uploadedDocument Uploaded document
+ * Update uploadedFileName in ContactTribunalSelectedController
+ * @param req request
  */
-export const setFileToUserCase = (req: AppRequest, uploadedDocument: DocumentUploadResponse): void => {
-  if (ObjectUtils.isEmpty(uploadedDocument)) {
-    return;
-  }
+export const getContactApplicationFileName = (req: AppRequest): string => {
   if (ObjectUtils.isEmpty(req?.session?.userCase)) {
-    return;
+    return DefaultValues.STRING_EMPTY;
   }
-  const uploadedDocumentType: UploadedDocumentType = {
-    category_id: et3AttachmentDocTypes[0],
-    document_binary_url: uploadedDocument.uri + '/binary',
-    document_filename: uploadedDocument.originalDocumentName,
-    document_url: uploadedDocument.uri,
-    upload_timestamp: uploadedDocument.createdOn,
-  };
-  req.session.userCase.et3ResponseEmployerClaimDocument = uploadedDocumentType;
-  req.session.userCase.et3ResponseEmployerClaimDocumentFileName = uploadedDocumentType.document_filename;
-  req.session.userCase.et3ResponseEmployerClaimDocumentUrl = uploadedDocumentType.document_url;
-  req.session.userCase.et3ResponseEmployerClaimDocumentBinaryUrl = uploadedDocumentType.document_binary_url;
-  req.session.userCase.et3ResponseEmployerClaimDocumentUploadTimestamp = uploadedDocumentType.upload_timestamp;
-  req.session.userCase.et3ResponseEmployerClaimDocumentCategoryId = et3AttachmentDocTypes[0];
   if (
-    CollectionUtils.isNotEmpty(req.session.userCase.respondents) &&
-    NumberUtils.isNotEmpty(req.session.selectedRespondentIndex) &&
-    ObjectUtils.isNotEmpty(req.session.userCase.respondents[req.session.selectedRespondentIndex])
+    req.session.userCase.contactApplicationFile &&
+    StringUtils.isNotBlank(req.session.userCase.contactApplicationFile.document_filename)
   ) {
-    const selectedRespondent = req.session.userCase.respondents[req.session.selectedRespondentIndex];
-    selectedRespondent.et3ResponseEmployerClaimDocument = uploadedDocumentType;
-    selectedRespondent.et3ResponseEmployerClaimDocumentBinaryUrl = uploadedDocumentType.document_binary_url;
-    selectedRespondent.et3ResponseEmployerClaimDocumentUrl = uploadedDocumentType.document_url;
-    selectedRespondent.et3ResponseEmployerClaimDocumentCategoryId = et3AttachmentDocTypes[0];
-    selectedRespondent.et3ResponseEmployerClaimDocumentFileName = uploadedDocumentType.document_filename;
-    selectedRespondent.et3ResponseEmployerClaimDocumentUploadTimestamp = uploadedDocumentType.upload_timestamp;
+    return req.session.userCase.contactApplicationFile.document_filename;
   }
-  if (CollectionUtils.isEmpty(req.session.userCase.documentCollection)) {
-    req.session.userCase.documentCollection = [];
-  }
-  const documentTypeItem: DocumentTypeItem = FileUtils.convertDocumentUploadResponseToDocumentTypeItem(
-    req,
-    uploadedDocument
-  );
-  if (ObjectUtils.isNotEmpty(documentTypeItem)) {
-    req.session.userCase.documentCollection.push(documentTypeItem);
+  return DefaultValues.STRING_EMPTY;
+};
+
+/**
+ * Get file hint display
+ * @param label translation
+ * @param uploadedFileName uploadedFileName in ContactTribunalSelectedController
+ */
+export const getFileHint = (label: AnyRecord, uploadedFileName: string): string => {
+  if (StringUtils.isNotBlank(uploadedFileName)) {
+    return (label.contactApplicationFile.hintExisting as string).replace('{{filename}}', uploadedFileName);
+  } else {
+    return label.contactApplicationFile.hint;
   }
 };
 
 /**
- * Check and return errors in Contact Tribunal Selected page
- * @param req Request
- * @param formData Form
+ * Handle file upload. Return true when error occur.
+ * @param req request
+ * @param fieldName form field name
  */
-export const isInputValuesValid = (req: AppRequest, formData: Partial<CaseWithId>): boolean => {
-  req.session.errors = [];
-  let selectedRespondent: RespondentET3Model;
-  if (
-    NumberUtils.isNotEmpty(req.session.selectedRespondentIndex) &&
-    ObjectUtils.isNotEmpty(req.session.userCase) &&
-    CollectionUtils.isNotEmpty(req.session.userCase.respondents) &&
-    ObjectUtils.isNotEmpty(req.session.userCase.respondents[req.session.selectedRespondentIndex])
-  ) {
-    selectedRespondent = req.session.userCase.respondents[req.session.selectedRespondentIndex];
+export const handleFileUpload = async (req: AppRequest, fieldName: string): Promise<boolean> => {
+  if (req.body?.upload && ObjectUtils.isEmpty(req?.file)) {
+    req.session.errors = [
+      {
+        propertyName: fieldName,
+        errorType: ValidationErrors.INVALID_FILE_NOT_SELECTED,
+      },
+    ];
+    return true;
+  } else {
+    req.session.errors = [];
   }
-  const et3ResponseEmployerClaimDetailsText = formData.et3ResponseEmployerClaimDetails;
-  const employerClaimDetailsProvided = StringUtils.isNotBlank(et3ResponseEmployerClaimDetailsText);
-  const employerClaimDetailsMoreThan3000Chars = StringUtils.isLengthMoreThan(
-    et3ResponseEmployerClaimDetailsText,
-    DefaultValues.EMPLOYERS_CLAIM_DETAILS_MAX_LENGTH
-  );
-  const claimSummaryFileExists =
-    ObjectUtils.isNotEmpty(req.file) ||
-    ObjectUtils.isNotEmpty(req.session.userCase.et3ResponseEmployerClaimDocument) ||
-    ObjectUtils.isNotEmpty(selectedRespondent?.et3ResponseEmployerClaimDocument);
-  if (!claimSummaryFileExists && !employerClaimDetailsProvided) {
-    ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
-      req,
-      ValidationErrors.REQUIRED,
-      FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-    );
-    return false;
+
+  if (ObjectUtils.isNotEmpty(req?.file)) {
+    req.session.errors = [];
+    if (req.fileTooLarge) {
+      req.session.errors = [
+        {
+          propertyName: fieldName,
+          errorType: ValidationErrors.INVALID_FILE_SIZE,
+        },
+      ];
+      return true;
+    }
+
+    if (!FileUtils.checkFile(req, fieldName)) {
+      return true;
+    }
+
+    const uploadedDocumentResponse: DocumentUploadResponse = await FileUtils.uploadFile(req);
+    if (!uploadedDocumentResponse) {
+      return true;
+    }
+
+    req.session.userCase.contactApplicationFile = fromApiFormatDocument(uploadedDocumentResponse);
+    req.file = undefined;
   }
-  if (employerClaimDetailsMoreThan3000Chars) {
-    ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
-      req,
-      ValidationErrors.TOO_LONG,
-      FormFieldNames.EMPLOYERS_CONTRACT_CLAIM_DETAILS.ET3_RESPONSE_EMPLOYER_CLAIM_DETAILS
-    );
-    return false;
-  }
-  return true;
+  return false;
 };
 
 /**
- * Check and return errors in Contact Tribunal Selected page
- * @param formData form data from Contact Tribunal input
+ * Handle form validation. Return FormError when error found.
+ * @param req request
+ * @param formData form data
  */
-export const getFormDataError = (formData: Partial<CaseWithId>): FormError => {
-  const file = formData.contactApplicationFile;
-  const text = formData.contactApplicationText;
-
-  const fileProvided = file !== undefined && false; // TODO: Fix fileProvided checking
-  const textProvided = isFieldFilledIn(text) === undefined;
-
-  if (!textProvided && !fileProvided) {
+export const getFormError = (req: AppRequest, formData: Partial<CaseWithId>): FormError => {
+  const isTextProvided = StringUtils.isNotBlank(formData.contactApplicationText);
+  const isFileExists =
+    ObjectUtils.isNotEmpty(req.file) || ObjectUtils.isNotEmpty(req.session.userCase.contactApplicationFile);
+  if (!isFileExists && !isTextProvided) {
     return { propertyName: 'contactApplicationText', errorType: ValidationErrors.REQUIRED };
   }
 
-  if (isContentCharsOrLess(2500)(text)) {
+  const isTextTooLong = StringUtils.isLengthMoreThan(formData.contactApplicationText, 2500);
+  if (isTextTooLong) {
     return { propertyName: 'contactApplicationText', errorType: ValidationErrors.TOO_LONG };
   }
 };
