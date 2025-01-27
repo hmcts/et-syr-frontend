@@ -74,7 +74,7 @@ export default class ContactTribunalSelectedController {
         req,
         FormFieldNames.CONTACT_TRIBUNAL_SELECTED.CONTACT_APPLICATION_FILE_NAME
       );
-      if (fileErrorRedirect) {
+      if (await fileErrorRedirect) {
         return res.redirect(getThisPage(selectedApplication, req));
       }
     }
