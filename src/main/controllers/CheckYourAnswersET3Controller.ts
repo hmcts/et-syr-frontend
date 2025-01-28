@@ -51,11 +51,13 @@ export default class CheckYourAnswersET3Controller {
       ET3ModificationTypes.MODIFICATION_TYPE_SUBMIT
     );
     if (!userCase) {
-      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3)));
+      const redirectUrl: string = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3);
+      return res.redirect(returnValidUrl(redirectUrl));
     }
     req.session.userCase = userCase;
     if (req.body?.submit) {
-      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.APPLICATION_SUBMITTED)));
+      const redirectUrl: string = setUrlLanguage(req, PageUrls.APPLICATION_SUBMITTED);
+      return res.redirect(returnValidUrl(redirectUrl));
     }
   };
 

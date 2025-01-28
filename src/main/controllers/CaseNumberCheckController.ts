@@ -47,7 +47,8 @@ export default class CaseNumberCheckController {
     const errors = this.form.getValidatorErrors(formData);
     if (errors.length > 0) {
       req.session.errors = errors;
-      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CASE_NUMBER_CHECK)));
+      const redirectUrl: string = setUrlLanguage(req, PageUrls.CASE_NUMBER_CHECK);
+      return res.redirect(returnValidUrl(redirectUrl));
     }
     req.session.errors = [];
     try {
