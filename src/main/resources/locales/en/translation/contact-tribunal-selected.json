@@ -21,6 +21,15 @@
     "contactApplicationText": {
       "required": "Use the text box or file upload to give details",
       "tooLong": "Give details (free text) must be entered as 2500 characters or less"
+    },
+    "contactApplicationFile": {
+      "invalidFileName": "The name of the file provided is invalid. A file name cannot exceed 150 characters or contain any of the following characters: \\/:*?\"|<>",
+      "invalidFileFormat": "The type of file(s) you are trying to upload is not supported by our system. Please convert this into one of the supported file types listed below.",
+      "invalidFileSize": "The file you are trying to upload has exceeded the maximum file size limit of 80MB, please reduce the size of the file.",
+      "fileNameNotFound": "The file you are trying to upload does not have name.",
+      "fileBufferEmpty": "The file you are trying to upload is empty.",
+      "fileNameNotSelected": "Please select a file.",
+      "fileAlreadyExists": "The file you are trying to upload already exists. Please remove existing one first."
     }
   }
 }
