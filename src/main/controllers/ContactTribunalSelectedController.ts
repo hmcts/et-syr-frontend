@@ -16,12 +16,21 @@ import {
   handleFileUpload,
 } from '../helpers/controller/ContactTribunalSelectedControllerHelper';
 import { getLogger } from '../logger';
+import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
 
 const logger = getLogger('ContactTribunalSelectedController');
 
 export default class ContactTribunalSelectedController {
   private readonly form: Form;
+  private uploadedFileName = '';
+  private getHint = (label: AnyRecord): string => {
+    if (StringUtils.isNotBlank(this.uploadedFileName)) {
+      return (label.contactApplicationFile.hintExisting as string).replace('{{filename}}', this.uploadedFileName);
+    } else {
+      return label.fileUpload.hint;
+    }
+  };
   private readonly formContent: FormContent = {
     fields: {
       contactApplicationFile: {
@@ -30,6 +39,7 @@ export default class ContactTribunalSelectedController {
         type: 'upload',
         classes: 'govuk-label',
         label: (l: AnyRecord): string => l.contactApplicationFile.label,
+        hint: (l: AnyRecord) => this.getHint(l),
       },
       upload: {
         label: (l: AnyRecord): string => l.files.uploadButton,
@@ -94,6 +104,7 @@ export default class ContactTribunalSelectedController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    this.uploadedFileName = req?.session?.userCase?.contactApplicationFile?.document_filename;
     const selectedApplication = getApplicationByUrl(req.params?.selectedOption);
     if (!selectedApplication) {
       return res.redirect(PageUrls.CONTACT_TRIBUNAL);
