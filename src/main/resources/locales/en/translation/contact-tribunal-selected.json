@@ -8,6 +8,12 @@
   "contactApplicationFile": {
     "label": "Document"
   },
+  "files": {
+    "title": "Upload a file (Optional)",
+    "uploadButton": "Upload file",
+    "removeButton": "Remove file",
+    "uploaded": "Files uploaded"
+  },
   "contactApplicationText": {
     "label": "Use this box for any accompanying information (Optional)"
   },

@@ -8,6 +8,12 @@
   "contactApplicationFile": {
     "label": "Dogfen"
   },
+  "files": {
+    "title": "Uwchlwytho ffeil (dewisol)",
+    "uploadButton": "Uwchlwytho ffeil",
+    "removeButton": "Dileu ffeil",
+    "uploaded": "Ffeiliau sydd wedi’u huwchlwytho"
+  },
   "contactApplicationText": {
     "label": "Defnyddiwch y blwch hwn ar gyfer unrhyw wybodaeth gysylltiedig (Dewisol)"
   },
