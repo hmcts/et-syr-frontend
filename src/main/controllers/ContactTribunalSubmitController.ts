@@ -23,7 +23,7 @@ export default class ContactTribunalSubmitController {
       // TODO: save data in api
 
       // Clear temporary fields
-      userCase.rule91state = userCase.copyToOtherPartyYesOrNo && userCase.copyToOtherPartyYesOrNo === YesOrNo.YES;
+      userCase.rule90state = userCase.copyToOtherPartyYesOrNo && userCase.copyToOtherPartyYesOrNo === YesOrNo.YES;
       clearTempFields(req.session.userCase);
 
       // Redirect to next page

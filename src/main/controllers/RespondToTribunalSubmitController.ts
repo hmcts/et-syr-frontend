@@ -5,7 +5,7 @@ import { YesOrNo } from '../definitions/case';
 import { ErrorPages, PageUrls } from '../definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { clearTempFields } from '../helpers/controller/RespondToTribunalHelper';
+import { clearTempFields } from '../helpers/controller/RespondToTribunalSubmitControllerHelper';
 import ET3Util from '../utils/ET3Util';
 
 export default class RespondToTribunalSubmitController {
@@ -23,7 +23,7 @@ export default class RespondToTribunalSubmitController {
       // TODO: save data in api
 
       // Clear temporary fields
-      userCase.rule91state = userCase.copyToOtherPartyYesOrNo && userCase.copyToOtherPartyYesOrNo === YesOrNo.YES;
+      userCase.rule90state = userCase.copyToOtherPartyYesOrNo && userCase.copyToOtherPartyYesOrNo === YesOrNo.YES;
       clearTempFields(userCase);
 
       return res.redirect(PageUrls.RESPOND_TO_TRIBUNAL_COMPLETE + getLanguageParam(req.url));

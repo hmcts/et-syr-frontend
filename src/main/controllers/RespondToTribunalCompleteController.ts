@@ -10,7 +10,7 @@ export default class RespondToTribunalCompleteController {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
       ...req.t(TranslationKeys.RESPOND_TO_TRIBUNAL_COMPLETE, { returnObjects: true }),
       redirectUrl: UrlUtils.getCaseDetailsUrlByRequest(req),
-      rule91state: req.session?.userCase?.rule91state,
+      rule90state: req.session?.userCase?.rule90state,
     });
   };
 }

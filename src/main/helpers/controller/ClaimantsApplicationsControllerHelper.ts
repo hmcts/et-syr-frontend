@@ -7,7 +7,7 @@ import { getLanguageParam } from '../RouterHelpers';
 
 import { getApplicationDisplayByCode } from './ContactTribunalHelper';
 
-export const getApplicationCollection = (req: AppRequest): GenericTseApplicationTypeItem[] => {
+export const getClaimantsApplications = (req: AppRequest): GenericTseApplicationTypeItem[] => {
   const userCase = req.session.userCase;
   const url = req.url;
   const translations: AnyRecord = {

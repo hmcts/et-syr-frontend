@@ -84,6 +84,7 @@ export const TranslationKeys = {
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: 'contact-tribunal-submit-complete',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
+  CLAIMANTS_APPLICATIONS: 'claimants-applications',
   APPLICATION_DETAILS: 'application-details',
   RESPOND_TO_TRIBUNAL: 'respond-to-tribunal',
   RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL: 'respond-to-tribunal-supporting-material',
@@ -163,6 +164,7 @@ export const PageUrls = {
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
+  CLAIMANTS_APPLICATIONS: '/claimants-applications',
   APPLICATION_DETAILS: '/application-details/:appId',
   RESPOND_TO_TRIBUNAL: '/respond-to-tribunal/:appId',
   RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL: '/respond-to-tribunal-supporting-material',
