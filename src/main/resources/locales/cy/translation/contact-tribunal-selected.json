@@ -6,7 +6,8 @@
   "genericGuidanceItem3": "os byddwch yn uwchlwytho dogfen ysgrifenedig gyda tracked changes, gwnewch yn siŵr eich bod wedi clicio ar yr opsiwn tracked changes.",
   "formHearing": "Rhowch fanylion eich cais yn y blwch testun neu uwchlwythwch ffeil",
   "contactApplicationFile": {
-    "label": "Dogfen"
+    "label": "Dogfen",
+    "hintExisting": "[W]<p>You can only upload 1 document.</p><p>If you want to upload an email, download and convert from your email client first. Most email clients will give the option of downloading as pdf or PostScript.</p><b><p>You have previously uploaded: {{filename}}</p></b>"
   },
   "files": {
     "title": "Uwchlwytho ffeil (dewisol)",
