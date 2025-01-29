@@ -7,7 +7,8 @@
   "formHearing": "Rhowch fanylion eich cais yn y blwch testun neu uwchlwythwch ffeil",
   "contactApplicationFile": {
     "label": "Dogfen",
-    "hintExisting": "[W]<p>You can only upload 1 document.</p><p>If you want to upload an email, download and convert from your email client first. Most email clients will give the option of downloading as pdf or PostScript.</p><b><p>You have previously uploaded: {{filename}}</p></b>"
+    "hint": "<p>Gallwch ond uwchlwytho 1 ddogfen o uchafswm o 80MB mewn maint.</p><p>Os ydych chi eisiau uwchlwytho e-bost, dylech lawrlwytho a throsglwyddo o e-bost eich cleient yn gyntaf. Bydd y rhan fwyaf o gleientiaid e-bost yn rhoi’r opsiwn o lawrlwytho fel pdf neu PostScript.</p><p>Uwchlwytho ffeil</p>",
+    "hintExisting": "<p>Gallwch ond uwchlwytho 1 ddogfen.</p><p>Os ydych chi eisiau uwchlwytho e-bost, dylech lawrlwytho a throsglwyddo o e-bost eich cleient yn gyntaf. Bydd y rhan fwyaf o gleientiaid e-bost yn rhoi'r opsiwn o lawrlwytho fel pdf neu PostScript.</p><b><p>Rydych chi wedi uwchlwytho'n flaenorol: {{filename}}</p></b>"
   },
   "files": {
     "title": "Uwchlwytho ffeil (dewisol)",

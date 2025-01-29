@@ -28,7 +28,7 @@ export default class ContactTribunalSelectedController {
     if (StringUtils.isNotBlank(this.uploadedFileName)) {
       return (label.contactApplicationFile.hintExisting as string).replace('{{filename}}', this.uploadedFileName);
     } else {
-      return label.fileUpload.hint;
+      return label.contactApplicationFile.hint;
     }
   };
   private readonly formContent: FormContent = {
