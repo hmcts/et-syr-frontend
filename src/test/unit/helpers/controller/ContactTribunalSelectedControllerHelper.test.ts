@@ -38,11 +38,47 @@ describe('Contact Tribunal Selected Controller Helper', () => {
       expect(req.session.errors[0].errorType).toBe(ValidationErrors.INVALID_FILE_SIZE);
     });
 
+    it('should return true if file check fails', async () => {
+      const req = mockRequest({
+        body: { upload: true },
+        file: mockValidMulterFile,
+      });
+      FileUtils.checkFile = jest.fn().mockReturnValueOnce(false);
+      const result = await handleFileUpload(req, 'contactApplicationFile');
+      expect(result).toBe(true);
+      expect(FileUtils.checkFile).toHaveBeenCalledWith(req, 'contactApplicationFile');
+    });
+
+    it('should return true if file upload response is null', async () => {
+      const req = mockRequest({
+        body: { upload: true },
+        file: mockValidMulterFile,
+      });
+      FileUtils.checkFile = jest.fn().mockReturnValueOnce(true);
+      FileUtils.uploadFile = jest.fn().mockResolvedValueOnce(null);
+      const result = await handleFileUpload(req, 'contactApplicationFile');
+      expect(result).toBe(true);
+      expect(FileUtils.uploadFile).toHaveBeenCalledWith(req);
+    });
+
+    it('should return true if file upload response is undefined', async () => {
+      const req = mockRequest({
+        body: { upload: true },
+        file: mockValidMulterFile,
+      });
+      FileUtils.checkFile = jest.fn().mockReturnValueOnce(true);
+      FileUtils.uploadFile = jest.fn().mockResolvedValueOnce(undefined);
+      const result = await handleFileUpload(req, 'contactApplicationFile');
+      expect(result).toBe(true);
+      expect(FileUtils.uploadFile).toHaveBeenCalledWith(req);
+    });
+
     it('should upload file and update session', async () => {
       const req = mockRequest({
         body: { upload: true },
         file: mockValidMulterFile,
       });
+      FileUtils.checkFile = jest.fn().mockReturnValueOnce(true);
       FileUtils.uploadFile = jest.fn().mockResolvedValueOnce(mockDocumentUploadResponse);
       const result = await handleFileUpload(req, 'contactApplicationFile');
       expect(result).toBe(false);
@@ -96,6 +132,15 @@ describe('Contact Tribunal Selected Controller Helper', () => {
   });
 
   describe('getNextPage', () => {
+    it('should return the current page URL if upload is present in request body', () => {
+      const req: AppRequest = mockRequest({
+        body: { upload: true },
+      });
+      const app = application.CHANGE_PERSONAL_DETAILS;
+      const result = getNextPage(app, req);
+      expect(result).toBe('/contact-tribunal/change-my-personal-details?lng=en');
+    });
+
     const req: AppRequest = mockRequest({});
     it('should return COPY_TO_OTHER_PARTY page for Type A/B applications when claimant is system user', () => {
       const nextPage = getNextPage(application.CHANGE_PERSONAL_DETAILS, req);
