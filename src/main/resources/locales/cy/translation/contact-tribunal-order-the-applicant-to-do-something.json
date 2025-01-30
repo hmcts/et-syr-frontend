@@ -12,10 +12,10 @@
     {
       "type": "list",
       "items": [
-        "[W]what you want the claimant to do",
-        "[W]why it is relevant to your response",
-        "[W]if you have already asked the claimant to do or provide this thing. If you have, tell us when you asked and what their response was",
-        "[W]if you have not asked the claimant to do or provide this thing yet, explain why"
+        "what you want the claimant to do",
+        "why it is relevant to your response",
+        "if you have already asked the claimant to do or provide this thing. If you have, tell us when you asked and what their response was",
+        "if you have not asked the claimant to do or provide this thing yet, explain why"
       ]
     }
   ]

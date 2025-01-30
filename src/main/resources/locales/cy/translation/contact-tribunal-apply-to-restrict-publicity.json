@@ -24,10 +24,10 @@
     {
       "type": "list",
       "items": [
-        "[W]that a hearing that would otherwise be in public be conducted, in whole or in part, in private",
-        "[W]that the identities of specified parties, witnesses or other persons referred to in the proceedings should not be disclosed to the public, by the use of anonymisation or otherwise",
-        "[W]for measures preventing witnesses at a public hearing being identifiable by members of the public",
-        "[W]restricting the reporting of the case in the media"
+        "that a hearing that would otherwise be in public be conducted, in whole or in part, in private",
+        "that the identities of specified parties, witnesses or other persons referred to in the proceedings should not be disclosed to the public, by the use of anonymisation or otherwise",
+        "for measures preventing witnesses at a public hearing being identifiable by members of the public",
+        "restricting the reporting of the case in the media"
       ]
     },
     {
@@ -37,9 +37,9 @@
     {
       "type": "list",
       "items": [
-        "[W]how the tribunal should prevent or restrict publicity in this case",
-        "[W]why the restrictions you want are needed. The tribunal must make the least restrictive order possible. Tell us why fewer restrictions would not be enough",
-        "[W]any media interest in this case. Include names of media organisations or journalists that are interested. The tribunal might seek their comments before making a decision"
+        "how the tribunal should prevent or restrict publicity in this case",
+        "why the restrictions you want are needed. The tribunal must make the least restrictive order possible. Tell us why fewer restrictions would not be enough",
+        "any media interest in this case. Include names of media organisations or journalists that are interested. The tribunal might seek their comments before making a decision"
       ]
     }
   ]

@@ -16,10 +16,10 @@
     {
       "type": "list",
       "items": [
-        "[W]which order has not been complied with",
-        "[W]the date the tribunal issued the order",
-        "[W]what the claimant has not done",
-        "[W]what you want the tribunal to do next "
+        "which order has not been complied with",
+        "the date the tribunal issued the order",
+        "what the claimant has not done",
+        "what you want the tribunal to do next "
       ]
     }
   ]

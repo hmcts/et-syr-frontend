@@ -32,12 +32,12 @@
     {
       "type": "list",
       "items": [
-        "[W]the judgment you want reconsidered",
-        "[W]the date the tribunal issued the judgment",
-        "[W]your reason for a late application if the judgment was sent over 14 days ago",
-        "[W]why it is in the interests of justice to reconsider this judgment",
-        "[W]if the tribunal should vary or revoke the judgment",
-        "[W]any additional information or material which the tribunal does not already have to support your application"
+        "the judgment you want reconsidered",
+        "the date the tribunal issued the judgment",
+        "your reason for a late application if the judgment was sent over 14 days ago",
+        "why it is in the interests of justice to reconsider this judgment",
+        "if the tribunal should vary or revoke the judgment",
+        "any additional information or material which the tribunal does not already have to support your application"
       ]
     }
   ]

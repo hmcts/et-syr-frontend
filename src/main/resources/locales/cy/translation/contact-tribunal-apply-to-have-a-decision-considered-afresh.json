@@ -20,9 +20,9 @@
     {
       "type": "list",
       "items": [
-        "[W]the decision you want considered afresh",
-        "[W]the date the tribunal issued the decision",
-        "[W]why you want the decision considered afresh"
+        "the decision you want considered afresh",
+        "the date the tribunal issued the decision",
+        "why you want the decision considered afresh"
       ]
     }
   ]
