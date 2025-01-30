@@ -1,11 +1,13 @@
 import { AppRequest } from '../../definitions/appRequest';
-import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constants';
-import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
+import { YesOrNo } from '../../definitions/case';
+import {
+  GenericTseApplicationTypeItem,
+  TseRespondTypeItem,
+} from '../../definitions/complexTypes/genericTseApplicationTypeItem';
+import { Applicant, Parties, TranslationKeys } from '../../definitions/constants';
 import { AnyRecord } from '../../definitions/util-types';
-import { getLanguageParam } from '../RouterHelpers';
 
-import { getApplicationDisplayByCode } from './ContactTribunalHelper';
+import { updateAppsInfo } from './YourRequestAndApplicationsHelper';
 
 export const getClaimantsApplications = (req: AppRequest): GenericTseApplicationTypeItem[] => {
   const userCase = req.session.userCase;
@@ -14,14 +16,24 @@ export const getClaimantsApplications = (req: AppRequest): GenericTseApplication
     ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
     ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
   };
-  const respondentApps = (userCase.genericTseApplicationCollection || []).filter(
-    app => app.value?.applicant === Applicant.RESPONDENT
+  const claimantApps = (userCase.genericTseApplicationCollection || []).filter(
+    app => app.value?.applicant === Applicant.CLAIMANT && isClaimantAppsShare(app)
   );
-  respondentApps.forEach(app => {
-    app.linkValue = getApplicationDisplayByCode(app.value.type, translations);
-    app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
-    app.statusColor = linkStatusColorMap.get(<LinkStatus>app.value.status);
-    app.displayStatus = translations[app.value.status];
+  claimantApps.forEach(app => {
+    updateAppsInfo(app, translations, url);
   });
-  return respondentApps;
+  return claimantApps;
+};
+
+const isClaimantAppsShare = (app: GenericTseApplicationTypeItem): boolean => {
+  if (app.value?.copyToOtherPartyYesOrNo === YesOrNo.YES) {
+    return true;
+  }
+  return app.value?.respondCollection?.some((response: TseRespondTypeItem) => {
+    isAdminNotifyBothParty(response);
+  });
+};
+
+const isAdminNotifyBothParty = (response: TseRespondTypeItem): boolean => {
+  return response.value?.from === Applicant.ADMIN && response.value?.selectPartyNotify === Parties.BOTH_PARTIES;
 };
