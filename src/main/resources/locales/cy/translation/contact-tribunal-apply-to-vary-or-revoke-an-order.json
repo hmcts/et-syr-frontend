@@ -1,28 +1,28 @@
 {
-  "title": "Amrywio neu ddirymu gorchymyn",
+  "title": "[W]Vary or revoke an order",
   "content": [
     {
       "type": "paragraph",
-      "text": "Defnyddiwch y ffurflen hon i wneud cais i amrywio neu ddirymu gorchymyn y mae’r tribiwnlys wedi ei gyhoeddi."
+      "text": "[W]Use this form to apply to vary or revoke an order the tribunal has issued."
     },
     {
       "type": "paragraph",
-      "text": "Fel arfer, ni fydd gorchmynion tribiwnlys yn cael eu hamrywio na’u dirymu oni bai bod newid materol wedi bod mewn amgylchiadau ers i’r gorchymyn gael ei wneud, sy’n gwneud yr amrywiad er budd cyfiawnder."
+      "text": "[W]Tribunal orders will not usually be varied or revoked unless there has been a material change in circumstances since the order was made, which make the variation in the interests of justice."
     },
     {
       "type": "paragraph",
-      "text": "Bydd y tribiwnlys yn ystyried eich rhesymau dros amrywio neu ddirymu’r gorchymyn ac unrhyw ddeunyddiau ategol y byddwch yn eu darparu ac yna’n gwneud penderfyniad."
+      "text": "[W]The tribunal will consider your reasons for varying or revoking the order and any supporting materials you provide then make a decision."
     },
     {
       "type": "bold-paragraph",
-      "text": "Manylion i’w cynnwys yn eich cais:"
+      "text": "[W]Details to include in your application:"
     },
     {
       "type": "list",
       "items": [
-        "y gorchymyn rydych am ei amrywio neu ei ddirymu",
-        "y dyddiad y cyhoeddodd y tribiwnlys y gorchymyn",
-        "eglurwch pa ran o’r gorchymyn rydych am ei amrywio neu ei ddirymu",
+        "[W]the order you want to vary or revoke",
+        "[W]the date the tribunal issued the order",
+        "[W]explain which part of the order you want to vary or revoke",
         "[W]how to vary the order",
         "[W]why it is in the interests of justice to vary or revoke this order. Tell us any relevant changes of circumstance since the order was made and consider the requirements of the ‘overriding objective’ in Rule 2 of the Employment Tribunal Rules of Procedure"
       ]

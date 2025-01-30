@@ -3,41 +3,41 @@
   "content": [
     {
       "type": "paragraph",
-      "text": "Defnyddiwch y ffurflen hon i wneud cais i ddyfarniad a wnaed gan dribiwnlys gael ei ailystyried. Gall hyn fod yn ddyfarniad a wnaed gan farnwr yn unig neu gan farnwr yn eistedd gydag aelodau nad ydynt yn gweithio yn y proffesiwn cyfreithiol."
+      "text": "[W]Use this form to have a judgment made by a tribunal reconsidered. This may be a judgment made by a judge alone or by a judge sitting with non-legal members."
     },
     {
       "type": "paragraph",
-      "text": "Os yw’n angenrheidiol ailystyried dyfarniad er budd cyfiawnder, gallwch ofyn i’r tribiwnlys edrych ar y dyfarniad eto."
+      "text": "[W]If reconsideration is necessary in the interests of justice you can ask the tribunal to look at the judgment again."
     },
     {
       "type": "paragraph",
-      "text": "Dim ond dyfarniad sy’n penderfynu ar fater terfynol yn eich achos y gellir ei ailystyried. Mae hyn felly yn eithrio unrhyw benderfyniad nad yw'n cynnwys penderfyniad terfynol ar yr hawliad, neu ran o hawliad. Os ydych am ofyn i orchymyn rheoli achos gael ei amrywio neu ei ddirymu, defnyddiwch y ffurflen gais ar gyfer amrywio neu ddirymu gorchymyn."
+      "text": "[W]Only a judgment which finally determines an issue in your case can be reconsidered. This therefore excludes any decision that does not comprise a final determination of the claim, or part of a claim. If you wish to ask for a case management order to be varied or revoked, use the vary or revoke an order application."
     },
     {
       "type": "paragraph",
-      "text": "Mae’n rhaid i chi ofyn i dribiwnlys ailystyried dyfarniad o fewn 14 diwrnod i ddyddiad anfon y dyfarniad atoch."
+      "text": "[W]You can only ask the tribunal to reconsider a judgment within 14 days of the date the judgment was sent to you."
     },
     {
       "type": "paragraph",
-      "text": "Os ydych am i’r tribiwnlys ailystyried dyfarniad a anfonwyd atoch dros 14 diwrnod yn ôl rhaid i chi egluro pam bod eich cais yn hwyr."
+      "text": "[W]If you want the tribunal to reconsider a judgment that was sent to you over 14 days ago you must explain why your application is late."
     },
     {
       "type": "paragraph",
-      "text": "Nid yw cais i ailystyried yn effeithio ar y terfyn amser ar gyfer apelio i’r Tribiwnlys Apeliadau Cyflogaeth."
+      "text": "[W]A reconsideration application does not affect the time limit for appealing to the Employment Appeal Tribunal."
     },
     {
       "type": "bold-paragraph",
-      "text": "Manylion i’w cynnwys yn eich cais:"
+      "text": "[W]Details to include in your application:"
     },
     {
       "type": "list",
       "items": [
-        "y dyfarniad rydych eisiau iddo gael ei ailystyried",
-        "y dyddiad y cyhoeddodd y tribiwnlys y dyfarniad",
-        "eich rheswm dros anfon eich cais yn hwyr os anfonwyd y dyfarniad dros 14 diwrnod yn ôl",
-        "pam ei fod er budd cyfiawnder i ailystyried y dyfarniad hwn",
-        "os dylai’r tribiwnlys amrywio neu ddirymu’r dyfarniad",
-        "unrhyw wybodaeth ychwanegol neu ddeunydd nad oes gan y tribiwnlys yn barod i gefnogi eich cais"
+        "[W]the judgment you want reconsidered",
+        "[W]the date the tribunal issued the judgment",
+        "[W]your reason for a late application if the judgment was sent over 14 days ago",
+        "[W]why it is in the interests of justice to reconsider this judgment",
+        "[W]if the tribunal should vary or revoke the judgment",
+        "[W]any additional information or material which the tribunal does not already have to support your application"
       ]
     }
   ]

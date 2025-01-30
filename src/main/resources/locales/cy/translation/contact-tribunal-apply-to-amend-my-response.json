@@ -19,13 +19,13 @@
     },
     {
       "type": "bold-paragraph",
-      "text": "Manylion i’w cynnwys yn eich cais:"
+      "text": "[W]Details to include in your application:"
     },
     {
       "type": "list",
       "items": [
         "[W]what you want to amend in your response. Be specific and refer to your ET3 response form if possible",
-        "[W]if you consider it a minor or substantial amendment",
+        "[W]if you consider it a minor or substantial amendment ",
         "[W]why you want to make this amendment",
         "[W]why you are asking to make this amendment now",
         "[W]how this amendment will benefit you and how could it disadvantage you if not granted"

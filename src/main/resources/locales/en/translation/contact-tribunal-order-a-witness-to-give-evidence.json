@@ -7,7 +7,7 @@
     },
     {
       "type": "paragraph",
-      "text": "The witness must be in Great Britain (England, Scotland and Wales). This does not include Northern Ireland."
+      "text": "The witness must be in Great Britain (England, Scotland and Wales). This does not include Northern Ireland. "
     },
     {
       "type": "paragraph",
@@ -28,7 +28,7 @@
     {
       "type": "list",
       "items": [
-        "the witness’s full name and address",
+        "the witness’s full name and address ",
         "why the attendance of this witness is necessary for a fair hearing. The tribunal needs to understand why the evidence is relevant, and why there is no alternative way of establishing the same points at the hearing without ordering a witness to attend",
         "if you have asked this witness to attend voluntarily. If you have, tell us when you asked and what their response was",
         "if you have not asked the witness to attend yet, explain why"
@@ -36,7 +36,7 @@
     },
     {
       "type": "paragraph",
-      "text": "If the order is granted, the witness will be ordered to attend on the first day of the hearing. If you want them to attend on another day or days, tell us:"
+      "text": "If the order is granted, the witness will be ordered to attend on the first day of the hearing. If you want them to attend on another day or days, tell us: "
     },
     {
       "type": "list",

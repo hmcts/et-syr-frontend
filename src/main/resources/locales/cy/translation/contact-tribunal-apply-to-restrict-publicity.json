@@ -1,5 +1,5 @@
 {
-  "title": "Cyfyngu ar gyhoeddusrwydd",
+  "title": "[W]Restrict publicity",
   "content": [
     {
       "type": "paragraph",
@@ -19,12 +19,12 @@
     },
     {
       "type": "paragraph",
-      "text": "Caiff y tribiwnlys orchymyn:"
+      "text": "[W]The tribunal may issue an order:"
     },
     {
       "type": "list",
       "items": [
-        "bod gwrandawiad a fyddai fel arall yn gyhoeddus yn cael ei gynnal, yn gyfan gwbl neu’n rhannol breifat",
+        "[W]that a hearing that would otherwise be in public be conducted, in whole or in part, in private",
         "[W]that the identities of specified parties, witnesses or other persons referred to in the proceedings should not be disclosed to the public, by the use of anonymisation or otherwise",
         "[W]for measures preventing witnesses at a public hearing being identifiable by members of the public",
         "[W]restricting the reporting of the case in the media"
@@ -32,7 +32,7 @@
     },
     {
       "type": "bold-paragraph",
-      "text": "Manylion i’w cynnwys yn eich cais:"
+      "text": "[W]Details to include in your application:"
     },
     {
       "type": "list",

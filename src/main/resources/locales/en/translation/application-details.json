@@ -4,10 +4,13 @@
   "applicant": "Applicant",
   "requestDate": "Application date",
   "applicationType": "Application type",
+  "Respondent": "Respondent",
   "legend": "What do you want to tell or ask the tribunal?",
   "supportingMaterial": "Supporting material",
   "copyCorrespondence": "Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?",
   "copyToOtherPartyText": "Reason for not informing other party",
+  "respond": "Respond",
+  "mustRespond": "You must respond to the tribunal.",
   "responder": "Response from",
   "responseDate": "Response date",
   "response": "What's your response to the claimant's application?",
@@ -23,7 +26,5 @@
   "document": "Document",
   "requestMadeBy": "Request made by",
   "name": "Name",
-  "sentTo": "Sent to",
-  "mustRespond": "You must respond to the tribunal.",
-  "respond": "Respond"
+  "sentTo": "Sent to"
 }
