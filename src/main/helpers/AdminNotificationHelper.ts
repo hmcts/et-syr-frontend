@@ -57,7 +57,7 @@ const isRequestFromAdmin = (response: TseRespondTypeItem, respondentResponseRequ
     response.value.from === Applicant.ADMIN &&
     response.value.isResponseRequired === YesOrNo.YES &&
     (response.value.selectPartyRespond === Parties.RESPONDENT_ONLY ||
-      response.value.selectPartyRespond.toLowerCase() === Parties.BOTH_PARTIES.toLowerCase()) // EW has 'Both parties'. Scottish had 'Both Parties'
+      response.value.selectPartyRespond === Parties.BOTH_PARTIES)
   );
 };
 

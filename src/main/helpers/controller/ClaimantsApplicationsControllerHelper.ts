@@ -4,10 +4,13 @@ import {
   GenericTseApplicationTypeItem,
   TseRespondTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, Parties, TranslationKeys } from '../../definitions/constants';
+import { Applicant, PageUrls, Parties, TranslationKeys } from '../../definitions/constants';
+import { application } from '../../definitions/contact-tribunal-applications';
+import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
+import { getLanguageParam } from '../RouterHelpers';
 
-import { updateAppsInfo } from './YourRequestAndApplicationsHelper';
+import { getApplicationDisplayByCode } from './ContactTribunalHelper';
 
 export const getClaimantsApplications = (req: AppRequest): GenericTseApplicationTypeItem[] => {
   const userCase = req.session.userCase;
@@ -20,12 +23,18 @@ export const getClaimantsApplications = (req: AppRequest): GenericTseApplication
     app => app.value?.applicant === Applicant.CLAIMANT && isClaimantAppsShare(app)
   );
   claimantApps.forEach(app => {
-    updateAppsInfo(app, translations, url);
+    app.linkValue = getApplicationDisplayByCode(app.value.type, translations);
+    app.redirectUrl = PageUrls.CLAIMANTS_APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
+    app.statusColor = linkStatusColorMap.get(<LinkStatus>app.value.status);
+    app.displayStatus = translations[app.value.status];
   });
   return claimantApps;
 };
 
 const isClaimantAppsShare = (app: GenericTseApplicationTypeItem): boolean => {
+  if (app.value.type === application.ORDER_WITNESS_ATTEND.code) {
+    return false;
+  }
   if (app.value?.copyToOtherPartyYesOrNo === YesOrNo.YES) {
     return true;
   }

@@ -171,6 +171,7 @@ export const PageUrls = {
   RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY: '/respond-to-tribunal-copy-to-other-party',
   RESPOND_TO_TRIBUNAL_CYA: '/respond-to-tribunal-check-your-answers',
   RESPOND_TO_TRIBUNAL_COMPLETE: '/respond-to-tribunal-complete',
+  CLAIMANTS_APPLICATION_DETAILS: '/claimants-application-details/:appId',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
 } as const;

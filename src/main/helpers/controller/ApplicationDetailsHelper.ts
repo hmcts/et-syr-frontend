@@ -96,7 +96,7 @@ const isResponseFromTribunalToRespondent = (response: TseRespondTypeItem): boole
   return (
     response.value.from === Applicant.ADMIN &&
     (response.value.selectPartyNotify === Parties.RESPONDENT_ONLY ||
-      response.value.selectPartyNotify.toLowerCase() === Parties.BOTH_PARTIES.toLowerCase()) // EW has 'Both parties'. Scottish had 'Both Parties'
+      response.value.selectPartyNotify === Parties.BOTH_PARTIES)
   );
 };
 

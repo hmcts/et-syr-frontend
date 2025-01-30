@@ -18,14 +18,10 @@ export const getApplicationCollection = (req: AppRequest): GenericTseApplication
     app => app.value?.applicant === Applicant.RESPONDENT
   );
   respondentApps.forEach(app => {
-    updateAppsInfo(app, translations, url);
+    app.linkValue = getApplicationDisplayByCode(app.value.type, translations);
+    app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
+    app.statusColor = linkStatusColorMap.get(<LinkStatus>app.value.status);
+    app.displayStatus = translations[app.value.status];
   });
   return respondentApps;
-};
-
-export const updateAppsInfo = (app: GenericTseApplicationTypeItem, translations: AnyRecord, url: string): void => {
-  app.linkValue = getApplicationDisplayByCode(app.value.type, translations);
-  app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
-  app.statusColor = linkStatusColorMap.get(<LinkStatus>app.value.status);
-  app.displayStatus = translations[app.value.status];
 };
