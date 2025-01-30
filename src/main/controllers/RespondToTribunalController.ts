@@ -11,7 +11,7 @@ import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getAllResponses, getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
-import { getFormDataError } from '../helpers/controller/RespondToTribunalControllerHelper';
+import { getFormDataError } from '../helpers/controller/RespondToTribunalHelper';
 import UrlUtils from '../utils/UrlUtils';
 import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
 

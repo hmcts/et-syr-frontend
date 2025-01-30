@@ -13,20 +13,19 @@ export default class ContactTribunalSubmitController {
     const userCase = req.session?.userCase;
     try {
       // Update Hub Links Statuses
-      await ET3Util.updateCaseDetailsLinkStatuses(
+      req.session.userCase = await ET3Util.updateCaseDetailsLinkStatuses(
         req,
         ET3CaseDetailsLinkNames.RespondentRequestsAndApplications,
         LinkStatus.IN_PROGRESS
       );
 
       // Submit application
-      // TODO: save data in api
+      //TODO: save data in api
 
       // Clear temporary fields
       userCase.rule90state = userCase.copyToOtherPartyYesOrNo && userCase.copyToOtherPartyYesOrNo === YesOrNo.YES;
       clearTempFields(req.session.userCase);
 
-      // Redirect to next page
       return res.redirect(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE + getLanguageParam(req.url));
     } catch (error) {
       return res.redirect(ErrorPages.NOT_FOUND);

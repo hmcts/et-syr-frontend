@@ -1,6 +1,6 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import { ValidationErrors } from '../../../../main/definitions/constants';
-import { getFormDataError } from '../../../../main/helpers/controller/RespondToTribunalControllerHelper';
+import { getFormDataError } from '../../../../main/helpers/controller/RespondToTribunalHelper';
 
 describe('Respond to Tribunal Controller Helper', () => {
   describe('getFormDataError', () => {

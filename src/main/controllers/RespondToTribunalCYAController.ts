@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { InterceptPaths, TranslationKeys } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getCyaContent } from '../helpers/controller/RespondToTribunalCYAControllerHelper';
+import { getCyaContent } from '../helpers/controller/RespondToTribunalCYAHelper';
 import UrlUtils from '../utils/UrlUtils';
 
 export default class RespondToTribunalCYAController {

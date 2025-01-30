@@ -1,6 +1,6 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import { Applicant } from '../../../../main/definitions/constants';
-import { getCyaContent } from '../../../../main/helpers/controller/RespondToTribunalCYAControllerHelper';
+import { getCyaContent } from '../../../../main/helpers/controller/RespondToTribunalCYAHelper';
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
 import commonJson from '../../../../main/resources/locales/en/translation/common.json';
 import respondToTribunalCyaJson from '../../../../main/resources/locales/en/translation/respond-to-tribunal-check-your-answers.json';

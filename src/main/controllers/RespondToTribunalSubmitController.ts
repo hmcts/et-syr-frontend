@@ -5,7 +5,7 @@ import { YesOrNo } from '../definitions/case';
 import { ErrorPages, PageUrls } from '../definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { clearTempFields } from '../helpers/controller/RespondToTribunalSubmitControllerHelper';
+import { clearTempFields } from '../helpers/controller/RespondToTribunalSubmitHelper';
 import ET3Util from '../utils/ET3Util';
 
 export default class RespondToTribunalSubmitController {

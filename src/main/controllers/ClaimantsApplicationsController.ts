@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { TranslationKeys } from '../definitions/constants';
-import { getClaimantsApplications } from '../helpers/controller/ClaimantsApplicationsControllerHelper';
+import { getClaimantsApplications } from '../helpers/controller/ClaimantsApplicationsHelper';
 
 export default class ClaimantsApplicationsController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {

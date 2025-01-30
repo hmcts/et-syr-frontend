@@ -1,5 +1,5 @@
 import { CaseWithId, YesOrNo } from '../../../../main/definitions/case';
-import { clearTempFields } from '../../../../main/helpers/controller/RespondToTribunalSubmitControllerHelper';
+import { clearTempFields } from '../../../../main/helpers/controller/RespondToTribunalSubmitHelper';
 
 describe('Respond to Tribunal Controller Helper', () => {
   describe('clearTempFields', () => {
