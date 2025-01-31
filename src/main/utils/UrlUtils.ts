@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, RespondentET3Model } from '../definitions/case';
-import { DefaultValues, PageUrls } from '../definitions/constants';
+import { DefaultValues, PageUrls, ValidParameters } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 
 import CollectionUtils from './CollectionUtils';
@@ -144,5 +144,24 @@ export default class UrlUtils {
       selectedRespondent.ccdId +
       getLanguageParam(req.url)
     );
+  }
+
+  /**
+   * Checks if parameter is a valid parameter by searching if it exists in the ValidParameters list.
+   * ValidParameters are 'fileId', 'redirect', 'csrftoken', 'csrf', 'csrfToken', 'lng'.
+   * @param parameter parameter to be checked.
+   * @return boolean value according to parameter exists in valid parameters.
+   */
+  public static isValidParameter(parameter: string): boolean {
+    if (StringUtils.isBlank(parameter)) {
+      return false;
+    }
+
+    for (const param of ValidParameters) {
+      if (parameter.includes(param)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

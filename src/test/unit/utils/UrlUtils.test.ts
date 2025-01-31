@@ -274,4 +274,30 @@ describe('UrlUtils tests', () => {
       );
     });
   });
+  describe('isValidParameter tests', () => {
+    it.each([
+      {
+        parameter: undefined,
+        result: false,
+      },
+      {
+        parameter: '',
+        result: false,
+      },
+      {
+        parameter: ' ',
+        result: false,
+      },
+      {
+        parameter: 'test=test',
+        result: false,
+      },
+      {
+        parameter: 'lng=test',
+        result: true,
+      },
+    ])('checks if given parameter is in ValidParameters list: %o', ({ parameter, result }) => {
+      expect(UrlUtils.isValidParameter(parameter)).toStrictEqual(result);
+    });
+  });
 });

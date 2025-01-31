@@ -37,7 +37,7 @@ export const addParameterToUrl = (url: string, parameter: string): string => {
   if (StringUtils.isBlank(url)) {
     return DefaultValues.STRING_EMPTY;
   }
-  if (StringUtils.isBlank(parameter)) {
+  if (StringUtils.isBlank(parameter) || !UrlUtils.isValidParameter(parameter)) {
     return url;
   }
   if (!url.includes(parameter)) {

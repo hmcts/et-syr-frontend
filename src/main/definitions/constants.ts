@@ -518,6 +518,8 @@ export const DefaultValues = {
   DOCUMENT_CHARS_TO_REPLACE: ['@', '/', '\\', "'", ':', '(', ')', '#'],
 } as const;
 
+export const ValidParameters: string[] = ['fileId', 'redirect', 'csrftoken', 'csrf', 'csrfToken', 'lng'];
+
 export const FormFieldNames = {
   GENERIC_FORM_FIELDS: {
     HIDDEN_ERROR_FIELD: 'hiddenErrorField',
