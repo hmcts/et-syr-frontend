@@ -17,7 +17,7 @@ export const mockGenericTseCollection: GenericTseApplicationTypeItem[] = [
         document_filename: 'Application 1 - Amend my claim - Attachment.txt',
         document_binary_url: 'http://dm-store:8080/documents/04ee9057-4d4b-44d0-b371-6bb396f078ca/binary',
       },
-      responsesCount: '0',
+      responsesCount: '1',
       applicationState: 'notStartedYet',
       respondCollection: [
         {
@@ -80,7 +80,7 @@ export const mockGenericTseCollection: GenericTseApplicationTypeItem[] = [
         document_filename: 'Application 2 - App to amend response - Attachment.txt',
         document_binary_url: 'http://dm-store:8080/documents/e760f197-7611-41ae-bbcd-7f92194f6074/binary',
       },
-      responsesCount: '0',
+      responsesCount: '1',
       applicationState: 'notStartedYet',
       respondCollection: [
         {
