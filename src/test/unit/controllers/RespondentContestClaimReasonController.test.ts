@@ -5,6 +5,7 @@ import {
   PageUrls,
   TranslationKeys,
   ValidationErrors,
+  languages,
 } from '../../../main/definitions/constants';
 import RespondentContestClaimReasonControllerHelper from '../../../main/helpers/controller/RespondentContestClaimReasonControllerHelper';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
@@ -88,7 +89,9 @@ describe('RespondentContestClaimReasonController', () => {
           errorType: ValidationErrors.INVALID_FILE_SIZE,
         },
       ]);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languages.ENGLISH_URL_PARAMETER
+      );
     });
     it('should redirect to respondent contest claim reason page when file has any error', async () => {
       request = mockRequest({
@@ -99,7 +102,9 @@ describe('RespondentContestClaimReasonController', () => {
       request.fileTooLarge = false;
       FileUtils.checkFile = jest.fn().mockReturnValueOnce(undefined);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languages.ENGLISH_URL_PARAMETER
+      );
     });
     it('should redirect to respondent contest claim reason page when file already exists', async () => {
       request = mockRequest({
@@ -112,7 +117,9 @@ describe('RespondentContestClaimReasonController', () => {
       FileUtils.checkFile = jest.fn().mockReturnValueOnce(true);
       FileUtils.fileAlreadyExists = jest.fn().mockReturnValueOnce(true);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languages.ENGLISH_URL_PARAMETER
+      );
       expect(request.session.errors).toStrictEqual([
         {
           propertyName: FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT,
@@ -131,7 +138,9 @@ describe('RespondentContestClaimReasonController', () => {
       FileUtils.fileAlreadyExists = jest.fn().mockReturnValueOnce(false);
       FileUtils.uploadFile = jest.fn().mockResolvedValueOnce(undefined);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languages.ENGLISH_URL_PARAMETER
+      );
     });
     it('should redirect to respondent contest claim reason page when document type item is undefined', async () => {
       request = mockRequest({
@@ -145,7 +154,9 @@ describe('RespondentContestClaimReasonController', () => {
       FileUtils.uploadFile = jest.fn().mockResolvedValueOnce(mockDocumentUploadResponse);
       FileUtils.convertDocumentUploadResponseToDocumentTypeItem = jest.fn().mockReturnValueOnce(undefined);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languages.ENGLISH_URL_PARAMETER
+      );
     });
     it('should set session et3 response contest claim document to an empty array when not found and push uploaded document', async () => {
       request = mockRequest({
@@ -166,7 +177,9 @@ describe('RespondentContestClaimReasonController', () => {
       expect(request.session.userCase.et3ResponseContestClaimDocument[0]).toStrictEqual(
         mockDocumentTypeItemFromMockDocumentUploadResponseDocumentFileNameTestFilePdf
       );
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languages.ENGLISH_URL_PARAMETER
+      );
     });
     it('should redirect to respondent contest claim reason page when there is an error in check areInputValuesValid of RespondentContestClaimReasonControllerHelper', async () => {
       request = mockRequest({
@@ -183,7 +196,9 @@ describe('RespondentContestClaimReasonController', () => {
         return false;
       });
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languages.ENGLISH_URL_PARAMETER
+      );
       expect(request.session.errors).toStrictEqual([
         {
           propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
@@ -199,7 +214,9 @@ describe('RespondentContestClaimReasonController', () => {
       });
       areInputValuesValidMock.mockReturnValueOnce(true);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languages.ENGLISH_URL_PARAMETER
+      );
     });
 
     it('should redirect to check your answers contest claim page when submit button clicked and data successfully updated', async () => {
@@ -211,7 +228,9 @@ describe('RespondentContestClaimReasonController', () => {
       areInputValuesValidMock.mockReturnValueOnce(true);
       updateET3DataMock.mockResolvedValueOnce(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM);
+      expect(response.redirect).toHaveBeenCalledWith(
+        PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM + languages.ENGLISH_URL_PARAMETER
+      );
     });
     it('should redirect to response saved page when submit save as draft clicked and data successfully updated', async () => {
       request = mockRequest({
@@ -222,7 +241,7 @@ describe('RespondentContestClaimReasonController', () => {
       areInputValuesValidMock.mockReturnValueOnce(true);
       updateET3DataMock.mockResolvedValueOnce(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONSE_SAVED);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONSE_SAVED + languages.ENGLISH_URL_PARAMETER);
     });
     it('should call ET3Util.updateET3ResponseWithET3Form with the correct parameters', async () => {
       request = mockRequest({

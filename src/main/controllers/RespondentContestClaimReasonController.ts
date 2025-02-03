@@ -100,6 +100,7 @@ export default class RespondentContestClaimReasonController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    const languageParam: string = getLanguageParam(req.url);
     req.session.errors = [];
     if (req.body.url) {
       logger.warn('Potential bot activity detected from IP: ' + req.ip);
@@ -115,10 +116,10 @@ export default class RespondentContestClaimReasonController {
             errorType: ValidationErrors.INVALID_FILE_SIZE,
           },
         ];
-        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
+        return res.redirect(returnValidUrl(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languageParam));
       }
       if (!FileUtils.checkFile(req, FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT)) {
-        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
+        return res.redirect(returnValidUrl(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languageParam));
       }
       if (FileUtils.fileAlreadyExists(req)) {
         ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
@@ -126,18 +127,18 @@ export default class RespondentContestClaimReasonController {
           ValidationErrors.FILE_ALREADY_EXISTS,
           FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.CONTEST_CLAIM_DOCUMENT
         );
-        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
+        return res.redirect(returnValidUrl(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languageParam));
       }
       const uploadedDocument: DocumentUploadResponse = await FileUtils.uploadFile(req);
       if (!uploadedDocument) {
-        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
+        return res.redirect(returnValidUrl(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languageParam));
       }
       const documentTypeItem: DocumentTypeItem = FileUtils.convertDocumentUploadResponseToDocumentTypeItem(
         req,
         uploadedDocument
       );
       if (!documentTypeItem) {
-        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
+        return res.redirect(returnValidUrl(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languageParam));
       }
       if (CollectionUtils.isEmpty(req.session.userCase.et3ResponseContestClaimDocument)) {
         req.session.userCase.et3ResponseContestClaimDocument = [];
@@ -147,7 +148,7 @@ export default class RespondentContestClaimReasonController {
     }
     req.session.userCase.et3ResponseContestClaimDetails = formData.et3ResponseContestClaimDetails;
     if (req.body?.upload) {
-      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
+      return res.redirect(returnValidUrl(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languageParam));
     }
     RespondentContestClaimReasonControllerHelper.areInputValuesValid(req, formData);
 
@@ -160,17 +161,17 @@ export default class RespondentContestClaimReasonController {
           ValidationErrors.FILE_UPLOAD_BACKEND_ERROR,
           FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
         );
-        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
+        return res.redirect(returnValidUrl(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languageParam));
       }
       req.session.userCase = userCase;
       if (req.body?.submit) {
-        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM)));
+        return res.redirect(returnValidUrl(PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM + languageParam));
       }
       if (req.body?.saveAsDraft) {
-        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONSE_SAVED)));
+        return res.redirect(returnValidUrl(PageUrls.RESPONSE_SAVED + languageParam));
       }
     }
-    return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
+    return res.redirect(returnValidUrl(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON + languageParam));
   };
 
   public get = (req: AppRequest, res: Response): void => {
