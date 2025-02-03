@@ -25,7 +25,7 @@ describe('Respond to Tribunal Controller', () => {
       request = mockRequestWithTranslation({}, translationJsons);
       request.session.userCase = mockUserCase;
       request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
-      request.params.appId = '1';
+      request.params.appId = '5d0118c9-bdd6-4d32-9131-6aa6f5ec718e';
       controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.RESPOND_TO_TRIBUNAL, expect.anything());
     });
@@ -61,7 +61,7 @@ describe('Respond to Tribunal Controller', () => {
       });
       request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
       request.session.errors = [];
-      request.params.appId = '1';
+      request.params.appId = '5d0118c9-bdd6-4d32-9131-6aa6f5ec718e';
       controller.post(request, response);
       expect(request.session.userCase.hasSupportingMaterial).toEqual(YesOrNo.YES);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL + '?lng=en');
@@ -76,7 +76,7 @@ describe('Respond to Tribunal Controller', () => {
       });
       request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
       request.session.errors = [];
-      request.params.appId = '1';
+      request.params.appId = '5d0118c9-bdd6-4d32-9131-6aa6f5ec718e';
       controller.post(request, response);
       expect(request.session.userCase.responseText).toEqual('Test response');
       expect(request.session.userCase.hasSupportingMaterial).toEqual(YesOrNo.NO);
@@ -87,9 +87,11 @@ describe('Respond to Tribunal Controller', () => {
       request = mockRequest({ body: {} });
       request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
       request.session.errors = [];
-      request.params.appId = '1';
+      request.params.appId = '5d0118c9-bdd6-4d32-9131-6aa6f5ec718e';
       controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith('/respond-to-tribunal/1?lng=en');
+      expect(response.redirect).toHaveBeenCalledWith(
+        '/respond-to-tribunal/5d0118c9-bdd6-4d32-9131-6aa6f5ec718e?lng=en'
+      );
       const errors = [{ propertyName: 'responseText', errorType: 'required' }];
       expect(request.session.errors).toEqual(errors);
     });
@@ -103,9 +105,11 @@ describe('Respond to Tribunal Controller', () => {
       });
       request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
       request.session.errors = [];
-      request.params.appId = '1';
+      request.params.appId = '5d0118c9-bdd6-4d32-9131-6aa6f5ec718e';
       controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith('/respond-to-tribunal/1?lng=en');
+      expect(response.redirect).toHaveBeenCalledWith(
+        '/respond-to-tribunal/5d0118c9-bdd6-4d32-9131-6aa6f5ec718e?lng=en'
+      );
       const errors = [{ propertyName: 'responseText', errorType: 'tooLong' }];
       expect(request.session.errors).toEqual(errors);
     });
