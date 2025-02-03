@@ -26,5 +26,9 @@
   "document": "Document",
   "requestMadeBy": "Request made by",
   "name": "Name",
-  "sentTo": "Sent to"
+  "sentTo": "Sent to",
+  "decision": "Decision",
+  "notification": "Notification",
+  "decisionType": "Type of decision",
+  "decisionMadeBy": "Decision made by"
 }

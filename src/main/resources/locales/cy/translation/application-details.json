@@ -26,5 +26,9 @@
   "document": "Dogfen",
   "requestMadeBy": "Gwnaethpwyd y cais gan",
   "name": "Enw",
-  "sentTo": "Anfonwyd at"
+  "sentTo": "Anfonwyd at",
+  "decision": "Penderfyniad",
+  "notification": "Hysbysiad",
+  "decisionType": "Math o benderfyniad",
+  "decisionMadeBy": "Gwnaethpwyd y penderfyniad gan"
 }

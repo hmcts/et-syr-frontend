@@ -23,6 +23,13 @@
         }) }}
       {% endfor %}
 
+      {% for decisionContent in decisionContent %}
+        <h2 class="govuk-heading-m">{{ decision }}</h2>
+        {{ govukSummaryList({
+          rows: decisionContent
+        }) }}
+      {% endfor %}
+
       {% if isRespondButton %}
         <p class="govuk-body">{{ mustRespond }}</p>
         {{ govukButton({

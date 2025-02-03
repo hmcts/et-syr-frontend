@@ -2,11 +2,13 @@ import { AppRequest } from '../../definitions/appRequest';
 import { YesOrNo } from '../../definitions/case';
 import {
   GenericTseApplicationTypeItem,
+  TseAdminDecision,
   TseRespondTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant, Parties, TranslationKeys } from '../../definitions/constants';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
+import CollectionUtils from '../../utils/CollectionUtils';
 import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../DocumentHelpers';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
@@ -60,6 +62,11 @@ const getTseApplicationDetails = (
   return rows;
 };
 
+/**
+ * Get all responses in respondCollection
+ * @param app selected GenericTseApplicationTypeItem
+ * @param req request
+ */
 export const getAllResponses = (app: GenericTseApplicationTypeItem, req: AppRequest): SummaryListRow[][] => {
   const allResponses: SummaryListRow[][] = [];
 
@@ -171,6 +178,55 @@ const addAdminResponse = (response: TseRespondTypeItem, translations: AnyRecord,
   }
 
   rows.push(addSummaryRow(translations.sentTo, translations[response.value.selectPartyNotify]));
+
+  return rows;
+};
+
+/**
+ * Get selected application decision
+ * @param app selected application
+ * @param req request
+ */
+export const getDecisionContent = (app: GenericTseApplicationTypeItem, req: AppRequest): SummaryListRow[][] => {
+  const selectedAppAdminDecision = app.value?.adminDecision;
+  if (!selectedAppAdminDecision) {
+    return [];
+  }
+
+  const allResponses: SummaryListRow[][] = [];
+  const translations = {
+    ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
+    ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
+  };
+
+  for (const item of selectedAppAdminDecision) {
+    allResponses.push(getTseApplicationDecisionDetails(item.value, translations));
+  }
+  return allResponses;
+};
+
+const getTseApplicationDecisionDetails = (decision: TseAdminDecision, translations: AnyRecord): SummaryListRow[] => {
+  const rows = [];
+  rows.push(
+    addSummaryRow(translations.notification, decision.enterNotificationTitle),
+    addSummaryRow(translations.decision, decision.decision),
+    addSummaryRow(translations.date, decision.date),
+    addSummaryRow(translations.sentBy, translations.tribunal),
+    addSummaryRow(translations.decisionType, decision.typeOfDecision),
+    addSummaryRow(translations.additionalInfo, decision.additionalInformation)
+  );
+
+  if (CollectionUtils.isNotEmpty(decision.responseRequiredDoc)) {
+    const docLinks: string[] = [];
+    decision.responseRequiredDoc.forEach(d => docLinks.push(getLinkFromDocument(d.value.uploadedDocument)));
+    rows.push(addSummaryHtmlRow(translations.document, docLinks.join('')));
+  }
+
+  rows.push(
+    addSummaryRow(translations.decisionMadeBy, decision.decisionMadeBy),
+    addSummaryRow(translations.name, decision.decisionMadeByFullName),
+    addSummaryRow(translations.sentTo, decision.selectPartyNotify)
+  );
 
   return rows;
 };

@@ -8,6 +8,7 @@ import { getLanguageParam } from '../helpers/RouterHelpers';
 import {
   getAllResponses,
   getApplicationContent,
+  getDecisionContent,
   isResponseToTribunalRequired,
 } from '../helpers/controller/ApplicationDetailsHelper';
 import { getApplicationDisplayByCode } from '../helpers/controller/ContactTribunalHelper';
@@ -29,6 +30,7 @@ export default class ApplicationDetailsController {
       }),
       appContent: getApplicationContent(selectedApplication, req),
       allResponses: getAllResponses(selectedApplication, req),
+      decisionContent: getDecisionContent(selectedApplication, req),
       isRespondButton: isResponseToTribunalRequired(selectedApplication),
       respondRedirectUrl:
         PageUrls.RESPOND_TO_TRIBUNAL.replace(':appId', selectedApplication.id) + getLanguageParam(req.url),
