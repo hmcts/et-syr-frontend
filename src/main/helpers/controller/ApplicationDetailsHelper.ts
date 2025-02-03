@@ -200,17 +200,21 @@ export const getDecisionContent = (app: GenericTseApplicationTypeItem, req: AppR
   };
 
   for (const item of selectedAppAdminDecision) {
-    allResponses.push(getTseApplicationDecisionDetails(item.value, translations));
+    allResponses.push(getTseApplicationDecisionDetails(item.value, translations, req));
   }
   return allResponses;
 };
 
-const getTseApplicationDecisionDetails = (decision: TseAdminDecision, translations: AnyRecord): SummaryListRow[] => {
+const getTseApplicationDecisionDetails = (
+  decision: TseAdminDecision,
+  translations: AnyRecord,
+  req: AppRequest
+): SummaryListRow[] => {
   const rows = [];
   rows.push(
     addSummaryRow(translations.notification, decision.enterNotificationTitle),
     addSummaryRow(translations.decision, decision.decision),
-    addSummaryRow(translations.date, decision.date),
+    addSummaryRow(translations.date, datesStringToDateInLocale(decision.date, req.url)),
     addSummaryRow(translations.sentBy, translations.tribunal),
     addSummaryRow(translations.decisionType, decision.typeOfDecision),
     addSummaryRow(translations.additionalInfo, decision.additionalInformation)
