@@ -4,23 +4,52 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { continueButton } from '../definitions/buttons';
 import { CaseWithId } from '../definitions/case';
-import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants';
+import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { getApplicationByUrl } from '../helpers/ApplicationHelper';
 import { getPageContent } from '../helpers/FormHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getApplicationDisplayByUrl, getFormDataError, getNextPage } from '../helpers/controller/ContactTribunalHelper';
+import { getApplicationDisplayByUrl } from '../helpers/controller/ContactTribunalHelper';
+import {
+  getFormError,
+  getNextPage,
+  getThisPage,
+  handleFileUpload,
+} from '../helpers/controller/ContactTribunalSelectedControllerHelper';
+import { getLogger } from '../logger';
+import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
+
+const logger = getLogger('ContactTribunalSelectedController');
 
 export default class ContactTribunalSelectedController {
   private readonly form: Form;
+  private uploadedFileName = '';
+  private getHint = (label: AnyRecord): string => {
+    if (StringUtils.isNotBlank(this.uploadedFileName)) {
+      return (label.contactApplicationFile.hintExisting as string).replace('{{filename}}', this.uploadedFileName);
+    } else {
+      return label.contactApplicationFile.hint;
+    }
+  };
   private readonly formContent: FormContent = {
     fields: {
       contactApplicationFile: {
+        id: 'contactApplicationFile',
+        labelHidden: true,
         type: 'upload',
+        classes: 'govuk-label',
         label: (l: AnyRecord): string => l.contactApplicationFile.label,
-        labelAsHint: true,
+        hint: (l: AnyRecord) => this.getHint(l),
+      },
+      upload: {
+        label: (l: AnyRecord): string => l.files.uploadButton,
+        classes: 'govuk-button--secondary',
+        id: 'upload',
+        type: 'button',
+        name: 'upload',
+        value: 'true',
+        divider: false,
       },
       contactApplicationText: {
         type: 'charactercount',
@@ -37,30 +66,43 @@ export default class ContactTribunalSelectedController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    if (req.body.url) {
+      logger.warn('Potential bot activity detected from IP: ' + req.ip);
+      res.status(200).end('Thank you for your submission. You will be contacted in due course.');
+      return;
+    }
+
     const selectedApplication = getApplicationByUrl(req.params.selectedOption);
     if (!selectedApplication) {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
-    req.session.errors = [];
-    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    const contactApplicationError = getFormDataError(formData);
-    if (contactApplicationError) {
-      req.session.errors.push(contactApplicationError);
-      return res.redirect(
-        PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) +
-          getLanguageParam(req.url)
+    if (req.body?.upload) {
+      const fileErrorRedirect = handleFileUpload(
+        req,
+        FormFieldNames.CONTACT_TRIBUNAL_SELECTED.CONTACT_APPLICATION_FILE_NAME
       );
+      if (await fileErrorRedirect) {
+        return res.redirect(getThisPage(selectedApplication, req));
+      }
     }
 
-    // TODO: Get values from inputs and Save them
+    req.session.errors = [];
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    const contactApplicationError = getFormError(req, formData);
+    if (contactApplicationError) {
+      req.session.errors.push(contactApplicationError);
+      return res.redirect(getThisPage(selectedApplication, req));
+    }
+
     req.session.userCase.contactApplicationType = selectedApplication.code;
-    req.session.userCase.contactApplicationFile = formData.contactApplicationFile;
     req.session.userCase.contactApplicationText = formData.contactApplicationText;
-    res.redirect(getNextPage(selectedApplication) + getLanguageParam(req.url));
+
+    res.redirect(getNextPage(selectedApplication, req));
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    this.uploadedFileName = req?.session?.userCase?.contactApplicationFile?.document_filename;
     const selectedApplication = getApplicationByUrl(req.params?.selectedOption);
     if (!selectedApplication) {
       return res.redirect(PageUrls.CONTACT_TRIBUNAL);

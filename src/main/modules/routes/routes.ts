@@ -106,11 +106,18 @@ const employersContractClaimDetailsLimiter = rateLimit({
   message: 'Too many requests from this IP, please try again later.',
 });
 
+const limiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  message: 'Too many requests from this IP, please try again later.',
+});
+
 export class Routes {
   public enableFor(app: Application): void {
     // Singleton controllers:
     const respondentContestClaimReasonController = new RespondentContestClaimReasonController();
     const employersContractClaimDetailsController = new EmployersContractClaimDetailsController();
+    const contactTribunalSelectedController = new ContactTribunalSelectedController();
     app.get(InterceptPaths.CHANGE_DETAILS, new ChangeDetailsController().get);
     // Page URLs
     app.get(PageUrls.HOME, new HomeController().get);
@@ -246,8 +253,13 @@ export class Routes {
     // Contact the tribunal about your case
     app.get(PageUrls.HOLDING_PAGE, new HoldingPageController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL, new ContactTribunalController().get);
-    app.get(PageUrls.CONTACT_TRIBUNAL_SELECTED, new ContactTribunalSelectedController().get);
-    app.post(PageUrls.CONTACT_TRIBUNAL_SELECTED, new ContactTribunalSelectedController().post);
+    app.get(PageUrls.CONTACT_TRIBUNAL_SELECTED, contactTribunalSelectedController.get);
+    app.post(
+      PageUrls.CONTACT_TRIBUNAL_SELECTED,
+      limiter,
+      handleUploads.single('contactApplicationFile'),
+      contactTribunalSelectedController.post
+    );
     app.get(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().get);
     app.post(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().post);
     app.get(PageUrls.CONTACT_TRIBUNAL_CYA, new ContactTribunalCYAController().get);

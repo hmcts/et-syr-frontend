@@ -3,14 +3,12 @@ import path from 'path';
 
 import { CaseWithId, YesOrNo } from '../../../../main/definitions/case';
 import { PageUrls } from '../../../../main/definitions/constants';
-import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import { AnyRecord } from '../../../../main/definitions/util-types';
 import {
   clearTempFields,
   getApplicationDisplayByCode,
   getApplicationDisplayByUrl,
   getApplicationsAccordionItems,
-  getNextPage,
   isClaimantSystemUser,
 } from '../../../../main/helpers/controller/ContactTribunalHelper';
 
@@ -71,18 +69,6 @@ describe('Contact Tribunal Helper', () => {
     it('should return an empty string if no translation exists for the application code', () => {
       const result = getApplicationDisplayByCode('Non-existent code', applicationTypePageJson);
       expect(result).toBe('');
-    });
-  });
-
-  describe('getNextPage', () => {
-    it('should return COPY_TO_OTHER_PARTY page for Type A/B applications when claimant is system user', () => {
-      const nextPage = getNextPage(application.CHANGE_PERSONAL_DETAILS);
-      expect(nextPage).toBe(PageUrls.COPY_TO_OTHER_PARTY);
-    });
-
-    it('should return CONTACT_TRIBUNAL_CYA page for Type C', () => {
-      const nextPage = getNextPage(application.ORDER_WITNESS_ATTEND);
-      expect(nextPage).toBe(PageUrls.CONTACT_TRIBUNAL_CYA);
     });
   });
 
