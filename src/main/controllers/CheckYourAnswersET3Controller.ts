@@ -41,6 +41,7 @@ export default class CheckYourAnswersET3Controller {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    const languageParam: string = getLanguageParam(req.url);
     if (req.body.saveAsDraft) {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONSE_SAVED)));
     }
@@ -51,11 +52,11 @@ export default class CheckYourAnswersET3Controller {
       ET3ModificationTypes.MODIFICATION_TYPE_SUBMIT
     );
     if (!userCase) {
-      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3)));
+      return res.redirect(returnValidUrl(PageUrls.CHECK_YOUR_ANSWERS_ET3 + languageParam));
     }
     req.session.userCase = userCase;
     if (req.body?.submit) {
-      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.APPLICATION_SUBMITTED)));
+      return res.redirect(returnValidUrl(PageUrls.APPLICATION_SUBMITTED + languageParam));
     }
   };
 
