@@ -115,9 +115,9 @@ const addNonAdminResponse = (
   const rows: SummaryListRow[] = [];
 
   rows.push(
-    addSummaryRow(translations.responder, translations[response.value.from]),
+    addSummaryRow(translations.responseFrom, translations[response.value.from]),
     addSummaryRow(translations.responseDate, datesStringToDateInLocale(response.value.date, req.url)),
-    addSummaryRow(translations.response, response.value.response)
+    addSummaryRow(translations.responseText, response.value.response)
   );
 
   if (response.value.supportingMaterial) {
@@ -213,10 +213,10 @@ const getTseApplicationDecisionDetails = (
   const rows = [];
   rows.push(
     addSummaryRow(translations.notification, decision.enterNotificationTitle),
-    addSummaryRow(translations.decision, decision.decision),
+    addSummaryRow(translations.decision, translations[decision.decision]),
     addSummaryRow(translations.date, datesStringToDateInLocale(decision.date, req.url)),
     addSummaryRow(translations.sentBy, translations.tribunal),
-    addSummaryRow(translations.decisionType, decision.typeOfDecision),
+    addSummaryRow(translations.decisionType, translations[decision.typeOfDecision]),
     addSummaryRow(translations.additionalInfo, decision.additionalInformation)
   );
 
@@ -227,9 +227,9 @@ const getTseApplicationDecisionDetails = (
   }
 
   rows.push(
-    addSummaryRow(translations.decisionMadeBy, decision.decisionMadeBy),
+    addSummaryRow(translations.decisionMadeBy, translations[decision.decisionMadeBy]),
     addSummaryRow(translations.name, decision.decisionMadeByFullName),
-    addSummaryRow(translations.sentTo, decision.selectPartyNotify)
+    addSummaryRow(translations.sentTo, translations[decision.selectPartyNotify])
   );
 
   return rows;

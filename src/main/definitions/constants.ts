@@ -635,26 +635,3 @@ export const CLAIM_TYPES = {
   WHISTLEBLOWING: 'Whistleblowing',
   OTHER: 'Other type of claim',
 };
-
-export const TypeOfDecision = {
-  JUDGMENT: 'Judgment',
-  CMO: 'Case management order',
-};
-
-export const TribunalMadeBy = {
-  LEGAL_OFFICER: 'Legal officer',
-  JUDGE: 'Judge',
-};
-
-export const IsCmoOrRequest = {
-  CMO: 'Case management order',
-  REQUEST: 'Request',
-  NEITHER: 'Neither',
-};
-
-export const AdminDecision = {
-  GRANTED: 'Granted',
-  GRANTED_IN_PART: 'Granted in part',
-  REFUSED: 'Refused',
-  OTHER: 'Other',
-};

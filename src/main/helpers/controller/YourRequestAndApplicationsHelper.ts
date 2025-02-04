@@ -20,8 +20,8 @@ export const getApplicationCollection = (req: AppRequest): GenericTseApplication
   respondentApps.forEach(app => {
     app.linkValue = getApplicationDisplayByCode(app.value.type, translations);
     app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
-    app.statusColor = linkStatusColorMap.get(<LinkStatus>app.value.status);
-    app.displayStatus = translations[app.value.status];
+    app.statusColor = linkStatusColorMap.get(<LinkStatus>app.value.applicationState);
+    app.displayStatus = translations[app.value.applicationState];
   });
   return respondentApps;
 };

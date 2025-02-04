@@ -22,7 +22,7 @@ describe('getApplicationCollection', () => {
         value: {
           applicant: Applicant.RESPONDENT,
           type: application.CHANGE_PERSONAL_DETAILS.code,
-          status: LinkStatus.IN_PROGRESS,
+          applicationState: LinkStatus.IN_PROGRESS,
         },
       },
       {
@@ -30,7 +30,7 @@ describe('getApplicationCollection', () => {
         value: {
           applicant: Applicant.CLAIMANT,
           type: application.AMEND_RESPONSE.code,
-          status: LinkStatus.WAITING_FOR_TRIBUNAL,
+          applicationState: LinkStatus.WAITING_FOR_TRIBUNAL,
         },
       },
     ];
@@ -41,7 +41,7 @@ describe('getApplicationCollection', () => {
         value: {
           applicant: Applicant.RESPONDENT,
           type: application.CHANGE_PERSONAL_DETAILS.code,
-          status: 'inProgress',
+          applicationState: 'inProgress',
         },
         linkValue: 'Change my personal details',
         redirectUrl: '/application-details/1?lng=en',

@@ -24,7 +24,7 @@ describe('Application Details Controller', () => {
       request = mockRequestWithTranslation({}, translationJsons);
       request.session.userCase = mockUserCase;
       request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
-      request.session.userCase.genericTseApplicationCollection[0].value.respondentResponseRequired = 'Yes';
+      request.session.userCase.genericTseApplicationCollection[1].value.respondentResponseRequired = 'Yes';
       request.params.appId = '5d0118c9-bdd6-4d32-9131-6aa6f5ec718e';
       controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(

@@ -1,12 +1,6 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import { GenericTseApplicationTypeItem } from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
-import {
-  AdminDecision,
-  Applicant,
-  Parties,
-  TribunalMadeBy,
-  TypeOfDecision,
-} from '../../../../main/definitions/constants';
+import { Applicant, Parties } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import { HubLinkStatus } from '../../../../main/definitions/hub';
 import {
@@ -124,9 +118,9 @@ describe('Application Details Helper', () => {
             {
               value: {
                 enterNotificationTitle: 'Decision Notification',
-                decision: AdminDecision.GRANTED,
+                decision: 'Granted',
                 date: '2022-05-10',
-                typeOfDecision: TypeOfDecision.JUDGMENT,
+                typeOfDecision: 'Judgment',
                 additionalInformation: 'Additional details',
                 responseRequiredDoc: [
                   {
@@ -150,7 +144,7 @@ describe('Application Details Helper', () => {
                     },
                   },
                 ],
-                decisionMadeBy: TribunalMadeBy.JUDGE,
+                decisionMadeBy: 'Judge',
                 decisionMadeByFullName: 'Tribunal Admin',
                 selectPartyNotify: Parties.BOTH_PARTIES,
               },
