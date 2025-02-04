@@ -274,4 +274,54 @@ describe('UrlUtils tests', () => {
       );
     });
   });
+  describe('getValidUrl tests', () => {
+    it.each([
+      {
+        url: undefined,
+        result: DefaultValues.STRING_HASH,
+      },
+      {
+        url: null,
+        result: DefaultValues.STRING_HASH,
+      },
+      {
+        url: '',
+        result: DefaultValues.STRING_HASH,
+      },
+      {
+        url: '    ',
+        result: DefaultValues.STRING_HASH,
+      },
+      {
+        url: 'employers-contract-claim',
+        result: DefaultValues.STRING_HASH,
+      },
+      {
+        url: 'employers-contract-claim?lng=cy&redirect=clearSelection',
+        result: DefaultValues.STRING_HASH,
+      },
+      {
+        url: '/employers-contract-claim',
+        result: '/employers-contract-claim',
+      },
+      {
+        url: '/employers-contract-claim?lng=cy',
+        result: '/employers-contract-claim?lng=cy',
+      },
+      {
+        url: '/employers-contract-claim?lng=cy&redirect=clearSelection',
+        result: '/employers-contract-claim?lng=cy&redirect=clearSelection',
+      },
+      {
+        url: '/employers-contract-claim?lng=cy&redirect=clearSelection&test=test',
+        result: '/employers-contract-claim?lng=cy&redirect=clearSelection&test=test',
+      },
+      {
+        url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+      },
+    ])('check if given url is a valid url: %o', ({ url, result }) => {
+      expect(UrlUtils.getValidUrl(url)).toStrictEqual(result);
+    });
+  });
 });

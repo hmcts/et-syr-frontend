@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, RespondentET3Model } from '../definitions/case';
-import { DefaultValues, PageUrls } from '../definitions/constants';
+import { DefaultValues, PageUrls, ValidUrls } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 
 import CollectionUtils from './CollectionUtils';
@@ -144,5 +144,31 @@ export default class UrlUtils {
       selectedRespondent.ccdId +
       getLanguageParam(req.url)
     );
+  }
+
+  /**
+   * Checks if the given url value is not blank and has valid url value after url prefix and before url parameters
+   * If so returns new generated string url value. This method is implemented for hindering phishing attacks and
+   * removing fortify issues
+   * @param url value to be checked.
+   * @param validUrls optional parametric urls to compare
+   * @return new generated url value.
+   */
+  public static getValidUrl(url: string, validUrls?: string[]): string {
+    let returnUrl: string = DefaultValues.STRING_HASH;
+    if (StringUtils.isBlank(url) || url.startsWith(DefaultValues.STRING_HASH)) {
+      return returnUrl;
+    }
+    validUrls = validUrls ?? Object.values(ValidUrls);
+    for (const tmpValidUrl of validUrls) {
+      if (url.includes(tmpValidUrl)) {
+        const urlPrefix: string = url.substring(0, url.indexOf(tmpValidUrl));
+        const urlParams: string = url.includes(DefaultValues.STRING_QUESTION_MARK)
+          ? url.substring(url.indexOf(DefaultValues.STRING_QUESTION_MARK))
+          : DefaultValues.STRING_EMPTY;
+        returnUrl = urlPrefix + tmpValidUrl + urlParams;
+      }
+    }
+    return returnUrl;
   }
 }

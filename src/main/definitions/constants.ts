@@ -10,11 +10,6 @@ import {
   postcode_Newcastle,
 } from './postcode';
 
-export const LegacyUrls = {
-  SIGN_UP: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_up',
-  SIGN_IN: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_in',
-} as const;
-
 export const TranslationKeys = {
   COMMON: 'common',
   WELSH_ENABLED: 'welsh-language',
@@ -161,6 +156,16 @@ export const PageUrls = {
   APPLICATION_DETAILS: '/application-details/:appId',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
+} as const;
+
+export const LegacyUrls = {
+  SIGN_UP: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_up',
+  SIGN_IN: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_in',
+} as const;
+
+export const ValidUrls = {
+  ...PageUrls,
+  ...LegacyUrls,
 } as const;
 
 export const InterceptPaths = {
