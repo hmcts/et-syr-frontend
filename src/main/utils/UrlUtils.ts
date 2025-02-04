@@ -155,14 +155,14 @@ export default class UrlUtils {
    * @return new generated url value.
    */
   public static getValidUrl(url: string, validUrls?: string[]): string {
-    let returnUrl: string = DefaultValues.STRING_HASH;
     if (StringUtils.isBlank(url) || url.startsWith(DefaultValues.STRING_HASH)) {
-      return returnUrl;
+      return DefaultValues.STRING_HASH;
     }
     validUrls = validUrls ?? Object.values(ValidUrls);
+    const pageUrl = this.findPageUrl(url);
     for (const tmpValidUrl of validUrls) {
       if (
-        url.includes(tmpValidUrl) &&
+        pageUrl === tmpValidUrl &&
         tmpValidUrl !== DefaultValues.STRING_HASH &&
         tmpValidUrl !== DefaultValues.STRING_SLASH
       ) {
@@ -170,9 +170,24 @@ export default class UrlUtils {
         const urlParams: string = url.includes(DefaultValues.STRING_QUESTION_MARK)
           ? url.substring(url.indexOf(DefaultValues.STRING_QUESTION_MARK))
           : DefaultValues.STRING_EMPTY;
-        returnUrl = urlPrefix + tmpValidUrl + urlParams;
+        return urlPrefix + tmpValidUrl + urlParams;
       }
     }
-    return returnUrl;
+    return DefaultValues.STRING_HASH;
+  }
+
+  public static findPageUrl(url: string): string {
+    if (StringUtils.isBlank(url)) {
+      return DefaultValues.STRING_EMPTY;
+    }
+    const lastIndexOfSlash: number = url.lastIndexOf(DefaultValues.STRING_SLASH);
+    if (lastIndexOfSlash === -1) {
+      return DefaultValues.STRING_EMPTY;
+    }
+    const indexOfQuestionMark: number = url.indexOf(DefaultValues.STRING_QUESTION_MARK);
+    if (indexOfQuestionMark === -1) {
+      return url.substring(lastIndexOfSlash);
+    }
+    return url.substring(url.lastIndexOf(DefaultValues.STRING_SLASH), url.indexOf(DefaultValues.STRING_QUESTION_MARK));
   }
 }
