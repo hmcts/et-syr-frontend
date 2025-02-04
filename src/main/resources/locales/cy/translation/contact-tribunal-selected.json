@@ -6,7 +6,15 @@
   "genericGuidanceItem3": "os byddwch yn uwchlwytho dogfen ysgrifenedig gyda tracked changes, gwnewch yn siŵr eich bod wedi clicio ar yr opsiwn tracked changes.",
   "formHearing": "Rhowch fanylion eich cais yn y blwch testun neu uwchlwythwch ffeil",
   "contactApplicationFile": {
-    "label": "Dogfen"
+    "label": "Dogfen",
+    "hint": "Uwchlwytho ffeil",
+    "hintExisting": "Rydych chi wedi uwchlwytho'n flaenorol: {{filename}}"
+  },
+  "files": {
+    "title": "Uwchlwytho ffeil (dewisol)",
+    "uploadButton": "Uwchlwytho ffeil",
+    "removeButton": "Dileu ffeil",
+    "uploaded": "Ffeiliau sydd wedi’u huwchlwytho"
   },
   "contactApplicationText": {
     "label": "Defnyddiwch y blwch hwn ar gyfer unrhyw wybodaeth gysylltiedig (Dewisol)"
@@ -15,6 +23,15 @@
     "contactApplicationText": {
       "required": "Defnyddiwch y blwch testun neu’r cyfleuster llwytho ffeil i roi manylion",
       "tooLong": "Rhaid i’ch manylion fod yn llai na 2500 o nodau"
+    },
+    "contactApplicationFile": {
+      "invalidFileName": "Mae enw’r ffeil a ddarparwyd yn annilys. Ni all enw’r ffeil fod yn fwy na 150 o nodau ac ni all gynnwys unrhyw un o’r nodau canlynol: \\/:*?\"|<>",
+      "invalidFileFormat": "Nid yw’r math o ffeil(iau) rydych chi'n ceisio ei huwchlwytho yn cael ei chefnogi gan ein system. Trosglwyddwch hwn i un o'r mathau o ffeiliau a gefnogir a restrir isod.",
+      "invalidFileSize": "Mae’r ffeil rydych chi’n ceisio ei huwchlwytho yn uwch na’r terfyn maint uchaf o 80MB, ceisiwch leihau maint y ffeil.",
+      "fileNameNotFound": "Nid oes gan y ffeil rydych chi’n ceisio ei huwchlwytho enw.",
+      "fileBufferEmpty": "Mae’r ffeil rydych chi’n ceisio ei huwchlwytho yn wag.",
+      "fileNameNotSelected": "Dewiswch ffeil.",
+      "fileAlreadyExists": "Mae’r ffeil rydych chi’n ceisio ei huwchlwytho eisoes yn bodoli. Tynnwch yr un sy’n bodoli eisoes yn gyntaf."
     }
   }
 }

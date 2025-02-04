@@ -1,11 +1,8 @@
 import { CaseWithId } from '../../definitions/case';
-import { MY_HMCTS, PageUrls, ValidationErrors, YES } from '../../definitions/constants';
-import { Application, application } from '../../definitions/contact-tribunal-applications';
-import { FormError } from '../../definitions/form';
+import { MY_HMCTS, PageUrls, YES } from '../../definitions/constants';
+import { application } from '../../definitions/contact-tribunal-applications';
 import { AccordionItem, addAccordionRow } from '../../definitions/govuk/govukAccordion';
 import { AnyRecord } from '../../definitions/util-types';
-import { isContentCharsOrLess, isFieldFilledIn } from '../../validators/validator';
-import { isTypeAOrB } from '../ApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
@@ -62,14 +59,6 @@ export const getApplicationDisplayByCode = (appCode: string, translations: AnyRe
 };
 
 /**
- * Return COPY_TO_OTHER_PARTY when Type A or B, otherwise return CONTACT_TRIBUNAL_CYA
- * @param app selected application
- */
-export const getNextPage = (app: Application): string => {
-  return isTypeAOrB(app) ? PageUrls.COPY_TO_OTHER_PARTY : PageUrls.CONTACT_TRIBUNAL_CYA;
-};
-
-/**
  * Check if Claimant is represented with MyHMCTS
  * @param userCase
  * @returns boolean
@@ -97,26 +86,6 @@ export const isClaimantSystemUser = (userCase: CaseWithId): boolean => {
     );
   }
   return false;
-};
-
-/**
- * Check and return errors in Contact Tribunal page
- * @param formData form data from Contact Tribunal input
- */
-export const getFormDataError = (formData: Partial<CaseWithId>): FormError => {
-  const file = formData.contactApplicationFile;
-  const text = formData.contactApplicationText;
-
-  const fileProvided = file !== undefined && false; // TODO: Fix fileProvided checking
-  const textProvided = isFieldFilledIn(text) === undefined;
-
-  if (!textProvided && !fileProvided) {
-    return { propertyName: 'contactApplicationText', errorType: ValidationErrors.REQUIRED };
-  }
-
-  if (isContentCharsOrLess(2500)(text)) {
-    return { propertyName: 'contactApplicationText', errorType: ValidationErrors.TOO_LONG };
-  }
 };
 
 /**
