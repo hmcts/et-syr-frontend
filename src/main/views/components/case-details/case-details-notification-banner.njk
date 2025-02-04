@@ -59,16 +59,3 @@
   }) }}
 {% endif %}
 
-{% for app in adminNotifications %}
-  {% set adminNotificationHtml %}
-    <p class="govuk-notification-banner__heading">{{ tribunalHasRespondToYourApp }} {{ appName }}</p>
-    <p class="govuk-body">{{ mustRespond }}</p>
-    <p class="govuk-notification-banner__heading">
-      <a class="govuk-link" href="{{ app.appUrl }}">{{ respondToTribunal }}</a>
-    </p>
-  {% endset %}
-  {{ govukNotificationBanner({
-    html: adminNotificationHtml,
-    titleText: important
-  }) }}
-{% endfor %}
