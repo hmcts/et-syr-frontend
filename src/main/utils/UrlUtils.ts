@@ -161,7 +161,11 @@ export default class UrlUtils {
     }
     validUrls = validUrls ?? Object.values(ValidUrls);
     for (const tmpValidUrl of validUrls) {
-      if (url.includes(tmpValidUrl)) {
+      if (
+        url.includes(tmpValidUrl) &&
+        tmpValidUrl !== DefaultValues.STRING_HASH &&
+        tmpValidUrl !== DefaultValues.STRING_SLASH
+      ) {
         const urlPrefix: string = url.substring(0, url.indexOf(tmpValidUrl));
         const urlParams: string = url.includes(DefaultValues.STRING_QUESTION_MARK)
           ? url.substring(url.indexOf(DefaultValues.STRING_QUESTION_MARK))

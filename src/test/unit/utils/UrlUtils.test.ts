@@ -320,6 +320,10 @@ describe('UrlUtils tests', () => {
         url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
         result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
       },
+      {
+        url: 'https://localhost:3003/unapproved-url?redirect=clearSelection&test=test&lng=cy',
+        result: DefaultValues.STRING_HASH,
+      },
     ])('check if given url is a valid url: %o', ({ url, result }) => {
       expect(UrlUtils.getValidUrl(url)).toStrictEqual(result);
     });
