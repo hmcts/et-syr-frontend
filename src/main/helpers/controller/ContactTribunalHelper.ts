@@ -38,9 +38,6 @@ const getContentHtml = (key: keyof typeof application, translations: AnyRecord, 
  * @param translations translation of the page
  */
 export const getApplicationDisplayByUrl = (url: string, translations: AnyRecord): string => {
-  if (!url) {
-    return '';
-  }
   const appKey = Object.keys(application).find(key => application[key].url === url);
   return appKey ? translations[appKey] : '';
 };
@@ -51,9 +48,6 @@ export const getApplicationDisplayByUrl = (url: string, translations: AnyRecord)
  * @param translations translation of the page
  */
 export const getApplicationDisplayByCode = (appCode: string, translations: AnyRecord): string => {
-  if (!appCode) {
-    return '';
-  }
   const appKey = Object.keys(application).find(key => application[key].code === appCode);
   return appKey ? translations[appKey] : '';
 };
@@ -64,9 +58,6 @@ export const getApplicationDisplayByCode = (appCode: string, translations: AnyRe
  * @param translations translation of the page
  */
 export const getApplicationDisplayByClaimantCode = (appCode: string, translations: AnyRecord): string => {
-  if (!appCode) {
-    return '';
-  }
   const appKey = Object.keys(application).find(key => application[key].claimant === appCode);
   return appKey ? translations[appKey] : '';
 };

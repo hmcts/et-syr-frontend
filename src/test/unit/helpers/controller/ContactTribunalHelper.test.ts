@@ -1,73 +1,98 @@
-import fs from 'fs';
-import path from 'path';
-
 import { CaseWithId, YesOrNo } from '../../../../main/definitions/case';
 import { PageUrls } from '../../../../main/definitions/constants';
+import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import { AnyRecord } from '../../../../main/definitions/util-types';
 import {
   clearTempFields,
+  getApplicationDisplayByClaimantCode,
   getApplicationDisplayByCode,
   getApplicationDisplayByUrl,
   getApplicationsAccordionItems,
   isClaimantSystemUser,
 } from '../../../../main/helpers/controller/ContactTribunalHelper';
-
-const contactTribunalPageJson = JSON.parse(
-  fs.readFileSync(
-    path.resolve(__dirname, '../../../../main/resources/locales/en/translation/contact-tribunal.json'),
-    'utf-8'
-  )
-);
-
-const applicationTypePageJson = JSON.parse(
-  fs.readFileSync(
-    path.resolve(__dirname, '../../../../main/resources/locales/en/translation/application-type.json'),
-    'utf-8'
-  )
-);
+import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
+import contactTribunalJson from '../../../../main/resources/locales/en/translation/contact-tribunal.json';
 
 describe('Contact Tribunal Helper', () => {
   describe('getApplicationsAccordionItems', () => {
     it('should return an array of accordion items with proper content from JSON data', () => {
       const url = PageUrls.CONTACT_TRIBUNAL;
-      const translations: AnyRecord = contactTribunalPageJson;
+      const translations: AnyRecord = contactTribunalJson;
       const accordionItems = getApplicationsAccordionItems(url, translations);
       expect(accordionItems).toBeInstanceOf(Array);
       expect(accordionItems).toHaveLength(Object.keys(translations.sections).length);
-      expect(accordionItems[0].heading.text).toBe(contactTribunalPageJson.sections.CHANGE_PERSONAL_DETAILS.label);
+      expect(accordionItems[0].heading.text).toBe(contactTribunalJson.sections.CHANGE_PERSONAL_DETAILS.label);
     });
   });
 
   describe('getApplicationTypeByUrl', () => {
+    const translations: AnyRecord = applicationTypeJson;
+
     it('should return the correct translation for a valid URL', () => {
-      const result = getApplicationDisplayByUrl('apply-to-postpone-my-hearing', applicationTypePageJson);
-      expect(result).toBe(applicationTypePageJson['POSTPONE_HEARING']);
+      const result = getApplicationDisplayByUrl(application.CHANGE_PERSONAL_DETAILS.url, translations);
+      expect(result).toBe(translations['CHANGE_PERSONAL_DETAILS']);
     });
 
     it('should return an empty string if URL is empty', () => {
-      const result = getApplicationDisplayByUrl('', applicationTypePageJson);
+      const result = getApplicationDisplayByUrl('', translations);
+      expect(result).toBe('');
+    });
+
+    it('should return an empty string if URL is undefined', () => {
+      const result = getApplicationDisplayByUrl(undefined, translations);
       expect(result).toBe('');
     });
 
     it('should return an empty string if no translation exists for the URL', () => {
-      const result = getApplicationDisplayByUrl('unknown-url', applicationTypePageJson);
+      const result = getApplicationDisplayByUrl('unknown-url', translations);
       expect(result).toBe('');
     });
   });
 
   describe('getApplicationTypeByCode', () => {
+    const translations: AnyRecord = applicationTypeJson;
+
     it('should return the correct translation for a valid application code', () => {
-      const result = getApplicationDisplayByCode('Change personal details', applicationTypePageJson);
-      expect(result).toBe(applicationTypePageJson['CHANGE_PERSONAL_DETAILS']);
+      const result = getApplicationDisplayByCode(application.CHANGE_PERSONAL_DETAILS.code, translations);
+      expect(result).toBe(translations['CHANGE_PERSONAL_DETAILS']);
     });
 
     it('should return an empty string if application code is empty', () => {
-      const result = getApplicationDisplayByCode('', applicationTypePageJson);
+      const result = getApplicationDisplayByCode('', translations);
+      expect(result).toBe('');
+    });
+
+    it('should return an empty string if application code is undefined', () => {
+      const result = getApplicationDisplayByCode(undefined, translations);
       expect(result).toBe('');
     });
 
     it('should return an empty string if no translation exists for the application code', () => {
-      const result = getApplicationDisplayByCode('Non-existent code', applicationTypePageJson);
+      const result = getApplicationDisplayByCode('Non-existent code', translations);
+      expect(result).toBe('');
+    });
+  });
+
+  describe('getApplicationDisplayByClaimantCode', () => {
+    const translations: AnyRecord = applicationTypeJson;
+
+    it('should return the correct translation for a valid application code', () => {
+      const result = getApplicationDisplayByClaimantCode(application.CHANGE_PERSONAL_DETAILS.claimant, translations);
+      expect(result).toBe(translations['CHANGE_PERSONAL_DETAILS']);
+    });
+
+    it('should return an empty string if application code is empty', () => {
+      const result = getApplicationDisplayByClaimantCode('', translations);
+      expect(result).toBe('');
+    });
+
+    it('should return an empty string if application code is undefined', () => {
+      const result = getApplicationDisplayByClaimantCode(undefined, translations);
+      expect(result).toBe('');
+    });
+
+    it('should return an empty string if no translation exists for the application code', () => {
+      const result = getApplicationDisplayByClaimantCode('Non-existent code', translations);
       expect(result).toBe('');
     });
   });

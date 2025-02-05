@@ -27,19 +27,19 @@ describe('Claimants Applications Helper', () => {
           id: '1',
           value: {
             applicant: Applicant.CLAIMANT,
-            type: application.CHANGE_PERSONAL_DETAILS.code,
+            type: application.CHANGE_PERSONAL_DETAILS.claimant,
             copyToOtherPartyYesOrNo: YesOrNo.YES,
-            status: LinkStatus.IN_PROGRESS,
+            applicationState: LinkStatus.IN_PROGRESS,
           },
         },
         {
           id: '2',
           value: {
             applicant: Applicant.CLAIMANT,
-            type: application.CHANGE_PERSONAL_DETAILS.code,
+            type: application.CHANGE_PERSONAL_DETAILS.claimant,
             copyToOtherPartyYesOrNo: YesOrNo.NO,
             copyToOtherPartyText: 'No reason',
-            status: LinkStatus.IN_PROGRESS,
+            applicationState: LinkStatus.IN_PROGRESS,
           },
         },
         {
@@ -47,7 +47,7 @@ describe('Claimants Applications Helper', () => {
           value: {
             applicant: Applicant.RESPONDENT,
             type: application.AMEND_RESPONSE.code,
-            status: LinkStatus.WAITING_FOR_TRIBUNAL,
+            applicationState: LinkStatus.WAITING_FOR_TRIBUNAL,
           },
         },
       ];
@@ -57,9 +57,9 @@ describe('Claimants Applications Helper', () => {
           id: '1',
           value: {
             applicant: Applicant.CLAIMANT,
-            type: application.CHANGE_PERSONAL_DETAILS.code,
+            type: application.CHANGE_PERSONAL_DETAILS.claimant,
             copyToOtherPartyYesOrNo: YesOrNo.YES,
-            status: 'inProgress',
+            applicationState: 'inProgress',
           },
           linkValue: 'Change my personal details',
           redirectUrl: '/claimants-application-details/1?lng=en',
