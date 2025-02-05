@@ -330,7 +330,7 @@ describe('UrlUtils tests', () => {
       },
       {
         url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
-        result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        result: '/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
       },
       {
         url: 'https://localhost:3003/unapproved-url?redirect=clearSelection&test=test&lng=cy',

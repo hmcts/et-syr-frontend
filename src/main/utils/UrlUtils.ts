@@ -166,11 +166,10 @@ export default class UrlUtils {
         tmpValidUrl !== DefaultValues.STRING_HASH &&
         tmpValidUrl !== DefaultValues.STRING_SLASH
       ) {
-        const urlPrefix: string = url.substring(0, url.indexOf(tmpValidUrl));
         const urlParams: string = url.includes(DefaultValues.STRING_QUESTION_MARK)
           ? url.substring(url.indexOf(DefaultValues.STRING_QUESTION_MARK))
           : DefaultValues.STRING_EMPTY;
-        return urlPrefix + tmpValidUrl + urlParams;
+        return tmpValidUrl + urlParams;
       }
     }
     return DefaultValues.STRING_HASH;

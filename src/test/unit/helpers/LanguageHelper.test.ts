@@ -228,19 +228,19 @@ describe('Language Helper Functions', () => {
       {
         url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
         redirectUrl: undefined,
-        result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        result: '/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
         expectedLang: languages.WELSH,
       },
       {
         url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
         redirectUrl: DefaultValues.STRING_EMPTY,
-        result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        result: '/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
         expectedLang: languages.WELSH,
       },
       {
         url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
         redirectUrl: DefaultValues.STRING_SPACE,
-        result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        result: '/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
         expectedLang: languages.WELSH,
       },
       {
