@@ -12,10 +12,13 @@ import { assignFormData } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import SelfAssignmentFormControllerHelper from '../helpers/controller/SelfAssignmentFormControllerHelper';
+import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import ErrorUtils from '../utils/ErrorUtils';
 import { isValidCaseReferenceId } from '../validators/numeric-validator';
 import { isFieldFilledIn } from '../validators/validator';
+
+const logger = getLogger('SelfAssignmentFormController');
 
 export default class SelfAssignmentFormController {
   private readonly form: Form;
@@ -76,10 +79,19 @@ export default class SelfAssignmentFormController {
     req.session.userCase = SelfAssignmentFormControllerHelper.generateBasicUserCaseBySelfAssignmentFormData(formData);
     req.session.respondentNameFromForm = formData.respondentName;
     const errors = this.form.getValidatorErrors(formData);
+    let isReformCase: AxiosResponse<string> = undefined;
     if (errors.length === 0) {
-      const isReformCase: AxiosResponse<string> = await getCaseApi(req.session.user?.accessToken).checkIdAndState(
-        formData.id
-      );
+      try {
+        isReformCase = await getCaseApi(req.session.user?.accessToken).checkIdAndState(formData.id);
+      } catch (error) {
+        logger.error('Unable to check reform case' + error.message);
+        ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
+          req,
+          ValidationErrors.API,
+          FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+        );
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_FORM)));
+      }
       if (isReformCase?.data.toString() === 'false') {
         return res.redirect(returnValidUrl(LegacyUrls.SIGN_UP, Object.values(LegacyUrls)));
       }
