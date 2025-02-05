@@ -13,7 +13,7 @@ import ObjectUtils from '../../utils/ObjectUtils';
 import { getLanguageParam } from '../RouterHelpers';
 
 import { isAdminResponseShareToRespondent, isDecisionShareToRespondent } from './ApplicationDetailsHelper';
-import { getApplicationDisplayByCode } from './ContactTribunalHelper';
+import { getApplicationDisplayByClaimantCode } from './ContactTribunalHelper';
 
 /**
  * Get claimant's applications
@@ -32,10 +32,10 @@ export const getClaimantsApplications = (req: AppRequest): GenericTseApplication
     ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
   };
   claimantApps.forEach(app => {
-    app.linkValue = getApplicationDisplayByCode(app.value.type, translations);
+    app.linkValue = getApplicationDisplayByClaimantCode(app.value.type, translations);
     app.redirectUrl = PageUrls.CLAIMANTS_APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
-    app.statusColor = linkStatusColorMap.get(<LinkStatus>app.value.status);
-    app.displayStatus = translations[app.value.status];
+    app.statusColor = linkStatusColorMap.get(<LinkStatus>app.value.applicationState);
+    app.displayStatus = translations[app.value.applicationState];
   });
   return claimantApps;
 };

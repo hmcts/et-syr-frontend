@@ -2,11 +2,17 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
-import { ErrorPages, TranslationKeys } from '../definitions/constants';
+import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants';
 import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
-import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
+import { getLanguageParam } from '../helpers/RouterHelpers';
+import {
+  getAllResponses,
+  getApplicationContent,
+  getDecisionContent,
+  isResponseToTribunalRequired,
+} from '../helpers/controller/ApplicationDetailsHelper';
 import { isClaimantAppsShare } from '../helpers/controller/ClaimantsApplicationsHelper';
-import { getApplicationDisplayByCode } from '../helpers/controller/ContactTribunalHelper';
+import { getApplicationDisplayByClaimantCode } from '../helpers/controller/ContactTribunalHelper';
 
 export default class ClaimantsApplicationDetailsController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
@@ -24,10 +30,15 @@ export default class ClaimantsApplicationDetailsController {
       ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
-      applicationType: getApplicationDisplayByCode(selectedApplication.value.type, {
+      applicationType: getApplicationDisplayByClaimantCode(selectedApplication.value.type, {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
       }),
       appContent: getApplicationContent(selectedApplication, req),
+      allResponses: getAllResponses(selectedApplication, req),
+      decisionContent: getDecisionContent(selectedApplication, req),
+      isRespondButton: isResponseToTribunalRequired(selectedApplication),
+      respondRedirectUrl:
+        PageUrls.RESPOND_TO_TRIBUNAL.replace(':appId', selectedApplication.id) + getLanguageParam(req.url),
     });
   };
 }

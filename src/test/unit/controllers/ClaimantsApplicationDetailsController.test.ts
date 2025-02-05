@@ -30,7 +30,7 @@ describe('Claimant s Application Details Controller', () => {
           id: '1',
           value: {
             applicant: Applicant.CLAIMANT,
-            type: application.AMEND_RESPONSE.code,
+            type: application.AMEND_RESPONSE.claimant,
             copyToOtherPartyYesOrNo: YesOrNo.YES,
           },
         },

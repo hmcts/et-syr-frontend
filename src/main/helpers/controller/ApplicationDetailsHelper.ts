@@ -87,7 +87,7 @@ export const getAllResponses = (app: GenericTseApplicationTypeItem, req: AppRequ
   };
 
   for (const response of respondCollection) {
-    if (isResponseFromRespondent(response) || isResponseFromClaimantWithCopyYes(response)) {
+    if (isRespondentResponse(response) || isClaimantResponseWithCopyYes(response)) {
       allResponses.push(addNonAdminResponse(response, translations, req));
     } else if (isAdminResponseShareToRespondent(response)) {
       allResponses.push(addAdminResponse(response, translations, req));
@@ -97,11 +97,11 @@ export const getAllResponses = (app: GenericTseApplicationTypeItem, req: AppRequ
   return allResponses;
 };
 
-const isResponseFromRespondent = (response: TseRespondTypeItem): boolean => {
+const isRespondentResponse = (response: TseRespondTypeItem): boolean => {
   return response.value.from === Applicant.RESPONDENT;
 };
 
-const isResponseFromClaimantWithCopyYes = (response: TseRespondTypeItem): boolean => {
+const isClaimantResponseWithCopyYes = (response: TseRespondTypeItem): boolean => {
   return response.value.from === Applicant.CLAIMANT && response.value.copyToOtherParty === YesOrNo.YES;
 };
 
