@@ -22,7 +22,7 @@
       "required": "Enter claimant last name that exactly matches the case details"
     },
     "hiddenErrorField": {
-      "api": "Unable to assign role. An unexpected error occurred. Please try again later",
+      "api": "Unable to assign role. Please try again later",
       "caseAlreadyAssignedToSameUser": "You have already assigned to this case",
       "caseAlreadyAssigned": "Case has already assigned to a respondent",
       "sessionUserCase": "User case not found in session",
