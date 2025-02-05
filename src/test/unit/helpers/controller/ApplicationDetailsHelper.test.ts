@@ -191,7 +191,7 @@ describe('Application Details Helper', () => {
         value: {},
       };
       const result = getDecisionContent(mockApp, mockReq);
-      expect(result).toHaveLength(0); // Expecting empty array when adminDecision is not present
+      expect(result).toHaveLength(0);
     });
   });
 

@@ -3,12 +3,14 @@ import { YesOrNo } from '../../definitions/case';
 import {
   GenericTseApplicationTypeItem,
   TseAdminDecision,
+  TseAdminDecisionItem,
   TseRespondTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant, Parties, TranslationKeys } from '../../definitions/constants';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import CollectionUtils from '../../utils/CollectionUtils';
+import ObjectUtils from '../../utils/ObjectUtils';
 import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../DocumentHelpers';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
@@ -20,21 +22,13 @@ import { getApplicationDisplayByCode } from './ContactTribunalHelper';
  * @param req request
  */
 export const getApplicationContent = (app: GenericTseApplicationTypeItem, req: AppRequest): SummaryListRow[] => {
-  const translations = {
+  const translations: AnyRecord = {
     ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
     ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
     ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
   };
-  return getTseApplicationDetails(app, req.url, translations);
-};
-
-const getTseApplicationDetails = (
-  app: GenericTseApplicationTypeItem,
-  url: string,
-  translations: AnyRecord
-): SummaryListRow[] => {
   const application = app.value;
-  const applicationDate = datesStringToDateInLocale(application.date, url);
+  const applicationDate = datesStringToDateInLocale(application.date, req.url);
 
   const rows: SummaryListRow[] = [];
 
@@ -63,6 +57,18 @@ const getTseApplicationDetails = (
 };
 
 /**
+ * Check if tribunal response is shared to respondent
+ * @param response response
+ */
+export const isAdminResponseShareToRespondent = (response: TseRespondTypeItem): boolean => {
+  return (
+    response.value?.from === Applicant.ADMIN &&
+    (response.value?.selectPartyNotify === Parties.BOTH_PARTIES ||
+      response.value?.selectPartyNotify === Parties.RESPONDENT_ONLY)
+  );
+};
+
+/**
  * Get all responses in respondCollection
  * @param app selected GenericTseApplicationTypeItem
  * @param req request
@@ -75,7 +81,7 @@ export const getAllResponses = (app: GenericTseApplicationTypeItem, req: AppRequ
     return allResponses;
   }
 
-  const translations = {
+  const translations: AnyRecord = {
     ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
     ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
   };
@@ -83,7 +89,7 @@ export const getAllResponses = (app: GenericTseApplicationTypeItem, req: AppRequ
   for (const response of respondCollection) {
     if (isResponseFromRespondent(response) || isResponseFromClaimantWithCopyYes(response)) {
       allResponses.push(addNonAdminResponse(response, translations, req));
-    } else if (isResponseFromTribunalToRespondent(response)) {
+    } else if (isAdminResponseShareToRespondent(response)) {
       allResponses.push(addAdminResponse(response, translations, req));
     }
   }
@@ -97,14 +103,6 @@ const isResponseFromRespondent = (response: TseRespondTypeItem): boolean => {
 
 const isResponseFromClaimantWithCopyYes = (response: TseRespondTypeItem): boolean => {
   return response.value.from === Applicant.CLAIMANT && response.value.copyToOtherParty === YesOrNo.YES;
-};
-
-const isResponseFromTribunalToRespondent = (response: TseRespondTypeItem): boolean => {
-  return (
-    response.value.from === Applicant.ADMIN &&
-    (response.value.selectPartyNotify === Parties.RESPONDENT_ONLY ||
-      response.value.selectPartyNotify === Parties.BOTH_PARTIES)
-  );
 };
 
 const addNonAdminResponse = (
@@ -183,18 +181,29 @@ const addAdminResponse = (response: TseRespondTypeItem, translations: AnyRecord,
 };
 
 /**
+ * Check if decision is shared to respondent
+ * @param decision decision
+ */
+export const isDecisionShareToRespondent = (decision: TseAdminDecisionItem): boolean => {
+  return (
+    decision.value?.selectPartyNotify === Parties.BOTH_PARTIES ||
+    decision.value?.selectPartyNotify === Parties.RESPONDENT_ONLY
+  );
+};
+
+/**
  * Get selected application decision
  * @param app selected application
  * @param req request
  */
 export const getDecisionContent = (app: GenericTseApplicationTypeItem, req: AppRequest): SummaryListRow[][] => {
-  const selectedAppAdminDecision = app.value?.adminDecision;
-  if (!selectedAppAdminDecision) {
+  const selectedAppAdminDecision = app.value?.adminDecision?.filter(d => isDecisionShareToRespondent(d));
+  if (ObjectUtils.isEmpty(selectedAppAdminDecision)) {
     return [];
   }
 
   const allResponses: SummaryListRow[][] = [];
-  const translations = {
+  const translations: AnyRecord = {
     ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
     ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
   };

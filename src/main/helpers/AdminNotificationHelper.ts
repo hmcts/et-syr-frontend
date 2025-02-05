@@ -15,7 +15,7 @@ export const getApplicationRequestFromAdmin = (
   req: AppRequest
 ): AdminNotification[] => {
   const adminNotifications: AdminNotification[] = [];
-  const translations = {
+  const translations: AnyRecord = {
     ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
     ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER, { returnObjects: true }),
   };

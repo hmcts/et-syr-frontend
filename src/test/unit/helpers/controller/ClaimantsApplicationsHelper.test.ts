@@ -178,7 +178,7 @@ describe('Respond to Tribunal Controller Helper', () => {
       expect(isClaimantAppsShare(applicationItem)).toBe(false);
     });
 
-    it('should return false if respondCollection contains responses but none from ADMIN notifying both parties', () => {
+    it('should return false if respondCollection contains responses but none from ADMIN notifying respondent', () => {
       const applicationItem = {
         id: '7',
         value: {
@@ -195,7 +195,7 @@ describe('Respond to Tribunal Controller Helper', () => {
             {
               value: {
                 from: Applicant.ADMIN,
-                selectPartyNotify: Parties.RESPONDENT_ONLY,
+                selectPartyNotify: Parties.CLAIMANT_ONLY,
               },
             },
           ],
