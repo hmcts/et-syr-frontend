@@ -2,7 +2,7 @@ import { YesOrNo } from '../../../../main/definitions/case';
 import { ValidationErrors } from '../../../../main/definitions/constants';
 import { getFormDataError } from '../../../../main/helpers/controller/RespondToTribunalHelper';
 
-describe('Respond to Tribunal Controller Helper', () => {
+describe('Respond to Tribunal Helper', () => {
   describe('getFormDataError', () => {
     it('should return error when responseText is filled and hasSupportingMaterial is not selected', () => {
       const formData = { responseText: 'test' };

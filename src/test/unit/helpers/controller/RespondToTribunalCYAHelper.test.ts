@@ -6,7 +6,7 @@ import commonJson from '../../../../main/resources/locales/en/translation/common
 import respondToTribunalCyaJson from '../../../../main/resources/locales/en/translation/respond-to-tribunal-check-your-answers.json';
 import { mockRequestWithTranslation } from '../../mocks/mockRequest';
 
-describe('Respond to Tribunal CYA Controller Helper', () => {
+describe('Respond to Tribunal CYA Helper', () => {
   describe('getCyaContent', () => {
     it('should generate the correct summary list for a complete case', () => {
       const translations = {

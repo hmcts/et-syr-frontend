@@ -11,7 +11,7 @@ import caseDetailsStatusJson from '../../../../main/resources/locales/en/transla
 import { mockRequestWithTranslation } from '../../mocks/mockRequest';
 import mockUserCase from '../../mocks/mockUserCase';
 
-describe('Respond to Tribunal Controller Helper', () => {
+describe('Claimants Applications Helper', () => {
   describe('getClaimantsApplications', () => {
     const translations = {
       ...applicationTypeJson,
