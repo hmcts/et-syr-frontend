@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { DefaultValues, PageUrls, TranslationKeys } from '../definitions/constants';
 import { CaseState, ET3Status } from '../definitions/definition';
 import { FormContent } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
@@ -18,7 +18,11 @@ export default class CaseListController {
     };
     const userCases = await getUserCasesByLastModified(req);
     const languageParam = getLanguageParam(req.url);
-    const newSelfAssignmentRequestUrl = PageUrls.SELF_ASSIGNMENT_FORM + languageParam;
+    const newSelfAssignmentRequestUrl =
+      PageUrls.CASE_NUMBER_CHECK +
+      languageParam +
+      DefaultValues.STRING_AMPERSAND +
+      DefaultValues.SELF_ASSIGNMENT_URL_PARAMETER;
     const usersApplications = getUserApplications(userCases, translations, languageParam);
     const et3NotCompleted = [];
     const et3Completed = [];
