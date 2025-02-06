@@ -4,8 +4,6 @@
   "applicationType": "Math o gais",
   "legend": "Beth ydych chi eisiau ei ddweud neu ofyn i’r tribiwnlys?",
   "supportingMaterial": "Deunydd ategol",
-  "copyToOtherPartyYesOrNo": "[W]Ydych chi eisiau cynnwys y parti arall yn yr ohebiaeth hon i fodloni’r Rheolau Trefniadaeth?",
-  "copyToOtherPartyText": "Rheswm dros beidio â hysbysu’r parti arall",
-  "offlineNote": "Ni allwch wneud newidiadau pellach i'r ohebiaeth hon ar ôl i chi ei storio",
-  "storeButton": "Storio’r cais"
+  "copyToOtherPartyYesOrNo": "Ydych chi eisiau anfon copi o’r ohebiaeth hon at y parti arall i fodloni’r Rheolau Trefniadaeth?",
+  "copyToOtherPartyText": "[W]Details of why you do not want to inform the other party"
 }
