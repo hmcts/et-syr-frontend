@@ -119,7 +119,7 @@ const getCaseDocumentLink = (documentId: string, documentName: string): string =
   }
   return (
     '<a href="' +
-    PageUrls.GET_CASE_DOCUMENT.replace(':docId', documentId) +
+    PageUrls.GET_SUPPORTING_MATERIAL.replace(':docId', documentId) +
     '" target="_blank">' +
     documentName +
     '</a><br>'

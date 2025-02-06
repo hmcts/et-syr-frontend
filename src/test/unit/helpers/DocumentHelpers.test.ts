@@ -122,7 +122,7 @@ describe('Documents Helper Test', () => {
       };
       const result = getLinkFromDocument(mockDoc);
       expect(result).toBe(
-        '<a href="/getCaseDocument/e760f197-7611-41ae-bbcd-7f92194f6074" target="_blank">test_document.pdf</a><br>'
+        '<a href="/getSupportingMaterial/e760f197-7611-41ae-bbcd-7f92194f6074" target="_blank">test_document.pdf</a><br>'
       );
     });
 
@@ -154,7 +154,7 @@ describe('Documents Helper Test', () => {
       };
       const result = getLinkFromDocument(mockDoc);
       expect(result).toBe(
-        '<a href="/getCaseDocument/e760f197-7611-41ae-bbcd-7f92194f6074" target="_blank">test & doc.pdf</a><br>'
+        '<a href="/getSupportingMaterial/e760f197-7611-41ae-bbcd-7f92194f6074" target="_blank">test & doc.pdf</a><br>'
       );
     });
   });
