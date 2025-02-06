@@ -1,4 +1,5 @@
 import AttachmentController from '../../../main/controllers/AttachmentController';
+import { ErrorPages } from '../../../main/definitions/constants';
 import * as CaseService from '../../../main/services/CaseService';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -12,7 +13,7 @@ describe('Attachment Controller', () => {
     const response = mockResponse();
     const request = mockRequest({});
     controller.get(request, response);
-    expect(response.redirect).toHaveBeenCalledWith('/not-found');
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
   });
 
   it('should redirect to not-found page if wrong document id  provided', () => {
@@ -21,7 +22,7 @@ describe('Attachment Controller', () => {
     const request = mockRequest({});
     request.params.docId = '123456';
     controller.get(request, response);
-    expect(response.redirect).toHaveBeenCalledWith('/not-found');
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
   });
 
   it('should call getCaseDocument if document id provided is for contact application file', () => {
