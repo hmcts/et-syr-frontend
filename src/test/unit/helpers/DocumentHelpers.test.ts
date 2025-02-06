@@ -1,3 +1,4 @@
+import { Document } from '../../../main/definitions/case';
 import { DefaultValues } from '../../../main/definitions/constants';
 import { DocumentDetail } from '../../../main/definitions/definition';
 import {
@@ -6,6 +7,7 @@ import {
   findContentTypeByDocumentDetail,
   findUploadedDocumentIdByDocumentUrl,
   formatDocumentDetailToApiDocumentTypeItem,
+  getLinkFromDocument,
 } from '../../../main/helpers/DocumentHelpers';
 import { mockDocumentDetail } from '../mocks/mockDocumentDetailsResponse';
 import mockUserCaseWithDocumentsComplete from '../mocks/mockUserCaseWithDocumentsComplete';
@@ -100,6 +102,60 @@ describe('Documents Helper Test', () => {
       );
       expect(apiDocumentTypeItem.value.shortDescription).toEqual(mockDocumentDetail.description);
       expect(apiDocumentTypeItem.value.dateOfCorrespondence).toEqual(mockDocumentDetail.createdOn);
+    });
+  });
+
+  describe('getLinkFromDocument', () => {
+    it('should return empty string when document is null', () => {
+      expect(getLinkFromDocument(null)).toBe('');
+    });
+
+    it('should return empty string when document is undefined', () => {
+      expect(getLinkFromDocument(undefined)).toBe('');
+    });
+
+    it('should return valid link when document is provided', () => {
+      const mockDoc: Document = {
+        document_url: 'http://dm-store:8080/documents/e760f197-7611-41ae-bbcd-7f92194f6074',
+        document_filename: 'test_document.pdf',
+        document_binary_url: 'http://dm-store:8080/documents/e760f197-7611-41ae-bbcd-7f92194f6074/binary',
+      };
+      const result = getLinkFromDocument(mockDoc);
+      expect(result).toBe(
+        '<a href="/getCaseDocument/e760f197-7611-41ae-bbcd-7f92194f6074" target="_blank">test_document.pdf</a><br>'
+      );
+    });
+
+    it('should handle missing document_url gracefully', () => {
+      const mockDoc: Document = {
+        document_url: '',
+        document_filename: 'test_document.pdf',
+        document_binary_url: 'http://dm-store:8080/documents/e760f197-7611-41ae-bbcd-7f92194f6074/binary',
+      };
+      const result = getLinkFromDocument(mockDoc);
+      expect(result).toBe(undefined);
+    });
+
+    it('should handle missing document_filename gracefully', () => {
+      const mockDoc: Document = {
+        document_url: 'http://dm-store:8080/documents/e760f197-7611-41ae-bbcd-7f92194f6074',
+        document_filename: '', // Empty Filename
+        document_binary_url: 'http://dm-store:8080/documents/e760f197-7611-41ae-bbcd-7f92194f6074/binary',
+      };
+      const result = getLinkFromDocument(mockDoc);
+      expect(result).toBe(undefined);
+    });
+
+    it('should handle special characters in document_filename properly', () => {
+      const mockDoc: Document = {
+        document_url: 'http://dm-store:8080/documents/e760f197-7611-41ae-bbcd-7f92194f6074',
+        document_filename: 'test & doc.pdf',
+        document_binary_url: 'http://dm-store:8080/documents/e760f197-7611-41ae-bbcd-7f92194f6074/binary',
+      };
+      const result = getLinkFromDocument(mockDoc);
+      expect(result).toBe(
+        '<a href="/getCaseDocument/e760f197-7611-41ae-bbcd-7f92194f6074" target="_blank">test & doc.pdf</a><br>'
+      );
     });
   });
 });

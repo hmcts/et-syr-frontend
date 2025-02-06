@@ -2,10 +2,11 @@
 import { AxiosResponse } from 'axios';
 
 import { CaseWithId, Document } from '../definitions/case';
-import { ApiDocumentTypeItem, DocumentType, DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
+import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
 import { DOCUMENT_CONTENT_TYPES, DefaultValues, PageUrls } from '../definitions/constants';
 import { DocumentDetail } from '../definitions/definition';
 import DocumentUtils from '../utils/DocumentUtils';
+import ObjectUtils from '../utils/ObjectUtils';
 
 export const combineDocuments = <T>(...arrays: T[][]): T[] =>
   [].concat(...arrays.filter(Array.isArray)).filter(doc => doc !== undefined);
@@ -99,10 +100,10 @@ export const formatDocumentDetailToApiDocumentTypeItem = (form: DocumentDetail):
   };
 };
 
-export const getDocumentFromDocumentTypeItems = (docs: DocumentTypeItem[]): DocumentType => {
-  return docs.find(element => element)?.value;
-};
-
+/**
+ * Get link from Document
+ * @param doc Document type
+ */
 export const getLinkFromDocument = (doc: Document): string => {
   if (!doc) {
     return '';
@@ -113,6 +114,9 @@ export const getLinkFromDocument = (doc: Document): string => {
 };
 
 const getCaseDocumentLink = (documentId: string, documentName: string): string => {
+  if (!documentId || ObjectUtils.isEmpty(documentName)) {
+    return undefined;
+  }
   return (
     '<a href="' +
     PageUrls.GET_CASE_DOCUMENT.replace(':docId', documentId) +
