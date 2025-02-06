@@ -7,7 +7,7 @@ import {
   findContentTypeByDocumentDetail,
   findUploadedDocumentIdByDocumentUrl,
   formatDocumentDetailToApiDocumentTypeItem,
-  getLinkFromDocument,
+  getSupportingMaterialLink,
 } from '../../../main/helpers/DocumentHelpers';
 import { mockDocumentDetail } from '../mocks/mockDocumentDetailsResponse';
 import mockUserCaseWithDocumentsComplete from '../mocks/mockUserCaseWithDocumentsComplete';
@@ -107,11 +107,11 @@ describe('Documents Helper Test', () => {
 
   describe('getLinkFromDocument', () => {
     it('should return empty string when document is null', () => {
-      expect(getLinkFromDocument(null)).toBe('');
+      expect(getSupportingMaterialLink(null)).toBe('');
     });
 
     it('should return empty string when document is undefined', () => {
-      expect(getLinkFromDocument(undefined)).toBe('');
+      expect(getSupportingMaterialLink(undefined)).toBe('');
     });
 
     it('should return valid link when document is provided', () => {
@@ -120,7 +120,7 @@ describe('Documents Helper Test', () => {
         document_filename: 'test_document.pdf',
         document_binary_url: 'http://dm-store:8080/documents/e760f197-7611-41ae-bbcd-7f92194f6074/binary',
       };
-      const result = getLinkFromDocument(mockDoc);
+      const result = getSupportingMaterialLink(mockDoc);
       expect(result).toBe(
         '<a href="/getSupportingMaterial/e760f197-7611-41ae-bbcd-7f92194f6074" target="_blank">test_document.pdf</a><br>'
       );
@@ -132,7 +132,7 @@ describe('Documents Helper Test', () => {
         document_filename: 'test_document.pdf',
         document_binary_url: 'http://dm-store:8080/documents/e760f197-7611-41ae-bbcd-7f92194f6074/binary',
       };
-      const result = getLinkFromDocument(mockDoc);
+      const result = getSupportingMaterialLink(mockDoc);
       expect(result).toBe(undefined);
     });
 
@@ -142,7 +142,7 @@ describe('Documents Helper Test', () => {
         document_filename: '', // Empty Filename
         document_binary_url: 'http://dm-store:8080/documents/e760f197-7611-41ae-bbcd-7f92194f6074/binary',
       };
-      const result = getLinkFromDocument(mockDoc);
+      const result = getSupportingMaterialLink(mockDoc);
       expect(result).toBe(undefined);
     });
 
@@ -152,7 +152,7 @@ describe('Documents Helper Test', () => {
         document_filename: 'test & doc.pdf',
         document_binary_url: 'http://dm-store:8080/documents/e760f197-7611-41ae-bbcd-7f92194f6074/binary',
       };
-      const result = getLinkFromDocument(mockDoc);
+      const result = getSupportingMaterialLink(mockDoc);
       expect(result).toBe(
         '<a href="/getSupportingMaterial/e760f197-7611-41ae-bbcd-7f92194f6074" target="_blank">test & doc.pdf</a><br>'
       );

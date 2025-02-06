@@ -8,7 +8,7 @@ import {
 } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import { getApplicationByCode, getApplicationKey, isTypeAOrB } from '../ApplicationHelper';
-import { getLinkFromDocument } from '../DocumentHelpers';
+import { getSupportingMaterialLink } from '../DocumentHelpers';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
@@ -42,7 +42,7 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
     )
   );
 
-  const link = getLinkFromDocument(userCase.contactApplicationFile);
+  const link = getSupportingMaterialLink(userCase.contactApplicationFile);
   rows.push(
     addSummaryHtmlRowWithAction(
       translations.supportingMaterial,

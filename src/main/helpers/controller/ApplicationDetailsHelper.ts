@@ -3,7 +3,6 @@ import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/ge
 import { TranslationKeys } from '../../definitions/constants';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
-import { getLinkFromDocument } from '../DocumentHelpers';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
 import { getApplicationDisplayByCode } from './ContactTribunalHelper';
@@ -35,8 +34,9 @@ export const getApplicationContent = (app: GenericTseApplicationTypeItem, req: A
   }
 
   if (application.documentUpload) {
-    const link = getLinkFromDocument(application.documentUpload);
-    rows.push(addSummaryHtmlRow(translations.supportingMaterial, link));
+    // TODO: Create Download Link
+    const downloadLink = 'link';
+    rows.push(addSummaryHtmlRow(translations.supportingMaterial, downloadLink));
   }
 
   rows.push(addSummaryRow(translations.copyCorrespondence, translations[application.copyToOtherPartyYesOrNo]));

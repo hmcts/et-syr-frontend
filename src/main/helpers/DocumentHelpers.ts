@@ -104,24 +104,17 @@ export const formatDocumentDetailToApiDocumentTypeItem = (form: DocumentDetail):
  * Get link from Document
  * @param doc Document type
  */
-export const getLinkFromDocument = (doc: Document): string => {
+export const getSupportingMaterialLink = (doc: Document): string => {
   if (!doc) {
     return '';
   }
   const documentId = DocumentUtils.findDocumentIdByURL(doc.document_url);
   const documentName = doc.document_filename;
-  return getCaseDocumentLink(documentId, documentName);
-};
-
-const getCaseDocumentLink = (documentId: string, documentName: string): string => {
-  if (!documentId || ObjectUtils.isEmpty(documentName)) {
-    return undefined;
-  }
-  return (
-    '<a href="' +
-    PageUrls.GET_SUPPORTING_MATERIAL.replace(':docId', documentId) +
-    '" target="_blank">' +
-    documentName +
-    '</a><br>'
-  );
+  return documentId && ObjectUtils.isNotEmpty(documentName)
+    ? '<a href="' +
+        PageUrls.GET_SUPPORTING_MATERIAL.replace(':docId', documentId) +
+        '" target="_blank">' +
+        documentName +
+        '</a><br>'
+    : undefined;
 };
