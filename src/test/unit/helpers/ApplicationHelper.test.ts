@@ -1,4 +1,4 @@
-import { ApplicationType, application } from '../../../main/definitions/contact-tribunal-applications';
+import { Application, ApplicationType, application } from '../../../main/definitions/contact-tribunal-applications';
 import {
   getApplicationByCode,
   getApplicationByUrl,
@@ -39,8 +39,9 @@ describe('Applications Helper Test', () => {
     });
 
     it('should return undefined for an invalid application object', () => {
-      const invalidApp = {
+      const invalidApp: Application = {
         code: 'Invalid application',
+        claimant: 'Invalid application',
         url: 'invalid-url',
         type: ApplicationType.C,
       };

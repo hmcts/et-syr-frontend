@@ -3,6 +3,7 @@ import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/ge
 import { TranslationKeys } from '../../definitions/constants';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
+import { getLinkFromDocument } from '../DocumentHelpers';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
 import { getApplicationDisplayByCode } from './ContactTribunalHelper';
@@ -13,21 +14,13 @@ import { getApplicationDisplayByCode } from './ContactTribunalHelper';
  * @param req request
  */
 export const getApplicationContent = (app: GenericTseApplicationTypeItem, req: AppRequest): SummaryListRow[] => {
-  const translations = {
+  const translations: AnyRecord = {
     ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
     ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
     ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
   };
-  return getTseApplicationDetails(app, req.url, translations);
-};
-
-const getTseApplicationDetails = (
-  app: GenericTseApplicationTypeItem,
-  url: string,
-  translations: AnyRecord
-): SummaryListRow[] => {
   const application = app.value;
-  const applicationDate = datesStringToDateInLocale(application.date, url);
+  const applicationDate = datesStringToDateInLocale(application.date, req.url);
 
   const rows: SummaryListRow[] = [];
 
@@ -42,9 +35,8 @@ const getTseApplicationDetails = (
   }
 
   if (application.documentUpload) {
-    // TODO: Create Download Link
-    const downloadLink = 'link';
-    rows.push(addSummaryHtmlRow(translations.supportingMaterial, downloadLink));
+    const link = getLinkFromDocument(application.documentUpload);
+    rows.push(addSummaryHtmlRow(translations.supportingMaterial, link));
   }
 
   rows.push(addSummaryRow(translations.copyCorrespondence, translations[application.copyToOtherPartyYesOrNo]));
