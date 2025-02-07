@@ -19,7 +19,7 @@ export default class AttachmentController {
     }
 
     if (docId !== getDocId(userCase.contactApplicationFile?.document_url)) {
-      logger.warn('bad request parameter');
+      logger.warn('bad request parameter - empty or invalid document url');
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
