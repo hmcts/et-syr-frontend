@@ -13,21 +13,13 @@ import { getApplicationDisplayByCode } from './ContactTribunalHelper';
  * @param req request
  */
 export const getApplicationContent = (app: GenericTseApplicationTypeItem, req: AppRequest): SummaryListRow[] => {
-  const translations = {
+  const translations: AnyRecord = {
     ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
     ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
     ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
   };
-  return getTseApplicationDetails(app, req.url, translations);
-};
-
-const getTseApplicationDetails = (
-  app: GenericTseApplicationTypeItem,
-  url: string,
-  translations: AnyRecord
-): SummaryListRow[] => {
   const application = app.value;
-  const applicationDate = datesStringToDateInLocale(application.date, url);
+  const applicationDate = datesStringToDateInLocale(application.date, req.url);
 
   const rows: SummaryListRow[] = [];
 

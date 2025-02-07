@@ -2,50 +2,24 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, YesOrNo } from '../definitions/case';
+import { continueButton } from '../definitions/buttons';
+import { CaseWithId } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
-import { AnyRecord } from '../definitions/util-types';
+import { CopyToOtherPartyRadioFormFields } from '../definitions/radios';
 import { getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getApplicationDisplayByCode } from '../helpers/controller/ContactTribunalHelper';
 import UrlUtils from '../utils/UrlUtils';
-import { isContentCharsOrLessAndNotEmpty, isOptionSelected } from '../validators/validator';
 
 export default class CopyToOtherPartyController {
   private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
-      copyToOtherPartyYesOrNo: {
-        type: 'radios',
-        label: (l: AnyRecord): string => l.copyToOtherPartyYesOrNo.label,
-        values: [
-          {
-            label: (l: AnyRecord): string => l.copyToOtherPartyYesOrNo.yes,
-            value: YesOrNo.YES,
-          },
-          {
-            label: (l: AnyRecord): string => l.copyToOtherPartyYesOrNo.no,
-            value: YesOrNo.NO,
-            subFields: {
-              copyToOtherPartyText: {
-                type: 'charactercount',
-                label: (l: AnyRecord): string => l.copyToOtherPartyText.label,
-                labelSize: 's',
-                maxlength: 2500,
-                validator: isContentCharsOrLessAndNotEmpty(2500),
-              },
-            },
-          },
-        ],
-        validator: isOptionSelected,
-      },
+      copyToOtherPartyYesOrNo: CopyToOtherPartyRadioFormFields,
     },
-    submit: {
-      text: (l: AnyRecord): string => l.continue,
-      classes: 'govuk-!-margin-right-2',
-    },
-  } as never;
+    submit: continueButton,
+  };
 
   constructor() {
     this.form = new Form(<FormFields>this.formContent.fields);
@@ -74,7 +48,7 @@ export default class CopyToOtherPartyController {
       ...content,
       hideContactUs: true,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
-      applicationType: getApplicationDisplayByCode(req.session.userCase?.contactApplicationType, {
+      caption: getApplicationDisplayByCode(req.session.userCase?.contactApplicationType, {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
       }),
     });

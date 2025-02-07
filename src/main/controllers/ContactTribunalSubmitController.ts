@@ -1,6 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
+import { YesOrNo } from '../definitions/case';
 import { ErrorPages, PageUrls } from '../definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import { getLanguageParam } from '../helpers/RouterHelpers';
@@ -13,6 +14,7 @@ const logger = getLogger('SubmitContactTribunalController');
 
 export default class ContactTribunalSubmitController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
+    const userCase = req.session?.userCase;
     try {
       // Update Hub Links Statuses
       req.session.userCase = await ET3Util.updateCaseDetailsLinkStatuses(
@@ -25,6 +27,7 @@ export default class ContactTribunalSubmitController {
       //TODO: save data in api
       await getCaseApi(req.session.user?.accessToken).submitRespondentTse(req, logger);
       // Clear temporary fields
+      userCase.ruleCopystate = userCase.copyToOtherPartyYesOrNo && userCase.copyToOtherPartyYesOrNo === YesOrNo.YES;
       clearTempFields(req.session.userCase);
       logger.info('Contact Tribunal submitted successfully');
       // Redirect to the complete page
