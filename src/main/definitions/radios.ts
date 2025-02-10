@@ -1,8 +1,33 @@
-import { Validator, isFieldFilledIn } from '../validators/validator';
+import { Validator, isContentCharsOrLessAndNotEmpty, isFieldFilledIn, isOptionSelected } from '../validators/validator';
 
 import { PayInterval, YesOrNo } from './case';
 import { SubmitButton } from './form';
 import { AnyRecord } from './util-types';
+
+export const CopyToOtherPartyRadioFormFields = {
+  type: 'radios',
+  label: (l: AnyRecord): string => l.copyToOtherPartyYesOrNo.label,
+  values: [
+    {
+      label: (l: AnyRecord): string => l.copyToOtherPartyYesOrNo.yes,
+      value: YesOrNo.YES,
+    },
+    {
+      label: (l: AnyRecord): string => l.copyToOtherPartyYesOrNo.no,
+      value: YesOrNo.NO,
+      subFields: {
+        copyToOtherPartyText: {
+          type: 'charactercount',
+          label: (l: AnyRecord): string => l.copyToOtherPartyText.label,
+          labelSize: 's',
+          maxlength: 2500,
+          validator: isContentCharsOrLessAndNotEmpty(2500),
+        },
+      },
+    },
+  ],
+  validator: isOptionSelected,
+};
 
 export const PayIntervalRadioValues = [
   {
