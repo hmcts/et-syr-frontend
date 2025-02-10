@@ -32,7 +32,6 @@ import ClaimantNoticePeriodController from '../../controllers/ClaimantNoticePeri
 import ClaimantPayDetailsController from '../../controllers/ClaimantPayDetailsController';
 import ClaimantPayDetailsEnterController from '../../controllers/ClaimantPayDetailsEnterController';
 import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPensionAndBenefitsController';
-import ClaimantsApplicationDetailsController from '../../controllers/ClaimantsApplicationDetailsController';
 import ClaimantsApplicationsController from '../../controllers/ClaimantsApplicationsController';
 import ContactTribunalCYAController from '../../controllers/ContactTribunalCYAController';
 import ContactTribunalController from '../../controllers/ContactTribunalController';
@@ -269,6 +268,7 @@ export class Routes {
     // Your request and applications
     app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
     app.get(PageUrls.APPLICATION_DETAILS, new ApplicationDetailsController().get);
+    app.get(PageUrls.CLAIMANTS_APPLICATIONS, new ClaimantsApplicationsController().get);
     app.get(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().get);
     app.post(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().post);
     app.get(
@@ -290,9 +290,6 @@ export class Routes {
     app.get(PageUrls.RESPOND_TO_APPLICATION_CYA, new RespondToApplicationCYAController().get);
     app.get(InterceptPaths.RESPOND_TO_APPLICATION_SUBMIT, new RespondToApplicationSubmitController().get);
     app.get(PageUrls.RESPOND_TO_APPLICATION_COMPLETE, new RespondToApplicationCompleteController().get);
-    // Claimant's applications
-    app.get(PageUrls.CLAIMANTS_APPLICATIONS, new ClaimantsApplicationsController().get);
-    app.get(PageUrls.CLAIMANTS_APPLICATION_DETAILS, new ClaimantsApplicationDetailsController().get);
     // others
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);

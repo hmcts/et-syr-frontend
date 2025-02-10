@@ -165,15 +165,14 @@ export const PageUrls = {
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
+  CLAIMANTS_APPLICATIONS: '/claimants-applications',
+  OTHER_RESPONDENTS_APPLICATIONS: '/other-respondents-applications',
   APPLICATION_DETAILS: '/application-details/:appId',
   RESPOND_TO_APPLICATION: '/respond-to-application/:appId',
   RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: '/respond-to-application-supporting-material',
   RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: '/respond-to-application-copy-to-other-party',
   RESPOND_TO_APPLICATION_CYA: '/respond-to-application-check-your-answers',
   RESPOND_TO_APPLICATION_COMPLETE: '/respond-to-application-complete',
-  // Claimant's applications
-  CLAIMANTS_APPLICATIONS: '/claimants-applications',
-  CLAIMANTS_APPLICATION_DETAILS: '/claimants-application-details/:appId',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
 } as const;

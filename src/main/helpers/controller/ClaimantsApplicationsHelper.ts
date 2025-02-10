@@ -21,7 +21,7 @@ import { getApplicationDisplayByClaimantCode } from './ContactTribunalHelper';
  */
 export const getClaimantsApplications = (req: AppRequest): GenericTseApplicationTypeItem[] => {
   const userCase = req.session.userCase;
-  const claimantApps = (userCase.genericTseApplicationCollection || []).filter(app => isClaimantAppsShare(app));
+  const claimantApps = (userCase.genericTseApplicationCollection || []).filter(app => isClaimantAppShare(app));
   if (ObjectUtils.isEmpty(claimantApps)) {
     return [];
   }
@@ -33,7 +33,7 @@ export const getClaimantsApplications = (req: AppRequest): GenericTseApplication
   };
   claimantApps.forEach(app => {
     app.linkValue = getApplicationDisplayByClaimantCode(app.value.type, translations);
-    app.redirectUrl = PageUrls.CLAIMANTS_APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
+    app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
     app.statusColor = linkStatusColorMap.get(<LinkStatus>app.value.applicationState);
     app.displayStatus = translations[app.value.applicationState];
   });
@@ -44,7 +44,7 @@ export const getClaimantsApplications = (req: AppRequest): GenericTseApplication
  * Check if claimant application is shared to respondent
  * @param app claimant's application
  */
-export const isClaimantAppsShare = (app: GenericTseApplicationTypeItem): boolean => {
+export const isClaimantAppShare = (app: GenericTseApplicationTypeItem): boolean => {
   if (app.value?.applicant !== Applicant.CLAIMANT) {
     return false;
   }

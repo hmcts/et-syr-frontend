@@ -119,20 +119,24 @@ export const getSupportingMaterialLink = (doc: Document): string => {
     : undefined;
 };
 
+/**
+ * Get document from DocumentTypeItem[]
+ * @param docs DocumentTypeItem[]
+ */
 export const getDocumentFromDocumentTypeItems = (docs: DocumentTypeItem[]): DocumentType => {
   return docs.find(element => element)?.value;
 };
 
+/**
+ * Get link from Document
+ * @param doc Document type
+ * */
 export const getLinkFromDocument = (doc: Document): string => {
   if (!doc) {
     return '';
   }
   const documentId = DocumentUtils.findDocumentIdByURL(doc.document_url);
   const documentName = doc.document_filename;
-  return getCaseDocumentLink(documentId, documentName);
-};
-
-const getCaseDocumentLink = (documentId: string, documentName: string): string => {
   return (
     '<a href="' +
     PageUrls.GET_CASE_DOCUMENT.replace(':docId', documentId) +

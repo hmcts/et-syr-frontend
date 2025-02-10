@@ -4,7 +4,7 @@ import { application } from '../../../../main/definitions/contact-tribunal-appli
 import { LinkStatus, linkStatusColorMap } from '../../../../main/definitions/links';
 import {
   getClaimantsApplications,
-  isClaimantAppsShare,
+  isClaimantAppShare,
 } from '../../../../main/helpers/controller/ClaimantsApplicationsHelper';
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
 import caseDetailsStatusJson from '../../../../main/resources/locales/en/translation/case-details-status.json';
@@ -62,7 +62,7 @@ describe('Claimants Applications Helper', () => {
             applicationState: 'inProgress',
           },
           linkValue: 'Change my personal details',
-          redirectUrl: '/claimants-application-details/1?lng=en',
+          redirectUrl: '/application-details/1?lng=en',
           statusColor: linkStatusColorMap.get(LinkStatus.IN_PROGRESS),
           displayStatus: 'In progress',
         },
@@ -94,7 +94,7 @@ describe('Claimants Applications Helper', () => {
         },
       };
 
-      expect(isClaimantAppsShare(applicationItem)).toBe(false);
+      expect(isClaimantAppShare(applicationItem)).toBe(false);
     });
 
     it('should return false if the application type is ORDER_WITNESS_ATTEND', () => {
@@ -107,7 +107,7 @@ describe('Claimants Applications Helper', () => {
         },
       };
 
-      expect(isClaimantAppsShare(applicationItem)).toBe(false);
+      expect(isClaimantAppShare(applicationItem)).toBe(false);
     });
 
     it('should return true if copyToOtherPartyYesOrNo is YES', () => {
@@ -120,7 +120,7 @@ describe('Claimants Applications Helper', () => {
         },
       };
 
-      expect(isClaimantAppsShare(applicationItem)).toBe(true);
+      expect(isClaimantAppShare(applicationItem)).toBe(true);
     });
 
     it('should return true if an admin notified both parties in respondCollection', () => {
@@ -141,7 +141,7 @@ describe('Claimants Applications Helper', () => {
         },
       };
 
-      expect(isClaimantAppsShare(applicationItem)).toBe(true);
+      expect(isClaimantAppShare(applicationItem)).toBe(true);
     });
 
     it('should return false if no valid conditions are met', () => {
@@ -162,7 +162,7 @@ describe('Claimants Applications Helper', () => {
         },
       };
 
-      expect(isClaimantAppsShare(applicationItem)).toBe(false);
+      expect(isClaimantAppShare(applicationItem)).toBe(false);
     });
 
     it('should return false if respondCollection is empty', () => {
@@ -175,7 +175,7 @@ describe('Claimants Applications Helper', () => {
         },
       };
 
-      expect(isClaimantAppsShare(applicationItem)).toBe(false);
+      expect(isClaimantAppShare(applicationItem)).toBe(false);
     });
 
     it('should return false if respondCollection contains responses but none from ADMIN notifying respondent', () => {
@@ -202,7 +202,7 @@ describe('Claimants Applications Helper', () => {
         },
       };
 
-      expect(isClaimantAppsShare(applicationItem)).toBe(false);
+      expect(isClaimantAppShare(applicationItem)).toBe(false);
     });
   });
 });

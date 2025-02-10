@@ -9,6 +9,7 @@ import {
   getAllResponses,
   getApplicationContent,
   getDecisionContent,
+  isApplicationShare,
   isResponseToTribunalRequired,
 } from '../helpers/controller/ApplicationDetailsHelper';
 import { getApplicationDisplayByCode } from '../helpers/controller/ContactTribunalHelper';
@@ -17,6 +18,10 @@ export default class ApplicationDetailsController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const selectedApplication: GenericTseApplicationTypeItem = findSelectedGenericTseApplication(req);
     if (!selectedApplication) {
+      return res.redirect(ErrorPages.NOT_FOUND);
+    }
+
+    if (!isApplicationShare(selectedApplication)) {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 

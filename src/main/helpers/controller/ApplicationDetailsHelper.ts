@@ -14,7 +14,16 @@ import ObjectUtils from '../../utils/ObjectUtils';
 import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../DocumentHelpers';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
+import { isClaimantAppShare } from './ClaimantsApplicationsHelper';
 import { getApplicationDisplayByCode } from './ContactTribunalHelper';
+
+/**
+ * Check if this application is visible to user
+ * @param app selected application
+ */
+export const isApplicationShare = (app: GenericTseApplicationTypeItem): boolean => {
+  return app.value?.applicant === Applicant.RESPONDENT || isClaimantAppShare(app);
+};
 
 /**
  * Display details of selected application.
