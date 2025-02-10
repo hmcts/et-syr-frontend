@@ -103,7 +103,17 @@ describe('Contact Tribunal Selected Controller Helper', () => {
       expect(error).toEqual({ propertyName: 'contactApplicationText', errorType: ValidationErrors.TOO_LONG });
     });
 
-    it('should return no error if text or file exists', () => {
+    it('should return an error if file is uploaded but not properly assigned to the session case', () => {
+      const req = mockRequest({
+        file: mockValidMulterFile,
+        session: { userCase: {} },
+      });
+      const formData = { contactApplicationText: '' };
+      const error = getFormError(req, formData);
+      expect(error).toEqual({ propertyName: 'contactApplicationFile', errorType: 'WithoutUploadButton' });
+    });
+
+    it('should return no error if file exists but text is missing', () => {
       const req = mockRequest({
         session: {
           userCase: {
@@ -116,6 +126,13 @@ describe('Contact Tribunal Selected Controller Helper', () => {
         },
       });
       const formData = { contactApplicationText: '' };
+      const error = getFormError(req, formData);
+      expect(error).toBeUndefined();
+    });
+
+    it('should return no error if text is provided but file is missing', () => {
+      const req: AppRequest = mockRequest({});
+      const formData = { contactApplicationText: 'Valid text content' };
       const error = getFormError(req, formData);
       expect(error).toBeUndefined();
     });

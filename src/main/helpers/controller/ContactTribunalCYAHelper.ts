@@ -8,7 +8,7 @@ import {
 } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import { getApplicationByCode, getApplicationKey, isTypeAOrB } from '../ApplicationHelper';
-import { getLinkFromDocument } from '../DocumentHelpers';
+import { getSupportingMaterialLink } from '../DocumentHelpers';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
@@ -32,30 +32,26 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
     )
   );
 
-  if (userCase.contactApplicationText) {
-    rows.push(
-      addSummaryRowWithAction(
-        translations.legend,
-        userCase.contactApplicationText,
-        PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) + languageParam,
-        translations.change,
-        ''
-      )
-    );
-  }
+  rows.push(
+    addSummaryRowWithAction(
+      translations.legend,
+      userCase.contactApplicationText,
+      PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) + languageParam,
+      translations.change,
+      ''
+    )
+  );
 
-  if (userCase.contactApplicationFile) {
-    const link = getLinkFromDocument(userCase.contactApplicationFile);
-    rows.push(
-      addSummaryHtmlRowWithAction(
-        translations.supportingMaterial,
-        link,
-        PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) + languageParam,
-        translations.change,
-        ''
-      )
-    );
-  }
+  const link = getSupportingMaterialLink(userCase.contactApplicationFile);
+  rows.push(
+    addSummaryHtmlRowWithAction(
+      translations.supportingMaterial,
+      link,
+      PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) + languageParam,
+      translations.change,
+      ''
+    )
+  );
 
   if (isTypeAOrB(selectedApplication)) {
     rows.push(

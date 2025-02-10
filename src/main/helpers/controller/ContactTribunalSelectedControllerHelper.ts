@@ -62,15 +62,18 @@ export const handleFileUpload = async (req: AppRequest, fieldName: string): Prom
  * @param formData form data
  */
 export const getFormError = (req: AppRequest, formData: Partial<CaseWithId>): FormError => {
-  const isTextProvided = StringUtils.isNotBlank(formData.contactApplicationText);
-  const isFileExists =
-    ObjectUtils.isNotEmpty(req.file) || ObjectUtils.isNotEmpty(req.session.userCase.contactApplicationFile);
-  if (!isFileExists && !isTextProvided) {
+  if (ObjectUtils.isNotEmpty(req.file) && ObjectUtils.isEmpty(req.session.userCase.contactApplicationFile)) {
+    return { propertyName: 'contactApplicationFile', errorType: 'WithoutUploadButton' };
+  }
+
+  if (
+    ObjectUtils.isEmpty(req.session.userCase.contactApplicationFile) &&
+    StringUtils.isBlank(formData.contactApplicationText)
+  ) {
     return { propertyName: 'contactApplicationText', errorType: ValidationErrors.REQUIRED };
   }
 
-  const isTextTooLong = StringUtils.isLengthMoreThan(formData.contactApplicationText, 2500);
-  if (isTextTooLong) {
+  if (StringUtils.isLengthMoreThan(formData.contactApplicationText, 2500)) {
     return { propertyName: 'contactApplicationText', errorType: ValidationErrors.TOO_LONG };
   }
 };

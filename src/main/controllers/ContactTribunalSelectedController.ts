@@ -32,6 +32,7 @@ export default class ContactTribunalSelectedController {
       return label.contactApplicationFile.hint;
     }
   };
+
   private readonly formContent: FormContent = {
     fields: {
       contactApplicationFile: {

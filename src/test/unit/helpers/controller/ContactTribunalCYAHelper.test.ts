@@ -71,7 +71,7 @@ describe('Contact Tribunal CYA Helper', () => {
             text: translations.supportingMaterial,
           },
           value: {
-            html: '<a href="/getCaseDocument/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa" target="_blank">test-file.pdf</a><br>',
+            html: '<a href="/getSupportingMaterial/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa" target="_blank">test-file.pdf</a><br>',
           },
           actions: {
             items: [
