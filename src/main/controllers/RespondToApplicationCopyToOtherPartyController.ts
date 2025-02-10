@@ -12,7 +12,7 @@ import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import UrlUtils from '../utils/UrlUtils';
 
-export default class RespondToTribunalCopyToOtherPartyController {
+export default class RespondToApplicationCopyToOtherPartyController {
   private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
@@ -30,12 +30,12 @@ export default class RespondToTribunalCopyToOtherPartyController {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     req.session.errors = this.form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
-      return res.redirect(PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY + getLanguageParam(req.url));
+      return res.redirect(PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + getLanguageParam(req.url));
     }
 
     req.session.userCase.copyToOtherPartyYesOrNo = formData.copyToOtherPartyYesOrNo;
     req.session.userCase.copyToOtherPartyText = formData.copyToOtherPartyText;
-    res.redirect(PageUrls.RESPOND_TO_TRIBUNAL_CYA + getLanguageParam(req.url));
+    res.redirect(PageUrls.RESPOND_TO_APPLICATION_CYA + getLanguageParam(req.url));
   };
 
   public get = (req: AppRequest, res: Response): void => {
@@ -46,7 +46,7 @@ export default class RespondToTribunalCopyToOtherPartyController {
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
     const captionTranslation: AnyRecord = {
-      ...req.t(TranslationKeys.RESPOND_TO_TRIBUNAL, { returnObjects: true }),
+      ...req.t(TranslationKeys.RESPOND_TO_APPLICATION, { returnObjects: true }),
     };
     res.render(TranslationKeys.COPY_TO_OTHER_PARTY, {
       ...content,

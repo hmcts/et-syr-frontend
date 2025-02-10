@@ -10,7 +10,7 @@ import { AnyRecord } from '../../definitions/util-types';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
- * Get Respond to Tribunal Check your answer content
+ * Get Respond to Application Check your answer content
  * @param req request
  * @param translations translations
  */
@@ -23,7 +23,7 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
     addSummaryRowWithAction(
       translations.legend,
       userCase.responseText,
-      PageUrls.RESPOND_TO_TRIBUNAL.replace(':appId', userCase.selectedGenericTseApplication.id) + languageParam,
+      PageUrls.RESPOND_TO_APPLICATION.replace(':appId', userCase.selectedGenericTseApplication.id) + languageParam,
       translations.change,
       ''
     )
@@ -36,7 +36,7 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
       addSummaryHtmlRowWithAction(
         translations.supportingMaterial,
         downloadLink,
-        PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL + languageParam,
+        PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL + languageParam,
         translations.change,
         ''
       )
@@ -47,7 +47,7 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
     addSummaryRowWithAction(
       translations.copyToOtherPartyYesOrNo,
       userCase.copyToOtherPartyYesOrNo === YesOrNo.YES ? translations.yes : translations.no,
-      PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY + languageParam,
+      PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + languageParam,
       translations.change,
       ''
     )
@@ -58,7 +58,7 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
       addSummaryRowWithAction(
         translations.copyToOtherPartyText,
         userCase.copyToOtherPartyText,
-        PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY + languageParam,
+        PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + languageParam,
         translations.change,
         ''
       )

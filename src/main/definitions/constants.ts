@@ -86,11 +86,11 @@ export const TranslationKeys = {
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
   CLAIMANTS_APPLICATIONS: 'claimants-applications',
   APPLICATION_DETAILS: 'application-details',
-  RESPOND_TO_TRIBUNAL: 'respond-to-tribunal',
-  RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL: 'respond-to-tribunal-supporting-material',
-  RESPOND_TO_TRIBUNAL_CYA: 'respond-to-tribunal-check-your-answers',
-  RESPOND_TO_TRIBUNAL_COMPLETE: 'respond-to-tribunal-complete',
-  RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY: 'respond-to-tribunal-copy-to-other-party',
+  RESPOND_TO_APPLICATION: 'respond-to-application',
+  RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: 'respond-to-application-supporting-material',
+  RESPOND_TO_APPLICATION_CYA: 'respond-to-application-check-your-answers',
+  RESPOND_TO_APPLICATION_COMPLETE: 'respond-to-application-complete',
+  RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: 'respond-to-application-copy-to-other-party',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
 } as const;
@@ -165,11 +165,11 @@ export const PageUrls = {
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
   APPLICATION_DETAILS: '/application-details/:appId',
-  RESPOND_TO_TRIBUNAL: '/respond-to-tribunal/:appId',
-  RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL: '/respond-to-tribunal-supporting-material',
-  RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY: '/respond-to-tribunal-copy-to-other-party',
-  RESPOND_TO_TRIBUNAL_CYA: '/respond-to-tribunal-check-your-answers',
-  RESPOND_TO_TRIBUNAL_COMPLETE: '/respond-to-tribunal-complete',
+  RESPOND_TO_APPLICATION: '/respond-to-application/:appId',
+  RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: '/respond-to-application-supporting-material',
+  RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: '/respond-to-application-copy-to-other-party',
+  RESPOND_TO_APPLICATION_CYA: '/respond-to-application-check-your-answers',
+  RESPOND_TO_APPLICATION_COMPLETE: '/respond-to-application-complete',
   // Claimant's applications
   CLAIMANTS_APPLICATIONS: '/claimants-applications',
   CLAIMANTS_APPLICATION_DETAILS: '/claimants-application-details/:appId',
@@ -192,7 +192,7 @@ export const InterceptPaths = {
   REMOVE_FILE: '/remove-uploaded-file',
   // Contact Tribunal
   CONTACT_TRIBUNAL_SUBMIT: '/submitContactTribunal',
-  RESPOND_TO_TRIBUNAL_SUBMIT: '/submitRespondToTribunal',
+  RESPOND_TO_APPLICATION_SUBMIT: '/submitRespondToApplication',
 } as const;
 
 export const RedirectKeys = {

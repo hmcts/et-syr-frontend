@@ -11,11 +11,11 @@ import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getAllResponses, getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
-import { getFormDataError } from '../helpers/controller/RespondToTribunalHelper';
+import { getFormDataError } from '../helpers/controller/RespondToApplicationHelper';
 import UrlUtils from '../utils/UrlUtils';
 import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
 
-export default class RespondToTribunalController {
+export default class RespondToApplicationController {
   private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
@@ -70,14 +70,14 @@ export default class RespondToTribunalController {
     if (error) {
       req.session.errors.push(error);
       return res.redirect(
-        PageUrls.RESPOND_TO_TRIBUNAL.replace(':appId', selectedApplication.id) + getLanguageParam(req.url)
+        PageUrls.RESPOND_TO_APPLICATION.replace(':appId', selectedApplication.id) + getLanguageParam(req.url)
       );
     }
 
     const redirectUrl =
       formData.hasSupportingMaterial === YesOrNo.YES
-        ? PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL
-        : PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY;
+        ? PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL
+        : PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY;
     return res.redirect(redirectUrl + getLanguageParam(req.url));
   };
 
@@ -90,10 +90,10 @@ export default class RespondToTribunalController {
     assignFormData(req.session.userCase, this.form.getFormFields());
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
-      TranslationKeys.RESPOND_TO_TRIBUNAL,
+      TranslationKeys.RESPOND_TO_APPLICATION,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    res.render(TranslationKeys.RESPOND_TO_TRIBUNAL, {
+    res.render(TranslationKeys.RESPOND_TO_APPLICATION, {
       ...content,
       hideContactUs: true,
       appContent: getApplicationContent(selectedApplication, req),

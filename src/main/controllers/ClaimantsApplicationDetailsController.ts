@@ -38,7 +38,7 @@ export default class ClaimantsApplicationDetailsController {
       decisionContent: getDecisionContent(selectedApplication, req),
       isRespondButton: isResponseToTribunalRequired(selectedApplication),
       respondRedirectUrl:
-        PageUrls.RESPOND_TO_TRIBUNAL.replace(':appId', selectedApplication.id) + getLanguageParam(req.url),
+        PageUrls.RESPOND_TO_APPLICATION.replace(':appId', selectedApplication.id) + getLanguageParam(req.url),
     });
   };
 }

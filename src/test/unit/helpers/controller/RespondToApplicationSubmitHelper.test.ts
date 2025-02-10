@@ -1,7 +1,7 @@
 import { CaseWithId, YesOrNo } from '../../../../main/definitions/case';
-import { clearTempFields } from '../../../../main/helpers/controller/RespondToTribunalSubmitHelper';
+import { clearTempFields } from '../../../../main/helpers/controller/RespondToApplicationSubmitHelper';
 
-describe('Respond to Tribunal Submit Helper', () => {
+describe('Respond to Application Submit Helper', () => {
   describe('clearTempFields', () => {
     it('should clear all temporary fields from userCase', () => {
       const userCase = {

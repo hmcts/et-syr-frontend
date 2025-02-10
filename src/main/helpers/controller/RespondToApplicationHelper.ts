@@ -4,7 +4,7 @@ import { FormError } from '../../definitions/form';
 import { isContentCharsOrLess, isFieldFilledIn, isOptionSelected } from '../../validators/validator';
 
 /**
- * Check and return errors in Respond to Tribunal page
+ * Check and return errors in Respond to Application page
  * @param formData form data from Contact Tribunal input
  */
 export const getFormDataError = (formData: Partial<CaseWithId>): FormError => {

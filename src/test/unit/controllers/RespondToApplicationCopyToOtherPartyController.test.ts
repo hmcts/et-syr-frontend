@@ -1,17 +1,17 @@
-import RespondToTribunalCopyToOtherPartyController from '../../../main/controllers/RespondToTribunalCopyToOtherPartyController';
+import RespondToApplicationCopyToOtherPartyController from '../../../main/controllers/RespondToApplicationCopyToOtherPartyController';
 import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import mockUserCase from '../mocks/mockUserCase';
 
-describe('Respond to Tribunal Copy to Other Party Controller', () => {
-  let controller: RespondToTribunalCopyToOtherPartyController;
+describe('Respond to Application Copy to Other Party Controller', () => {
+  let controller: RespondToApplicationCopyToOtherPartyController;
   let request: ReturnType<typeof mockRequest>;
   let response: ReturnType<typeof mockResponse>;
 
   beforeEach(() => {
-    controller = new RespondToTribunalCopyToOtherPartyController();
+    controller = new RespondToApplicationCopyToOtherPartyController();
     request = mockRequest({});
     response = mockResponse();
   });
@@ -33,7 +33,7 @@ describe('Respond to Tribunal Copy to Other Party Controller', () => {
       });
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.RESPOND_TO_TRIBUNAL_CYA + languages.ENGLISH_URL_PARAMETER
+        PageUrls.RESPOND_TO_APPLICATION_CYA + languages.ENGLISH_URL_PARAMETER
       );
     });
 
@@ -46,7 +46,7 @@ describe('Respond to Tribunal Copy to Other Party Controller', () => {
       });
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.RESPOND_TO_TRIBUNAL_CYA + languages.ENGLISH_URL_PARAMETER
+        PageUrls.RESPOND_TO_APPLICATION_CYA + languages.ENGLISH_URL_PARAMETER
       );
     });
 
@@ -54,7 +54,7 @@ describe('Respond to Tribunal Copy to Other Party Controller', () => {
       request = mockRequest({ body: {} });
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY + languages.ENGLISH_URL_PARAMETER
+        PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + languages.ENGLISH_URL_PARAMETER
       );
       expect(request.session.errors).toEqual([{ propertyName: 'copyToOtherPartyYesOrNo', errorType: 'required' }]);
     });
@@ -67,7 +67,7 @@ describe('Respond to Tribunal Copy to Other Party Controller', () => {
       });
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY + languages.ENGLISH_URL_PARAMETER
+        PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + languages.ENGLISH_URL_PARAMETER
       );
       expect(request.session.errors).toEqual([{ propertyName: 'copyToOtherPartyText', errorType: 'required' }]);
     });
@@ -81,7 +81,7 @@ describe('Respond to Tribunal Copy to Other Party Controller', () => {
       });
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY + languages.ENGLISH_URL_PARAMETER
+        PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + languages.ENGLISH_URL_PARAMETER
       );
       expect(request.session.errors).toEqual([{ propertyName: 'copyToOtherPartyText', errorType: 'tooLong' }]);
     });

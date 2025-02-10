@@ -1,18 +1,18 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import { Applicant } from '../../../../main/definitions/constants';
-import { getCyaContent } from '../../../../main/helpers/controller/RespondToTribunalCYAHelper';
+import { getCyaContent } from '../../../../main/helpers/controller/RespondToApplicationCYAHelper';
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
 import commonJson from '../../../../main/resources/locales/en/translation/common.json';
-import respondToTribunalCyaJson from '../../../../main/resources/locales/en/translation/respond-to-tribunal-check-your-answers.json';
+import respondToApplicationCyaJson from '../../../../main/resources/locales/en/translation/respond-to-application-check-your-answers.json';
 import { mockRequestWithTranslation } from '../../mocks/mockRequest';
 
-describe('Respond to Tribunal CYA Helper', () => {
+describe('Respond to Application CYA Helper', () => {
   describe('getCyaContent', () => {
     it('should generate the correct summary list for a complete case', () => {
       const translations = {
         ...commonJson,
         ...applicationTypeJson,
-        ...respondToTribunalCyaJson,
+        ...respondToApplicationCyaJson,
       };
       const req = mockRequestWithTranslation({}, translations);
 
@@ -49,7 +49,7 @@ describe('Respond to Tribunal CYA Helper', () => {
           actions: {
             items: [
               {
-                href: '/respond-to-tribunal/1?lng=en',
+                href: '/respond-to-application/1?lng=en',
                 text: translations.change,
                 visuallyHiddenText: translations.legend,
               },
@@ -67,7 +67,7 @@ describe('Respond to Tribunal CYA Helper', () => {
           actions: {
             items: [
               {
-                href: '/respond-to-tribunal-supporting-material?lng=en',
+                href: '/respond-to-application-supporting-material?lng=en',
                 text: translations.change,
                 visuallyHiddenText: translations.supportingMaterial,
               },
@@ -85,7 +85,7 @@ describe('Respond to Tribunal CYA Helper', () => {
           actions: {
             items: [
               {
-                href: '/respond-to-tribunal-copy-to-other-party?lng=en',
+                href: '/respond-to-application-copy-to-other-party?lng=en',
                 text: translations.change,
                 visuallyHiddenText: translations.copyToOtherPartyYesOrNo,
               },
@@ -103,7 +103,7 @@ describe('Respond to Tribunal CYA Helper', () => {
           actions: {
             items: [
               {
-                href: '/respond-to-tribunal-copy-to-other-party?lng=en',
+                href: '/respond-to-application-copy-to-other-party?lng=en',
                 text: translations.change,
                 visuallyHiddenText: translations.copyToOtherPartyText,
               },

@@ -245,7 +245,7 @@ const getTseApplicationDecisionDetails = (
 };
 
 /**
- * Boolean if respond to Tribunal is required.
+ * Boolean if respond to Application is required.
  * @param app selected application
  */
 export const isResponseToTribunalRequired = (app: GenericTseApplicationTypeItem): boolean => {

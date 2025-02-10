@@ -12,7 +12,7 @@ import { getLanguageParam } from '../helpers/RouterHelpers';
 import UrlUtils from '../utils/UrlUtils';
 import { isContentCharsOrLess } from '../validators/validator';
 
-export default class RespondToTribunalSupportingMaterialController {
+export default class RespondToApplicationSupportingMaterialController {
   private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
@@ -62,17 +62,17 @@ export default class RespondToTribunalSupportingMaterialController {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     req.session.userCase.responseText = formData.responseText;
 
-    return res.redirect(PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY + getLanguageParam(req.url));
+    return res.redirect(PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + getLanguageParam(req.url));
   };
 
   public get = (req: AppRequest, res: Response): void => {
     assignFormData(req.session.userCase, this.form.getFormFields());
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
-      TranslationKeys.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL,
+      TranslationKeys.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
       TranslationKeys.SIDEBAR_CONTACT_US,
     ]);
-    res.render(TranslationKeys.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL, {
+    res.render(TranslationKeys.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL, {
       ...content,
       hideContactUs: true,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),

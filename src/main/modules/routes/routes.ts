@@ -51,12 +51,12 @@ import IsClaimantEmploymentWithRespondentContinuingController from '../../contro
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
-import RespondToTribunalCYAController from '../../controllers/RespondToTribunalCYAController';
-import RespondToTribunalCompleteController from '../../controllers/RespondToTribunalCompleteController';
-import RespondToTribunalController from '../../controllers/RespondToTribunalController';
-import RespondToTribunalCopyToOtherPartyController from '../../controllers/RespondToTribunalCopyToOtherPartyController';
-import RespondToTribunalSubmitController from '../../controllers/RespondToTribunalSubmitController';
-import RespondToTribunalSupportingMaterialController from '../../controllers/RespondToTribunalSupportingMaterialController';
+import RespondToApplicationCYAController from '../../controllers/RespondToApplicationCYAController';
+import RespondToApplicationCompleteController from '../../controllers/RespondToApplicationCompleteController';
+import RespondToApplicationController from '../../controllers/RespondToApplicationController';
+import RespondToApplicationCopyToOtherPartyController from '../../controllers/RespondToApplicationCopyToOtherPartyController';
+import RespondToApplicationSubmitController from '../../controllers/RespondToApplicationSubmitController';
+import RespondToApplicationSupportingMaterialController from '../../controllers/RespondToApplicationSupportingMaterialController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
@@ -268,18 +268,27 @@ export class Routes {
     // Your request and applications
     app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
     app.get(PageUrls.APPLICATION_DETAILS, new ApplicationDetailsController().get);
-    app.get(PageUrls.RESPOND_TO_TRIBUNAL, new RespondToTribunalController().get);
-    app.post(PageUrls.RESPOND_TO_TRIBUNAL, new RespondToTribunalController().post);
-    app.get(PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL, new RespondToTribunalSupportingMaterialController().get);
-    app.post(
-      PageUrls.RESPOND_TO_TRIBUNAL_SUPPORTING_MATERIAL,
-      new RespondToTribunalSupportingMaterialController().post
+    app.get(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().get);
+    app.post(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().post);
+    app.get(
+      PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
+      new RespondToApplicationSupportingMaterialController().get
     );
-    app.get(PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY, new RespondToTribunalCopyToOtherPartyController().get);
-    app.post(PageUrls.RESPOND_TO_TRIBUNAL_COPY_TO_ORDER_PARTY, new RespondToTribunalCopyToOtherPartyController().post);
-    app.get(PageUrls.RESPOND_TO_TRIBUNAL_CYA, new RespondToTribunalCYAController().get);
-    app.get(InterceptPaths.RESPOND_TO_TRIBUNAL_SUBMIT, new RespondToTribunalSubmitController().get);
-    app.get(PageUrls.RESPOND_TO_TRIBUNAL_COMPLETE, new RespondToTribunalCompleteController().get);
+    app.post(
+      PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
+      new RespondToApplicationSupportingMaterialController().post
+    );
+    app.get(
+      PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY,
+      new RespondToApplicationCopyToOtherPartyController().get
+    );
+    app.post(
+      PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY,
+      new RespondToApplicationCopyToOtherPartyController().post
+    );
+    app.get(PageUrls.RESPOND_TO_APPLICATION_CYA, new RespondToApplicationCYAController().get);
+    app.get(InterceptPaths.RESPOND_TO_APPLICATION_SUBMIT, new RespondToApplicationSubmitController().get);
+    app.get(PageUrls.RESPOND_TO_APPLICATION_COMPLETE, new RespondToApplicationCompleteController().get);
     // Claimant's applications
     app.get(PageUrls.CLAIMANTS_APPLICATIONS, new ClaimantsApplicationsController().get);
     app.get(PageUrls.CLAIMANTS_APPLICATION_DETAILS, new ClaimantsApplicationDetailsController().get);
