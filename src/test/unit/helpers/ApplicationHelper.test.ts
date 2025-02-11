@@ -1,10 +1,14 @@
 import { Application, ApplicationType, application } from '../../../main/definitions/contact-tribunal-applications';
+import { AnyRecord } from '../../../main/definitions/util-types';
 import {
   getApplicationByCode,
   getApplicationByUrl,
+  getApplicationDisplayByCode,
+  getApplicationDisplayByUrl,
   getApplicationKey,
   isTypeAOrB,
 } from '../../../main/helpers/ApplicationHelper';
+import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
 
 describe('Applications Helper Test', () => {
   describe('getApplicationByCode', () => {
@@ -61,6 +65,54 @@ describe('Applications Helper Test', () => {
 
     it('should return false if application type is C', () => {
       expect(isTypeAOrB(application.ORDER_WITNESS_ATTEND)).toBe(false);
+    });
+  });
+
+  describe('getApplicationTypeByUrl', () => {
+    const translations: AnyRecord = applicationTypeJson;
+
+    it('should return the correct translation for a valid URL', () => {
+      const result = getApplicationDisplayByUrl(application.CHANGE_PERSONAL_DETAILS.url, translations);
+      expect(result).toBe(translations['CHANGE_PERSONAL_DETAILS']);
+    });
+
+    it('should return an empty string if URL is empty', () => {
+      const result = getApplicationDisplayByUrl('', translations);
+      expect(result).toBe('');
+    });
+
+    it('should return an empty string if URL is undefined', () => {
+      const result = getApplicationDisplayByUrl(undefined, translations);
+      expect(result).toBe('');
+    });
+
+    it('should return an empty string if no translation exists for the URL', () => {
+      const result = getApplicationDisplayByUrl('unknown-url', translations);
+      expect(result).toBe('');
+    });
+  });
+
+  describe('getApplicationTypeByCode', () => {
+    const translations: AnyRecord = applicationTypeJson;
+
+    it('should return the correct translation for a valid application code', () => {
+      const result = getApplicationDisplayByCode(application.CHANGE_PERSONAL_DETAILS.code, translations);
+      expect(result).toBe(translations['CHANGE_PERSONAL_DETAILS']);
+    });
+
+    it('should return an empty string if application code is empty', () => {
+      const result = getApplicationDisplayByCode('', translations);
+      expect(result).toBe('');
+    });
+
+    it('should return an empty string if application code is undefined', () => {
+      const result = getApplicationDisplayByCode(undefined, translations);
+      expect(result).toBe('');
+    });
+
+    it('should return an empty string if no translation exists for the application code', () => {
+      const result = getApplicationDisplayByCode('Non-existent code', translations);
+      expect(result).toBe('');
     });
   });
 });

@@ -4,9 +4,8 @@ import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constant
 import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import ObjectUtils from '../../utils/ObjectUtils';
+import { getApplicationDisplayByCode } from '../ApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
-
-import { getApplicationDisplayByCode } from './ContactTribunalHelper';
 
 export const getApplicationCollection = (req: AppRequest): GenericTseApplicationTypeItem[] => {
   const userCase = req.session.userCase;
