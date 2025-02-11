@@ -601,6 +601,11 @@ export default class ET3DataModelUtil {
     req.session.userCase.et3FormCategoryId = selectedRespondent.et3FormCategoryId;
     req.session.userCase.et3FormUploadTimestamp = selectedRespondent.et3FormUploadTimestamp;
     req.session.userCase.idamId = selectedRespondent.idamId;
+    req.session.userCase.respondentHearingPanelPreference = selectedRespondent.respondentHearingPanelPreference;
+    req.session.userCase.respondentHearingPanelPreferenceReasonJudge =
+      selectedRespondent.respondentHearingPanelPreferenceReasonJudge;
+    req.session.userCase.respondentHearingPanelPreferenceReasonPanel =
+      selectedRespondent.respondentHearingPanelPreferenceReasonPanel;
   }
 
   public static setResponseRespondentAddress(userCase: CaseWithId, selectedRespondent: RespondentET3Model): void {
