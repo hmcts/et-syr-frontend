@@ -33,6 +33,7 @@ export const updateAppsDisplayInfo = (
   });
   return apps;
 };
+
 const getApplicationDisplay = (app: GenericTseApplicationTypeItem, translations: AnyRecord): string => {
   return app.value?.applicant === Applicant.RESPONDENT
     ? getApplicationDisplayByCode(app.value.type, translations)
@@ -53,5 +54,6 @@ export const getApplicationCollection = (req: AppRequest): GenericTseApplication
  * @param app selected application
  */
 export const isYourApplication = (app: GenericTseApplicationTypeItem): boolean => {
+  // TODO: update this placeholder
   return app.value?.applicant === Applicant.RESPONDENT;
 };

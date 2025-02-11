@@ -8,7 +8,8 @@ export default class OtherRespondentsApplicationsController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     res.render(TranslationKeys.YOUR_REQUEST_AND_APPLICATIONS, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
-      ...req.t(TranslationKeys.CLAIMANTS_APPLICATIONS, { returnObjects: true }),
+      ...req.t(TranslationKeys.YOUR_REQUEST_AND_APPLICATIONS, { returnObjects: true }),
+      ...req.t(TranslationKeys.OTHER_RESPONDENTS_APPLICATIONS, { returnObjects: true }),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
       appList: getOtherRespondentsApplications(req),

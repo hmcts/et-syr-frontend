@@ -27,7 +27,15 @@ import { isYourApplication } from './YourRequestAndApplicationsHelper';
  * @param app selected application
  */
 export const isApplicationVisible = (app: GenericTseApplicationTypeItem): boolean => {
-  return isYourApplication(app) || isClaimantApplicationShare(app) || isOtherRespApplicationShare(app);
+  if (isYourApplication(app)) {
+    return true;
+  } else if (app.value?.applicant === Applicant.RESPONDENT) {
+    return isOtherRespApplicationShare(app);
+  } else if (app.value?.applicant === Applicant.CLAIMANT) {
+    return isClaimantApplicationShare(app);
+  } else {
+    return false;
+  }
 };
 
 /**

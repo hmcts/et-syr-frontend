@@ -49,6 +49,7 @@ import HoldingPageController from '../../controllers/HoldingPageController';
 import HomeController from '../../controllers/HomeController';
 import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
+import OtherRespondentsApplicationsController from '../../controllers/OtherRespondentsApplicationsController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
 import RespondToApplicationCYAController from '../../controllers/RespondToApplicationCYAController';
@@ -267,8 +268,9 @@ export class Routes {
     app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
     // Your request and applications
     app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
-    app.get(PageUrls.APPLICATION_DETAILS, new ApplicationDetailsController().get);
     app.get(PageUrls.CLAIMANTS_APPLICATIONS, new ClaimantsApplicationsController().get);
+    app.get(PageUrls.OTHER_RESPONDENTS_APPLICATIONS, new OtherRespondentsApplicationsController().get);
+    app.get(PageUrls.APPLICATION_DETAILS, new ApplicationDetailsController().get);
     app.get(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().get);
     app.post(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().post);
     app.get(

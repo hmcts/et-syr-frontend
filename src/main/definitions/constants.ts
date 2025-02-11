@@ -85,6 +85,7 @@ export const TranslationKeys = {
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
   CLAIMANTS_APPLICATIONS: 'claimants-applications',
+  OTHER_RESPONDENTS_APPLICATIONS: 'other-respondents-applications',
   APPLICATION_DETAILS: 'application-details',
   RESPOND_TO_APPLICATION: 'respond-to-application',
   RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: 'respond-to-application-supporting-material',
