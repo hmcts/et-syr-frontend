@@ -143,6 +143,7 @@ export const mockEt1DataModelUpdate = {
           respondent_ACAS_question: YesOrNo.YES,
           respondent_ACAS: 'R111111111111',
           respondent_ACAS_no: NoAcasNumberReason.ANOTHER,
+          respondent_hearing_panel_preference_reason: '',
           respondent_address: {
             AddressLine1: 'Respondent Address',
             AddressLine2: 'That Road',

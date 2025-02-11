@@ -287,6 +287,8 @@ export default {
       et3CaseDetailsLinksStatuses: new ET3CaseDetailsLinksStatuses(),
       et3HubLinksStatuses: new ET3HubLinksStatuses(),
       et3IsRespondentAddressCorrect: undefined,
+      respondentHearingPanelPreferenceReasonJudge: '',
+      respondentHearingPanelPreferenceReasonPanel: '',
     },
     {
       respondentName: 'Version1',
@@ -409,6 +411,8 @@ export default {
       idamId: undefined,
       et3CaseDetailsLinksStatuses: undefined,
       et3HubLinksStatuses: undefined,
+      respondentHearingPanelPreferenceReasonJudge: '',
+      respondentHearingPanelPreferenceReasonPanel: '',
     },
   ],
   et3ResponseReceived: true,

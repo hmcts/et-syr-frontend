@@ -15,6 +15,7 @@ import {
   CaseWithId,
   Document,
   EnglishOrWelsh,
+  HearingPanelPreference,
   Representative,
   RespondentET3Model,
   YesOrNo,
@@ -27,6 +28,7 @@ import {
   AllDocumentTypeValue,
   AllDocumentTypes,
   CcdDataModel,
+  DefaultValues,
   TYPE_OF_CLAIMANT,
   acceptanceDocTypes,
   et1DocTypes,
@@ -481,6 +483,16 @@ function mapResponseApiDataToCaseWithId(
   caseWithId.et3IsRespondentAddressCorrect = selectedRespondent.value?.et3IsRespondentAddressCorrect;
   caseWithId.et3Form = selectedRespondent.value?.et3Form;
   caseWithId.et3FormWelsh = selectedRespondent.value?.et3FormWelsh;
+  caseWithId.respondentHearingPanelPreference =
+    selectedRespondent.value?.respondent_hearing_panel_preference ?? undefined;
+  caseWithId.respondentHearingPanelPreferenceReasonJudge =
+    selectedRespondent.value?.respondent_hearing_panel_preference === HearingPanelPreference.JUDGE
+      ? selectedRespondent.value?.respondent_hearing_panel_preference_reason
+      : DefaultValues.STRING_EMPTY;
+  caseWithId.respondentHearingPanelPreferenceReasonPanel =
+    selectedRespondent.value?.respondent_hearing_panel_preference === HearingPanelPreference.PANEL
+      ? selectedRespondent.value.respondent_hearing_panel_preference_reason
+      : DefaultValues.STRING_EMPTY;
 }
 
 export function toApiFormat(caseItem: CaseWithId): UpdateCaseBody {
@@ -808,6 +820,15 @@ export const mapRespondent = (respondent: RespondentType): RespondentET3Model =>
     et3CaseDetailsLinksStatuses: respondent?.et3CaseDetailsLinksStatuses,
     et3HubLinksStatuses: respondent?.et3HubLinksStatuses,
     et3Status: respondent?.et3Status,
+    respondentHearingPanelPreference: respondent?.respondent_hearing_panel_preference ?? undefined,
+    respondentHearingPanelPreferenceReasonJudge:
+      respondent?.respondent_hearing_panel_preference === HearingPanelPreference.JUDGE
+        ? respondent?.respondent_hearing_panel_preference_reason
+        : DefaultValues.STRING_EMPTY,
+    respondentHearingPanelPreferenceReasonPanel:
+      respondent?.respondent_hearing_panel_preference === HearingPanelPreference.PANEL
+        ? respondent?.respondent_hearing_panel_preference_reason
+        : DefaultValues.STRING_EMPTY,
   };
 };
 
@@ -838,6 +859,13 @@ export const setRespondentApiFormat = (respondents: RespondentET3Model[]): Respo
         respondent_ACAS_question: respondent.acasCert,
         respondent_ACAS: respondent.acasCertNum,
         respondent_ACAS_no: respondent.noAcasReason,
+        respondent_hearing_panel_preference: respondent.respondentHearingPanelPreference ?? undefined,
+        respondent_hearing_panel_preference_reason:
+          respondent.respondentHearingPanelPreference === HearingPanelPreference.JUDGE
+            ? respondent.respondentHearingPanelPreferenceReasonJudge
+            : respondent.respondentHearingPanelPreference === HearingPanelPreference.PANEL
+            ? respondent.respondentHearingPanelPreferenceReasonPanel
+            : DefaultValues.STRING_EMPTY,
       },
       id: respondent.ccdId,
     };

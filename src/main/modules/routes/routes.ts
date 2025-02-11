@@ -31,6 +31,7 @@ import ClaimantNoticePeriodController from '../../controllers/ClaimantNoticePeri
 import ClaimantPayDetailsController from '../../controllers/ClaimantPayDetailsController';
 import ClaimantPayDetailsEnterController from '../../controllers/ClaimantPayDetailsEnterController';
 import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPensionAndBenefitsController';
+import ClearSelectionController from '../../controllers/ClearSelectionController';
 import ContactTribunalCYAController from '../../controllers/ContactTribunalCYAController';
 import ContactTribunalController from '../../controllers/ContactTribunalController';
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
@@ -58,6 +59,7 @@ import RespondentDXAddressController from '../../controllers/RespondentDXAddress
 import RespondentEmployeesController from '../../controllers/RespondentEmployeesController';
 import RespondentEnterAddressController from '../../controllers/RespondentEnterAddressController';
 import RespondentEnterPostCodeController from '../../controllers/RespondentEnterPostCodeController';
+import RespondentHearingPanelPreferenceController from '../../controllers/RespondentHearingPanelPreferenceController';
 import RespondentNameController from '../../controllers/RespondentNameController';
 import RespondentPreferredContactNameController from '../../controllers/RespondentPreferredContactNameController';
 import RespondentResponseLandingController from '../../controllers/RespondentResponseLandingController';
@@ -159,6 +161,8 @@ export class Routes {
     // 1. Tell us about the respondent (hearing preferences)
     app.get(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().get);
     app.post(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().post);
+    app.get(PageUrls.RESPONDENT_HEARING_PANEL_PREFERENCE, new RespondentHearingPanelPreferenceController().get);
+    app.post(PageUrls.RESPONDENT_HEARING_PANEL_PREFERENCE, new RespondentHearingPanelPreferenceController().post);
     app.get(PageUrls.REASONABLE_ADJUSTMENTS, new ReasonableAdjustmentsController().get);
     app.post(PageUrls.REASONABLE_ADJUSTMENTS, new ReasonableAdjustmentsController().post);
     app.get(PageUrls.RESPONDENT_EMPLOYEES, new RespondentEmployeesController().get);
@@ -269,6 +273,7 @@ export class Routes {
     app.get(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().get);
     app.get(PageUrls.DOCUMENTS, new DocumentsController().get);
     app.get(PageUrls.REMOVE_FILE, new RemoveFileController().get);
+    app.get(PageUrls.CLEAR_SELECTION, new ClearSelectionController().get);
     app.get(
       Urls.INFO,
       infoRequestHandler({

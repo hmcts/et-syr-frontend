@@ -1,9 +1,15 @@
 import { ET3RequestModel } from '../definitions/ET3RequestModel';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, RespondentET3Model } from '../definitions/case';
+import { CaseWithId, HearingPanelPreference, RespondentET3Model } from '../definitions/case';
 import { Et1Address } from '../definitions/complexTypes/et1Address';
 import { RespondentSumType, RespondentType } from '../definitions/complexTypes/respondent';
-import { FormFieldNames, LoggerConstants, ServiceErrors, ValidationErrors } from '../definitions/constants';
+import {
+  DefaultValues,
+  FormFieldNames,
+  LoggerConstants,
+  ServiceErrors,
+  ValidationErrors,
+} from '../definitions/constants';
 import { getLogger } from '../logger';
 
 import AddressUtils from './AddressUtils';
@@ -249,6 +255,13 @@ export default class ET3DataModelUtil {
       workAddressTown: caseWithId.workAddressTown,
       workAddressCountry: caseWithId.workAddressCountry,
       workAddressPostcode: caseWithId.workAddressPostcode,
+      respondent_hearing_panel_preference: caseWithId.respondentHearingPanelPreference,
+      respondent_hearing_panel_preference_reason:
+        caseWithId.respondentHearingPanelPreference === HearingPanelPreference.JUDGE
+          ? caseWithId.respondentHearingPanelPreferenceReasonJudge
+          : caseWithId.respondentHearingPanelPreference === HearingPanelPreference.PANEL
+          ? caseWithId.respondentHearingPanelPreferenceReasonPanel
+          : DefaultValues.STRING_EMPTY,
     };
     if (
       StringUtils.isNotBlank(caseWithId.et3CompanyHouseDocumentBinaryUrl) &&

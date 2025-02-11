@@ -85,8 +85,14 @@ export const TranslationKeys = {
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
   APPLICATION_DETAILS: 'application-details',
+  // Respondent hearing panel preference
+  RESPONDENT_HEARING_PANEL_PREFERENCE: 'respondent-hearing-panel-preference',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
+} as const;
+
+export const ParameterizedUrls = {
+  CLEAR_SELECTION: 'clear-selection',
 } as const;
 
 export const PageUrls = {
@@ -125,6 +131,7 @@ export const PageUrls = {
   RESPONDENT_CONTACT_PREFERENCES: '/respondent-contact-preferences',
   CHECK_YOUR_ANSWERS_CONTACT_DETAILS: '/check-your-answers-contact-details',
   HEARING_PREFERENCES: '/hearing-preferences',
+  RESPONDENT_HEARING_PANEL_PREFERENCE: '/respondent-hearing-panel-preference',
   REASONABLE_ADJUSTMENTS: '/reasonable-adjustments',
   RESPONDENT_EMPLOYEES: '/respondent-employees',
   RESPONDENT_SITES: '/respondent-sites',
@@ -150,6 +157,7 @@ export const PageUrls = {
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: '/employers-contract-claim-details',
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: '/check-your-answers-employers-contract-claim',
   GET_CASE_DOCUMENT: '/getCaseDocument/:docId',
+  CLEAR_SELECTION: '/clearSelection/:pageName',
   // Contact the tribunal about your case
   CONTACT_TRIBUNAL: '/contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: '/contact-tribunal/:selectedOption',
