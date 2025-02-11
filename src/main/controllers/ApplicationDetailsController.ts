@@ -9,7 +9,7 @@ import {
   getAllResponses,
   getApplicationContent,
   getDecisionContent,
-  isApplicationShare,
+  isApplicationVisible,
   isResponseToTribunalRequired,
 } from '../helpers/controller/ApplicationDetailsHelper';
 import { getApplicationDisplayByCode } from '../helpers/controller/ContactTribunalHelper';
@@ -21,7 +21,7 @@ export default class ApplicationDetailsController {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
-    if (!isApplicationShare(selectedApplication)) {
+    if (!isApplicationVisible(selectedApplication)) {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 

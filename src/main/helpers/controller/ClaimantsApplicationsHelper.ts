@@ -5,50 +5,51 @@ import {
   TseAdminDecisionItem,
   TseRespondTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constants';
+import { Applicant, Parties } from '../../definitions/constants';
 import { application } from '../../definitions/contact-tribunal-applications';
-import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
-import { AnyRecord } from '../../definitions/util-types';
 import ObjectUtils from '../../utils/ObjectUtils';
-import { getLanguageParam } from '../RouterHelpers';
 
-import { isAdminResponseShareToRespondent, isDecisionShareToRespondent } from './ApplicationDetailsHelper';
-import { getApplicationDisplayByClaimantCode } from './ContactTribunalHelper';
+import { updateAppsDisplayInfo } from './YourRequestAndApplicationsHelper';
 
 /**
  * Get claimant's applications
  * @param req request
  */
 export const getClaimantsApplications = (req: AppRequest): GenericTseApplicationTypeItem[] => {
-  const userCase = req.session.userCase;
-  const claimantApps = (userCase.genericTseApplicationCollection || []).filter(app => isClaimantAppShare(app));
-  if (ObjectUtils.isEmpty(claimantApps)) {
-    return [];
-  }
-
-  const url = req.url;
-  const translations: AnyRecord = {
-    ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
-    ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
-  };
-  claimantApps.forEach(app => {
-    app.linkValue = getApplicationDisplayByClaimantCode(app.value.type, translations);
-    app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
-    app.statusColor = linkStatusColorMap.get(<LinkStatus>app.value.applicationState);
-    app.displayStatus = translations[app.value.applicationState];
-  });
-  return claimantApps;
+  const claimantApps = (req.session.userCase.genericTseApplicationCollection || []).filter(app =>
+    isClaimantApplicationShare(app)
+  );
+  return updateAppsDisplayInfo(claimantApps, req);
 };
 
 /**
- * Check if claimant application is shared to respondent
+ * Check if tribunal response is shared to respondent
+ * @param response response
+ */
+export const isAdminResponseShareToRespondent = (response: TseRespondTypeItem): boolean => {
+  return (
+    response.value?.from === Applicant.ADMIN &&
+    (response.value?.selectPartyNotify === Parties.BOTH_PARTIES ||
+      response.value?.selectPartyNotify === Parties.RESPONDENT_ONLY)
+  );
+};
+
+/**
+ * Check if decision is shared to respondent
+ * @param decision decision
+ */
+export const isDecisionShareToRespondent = (decision: TseAdminDecisionItem): boolean => {
+  return (
+    decision.value?.selectPartyNotify === Parties.BOTH_PARTIES ||
+    decision.value?.selectPartyNotify === Parties.RESPONDENT_ONLY
+  );
+};
+
+/**
+ * Check if application is shared to respondent
  * @param app claimant's application
  */
-export const isClaimantAppShare = (app: GenericTseApplicationTypeItem): boolean => {
-  if (app.value?.applicant !== Applicant.CLAIMANT) {
-    return false;
-  }
-
+export const isApplicationShare = (app: GenericTseApplicationTypeItem): boolean => {
   if (app.value.type === application.ORDER_WITNESS_ATTEND.code) {
     return false;
   }
@@ -66,14 +67,21 @@ export const isClaimantAppShare = (app: GenericTseApplicationTypeItem): boolean 
     return true;
   }
 
-  if (
+  return (
     ObjectUtils.isNotEmpty(app.value?.adminDecision) &&
     app.value?.adminDecision?.some((d: TseAdminDecisionItem) => {
       return isDecisionShareToRespondent(d);
     })
-  ) {
-    return true;
-  }
+  );
+};
 
-  return false;
+/**
+ * Check if claimant's application is shared to respondent
+ * @param app selected application
+ */
+export const isClaimantApplicationShare = (app: GenericTseApplicationTypeItem): boolean => {
+  if (app.value?.applicant !== Applicant.CLAIMANT) {
+    return false;
+  }
+  return isApplicationShare(app);
 };

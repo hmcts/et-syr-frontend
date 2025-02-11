@@ -3,10 +3,9 @@ import { YesOrNo } from '../../definitions/case';
 import {
   GenericTseApplicationTypeItem,
   TseAdminDecision,
-  TseAdminDecisionItem,
   TseRespondTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, Parties, TranslationKeys } from '../../definitions/constants';
+import { Applicant, TranslationKeys } from '../../definitions/constants';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import CollectionUtils from '../../utils/CollectionUtils';
@@ -14,15 +13,21 @@ import ObjectUtils from '../../utils/ObjectUtils';
 import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../DocumentHelpers';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
-import { isClaimantAppShare } from './ClaimantsApplicationsHelper';
+import {
+  isAdminResponseShareToRespondent,
+  isClaimantApplicationShare,
+  isDecisionShareToRespondent,
+} from './ClaimantsApplicationsHelper';
 import { getApplicationDisplayByCode } from './ContactTribunalHelper';
+import { isOtherRespApplicationShare } from './OtherRespondentsApplicationsHelper';
+import { isYourApplication } from './YourRequestAndApplicationsHelper';
 
 /**
  * Check if this application is visible to user
  * @param app selected application
  */
-export const isApplicationShare = (app: GenericTseApplicationTypeItem): boolean => {
-  return app.value?.applicant === Applicant.RESPONDENT || isClaimantAppShare(app);
+export const isApplicationVisible = (app: GenericTseApplicationTypeItem): boolean => {
+  return isYourApplication(app) || isClaimantApplicationShare(app) || isOtherRespApplicationShare(app);
 };
 
 /**
@@ -63,18 +68,6 @@ export const getApplicationContent = (app: GenericTseApplicationTypeItem, req: A
   }
 
   return rows;
-};
-
-/**
- * Check if tribunal response is shared to respondent
- * @param response response
- */
-export const isAdminResponseShareToRespondent = (response: TseRespondTypeItem): boolean => {
-  return (
-    response.value?.from === Applicant.ADMIN &&
-    (response.value?.selectPartyNotify === Parties.BOTH_PARTIES ||
-      response.value?.selectPartyNotify === Parties.RESPONDENT_ONLY)
-  );
 };
 
 /**
@@ -187,17 +180,6 @@ const addAdminResponse = (response: TseRespondTypeItem, translations: AnyRecord,
   rows.push(addSummaryRow(translations.sentTo, translations[response.value.selectPartyNotify]));
 
   return rows;
-};
-
-/**
- * Check if decision is shared to respondent
- * @param decision decision
- */
-export const isDecisionShareToRespondent = (decision: TseAdminDecisionItem): boolean => {
-  return (
-    decision.value?.selectPartyNotify === Parties.BOTH_PARTIES ||
-    decision.value?.selectPartyNotify === Parties.RESPONDENT_ONLY
-  );
 };
 
 /**
