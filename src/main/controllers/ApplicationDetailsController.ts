@@ -3,6 +3,7 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants';
+import { getApplicationDisplayByCode } from '../helpers/ApplicationHelper';
 import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import {
@@ -12,7 +13,6 @@ import {
   isApplicationVisible,
   isResponseToTribunalRequired,
 } from '../helpers/controller/ApplicationDetailsHelper';
-import { getApplicationDisplayByCode } from '../helpers/controller/ContactTribunalHelper';
 
 export default class ApplicationDetailsController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {

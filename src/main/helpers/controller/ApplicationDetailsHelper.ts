@@ -10,6 +10,7 @@ import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definiti
 import { AnyRecord } from '../../definitions/util-types';
 import CollectionUtils from '../../utils/CollectionUtils';
 import ObjectUtils from '../../utils/ObjectUtils';
+import { getApplicationDisplayByCode } from '../ApplicationHelper';
 import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../DocumentHelpers';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
@@ -18,7 +19,6 @@ import {
   isClaimantApplicationShare,
   isDecisionShareToRespondent,
 } from './ClaimantsApplicationsHelper';
-import { getApplicationDisplayByCode } from './ContactTribunalHelper';
 import { isOtherRespApplicationShare } from './OtherRespondentsApplicationsHelper';
 import { isYourApplication } from './YourRequestAndApplicationsHelper';
 

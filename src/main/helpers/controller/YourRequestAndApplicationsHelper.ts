@@ -4,9 +4,8 @@ import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constant
 import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import ObjectUtils from '../../utils/ObjectUtils';
+import { getApplicationDisplayByClaimantCode, getApplicationDisplayByCode } from '../ApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
-
-import { getApplicationDisplayByClaimantCode, getApplicationDisplayByCode } from './ContactTribunalHelper';
 
 /**
  * Update applications' display info
