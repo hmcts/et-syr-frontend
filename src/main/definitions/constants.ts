@@ -157,7 +157,7 @@ export const PageUrls = {
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: '/employers-contract-claim-details',
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: '/check-your-answers-employers-contract-claim',
   GET_CASE_DOCUMENT: '/getCaseDocument/:docId',
-  CLEAR_SELECTION: '/clearSelection/:pageName',
+  CLEAR_SELECTION: '/clear-selection/:pageName',
   // Contact the tribunal about your case
   CONTACT_TRIBUNAL: '/contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: '/contact-tribunal/:selectedOption',

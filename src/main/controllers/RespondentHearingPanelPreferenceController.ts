@@ -9,7 +9,6 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
-import { isClearSelection } from '../helpers/RouterHelpers';
 import ET3Util from '../utils/ET3Util';
 import ObjectUtils from '../utils/ObjectUtils';
 import RespondentUtils from '../utils/RespondentUtils';
@@ -59,7 +58,7 @@ export default class RespondentHearingPanelPreferenceController {
         ],
       },
       clearSelection: {
-        type: 'clearSelection',
+        type: 'clearSelectionParameterized',
         targetUrl: '/' + ParameterizedUrls.CLEAR_SELECTION + '/' + TranslationKeys.RESPONDENT_HEARING_PANEL_PREFERENCE,
       },
     },
@@ -101,11 +100,6 @@ export default class RespondentHearingPanelPreferenceController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    if (isClearSelection(req)) {
-      req.session.userCase.respondentHearingPanelPreference = undefined;
-      req.session.userCase.respondentHearingPanelPreferenceReasonJudge = undefined;
-      req.session.userCase.respondentHearingPanelPreferenceReasonPanel = undefined;
-    }
     const selectedRespondent: RespondentET3Model = RespondentUtils.findSelectedRespondentByRequest(req);
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
