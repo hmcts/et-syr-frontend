@@ -17,7 +17,7 @@ export default class RespondToApplicationSubmitController {
       // TODO: save data in api
 
       // Clear temporary fields
-      userCase.rule90state = userCase.copyToOtherPartyYesOrNo && userCase.copyToOtherPartyYesOrNo === YesOrNo.YES;
+      userCase.ruleCopystate = userCase.copyToOtherPartyYesOrNo && userCase.copyToOtherPartyYesOrNo === YesOrNo.YES;
       clearTempFields(userCase);
 
       return res.redirect(PageUrls.RESPOND_TO_APPLICATION_COMPLETE + getLanguageParam(req.url));
