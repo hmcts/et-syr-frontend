@@ -3,9 +3,8 @@ import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/ge
 import { TranslationKeys } from '../../definitions/constants';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
+import { getApplicationDisplayByCode } from '../ApplicationHelper';
 import { datesStringToDateInLocale } from '../dateInLocale';
-
-import { getApplicationDisplayByCode } from './ContactTribunalHelper';
 
 /**
  * Display details of selected application.
