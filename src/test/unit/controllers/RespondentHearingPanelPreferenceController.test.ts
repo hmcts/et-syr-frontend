@@ -1,7 +1,8 @@
 import _ from 'lodash';
 
+import { Form } from '../../../main/components/form';
 import RespondentHearingPanelPreferenceController from '../../../main/controllers/RespondentHearingPanelPreferenceController';
-import { YesOrNo } from '../../../main/definitions/case';
+import { HearingPanelPreference, YesOrNo } from '../../../main/definitions/case';
 import { TranslationKeys } from '../../../main/definitions/constants';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
@@ -10,7 +11,7 @@ import { mockResponse } from '../mocks/mockResponse';
 
 import SpyInstance = jest.SpyInstance;
 
-jest.mock('../../../main/helpers/CaseHelpers');
+const getFormFieldsMock: SpyInstance = jest.spyOn(Form.prototype, 'getParsedBody');
 const updateET3ResponseWithET3FormMock: SpyInstance = jest.spyOn(ET3Util, 'updateET3ResponseWithET3Form');
 
 describe('RespondentHearingPanelPreferenceController', () => {
@@ -58,6 +59,8 @@ describe('RespondentHearingPanelPreferenceController', () => {
         },
       });
       request.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      const caseWithId = _.cloneDeep(mockCaseWithIdWithRespondents);
+      getFormFieldsMock.mockReturnValueOnce(caseWithId);
       const fieldsToReset: string[] = [];
       updateET3ResponseWithET3FormMock.mockImplementationOnce(() => {
         fieldsToReset.push(
@@ -70,6 +73,63 @@ describe('RespondentHearingPanelPreferenceController', () => {
         'respondentHearingPanelPreferenceReasonJudge',
         'respondentHearingPanelPreferenceReasonPanel',
       ]);
+    });
+    it('should reset both judge and panel preference reason when form data respondent hearing panel preference is no preference', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseRespondentContestClaim: YesOrNo.NO,
+        },
+      });
+      request.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      const caseWithId = _.cloneDeep(mockCaseWithIdWithRespondents);
+      caseWithId.respondentHearingPanelPreference = HearingPanelPreference.NO_PREFERENCE;
+      getFormFieldsMock.mockReturnValueOnce(caseWithId);
+      const fieldsToReset: string[] = [];
+      updateET3ResponseWithET3FormMock.mockImplementationOnce(() => {
+        fieldsToReset.push(
+          'respondentHearingPanelPreferenceReasonJudge',
+          'respondentHearingPanelPreferenceReasonPanel'
+        );
+      });
+      await controller.post(request, response);
+      expect(fieldsToReset).toStrictEqual([
+        'respondentHearingPanelPreferenceReasonJudge',
+        'respondentHearingPanelPreferenceReasonPanel',
+      ]);
+    });
+    it('should reset panel preference reason when form data respondent hearing panel preference is judge', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseRespondentContestClaim: YesOrNo.NO,
+        },
+      });
+      request.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      const caseWithId = _.cloneDeep(mockCaseWithIdWithRespondents);
+      caseWithId.respondentHearingPanelPreference = HearingPanelPreference.JUDGE;
+      getFormFieldsMock.mockReturnValueOnce(caseWithId);
+      const fieldsToReset: string[] = [];
+      updateET3ResponseWithET3FormMock.mockImplementationOnce(() => {
+        fieldsToReset.push('respondentHearingPanelPreferenceReasonPanel');
+      });
+      await controller.post(request, response);
+      expect(fieldsToReset).toStrictEqual(['respondentHearingPanelPreferenceReasonPanel']);
+    });
+    it('should reset judge preference reason when form data respondent hearing panel preference is panel', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseRespondentContestClaim: YesOrNo.NO,
+        },
+      });
+      request.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      const caseWithId = _.cloneDeep(mockCaseWithIdWithRespondents);
+      caseWithId.respondentHearingPanelPreference = HearingPanelPreference.PANEL;
+      getFormFieldsMock.mockReturnValueOnce(caseWithId);
+      const fieldsToReset: string[] = [];
+      updateET3ResponseWithET3FormMock.mockImplementationOnce(() => {
+        fieldsToReset.push('respondentHearingPanelPreferenceReasonJudge');
+      });
+      await controller.post(request, response);
+      expect(fieldsToReset).toStrictEqual(['respondentHearingPanelPreferenceReasonJudge']);
     });
   });
 });
