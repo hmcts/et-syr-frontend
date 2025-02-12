@@ -23,5 +23,13 @@
     "panel": "[W]I prefer my case to be heard by a panel including non-legal members",
     "judgeReason": "[W]Give reason",
     "panelReason": "[W]Give reason"
+  },
+  "errors": {
+    "respondentHearingPanelPreferenceReasonJudge": {
+      "required": "[W]Give reason"
+    },
+    "respondentHearingPanelPreferenceReasonPanel": {
+      "required": "[W]Give reason"
+    }
   }
 }
