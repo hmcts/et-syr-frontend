@@ -1,10 +1,12 @@
 // Used in API formatter
 import { AxiosResponse } from 'axios';
 
-import { CaseWithId } from '../definitions/case';
+import { CaseWithId, Document } from '../definitions/case';
 import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
-import { DOCUMENT_CONTENT_TYPES, DefaultValues } from '../definitions/constants';
+import { DOCUMENT_CONTENT_TYPES, DefaultValues, PageUrls } from '../definitions/constants';
 import { DocumentDetail } from '../definitions/definition';
+import DocumentUtils from '../utils/DocumentUtils';
+import ObjectUtils from '../utils/ObjectUtils';
 
 export const combineDocuments = <T>(...arrays: T[][]): T[] =>
   [].concat(...arrays.filter(Array.isArray)).filter(doc => doc !== undefined);
@@ -96,4 +98,23 @@ export const formatDocumentDetailToApiDocumentTypeItem = (form: DocumentDetail):
       },
     },
   };
+};
+
+/**
+ * Get link from Document
+ * @param doc Document type
+ */
+export const getSupportingMaterialLink = (doc: Document): string => {
+  if (!doc) {
+    return '';
+  }
+  const documentId = DocumentUtils.findDocumentIdByURL(doc.document_url);
+  const documentName = doc.document_filename;
+  return documentId && ObjectUtils.isNotEmpty(documentName)
+    ? '<a href="' +
+        PageUrls.GET_SUPPORTING_MATERIAL.replace(':docId', documentId) +
+        '" target="_blank">' +
+        documentName +
+        '</a><br>'
+    : undefined;
 };

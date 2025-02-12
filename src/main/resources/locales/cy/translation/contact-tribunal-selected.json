@@ -31,7 +31,8 @@
       "fileNameNotFound": "Nid oes gan y ffeil rydych chi’n ceisio ei huwchlwytho enw.",
       "fileBufferEmpty": "Mae’r ffeil rydych chi’n ceisio ei huwchlwytho yn wag.",
       "fileNameNotSelected": "Dewiswch ffeil.",
-      "fileAlreadyExists": "Mae’r ffeil rydych chi’n ceisio ei huwchlwytho eisoes yn bodoli. Tynnwch yr un sy’n bodoli eisoes yn gyntaf."
+      "fileAlreadyExists": "Mae’r ffeil rydych chi’n ceisio ei huwchlwytho eisoes yn bodoli. Tynnwch yr un sy’n bodoli eisoes yn gyntaf.",
+      "WithoutUploadButton": "[W]Please press Upload file button after select file."
     }
   }
 }

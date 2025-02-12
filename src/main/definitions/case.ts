@@ -369,9 +369,9 @@ export interface Case {
   hearingDocument?: Document;
   formattedSelectedHearing?: string;
 
-  /* Used to save the Rule92 state to render the "Completed" page under various conditions, after submitting the CYA,
+  /* Used to save the Rule 90 state to render the "Completed" page under various conditions, after submitting the CYA,
   all temporary fields such as copyToOtherPartyYesOrNo, contactApplicationText, etc. are cleared.*/
-  rule92state?: boolean;
+  ruleCopystate?: boolean;
   documentCollection?: DocumentTypeItem[];
   respondentEnterPostcode?: string;
   workEnterPostcode?: string;

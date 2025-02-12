@@ -8,10 +8,19 @@
 
 {% block content %}
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
             {{ govukPanel({
                 titleText: titleText
             }) }}
+
+            <h2 class="govuk-heading-m">{{ pHead }}</h2>
+            {% if ruleCopystate %}
+                <p class="govuk-body">{{ pYes.p1 }} <b>{{ todayPlus7 }}</b> {{ pYes.p1a }}</p>
+                <p class="govuk-body">{{ pYes.p2 }}</p>
+                <p class="govuk-body">{{ pYes.p3 }}</p>
+            {% else %}
+                <p class="govuk-body">{{ pNo }}</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

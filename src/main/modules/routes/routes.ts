@@ -9,6 +9,7 @@ import multer, { FileFilterCallback } from 'multer';
 import AcasEarlyConciliationCertificateController from '../../controllers/AcasEarlyConciliationCertificateController';
 import ApplicationDetailsController from '../../controllers/ApplicationDetailsController';
 import ApplicationSubmittedController from '../../controllers/ApplicationSubmittedController';
+import AttachmentController from '../../controllers/AttachmentController';
 import CaseDetailsController from '../../controllers/CaseDetailsController';
 import CaseListCheckController from '../../controllers/CaseListCheckController';
 import CaseListController from '../../controllers/CaseListController';
@@ -269,6 +270,7 @@ export class Routes {
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
     app.get(PageUrls.GET_CASE_DOCUMENT, new GetCaseDocumentController().get);
+    app.get(PageUrls.GET_SUPPORTING_MATERIAL, new AttachmentController().get);
     app.post(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().post);
     app.get(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().get);
     app.get(PageUrls.DOCUMENTS, new DocumentsController().get);

@@ -2,13 +2,14 @@
   "title": "Manylion y ceisydd",
   "applicationTo": "Cais i ",
   "applicant": "Ceisydd",
+  "Respondent": "Atebydd",
+  "Claimant": "Hawlydd",
   "requestDate": "Dyddiad y cais",
   "applicationType": "Math o gais",
-  "Respondent": "Atebydd",
   "legend": "Beth ydych chi eisiau ei ddweud neu ofyn i’rtribiwnlys?",
   "supportingMaterial": "Deunydd ategol",
   "copyCorrespondence": "Ydych chi eisiau anfon copi o’r ohebiaeth hon at y Parti arall er mwyn cydymffurfio â’r Rheolau Trefniadaeth?",
   "copyToOtherPartyText": "Rheswm dros beidio â hysbysu’r parti arall",
-  "respond": "Ymateb",
+  "respondButton": "Ymateb",
   "mustRespond": "Rhaid i chi ymateb i’r tribiwnlys."
 }

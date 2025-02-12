@@ -38,9 +38,6 @@ const getContentHtml = (key: keyof typeof application, translations: AnyRecord, 
  * @param translations translation of the page
  */
 export const getApplicationDisplayByUrl = (url: string, translations: AnyRecord): string => {
-  if (!url) {
-    return '';
-  }
   const appKey = Object.keys(application).find(key => application[key].url === url);
   return appKey ? translations[appKey] : '';
 };
@@ -51,25 +48,8 @@ export const getApplicationDisplayByUrl = (url: string, translations: AnyRecord)
  * @param translations translation of the page
  */
 export const getApplicationDisplayByCode = (appCode: string, translations: AnyRecord): string => {
-  if (!appCode) {
-    return '';
-  }
   const appKey = Object.keys(application).find(key => application[key].code === appCode);
   return appKey ? translations[appKey] : '';
-};
-
-/**
- * Check if Claimant is represented with MyHMCTS
- * @param userCase
- * @returns boolean
- */
-const isClaimantRepresentedWithMyHMCTSCase = (userCase: CaseWithId): boolean => {
-  return (
-    MY_HMCTS === userCase.caseSource &&
-    YES === userCase.claimantRepresentedQuestion &&
-    userCase.representativeClaimantType !== undefined &&
-    userCase.representativeClaimantType.myHmctsOrganisation !== undefined
-  );
 };
 
 /**
@@ -86,6 +66,15 @@ export const isClaimantSystemUser = (userCase: CaseWithId): boolean => {
     );
   }
   return false;
+};
+
+const isClaimantRepresentedWithMyHMCTSCase = (userCase: CaseWithId): boolean => {
+  return (
+    MY_HMCTS === userCase.caseSource &&
+    YES === userCase.claimantRepresentedQuestion &&
+    userCase.representativeClaimantType !== undefined &&
+    userCase.representativeClaimantType.myHmctsOrganisation !== undefined
+  );
 };
 
 /**

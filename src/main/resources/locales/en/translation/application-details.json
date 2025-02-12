@@ -2,13 +2,14 @@
   "title": "Application details",
   "applicationTo": "Application to ",
   "applicant": "Applicant",
+  "Respondent": "Respondent",
+  "Claimant": "Claimant",
   "requestDate": "Application date",
   "applicationType": "Application type",
-  "Respondent": "Respondent",
   "legend": "What do you want to tell or ask the tribunal?",
   "supportingMaterial": "Supporting material",
   "copyCorrespondence": "Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?",
   "copyToOtherPartyText": "Reason for not informing other party",
-  "respond": "Respond",
+  "respondButton": "Respond",
   "mustRespond": "You must respond to the tribunal."
 }
