@@ -33,26 +33,6 @@ const getContentHtml = (key: keyof typeof application, translations: AnyRecord, 
 };
 
 /**
- * Get Application Type as heading by url
- * @param url url of application
- * @param translations translation of the page
- */
-export const getApplicationDisplayByUrl = (url: string, translations: AnyRecord): string => {
-  const appKey = Object.keys(application).find(key => application[key].url === url);
-  return appKey ? translations[appKey] : '';
-};
-
-/**
- * Get Application Type as heading by application code
- * @param appCode code of application
- * @param translations translation of the page
- */
-export const getApplicationDisplayByCode = (appCode: string, translations: AnyRecord): string => {
-  const appKey = Object.keys(application).find(key => application[key].code === appCode);
-  return appKey ? translations[appKey] : '';
-};
-
-/**
  * Check if Claimant is a system user
  * @param userCase
  * @returns boolean
