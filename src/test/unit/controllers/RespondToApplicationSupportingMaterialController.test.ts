@@ -21,7 +21,7 @@ describe('Respond to Application Supporting Material Controller', () => {
       controller.get(req, response);
       expect(response.render).toHaveBeenCalledWith(
         TranslationKeys.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
-        expect.anything()
+        expect.objectContaining({ hideContactUs: true })
       );
     });
   });
@@ -45,5 +45,16 @@ describe('Respond to Application Supporting Material Controller', () => {
         PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + languages.ENGLISH_URL_PARAMETER
       );
     });
+  });
+
+  it('should handle file upload and redirect on error', async () => {
+    const req = mockRequest({
+      body: { upload: 'true' },
+      session: { userCase: {} },
+    });
+    await controller.post(req, response);
+    expect(response.redirect).toHaveBeenCalledWith(
+      PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL + languages.ENGLISH_URL_PARAMETER
+    );
   });
 });
