@@ -92,6 +92,7 @@ export default class RespondToApplicationSupportingMaterialController {
 
   public get = (req: AppRequest, res: Response): void => {
     assignFormData(req.session.userCase, this.form.getFormFields());
+    this.uploadedFileName = req?.session?.userCase?.supportingMaterialFile?.document_filename;
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,

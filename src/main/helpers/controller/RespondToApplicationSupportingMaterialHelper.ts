@@ -14,6 +14,8 @@ import { fromApiFormatDocument } from '../ApiFormatter';
  * @param fieldName form field name
  */
 export const handleFileUpload = async (req: AppRequest, fieldName: string): Promise<boolean> => {
+  req.session.errors = [];
+
   if (req.body?.upload && ObjectUtils.isEmpty(req?.file)) {
     req.session.errors = [
       {
@@ -22,8 +24,6 @@ export const handleFileUpload = async (req: AppRequest, fieldName: string): Prom
       },
     ];
     return true;
-  } else {
-    req.session.errors = [];
   }
 
   if (ObjectUtils.isNotEmpty(req?.file)) {
