@@ -6,7 +6,7 @@ import {
   DocumentApiModel,
   HearingBundleType,
 } from '../../../main/definitions/api/caseApiResponse';
-import { CaseWithId, Document, EmailOrPost, EnglishOrWelsh, YesOrNo } from '../../../main/definitions/case';
+import { CaseWithId, Document } from '../../../main/definitions/case';
 import { acceptanceDocTypes } from '../../../main/definitions/constants';
 import { CaseState } from '../../../main/definitions/definition';
 import { TypeItem } from '../../../main/definitions/util-types';
@@ -64,19 +64,6 @@ describe('formatApiCaseDataToCaseWithId', () => {
     const result: CaseWithId = formatApiCaseDataToCaseWithId(caseApiDataResponse);
     expect(result).toEqual(ApiFormatterFormatApiCaseDataToCaseWithId_ExpectedEmptyCaseWithIdMock);
   });
-});
-
-describe('toApiFormat', () => {
-  it('should transform case data to api format', () => {
-    const apiData: UpdateCaseBody = toApiFormat(ApiFormatter_GenericCaseItemMock);
-    const expectedResponse: UpdateCaseBody = _.cloneDeep(ApiFormatter_UpdateCaseBodyMock);
-    expectedResponse.case_data.claimantIndType.claimant_date_of_birth = '2022-10-05';
-    expectedResponse.case_data.claimantIndType.claimant_first_names = 'Jane';
-    expectedResponse.case_data.claimantRequests.other_claim = 'other type of claims';
-    expectedResponse.case_data.claimantType.claimant_email_address = 'janedoe@exmaple.com';
-    expectedResponse.case_data.newEmploymentType.newly_employed_from = '2010-05-12';
-    expect(apiData).toEqual(expectedResponse);
-  });
   it('should format Case Api Response with no applications`', () => {
     const mock: CaseApiDataResponse = ApiFormatter_CaseApiDataResponseMock;
     mock.case_data.genericTseApplicationCollection = [];
@@ -87,295 +74,9 @@ describe('toApiFormat', () => {
 
     expect(complete).toEqual(result);
   });
+});
 
-  it('should return undefined for empty field`', () => {
-    const mockedApiDataEmpty: CaseApiDataResponse = {
-      id: '1234',
-      state: CaseState.AWAITING_SUBMISSION_TO_HMCTS,
-      created_date: '2022-08-19T09:19:25.817549',
-      last_modified: '2022-08-19T09:19:25.817549',
-      case_data: {
-        claimantRepresentedQuestion: YesOrNo.YES,
-      },
-    };
-    const result = formatApiCaseDataToCaseWithId(mockedApiDataEmpty);
-    expect(result).toStrictEqual({
-      id: '1234',
-      ccdId: '1234',
-      feeGroupReference: undefined,
-      ethosCaseReference: undefined,
-      createdDate: '19 August 2022',
-      lastModified: '19 August 2022',
-      state: CaseState.AWAITING_SUBMISSION_TO_HMCTS,
-      caseType: undefined,
-      typeOfClaim: undefined,
-      caseTypeId: undefined,
-      claimantRepresentedQuestion: YesOrNo.YES,
-      ClaimantPcqId: undefined,
-      dobDate: undefined,
-      claimantSex: undefined,
-      preferredTitle: undefined,
-      email: undefined,
-      address1: undefined,
-      address2: undefined,
-      addressEnterPostcode: undefined,
-      addressPostcode: undefined,
-      addressCountry: undefined,
-      addressTown: undefined,
-      telNumber: undefined,
-      firstName: undefined,
-      genericTseApplicationCollection: undefined,
-      tseApplicationStoredCollection: undefined,
-      lastName: undefined,
-      claimantPensionContribution: undefined,
-      claimantPensionWeeklyContribution: undefined,
-      employeeBenefits: undefined,
-      endDate: undefined,
-      newJob: undefined,
-      newJobPay: undefined,
-      newJobPayInterval: undefined,
-      newJobStartDate: undefined,
-      avgWeeklyHrs: undefined,
-      jobTitle: undefined,
-      noticePeriod: undefined,
-      noticePeriodLength: undefined,
-      noticePeriodUnit: undefined,
-      payAfterTax: undefined,
-      payBeforeTax: undefined,
-      payInterval: undefined,
-      startDate: undefined,
-      benefitsCharCount: undefined,
-      isStillWorking: undefined,
-      pastEmployer: undefined,
-      personalDetailsCheck: undefined,
-      reasonableAdjustments: undefined,
-      reasonableAdjustmentsDetail: undefined,
-      noticeEnds: undefined,
-      hearingPreferences: undefined,
-      hearingAssistance: undefined,
-      claimantContactPreference: undefined,
-      claimantContactLanguagePreference: undefined,
-      claimantHearingLanguagePreference: undefined,
-      employmentAndRespondentCheck: undefined,
-      claimDetailsCheck: undefined,
-      claimSummaryText: undefined,
-      claimTypeDiscrimination: undefined,
-      claimTypePay: undefined,
-      tellUsWhatYouWant: undefined,
-      tribunalRecommendationRequest: undefined,
-      compensationAmount: undefined,
-      compensationOutcome: undefined,
-      whistleblowingClaim: undefined,
-      whistleblowingEntityName: undefined,
-      linkedCases: undefined,
-      linkedCasesDetail: undefined,
-      respondents: undefined,
-      claimantWorkAddressQuestion: undefined,
-      workAddress1: undefined,
-      workAddress2: undefined,
-      workAddressTown: undefined,
-      workAddressCountry: undefined,
-      workEnterPostcode: undefined,
-      workAddressPostcode: undefined,
-      et3ResponseReceived: false,
-      claimSummaryFile: undefined,
-      submittedDate: undefined,
-      hubLinksStatuses: undefined,
-      managingOffice: undefined,
-      et1SubmittedForm: undefined,
-      tribunalCorrespondenceEmail: undefined,
-      tribunalCorrespondenceTelephone: undefined,
-      acknowledgementOfClaimLetterDetail: undefined,
-      respondentResponseDeadline: undefined,
-      rejectionOfClaimDocumentDetail: undefined,
-      responseAcknowledgementDocumentDetail: undefined,
-      responseRejectionDocumentDetail: undefined,
-      responseEt3FormDocumentDetail: [],
-      otherClaim: undefined,
-      sendNotificationCollection: undefined,
-      hearingCollection: undefined,
-      documentCollection: undefined,
-      representatives: undefined,
-      bundleDocuments: [],
-      multipleFlag: undefined,
-      leadClaimant: undefined,
-      caseStayed: undefined,
-      preAcceptCase: undefined,
-    });
-  });
-
-  it('should return document collection for welsh`', () => {
-    const mockedApiDataWelsh: CaseApiDataResponse = {
-      id: '1234',
-      state: CaseState.AWAITING_SUBMISSION_TO_HMCTS,
-      created_date: '2022-08-19T09:19:25.817549',
-      last_modified: '2022-08-19T09:19:25.817549',
-      case_data: {
-        claimantRepresentedQuestion: YesOrNo.YES,
-        claimantType: {
-          claimant_email_address: 'janedoe@exmaple.com',
-          claimant_contact_preference: EmailOrPost.EMAIL,
-        },
-        claimantHearingPreference: {
-          contact_language: EnglishOrWelsh.WELSH,
-          hearing_language: EnglishOrWelsh.WELSH,
-        },
-        documentCollection: [
-          {
-            id: 'f78aa088-c223-4ca5-8e0a-42e7c33dffa5',
-            value: {
-              typeOfDocument: 'ET1',
-              uploadedDocument: {
-                document_binary_url: 'http://dm-store:8080/documents/3aa7dfc1-378b-4fa8-9a17-89126fae5673/binary',
-                document_filename: 'ET1_CASE_DOCUMENT_Sunday_Ayeni.pdf',
-                document_url: 'http://dm-store:8080/documents/3aa7dfc1-378b-4fa8-9a17-89126fae5673',
-              },
-              shortDescription: 'Case Details - Sunday Ayeni',
-            },
-          },
-          {
-            id: '3db71007-d42c-43d5-a51b-57957f78ced3',
-            value: {
-              typeOfDocument: 'ET1',
-              uploadedDocument: {
-                document_binary_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa/binary',
-                document_filename: 'ET1_WELSH_Sunday_Ayeni_R600227_21_75.pdf',
-                document_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa',
-              },
-              shortDescription: 'ET1 WELSH - R600227/21/75',
-            },
-          },
-        ],
-      },
-    };
-    const result = formatApiCaseDataToCaseWithId(mockedApiDataWelsh);
-    expect(result).toEqual({
-      ccdId: '1234',
-      feeGroupReference: undefined,
-      ethosCaseReference: undefined,
-      createdDate: '19 August 2022',
-      lastModified: '19 August 2022',
-      state: CaseState.AWAITING_SUBMISSION_TO_HMCTS,
-      caseType: undefined,
-      typeOfClaim: undefined,
-      caseTypeId: undefined,
-      claimantRepresentedQuestion: YesOrNo.YES,
-      ClaimantPcqId: undefined,
-      dobDate: undefined,
-      claimantSex: undefined,
-      preferredTitle: undefined,
-      email: 'janedoe@exmaple.com',
-      et1SubmittedForm: {
-        description: 'ET1 WELSH - R600227/21/75',
-        id: '10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa',
-        type: 'ET1',
-      },
-      address1: undefined,
-      address2: undefined,
-      addressPostcode: undefined,
-      addressCountry: undefined,
-      addressTown: undefined,
-      telNumber: undefined,
-      firstName: undefined,
-      lastName: undefined,
-      claimantPensionContribution: undefined,
-      claimantPensionWeeklyContribution: undefined,
-      employeeBenefits: undefined,
-      endDate: undefined,
-      newJob: undefined,
-      newJobPay: undefined,
-      newJobPayInterval: undefined,
-      newJobStartDate: undefined,
-      avgWeeklyHrs: undefined,
-      jobTitle: undefined,
-      noticePeriod: undefined,
-      noticePeriodLength: undefined,
-      noticePeriodUnit: undefined,
-      payAfterTax: undefined,
-      payBeforeTax: undefined,
-      payInterval: undefined,
-      startDate: undefined,
-      benefitsCharCount: undefined,
-      isStillWorking: undefined,
-      pastEmployer: undefined,
-      personalDetailsCheck: undefined,
-      reasonableAdjustments: undefined,
-      reasonableAdjustmentsDetail: undefined,
-      noticeEnds: undefined,
-      hearingPreferences: undefined,
-      hearingAssistance: undefined,
-      claimantContactPreference: 'Email',
-      claimantContactLanguagePreference: 'Welsh',
-      claimantHearingLanguagePreference: 'Welsh',
-      employmentAndRespondentCheck: undefined,
-      claimDetailsCheck: undefined,
-      claimSummaryText: undefined,
-      claimTypeDiscrimination: undefined,
-      claimTypePay: undefined,
-      tellUsWhatYouWant: undefined,
-      tribunalRecommendationRequest: undefined,
-      compensationAmount: undefined,
-      compensationOutcome: undefined,
-      whistleblowingClaim: undefined,
-      whistleblowingEntityName: undefined,
-      linkedCases: undefined,
-      linkedCasesDetail: undefined,
-      respondents: undefined,
-      claimantWorkAddressQuestion: undefined,
-      workAddress1: undefined,
-      workAddress2: undefined,
-      workAddressTown: undefined,
-      workAddressCountry: undefined,
-      workAddressPostcode: undefined,
-      et3ResponseReceived: false,
-      claimSummaryFile: undefined,
-      submittedDate: undefined,
-      hubLinksStatuses: undefined,
-      managingOffice: undefined,
-      tribunalCorrespondenceEmail: undefined,
-      tribunalCorrespondenceTelephone: undefined,
-      acknowledgementOfClaimLetterDetail: undefined,
-      respondentResponseDeadline: undefined,
-      rejectionOfClaimDocumentDetail: undefined,
-      responseAcknowledgementDocumentDetail: undefined,
-      responseRejectionDocumentDetail: undefined,
-      responseEt3FormDocumentDetail: [],
-      otherClaim: undefined,
-      sendNotificationCollection: undefined,
-      genericTseApplicationCollection: undefined,
-      tseApplicationStoredCollection: undefined,
-      bundleDocuments: [],
-      documentCollection: [
-        {
-          id: 'f78aa088-c223-4ca5-8e0a-42e7c33dffa5',
-          value: {
-            typeOfDocument: 'ET1',
-            uploadedDocument: {
-              document_binary_url: 'http://dm-store:8080/documents/3aa7dfc1-378b-4fa8-9a17-89126fae5673/binary',
-              document_filename: 'ET1_CASE_DOCUMENT_Sunday_Ayeni.pdf',
-              document_url: 'http://dm-store:8080/documents/3aa7dfc1-378b-4fa8-9a17-89126fae5673',
-            },
-            shortDescription: 'Case Details - Sunday Ayeni',
-          },
-        },
-        {
-          id: '3db71007-d42c-43d5-a51b-57957f78ced3',
-          value: {
-            typeOfDocument: 'ET1',
-
-            uploadedDocument: {
-              document_binary_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa/binary',
-              document_filename: 'ET1_WELSH_Sunday_Ayeni_R600227_21_75.pdf',
-              document_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa',
-            },
-            shortDescription: 'ET1 WELSH - R600227/21/75',
-          },
-        },
-      ],
-      id: '1234',
-    });
-  });
-
+describe('toApiFormat', () => {
   it('date formatter should return null when date is empty', () => {
     const caseItem: CaseWithId = {
       id: '1234',
@@ -390,6 +91,16 @@ describe('toApiFormat', () => {
     expect(apiData.case_data.claimantIndType.claimant_date_of_birth).toEqual(null);
     expect(apiData.case_data.claimantOtherType.claimant_employed_from).toEqual(null);
     expect(apiData.case_data.claimantOtherType.claimant_employed_notice_period).toEqual(null);
+  });
+  it('should transform case data to api format', () => {
+    const apiData: UpdateCaseBody = toApiFormat(ApiFormatter_GenericCaseItemMock);
+    const expectedResponse: UpdateCaseBody = _.cloneDeep(ApiFormatter_UpdateCaseBodyMock);
+    expectedResponse.case_data.claimantIndType.claimant_date_of_birth = '2022-10-05';
+    expectedResponse.case_data.claimantIndType.claimant_first_names = 'Jane';
+    expectedResponse.case_data.claimantRequests.other_claim = 'other type of claims';
+    expectedResponse.case_data.claimantType.claimant_email_address = 'janedoe@exmaple.com';
+    expectedResponse.case_data.newEmploymentType.newly_employed_from = '2010-05-12';
+    expect(apiData).toEqual(expectedResponse);
   });
 });
 
