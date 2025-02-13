@@ -7,9 +7,8 @@ import { CaseWithId } from '../definitions/case';
 import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
-import { getApplicationByUrl } from '../helpers/ApplicationHelper';
+import { getApplicationByUrl, getApplicationDisplayByUrl } from '../helpers/ApplicationHelper';
 import { getPageContent } from '../helpers/FormHelper';
-import { getApplicationDisplayByUrl } from '../helpers/controller/ContactTribunalHelper';
 import {
   getFormError,
   getNextPage,

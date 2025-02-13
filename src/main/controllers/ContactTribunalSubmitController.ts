@@ -3,7 +3,6 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
 import { ErrorPages, PageUrls } from '../definitions/constants';
-import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { clearTempFields } from '../helpers/controller/ContactTribunalHelper';
 import { getLogger } from '../logger';
@@ -17,15 +16,12 @@ export default class ContactTribunalSubmitController {
     const userCase = req.session?.userCase;
     try {
       // Update Hub Links Statuses
-      req.session.userCase = await ET3Util.updateCaseDetailsLinkStatuses(
-        req,
-        ET3CaseDetailsLinkNames.RespondentRequestsAndApplications,
-        LinkStatus.IN_PROGRESS
-      );
+      // TODO: update Application status
 
       // Submit application
       //TODO: save data in api
       await getCaseApi(req.session.user?.accessToken).submitRespondentTse(req, logger);
+
       // Clear temporary fields
       userCase.ruleCopystate = userCase.copyToOtherPartyYesOrNo && userCase.copyToOtherPartyYesOrNo === YesOrNo.YES;
       clearTempFields(req.session.userCase);

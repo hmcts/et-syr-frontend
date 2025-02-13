@@ -4,8 +4,6 @@ import { application } from '../../../../main/definitions/contact-tribunal-appli
 import { AnyRecord } from '../../../../main/definitions/util-types';
 import {
   clearTempFields,
-  getApplicationDisplayByCode,
-  getApplicationDisplayByUrl,
   getApplicationsAccordionItems,
   isClaimantSystemUser,
 } from '../../../../main/helpers/controller/ContactTribunalHelper';
