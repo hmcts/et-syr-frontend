@@ -1,33 +1,14 @@
+import _ from 'lodash';
+
+import { CreateCaseBody, UpdateCaseBody } from '../../../main/definitions/api/caseApiBody';
 import {
   CaseApiDataResponse,
   DocumentApiModel,
   HearingBundleType,
 } from '../../../main/definitions/api/caseApiResponse';
-import { DocumentUploadResponse } from '../../../main/definitions/api/documentApiResponse';
-import { UserDetails } from '../../../main/definitions/appRequest';
-import {
-  CaseDataCacheKey,
-  CaseType,
-  CaseTypeId,
-  CaseWithId,
-  EmailOrPost,
-  EnglishOrWelsh,
-  HearingPreference,
-  NoAcasNumberReason,
-  PayInterval,
-  Sex,
-  StillWorking,
-  WeeksOrMonths,
-  YesOrNo,
-  YesOrNoOrNotApplicable,
-} from '../../../main/definitions/case';
+import { CaseWithId, Document, EmailOrPost, EnglishOrWelsh, YesOrNo } from '../../../main/definitions/case';
 import { acceptanceDocTypes } from '../../../main/definitions/constants';
-import {
-  CaseState,
-  ClaimTypeDiscrimination,
-  ClaimTypePay,
-  TellUsWhatYouWant,
-} from '../../../main/definitions/definition';
+import { CaseState } from '../../../main/definitions/definition';
 import { TypeItem } from '../../../main/definitions/util-types';
 import {
   formatApiCaseDataToCaseWithId,
@@ -45,285 +26,61 @@ import {
   toApiFormat,
   toApiFormatCreate,
 } from '../../../main/helpers/ApiFormatter';
-import { mockEt1DataModel, mockEt1DataModelUpdate } from '../mocks/mockEt1DataModel';
-import mockUserCaseComplete from '../mocks/mockUserCaseComplete';
-import { mockedApiData } from '../mocks/mockedApiData';
+import {
+  ApiFormatterFormatApiCaseDataToCaseWithId_ExpectedEmptyCaseWithIdMock,
+  ApiFormatterFromApiFormatDocument_DocumentUploadResponseMock,
+  ApiFormatterFromApiFormatDocument_ExpectedDocumentMock,
+  ApiFormatterToApiFormatCreate_CreateCaseBodyMock,
+  ApiFormatterToApiFormatCreate_UserDataMapMock,
+  ApiFormatterToApiFormatCreate_UserDetailsMock,
+  ApiFormatter_CaseApiDataResponseMock,
+  ApiFormatter_GenericCaseItemMock,
+  ApiFormatter_UpdateCaseBodyMock,
+} from '../mocks/mockApiFormatterTestModels';
 
-describe('Should return data in api format', () => {
+describe('toApiFormatCreate', () => {
   it('should transform triage and Idam credentials to api format', () => {
-    const userDataMap: Map<CaseDataCacheKey, string> = new Map<CaseDataCacheKey, string>([
-      [CaseDataCacheKey.POSTCODE, 'SW1A 1AA'],
-      [CaseDataCacheKey.CLAIMANT_REPRESENTED, 'Yes'],
-      [CaseDataCacheKey.CASE_TYPE, 'Single'],
-      [CaseDataCacheKey.TYPES_OF_CLAIM, JSON.stringify(['discrimination', 'payRelated'])],
-      [CaseDataCacheKey.OTHER_CLAIM_TYPE, 'other claim description'],
-      [CaseDataCacheKey.ACAS_MULTIPLE, 'Yes'],
-      [CaseDataCacheKey.VALID_NO_ACAS_REASON, 'Reason'],
-    ]);
-
-    const mockUserDetails: UserDetails = {
-      id: '1234',
-      givenName: 'Bobby',
-      familyName: 'Ryan',
-      email: 'bobby@gmail.com',
-      accessToken: 'xxxx',
-      isCitizen: true,
-    };
-    const apiData = toApiFormatCreate(userDataMap, mockUserDetails);
-    expect(apiData).toEqual(mockEt1DataModel);
-  });
-
-  it('should transform case data to api format', () => {
-    const caseItem: CaseWithId = {
-      id: '1234',
-      caseTypeId: CaseTypeId.ENGLAND_WALES,
-      caseType: CaseType.SINGLE,
-      ClaimantPcqId: '1234',
-      claimantRepresentedQuestion: YesOrNo.YES,
-      claimantWorkAddressQuestion: YesOrNo.YES,
-      state: CaseState.AWAITING_SUBMISSION_TO_HMCTS,
-      typeOfClaim: ['discrimination', 'payRelated'],
-      dobDate: {
-        year: '2010',
-        month: '05',
-        day: '11',
-      },
-      email: 'tester@test.com',
-      address1: 'address 1',
-      address2: 'address 2',
-      addressPostcode: 'TEST',
-      addressCountry: 'United',
-      addressTown: 'Test',
-      telNumber: '075',
-      firstName: 'John',
-      lastName: 'Doe',
-      claimantSex: Sex.MALE,
-      preferredTitle: 'Mr',
-      avgWeeklyHrs: 5,
-      claimantPensionContribution: YesOrNoOrNotApplicable.YES,
-      claimantPensionWeeklyContribution: 15,
-      employeeBenefits: YesOrNo.YES,
-      benefitsCharCount: 'Some benefits',
-      jobTitle: 'Developer',
-      noticePeriod: YesOrNo.YES,
-      noticePeriodLength: '1',
-      noticePeriodUnit: WeeksOrMonths.WEEKS,
-      payBeforeTax: 123,
-      payAfterTax: 120,
-      payInterval: PayInterval.WEEKS,
-      startDate: { year: '2010', month: '05', day: '11' },
-      endDate: { year: '2017', month: '05', day: '11' },
-      newJob: YesOrNo.YES,
-      newJobPay: 4000.0,
-      newJobPayInterval: PayInterval.MONTHS,
-      newJobStartDate: { year: '2022', month: '08', day: '11' },
-      pastEmployer: YesOrNo.YES,
-      isStillWorking: StillWorking.WORKING,
-      personalDetailsCheck: YesOrNo.YES,
-      reasonableAdjustments: YesOrNo.YES,
-      reasonableAdjustmentsDetail: 'Adjustments detail test',
-      noticeEnds: { year: '2022', month: '08', day: '11' },
-      hearingPreferences: [HearingPreference.PHONE],
-      hearingAssistance: 'Hearing assistance test',
-      claimantContactPreference: EmailOrPost.EMAIL,
-      claimantContactLanguagePreference: EnglishOrWelsh.ENGLISH,
-      claimantHearingLanguagePreference: EnglishOrWelsh.ENGLISH,
-      employmentAndRespondentCheck: YesOrNo.YES,
-      claimTypeDiscrimination: [ClaimTypeDiscrimination.RACE],
-      claimTypePay: [ClaimTypePay.REDUNDANCY_PAY],
-      claimSummaryText: 'Claim summary text',
-      tellUsWhatYouWant: [TellUsWhatYouWant.COMPENSATION_ONLY],
-      compensationOutcome: 'Compensation outcome',
-      compensationAmount: 123,
-      tribunalRecommendationRequest: 'Tribunal recommendation request',
-      whistleblowingClaim: YesOrNo.YES,
-      whistleblowingEntityName: 'Whistleblowing entity name',
-      linkedCases: YesOrNo.YES,
-      linkedCasesDetail: 'Linked Cases Detail',
-      claimDetailsCheck: YesOrNo.YES,
-      workAddress1: 'Respondent Address',
-      workAddress2: 'That Road',
-      workAddressTown: 'Anytown',
-      workAddressCountry: 'England',
-      workAddressPostcode: 'SW1H 9AQ',
-      respondents: [
-        {
-          respondentName: 'Globo Corp',
-          acasCert: YesOrNo.YES,
-          acasCertNum: 'R111111111111',
-          noAcasReason: NoAcasNumberReason.ANOTHER,
-          respondentAddressLine1: 'Respondent Address',
-          respondentAddressLine2: 'That Road',
-          respondentAddressPostTown: 'Anytown',
-          respondentAddressCountry: 'England',
-          respondentAddressPostCode: 'SW1H 9AQ',
-          ccdId: '3453xaa',
-          respondentEnterPostcode: undefined,
-          respondentAddress: undefined,
-          respondentACASQuestion: undefined,
-          respondentACAS: undefined,
-          respondentACASNo: undefined,
-          claimantWorkAddress: undefined,
-          responseReceived: undefined,
-          responseStatus: undefined,
-          responseToClaim: undefined,
-          rejectionReason: undefined,
-          rejectionReasonOther: undefined,
-          responseOutOfTime: undefined,
-          responseNotOnPrescribedForm: undefined,
-          responseRequiredInfoAbsent: undefined,
-          responseNotes: undefined,
-          responseReferredToJudge: undefined,
-          responseReturnedFromJudge: undefined,
-          respondentType: undefined,
-          respondentOrganisation: undefined,
-          respondentFirstName: undefined,
-          respondentLastName: undefined,
-          respondentPhone1: undefined,
-          respondentPhone2: undefined,
-          respondentEmail: undefined,
-          responseStruckOut: undefined,
-          respondentContactPreference: undefined,
-          responseStruckOutDate: undefined,
-          responseStruckOutChairman: undefined,
-          responseStruckOutReason: undefined,
-          responseRespondentAddress: undefined,
-          responseRespondentPhone1: undefined,
-          responseRespondentPhone2: undefined,
-          responseRespondentEmail: undefined,
-          responseRespondentContactPreference: undefined,
-          responseReceivedDate: undefined,
-          responseReceivedCount: undefined,
-          responseRespondentNameQuestion: undefined,
-          responseRespondentName: undefined,
-          responseContinue: undefined,
-          responseCounterClaim: undefined,
-          responseReference: undefined,
-          extensionRequested: undefined,
-          extensionGranted: undefined,
-          extensionDate: undefined,
-          extensionResubmitted: undefined,
-          et3Vetting: undefined,
-          et3VettingCompleted: undefined,
-          et3ResponseIsClaimantNameCorrect: undefined,
-          et3ResponseClaimantNameCorrection: undefined,
-          et3ResponseRespondentCompanyNumber: undefined,
-          et3ResponseRespondentEmployerType: undefined,
-          et3ResponseRespondentPreferredTitle: undefined,
-          et3ResponseRespondentContactName: undefined,
-          et3ResponseDXAddress: undefined,
-          et3ResponseContactReason: undefined,
-          et3ResponseLanguagePreference: undefined,
-          et3ResponseHearingRepresentative: undefined,
-          et3ResponseHearingRespondent: undefined,
-          et3ResponseEmploymentCount: undefined,
-          et3ResponseMultipleSites: undefined,
-          et3ResponseSiteEmploymentCount: undefined,
-          et3ResponseAcasAgree: undefined,
-          et3ResponseAcasAgreeReason: undefined,
-          et3ResponseAreDatesCorrect: undefined,
-          et3ResponseEmploymentStartDate: undefined,
-          et3ResponseEmploymentEndDate: undefined,
-          et3ResponseEmploymentInformation: undefined,
-          et3ResponseContinuingEmployment: undefined,
-          et3ResponseIsJobTitleCorrect: undefined,
-          et3ResponseCorrectJobTitle: undefined,
-          et3ResponseClaimantWeeklyHours: undefined,
-          et3ResponseClaimantCorrectHours: undefined,
-          et3ResponseEarningDetailsCorrect: undefined,
-          et3ResponsePayFrequency: undefined,
-          et3ResponsePayBeforeTax: undefined,
-          et3ResponsePayTakehome: undefined,
-          et3ResponseIsNoticeCorrect: undefined,
-          et3ResponseCorrectNoticeDetails: undefined,
-          et3ResponseIsPensionCorrect: undefined,
-          et3ResponsePensionCorrectDetails: undefined,
-          et3ResponseRespondentContestClaim: undefined,
-          et3ResponseContestClaimDocument: undefined,
-          et3ResponseContestClaimDetails: undefined,
-          et3ResponseEmployerClaim: undefined,
-          et3ResponseEmployerClaimDetails: undefined,
-          et3ResponseEmployerClaimDocument: undefined,
-          et3ResponseRespondentSupportNeeded: undefined,
-          et3ResponseRespondentSupportDetails: undefined,
-          et3ResponseRespondentSupportDocument: undefined,
-          et3Form: undefined,
-          contactDetailsSection: undefined,
-          employerDetailsSection: undefined,
-          conciliationAndEmployeeDetailsSection: undefined,
-          payPensionBenefitDetailsSection: undefined,
-          contestClaimSection: undefined,
-          employersContractClaimSection: undefined,
-        },
-      ],
-      createdDate: '19 August 2022',
-      lastModified: '19 August 2022',
-      et3ResponseReceived: true,
-      claimSummaryFile: {
-        document_url: 'http://dm-store:8080/documents/a0c113ec-eede-472a-a59c-f2614b48177c',
-        document_filename: 'document.pdf',
-        document_binary_url: 'http://dm-store:8080/documents/a0c113ec-eede-472a-a59c-f2614b48177c/binary',
-      },
-      otherClaim: 'other claim description',
-      representatives: [
-        {
-          hasMyHMCTSAccount: YesOrNo.YES,
-        },
-      ],
-    };
-    const apiData = toApiFormat(caseItem);
-    expect(apiData).toEqual(mockEt1DataModelUpdate);
+    const apiData: CreateCaseBody = toApiFormatCreate(
+      ApiFormatterToApiFormatCreate_UserDataMapMock,
+      ApiFormatterToApiFormatCreate_UserDetailsMock
+    );
+    expect(apiData).toEqual(ApiFormatterToApiFormatCreate_CreateCaseBodyMock);
   });
 });
 
-describe('Format document model', () => {
-  it('should format DocumentApiResponse', () => {
-    const mockDocData: DocumentUploadResponse = {
-      originalDocumentName: 'testname',
-      uri: 'test.com',
-      _links: {
-        self: {
-          href: 'test.com',
-        },
-        binary: {
-          href: 'test.com',
-        },
-      },
-      classification: '',
-      size: '16000000',
-      mimeType: 'test',
-      hashToken: '',
-      createdOn: '',
-      createdBy: '',
-      lastModifiedBy: '',
-      modifiedOn: '',
-      ttl: '',
-      metadata: {
-        case_type_id: '',
-        jurisdiction: '',
-      },
-    };
-    const result = fromApiFormatDocument(mockDocData);
-    expect(result).toStrictEqual({
-      document_filename: 'testname',
-      document_url: 'test.com',
-      document_binary_url: 'test.com',
-      document_mime_type: 'testname',
-      document_size: 16000000,
-    });
+describe('formatApiCaseDataToCaseWithId', () => {
+  it('should return undefined when from api case data is undefined`', () => {
+    const result: CaseWithId = formatApiCaseDataToCaseWithId(undefined);
+    expect(result).toEqual(undefined);
   });
-});
-
-describe('Format Case Data to Frontend Model', () => {
   it('should format Case Api Response`', () => {
-    const result = formatApiCaseDataToCaseWithId(mockedApiData);
-    expect(result).toEqual(mockUserCaseComplete);
+    const caseApiDataResponse: CaseApiDataResponse = _.cloneDeep(ApiFormatter_CaseApiDataResponseMock);
+    const result: CaseWithId = formatApiCaseDataToCaseWithId(caseApiDataResponse);
+    expect(result).toEqual(ApiFormatter_GenericCaseItemMock);
   });
+  it('should format Case Api Response`when case data is empty', () => {
+    const caseApiDataResponse: CaseApiDataResponse = _.cloneDeep(ApiFormatter_CaseApiDataResponseMock);
+    caseApiDataResponse.case_data = undefined;
+    const result: CaseWithId = formatApiCaseDataToCaseWithId(caseApiDataResponse);
+    expect(result).toEqual(ApiFormatterFormatApiCaseDataToCaseWithId_ExpectedEmptyCaseWithIdMock);
+  });
+});
 
+describe('toApiFormat', () => {
+  it('should transform case data to api format', () => {
+    const apiData: UpdateCaseBody = toApiFormat(ApiFormatter_GenericCaseItemMock);
+    const expectedResponse: UpdateCaseBody = _.cloneDeep(ApiFormatter_UpdateCaseBodyMock);
+    expectedResponse.case_data.claimantIndType.claimant_date_of_birth = '2022-10-05';
+    expectedResponse.case_data.claimantIndType.claimant_first_names = 'Jane';
+    expectedResponse.case_data.claimantRequests.other_claim = 'other type of claims';
+    expectedResponse.case_data.claimantType.claimant_email_address = 'janedoe@exmaple.com';
+    expectedResponse.case_data.newEmploymentType.newly_employed_from = '2010-05-12';
+    expect(apiData).toEqual(expectedResponse);
+  });
   it('should format Case Api Response with no applications`', () => {
-    const mock = mockedApiData;
+    const mock: CaseApiDataResponse = ApiFormatter_CaseApiDataResponseMock;
     mock.case_data.genericTseApplicationCollection = [];
-    const complete = mockUserCaseComplete;
+    const complete = ApiFormatter_GenericCaseItemMock;
     complete.genericTseApplicationCollection = [];
 
     const result = formatApiCaseDataToCaseWithId(mock);
@@ -633,6 +390,13 @@ describe('Format Case Data to Frontend Model', () => {
     expect(apiData.case_data.claimantIndType.claimant_date_of_birth).toEqual(null);
     expect(apiData.case_data.claimantOtherType.claimant_employed_from).toEqual(null);
     expect(apiData.case_data.claimantOtherType.claimant_employed_notice_period).toEqual(null);
+  });
+});
+
+describe('fromApiFormatDocument', () => {
+  it('should format DocumentApiResponse', () => {
+    const result: Document = fromApiFormatDocument(ApiFormatterFromApiFormatDocument_DocumentUploadResponseMock);
+    expect(result).toStrictEqual(ApiFormatterFromApiFormatDocument_ExpectedDocumentMock);
   });
 });
 

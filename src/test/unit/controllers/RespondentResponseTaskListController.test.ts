@@ -2,10 +2,10 @@ import RespondentResponseTaskListController from '../../../main/controllers/Resp
 import { CLAIM_TYPES, DefaultValues, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import { TypesOfClaim } from '../../../main/definitions/definition';
 import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
+import { ApiFormatter_GenericCaseItemMock } from '../mocks/mockApiFormatterTestModels';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import { mockUserDetails } from '../mocks/mockUser';
-import mockUserCaseComplete from '../mocks/mockUserCaseComplete';
 import {
   expectedRespondentHubTestLinkTextsWithBreachOfContract,
   expectedRespondentHubTestLinkTextsWithoutBreachOfContract,
@@ -41,7 +41,7 @@ describe('Respondent response task list controller', () => {
     mockWelshFlag.mockResolvedValue(true);
     const controller = new RespondentResponseTaskListController();
     const response = mockResponse();
-    const request = mockRequest({ session: { userCase: mockUserCaseComplete, user: mockUserDetails } });
+    const request = mockRequest({ session: { userCase: ApiFormatter_GenericCaseItemMock, user: mockUserDetails } });
     request.session.userCase.typeOfClaim.push(CLAIM_TYPES.BREACH_OF_CONTRACT);
     request.session.selectedRespondentIndex = 0;
     // Mock the translation function to return valid section data
@@ -85,7 +85,7 @@ describe('Respondent response task list controller', () => {
     mockWelshFlag.mockResolvedValue(true);
     const controller = new RespondentResponseTaskListController();
     const response = mockResponse();
-    const request = mockRequest({ session: { userCase: mockUserCaseComplete, user: mockUserDetails } });
+    const request = mockRequest({ session: { userCase: ApiFormatter_GenericCaseItemMock, user: mockUserDetails } });
     request.session.userCase.typeOfClaim = [TypesOfClaim.DISCRIMINATION];
     request.session.selectedRespondentIndex = 0;
     // Mock the translation function to return valid section data
@@ -128,7 +128,7 @@ describe('Respondent response task list controller', () => {
     mockWelshFlag.mockResolvedValue(true);
     const controller = new RespondentResponseTaskListController();
     const response = mockResponse();
-    const request = mockRequest({ session: { userCase: mockUserCaseComplete, user: mockUserDetails } });
+    const request = mockRequest({ session: { userCase: ApiFormatter_GenericCaseItemMock, user: mockUserDetails } });
     request.session.selectedRespondentIndex = 0;
     request.url = '/respondent-response-task-list' + languages.WELSH_URL_PARAMETER;
     // Mock the translation function to return valid section data
@@ -140,7 +140,7 @@ describe('Respondent response task list controller', () => {
     mockWelshFlag.mockResolvedValue(false);
     const controller = new RespondentResponseTaskListController();
     const response = mockResponse();
-    const request = mockRequest({ session: { userCase: mockUserCaseComplete, user: mockUserDetails } });
+    const request = mockRequest({ session: { userCase: ApiFormatter_GenericCaseItemMock, user: mockUserDetails } });
     request.session.selectedRespondentIndex = 0;
     await controller.get(request, response);
 
@@ -156,7 +156,7 @@ describe('Respondent response task list controller', () => {
     mockWelshFlag.mockResolvedValue(true);
     const controller = new RespondentResponseTaskListController();
     const response = mockResponse();
-    const request = mockRequest({ session: { userCase: mockUserCaseComplete, user: mockUserDetails } });
+    const request = mockRequest({ session: { userCase: ApiFormatter_GenericCaseItemMock, user: mockUserDetails } });
     request.session.selectedRespondentIndex = 0;
     await controller.get(request, response);
 

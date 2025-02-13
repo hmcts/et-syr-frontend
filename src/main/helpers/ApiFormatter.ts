@@ -42,6 +42,7 @@ import { DocumentDetail } from '../definitions/definition';
 import { TypeItem } from '../definitions/util-types';
 import DateUtils from '../utils/DateUtils';
 import NumberUtils from '../utils/NumberUtils';
+import ObjectUtils from '../utils/ObjectUtils';
 import { isDateEmpty } from '../validators/dateValidators';
 
 import { retrieveCurrentLocale } from './ApplicationTableRecordTranslationHelper';
@@ -86,6 +87,9 @@ export function toApiFormatCreate(
 }
 
 export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataResponse, req?: AppRequest): CaseWithId {
+  if (ObjectUtils.isEmpty(fromApiCaseData)) {
+    return undefined;
+  }
   const caseWithId: CaseWithId = {
     id: fromApiCaseData.id,
     // used for mapping respondent with the case
@@ -159,7 +163,7 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
     linkedCasesDetail: fromApiCaseData.case_data?.claimantRequests?.linked_cases_detail,
     compensationOutcome: fromApiCaseData.case_data?.claimantRequests?.claimant_compensation_text,
     compensationAmount: fromApiCaseData.case_data?.claimantRequests?.claimant_compensation_amount,
-    otherClaim: fromApiCaseData?.case_data?.claimantRequests?.other_claim,
+    otherClaim: fromApiCaseData.case_data?.claimantRequests?.other_claim,
     employmentAndRespondentCheck: fromApiCaseData.case_data?.claimantTaskListChecks?.employmentAndRespondentCheck,
     claimDetailsCheck: fromApiCaseData.case_data?.claimantTaskListChecks?.claimDetailsCheck,
     createdDate: convertFromTimestampString(fromApiCaseData.created_date, req),
@@ -173,42 +177,39 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
     workAddressPostcode: fromApiCaseData.case_data?.claimantWorkAddress?.claimant_work_address?.PostCode,
     workEnterPostcode: fromApiCaseData.case_data?.claimantWorkAddress?.claimant_work_address?.PostCode,
     et3ResponseReceived: hasResponseFromRespondentList(fromApiCaseData.case_data),
-    submittedDate: parseDateFromString(fromApiCaseData?.case_data?.receiptDate),
-    hubLinksStatuses: fromApiCaseData?.case_data?.hubLinksStatuses,
+    submittedDate: parseDateFromString(fromApiCaseData.case_data?.receiptDate),
+    hubLinksStatuses: fromApiCaseData.case_data?.hubLinksStatuses,
     et1SubmittedForm: returnSubmittedEt1Form(
       fromApiCaseData.case_data?.claimantHearingPreference?.contact_language,
       fromApiCaseData.case_data?.documentCollection
     ),
     acknowledgementOfClaimLetterDetail: setDocumentValues(
-      fromApiCaseData?.case_data?.servingDocumentCollection,
+      fromApiCaseData.case_data?.servingDocumentCollection,
       acceptanceDocTypes
     ),
-    rejectionOfClaimDocumentDetail: setDocumentValues(
-      fromApiCaseData?.case_data?.documentCollection,
-      rejectionDocTypes
-    ),
+    rejectionOfClaimDocumentDetail: setDocumentValues(fromApiCaseData.case_data?.documentCollection, rejectionDocTypes),
     responseAcknowledgementDocumentDetail: setDocumentValues(
-      fromApiCaseData?.case_data?.et3NotificationDocCollection,
+      fromApiCaseData.case_data?.et3NotificationDocCollection,
       responseAcceptedDocTypes
     ),
     responseRejectionDocumentDetail: setDocumentValues(
-      fromApiCaseData?.case_data?.et3NotificationDocCollection,
+      fromApiCaseData.case_data?.et3NotificationDocCollection,
       responseRejectedDocTypes
     ),
     respondentResponseDeadline: getDueDate(fromApiCaseData.case_data?.claimServedDate, 28),
     responseEt3FormDocumentDetail: [
       ...combineDocuments(
-        setDocumentValues(fromApiCaseData?.case_data?.et3NotificationDocCollection, responseAcceptedDocTypes),
-        setDocumentValues(fromApiCaseData?.case_data?.et3NotificationDocCollection, responseRejectedDocTypes),
-        setDocumentValues(fromApiCaseData?.case_data?.documentCollection, et3FormDocTypes),
-        setDocumentValues(fromApiCaseData?.case_data?.documentCollection, et3AttachmentDocTypes),
-        setDocumentValues(fromApiCaseData?.case_data?.et3ResponseContestClaimDocument, undefined, true)
+        setDocumentValues(fromApiCaseData.case_data?.et3NotificationDocCollection, responseAcceptedDocTypes),
+        setDocumentValues(fromApiCaseData.case_data?.et3NotificationDocCollection, responseRejectedDocTypes),
+        setDocumentValues(fromApiCaseData.case_data?.documentCollection, et3FormDocTypes),
+        setDocumentValues(fromApiCaseData.case_data?.documentCollection, et3AttachmentDocTypes),
+        setDocumentValues(fromApiCaseData.case_data?.et3ResponseContestClaimDocument, undefined, true)
       ),
     ],
     genericTseApplicationCollection: sortApplicationByDate(fromApiCaseData.case_data?.genericTseApplicationCollection),
-    tseApplicationStoredCollection: fromApiCaseData?.case_data?.tseApplicationStoredCollection,
+    tseApplicationStoredCollection: fromApiCaseData.case_data?.tseApplicationStoredCollection,
     sendNotificationCollection: fromApiCaseData.case_data?.sendNotificationCollection,
-    hearingCollection: fromApiCaseData?.case_data?.hearingCollection,
+    hearingCollection: fromApiCaseData.case_data?.hearingCollection,
     documentCollection: fromApiCaseData.case_data?.documentCollection,
     representatives: mapRepresentatives(fromApiCaseData.case_data?.repCollection),
     bundleDocuments: [
@@ -223,10 +224,10 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
         )
       ),
     ],
-    multipleFlag: fromApiCaseData?.case_data?.multipleFlag,
-    leadClaimant: fromApiCaseData?.case_data?.leadClaimant,
-    caseStayed: fromApiCaseData?.case_data?.batchCaseStayed,
-    preAcceptCase: fromApiCaseData?.case_data?.preAcceptCase,
+    multipleFlag: fromApiCaseData.case_data?.multipleFlag,
+    leadClaimant: fromApiCaseData.case_data?.leadClaimant,
+    caseStayed: fromApiCaseData.case_data?.batchCaseStayed,
+    preAcceptCase: fromApiCaseData.case_data?.preAcceptCase,
   };
   if (NumberUtils.isNotEmpty(req?.session?.selectedRespondentIndex)) {
     mapResponseApiDataToCaseWithId(fromApiCaseData, caseWithId, req);
@@ -234,7 +235,7 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
   return caseWithId;
 }
 
-function mapResponseApiDataToCaseWithId(
+export function mapResponseApiDataToCaseWithId(
   fromApiCaseData: CaseApiDataResponse,
   caseWithId: CaseWithId,
   req: AppRequest
