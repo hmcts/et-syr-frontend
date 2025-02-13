@@ -6,6 +6,7 @@ import {
   DocumentApiModel,
   HearingBundleType,
 } from '../../../main/definitions/api/caseApiResponse';
+import { AppRequest } from '../../../main/definitions/appRequest';
 import { CaseWithId, Document } from '../../../main/definitions/case';
 import { acceptanceDocTypes } from '../../../main/definitions/constants';
 import { CaseState } from '../../../main/definitions/definition';
@@ -20,6 +21,7 @@ import {
   isOtherTitle,
   isValidPreferredTitle,
   mapBundlesDocs,
+  mapResponseApiDataToCaseWithId,
   parseDateFromString,
   returnPreferredTitle,
   setDocumentValues,
@@ -37,6 +39,9 @@ import {
   ApiFormatter_GenericCaseItemMock,
   ApiFormatter_UpdateCaseBodyMock,
 } from '../mocks/mockApiFormatterTestModels';
+import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
+import { mockRequest } from '../mocks/mockRequest';
+import mockUserCase from '../mocks/mockUserCase';
 
 describe('toApiFormatCreate', () => {
   it('should transform triage and Idam credentials to api format', () => {
@@ -101,6 +106,78 @@ describe('toApiFormat', () => {
     expectedResponse.case_data.claimantType.claimant_email_address = 'janedoe@exmaple.com';
     expectedResponse.case_data.newEmploymentType.newly_employed_from = '2010-05-12';
     expect(apiData).toEqual(expectedResponse);
+  });
+});
+
+describe('mapResponseApiDataToCaseWithId', () => {
+  it('does not map response api data to case with id when response api data is empty', () => {
+    const caseWithId: CaseWithId = mockUserCase;
+    const req: AppRequest = mockRequest({});
+    mapResponseApiDataToCaseWithId(undefined, caseWithId, req);
+    expect(caseWithId).toEqual(mockUserCase);
+  });
+  it('does not map response api data to case with id when response api data, case_data is empty', () => {
+    const caseApiDataResponse: CaseApiDataResponse = _.cloneDeep(ApiFormatter_CaseApiDataResponseMock);
+    caseApiDataResponse.case_data = undefined;
+    const caseWithId: CaseWithId = mockUserCase;
+    const req: AppRequest = mockRequest({});
+    mapResponseApiDataToCaseWithId(caseApiDataResponse, caseWithId, req);
+    expect(caseWithId).toEqual(mockUserCase);
+  });
+  it('does not map response api data to case with id when response api data, case_data, respondent collection is empty', () => {
+    const caseApiDataResponse: CaseApiDataResponse = _.cloneDeep(ApiFormatter_CaseApiDataResponseMock);
+    caseApiDataResponse.case_data.respondentCollection = undefined;
+    const caseWithId: CaseWithId = mockUserCase;
+    const req: AppRequest = mockRequest({});
+    mapResponseApiDataToCaseWithId(caseApiDataResponse, caseWithId, req);
+    expect(caseWithId).toEqual(mockUserCase);
+  });
+  it('does not map response api data to case with id when request is empty', () => {
+    const caseApiDataResponse: CaseApiDataResponse = _.cloneDeep(ApiFormatter_CaseApiDataResponseMock);
+    const caseWithId: CaseWithId = mockUserCase;
+    mapResponseApiDataToCaseWithId(caseApiDataResponse, caseWithId, undefined);
+    expect(caseWithId).toEqual(mockUserCase);
+  });
+  it('does not map response api data to case with id when request session is empty', () => {
+    const caseApiDataResponse: CaseApiDataResponse = _.cloneDeep(ApiFormatter_CaseApiDataResponseMock);
+    const caseWithId: CaseWithId = mockUserCase;
+    const req: AppRequest = mockRequest({});
+    req.session = undefined;
+    mapResponseApiDataToCaseWithId(caseApiDataResponse, caseWithId, req);
+    expect(caseWithId).toEqual(mockUserCase);
+  });
+  it('does not map response api data to case with id when request session selected respondent index is empty', () => {
+    const caseApiDataResponse: CaseApiDataResponse = _.cloneDeep(ApiFormatter_CaseApiDataResponseMock);
+    const caseWithId: CaseWithId = mockUserCase;
+    const req: AppRequest = mockRequest({});
+    req.session.selectedRespondentIndex = undefined;
+    mapResponseApiDataToCaseWithId(caseApiDataResponse, caseWithId, req);
+    expect(caseWithId).toEqual(mockUserCase);
+  });
+  it('does not map response api data to case with id when selected respondent not found', () => {
+    const caseApiDataResponse: CaseApiDataResponse = _.cloneDeep(ApiFormatter_CaseApiDataResponseMock);
+    const caseWithId: CaseWithId = mockCaseWithIdWithRespondents;
+    const req: AppRequest = mockRequest({});
+    req.session.selectedRespondentIndex = 33;
+    mapResponseApiDataToCaseWithId(caseApiDataResponse, caseWithId, req);
+    expect(caseWithId).toEqual(mockCaseWithIdWithRespondents);
+  });
+  it('does not map response api data to case with id when selected respondent value is empty', () => {
+    const caseApiDataResponse: CaseApiDataResponse = _.cloneDeep(ApiFormatter_CaseApiDataResponseMock);
+    const caseWithId: CaseWithId = mockCaseWithIdWithRespondents;
+    const req: AppRequest = mockRequest({});
+    req.session.selectedRespondentIndex = 0;
+    caseApiDataResponse.case_data.respondentCollection[0].value = undefined;
+    mapResponseApiDataToCaseWithId(caseApiDataResponse, caseWithId, req);
+    expect(caseWithId).toEqual(mockCaseWithIdWithRespondents);
+  });
+  it('maps response api data to case with id', () => {
+    const caseApiDataResponse: CaseApiDataResponse = _.cloneDeep(ApiFormatter_CaseApiDataResponseMock);
+    const caseWithId: CaseWithId = mockCaseWithIdWithRespondents;
+    const req: AppRequest = mockRequest({});
+    req.session.selectedRespondentIndex = 0;
+    mapResponseApiDataToCaseWithId(caseApiDataResponse, caseWithId, req);
+    expect(caseWithId).toEqual(mockCaseWithIdWithRespondents);
   });
 });
 
