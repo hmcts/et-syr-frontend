@@ -9,9 +9,15 @@
   "responseText": {
     "hint": "Use this box to provide any supporting material. You can also upload a file if you wish."
   },
+  "supportingMaterialFile": {
+    "label": "Document",
+    "hint": "Upload a file",
+    "hintExisting": "You have previously uploaded: {{filename}}"
+  },
   "files": {
-    "title": "Upload a file",
-    "button": "Upload file",
+    "title": "Upload a file (Optional)",
+    "uploadButton": "Upload file",
+    "removeButton": "Remove file",
     "uploaded": "Files uploaded"
   },
   "errors": {
@@ -20,10 +26,14 @@
       "tooLong": "Give details (free text) must be entered as 2500 characters or less"
     },
     "supportingMaterialFile": {
-      "invalidFileFormat": "The type of file you are trying to upload is not supported by our system. Please convert it into a common supported file type for example word, excel, pdf.",
       "invalidFileName": "The name of the file provided is invalid. A file name cannot exceed 150 characters or contain any of the following characters: \\/:*?\"|<>",
-      "invalidFileSize": "The file you are trying to upload has exceeded the maximum file size limit, please reduce the size of the file.",
-      "backEndError": "There was an error uploading your file. Please try again. If this error persists please contact support."
+      "invalidFileFormat": "The type of file(s) you are trying to upload is not supported by our system. Please convert this into one of the supported file types listed below.",
+      "invalidFileSize": "The file you are trying to upload has exceeded the maximum file size limit of 80MB, please reduce the size of the file.",
+      "fileNameNotFound": "The file you are trying to upload does not have name.",
+      "fileBufferEmpty": "The file you are trying to upload is empty.",
+      "fileNameNotSelected": "Please select a file.",
+      "fileAlreadyExists": "The file you are trying to upload already exists. Please remove existing one first.",
+      "WithoutUploadButton": "Please press Upload file button after select file."
     }
   }
 }

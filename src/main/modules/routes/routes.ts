@@ -119,6 +119,7 @@ export class Routes {
     const respondentContestClaimReasonController = new RespondentContestClaimReasonController();
     const employersContractClaimDetailsController = new EmployersContractClaimDetailsController();
     const contactTribunalSelectedController = new ContactTribunalSelectedController();
+    const respondToApplicationSupportingMaterialController = new RespondToApplicationSupportingMaterialController();
     app.get(InterceptPaths.CHANGE_DETAILS, new ChangeDetailsController().get);
     // Page URLs
     app.get(PageUrls.HOME, new HomeController().get);
@@ -273,13 +274,12 @@ export class Routes {
     app.get(PageUrls.APPLICATION_DETAILS, new ApplicationDetailsController().get);
     app.get(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().get);
     app.post(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().post);
-    app.get(
-      PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
-      new RespondToApplicationSupportingMaterialController().get
-    );
+    app.get(PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL, respondToApplicationSupportingMaterialController.get);
     app.post(
       PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
-      new RespondToApplicationSupportingMaterialController().post
+      limiter,
+      handleUploads.single('supportingMaterialFile'),
+      respondToApplicationSupportingMaterialController.post
     );
     app.get(
       PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY,

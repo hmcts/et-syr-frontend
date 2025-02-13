@@ -566,6 +566,9 @@ export const FormFieldNames = {
   CONTACT_TRIBUNAL_SELECTED: {
     CONTACT_APPLICATION_FILE_NAME: 'contactApplicationFile',
   },
+  RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: {
+    SUPPORTING_MATERIAL_FILE: 'supportingMaterialFile',
+  },
 } as const;
 
 export const ServiceErrors = {
