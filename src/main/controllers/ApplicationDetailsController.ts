@@ -10,7 +10,6 @@ import {
   getAllResponses,
   getApplicationContent,
   getDecisionContent,
-  isApplicationVisible,
   isResponseToTribunalRequired,
 } from '../helpers/controller/ApplicationDetailsHelper';
 
@@ -18,10 +17,6 @@ export default class ApplicationDetailsController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const selectedApplication: GenericTseApplicationTypeItem = findSelectedGenericTseApplication(req);
     if (!selectedApplication) {
-      return res.redirect(ErrorPages.NOT_FOUND);
-    }
-
-    if (!isApplicationVisible(selectedApplication)) {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 

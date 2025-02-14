@@ -1,10 +1,16 @@
 import { YesOrNo } from '../../../../main/definitions/case';
+import {
+  TseAdminDecisionItem,
+  TseRespondTypeItem,
+} from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant, Parties } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import { LinkStatus, linkStatusColorMap } from '../../../../main/definitions/links';
 import {
   getClaimantsApplications,
-  isClaimantApplicationShare,
+  isAdminResponseShareToRespondent,
+  isApplicationShare,
+  isDecisionShareToRespondent,
 } from '../../../../main/helpers/controller/ClaimantsApplicationsHelper';
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
 import caseDetailsStatusJson from '../../../../main/resources/locales/en/translation/case-details-status.json';
@@ -83,55 +89,119 @@ describe('Claimants Applications Helper', () => {
     });
   });
 
-  describe('isClaimantAppsShare', () => {
-    it('should return false if the applicant is not a claimant', () => {
-      const applicationItem = {
-        id: '1',
+  describe('isAdminResponseShareToRespondent', () => {
+    it('should return true when from is ADMIN and selectPartyNotify is BOTH_PARTIES', () => {
+      const mockResponse: TseRespondTypeItem = {
         value: {
-          applicant: Applicant.RESPONDENT,
-          type: application.AMEND_RESPONSE.code,
-          copyToOtherPartyYesOrNo: YesOrNo.NO,
+          from: Applicant.ADMIN,
+          selectPartyNotify: Parties.BOTH_PARTIES,
         },
       };
-
-      expect(isClaimantApplicationShare(applicationItem)).toBe(false);
+      expect(isAdminResponseShareToRespondent(mockResponse)).toBe(true);
     });
 
-    it('should return false if the application type is ORDER_WITNESS_ATTEND', () => {
-      const applicationItem = {
-        id: '2',
+    it('should return true when from is ADMIN and selectPartyNotify is RESPONDENT_ONLY', () => {
+      const mockResponse: TseRespondTypeItem = {
         value: {
-          applicant: Applicant.CLAIMANT,
-          type: application.ORDER_WITNESS_ATTEND.code,
-          copyToOtherPartyYesOrNo: YesOrNo.NO,
+          from: Applicant.ADMIN,
+          selectPartyNotify: Parties.RESPONDENT_ONLY,
         },
       };
+      expect(isAdminResponseShareToRespondent(mockResponse)).toBe(true);
+    });
 
-      expect(isClaimantApplicationShare(applicationItem)).toBe(false);
+    it('should return false when from is not ADMIN', () => {
+      const mockResponse: TseRespondTypeItem = {
+        value: {
+          from: Applicant.RESPONDENT,
+          selectPartyNotify: Parties.BOTH_PARTIES,
+        },
+      };
+      expect(isAdminResponseShareToRespondent(mockResponse)).toBe(false);
+    });
+
+    it('should return false when selectPartyNotify is CLAIMANT_ONLY', () => {
+      const mockResponse: TseRespondTypeItem = {
+        value: {
+          from: Applicant.ADMIN,
+          selectPartyNotify: Parties.CLAIMANT_ONLY,
+        },
+      };
+      expect(isAdminResponseShareToRespondent(mockResponse)).toBe(false);
+    });
+
+    it('should return false when response.value is undefined', () => {
+      const mockResponse: TseRespondTypeItem = {};
+      expect(isAdminResponseShareToRespondent(mockResponse)).toBe(false);
+    });
+  });
+
+  describe('isDecisionShareToRespondent', () => {
+    it('should return true when selectPartyNotify is BOTH_PARTIES', () => {
+      const mockDecision: TseAdminDecisionItem = {
+        value: {
+          selectPartyNotify: Parties.BOTH_PARTIES,
+        },
+      };
+      expect(isDecisionShareToRespondent(mockDecision)).toBe(true);
+    });
+
+    it('should return true when selectPartyNotify is RESPONDENT_ONLY', () => {
+      const mockDecision: TseAdminDecisionItem = {
+        value: {
+          selectPartyNotify: Parties.RESPONDENT_ONLY,
+        },
+      };
+      expect(isDecisionShareToRespondent(mockDecision)).toBe(true);
+    });
+
+    it('should return false when selectPartyNotify is CLAIMANT_ONLY', () => {
+      const mockDecision: TseAdminDecisionItem = {
+        value: {
+          selectPartyNotify: Parties.CLAIMANT_ONLY,
+        },
+      };
+      expect(isDecisionShareToRespondent(mockDecision)).toBe(false);
+    });
+
+    it('should return false when selectPartyNotify is undefined', () => {
+      const mockDecision: TseAdminDecisionItem = {
+        value: {},
+      };
+      expect(isDecisionShareToRespondent(mockDecision)).toBe(false);
+    });
+
+    it('should return false when value is undefined', () => {
+      const mockDecision: TseAdminDecisionItem = {};
+      expect(isDecisionShareToRespondent(mockDecision)).toBe(false);
+    });
+  });
+
+  describe('isApplicationShare', () => {
+    it('should return false if type is ORDER_WITNESS_ATTEND.code', () => {
+      const mockApp = {
+        value: {
+          type: application.ORDER_WITNESS_ATTEND.code,
+        },
+      };
+      expect(isApplicationShare(mockApp)).toBe(false);
     });
 
     it('should return true if copyToOtherPartyYesOrNo is YES', () => {
-      const applicationItem = {
-        id: '3',
+      const mockApp = {
         value: {
-          applicant: Applicant.CLAIMANT,
-          type: application.CHANGE_PERSONAL_DETAILS.code,
           copyToOtherPartyYesOrNo: YesOrNo.YES,
         },
       };
-
-      expect(isClaimantApplicationShare(applicationItem)).toBe(true);
+      expect(isApplicationShare(mockApp)).toBe(true);
     });
 
-    it('should return true if an admin notified both parties in respondCollection', () => {
-      const applicationItem = {
-        id: '4',
+    it('should return true if respondCollection contains at least one valid response', () => {
+      const mockApp = {
         value: {
-          applicant: Applicant.CLAIMANT,
-          type: application.AMEND_RESPONSE.code,
-          copyToOtherPartyYesOrNo: YesOrNo.NO,
           respondCollection: [
             {
+              id: '0c28f1f0-0c2f-43bb-ae2c-e335c92a7e5c',
               value: {
                 from: Applicant.ADMIN,
                 selectPartyNotify: Parties.BOTH_PARTIES,
@@ -140,69 +210,37 @@ describe('Claimants Applications Helper', () => {
           ],
         },
       };
-
-      expect(isClaimantApplicationShare(applicationItem)).toBe(true);
+      expect(isApplicationShare(mockApp)).toBe(true);
     });
 
-    it('should return false if no valid conditions are met', () => {
-      const applicationItem = {
-        id: '5',
+    it('should return true if adminDecision contains at least one valid decision', () => {
+      const mockApp = {
         value: {
-          applicant: Applicant.CLAIMANT,
-          type: application.AMEND_RESPONSE.code,
-          copyToOtherPartyYesOrNo: YesOrNo.NO,
-          respondCollection: [
+          adminDecision: [
             {
               value: {
-                from: Applicant.RESPONDENT,
                 selectPartyNotify: Parties.BOTH_PARTIES,
               },
             },
           ],
         },
       };
-
-      expect(isClaimantApplicationShare(applicationItem)).toBe(false);
+      expect(isApplicationShare(mockApp)).toBe(true);
     });
 
-    it('should return false if respondCollection is empty', () => {
-      const applicationItem = {
-        id: '6',
+    it('should return false if none of the conditions are met', () => {
+      const mockApp = {
         value: {
-          applicant: Applicant.CLAIMANT,
           type: application.CHANGE_PERSONAL_DETAILS.code,
           copyToOtherPartyYesOrNo: YesOrNo.NO,
         },
       };
-
-      expect(isClaimantApplicationShare(applicationItem)).toBe(false);
+      expect(isApplicationShare(mockApp)).toBe(false);
     });
 
-    it('should return false if respondCollection contains responses but none from ADMIN notifying respondent', () => {
-      const applicationItem = {
-        id: '7',
-        value: {
-          applicant: Applicant.CLAIMANT,
-          type: application.CHANGE_PERSONAL_DETAILS.code,
-          copyToOtherPartyYesOrNo: YesOrNo.NO,
-          respondCollection: [
-            {
-              value: {
-                from: Applicant.CLAIMANT,
-                selectPartyNotify: Parties.BOTH_PARTIES,
-              },
-            },
-            {
-              value: {
-                from: Applicant.ADMIN,
-                selectPartyNotify: Parties.CLAIMANT_ONLY,
-              },
-            },
-          ],
-        },
-      };
-
-      expect(isClaimantApplicationShare(applicationItem)).toBe(false);
+    it('should return false if value is undefined', () => {
+      const mockApp = {};
+      expect(isApplicationShare(mockApp)).toBe(false);
     });
   });
 });

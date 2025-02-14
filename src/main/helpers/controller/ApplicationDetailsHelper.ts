@@ -14,29 +14,7 @@ import { getApplicationDisplayByCode } from '../ApplicationHelper';
 import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../DocumentHelpers';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
-import {
-  isAdminResponseShareToRespondent,
-  isClaimantApplicationShare,
-  isDecisionShareToRespondent,
-} from './ClaimantsApplicationsHelper';
-import { isOtherRespApplicationShare } from './OtherRespondentsApplicationsHelper';
-import { isYourApplication } from './YourRequestAndApplicationsHelper';
-
-/**
- * Check if this application is visible to user
- * @param app selected application
- */
-export const isApplicationVisible = (app: GenericTseApplicationTypeItem): boolean => {
-  if (isYourApplication(app)) {
-    return true;
-  } else if (app.value?.applicant === Applicant.RESPONDENT) {
-    return isOtherRespApplicationShare(app);
-  } else if (app.value?.applicant === Applicant.CLAIMANT) {
-    return isClaimantApplicationShare(app);
-  } else {
-    return false;
-  }
-};
+import { isAdminResponseShareToRespondent, isDecisionShareToRespondent } from './ClaimantsApplicationsHelper';
 
 /**
  * Display details of selected application.

@@ -44,15 +44,12 @@ const getApplicationDisplay = (app: GenericTseApplicationTypeItem, translations:
  * @param req request
  */
 export const getApplicationCollection = (req: AppRequest): GenericTseApplicationTypeItem[] => {
-  const yourApps = (req.session.userCase?.genericTseApplicationCollection || []).filter(app => isYourApplication(app));
+  const yourApps = (req.session.userCase?.genericTseApplicationCollection || []).filter(app =>
+    isYourApplication(app, req)
+  );
   return updateAppsDisplayInfo(yourApps, req);
 };
 
-/**
- * Check if application is created by current user
- * @param app selected application
- */
-export const isYourApplication = (app: GenericTseApplicationTypeItem): boolean => {
-  // TODO: update this placeholder
-  return app.value?.applicant === Applicant.RESPONDENT;
+const isYourApplication = (app: GenericTseApplicationTypeItem, req: AppRequest): boolean => {
+  return app.value?.applicant === Applicant.RESPONDENT && app.value?.createdById === req.session.user.id;
 };

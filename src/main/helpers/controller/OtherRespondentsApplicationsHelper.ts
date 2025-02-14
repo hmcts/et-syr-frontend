@@ -11,18 +11,15 @@ import { updateAppsDisplayInfo } from './YourRequestAndApplicationsHelper';
  */
 export const getOtherRespondentsApplications = (req: AppRequest): GenericTseApplicationTypeItem[] => {
   const otherRespApps = (req.session.userCase.genericTseApplicationCollection || []).filter(app =>
-    isOtherRespApplicationShare(app)
+    isOtherRespApplicationShare(app, req)
   );
   return updateAppsDisplayInfo(otherRespApps, req);
 };
 
-/**
- * Check if other respondent's application is shared to user
- * @param app selected application
- */
-export const isOtherRespApplicationShare = (app: GenericTseApplicationTypeItem): boolean => {
-  if (app.value?.applicant !== Applicant.RESPONDENT) {
-    return false;
-  }
-  return isApplicationShare(app);
+const isOtherRespApplicationShare = (app: GenericTseApplicationTypeItem, req: AppRequest): boolean => {
+  return (
+    app.value?.applicant === Applicant.RESPONDENT &&
+    app.value?.createdById !== req.session.user.id &&
+    isApplicationShare(app)
+  );
 };

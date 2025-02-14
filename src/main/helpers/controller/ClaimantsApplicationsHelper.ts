@@ -22,6 +22,10 @@ export const getClaimantsApplications = (req: AppRequest): GenericTseApplication
   return updateAppsDisplayInfo(claimantApps, req);
 };
 
+const isClaimantApplicationShare = (app: GenericTseApplicationTypeItem): boolean => {
+  return app.value?.applicant === Applicant.CLAIMANT && isApplicationShare(app);
+};
+
 /**
  * Check if tribunal response is shared to respondent
  * @param response response
@@ -50,7 +54,7 @@ export const isDecisionShareToRespondent = (decision: TseAdminDecisionItem): boo
  * @param app claimant's application
  */
 export const isApplicationShare = (app: GenericTseApplicationTypeItem): boolean => {
-  if (app.value.type === application.ORDER_WITNESS_ATTEND.code) {
+  if (app.value?.type === application.ORDER_WITNESS_ATTEND.code) {
     return false;
   }
 
@@ -73,15 +77,4 @@ export const isApplicationShare = (app: GenericTseApplicationTypeItem): boolean 
       return isDecisionShareToRespondent(d);
     })
   );
-};
-
-/**
- * Check if claimant's application is shared to respondent
- * @param app selected application
- */
-export const isClaimantApplicationShare = (app: GenericTseApplicationTypeItem): boolean => {
-  if (app.value?.applicant !== Applicant.CLAIMANT) {
-    return false;
-  }
-  return isApplicationShare(app);
 };

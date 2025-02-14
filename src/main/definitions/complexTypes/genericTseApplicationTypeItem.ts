@@ -31,6 +31,7 @@ export interface GenericTseApplicationType {
   respondentResponseRequired?: string;
   claimantResponseRequired?: string;
   adminDecision?: TseAdminDecisionItem[];
+  createdById?: string;
 }
 
 export interface TseAdminDecisionItem {
