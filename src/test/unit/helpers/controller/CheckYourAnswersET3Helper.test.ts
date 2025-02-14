@@ -56,6 +56,7 @@ describe('CheckYourAnswersET3Helper', () => {
   // Define URLs for sections 2
   const section2Urls = [
     PageUrls.HEARING_PREFERENCES,
+    PageUrls.RESPONDENT_HEARING_PANEL_PREFERENCE,
     PageUrls.REASONABLE_ADJUSTMENTS,
     PageUrls.RESPONDENT_EMPLOYEES,
     PageUrls.RESPONDENT_SITES,
