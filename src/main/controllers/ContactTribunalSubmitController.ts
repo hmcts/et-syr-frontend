@@ -7,7 +7,6 @@ import { getLanguageParam } from '../helpers/RouterHelpers';
 import { clearTempFields } from '../helpers/controller/ContactTribunalHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
-import ET3Util from '../utils/ET3Util';
 
 const logger = getLogger('SubmitContactTribunalController');
 
@@ -19,7 +18,6 @@ export default class ContactTribunalSubmitController {
       // TODO: update Application status
 
       // Submit application
-      //TODO: save data in api
       await getCaseApi(req.session.user?.accessToken).submitRespondentTse(req, logger);
 
       // Clear temporary fields

@@ -2,6 +2,7 @@ import { CaseWithId, YesOrNo } from '../../../../main/definitions/case';
 import { PageUrls } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import { AnyRecord } from '../../../../main/definitions/util-types';
+import { getApplicationDisplayByCode, getApplicationDisplayByUrl } from '../../../../main/helpers/ApplicationHelper';
 import {
   clearTempFields,
   getApplicationsAccordionItems,
