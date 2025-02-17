@@ -5371,15 +5371,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chromium-bidi@npm:1.2.0":
-  version: 1.2.0
-  resolution: "chromium-bidi@npm:1.2.0"
+"chromium-bidi@npm:1.3.0":
+  version: 1.3.0
+  resolution: "chromium-bidi@npm:1.3.0"
   dependencies:
     mitt: ^3.0.1
     zod: ^3.24.1
   peerDependencies:
     devtools-protocol: "*"
-  checksum: 24b8bd9c0f016ad12fb9c3e0010d62a9c7e0360eeb8b381d22abf2e1298006fad074b21fe68271f0bfb2c3a332ec4a7da6d379a1213a96436e3d84ccafc42de9
+  checksum: a4e1236d91cd3a2017c227623d80cbd48754887f8ef9328ba66a70a1e6ec58737aadee7f9be5b68e449ebbe6ad64831fadf960f7cc4463098190c9ac112638fb
   languageName: node
   linkType: hard
 
@@ -12964,17 +12964,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:24.2.0":
-  version: 24.2.0
-  resolution: "puppeteer-core@npm:24.2.0"
+"puppeteer-core@npm:24.2.1":
+  version: 24.2.1
+  resolution: "puppeteer-core@npm:24.2.1"
   dependencies:
     "@puppeteer/browsers": 2.7.1
-    chromium-bidi: 1.2.0
+    chromium-bidi: 1.3.0
     debug: ^4.4.0
     devtools-protocol: 0.0.1402036
     typed-query-selector: ^2.12.0
     ws: ^8.18.0
-  checksum: c8cc189211fe0506d439b7bc00134be62a734cc09d65fdd0b7d0a5439ce1372179283f4dd1da8020a19d4105b11663c12f30020af8aaf14658ce049472c8e279
+  checksum: 1c6f144d8b6c7b9faad1c663ade11eb9735202865c7832b24987b32b48b840d7af2612c38005c59f1dbac1ff8a53565eeac4e5fa97ab179e888920f13627acf1
   languageName: node
   linkType: hard
 
@@ -12993,18 +12993,18 @@ __metadata:
   linkType: hard
 
 "puppeteer@npm:^24.0.0":
-  version: 24.2.0
-  resolution: "puppeteer@npm:24.2.0"
+  version: 24.2.1
+  resolution: "puppeteer@npm:24.2.1"
   dependencies:
     "@puppeteer/browsers": 2.7.1
-    chromium-bidi: 1.2.0
+    chromium-bidi: 1.3.0
     cosmiconfig: ^9.0.0
     devtools-protocol: 0.0.1402036
-    puppeteer-core: 24.2.0
+    puppeteer-core: 24.2.1
     typed-query-selector: ^2.12.0
   bin:
     puppeteer: lib/cjs/puppeteer/node/cli.js
-  checksum: 407fceb08bc655e0a9de7357253f32ba5bdb0de4dd04539a9653dfd94ba08dbd31c3abc2957866fe6edf44972c9559f07052ff107ff231820bef4b336d8a18b5
+  checksum: 5b6eb843fd29a58550092c2b6684078266cf82173dac454a0547bafe56ae53fcb98cc8508ad8a6c0f2071aeebacb1a61213eff0daa0d4d6b277a9c4daaba2ed3
   languageName: node
   linkType: hard
 
@@ -13795,8 +13795,8 @@ __metadata:
   linkType: hard
 
 "sass@npm:^1.65.1":
-  version: 1.84.0
-  resolution: "sass@npm:1.84.0"
+  version: 1.85.0
+  resolution: "sass@npm:1.85.0"
   dependencies:
     "@parcel/watcher": ^2.4.1
     chokidar: ^4.0.0
@@ -13807,7 +13807,7 @@ __metadata:
       optional: true
   bin:
     sass: sass.js
-  checksum: fdaad6ac0c9fabedf944941086dd6e872a8a7ccc561199b4584adf70394bc41442180c719e756dea0935845b6719e43d196e4a489649506ddf0b6049cc24d4c2
+  checksum: 53c70831d1235f9ee40489a8bdde9b3304ba350df78417c4edaa8a8ac79426208054a69ac9b6d53c4dc5837362e552a92e3bcaa975a1a3e8975c0af9fbccfe1c
   languageName: node
   linkType: hard
 
