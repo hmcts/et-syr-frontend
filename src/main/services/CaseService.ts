@@ -10,12 +10,12 @@ import { CaseWithId } from '../definitions/case';
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { application } from '../definitions/contact-tribunal-applications';
 import { toApiFormat } from '../helpers/ApiFormatter';
-import { Logger } from '../logger';
+import { getLogger } from '../logger';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ErrorUtils from '../utils/ErrorUtils';
 
 import { axiosErrorDetails } from './AxiosErrorAdapter';
-
+const logger = getLogger('SubmitContactTribunalController');
 export class CaseApi {
   constructor(private readonly axios: AxiosInstance) {}
 
@@ -205,7 +205,7 @@ export class CaseApi {
     }
   };
 
-  submitRespondentTse = async (req: AppRequest, logger: Logger): Promise<AxiosResponse<CaseApiDataResponse>> => {
+  submitRespondentTse = async (req: AppRequest): Promise<AxiosResponse<CaseApiDataResponse>> => {
     try {
       const caseItem = req.session.userCase;
       const appType = Object.values(application).filter(app => app.code === caseItem.contactApplicationType)[0];
