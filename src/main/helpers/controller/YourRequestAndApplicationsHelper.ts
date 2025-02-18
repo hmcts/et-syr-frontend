@@ -51,5 +51,5 @@ export const getApplicationCollection = (req: AppRequest): GenericTseApplication
 };
 
 const isYourApplication = (app: GenericTseApplicationTypeItem, req: AppRequest): boolean => {
-  return app.value?.applicant === Applicant.RESPONDENT && app.value?.createdById === req.session.user.id;
+  return app.value?.applicant === Applicant.RESPONDENT && app.value?.applicantIdamId === req.session.user.id;
 };

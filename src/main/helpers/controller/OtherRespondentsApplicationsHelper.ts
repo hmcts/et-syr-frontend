@@ -19,7 +19,7 @@ export const getOtherRespondentsApplications = (req: AppRequest): GenericTseAppl
 const isOtherRespApplicationShare = (app: GenericTseApplicationTypeItem, req: AppRequest): boolean => {
   return (
     app.value?.applicant === Applicant.RESPONDENT &&
-    app.value?.createdById !== req.session.user.id &&
+    app.value?.applicantIdamId !== req.session.user.id &&
     isApplicationShare(app)
   );
 };
