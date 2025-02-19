@@ -71,6 +71,7 @@ export interface TseRespondType {
   copyToOtherParty?: string;
   hasSupportingMaterial?: YesOrNo;
   supportingMaterial?: TseRespondSupportingMaterialItem[];
+  copyNoGiveDetails?: string;
   // Admin Reply
   addDocument?: DocumentTypeItem[];
   additionalInformation?: string;

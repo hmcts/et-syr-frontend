@@ -2,7 +2,9 @@ import { AppRequest } from '../../definitions/appRequest';
 import { YesOrNo } from '../../definitions/case';
 import {
   GenericTseApplicationTypeItem,
+  TseAdminDecision,
   TseAdminDecisionItem,
+  TseRespondType,
   TseRespondTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant, Parties } from '../../definitions/constants';
@@ -30,11 +32,13 @@ const isClaimantApplicationShare = (app: GenericTseApplicationTypeItem): boolean
  * Check if tribunal response is shared to respondent
  * @param response response
  */
-export const isAdminResponseShareToRespondent = (response: TseRespondTypeItem): boolean => {
+export const isAdminResponseShareToRespondent = (response: TseRespondType): boolean => {
+  if (!response) {
+    return false;
+  }
   return (
-    response.value?.from === Applicant.ADMIN &&
-    (response.value?.selectPartyNotify === Parties.BOTH_PARTIES ||
-      response.value?.selectPartyNotify === Parties.RESPONDENT_ONLY)
+    response.from === Applicant.ADMIN &&
+    (response.selectPartyNotify === Parties.BOTH_PARTIES || response.selectPartyNotify === Parties.RESPONDENT_ONLY)
   );
 };
 
@@ -42,11 +46,11 @@ export const isAdminResponseShareToRespondent = (response: TseRespondTypeItem): 
  * Check if decision is shared to respondent
  * @param decision decision
  */
-export const isDecisionShareToRespondent = (decision: TseAdminDecisionItem): boolean => {
-  return (
-    decision.value?.selectPartyNotify === Parties.BOTH_PARTIES ||
-    decision.value?.selectPartyNotify === Parties.RESPONDENT_ONLY
-  );
+export const isDecisionShareToRespondent = (decision: TseAdminDecision): boolean => {
+  if (!decision) {
+    return false;
+  }
+  return decision.selectPartyNotify === Parties.BOTH_PARTIES || decision.selectPartyNotify === Parties.RESPONDENT_ONLY;
 };
 
 /**
@@ -65,7 +69,7 @@ export const isApplicationShare = (app: GenericTseApplicationTypeItem): boolean 
   if (
     ObjectUtils.isNotEmpty(app.value?.respondCollection) &&
     app.value?.respondCollection?.some((r: TseRespondTypeItem) => {
-      return isAdminResponseShareToRespondent(r);
+      return isAdminResponseShareToRespondent(r.value);
     })
   ) {
     return true;
@@ -74,7 +78,7 @@ export const isApplicationShare = (app: GenericTseApplicationTypeItem): boolean 
   return (
     ObjectUtils.isNotEmpty(app.value?.adminDecision) &&
     app.value?.adminDecision?.some((d: TseAdminDecisionItem) => {
-      return isDecisionShareToRespondent(d);
+      return isDecisionShareToRespondent(d.value);
     })
   );
 };

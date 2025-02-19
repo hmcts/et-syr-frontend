@@ -1,7 +1,7 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import {
-  TseAdminDecisionItem,
-  TseRespondTypeItem,
+  TseAdminDecision,
+  TseRespondType,
 } from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant, Parties } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
@@ -91,89 +91,83 @@ describe('Claimants Applications Helper', () => {
 
   describe('isAdminResponseShareToRespondent', () => {
     it('should return true when from is ADMIN and selectPartyNotify is BOTH_PARTIES', () => {
-      const mockResponse: TseRespondTypeItem = {
-        value: {
-          from: Applicant.ADMIN,
-          selectPartyNotify: Parties.BOTH_PARTIES,
-        },
+      const mockResponse: TseRespondType = {
+        from: Applicant.ADMIN,
+        selectPartyNotify: Parties.BOTH_PARTIES,
       };
       expect(isAdminResponseShareToRespondent(mockResponse)).toBe(true);
     });
 
     it('should return true when from is ADMIN and selectPartyNotify is RESPONDENT_ONLY', () => {
-      const mockResponse: TseRespondTypeItem = {
-        value: {
-          from: Applicant.ADMIN,
-          selectPartyNotify: Parties.RESPONDENT_ONLY,
-        },
+      const mockResponse: TseRespondType = {
+        from: Applicant.ADMIN,
+        selectPartyNotify: Parties.RESPONDENT_ONLY,
       };
       expect(isAdminResponseShareToRespondent(mockResponse)).toBe(true);
     });
 
     it('should return false when from is not ADMIN', () => {
-      const mockResponse: TseRespondTypeItem = {
-        value: {
-          from: Applicant.RESPONDENT,
-          selectPartyNotify: Parties.BOTH_PARTIES,
-        },
+      const mockResponse: TseRespondType = {
+        from: Applicant.RESPONDENT,
+        selectPartyNotify: Parties.BOTH_PARTIES,
       };
       expect(isAdminResponseShareToRespondent(mockResponse)).toBe(false);
     });
 
     it('should return false when selectPartyNotify is CLAIMANT_ONLY', () => {
-      const mockResponse: TseRespondTypeItem = {
-        value: {
-          from: Applicant.ADMIN,
-          selectPartyNotify: Parties.CLAIMANT_ONLY,
-        },
+      const mockResponse: TseRespondType = {
+        from: Applicant.ADMIN,
+        selectPartyNotify: Parties.CLAIMANT_ONLY,
       };
       expect(isAdminResponseShareToRespondent(mockResponse)).toBe(false);
     });
 
-    it('should return false when response.value is undefined', () => {
-      const mockResponse: TseRespondTypeItem = {};
+    it('should return false when response is empty', () => {
+      const mockResponse: TseRespondType = {};
       expect(isAdminResponseShareToRespondent(mockResponse)).toBe(false);
+    });
+
+    it('should return false when response is undefined', () => {
+      expect(isAdminResponseShareToRespondent(undefined)).toBe(false);
     });
   });
 
   describe('isDecisionShareToRespondent', () => {
     it('should return true when selectPartyNotify is BOTH_PARTIES', () => {
-      const mockDecision: TseAdminDecisionItem = {
-        value: {
-          selectPartyNotify: Parties.BOTH_PARTIES,
-        },
+      const mockDecision: TseAdminDecision = {
+        selectPartyNotify: Parties.BOTH_PARTIES,
       };
       expect(isDecisionShareToRespondent(mockDecision)).toBe(true);
     });
 
     it('should return true when selectPartyNotify is RESPONDENT_ONLY', () => {
-      const mockDecision: TseAdminDecisionItem = {
-        value: {
-          selectPartyNotify: Parties.RESPONDENT_ONLY,
-        },
+      const mockDecision: TseAdminDecision = {
+        selectPartyNotify: Parties.RESPONDENT_ONLY,
       };
       expect(isDecisionShareToRespondent(mockDecision)).toBe(true);
     });
 
     it('should return false when selectPartyNotify is CLAIMANT_ONLY', () => {
-      const mockDecision: TseAdminDecisionItem = {
-        value: {
-          selectPartyNotify: Parties.CLAIMANT_ONLY,
-        },
+      const mockDecision: TseAdminDecision = {
+        selectPartyNotify: Parties.CLAIMANT_ONLY,
       };
       expect(isDecisionShareToRespondent(mockDecision)).toBe(false);
     });
 
     it('should return false when selectPartyNotify is undefined', () => {
-      const mockDecision: TseAdminDecisionItem = {
-        value: {},
+      const mockDecision: TseAdminDecision = {
+        selectPartyNotify: undefined,
       };
       expect(isDecisionShareToRespondent(mockDecision)).toBe(false);
     });
 
-    it('should return false when value is undefined', () => {
-      const mockDecision: TseAdminDecisionItem = {};
+    it('should return false when Decision is empty', () => {
+      const mockDecision: TseAdminDecision = {};
       expect(isDecisionShareToRespondent(mockDecision)).toBe(false);
+    });
+
+    it('should return false when Decision is undefined', () => {
+      expect(isDecisionShareToRespondent(undefined)).toBe(false);
     });
   });
 
