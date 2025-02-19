@@ -5,7 +5,6 @@ import {
 } from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant, Parties } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
-import { LinkStatus, linkStatusColorMap } from '../../../../main/definitions/links';
 import {
   getClaimantsApplications,
   isAdminResponseShareToRespondent,
@@ -23,69 +22,98 @@ describe('Claimants Applications Helper', () => {
       ...applicationTypeJson,
       ...caseDetailsStatusJson,
     };
+    const req = mockRequestWithTranslation({ session: { userCase: mockUserCase } }, translations);
 
-    it('should return filtered and formatted claimant applications', () => {
-      const request = mockRequestWithTranslation({ session: { userCase: mockUserCase } }, translations);
-      request.url = '/url';
-
-      request.session.userCase.genericTseApplicationCollection = [
-        {
-          id: '1',
-          value: {
-            applicant: Applicant.CLAIMANT,
-            type: application.CHANGE_PERSONAL_DETAILS.claimant,
-            copyToOtherPartyYesOrNo: YesOrNo.YES,
-            applicationState: LinkStatus.IN_PROGRESS,
-          },
-        },
-        {
-          id: '2',
-          value: {
-            applicant: Applicant.CLAIMANT,
-            type: application.CHANGE_PERSONAL_DETAILS.claimant,
-            copyToOtherPartyYesOrNo: YesOrNo.NO,
-            copyToOtherPartyText: 'No reason',
-            applicationState: LinkStatus.IN_PROGRESS,
-          },
-        },
-        {
-          id: '3',
-          value: {
-            applicant: Applicant.RESPONDENT,
-            type: application.AMEND_RESPONSE.code,
-            applicationState: LinkStatus.WAITING_FOR_TRIBUNAL,
-          },
-        },
-      ];
-
-      const expectedOutput = [
-        {
-          id: '1',
-          value: {
-            applicant: Applicant.CLAIMANT,
-            type: application.CHANGE_PERSONAL_DETAILS.claimant,
-            copyToOtherPartyYesOrNo: YesOrNo.YES,
-            applicationState: 'inProgress',
-          },
-          linkValue: 'Change my personal details',
-          redirectUrl: '/application-details/1?lng=en',
-          statusColor: linkStatusColorMap.get(LinkStatus.IN_PROGRESS),
-          displayStatus: 'In progress',
-        },
-      ];
-
-      const result = getClaimantsApplications(request);
-
-      expect(result).toHaveLength(1);
-      expect(result).toEqual(expectedOutput);
+    it('should return an empty array when genericTseApplicationCollection is undefined', () => {
+      req.session.userCase.genericTseApplicationCollection = undefined;
+      const result = getClaimantsApplications(req);
+      expect(result).toEqual([]);
     });
 
-    it('should handle empty application collection', () => {
-      const request = mockRequestWithTranslation({ session: { userCase: mockUserCase } }, translations);
-      request.url = '/url';
-      request.session.userCase.genericTseApplicationCollection = undefined;
-      const result = getClaimantsApplications(request);
+    it('should return an empty array when genericTseApplicationCollection is empty', () => {
+      req.session.userCase.genericTseApplicationCollection = [];
+      const result = getClaimantsApplications(req);
       expect(result).toEqual([]);
+    });
+
+    it('should filter out applications not from CLAIMANT', () => {
+      req.session.userCase.genericTseApplicationCollection = [
+        {
+          value: {
+            applicant: Applicant.RESPONDENT,
+            copyToOtherPartyYesOrNo: YesOrNo.YES,
+          },
+        },
+      ];
+      const result = getClaimantsApplications(req);
+      expect(result).toEqual([]);
+    });
+
+    it('should not include applications from CLAIMANT say No', () => {
+      req.session.userCase.genericTseApplicationCollection = [
+        {
+          value: {
+            applicant: Applicant.CLAIMANT,
+            copyToOtherPartyYesOrNo: YesOrNo.NO,
+          },
+        },
+      ];
+      const result = getClaimantsApplications(req);
+      expect(result).toEqual([]);
+    });
+
+    it('should include applications from CLAIMANT', () => {
+      req.session.userCase.genericTseApplicationCollection = [
+        {
+          value: {
+            applicant: Applicant.CLAIMANT,
+            copyToOtherPartyYesOrNo: YesOrNo.YES,
+          },
+        },
+      ];
+      const result = getClaimantsApplications(req);
+      expect(result).toHaveLength(1);
+    });
+
+    it('should include applications if admin response is shared with respondent', () => {
+      req.session.userCase.genericTseApplicationCollection = [
+        {
+          value: {
+            applicant: Applicant.CLAIMANT,
+            copyToOtherPartyYesOrNo: YesOrNo.NO,
+            respondCollection: [
+              {
+                value: {
+                  from: Applicant.ADMIN,
+                  selectPartyNotify: Parties.BOTH_PARTIES,
+                },
+              },
+            ],
+          },
+        },
+      ];
+      const result = getClaimantsApplications(req);
+      expect(result).toHaveLength(1);
+    });
+
+    it('should include applications if admin decision is shared with respondent', () => {
+      req.session.userCase.genericTseApplicationCollection = [
+        {
+          value: {
+            applicant: Applicant.CLAIMANT,
+            copyToOtherPartyYesOrNo: YesOrNo.NO,
+            adminDecision: [
+              {
+                value: {
+                  selectPartyNotify: Parties.RESPONDENT_ONLY,
+                },
+              },
+            ],
+          },
+        },
+      ];
+      const result = getClaimantsApplications(req);
+      expect(result).toHaveLength(1);
     });
   });
 

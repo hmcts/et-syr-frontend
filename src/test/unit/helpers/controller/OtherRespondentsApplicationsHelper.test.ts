@@ -34,6 +34,7 @@ describe('Other Respondents Applications Helper', () => {
           value: {
             applicant: Applicant.CLAIMANT,
             applicantIdamId: 'user2',
+            copyToOtherPartyYesOrNo: YesOrNo.YES,
           },
         },
       ];
@@ -47,6 +48,7 @@ describe('Other Respondents Applications Helper', () => {
           value: {
             applicant: Applicant.RESPONDENT,
             applicantIdamId: 'user1',
+            copyToOtherPartyYesOrNo: YesOrNo.YES,
           },
         },
       ];
@@ -102,6 +104,7 @@ describe('Other Respondents Applications Helper', () => {
           value: {
             applicant: Applicant.RESPONDENT,
             applicantIdamId: 'user2',
+            copyToOtherPartyYesOrNo: YesOrNo.NO,
             respondCollection: [
               {
                 value: {
@@ -123,6 +126,7 @@ describe('Other Respondents Applications Helper', () => {
           value: {
             applicant: Applicant.RESPONDENT,
             applicantIdamId: 'user2',
+            copyToOtherPartyYesOrNo: YesOrNo.NO,
             adminDecision: [
               {
                 value: {
