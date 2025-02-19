@@ -209,7 +209,6 @@ export class CaseApi {
       const caseItem = req.session.userCase;
       const filteredApps = Object.values(application).filter(app => app.code === caseItem.contactApplicationType);
       const appType = filteredApps.length > 0 ? filteredApps[0] : null;
-      console.log('appType for test', appType);
       return await this.axios.put(JavaApiUrls.SUBMIT_RESPONDENT_APPLICATION, {
         case_id: caseItem.id,
         case_type_id: caseItem.caseTypeId,
