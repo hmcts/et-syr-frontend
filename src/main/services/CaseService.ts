@@ -10,12 +10,10 @@ import { CaseWithId } from '../definitions/case';
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { application } from '../definitions/contact-tribunal-applications';
 import { toApiFormat } from '../helpers/ApiFormatter';
-import { getLogger } from '../logger';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ErrorUtils from '../utils/ErrorUtils';
 
 import { axiosErrorDetails } from './AxiosErrorAdapter';
-const logger = getLogger('SubmitContactTribunalController');
 export class CaseApi {
   constructor(private readonly axios: AxiosInstance) {}
 
@@ -209,7 +207,7 @@ export class CaseApi {
     try {
       const caseItem = req.session.userCase;
       const appType = Object.values(application).filter(app => app.code === caseItem.contactApplicationType)[0];
-      const result = await this.axios.put(JavaApiUrls.SUBMIT_RESPONDENT_APPLICATION, {
+      return await this.axios.put(JavaApiUrls.SUBMIT_RESPONDENT_APPLICATION, {
         case_id: caseItem.id,
         case_type_id: caseItem.caseTypeId,
         type_c: application.ORDER_WITNESS_ATTEND.code.includes(caseItem.contactApplicationType),
@@ -222,8 +220,6 @@ export class CaseApi {
           copyToOtherPartyText: caseItem.copyToOtherPartyText,
         },
       });
-      logger.info('Submitted respondent tse for case:' + `${req.session.userCase.id}`);
-      return result;
     } catch (error) {
       throw new Error('Error submitting respondent tse application: ' + axiosErrorDetails(error));
     }

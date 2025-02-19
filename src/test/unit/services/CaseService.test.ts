@@ -413,5 +413,25 @@ describe('Case Service Tests', () => {
         new Error('Error submitting respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
       );
     });
+
+    it('should throw exception when userCase is not found in session', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      const invalidRequest = mockRequest({
+        session: { user: mockUserDetails },
+      });
+      await expect(() => api.submitRespondentTse(invalidRequest)).rejects.toEqual(
+        new Error('Error submitting respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
+
+    it('should throw exception when contactApplicationType is not found in userCase', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      request.session.userCase.contactApplicationType = undefined;
+      await expect(() => api.submitRespondentTse(request)).rejects.toEqual(
+        new Error('Error submitting respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
   });
 });
