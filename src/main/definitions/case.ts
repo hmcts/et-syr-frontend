@@ -374,7 +374,7 @@ export interface Case {
   addressEnterPostcode?: string;
   representatives?: Representative[];
   confirmCopied?: string;
-  // indiciates if responding to a tribunal order/request or not when responding to an application
+  // indicates if responding to a tribunal order/request or not when responding to an application
   isRespondingToRequestOrOrder?: boolean;
   updateDraftCaseError?: string;
   // Multiples
