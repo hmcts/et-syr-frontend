@@ -11,6 +11,7 @@ export default {
   hubLinksStatuses: {},
   caseSource: undefined,
   claimantRepresentedQuestion: 'No',
+  contactApplicationType: 'Vary or Not I care less',
   representativeClaimantType: {
     myHmctsOrganisation: {
       organisationID: undefined,

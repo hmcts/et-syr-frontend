@@ -393,6 +393,7 @@ describe('Case Service Tests', () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
       mockedAxios.put.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse);
+      console.log(' || ==>> request case app type: ', request.session.userCase.contactApplicationType);
       const value = await api.submitRespondentTse(request);
       expect(value.data).toEqual(mockCaseApiDataResponse);
     });

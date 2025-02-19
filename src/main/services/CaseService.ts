@@ -207,14 +207,16 @@ export class CaseApi {
   submitRespondentTse = async (req: AppRequest): Promise<AxiosResponse<CaseApiDataResponse>> => {
     try {
       const caseItem = req.session.userCase;
-      const appType = Object.values(application).filter(app => app.code === caseItem.contactApplicationType)[0];
+      const filteredApps = Object.values(application).filter(app => app.code === caseItem.contactApplicationType);
+      const appType = filteredApps.length > 0 ? filteredApps[0] : null;
+      console.log('appType for test', appType);
       return await this.axios.put(JavaApiUrls.SUBMIT_RESPONDENT_APPLICATION, {
         case_id: caseItem.id,
         case_type_id: caseItem.caseTypeId,
         type_c: application.ORDER_WITNESS_ATTEND.code.includes(caseItem.contactApplicationType),
         respondent_tse: {
           contactApplicationType: caseItem.contactApplicationType,
-          contactApplicationClaimantType: appType.claimant,
+          contactApplicationClaimantType: appType ? appType.claimant : null,
           contactApplicationText: caseItem.contactApplicationText,
           contactApplicationFile: caseItem.contactApplicationFile,
           copyToOtherPartyYesOrNo: caseItem.copyToOtherPartyYesOrNo,
