@@ -1,6 +1,7 @@
 {% extends "form/main/template.njk" %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block beforeContent %}
   {{ super() }}
@@ -9,34 +10,20 @@
 
 {% block content %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds-from-desktop">
-      <h1 class="govuk-heading-xl">{{ applicationTo }} {{ applicationType }}</h1>
-
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">{{ title }}</h1>
       {{ govukSummaryList({
-        rows: appContent
+        rows: cyaContent
       }) }}
 
-      {% for response in allResponses %}
-        <h2 class="govuk-heading-m">{{ responseItem }} {{ loop.index }}</h2>
-        {{ govukSummaryList({
-          rows: response
-        }) }}
-      {% endfor %}
-
-      {% for decisionContent in decisionContent %}
-        <h2 class="govuk-heading-m">{{ decision }}</h2>
-        {{ govukSummaryList({
-          rows: decisionContent
-        }) }}
-      {% endfor %}
-
-      {% if isRespondButton %}
-        <p class="govuk-body">{{ mustRespond }}</p>
+      <div class="govuk-button-group">
         {{ govukButton({
-          text: respondButton,
-          href: respondRedirectUrl
+          text: submit,
+          href: submitLink,
+          preventDoubleClick: true
         }) }}
-      {% endif %}
+        <a class="govuk-link" href={{ cancelLink }}>{{ cancel }}</a>
+      </div>
     </div>
 
     <div class="govuk-grid-column-one-third-from-desktop">

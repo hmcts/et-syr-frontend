@@ -2,10 +2,16 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
-import { ErrorPages, TranslationKeys } from '../definitions/constants';
+import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants';
 import { getApplicationDisplayByCode } from '../helpers/ApplicationHelper';
 import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
-import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
+import { getLanguageParam } from '../helpers/RouterHelpers';
+import {
+  getAllResponses,
+  getApplicationContent,
+  getDecisionContent,
+  isResponseToTribunalRequired,
+} from '../helpers/controller/ApplicationDetailsHelper';
 
 export default class ApplicationDetailsController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
@@ -23,6 +29,11 @@ export default class ApplicationDetailsController {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
       }),
       appContent: getApplicationContent(selectedApplication, req),
+      allResponses: getAllResponses(selectedApplication, req),
+      decisionContent: getDecisionContent(selectedApplication, req),
+      isRespondButton: isResponseToTribunalRequired(selectedApplication),
+      respondRedirectUrl:
+        PageUrls.RESPOND_TO_APPLICATION.replace(':appId', selectedApplication.id) + getLanguageParam(req.url),
     });
   };
 }

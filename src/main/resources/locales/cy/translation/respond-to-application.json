@@ -1,0 +1,24 @@
+{
+  "title": "Ymateb i'r tribiwnlys",
+  "caption": "Ymateb i'r tribiwnlys",
+  "h1": "Eich ymateb",
+  "responseItem": "Ymateb",
+  "responseText": {
+    "label": "Beth yw eich ymateb i’r tribiwnlys",
+    "hint": "Defnyddiwch y blwch hwn i ymateb neu gallwch uwchlwytho deunydd yn y cam nesaf."
+  },
+  "hasSupportingMaterial": {
+    "label": "Ddeunydd ategol",
+    "hint": "A oes gennych unrhyw ddeunydd ategol yr hoffech ei ddarparu?"
+  },
+  "errors": {
+    "hasSupportingMaterial": {
+      "required": "Dywedwch wrthym os ydych eisiau llwytho deunydd ategol hefyd"
+    },
+    "responseText": {
+      "required": "Darparwch fanylion eich ymateb a/neu llwythwch ddeunydd ategol",
+      "requiredFile": "Darparwch fanylion eich ymateb a/neu llwythwch ffeil",
+      "tooLong": "Rhaid i’r ymateb fod yn 2500 nod neu lai"
+    }
+  }
+}
