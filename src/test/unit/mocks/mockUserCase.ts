@@ -1,4 +1,4 @@
-import { CaseWithId } from '../../../main/definitions/case';
+import { CaseWithId, YesOrNo } from '../../../main/definitions/case';
 import { CaseState } from '../../../main/definitions/definition';
 
 export default {
@@ -11,7 +11,9 @@ export default {
   hubLinksStatuses: {},
   caseSource: undefined,
   claimantRepresentedQuestion: 'No',
-  contactApplicationType: 'Vary or Not I care less',
+  contactApplicationType: 'Change personal details',
+  copyToOtherPartyYesOrNo: YesOrNo.YES,
+  ruleCopystate: undefined,
   representativeClaimantType: {
     myHmctsOrganisation: {
       organisationID: undefined,
