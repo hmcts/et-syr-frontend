@@ -5,6 +5,7 @@ import { YesOrNo } from '../definitions/case';
 import { ErrorPages, PageUrls } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { clearTempFields } from '../helpers/controller/ContactTribunalHelper';
+import { getCaseApi } from '../services/CaseService';
 
 export default class ContactTribunalSubmitController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
@@ -14,7 +15,7 @@ export default class ContactTribunalSubmitController {
       // TODO: update Application status
 
       // Submit application
-      // TODO: save data in api
+      await getCaseApi(req.session.user?.accessToken).submitRespondentTse(req);
 
       // Clear temporary fields
       userCase.ruleCopystate = userCase.copyToOtherPartyYesOrNo && userCase.copyToOtherPartyYesOrNo === YesOrNo.YES;
