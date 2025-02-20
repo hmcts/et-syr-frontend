@@ -1,6 +1,7 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
 import { YesOrNo } from '../../definitions/case';
 import {
+  GenericTseApplicationType,
   GenericTseApplicationTypeItem,
   TseAdminDecision,
   TseRespondType,
@@ -242,7 +243,44 @@ const getTseApplicationDecisionDetails = (
 /**
  * Boolean if respond to Application is required.
  * @param app selected application
+ * @param user user in request
  */
-export const isResponseToTribunalRequired = (app: GenericTseApplicationTypeItem): boolean => {
-  return app.value.respondentResponseRequired === YesOrNo.YES;
+export const isResponseToTribunalRequired = (app: GenericTseApplicationType, user: UserDetails): boolean => {
+  if (!app || ObjectUtils.isEmpty(app.respondCollection) || !user) {
+    return false;
+  }
+
+  const lastAdminRequireDate = getLatestDateFromResponses(
+    app.respondCollection.filter(
+      response =>
+        response.value.from === Applicant.ADMIN &&
+        (response.value.selectPartyRespond === Parties.BOTH_PARTIES ||
+          response.value.selectPartyRespond === Parties.RESPONDENT_ONLY)
+    )
+  );
+
+  if (!lastAdminRequireDate) {
+    return false;
+  }
+
+  const lastUserRespondDate = getLatestDateFromResponses(
+    app.respondCollection.filter(
+      response =>
+        response.value.from === Applicant.RESPONDENT &&
+        response.value.fromIdamId &&
+        response.value.fromIdamId === user.id
+    )
+  );
+
+  if (!lastUserRespondDate) {
+    return true;
+  }
+
+  return lastAdminRequireDate > lastUserRespondDate;
+};
+
+const getLatestDateFromResponses = (responses: TseRespondTypeItem[]): Date => {
+  return (
+    responses.map(response => new Date(response.value.date!)).sort((a, b) => b.getTime() - a.getTime())[0] || undefined
+  );
 };

@@ -31,7 +31,7 @@ export default class ApplicationDetailsController {
       appContent: getApplicationContent(selectedApplication, req),
       allResponses: getAllResponses(selectedApplication, req),
       decisionContent: getDecisionContent(selectedApplication, req),
-      isRespondButton: isResponseToTribunalRequired(selectedApplication),
+      isRespondButton: isResponseToTribunalRequired(selectedApplication.value, req.session.user),
       respondRedirectUrl:
         PageUrls.RESPOND_TO_APPLICATION.replace(':appId', selectedApplication.id) + getLanguageParam(req.url),
     });
