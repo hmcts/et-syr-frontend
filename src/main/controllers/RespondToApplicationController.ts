@@ -14,6 +14,7 @@ import {
   getAllResponses,
   getApplicationContent,
   getDecisionContent,
+  isResponseToTribunalRequired,
 } from '../helpers/controller/ApplicationDetailsHelper';
 import { getFormDataError } from '../helpers/controller/RespondToApplicationHelper';
 import UrlUtils from '../utils/UrlUtils';
@@ -65,10 +66,6 @@ export default class RespondToApplicationController {
     }
 
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    req.session.userCase.selectedGenericTseApplication = selectedApplication;
-    req.session.userCase.responseText = formData.responseText;
-    req.session.userCase.hasSupportingMaterial = formData.hasSupportingMaterial;
-
     req.session.errors = [];
     const error = getFormDataError(formData);
     if (error) {
@@ -77,6 +74,10 @@ export default class RespondToApplicationController {
         PageUrls.RESPOND_TO_APPLICATION.replace(':appId', selectedApplication.id) + getLanguageParam(req.url)
       );
     }
+
+    req.session.userCase.selectedGenericTseApplication = selectedApplication;
+    req.session.userCase.responseText = formData.responseText;
+    req.session.userCase.hasSupportingMaterial = formData.hasSupportingMaterial;
 
     const redirectUrl =
       formData.hasSupportingMaterial === YesOrNo.YES
@@ -88,6 +89,10 @@ export default class RespondToApplicationController {
   public get = (req: AppRequest, res: Response): void => {
     const selectedApplication: GenericTseApplicationTypeItem = findSelectedGenericTseApplication(req);
     if (!selectedApplication) {
+      return res.redirect(ErrorPages.NOT_FOUND);
+    }
+
+    if (!isResponseToTribunalRequired(selectedApplication.value, req.session.user)) {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 

@@ -31,7 +31,7 @@
   "respondButton": "Ymateb",
   "mustRespond": "Rhaid i chi ymateb i’r tribiwnlys.",
   "notification": "Hysbysiad",
-  "decision": "Penderfyniad",
+  "decisionItem": "Penderfyniad",
   "Granted": "Caniatawyd",
   "Granted in part": "Caniatawyd yn rhannol",
   "Refused": "Gwrthodwyd",
