@@ -364,7 +364,7 @@ describe('Application Details Helper', () => {
   });
 
   describe('isResponseToTribunalRequired', () => {
-    test('should return true when user has not responded', () => {
+    it('should return true when user has not responded', () => {
       const app = {
         respondCollection: [
           {
@@ -379,7 +379,7 @@ describe('Application Details Helper', () => {
       expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(true);
     });
 
-    test('should return false when admin not require responded', () => {
+    it('should return false when admin not require responded', () => {
       const app = {
         respondCollection: [
           {
@@ -394,7 +394,7 @@ describe('Application Details Helper', () => {
       expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(false);
     });
 
-    test('should return true when admin latest required response date is after user latest response date', () => {
+    it('should return true when admin latest required response date is after user latest response date', () => {
       const app = {
         respondCollection: [
           {
@@ -416,7 +416,7 @@ describe('Application Details Helper', () => {
       expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(true);
     });
 
-    test('should return false when user latest response date is after admin required response date', () => {
+    it('should return false when user latest response date is after admin required response date', () => {
       const app = {
         respondCollection: [
           {
@@ -445,21 +445,21 @@ describe('Application Details Helper', () => {
       expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(false);
     });
 
-    test('should return false when user is undefined', () => {
+    it('should return false when user is undefined', () => {
       const app: GenericTseApplicationType = mockGenericTseCollection[0].value;
       expect(isResponseToTribunalRequired(app, undefined)).toBe(false);
     });
 
-    test('should return false when application is undefined', () => {
+    it('should return false when application is undefined', () => {
       expect(isResponseToTribunalRequired(undefined, mockUserDetails)).toBe(false);
     });
 
-    test('should return false when respondCollection is undefined', () => {
+    it('should return false when respondCollection is undefined', () => {
       const app: GenericTseApplicationType = { respondCollection: undefined };
       expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(false);
     });
 
-    test('should return false when respondCollection is empty', () => {
+    it('should return false when respondCollection is empty', () => {
       const app: GenericTseApplicationType = { respondCollection: [] };
       expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(false);
     });
