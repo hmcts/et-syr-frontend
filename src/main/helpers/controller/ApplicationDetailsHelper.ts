@@ -1,11 +1,12 @@
-import { AppRequest } from '../../definitions/appRequest';
+import { AppRequest, UserDetails } from '../../definitions/appRequest';
 import { YesOrNo } from '../../definitions/case';
 import {
   GenericTseApplicationTypeItem,
   TseAdminDecision,
+  TseRespondType,
   TseRespondTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, TranslationKeys } from '../../definitions/constants';
+import { Applicant, DefaultValues, Parties, TranslationKeys } from '../../definitions/constants';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import CollectionUtils from '../../utils/CollectionUtils';
@@ -74,78 +75,95 @@ export const getAllResponses = (app: GenericTseApplicationTypeItem, req: AppRequ
     ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
   };
 
-  for (const response of respondCollection) {
-    if (isRespondentResponse(response) || isClaimantResponseWithCopyYes(response)) {
-      allResponses.push(addNonAdminResponse(response, translations, req));
-    } else if (isAdminResponseShareToRespondent(response)) {
-      allResponses.push(addAdminResponse(response, translations, req));
+  const lastAdminShareDate = getLastAdminShareDate(respondCollection);
+  for (const r of respondCollection) {
+    if (
+      (r.value.from === Applicant.RESPONDENT || r.value.from === Applicant.CLAIMANT) &&
+      isOtherPartyResponseShare(r.value, req.session.user, lastAdminShareDate)
+    ) {
+      allResponses.push(addNonAdminResponse(r.value, translations, req));
+    } else if (r.value.from === Applicant.ADMIN && isAdminResponseShareToRespondent(r.value)) {
+      allResponses.push(addAdminResponse(r.value, translations, req));
     }
   }
 
   return allResponses;
 };
 
-const isRespondentResponse = (response: TseRespondTypeItem): boolean => {
-  return response.value.from === Applicant.RESPONDENT;
+const getLastAdminShareDate = (responses: TseRespondTypeItem[]): Date => {
+  return (
+    responses
+      .filter(
+        item =>
+          item.value?.from === Applicant.ADMIN &&
+          (item.value?.selectPartyNotify === Parties.BOTH_PARTIES ||
+            item.value?.selectPartyNotify === Parties.RESPONDENT_ONLY) &&
+          item.value?.date
+      )
+      .map(item => new Date(item.value!.date!))
+      .sort((a, b) => b.getDate() - a.getDate())[0] || null
+  );
 };
 
-const isClaimantResponseWithCopyYes = (response: TseRespondTypeItem): boolean => {
-  return response.value.from === Applicant.CLAIMANT && response.value.copyToOtherParty === YesOrNo.YES;
+const isOtherPartyResponseShare = (response: TseRespondType, user: UserDetails, lastAdminShareDate: Date): boolean => {
+  if (response.fromIdamId && response.fromIdamId === user.id) {
+    return true;
+  }
+  if (response.copyToOtherParty === YesOrNo.YES) {
+    return true;
+  }
+  return new Date(response.date) < lastAdminShareDate;
 };
 
-const addNonAdminResponse = (
-  response: TseRespondTypeItem,
-  translations: AnyRecord,
-  req: AppRequest
-): SummaryListRow[] => {
+const addNonAdminResponse = (response: TseRespondType, translations: AnyRecord, req: AppRequest): SummaryListRow[] => {
   const rows: SummaryListRow[] = [];
 
   rows.push(
-    addSummaryRow(translations.responseFrom, translations[response.value.from]),
-    addSummaryRow(translations.responseDate, datesStringToDateInLocale(response.value.date, req.url)),
-    addSummaryRow(translations.responseText, response.value.response)
+    addSummaryRow(translations.responseFrom, translations[response.from]),
+    addSummaryRow(translations.responseDate, datesStringToDateInLocale(response.date, req.url)),
+    addSummaryRow(translations.responseText, response.response || DefaultValues.STRING_DASH)
   );
 
-  if (response.value.supportingMaterial) {
-    const docType = getDocumentFromDocumentTypeItems(response.value.supportingMaterial);
+  if (response.supportingMaterial) {
+    const docType = getDocumentFromDocumentTypeItems(response.supportingMaterial);
     const link = getLinkFromDocument(docType.uploadedDocument);
     rows.push(addSummaryHtmlRow(translations.supportingMaterial, link));
   }
 
-  if (response.value.copyToOtherParty) {
-    rows.push(addSummaryRow(translations.copyCorrespondence, translations[response.value.copyToOtherParty]));
+  if (response.copyToOtherParty) {
+    rows.push(addSummaryRow(translations.copyCorrespondence, translations[response.copyToOtherParty]));
   }
 
   return rows;
 };
 
-const addAdminResponse = (response: TseRespondTypeItem, translations: AnyRecord, req: AppRequest): SummaryListRow[] => {
+const addAdminResponse = (response: TseRespondType, translations: AnyRecord, req: AppRequest): SummaryListRow[] => {
   const rows: SummaryListRow[] = [];
 
-  if (response.value.enterResponseTitle) {
-    rows.push(addSummaryRow(translations.responseItem, response.value.enterResponseTitle));
+  if (response.enterResponseTitle) {
+    rows.push(addSummaryRow(translations.responseItem, response.enterResponseTitle));
   }
 
   rows.push(
-    addSummaryRow(translations.date, datesStringToDateInLocale(response.value.date, req.url)),
+    addSummaryRow(translations.date, datesStringToDateInLocale(response.date, req.url)),
     addSummaryRow(translations.sentBy, translations.tribunal),
-    addSummaryRow(translations.orderOrRequest, translations[response.value.isCmoOrRequest])
+    addSummaryRow(translations.orderOrRequest, translations[response.isCmoOrRequest])
   );
 
-  if (response.value.isResponseRequired) {
-    rows.push(addSummaryRow(translations.responseDue, translations[response.value.isResponseRequired]));
+  if (response.isResponseRequired) {
+    rows.push(addSummaryRow(translations.responseDue, translations[response.isResponseRequired]));
   }
 
-  if (response.value.selectPartyRespond) {
-    rows.push(addSummaryRow(translations.partyToRespond, translations[response.value.selectPartyRespond]));
+  if (response.selectPartyRespond) {
+    rows.push(addSummaryRow(translations.partyToRespond, translations[response.selectPartyRespond]));
   }
 
-  if (response.value.additionalInformation) {
-    rows.push(addSummaryRow(translations.additionalInfo, response.value.additionalInformation));
+  if (response.additionalInformation) {
+    rows.push(addSummaryRow(translations.additionalInfo, response.additionalInformation));
   }
 
-  if (response.value.addDocument) {
-    const docType = getDocumentFromDocumentTypeItems(response.value.addDocument);
+  if (response.addDocument && ObjectUtils.isNotEmpty(response.addDocument)) {
+    const docType = getDocumentFromDocumentTypeItems(response.addDocument);
     const link = getLinkFromDocument(docType.uploadedDocument);
     rows.push(
       addSummaryRow(translations.description, docType.shortDescription),
@@ -153,17 +171,17 @@ const addAdminResponse = (response: TseRespondTypeItem, translations: AnyRecord,
     );
   }
 
-  if (response.value.requestMadeBy) {
-    rows.push(addSummaryRow(translations.requestMadeBy, translations[response.value.requestMadeBy]));
-  } else if (response.value.cmoMadeBy) {
-    rows.push(addSummaryRow(translations.requestMadeBy, translations[response.value.cmoMadeBy]));
+  if (response.requestMadeBy) {
+    rows.push(addSummaryRow(translations.requestMadeBy, translations[response.requestMadeBy]));
+  } else if (response.cmoMadeBy) {
+    rows.push(addSummaryRow(translations.requestMadeBy, translations[response.cmoMadeBy]));
   }
 
-  if (response.value.madeByFullName) {
-    rows.push(addSummaryRow(translations.name, response.value.madeByFullName));
+  if (response.madeByFullName) {
+    rows.push(addSummaryRow(translations.name, response.madeByFullName));
   }
 
-  rows.push(addSummaryRow(translations.sentTo, translations[response.value.selectPartyNotify]));
+  rows.push(addSummaryRow(translations.sentTo, translations[response.selectPartyNotify]));
 
   return rows;
 };
@@ -174,7 +192,7 @@ const addAdminResponse = (response: TseRespondTypeItem, translations: AnyRecord,
  * @param req request
  */
 export const getDecisionContent = (app: GenericTseApplicationTypeItem, req: AppRequest): SummaryListRow[][] => {
-  const selectedAppAdminDecision = app.value?.adminDecision?.filter(d => isDecisionShareToRespondent(d));
+  const selectedAppAdminDecision = app.value?.adminDecision?.filter(d => isDecisionShareToRespondent(d.value));
   if (ObjectUtils.isEmpty(selectedAppAdminDecision)) {
     return [];
   }
