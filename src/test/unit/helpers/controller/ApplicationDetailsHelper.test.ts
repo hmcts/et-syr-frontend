@@ -1,8 +1,5 @@
 import { YesOrNo } from '../../../../main/definitions/case';
-import {
-  GenericTseApplicationType,
-  GenericTseApplicationTypeItem,
-} from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
+import { GenericTseApplicationType } from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant, Parties } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import { HubLinkStatus } from '../../../../main/definitions/hub';
@@ -29,19 +26,16 @@ describe('Application Details Helper', () => {
     const req = mockRequestWithTranslation({}, translations);
 
     it('should return a SummaryListRow array with some fields', () => {
-      const app: GenericTseApplicationTypeItem = {
-        id: '1',
-        value: {
-          applicant: Applicant.RESPONDENT,
-          date: '2022-05-05',
-          type: application.AMEND_RESPONSE.code,
-          copyToOtherPartyYesOrNo: YesOrNo.YES,
-          details: 'Test application details text',
-          number: '1',
-          status: HubLinkStatus.NOT_VIEWED,
-          dueDate: '2022-05-12',
-          applicationState: HubLinkStatus.NOT_VIEWED,
-        },
+      const app: GenericTseApplicationType = {
+        applicant: Applicant.RESPONDENT,
+        date: '2022-05-05',
+        type: application.AMEND_RESPONSE.code,
+        copyToOtherPartyYesOrNo: YesOrNo.YES,
+        details: 'Test application details text',
+        number: '1',
+        status: HubLinkStatus.NOT_VIEWED,
+        dueDate: '2022-05-12',
+        applicationState: HubLinkStatus.NOT_VIEWED,
       };
       const result = getApplicationContent(app, req);
       expect(result).toHaveLength(5);
@@ -60,26 +54,23 @@ describe('Application Details Helper', () => {
     });
 
     it('should return a SummaryListRow array with some missing fields', () => {
-      const app: GenericTseApplicationTypeItem = {
-        id: '1',
-        value: {
-          applicant: Applicant.RESPONDENT,
-          date: '2022-05-05',
-          type: Applicant.RESPONDENT,
-          copyToOtherPartyYesOrNo: YesOrNo.NO,
-          copyToOtherPartyText: 'No details',
-          number: '1',
-          status: HubLinkStatus.NOT_VIEWED,
-          dueDate: '2022-05-12',
-          applicationState: HubLinkStatus.NOT_VIEWED,
-          documentUpload: {
-            document_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa',
-            document_filename: 'test-file.pdf',
-            document_binary_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa/binary',
-            createdOn: 'Test date',
-            document_size: 5,
-            document_mime_type: 'pdf',
-          },
+      const app: GenericTseApplicationType = {
+        applicant: Applicant.RESPONDENT,
+        date: '2022-05-05',
+        type: Applicant.RESPONDENT,
+        copyToOtherPartyYesOrNo: YesOrNo.NO,
+        copyToOtherPartyText: 'No details',
+        number: '1',
+        status: HubLinkStatus.NOT_VIEWED,
+        dueDate: '2022-05-12',
+        applicationState: HubLinkStatus.NOT_VIEWED,
+        documentUpload: {
+          document_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa',
+          document_filename: 'test-file.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa/binary',
+          createdOn: 'Test date',
+          document_size: 5,
+          document_mime_type: 'pdf',
         },
       };
       const result = getApplicationContent(app, req);
@@ -106,7 +97,7 @@ describe('Application Details Helper', () => {
     req.session.user.id = '4d148fe6-3fc9-408f-9d6a-7e93fa5533d4';
 
     it('should return Claimant application responses', () => {
-      const result = getAllResponses(mockGenericTseCollection[0], req);
+      const result = getAllResponses(mockGenericTseCollection[0].value, req);
       expect(result).toHaveLength(3);
 
       expect(result[0]).toHaveLength(12);
@@ -171,49 +162,47 @@ describe('Application Details Helper', () => {
     });
 
     it('should return all responses before Admin share', () => {
-      const app: GenericTseApplicationTypeItem = {
-        value: {
-          respondCollection: [
-            {
-              value: {
-                from: Applicant.RESPONDENT,
-                date: '2025-02-14',
-                fromIdamId: '4d148fe6-3fc9-408f-9d6a-7e93fa5533d4',
-                copyToOtherParty: YesOrNo.NO,
-              },
+      const app: GenericTseApplicationType = {
+        respondCollection: [
+          {
+            value: {
+              from: Applicant.RESPONDENT,
+              date: '2025-02-14',
+              fromIdamId: '4d148fe6-3fc9-408f-9d6a-7e93fa5533d4',
+              copyToOtherParty: YesOrNo.NO,
             },
-            {
-              value: {
-                from: Applicant.RESPONDENT,
-                date: '2025-02-15',
-                fromIdamId: '05e628f7-2182-4fc6-a57d-21425c358f7e',
-                copyToOtherParty: YesOrNo.YES,
-              },
+          },
+          {
+            value: {
+              from: Applicant.RESPONDENT,
+              date: '2025-02-15',
+              fromIdamId: '05e628f7-2182-4fc6-a57d-21425c358f7e',
+              copyToOtherParty: YesOrNo.YES,
             },
-            {
-              value: {
-                from: Applicant.CLAIMANT,
-                date: '2025-02-16',
-                copyToOtherParty: YesOrNo.NO,
-              },
+          },
+          {
+            value: {
+              from: Applicant.CLAIMANT,
+              date: '2025-02-16',
+              copyToOtherParty: YesOrNo.NO,
             },
-            {
-              value: {
-                from: Applicant.ADMIN,
-                date: '2025-02-17',
-                isCmoOrRequest: 'Case management order',
-                selectPartyNotify: Parties.BOTH_PARTIES,
-              },
+          },
+          {
+            value: {
+              from: Applicant.ADMIN,
+              date: '2025-02-17',
+              isCmoOrRequest: 'Case management order',
+              selectPartyNotify: Parties.BOTH_PARTIES,
             },
-            {
-              value: {
-                from: Applicant.CLAIMANT,
-                date: '2025-02-18',
-                copyToOtherParty: YesOrNo.NO,
-              },
+          },
+          {
+            value: {
+              from: Applicant.CLAIMANT,
+              date: '2025-02-18',
+              copyToOtherParty: YesOrNo.NO,
             },
-          ],
-        },
+          },
+        ],
       };
       const result = getAllResponses(app, req);
       expect(result).toHaveLength(4);
@@ -253,11 +242,22 @@ describe('Application Details Helper', () => {
       expect(result[3][3].value.text).toEqual('Both parties');
     });
 
+    it('should return empty array if application undefined', () => {
+      const result = getAllResponses(undefined, req);
+      expect(result).toEqual([]);
+    });
+
+    it('should return empty array if respondCollection undefined', () => {
+      const app: GenericTseApplicationType = {
+        respondCollection: undefined,
+      };
+      const result = getAllResponses(app, req);
+      expect(result).toEqual([]);
+    });
+
     it('should return empty array if no respondCollection exists', () => {
-      const app: GenericTseApplicationTypeItem = {
-        value: {
-          respondCollection: [],
-        },
+      const app: GenericTseApplicationType = {
+        respondCollection: [],
       };
       const result = getAllResponses(app, req);
       expect(result).toEqual([]);
@@ -273,46 +273,41 @@ describe('Application Details Helper', () => {
     const req = mockRequestWithTranslation({}, translations);
 
     it('should return a SummaryListRow array with decision details', () => {
-      const app: GenericTseApplicationTypeItem = {
-        id: '1',
-        value: {
-          adminDecision: [
-            {
-              value: {
-                enterNotificationTitle: 'Decision Notification',
-                decision: 'Granted',
-                date: '2022-05-10',
-                typeOfDecision: 'Judgment',
-                additionalInformation: 'Additional details',
-                responseRequiredDoc: [
-                  {
-                    value: {
-                      uploadedDocument: {
-                        document_filename: 'test-doc-1.pdf',
-                        document_binary_url:
-                          'http://dm-store:8080/documents/3aa7dfc1-378b-4fa8-9a17-89126fae5673/binary',
-                        document_url: 'http://dm-store:8080/documents/3aa7dfc1-378b-4fa8-9a17-89126fae5673',
-                      },
+      const app: GenericTseApplicationType = {
+        adminDecision: [
+          {
+            value: {
+              enterNotificationTitle: 'Decision Notification',
+              decision: 'Granted',
+              date: '2022-05-10',
+              typeOfDecision: 'Judgment',
+              additionalInformation: 'Additional details',
+              responseRequiredDoc: [
+                {
+                  value: {
+                    uploadedDocument: {
+                      document_filename: 'test-doc-1.pdf',
+                      document_binary_url: 'http://dm-store:8080/documents/3aa7dfc1-378b-4fa8-9a17-89126fae5673/binary',
+                      document_url: 'http://dm-store:8080/documents/3aa7dfc1-378b-4fa8-9a17-89126fae5673',
                     },
                   },
-                  {
-                    value: {
-                      uploadedDocument: {
-                        document_filename: 'test-doc-2.pdf',
-                        document_binary_url:
-                          'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa/binary',
-                        document_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa',
-                      },
+                },
+                {
+                  value: {
+                    uploadedDocument: {
+                      document_filename: 'test-doc-2.pdf',
+                      document_binary_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa/binary',
+                      document_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa',
                     },
                   },
-                ],
-                decisionMadeBy: 'Judge',
-                decisionMadeByFullName: 'Tribunal Admin',
-                selectPartyNotify: Parties.BOTH_PARTIES,
-              },
+                },
+              ],
+              decisionMadeBy: 'Judge',
+              decisionMadeByFullName: 'Tribunal Admin',
+              selectPartyNotify: Parties.BOTH_PARTIES,
             },
-          ],
-        },
+          },
+        ],
       };
 
       const results = getDecisionContent(app, req);
@@ -353,11 +348,13 @@ describe('Application Details Helper', () => {
       expect(result[9].value.text).toEqual('Both parties');
     });
 
-    it('should return an empty array if adminDecision is not present', () => {
-      const app: GenericTseApplicationTypeItem = {
-        id: '2',
-        value: {},
-      };
+    it('should return an empty array if application is undefined', () => {
+      const result = getDecisionContent(undefined, req);
+      expect(result).toHaveLength(0);
+    });
+
+    it('should return an empty array if application is empty', () => {
+      const app: GenericTseApplicationType = {};
       const result = getDecisionContent(app, req);
       expect(result).toHaveLength(0);
     });
