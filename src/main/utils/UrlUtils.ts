@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, RespondentET3Model } from '../definitions/case';
-import { DefaultValues, PageUrls } from '../definitions/constants';
+import { DefaultValues, PageUrls, ValidUrls } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 
 import CollectionUtils from './CollectionUtils';
@@ -144,5 +144,49 @@ export default class UrlUtils {
       selectedRespondent.ccdId +
       getLanguageParam(req.url)
     );
+  }
+
+  /**
+   * Checks if the given url value is not blank and has valid url value after url prefix and before url parameters
+   * If so returns new generated string url value. This method is implemented for hindering phishing attacks and
+   * removing fortify issues
+   * @param url value to be checked.
+   * @param validUrls optional parametric urls to compare
+   * @return new generated url value.
+   */
+  public static getValidUrl(url: string, validUrls?: string[]): string {
+    if (StringUtils.isBlank(url) || url.startsWith(DefaultValues.STRING_HASH)) {
+      return DefaultValues.STRING_HASH;
+    }
+    validUrls = validUrls ?? Object.values(ValidUrls);
+    const pageUrl = this.findPageUrl(url);
+    for (const tmpValidUrl of validUrls) {
+      if (
+        pageUrl === tmpValidUrl &&
+        tmpValidUrl !== DefaultValues.STRING_HASH &&
+        tmpValidUrl !== DefaultValues.STRING_SLASH
+      ) {
+        const urlParams: string = url.includes(DefaultValues.STRING_QUESTION_MARK)
+          ? url.substring(url.indexOf(DefaultValues.STRING_QUESTION_MARK))
+          : DefaultValues.STRING_EMPTY;
+        return tmpValidUrl + urlParams;
+      }
+    }
+    return DefaultValues.STRING_HASH;
+  }
+
+  public static findPageUrl(url: string): string {
+    if (StringUtils.isBlank(url)) {
+      return DefaultValues.STRING_EMPTY;
+    }
+    const lastIndexOfSlash: number = url.lastIndexOf(DefaultValues.STRING_SLASH);
+    if (lastIndexOfSlash === -1) {
+      return DefaultValues.STRING_EMPTY;
+    }
+    const indexOfQuestionMark: number = url.indexOf(DefaultValues.STRING_QUESTION_MARK);
+    if (indexOfQuestionMark === -1) {
+      return url.substring(lastIndexOfSlash);
+    }
+    return url.substring(url.lastIndexOf(DefaultValues.STRING_SLASH), url.indexOf(DefaultValues.STRING_QUESTION_MARK));
   }
 }
