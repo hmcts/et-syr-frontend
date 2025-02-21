@@ -8,9 +8,14 @@
 {% endblock %}
 
 {% block content %}
+  {% block errorSummary %}
+    {% include "./form/main/error-summary.njk" %}
+  {% endblock %}
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-      <h1 class="govuk-heading-xl">{{ applicationTo }} {{ applicationType }}</h1>
+      <span class="govuk-caption-l">{{ caption }}</span>
+      <h1 class="govuk-heading-xl">{{ h1 }}</h1>
 
       {{ govukSummaryList({
         rows: appContent
@@ -30,13 +35,9 @@
         }) }}
       {% endfor %}
 
-      {% if isRespondButton %}
-        <p class="govuk-body">{{ mustRespond }}</p>
-        {{ govukButton({
-          text: respondButton,
-          href: respondRedirectUrl
-        }) }}
-      {% endif %}
+      {% block form %}
+        {% include "form/form.njk"%}
+      {% endblock %}
     </div>
 
     <div class="govuk-grid-column-one-third-from-desktop">
