@@ -15,6 +15,7 @@ export interface GenericTseApplicationTypeItem {
 
 export interface GenericTseApplicationType {
   applicant?: string;
+  applicantIdamId?: string;
   date?: string;
   type?: string;
   copyToOtherPartyText?: string;
@@ -65,10 +66,12 @@ export interface TseRespondType {
   date?: string;
   status?: string;
   // Respondent / Claimant Reply
+  fromIdamId?: string;
   response?: string;
   copyToOtherParty?: string;
   hasSupportingMaterial?: YesOrNo;
   supportingMaterial?: TseRespondSupportingMaterialItem[];
+  copyNoGiveDetails?: string;
   // Admin Reply
   addDocument?: DocumentTypeItem[];
   additionalInformation?: string;

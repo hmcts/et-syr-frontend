@@ -84,7 +84,14 @@ export const TranslationKeys = {
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: 'contact-tribunal-submit-complete',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
+  CLAIMANTS_APPLICATIONS: 'claimants-applications',
+  OTHER_RESPONDENTS_APPLICATIONS: 'other-respondents-applications',
   APPLICATION_DETAILS: 'application-details',
+  RESPOND_TO_APPLICATION: 'respond-to-application',
+  RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: 'respond-to-application-supporting-material',
+  RESPOND_TO_APPLICATION_CYA: 'respond-to-application-check-your-answers',
+  RESPOND_TO_APPLICATION_COMPLETE: 'respond-to-application-complete',
+  RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: 'respond-to-application-copy-to-other-party',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
 } as const;
@@ -159,7 +166,14 @@ export const PageUrls = {
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
+  CLAIMANTS_APPLICATIONS: '/claimants-applications',
+  OTHER_RESPONDENTS_APPLICATIONS: '/other-respondents-applications',
   APPLICATION_DETAILS: '/application-details/:appId',
+  RESPOND_TO_APPLICATION: '/respond-to-application/:appId',
+  RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: '/respond-to-application-supporting-material',
+  RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: '/respond-to-application-copy-to-other-party',
+  RESPOND_TO_APPLICATION_CYA: '/respond-to-application-check-your-answers',
+  RESPOND_TO_APPLICATION_COMPLETE: '/respond-to-application-complete',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
 } as const;
@@ -179,6 +193,7 @@ export const InterceptPaths = {
   REMOVE_FILE: '/remove-uploaded-file',
   // Contact Tribunal
   CONTACT_TRIBUNAL_SUBMIT: '/submitContactTribunal',
+  RESPOND_TO_APPLICATION_SUBMIT: '/submitRespondToApplication',
 } as const;
 
 export const RedirectKeys = {
@@ -551,6 +566,9 @@ export const FormFieldNames = {
   },
   CONTACT_TRIBUNAL_SELECTED: {
     CONTACT_APPLICATION_FILE_NAME: 'contactApplicationFile',
+  },
+  RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: {
+    SUPPORTING_MATERIAL_FILE: 'supportingMaterialFile',
   },
 } as const;
 
