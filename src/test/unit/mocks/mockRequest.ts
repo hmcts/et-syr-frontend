@@ -95,6 +95,8 @@ export const mockRequestWithTranslation = (
       typeOfClaim: [],
       claimantSex: Sex.FEMALE,
       hearingPreferences: [HearingPreference.NEITHER],
+      copyToOtherPartyYesOrNo: YesOrNo.NO,
+      ruleCopystate: undefined,
       ...userCase,
     } as CaseWithId,
     submittedCase: {
