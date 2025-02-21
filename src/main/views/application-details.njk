@@ -24,7 +24,7 @@
       {% endfor %}
 
       {% for decisionContent in decisionContent %}
-        <h2 class="govuk-heading-m">{{ decision }}</h2>
+        <h2 class="govuk-heading-m">{{ decisionItem }} {{ loop.index }}</h2>
         {{ govukSummaryList({
           rows: decisionContent
         }) }}

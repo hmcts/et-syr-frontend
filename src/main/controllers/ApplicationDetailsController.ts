@@ -28,10 +28,10 @@ export default class ApplicationDetailsController {
       applicationType: getApplicationDisplayByCode(selectedApplication.value.type, {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
       }),
-      appContent: getApplicationContent(selectedApplication, req),
-      allResponses: getAllResponses(selectedApplication, req),
-      decisionContent: getDecisionContent(selectedApplication, req),
-      isRespondButton: isResponseToTribunalRequired(selectedApplication),
+      appContent: getApplicationContent(selectedApplication.value, req),
+      allResponses: getAllResponses(selectedApplication.value, req),
+      decisionContent: getDecisionContent(selectedApplication.value, req),
+      isRespondButton: isResponseToTribunalRequired(selectedApplication.value, req.session.user),
       respondRedirectUrl:
         PageUrls.RESPOND_TO_APPLICATION.replace(':appId', selectedApplication.id) + getLanguageParam(req.url),
     });

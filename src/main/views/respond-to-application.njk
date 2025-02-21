@@ -28,6 +28,13 @@
         }) }}
       {% endfor %}
 
+      {% for decisionContent in decisionContent %}
+        <h2 class="govuk-heading-m">{{ decisionItem }} {{ loop.index }}</h2>
+        {{ govukSummaryList({
+          rows: decisionContent
+        }) }}
+      {% endfor %}
+
       {% block form %}
         {% include "form/form.njk"%}
       {% endblock %}

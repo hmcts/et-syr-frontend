@@ -3,6 +3,7 @@
   "caption": "Respond to the tribunal",
   "h1": "Your response",
   "responseItem": "Response",
+  "decisionItem": "Decision",
   "responseText": {
     "label": "What's your response to the tribunal?",
     "hint": "Use this box to respond or you can upload material at the next step."

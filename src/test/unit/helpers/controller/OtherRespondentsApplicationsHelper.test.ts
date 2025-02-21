@@ -98,6 +98,19 @@ describe('Other Respondents Applications Helper', () => {
       expect(result).toHaveLength(1);
     });
 
+    it('should include applications when applicantIdamId is missing', () => {
+      req.session.userCase.genericTseApplicationCollection = [
+        {
+          value: {
+            applicant: Applicant.RESPONDENT,
+            copyToOtherPartyYesOrNo: YesOrNo.YES,
+          },
+        },
+      ];
+      const result = getOtherRespondentsApplications(req);
+      expect(result).toHaveLength(1);
+    });
+
     it('should include applications if admin response is shared with respondent', () => {
       req.session.userCase.genericTseApplicationCollection = [
         {

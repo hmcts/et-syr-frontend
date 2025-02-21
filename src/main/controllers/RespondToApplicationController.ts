@@ -10,7 +10,12 @@ import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getAllResponses, getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
+import {
+  getAllResponses,
+  getApplicationContent,
+  getDecisionContent,
+  isResponseToTribunalRequired,
+} from '../helpers/controller/ApplicationDetailsHelper';
 import { getFormDataError } from '../helpers/controller/RespondToApplicationHelper';
 import UrlUtils from '../utils/UrlUtils';
 import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
@@ -61,10 +66,6 @@ export default class RespondToApplicationController {
     }
 
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    req.session.userCase.selectedGenericTseApplication = selectedApplication;
-    req.session.userCase.responseText = formData.responseText;
-    req.session.userCase.hasSupportingMaterial = formData.hasSupportingMaterial;
-
     req.session.errors = [];
     const error = getFormDataError(formData);
     if (error) {
@@ -73,6 +74,10 @@ export default class RespondToApplicationController {
         PageUrls.RESPOND_TO_APPLICATION.replace(':appId', selectedApplication.id) + getLanguageParam(req.url)
       );
     }
+
+    req.session.userCase.selectedGenericTseApplication = selectedApplication;
+    req.session.userCase.responseText = formData.responseText;
+    req.session.userCase.hasSupportingMaterial = formData.hasSupportingMaterial;
 
     const redirectUrl =
       formData.hasSupportingMaterial === YesOrNo.YES
@@ -87,6 +92,10 @@ export default class RespondToApplicationController {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
+    if (!isResponseToTribunalRequired(selectedApplication.value, req.session.user)) {
+      return res.redirect(ErrorPages.NOT_FOUND);
+    }
+
     assignFormData(req.session.userCase, this.form.getFormFields());
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
@@ -96,8 +105,9 @@ export default class RespondToApplicationController {
     res.render(TranslationKeys.RESPOND_TO_APPLICATION, {
       ...content,
       hideContactUs: true,
-      appContent: getApplicationContent(selectedApplication, req),
-      allResponses: getAllResponses(selectedApplication, req),
+      appContent: getApplicationContent(selectedApplication.value, req),
+      allResponses: getAllResponses(selectedApplication.value, req),
+      decisionContent: getDecisionContent(selectedApplication.value, req),
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
     });
   };

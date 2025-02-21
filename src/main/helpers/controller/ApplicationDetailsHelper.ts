@@ -1,7 +1,7 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
 import { YesOrNo } from '../../definitions/case';
 import {
-  GenericTseApplicationTypeItem,
+  GenericTseApplicationType,
   TseAdminDecision,
   TseRespondType,
   TseRespondTypeItem,
@@ -22,36 +22,35 @@ import { isAdminResponseShareToRespondent, isDecisionShareToRespondent } from '.
  * @param app selected application
  * @param req request
  */
-export const getApplicationContent = (app: GenericTseApplicationTypeItem, req: AppRequest): SummaryListRow[] => {
+export const getApplicationContent = (app: GenericTseApplicationType, req: AppRequest): SummaryListRow[] => {
   const translations: AnyRecord = {
     ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
     ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
     ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
   };
-  const application = app.value;
-  const applicationDate = datesStringToDateInLocale(application.date, req.url);
+  const applicationDate = datesStringToDateInLocale(app.date, req.url);
 
   const rows: SummaryListRow[] = [];
 
   rows.push(
-    addSummaryRow(translations.applicant, translations[application.applicant]),
+    addSummaryRow(translations.applicant, translations[app.applicant]),
     addSummaryRow(translations.requestDate, applicationDate),
-    addSummaryRow(translations.applicationType, getApplicationDisplayByCode(application.type, translations))
+    addSummaryRow(translations.applicationType, getApplicationDisplayByCode(app.type, translations))
   );
 
-  if (application.details) {
-    rows.push(addSummaryRow(translations.legend, application.details));
+  if (app.details) {
+    rows.push(addSummaryRow(translations.legend, app.details));
   }
 
-  if (application.documentUpload) {
-    const link = getLinkFromDocument(application.documentUpload);
+  if (app.documentUpload) {
+    const link = getLinkFromDocument(app.documentUpload);
     rows.push(addSummaryHtmlRow(translations.supportingMaterial, link));
   }
 
-  rows.push(addSummaryRow(translations.copyCorrespondence, translations[application.copyToOtherPartyYesOrNo]));
+  rows.push(addSummaryRow(translations.copyCorrespondence, translations[app.copyToOtherPartyYesOrNo]));
 
-  if (application.copyToOtherPartyText) {
-    rows.push(addSummaryRow(translations.copyToOtherPartyText, application.copyToOtherPartyText));
+  if (app.copyToOtherPartyText) {
+    rows.push(addSummaryRow(translations.copyToOtherPartyText, app.copyToOtherPartyText));
   }
 
   return rows;
@@ -62,21 +61,20 @@ export const getApplicationContent = (app: GenericTseApplicationTypeItem, req: A
  * @param app selected GenericTseApplicationTypeItem
  * @param req request
  */
-export const getAllResponses = (app: GenericTseApplicationTypeItem, req: AppRequest): SummaryListRow[][] => {
-  const allResponses: SummaryListRow[][] = [];
-
-  const respondCollection = app.value.respondCollection;
-  if (!respondCollection?.length) {
-    return allResponses;
+export const getAllResponses = (app: GenericTseApplicationType, req: AppRequest): SummaryListRow[][] => {
+  if (!app || ObjectUtils.isEmpty(app.respondCollection)) {
+    return [];
   }
+
+  const allResponses: SummaryListRow[][] = [];
 
   const translations: AnyRecord = {
     ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
     ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
   };
 
-  const lastAdminShareDate = getLastAdminShareDate(respondCollection);
-  for (const r of respondCollection) {
+  const lastAdminShareDate = getLastAdminShareDate(app.respondCollection);
+  for (const r of app.respondCollection) {
     if (
       (r.value.from === Applicant.RESPONDENT || r.value.from === Applicant.CLAIMANT) &&
       isOtherPartyResponseShare(r.value, req.session.user, lastAdminShareDate)
@@ -91,17 +89,14 @@ export const getAllResponses = (app: GenericTseApplicationTypeItem, req: AppRequ
 };
 
 const getLastAdminShareDate = (responses: TseRespondTypeItem[]): Date => {
-  return (
-    responses
-      .filter(
-        item =>
-          item.value?.from === Applicant.ADMIN &&
-          (item.value?.selectPartyNotify === Parties.BOTH_PARTIES ||
-            item.value?.selectPartyNotify === Parties.RESPONDENT_ONLY) &&
-          item.value?.date
-      )
-      .map(item => new Date(item.value!.date!))
-      .sort((a, b) => b.getDate() - a.getDate())[0] || null
+  return getLatestDateFromResponses(
+    responses.filter(
+      item =>
+        item.value?.from === Applicant.ADMIN &&
+        (item.value?.selectPartyNotify === Parties.BOTH_PARTIES ||
+          item.value?.selectPartyNotify === Parties.RESPONDENT_ONLY) &&
+        item.value?.date
+    )
   );
 };
 
@@ -191,8 +186,12 @@ const addAdminResponse = (response: TseRespondType, translations: AnyRecord, req
  * @param app selected application
  * @param req request
  */
-export const getDecisionContent = (app: GenericTseApplicationTypeItem, req: AppRequest): SummaryListRow[][] => {
-  const selectedAppAdminDecision = app.value?.adminDecision?.filter(d => isDecisionShareToRespondent(d.value));
+export const getDecisionContent = (app: GenericTseApplicationType, req: AppRequest): SummaryListRow[][] => {
+  if (!app) {
+    return [];
+  }
+
+  const selectedAppAdminDecision = app.adminDecision?.filter(d => isDecisionShareToRespondent(d.value));
   if (ObjectUtils.isEmpty(selectedAppAdminDecision)) {
     return [];
   }
@@ -242,7 +241,44 @@ const getTseApplicationDecisionDetails = (
 /**
  * Boolean if respond to Application is required.
  * @param app selected application
+ * @param user user in request
  */
-export const isResponseToTribunalRequired = (app: GenericTseApplicationTypeItem): boolean => {
-  return app.value.respondentResponseRequired === YesOrNo.YES;
+export const isResponseToTribunalRequired = (app: GenericTseApplicationType, user: UserDetails): boolean => {
+  if (!app || ObjectUtils.isEmpty(app.respondCollection) || !user) {
+    return false;
+  }
+
+  const lastAdminRequireDate = getLatestDateFromResponses(
+    app.respondCollection.filter(
+      response =>
+        response.value.from === Applicant.ADMIN &&
+        (response.value.selectPartyRespond === Parties.BOTH_PARTIES ||
+          response.value.selectPartyRespond === Parties.RESPONDENT_ONLY)
+    )
+  );
+
+  if (!lastAdminRequireDate) {
+    return false;
+  }
+
+  const lastUserRespondDate = getLatestDateFromResponses(
+    app.respondCollection.filter(
+      response =>
+        response.value.from === Applicant.RESPONDENT &&
+        response.value.fromIdamId &&
+        response.value.fromIdamId === user.id
+    )
+  );
+
+  if (!lastUserRespondDate) {
+    return true;
+  }
+
+  return lastAdminRequireDate > lastUserRespondDate;
+};
+
+const getLatestDateFromResponses = (responses: TseRespondTypeItem[]): Date => {
+  return (
+    responses.map(response => new Date(response.value.date!)).sort((a, b) => b.getTime() - a.getTime())[0] || undefined
+  );
 };
