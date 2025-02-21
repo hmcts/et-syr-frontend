@@ -11,7 +11,7 @@ import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definiti
 import { AnyRecord } from '../../definitions/util-types';
 import CollectionUtils from '../../utils/CollectionUtils';
 import ObjectUtils from '../../utils/ObjectUtils';
-import { getApplicationDisplayByCode } from '../ApplicationHelper';
+import { getApplicationDisplay } from '../ApplicationHelper';
 import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../DocumentHelpers';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
@@ -35,7 +35,7 @@ export const getApplicationContent = (app: GenericTseApplicationType, req: AppRe
   rows.push(
     addSummaryRow(translations.applicant, translations[app.applicant]),
     addSummaryRow(translations.requestDate, applicationDate),
-    addSummaryRow(translations.applicationType, getApplicationDisplayByCode(app.type, translations))
+    addSummaryRow(translations.applicationType, getApplicationDisplay(app, translations))
   );
 
   if (app.details) {

@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants';
-import { getApplicationDisplayByCode } from '../helpers/ApplicationHelper';
+import { getApplicationDisplay } from '../helpers/ApplicationHelper';
 import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import {
@@ -25,7 +25,7 @@ export default class ApplicationDetailsController {
       ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
-      applicationType: getApplicationDisplayByCode(selectedApplication.value.type, {
+      applicationType: getApplicationDisplay(selectedApplication.value, {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
       }),
       appContent: getApplicationContent(selectedApplication.value, req),
