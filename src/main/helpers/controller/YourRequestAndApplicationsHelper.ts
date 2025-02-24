@@ -19,18 +19,23 @@ export const updateAppsDisplayInfo = (
   if (ObjectUtils.isEmpty(apps)) {
     return [];
   }
-  const url = req.url;
   const translations: AnyRecord = {
     ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
     ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
   };
   apps.forEach(app => {
-    app.linkValue = getApplicationDisplay(app.value, translations);
-    app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
-    app.statusColor = linkStatusColorMap.get(<LinkStatus>app.value.applicationState);
-    app.displayStatus = translations[app.value.applicationState];
+    updateAppDisplayInfo(app, translations, req.url);
   });
   return apps;
+};
+
+const updateAppDisplayInfo = (app: GenericTseApplicationTypeItem, translations: AnyRecord, url: string): void => {
+  // TODO: replace claimant's applicationState to user's application state
+  const appState: LinkStatus = <LinkStatus>app.value.applicationState;
+  app.linkValue = getApplicationDisplay(app.value, translations);
+  app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
+  app.statusColor = linkStatusColorMap.get(appState);
+  app.displayStatus = translations[appState];
 };
 
 /**
