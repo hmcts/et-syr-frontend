@@ -2,7 +2,7 @@
 import { AxiosResponse } from 'axios';
 
 import { CaseWithId, Document } from '../definitions/case';
-import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
+import { ApiDocumentTypeItem, DocumentType, DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
 import { DOCUMENT_CONTENT_TYPES, DefaultValues, PageUrls } from '../definitions/constants';
 import { DocumentDetail } from '../definitions/definition';
 import DocumentUtils from '../utils/DocumentUtils';
@@ -117,4 +117,31 @@ export const getSupportingMaterialLink = (doc: Document): string => {
         documentName +
         '</a><br>'
     : undefined;
+};
+
+/**
+ * Get document from DocumentTypeItem[]
+ * @param docs DocumentTypeItem[]
+ */
+export const getDocumentFromDocumentTypeItems = (docs: DocumentTypeItem[]): DocumentType => {
+  return docs.find(element => element)?.value;
+};
+
+/**
+ * Get link from Document
+ * @param doc Document type
+ * */
+export const getLinkFromDocument = (doc: Document): string => {
+  if (!doc) {
+    return '';
+  }
+  const documentId = DocumentUtils.findDocumentIdByURL(doc.document_url);
+  const documentName = doc.document_filename;
+  return (
+    '<a href="' +
+    PageUrls.GET_CASE_DOCUMENT.replace(':docId', documentId) +
+    '" target="_blank">' +
+    documentName +
+    '</a><br>'
+  );
 };
