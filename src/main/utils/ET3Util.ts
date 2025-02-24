@@ -191,11 +191,11 @@ export default class ET3Util {
   ): Promise<void> {
     const formData = form.getParsedBody<CaseWithId>(req.body, form.getFormFields());
     req.session.errors = form.getValidatorErrors(formData);
+    setUserCase(req, formData, fieldsToReset);
     if (req.session.errors.length > 0) {
       logger.error(LoggerConstants.ERROR_FORM_INVALID_DATA + ' Form: ' + form);
       return res.redirect(returnValidUrl(req.url));
     }
-    setUserCase(req, formData, fieldsToReset);
     const userCase: CaseWithId = await ET3Util.updateET3Data(req, et3HubLinkName, et3HubLinkStatus);
     if (req.session.errors?.length > 0) {
       logger.error(LoggerConstants.ERROR_API);

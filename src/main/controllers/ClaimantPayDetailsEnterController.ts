@@ -6,23 +6,19 @@ import { CaseWithId, PayFrequency } from '../definitions/case';
 import { DefaultValues, FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
-import { saveForLaterButton, saveAndContinueButton } from '../definitions/radios';
+import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { isClearSelection, returnValidUrl } from '../helpers/RouterHelpers';
-import { getLogger } from '../logger';
-import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
 import ET3Util from '../utils/ET3Util';
 import ErrorUtils from '../utils/ErrorUtils';
 import NumberUtils from '../utils/NumberUtils';
 import ObjectUtils from '../utils/ObjectUtils';
+import RequestUtils from '../utils/RequestUtils';
 import StringUtils from '../utils/StringUtils';
 import { isValidCurrency } from '../validators/validator';
-
-const logger = getLogger('ClaimantPayDetailsEnterController');
 
 export default class ClaimantPayDetailsEnterController {
   private readonly form: Form;
@@ -118,18 +114,7 @@ export default class ClaimantPayDetailsEnterController {
   };
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
-    let userCase = undefined;
-    try {
-      userCase = formatApiCaseDataToCaseWithId(
-        (await getCaseApi(req.session.user?.accessToken).getUserCase(req?.session?.userCase?.id)).data,
-        req
-      );
-    } catch (error) {
-      logger.error('Unable to retrieve user info from get user api. Error is: ' + error.message);
-    }
-    if (ObjectUtils.isNotEmpty(userCase)) {
-      req.session.userCase = userCase;
-    }
+    await RequestUtils.setRequestUserCase(req);
     if (isClearSelection(req)) {
       req.session.userCase.et3ResponsePayFrequency = undefined;
     }
