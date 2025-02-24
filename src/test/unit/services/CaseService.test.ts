@@ -357,6 +357,7 @@ describe('Case Service Tests', () => {
       expect(document).toEqual(mockedET1FormDocument);
     });
   });
+
   describe('uploadFile', () => {
     test('Should upload file when file is valid', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -376,9 +377,64 @@ describe('Case Service Tests', () => {
       );
     });
   });
+
   describe('getCaseApi', () => {
     test('should create a CaseApi', () => {
       expect(getCaseApi(token)).toBeInstanceOf(CaseApi);
+    });
+  });
+
+  describe('Submit respondent tse', () => {
+    const request = mockRequest({
+      session: { userCase: mockUserCase, user: mockUserDetails },
+    });
+
+    it('should submit respondent tse application successfully', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.put.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse);
+      const value = await api.submitRespondentTse(request);
+      expect(value.data).toEqual(mockCaseApiDataResponse);
+    });
+
+    it('should throw exception when there is a problem while submitting respondent tse application', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.put.mockImplementation(() => {
+        throw mockAxiosError('TEST', ServiceErrors.ERROR_CASE_NOT_FOUND, 404);
+      });
+      await expect(() => api.submitRespondentTse(request)).rejects.toEqual(
+        new Error('Error submitting respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
+
+    it('should throw exception when application type is not found', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      request.session.userCase.contactApplicationType = 'InvalidType';
+      await expect(() => api.submitRespondentTse(request)).rejects.toEqual(
+        new Error('Error submitting respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
+
+    it('should throw exception when userCase is not found in session', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      const invalidRequest = mockRequest({
+        session: { user: mockUserDetails },
+      });
+      await expect(() => api.submitRespondentTse(invalidRequest)).rejects.toEqual(
+        new Error('Error submitting respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
+
+    it('should throw exception when contactApplicationType is not found in userCase', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      request.session.userCase.contactApplicationType = undefined;
+      await expect(() => api.submitRespondentTse(request)).rejects.toEqual(
+        new Error('Error submitting respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
     });
   });
 });

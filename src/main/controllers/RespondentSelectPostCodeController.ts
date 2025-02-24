@@ -14,7 +14,7 @@ import {
 } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
-import { saveForLaterButton, saveAndContinueButton } from '../definitions/radios';
+import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { convertJsonArrayToTitleCase } from '../helpers/CaseHelpers';
 import { assignAddresses, getPageContent } from '../helpers/FormHelper';
