@@ -4,7 +4,7 @@ import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constant
 import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import ObjectUtils from '../../utils/ObjectUtils';
-import { getApplicationDisplayByClaimantCode, getApplicationDisplayByCode } from '../ApplicationHelper';
+import { getApplicationDisplay } from '../ApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
@@ -19,24 +19,23 @@ export const updateAppsDisplayInfo = (
   if (ObjectUtils.isEmpty(apps)) {
     return [];
   }
-  const url = req.url;
   const translations: AnyRecord = {
     ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
     ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
   };
   apps.forEach(app => {
-    app.linkValue = getApplicationDisplay(app, translations);
-    app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
-    app.statusColor = linkStatusColorMap.get(<LinkStatus>app.value.applicationState);
-    app.displayStatus = translations[app.value.applicationState];
+    updateAppDisplayInfo(app, translations, req.url);
   });
   return apps;
 };
 
-const getApplicationDisplay = (app: GenericTseApplicationTypeItem, translations: AnyRecord): string => {
-  return app.value?.applicant === Applicant.RESPONDENT
-    ? getApplicationDisplayByCode(app.value.type, translations)
-    : getApplicationDisplayByClaimantCode(app.value.type, translations);
+const updateAppDisplayInfo = (app: GenericTseApplicationTypeItem, translations: AnyRecord, url: string): void => {
+  // TODO: replace claimant's applicationState to user's application state
+  const appState: LinkStatus = <LinkStatus>app.value.applicationState;
+  app.linkValue = getApplicationDisplay(app.value, translations);
+  app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
+  app.statusColor = linkStatusColorMap.get(appState);
+  app.displayStatus = translations[appState];
 };
 
 /**
