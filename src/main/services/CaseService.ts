@@ -8,7 +8,9 @@ import { UploadedFile } from '../definitions/api/uploadedFile';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
+import { application } from '../definitions/contact-tribunal-applications';
 import { toApiFormat } from '../helpers/ApiFormatter';
+import { getApplicationByCode } from '../helpers/ApplicationHelper';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ErrorUtils from '../utils/ErrorUtils';
 
@@ -200,6 +202,28 @@ export class CaseApi {
       });
     } catch (error) {
       throw new Error('Error uploading document: ' + axiosErrorDetails(error));
+    }
+  };
+
+  submitRespondentTse = async (req: AppRequest): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      const caseItem = req.session.userCase;
+      const appType = getApplicationByCode(caseItem.contactApplicationType);
+      return await this.axios.put(JavaApiUrls.SUBMIT_RESPONDENT_APPLICATION, {
+        case_id: caseItem.id,
+        case_type_id: caseItem.caseTypeId,
+        type_c: application.ORDER_WITNESS_ATTEND.code.includes(caseItem.contactApplicationType),
+        respondent_tse: {
+          contactApplicationType: caseItem.contactApplicationType,
+          contactApplicationClaimantType: appType ? appType.claimant : null,
+          contactApplicationText: caseItem.contactApplicationText,
+          contactApplicationFile: caseItem.contactApplicationFile,
+          copyToOtherPartyYesOrNo: caseItem.copyToOtherPartyYesOrNo,
+          copyToOtherPartyText: caseItem.copyToOtherPartyText,
+        },
+      });
+    } catch (error) {
+      throw new Error('Error submitting respondent tse application: ' + axiosErrorDetails(error));
     }
   };
 }
