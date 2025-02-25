@@ -1,0 +1,37 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% block beforeContent %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            {{ govukPanel({
+                titleText: titleText
+            }) }}
+
+            <h2 class="govuk-heading-m">{{ pHead }}</h2>
+            {% if ruleCopystate %}
+                <p class="govuk-body">{{ p1.yes }}</p>
+            {% else %}
+                <p class="govuk-body">{{ p1.no }}</p>
+            {% endif %}
+            <p class="govuk-body">{{ p2 }}</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <div class="govuk-width-container">
+        <div class="govuk-button-group">
+            {{ govukButton({
+                text: button,
+                href: redirectUrl
+            }) }}
+        </div>
+    </div>
+    {{ super() }}
+{% endblock %}
