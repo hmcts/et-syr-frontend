@@ -10,6 +10,7 @@ import { CaseWithId } from '../definitions/case';
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { application } from '../definitions/contact-tribunal-applications';
 import { toApiFormat } from '../helpers/ApiFormatter';
+import { getApplicationByCode } from '../helpers/ApplicationHelper';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ErrorUtils from '../utils/ErrorUtils';
 
@@ -207,8 +208,7 @@ export class CaseApi {
   submitRespondentTse = async (req: AppRequest): Promise<AxiosResponse<CaseApiDataResponse>> => {
     try {
       const caseItem = req.session.userCase;
-      const filteredApps = Object.values(application).filter(app => app.code === caseItem.contactApplicationType);
-      const appType = filteredApps.length > 0 ? filteredApps[0] : null;
+      const appType = getApplicationByCode(caseItem.contactApplicationType);
       return await this.axios.put(JavaApiUrls.SUBMIT_RESPONDENT_APPLICATION, {
         case_id: caseItem.id,
         case_type_id: caseItem.caseTypeId,
