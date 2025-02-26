@@ -280,6 +280,7 @@ export const JavaApiUrls = {
   MODIFY_ET3_DATA: '/et3/modifyEt3Data',
   FIND_CASE_BY_ETHOS_CASE_REFERENCE_PARAM_NAME: 'ethosCaseReference',
   SUBMIT_RESPONDENT_APPLICATION: 'respondentTSE/submit-respondent-application',
+  SUBMIT_RESPONDENT_RESPONSE_TO_APP: 'respondentTSE/respond-to-claimant-application',
 } as const;
 
 export const Roles = {
