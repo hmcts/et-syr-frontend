@@ -226,6 +226,26 @@ export class CaseApi {
       throw new Error('Error submitting respondent tse application: ' + axiosErrorDetails(error));
     }
   };
+
+  submitRespondentResponseToApplication = async (caseItem: CaseWithId): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      return await this.axios.put(JavaApiUrls.SUBMIT_RESPONDENT_RESPONSE_TO_APP, {
+        case_id: caseItem.id,
+        case_type_id: caseItem.caseTypeId,
+        applicationId: caseItem.selectedGenericTseApplication.id,
+        supportingMaterialFile: caseItem.supportingMaterialFile,
+        isRespondingToRequestOrOrder: caseItem.isRespondingToRequestOrOrder,
+        response: {
+          response: caseItem.responseText,
+          hasSupportingMaterial: caseItem.hasSupportingMaterial,
+          copyToOtherParty: caseItem.copyToOtherPartyYesOrNo,
+          copyNoGiveDetails: caseItem.copyToOtherPartyText,
+        },
+      });
+    } catch (error) {
+      throw new Error('Error responding to tse application: ' + axiosErrorDetails(error));
+    }
+  };
 }
 
 export const getCaseApi = (token: string): CaseApi => {
