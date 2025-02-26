@@ -15,6 +15,7 @@ import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helper
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
+import { addNewET3CaseDetailsLinkNames } from '../helpers/controller/CaseDetailsHelper';
 import { getAppNotificationFromAdmin } from '../helpers/notification/ApplicationNotificationHelper';
 import { currentET3StatusFn } from '../helpers/state-sequence';
 import { getCaseApi } from '../services/CaseService';
@@ -23,6 +24,7 @@ import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ET3Util from '../utils/ET3Util';
 
 const DAYS_FOR_PROCESSING = 7;
+
 export default class CaseDetailsController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const et1FormUrl = setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM);
@@ -45,7 +47,7 @@ export default class CaseDetailsController {
     }
     respondentResponseDeadline = ET3DataModelUtil.getRespondentResponseDeadline(req);
     const currentState = currentET3StatusFn(selectedRespondent);
-    const et3CaseDetailsLinksStatuses = selectedRespondent.et3CaseDetailsLinksStatuses;
+    const et3CaseDetailsLinksStatuses = addNewET3CaseDetailsLinkNames(selectedRespondent.et3CaseDetailsLinksStatuses);
     const languageParam = getLanguageParam(req.url);
     const sections = Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
       return {

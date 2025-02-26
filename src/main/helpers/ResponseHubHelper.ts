@@ -47,12 +47,16 @@ export const getET3CaseDetailsLinksUrlMap = (
   }
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.HearingDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
   caseDetailsLinksMap.set(
-    ET3CaseDetailsLinkNames.RespondentRequestsAndApplications,
-    PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]
+    ET3CaseDetailsLinkNames.YourRequestsAndApplications,
+    PageUrls.YOUR_REQUEST_AND_APPLICATIONS + baseUrls[languageParam]
   );
   caseDetailsLinksMap.set(
     ET3CaseDetailsLinkNames.ClaimantApplications,
-    PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]
+    PageUrls.CLAIMANTS_APPLICATIONS + baseUrls[languageParam]
+  );
+  caseDetailsLinksMap.set(
+    ET3CaseDetailsLinkNames.OtherRespondentApplications,
+    PageUrls.OTHER_RESPONDENTS_APPLICATIONS + baseUrls[languageParam]
   );
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.ContactTribunal, PageUrls.CONTACT_TRIBUNAL + baseUrls[languageParam]);
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.TribunalOrders, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
