@@ -4,6 +4,7 @@ import ContactTribunalSubmitController from '../../../main/controllers/ContactTr
 import { CaseApiDataResponse } from '../../../main/definitions/api/caseApiResponse';
 import { YesOrNo } from '../../../main/definitions/case';
 import { ErrorPages, PageUrls } from '../../../main/definitions/constants';
+import { ET3CaseDetailsLinksStatuses } from '../../../main/definitions/links';
 import { CaseApi, getCaseApi } from '../../../main/services/CaseService';
 import * as CaseService from '../../../main/services/CaseService';
 import { mockRequest } from '../mocks/mockRequest';
@@ -48,6 +49,7 @@ describe('Contact Tribunal Controller', () => {
     const res = mockResponse();
     const req = mockRequest({});
     req.session.userCase = mockUserCase;
+    req.session.userCase.et3CaseDetailsLinksStatuses = new ET3CaseDetailsLinksStatuses();
     req.url = PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE;
 
     await controller.get(req, res);
