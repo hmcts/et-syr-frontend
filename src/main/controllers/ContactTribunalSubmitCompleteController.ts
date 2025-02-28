@@ -11,7 +11,7 @@ export default class ContactTribunalSubmitCompleteController {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
       ...req.t(TranslationKeys.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, { returnObjects: true }),
       todayPlus7: returnTodayPlus7(req.url),
-      ruleCopystate: req.session?.userCase.ruleCopystate,
+      ruleCopyState: req.session?.userCase.ruleCopyState,
       redirectUrl: UrlUtils.getCaseDetailsUrlByRequest(req),
     });
   };

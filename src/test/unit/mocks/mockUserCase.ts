@@ -13,7 +13,7 @@ export default {
   claimantRepresentedQuestion: 'No',
   contactApplicationType: 'Change personal details',
   copyToOtherPartyYesOrNo: YesOrNo.YES,
-  ruleCopystate: undefined,
+  ruleCopyState: undefined,
   representativeClaimantType: {
     myHmctsOrganisation: {
       organisationID: undefined,
