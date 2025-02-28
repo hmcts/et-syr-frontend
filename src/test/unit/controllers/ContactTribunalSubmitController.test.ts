@@ -7,6 +7,8 @@ import { ErrorPages, PageUrls } from '../../../main/definitions/constants';
 import { ET3CaseDetailsLinksStatuses } from '../../../main/definitions/links';
 import { CaseApi, getCaseApi } from '../../../main/services/CaseService';
 import * as CaseService from '../../../main/services/CaseService';
+import ET3Util from '../../../main/utils/ET3Util';
+import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import mockUserCase from '../mocks/mockUserCase';
@@ -14,7 +16,7 @@ import mockUserCase from '../mocks/mockUserCase';
 jest.mock('config');
 const controller = new ContactTribunalSubmitController();
 
-describe('Contact Tribunal Controller', () => {
+describe('Contact Tribunal Submit Controller', () => {
   jest.mock('axios');
   const mockCaseApi = {
     axios: AxiosInstance,
@@ -43,6 +45,9 @@ describe('Contact Tribunal Controller', () => {
     } as AxiosResponse<CaseApiDataResponse>)
   );
 
+  const updateCaseDetailsLinkStatuses = jest.spyOn(ET3Util, 'updateCaseDetailsLinkStatuses');
+  updateCaseDetailsLinkStatuses.mockResolvedValueOnce(Promise.resolve(mockCaseWithIdWithRespondents));
+
   beforeEach(() => {});
 
   it('should redirect to CONTACT_TRIBUNAL_SUBMIT_COMPLETE with language param', async () => {
@@ -53,7 +58,7 @@ describe('Contact Tribunal Controller', () => {
     req.url = PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE;
 
     await controller.get(req, res);
-    expect(req.session.userCase.ruleCopystate).toBe(true);
+    expect(req.session.userCase.ruleCopyState).toBe(true);
     expect(req.session.userCase.copyToOtherPartyYesOrNo).toBe(undefined);
     expect(res.redirect).toHaveBeenCalledWith(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE + '?lng=en');
   });

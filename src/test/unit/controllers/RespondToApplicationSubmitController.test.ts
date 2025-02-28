@@ -51,7 +51,7 @@ describe('Respond To Application Submit Controller', () => {
     req.url = PageUrls.RESPOND_TO_APPLICATION_COMPLETE;
 
     await controller.get(req, res);
-    expect(req.session.userCase.ruleCopystate).toBe(true);
+    expect(req.session.userCase.ruleCopyState).toBe(true);
     expect(req.session.userCase.copyToOtherPartyYesOrNo).toBe(undefined);
     expect(res.redirect).toHaveBeenCalledWith(PageUrls.RESPOND_TO_APPLICATION_COMPLETE + '?lng=en');
   });
@@ -63,9 +63,11 @@ describe('Respond To Application Submit Controller', () => {
     req.url = PageUrls.RESPOND_TO_APPLICATION_COMPLETE;
     req.session.userCase.copyToOtherPartyYesOrNo = YesOrNo.YES;
     req.url = '/test-url';
-    jest.spyOn(getCaseApi(req.session.user?.accessToken), 'submitRespondentResponseToApplication').mockImplementation(() => {
-      throw new Error('Test error');
-    });
+    jest
+      .spyOn(getCaseApi(req.session.user?.accessToken), 'submitRespondentResponseToApplication')
+      .mockImplementation(() => {
+        throw new Error('Test error');
+      });
     await controller.get(req, res);
     expect(res.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
   });

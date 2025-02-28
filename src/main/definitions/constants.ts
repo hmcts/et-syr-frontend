@@ -275,7 +275,6 @@ export const JavaApiUrls = {
   INITIATE_CASE_DRAFT: 'cases/initiate-case',
   UPDATE_CASE_DRAFT: 'cases/update-case',
   SUBMIT_CASE: 'cases/submit-case',
-  UPDATE_CASE_SUBMITTED: 'cases/update-hub-links-statuses',
   ROLE_PARAM_NAME: 'case_user_role',
   MODIFY_ET3_DATA: '/et3/modifyEt3Data',
   FIND_CASE_BY_ETHOS_CASE_REFERENCE_PARAM_NAME: 'ethosCaseReference',

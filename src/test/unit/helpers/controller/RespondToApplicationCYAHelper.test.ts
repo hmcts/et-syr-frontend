@@ -28,11 +28,9 @@ describe('Respond to Application CYA Helper', () => {
       userCase.responseText = 'Strike out all or part of a claim';
       userCase.hasSupportingMaterial = YesOrNo.YES;
       userCase.supportingMaterialFile = {
-        document_binary_url: 'test-binary-url',
-        document_size: 1024,
-        document_mime_type: 'application/pdf',
-        document_filename: 'test-file.pdf',
-        document_url: 'test-url',
+        document_url: 'http://dm-store:8080/documents/6cd4768b-d9f8-4e39-b8e3-672f0047aa88',
+        document_filename: 'TEST.txt',
+        document_binary_url: 'http://dm-store:8080/documents/6cd4768b-d9f8-4e39-b8e3-672f0047aa88/binary',
       };
       userCase.copyToOtherPartyYesOrNo = YesOrNo.NO;
       userCase.copyToOtherPartyText = 'No Reason';
@@ -62,7 +60,7 @@ describe('Respond to Application CYA Helper', () => {
             text: translations.supportingMaterial,
           },
           value: {
-            html: 'link',
+            html: '<a href="/getSupportingMaterial/6cd4768b-d9f8-4e39-b8e3-672f0047aa88" target="_blank">TEST.txt</a><br>',
           },
           actions: {
             items: [

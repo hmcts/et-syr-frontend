@@ -7,6 +7,7 @@ import {
   addSummaryRowWithAction,
 } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
+import { getSupportingMaterialLink } from '../DocumentHelpers';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
@@ -30,12 +31,11 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
   );
 
   if (userCase.hasSupportingMaterial === YesOrNo.YES) {
-    // TODO: Create Download Link
-    const downloadLink = 'link';
+    const link = getSupportingMaterialLink(userCase.supportingMaterialFile);
     rows.push(
       addSummaryHtmlRowWithAction(
         translations.supportingMaterial,
-        downloadLink,
+        link,
         PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL + languageParam,
         translations.change,
         ''
