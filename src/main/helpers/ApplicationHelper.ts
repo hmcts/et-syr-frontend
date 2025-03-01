@@ -1,3 +1,5 @@
+import { GenericTseApplicationType } from '../definitions/complexTypes/genericTseApplicationTypeItem';
+import { Applicant } from '../definitions/constants';
 import { Application, ApplicationType, application } from '../definitions/contact-tribunal-applications';
 import { AnyRecord } from '../definitions/util-types';
 
@@ -51,4 +53,25 @@ export const getApplicationDisplayByUrl = (url: string, translations: AnyRecord)
 export const getApplicationDisplayByCode = (appCode: string, translations: AnyRecord): string => {
   const appKey = Object.keys(application).find(key => application[key].code === appCode);
   return appKey ? translations[appKey] : '';
+};
+
+/**
+ * Get Application Type as heading by application code
+ * @param appCode code of application
+ * @param translations translation of the page
+ */
+export const getApplicationDisplayByClaimantCode = (appCode: string, translations: AnyRecord): string => {
+  const appKey = Object.keys(application).find(key => application[key].claimant === appCode);
+  return appKey ? translations[appKey] : '';
+};
+
+/**
+ * Get application display with translation
+ * @param app application
+ * @param translations translation
+ */
+export const getApplicationDisplay = (app: GenericTseApplicationType, translations: AnyRecord): string => {
+  return app.applicant === Applicant.RESPONDENT
+    ? getApplicationDisplayByCode(app.type, translations)
+    : getApplicationDisplayByClaimantCode(app.type, translations);
 };
