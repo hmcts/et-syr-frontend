@@ -127,7 +127,9 @@ export const idamCallbackHandler = async (req: AppRequest, res: Response, servic
       return res.redirect(preLoginUrl);
     }
     logger.error(RedisErrors.FAILED_TO_RETRIEVE_PRE_LOGIN_URL);
+    res.redirect(PageUrls.HOME);
   } catch (err) {
     logger.error(RedisErrors.FAILED_TO_RETRIEVE_PRE_LOGIN_URL);
+    res.redirect(PageUrls.HOME);
   }
 };
