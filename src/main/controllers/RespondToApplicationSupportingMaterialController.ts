@@ -9,7 +9,11 @@ import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getFormError, handleFileUpload } from '../helpers/controller/RespondToApplicationSupportingMaterialHelper';
+import {
+  getFormError,
+  getNextPage,
+  handleFileUpload,
+} from '../helpers/controller/RespondToApplicationSupportingMaterialHelper';
 import { getLogger } from '../logger';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
@@ -87,7 +91,7 @@ export default class RespondToApplicationSupportingMaterialController {
     }
 
     req.session.userCase.responseText = formData.responseText;
-    return res.redirect(PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + getLanguageParam(req.url));
+    return res.redirect(getNextPage(req));
   };
 
   public get = (req: AppRequest, res: Response): void => {

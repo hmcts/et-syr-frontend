@@ -1,5 +1,6 @@
 import RespondToApplicationSupportingMaterialController from '../../../main/controllers/RespondToApplicationSupportingMaterialController';
-import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
+import { Applicant, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
+import { application } from '../../../main/definitions/contact-tribunal-applications';
 import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
 import commonJson from '../../../main/resources/locales/en/translation/common.json';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
@@ -32,6 +33,12 @@ describe('Respond to Application Supporting Material Controller', () => {
         body: {},
         session: {
           userCase: {
+            selectedGenericTseApplication: {
+              value: {
+                applicant: Applicant.RESPONDENT,
+                type: application.CHANGE_PERSONAL_DETAILS.code,
+              },
+            },
             supportingMaterialFile: {
               document_binary_url: 'https://dummy.document.url/binary',
               document_url: 'https://dummy.document.url',

@@ -6,7 +6,7 @@ import {
 import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constants';
 import { ApplicationNotification } from '../../definitions/notification/applicationNotification';
 import { AnyRecord } from '../../definitions/util-types';
-import { getApplicationDisplay } from '../ApplicationHelper';
+import { getApplicationDisplay } from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 import { isResponseToTribunalRequired } from '../controller/ApplicationDetailsHelper';
 

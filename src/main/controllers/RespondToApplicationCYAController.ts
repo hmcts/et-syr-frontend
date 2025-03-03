@@ -13,10 +13,7 @@ export default class RespondToApplicationCYAController {
       ...req.t(TranslationKeys.RESPOND_TO_APPLICATION_CYA, { returnObjects: true }),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
-      cyaContent: getCyaContent(req, {
-        ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
-        ...req.t(TranslationKeys.RESPOND_TO_APPLICATION_CYA, { returnObjects: true }),
-      }),
+      cyaContent: getCyaContent(req),
       submitLink: InterceptPaths.RESPOND_TO_APPLICATION_SUBMIT + getLanguageParam(req.url),
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
     });
