@@ -19,7 +19,6 @@ import { getLanguageParam } from '../RouterHelpers';
 export const getCyaContent = (req: AppRequest, translations: AnyRecord): SummaryListRow[] => {
   const rows: SummaryListRow[] = [];
   const userCase = req.session.userCase;
-  const selectedApplication = userCase.selectedGenericTseApplication;
   const languageParam = getLanguageParam(req.url);
 
   rows.push(
@@ -45,7 +44,7 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
     );
   }
 
-  if (isTypeAOrB(selectedApplication.value)) {
+  if (isTypeAOrB(userCase.selectedGenericTseApplication.value)) {
     rows.push(
       addSummaryRowWithAction(
         translations.copyToOtherPartyYesOrNo,

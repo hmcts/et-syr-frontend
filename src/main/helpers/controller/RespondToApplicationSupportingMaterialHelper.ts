@@ -1,12 +1,14 @@
 import { DocumentUploadResponse } from '../../definitions/api/documentApiResponse';
 import { AppRequest } from '../../definitions/appRequest';
 import { CaseWithId } from '../../definitions/case';
-import { ValidationErrors } from '../../definitions/constants';
+import { PageUrls, ValidationErrors } from '../../definitions/constants';
 import { FormError } from '../../definitions/form';
 import FileUtils from '../../utils/FileUtils';
 import ObjectUtils from '../../utils/ObjectUtils';
 import StringUtils from '../../utils/StringUtils';
 import { fromApiFormatDocument } from '../ApiFormatter';
+import { isTypeAOrB } from '../GenericTseApplicationHelper';
+import { getLanguageParam } from '../RouterHelpers';
 
 /**
  * Handle file upload. Return true when error occur.
@@ -70,4 +72,19 @@ export const getFormError = (req: AppRequest, formData: Partial<CaseWithId>): Fo
   if (StringUtils.isLengthMoreThan(formData.responseText, 2500)) {
     return { propertyName: 'responseText', errorType: ValidationErrors.TOO_LONG };
   }
+};
+
+/**
+ * Return COPY_TO_ORDER_PARTY page when Type A or B, otherwise return CYA page
+ * @param req request
+ */
+export const getNextPage = (req: AppRequest): string => {
+  if (req.body?.upload) {
+    return PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL + getLanguageParam(req.url);
+  }
+  const app = req.session.userCase?.selectedGenericTseApplication?.value;
+  return (
+    (isTypeAOrB(app) ? PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY : PageUrls.RESPOND_TO_APPLICATION_CYA) +
+    getLanguageParam(req.url)
+  );
 };
