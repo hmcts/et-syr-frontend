@@ -8,6 +8,7 @@ import {
 } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import { getSupportingMaterialLink } from '../DocumentHelpers';
+import { isTypeAOrB } from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
@@ -18,6 +19,7 @@ import { getLanguageParam } from '../RouterHelpers';
 export const getCyaContent = (req: AppRequest, translations: AnyRecord): SummaryListRow[] => {
   const rows: SummaryListRow[] = [];
   const userCase = req.session.userCase;
+  const selectedApplication = userCase.selectedGenericTseApplication;
   const languageParam = getLanguageParam(req.url);
 
   rows.push(
@@ -43,26 +45,28 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
     );
   }
 
-  rows.push(
-    addSummaryRowWithAction(
-      translations.copyToOtherPartyYesOrNo,
-      userCase.copyToOtherPartyYesOrNo === YesOrNo.YES ? translations.yes : translations.no,
-      PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + languageParam,
-      translations.change,
-      ''
-    )
-  );
-
-  if (userCase.copyToOtherPartyYesOrNo === YesOrNo.NO) {
+  if (isTypeAOrB(selectedApplication.value)) {
     rows.push(
       addSummaryRowWithAction(
-        translations.copyToOtherPartyText,
-        userCase.copyToOtherPartyText,
+        translations.copyToOtherPartyYesOrNo,
+        userCase.copyToOtherPartyYesOrNo === YesOrNo.YES ? translations.yes : translations.no,
         PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + languageParam,
         translations.change,
         ''
       )
     );
+
+    if (userCase.copyToOtherPartyYesOrNo === YesOrNo.NO) {
+      rows.push(
+        addSummaryRowWithAction(
+          translations.copyToOtherPartyText,
+          userCase.copyToOtherPartyText,
+          PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY + languageParam,
+          translations.change,
+          ''
+        )
+      );
+    }
   }
 
   return rows;

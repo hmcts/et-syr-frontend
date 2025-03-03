@@ -3,8 +3,7 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants';
-import { getApplicationDisplay } from '../helpers/ApplicationHelper';
-import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
+import { findSelectedGenericTseApplication, getApplicationDisplay } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import {
   getAllResponses,
