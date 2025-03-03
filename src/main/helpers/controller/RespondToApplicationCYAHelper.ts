@@ -24,7 +24,7 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
   rows.push(
     addSummaryRowWithAction(
       translations.legend,
-      userCase.responseText,
+      userCase.responseText || translations.notProvided,
       PageUrls.RESPOND_TO_APPLICATION.replace(':appId', userCase.selectedGenericTseApplication.id) + languageParam,
       translations.change,
       ''

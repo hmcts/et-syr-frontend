@@ -35,7 +35,7 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
   rows.push(
     addSummaryRowWithAction(
       translations.legend,
-      userCase.contactApplicationText,
+      userCase.contactApplicationText || translations.notProvided,
       PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) + languageParam,
       translations.change,
       ''
@@ -46,7 +46,7 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
   rows.push(
     addSummaryHtmlRowWithAction(
       translations.supportingMaterial,
-      link,
+      link || translations.notProvided,
       PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) + languageParam,
       translations.change,
       ''
