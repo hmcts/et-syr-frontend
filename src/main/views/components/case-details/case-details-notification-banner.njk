@@ -59,3 +59,16 @@
   }) }}
 {% endif %}
 
+{% for app in appNotifications %}
+  {% set appNotificationHtml %}
+    <p class="govuk-notification-banner__heading">{{ notificationBanner.application.p1 }} {{ app.from }} {{ notificationBanner.application.p2 }} {{ app.appName }}</p>
+    <p class="govuk-body">{{ notificationBanner.application.mustRespond }}</p>
+    <p class="govuk-notification-banner__heading">
+      <a class="govuk-link" href="{{ app.appUrl }}">{{ notificationBanner.application.respondToTribunal }}</a>
+    </p>
+  {% endset %}
+  {{ govukNotificationBanner({
+    html: appNotificationHtml,
+    titleText: important
+  }) }}
+{% endfor %}

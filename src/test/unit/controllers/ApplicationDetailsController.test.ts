@@ -31,6 +31,8 @@ describe('Application Details Controller', () => {
         TranslationKeys.APPLICATION_DETAILS,
         expect.objectContaining({
           applicationType: 'Amend my response',
+          isRespondButton: true,
+          respondRedirectUrl: '/respond-to-application/5d0118c9-bdd6-4d32-9131-6aa6f5ec718e?lng=en',
         })
       );
     });
