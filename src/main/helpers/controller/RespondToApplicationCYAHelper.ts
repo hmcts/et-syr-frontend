@@ -7,6 +7,7 @@ import {
   addSummaryRowWithAction,
 } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
+import { oesYesOrNoMap } from '../../utils/TranslationUtils';
 import { getSupportingMaterialLink } from '../DocumentHelpers';
 import { isTypeAOrB } from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
@@ -28,6 +29,16 @@ export const getCyaContent = (req: AppRequest): SummaryListRow[] => {
     addSummaryRowWithAction(
       translations.legend,
       userCase.responseText || translations.notProvided,
+      PageUrls.RESPOND_TO_APPLICATION.replace(':appId', userCase.selectedGenericTseApplication.id) + languageParam,
+      translations.change,
+      ''
+    )
+  );
+
+  rows.push(
+    addSummaryRowWithAction(
+      translations.hasSupportingMaterial,
+      oesYesOrNoMap(translations)[userCase.hasSupportingMaterial],
       PageUrls.RESPOND_TO_APPLICATION.replace(':appId', userCase.selectedGenericTseApplication.id) + languageParam,
       translations.change,
       ''

@@ -1,7 +1,6 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import { Applicant } from '../../../../main/definitions/constants';
 import { getCyaContent } from '../../../../main/helpers/controller/RespondToApplicationCYAHelper';
-import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
 import commonJson from '../../../../main/resources/locales/en/translation/common.json';
 import respondToApplicationCyaJson from '../../../../main/resources/locales/en/translation/respond-to-application-check-your-answers.json';
 import { mockRequestWithTranslation } from '../../mocks/mockRequest';
@@ -11,7 +10,6 @@ describe('Respond to Application CYA Helper', () => {
     it('should generate the correct summary list for a complete case', () => {
       const translations = {
         ...commonJson,
-        ...applicationTypeJson,
         ...respondToApplicationCyaJson,
       };
       const req = mockRequestWithTranslation({}, translations);
@@ -50,6 +48,24 @@ describe('Respond to Application CYA Helper', () => {
                 href: '/respond-to-application/1?lng=en',
                 text: translations.change,
                 visuallyHiddenText: translations.legend,
+              },
+            ],
+          },
+        },
+        {
+          key: {
+            classes: 'govuk-!-font-weight-regular-m',
+            text: translations.hasSupportingMaterial,
+          },
+          value: {
+            text: userCase.hasSupportingMaterial,
+          },
+          actions: {
+            items: [
+              {
+                href: '/respond-to-application/1?lng=en',
+                text: translations.change,
+                visuallyHiddenText: translations.hasSupportingMaterial,
               },
             ],
           },
