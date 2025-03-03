@@ -18,7 +18,7 @@ export default class RespondToApplicationSubmitController {
       await getCaseApi(req.session.user?.accessToken).submitRespondentResponseToApplication(userCase);
 
       // Clear temporary fields
-      userCase.ruleCopystate = userCase.copyToOtherPartyYesOrNo && userCase.copyToOtherPartyYesOrNo === YesOrNo.YES;
+      userCase.ruleCopyState = userCase.copyToOtherPartyYesOrNo && userCase.copyToOtherPartyYesOrNo === YesOrNo.YES;
       clearTempFields(userCase);
 
       return res.redirect(PageUrls.RESPOND_TO_APPLICATION_COMPLETE + getLanguageParam(req.url));

@@ -27,24 +27,6 @@ export class CaseApi {
     }
   };
 
-  updateHubLinksStatuses = async (caseItem: CaseWithId): Promise<AxiosResponse<CaseApiDataResponse>> => {
-    try {
-      return await this.axios.put(
-        JavaApiUrls.UPDATE_CASE_SUBMITTED +
-          DefaultValues.STRING_QUESTION_MARK +
-          JavaApiUrls.ROLE_PARAM_NAME +
-          DefaultValues.STRING_EQUALS +
-          Roles.DEFENDANT_ROLE_WITHOUT_BRACKETS,
-        {
-          case_id: caseItem.id,
-          case_type_id: caseItem.caseTypeId,
-          hub_links_statuses: caseItem.hubLinksStatuses,
-        }
-      );
-    } catch (error) {
-      throw new Error('Error updating hub links statuses: ' + axiosErrorDetails(error));
-    }
-  };
   /**
    * Retrieves case data by userCase value of the session(req.session.userCase).
    * throws an exception when there is no value of userCase in the session.

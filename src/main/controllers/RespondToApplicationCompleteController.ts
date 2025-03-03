@@ -10,7 +10,7 @@ export default class RespondToApplicationCompleteController {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
       ...req.t(TranslationKeys.RESPOND_TO_APPLICATION_COMPLETE, { returnObjects: true }),
       redirectUrl: UrlUtils.getCaseDetailsUrlByRequest(req),
-      ruleCopystate: req.session?.userCase?.ruleCopystate,
+      ruleCopyState: req.session?.userCase?.ruleCopyState,
     });
   };
 }
