@@ -1,6 +1,6 @@
 import { AppRequest } from '../../definitions/appRequest';
 import { YesOrNo } from '../../definitions/case';
-import { PageUrls } from '../../definitions/constants';
+import { PageUrls, TranslationKeys } from '../../definitions/constants';
 import {
   SummaryListRow,
   addSummaryHtmlRowWithAction,
@@ -14,10 +14,13 @@ import { getLanguageParam } from '../RouterHelpers';
 /**
  * Get Respond to Application Check your answer content
  * @param req request
- * @param translations translations
  */
-export const getCyaContent = (req: AppRequest, translations: AnyRecord): SummaryListRow[] => {
+export const getCyaContent = (req: AppRequest): SummaryListRow[] => {
   const rows: SummaryListRow[] = [];
+  const translations: AnyRecord = {
+    ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
+    ...req.t(TranslationKeys.RESPOND_TO_APPLICATION_CYA, { returnObjects: true }),
+  };
   const userCase = req.session.userCase;
   const languageParam = getLanguageParam(req.url);
 
