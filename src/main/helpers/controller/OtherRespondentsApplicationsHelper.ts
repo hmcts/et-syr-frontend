@@ -1,6 +1,9 @@
 import { AppRequest } from '../../definitions/appRequest';
-import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant } from '../../definitions/constants';
+import {
+  GenericTseApplicationType,
+  GenericTseApplicationTypeItem,
+} from '../../definitions/complexTypes/genericTseApplicationTypeItem';
+import { isApplicantRespondent } from '../GenericTseApplicationHelper';
 
 import { isApplicationShare } from './ClaimantsApplicationsHelper';
 import { updateAppsDisplayInfo } from './YourRequestAndApplicationsHelper';
@@ -11,15 +14,11 @@ import { updateAppsDisplayInfo } from './YourRequestAndApplicationsHelper';
  */
 export const getOtherRespondentsApplications = (req: AppRequest): GenericTseApplicationTypeItem[] => {
   const otherRespApps = (req.session.userCase.genericTseApplicationCollection || []).filter(app =>
-    isOtherRespApplicationShare(app, req)
+    isOtherRespApplicationShare(app.value, req)
   );
   return updateAppsDisplayInfo(otherRespApps, req);
 };
 
-const isOtherRespApplicationShare = (app: GenericTseApplicationTypeItem, req: AppRequest): boolean => {
-  return (
-    app.value?.applicant === Applicant.RESPONDENT &&
-    app.value?.applicantIdamId !== req.session.user.id &&
-    isApplicationShare(app)
-  );
+const isOtherRespApplicationShare = (app: GenericTseApplicationType, req: AppRequest): boolean => {
+  return isApplicantRespondent(app) && app.applicantIdamId !== req.session.user.id && isApplicationShare(app);
 };

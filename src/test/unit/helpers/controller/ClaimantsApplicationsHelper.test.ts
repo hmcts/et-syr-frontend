@@ -1,5 +1,6 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import {
+  GenericTseApplicationType,
   TseAdminDecision,
   TseRespondType,
 } from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
@@ -201,67 +202,57 @@ describe('Claimants Applications Helper', () => {
 
   describe('isApplicationShare', () => {
     it('should return false if type is ORDER_WITNESS_ATTEND.code', () => {
-      const mockApp = {
-        value: {
-          type: application.ORDER_WITNESS_ATTEND.code,
-        },
+      const mockApp: GenericTseApplicationType = {
+        type: application.ORDER_WITNESS_ATTEND.code,
       };
       expect(isApplicationShare(mockApp)).toBe(false);
     });
 
     it('should return true if copyToOtherPartyYesOrNo is YES', () => {
-      const mockApp = {
-        value: {
-          copyToOtherPartyYesOrNo: YesOrNo.YES,
-        },
+      const mockApp: GenericTseApplicationType = {
+        copyToOtherPartyYesOrNo: YesOrNo.YES,
       };
       expect(isApplicationShare(mockApp)).toBe(true);
     });
 
     it('should return true if respondCollection contains at least one valid response', () => {
-      const mockApp = {
-        value: {
-          respondCollection: [
-            {
-              id: '0c28f1f0-0c2f-43bb-ae2c-e335c92a7e5c',
-              value: {
-                from: Applicant.ADMIN,
-                selectPartyNotify: Parties.BOTH_PARTIES,
-              },
+      const mockApp: GenericTseApplicationType = {
+        respondCollection: [
+          {
+            id: '0c28f1f0-0c2f-43bb-ae2c-e335c92a7e5c',
+            value: {
+              from: Applicant.ADMIN,
+              selectPartyNotify: Parties.BOTH_PARTIES,
             },
-          ],
-        },
+          },
+        ],
       };
       expect(isApplicationShare(mockApp)).toBe(true);
     });
 
     it('should return true if adminDecision contains at least one valid decision', () => {
-      const mockApp = {
-        value: {
-          adminDecision: [
-            {
-              value: {
-                selectPartyNotify: Parties.BOTH_PARTIES,
-              },
+      const mockApp: GenericTseApplicationType = {
+        adminDecision: [
+          {
+            value: {
+              selectPartyNotify: Parties.BOTH_PARTIES,
             },
-          ],
-        },
+          },
+        ],
       };
       expect(isApplicationShare(mockApp)).toBe(true);
     });
 
     it('should return false if none of the conditions are met', () => {
-      const mockApp = {
-        value: {
-          type: application.CHANGE_PERSONAL_DETAILS.code,
-          copyToOtherPartyYesOrNo: YesOrNo.NO,
-        },
+      const mockApp: GenericTseApplicationType = {
+        type: application.CHANGE_PERSONAL_DETAILS.code,
+        copyToOtherPartyYesOrNo: YesOrNo.NO,
       };
       expect(isApplicationShare(mockApp)).toBe(false);
     });
 
     it('should return false if value is undefined', () => {
-      const mockApp = {};
+      const mockApp: GenericTseApplicationType = {};
       expect(isApplicationShare(mockApp)).toBe(false);
     });
   });

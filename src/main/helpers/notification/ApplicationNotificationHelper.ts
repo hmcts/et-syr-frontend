@@ -3,12 +3,13 @@ import {
   GenericTseApplicationType,
   GenericTseApplicationTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constants';
+import { PageUrls, TranslationKeys } from '../../definitions/constants';
 import { ApplicationNotification } from '../../definitions/notification/applicationNotification';
 import { AnyRecord } from '../../definitions/util-types';
-import { getApplicationDisplay } from '../GenericTseApplicationHelper';
+import { getApplicationDisplay, isApplicantClaimant, isApplicantRespondent } from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 import { isResponseToTribunalRequired } from '../controller/ApplicationDetailsHelper';
+import { isYourApplication } from '../controller/YourRequestAndApplicationsHelper';
 
 export const getAppNotificationFromAdmin = (
   apps: GenericTseApplicationTypeItem[],
@@ -34,10 +35,10 @@ export const getAppNotificationFromAdmin = (
 };
 
 const getFrom = (app: GenericTseApplicationType, user: UserDetails, translations: AnyRecord) => {
-  if (app.applicant === Applicant.CLAIMANT) {
+  if (isApplicantClaimant(app)) {
     return translations.theClaimant;
-  } else if (app.applicant === Applicant.RESPONDENT) {
-    if (app.applicantIdamId || app.applicantIdamId === user.id) {
+  } else if (isApplicantRespondent(app)) {
+    if (isYourApplication(app, user)) {
       return translations.your;
     } else {
       return translations.theRespondent;
