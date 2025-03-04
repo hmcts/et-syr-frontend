@@ -1693,9 +1693,9 @@ __metadata:
   linkType: hard
 
 "@faker-js/faker@npm:^9.0.0":
-  version: 9.5.0
-  resolution: "@faker-js/faker@npm:9.5.0"
-  checksum: bb211063631c52600e62a6a5014801d6309b028b6eff22c11e222f4bf28b80c0ef7216b28635fff18d86434e64cf41bad1e187ddf9a07066bbc9346770e8f5d3
+  version: 9.5.1
+  resolution: "@faker-js/faker@npm:9.5.1"
+  checksum: 11fd03314403c152dbd5c869bac0ca8f5887d86b45382be14b7ee620c436b091557dc826d5585520c939f71ff1908f2aa7eccfb72a2c0dead3df6fd0b56ab7b7
   languageName: node
   linkType: hard
 
@@ -3252,9 +3252,9 @@ __metadata:
   linkType: hard
 
 "@types/lodash@npm:^4.14.194":
-  version: 4.17.15
-  resolution: "@types/lodash@npm:4.17.15"
-  checksum: 5037564154411f4ac0b187b914031c150520a7ca037dea007f774b7123c97c0da55b2e41ae81dc1bc80ff09e8d6a236455ea676d5062af12c592b8e81baec7bf
+  version: 4.17.16
+  resolution: "@types/lodash@npm:4.17.16"
+  checksum: 915618c5735b10007e0ed7d06fdce6b344f88fc721d492b189a69064bfd046d2382e1ba61d683eeb61cad60ca0286cd110e6fe0fa4ab2e99066a40478376831d
   languageName: node
   linkType: hard
 
@@ -4676,13 +4676,13 @@ __metadata:
   linkType: hard
 
 "axios@npm:^1.7.4":
-  version: 1.7.9
-  resolution: "axios@npm:1.7.9"
+  version: 1.8.1
+  resolution: "axios@npm:1.8.1"
   dependencies:
     follow-redirects: ^1.15.6
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
-  checksum: cb8ce291818effda09240cb60f114d5625909b345e10f389a945320e06acf0bc949d0f8422d25720f5dd421362abee302c99f5e97edec4c156c8939814b23d19
+  checksum: 3c434b86bb690046b5861134e9cee9b273467f0d82b64b9074f7da5004855826833736a1c6a9c05bf9af225ddd52b3da857a99d59e6736490b18e2cbc1ccb67e
   languageName: node
   linkType: hard
 
@@ -5445,15 +5445,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chromium-bidi@npm:2.0.0":
-  version: 2.0.0
-  resolution: "chromium-bidi@npm:2.0.0"
+"chromium-bidi@npm:2.1.2":
+  version: 2.1.2
+  resolution: "chromium-bidi@npm:2.1.2"
   dependencies:
     mitt: ^3.0.1
     zod: ^3.24.1
   peerDependencies:
     devtools-protocol: "*"
-  checksum: cf2000ee0cffb6fa5b5ed8374fff213c2221e965f2b1570c567004d6a2c6a0f46e7abef1439d75ef297cd4e84f16d9331b9555429f3ca9d9ed84a618dac3f6af
+  checksum: 8eb61035b09c210aba964dee33823b80512d839309c548e06efd83d6310d69814981daec9f6454aec65df359370fb7d93197fcaa15f8d9b8dca510a47a930330
   languageName: node
   linkType: hard
 
@@ -7182,13 +7182,13 @@ __metadata:
   linkType: hard
 
 "eslint-config-prettier@npm:^10.0.0":
-  version: 10.0.1
-  resolution: "eslint-config-prettier@npm:10.0.1"
+  version: 10.0.2
+  resolution: "eslint-config-prettier@npm:10.0.2"
   peerDependencies:
     eslint: ">=7.0.0"
   bin:
     eslint-config-prettier: build/bin/cli.js
-  checksum: f827d9b0df5e088bb22c938e59bd4ade4df756ae73b13150652dcc64ee3b6b81d06f53baa47a51b4a44e3ece19e3a5357b79d01e5048fd7667af332dcca8473e
+  checksum: 76c30d85b29320c631aafe7e10fa4d065c574d3e5491f7f9c888bfc1351e9ded6b0e0821c4d7b8f49e86b056206c91fb2f5d4b30c8f2c57a6c44fdafa75716c8
   languageName: node
   linkType: hard
 
@@ -12994,17 +12994,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:24.3.0":
-  version: 24.3.0
-  resolution: "puppeteer-core@npm:24.3.0"
+"puppeteer-core@npm:24.3.1":
+  version: 24.3.1
+  resolution: "puppeteer-core@npm:24.3.1"
   dependencies:
     "@puppeteer/browsers": 2.7.1
-    chromium-bidi: 2.0.0
+    chromium-bidi: 2.1.2
     debug: ^4.4.0
     devtools-protocol: 0.0.1402036
     typed-query-selector: ^2.12.0
     ws: ^8.18.1
-  checksum: 39310204371b015f8835a69c1ac6673edd0556948873da8d9bb9d1ee30297bee51acc94c9875737700d1492026118b7fb2b9708d1650b2619b6ed00117e6a8bb
+  checksum: 6c28d5254c8eaa9d97fb60bb7a87e05d3b4718a3f8074fc622f3ab0413052e924b27441ceec8d5ceea2dc6ed6884da858401a57fb131d28d91133ed0d1705100
   languageName: node
   linkType: hard
 
@@ -13023,18 +13023,18 @@ __metadata:
   linkType: hard
 
 "puppeteer@npm:^24.0.0":
-  version: 24.3.0
-  resolution: "puppeteer@npm:24.3.0"
+  version: 24.3.1
+  resolution: "puppeteer@npm:24.3.1"
   dependencies:
     "@puppeteer/browsers": 2.7.1
-    chromium-bidi: 2.0.0
+    chromium-bidi: 2.1.2
     cosmiconfig: ^9.0.0
     devtools-protocol: 0.0.1402036
-    puppeteer-core: 24.3.0
+    puppeteer-core: 24.3.1
     typed-query-selector: ^2.12.0
   bin:
     puppeteer: lib/cjs/puppeteer/node/cli.js
-  checksum: b79c48da983db88eddbace2852416bf3757c7ac37221176c56273015e6e299f5d4284dce0b92db3715ed1ab1938ba278053287f7e98ad702f77c482b6b35e12a
+  checksum: 7751dc1c0dc8c2df7051a49cec50066164fa5d5fd8fd6577459134d0082b94b2e0afa03d816f7dd5a6bd80c7971b72f4548eeff348a9162a6c28d8bef1939da1
   languageName: node
   linkType: hard
 
@@ -14981,11 +14981,11 @@ __metadata:
   linkType: hard
 
 "tough-cookie@npm:^5.0.0":
-  version: 5.1.1
-  resolution: "tough-cookie@npm:5.1.1"
+  version: 5.1.2
+  resolution: "tough-cookie@npm:5.1.2"
   dependencies:
     tldts: ^6.1.32
-  checksum: 051d2d09df12448642928de9e1da7c296ae1019c6531e87f45f51fd29e8f235efbe94ef6502b37e874df72047c13a34da8816f2c05c7c358ead27ef4fbbd8117
+  checksum: 31c626a77ac247b881665851035773afe7eeac283b91ed8da3c297ed55480ea1dd1ba3f5bb1f94b653ac2d5b184f17ce4bf1cf6ca7c58ee7c321b4323c4f8024
   languageName: node
   linkType: hard
 
