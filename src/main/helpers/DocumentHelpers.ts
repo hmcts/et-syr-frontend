@@ -139,7 +139,7 @@ export const getLinkFromDocument = (doc: Document): string => {
   const documentName = doc.document_filename;
   return (
     '<a href="' +
-    PageUrls.GET_CASE_DOCUMENT.replace(':docId', documentId) +
+    PageUrls.GET_SUPPORTING_MATERIAL.replace(':docId', documentId) +
     '" target="_blank">' +
     documentName +
     '</a><br>'

@@ -1,5 +1,8 @@
-import { AppRequest } from '../../definitions/appRequest';
-import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
+import { AppRequest, UserDetails } from '../../definitions/appRequest';
+import {
+  GenericTseApplicationType,
+  GenericTseApplicationTypeItem,
+} from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constants';
 import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
@@ -44,11 +47,16 @@ const updateAppDisplayInfo = (app: GenericTseApplicationTypeItem, translations: 
  */
 export const getApplicationCollection = (req: AppRequest): GenericTseApplicationTypeItem[] => {
   const yourApps = (req.session.userCase?.genericTseApplicationCollection || []).filter(app =>
-    isYourApplication(app, req)
+    isYourApplication(app.value, req.session.user)
   );
   return updateAppsDisplayInfo(yourApps, req);
 };
 
-const isYourApplication = (app: GenericTseApplicationTypeItem, req: AppRequest): boolean => {
-  return app.value?.applicant === Applicant.RESPONDENT && app.value?.applicantIdamId === req.session.user.id;
+/**
+ * Check if application applied by current user
+ * @param app application
+ * @param user user details
+ */
+export const isYourApplication = (app: GenericTseApplicationType, user: UserDetails): boolean => {
+  return app.applicant === Applicant.RESPONDENT && app.applicantIdamId === user.id;
 };

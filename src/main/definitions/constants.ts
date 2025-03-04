@@ -405,6 +405,8 @@ export const ResponseRequired = {
 export const Applicant = {
   CLAIMANT: 'Claimant',
   RESPONDENT: 'Respondent',
+  CLAIMANT_REP: 'Claimant Representative',
+  RESPONDENT_REP: 'Respondent Representative',
   ADMIN: 'Admin',
 } as const;
 
