@@ -1,6 +1,9 @@
-import { ValidationErrors } from '../../../../main/definitions/constants';
+import { AppRequest } from '../../../../main/definitions/appRequest';
+import { Applicant, ValidationErrors } from '../../../../main/definitions/constants';
+import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import {
   getFormError,
+  getNextPage,
   handleFileUpload,
 } from '../../../../main/helpers/controller/RespondToApplicationSupportingMaterialHelper';
 import FileUtils from '../../../../main/utils/FileUtils';
@@ -136,6 +139,46 @@ describe('Respond to Application Supporting Material Controller Helper', () => {
       const formData = { responseText: 'A'.repeat(2501) };
       const error = getFormError(req, formData);
       expect(error).toEqual({ propertyName: 'responseText', errorType: ValidationErrors.TOO_LONG });
+    });
+  });
+
+  describe('getNextPage', () => {
+    it('should return the current page URL if upload is present in request body', () => {
+      const req: AppRequest = mockRequest({
+        body: { upload: true },
+      });
+      const result = getNextPage(req);
+      expect(result).toBe('/respond-to-application-supporting-material?lng=en');
+    });
+
+    it('should return COPY_TO_OTHER_PARTY page for Type A/B applications when claimant is system user', () => {
+      const req: AppRequest = mockRequest({
+        userCase: {
+          selectedGenericTseApplication: {
+            value: {
+              applicant: Applicant.RESPONDENT,
+              type: application.CHANGE_PERSONAL_DETAILS.code,
+            },
+          },
+        },
+      });
+      const result = getNextPage(req);
+      expect(result).toBe('/respond-to-application-copy-to-other-party?lng=en');
+    });
+
+    it('should return CONTACT_TRIBUNAL_CYA page for Type C', () => {
+      const req: AppRequest = mockRequest({
+        userCase: {
+          selectedGenericTseApplication: {
+            value: {
+              applicant: Applicant.RESPONDENT,
+              type: application.ORDER_WITNESS_ATTEND.code,
+            },
+          },
+        },
+      });
+      const result = getNextPage(req);
+      expect(result).toBe('/respond-to-application-check-your-answers?lng=en');
     });
   });
 });

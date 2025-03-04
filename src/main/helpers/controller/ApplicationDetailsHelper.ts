@@ -11,8 +11,8 @@ import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definiti
 import { AnyRecord } from '../../definitions/util-types';
 import CollectionUtils from '../../utils/CollectionUtils';
 import ObjectUtils from '../../utils/ObjectUtils';
-import { getApplicationDisplay } from '../ApplicationHelper';
 import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../DocumentHelpers';
+import { getApplicationDisplay } from '../GenericTseApplicationHelper';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
 import { isAdminResponseShareToRespondent, isDecisionShareToRespondent } from './ClaimantsApplicationsHelper';

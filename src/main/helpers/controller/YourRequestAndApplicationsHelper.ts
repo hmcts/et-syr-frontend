@@ -4,7 +4,7 @@ import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constant
 import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import ObjectUtils from '../../utils/ObjectUtils';
-import { getApplicationDisplay } from '../ApplicationHelper';
+import { getApplicationDisplay } from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
