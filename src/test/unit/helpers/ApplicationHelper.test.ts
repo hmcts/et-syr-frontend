@@ -3,6 +3,7 @@ import { AnyRecord } from '../../../main/definitions/util-types';
 import {
   getApplicationByCode,
   getApplicationByUrl,
+  getApplicationDisplayByClaimantCode,
   getApplicationDisplayByCode,
   getApplicationDisplayByUrl,
   getApplicationKey,
@@ -112,6 +113,30 @@ describe('Applications Helper Test', () => {
 
     it('should return an empty string if no translation exists for the application code', () => {
       const result = getApplicationDisplayByCode('Non-existent code', translations);
+      expect(result).toBe('');
+    });
+  });
+
+  describe('getApplicationDisplayByClaimantCode', () => {
+    const translations: AnyRecord = applicationTypeJson;
+
+    it('should return the correct translation for a valid application code', () => {
+      const result = getApplicationDisplayByClaimantCode(application.CHANGE_PERSONAL_DETAILS.claimant, translations);
+      expect(result).toBe(translations['CHANGE_PERSONAL_DETAILS']);
+    });
+
+    it('should return an empty string if application code is empty', () => {
+      const result = getApplicationDisplayByClaimantCode('', translations);
+      expect(result).toBe('');
+    });
+
+    it('should return an empty string if application code is undefined', () => {
+      const result = getApplicationDisplayByClaimantCode(undefined, translations);
+      expect(result).toBe('');
+    });
+
+    it('should return an empty string if no translation exists for the application code', () => {
+      const result = getApplicationDisplayByClaimantCode('Non-existent code', translations);
       expect(result).toBe('');
     });
   });
