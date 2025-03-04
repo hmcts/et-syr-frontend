@@ -17,7 +17,7 @@ describe('Language Helper Functions', () => {
 
     it('should append Welsh language parameter to the redirect URL and set session.lang to Welsh when URL contains Welsh parameter', () => {
       req.url = '/some-url?lng=cy';
-      const redirectUrl = '/redirect-url';
+      const redirectUrl = '/case-number-check';
       const result = setUrlLanguage(req, redirectUrl);
 
       expect(result).toBe(redirectUrl + languages.WELSH_URL_PARAMETER);
@@ -26,7 +26,7 @@ describe('Language Helper Functions', () => {
 
     it('should append English language parameter to the redirect URL and set session.lang to English when URL contains English parameter', () => {
       req.url = '/some-url?lng=en';
-      const redirectUrl = '/redirect-url';
+      const redirectUrl = '/case-number-check';
       const result = setUrlLanguage(req, redirectUrl);
 
       expect(result).toBe(redirectUrl + languages.ENGLISH_URL_PARAMETER);
@@ -35,7 +35,7 @@ describe('Language Helper Functions', () => {
 
     it('should return the original redirect URL if no language parameter is found in the URL', () => {
       req.url = '/some-url';
-      const redirectUrl = '/redirect-url';
+      const redirectUrl = '/case-number-check';
       const result = setUrlLanguage(req, redirectUrl);
 
       expect(result).toBe(redirectUrl);
@@ -228,19 +228,19 @@ describe('Language Helper Functions', () => {
       {
         url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
         redirectUrl: undefined,
-        result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        result: '/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
         expectedLang: languages.WELSH,
       },
       {
         url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
         redirectUrl: DefaultValues.STRING_EMPTY,
-        result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        result: '/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
         expectedLang: languages.WELSH,
       },
       {
         url: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
         redirectUrl: DefaultValues.STRING_SPACE,
-        result: 'https://localhost:3003/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
+        result: '/employers-contract-claim?redirect=clearSelection&test=test&lng=cy',
         expectedLang: languages.WELSH,
       },
       {
