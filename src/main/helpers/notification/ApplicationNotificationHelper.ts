@@ -37,12 +37,10 @@ export const getAppNotificationFromAdmin = (
 const getFrom = (app: GenericTseApplicationType, user: UserDetails, translations: AnyRecord) => {
   if (isApplicantClaimant(app)) {
     return translations.theClaimant;
+  } else if (isYourApplication(app, user)) {
+    return translations.your;
   } else if (isApplicantRespondent(app)) {
-    if (isYourApplication(app, user)) {
-      return translations.your;
-    } else {
-      return translations.theRespondent;
-    }
+    return translations.theRespondent;
   }
   return '';
 };
