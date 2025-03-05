@@ -77,7 +77,7 @@ describe('Application Details Helper', () => {
       expect(result).toHaveLength(6);
       expect(result[3].key.text).toEqual('Supporting material');
       expect(result[3].value.html).toEqual(
-        '<a href="/getCaseDocument/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa" target="_blank">test-file.pdf</a><br>'
+        '<a href="/getSupportingMaterial/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa" target="_blank">test-file.pdf</a><br>'
       );
       expect(result[4].key.text).toEqual(
         'Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?'
@@ -119,7 +119,7 @@ describe('Application Details Helper', () => {
       expect(result[0][7].value.text).toEqual('Short description 1-1-1');
       expect(result[0][8].key.text).toEqual('Document');
       expect(result[0][8].value.html).toEqual(
-        '<a href="/getCaseDocument/cdaf047b-492a-4d8a-8f6b-2c075d2fd44d" target="_blank">Test.pdf</a><br>'
+        '<a href="/getSupportingMaterial/cdaf047b-492a-4d8a-8f6b-2c075d2fd44d" target="_blank">Test.pdf</a><br>'
       );
       expect(result[0][9].key.text).toEqual('Request made by');
       expect(result[0][9].value.text).toEqual('Judge');
@@ -137,7 +137,7 @@ describe('Application Details Helper', () => {
       expect(result[1][2].value.text).toEqual('-');
       expect(result[1][3].key.text).toEqual('Supporting material');
       expect(result[1][3].value.html).toEqual(
-        '<a href="/getCaseDocument/6cd4768b-d9f8-4e39-b8e3-672f0047aa88" target="_blank">TEST.txt</a><br>'
+        '<a href="/getSupportingMaterial/6cd4768b-d9f8-4e39-b8e3-672f0047aa88" target="_blank">TEST.txt</a><br>'
       );
       expect(result[1][4].key.text).toEqual(
         'Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?'
@@ -153,7 +153,7 @@ describe('Application Details Helper', () => {
       expect(result[2][2].value.text).toEqual('response 1-C');
       expect(result[2][3].key.text).toEqual('Supporting material');
       expect(result[2][3].value.html).toEqual(
-        '<a href="/getCaseDocument/fa26d905-9f87-4232-beb6-c6b3a730e34f" target="_blank">Application 1 - Amend my claim - Attachment.txt</a><br>'
+        '<a href="/getSupportingMaterial/fa26d905-9f87-4232-beb6-c6b3a730e34f" target="_blank">Application 1 - Amend my claim - Attachment.txt</a><br>'
       );
       expect(result[2][4].key.text).toEqual(
         'Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?'
@@ -335,8 +335,8 @@ describe('Application Details Helper', () => {
 
       expect(result[6].key.text).toEqual('Document');
       expect(result[6].value.html).toEqual(
-        '<a href="/getCaseDocument/3aa7dfc1-378b-4fa8-9a17-89126fae5673" target="_blank">test-doc-1.pdf</a><br>' +
-          '<a href="/getCaseDocument/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa" target="_blank">test-doc-2.pdf</a><br>'
+        '<a href="/getSupportingMaterial/3aa7dfc1-378b-4fa8-9a17-89126fae5673" target="_blank">test-doc-1.pdf</a><br>' +
+          '<a href="/getSupportingMaterial/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa" target="_blank">test-doc-2.pdf</a><br>'
       );
       expect(result[7].key.text).toEqual('Decision made by');
       expect(result[7].value.text).toEqual('Judge');

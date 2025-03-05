@@ -1,6 +1,7 @@
 import { AppRequest } from '../../definitions/appRequest';
 import { YesOrNo } from '../../definitions/case';
 import {
+  GenericTseApplicationType,
   GenericTseApplicationTypeItem,
   TseAdminDecision,
   TseAdminDecisionItem,
@@ -10,6 +11,7 @@ import {
 import { Applicant, Parties } from '../../definitions/constants';
 import { application } from '../../definitions/contact-tribunal-applications';
 import ObjectUtils from '../../utils/ObjectUtils';
+import { isApplicantClaimant } from '../GenericTseApplicationHelper';
 
 import { updateAppsDisplayInfo } from './YourRequestAndApplicationsHelper';
 
@@ -19,13 +21,13 @@ import { updateAppsDisplayInfo } from './YourRequestAndApplicationsHelper';
  */
 export const getClaimantsApplications = (req: AppRequest): GenericTseApplicationTypeItem[] => {
   const claimantApps = (req.session.userCase.genericTseApplicationCollection || []).filter(app =>
-    isClaimantApplicationShare(app)
+    isClaimantApplicationShare(app.value)
   );
   return updateAppsDisplayInfo(claimantApps, req);
 };
 
-const isClaimantApplicationShare = (app: GenericTseApplicationTypeItem): boolean => {
-  return app.value?.applicant === Applicant.CLAIMANT && isApplicationShare(app);
+const isClaimantApplicationShare = (app: GenericTseApplicationType): boolean => {
+  return isApplicantClaimant(app) && isApplicationShare(app);
 };
 
 /**
@@ -57,18 +59,18 @@ export const isDecisionShareToRespondent = (decision: TseAdminDecision): boolean
  * Check if application is shared to respondent
  * @param app claimant's application
  */
-export const isApplicationShare = (app: GenericTseApplicationTypeItem): boolean => {
-  if (app.value?.type === application.ORDER_WITNESS_ATTEND.code) {
+export const isApplicationShare = (app: GenericTseApplicationType): boolean => {
+  if (app.type === application.ORDER_WITNESS_ATTEND.code) {
     return false;
   }
 
-  if (app.value?.copyToOtherPartyYesOrNo === YesOrNo.YES) {
+  if (app.copyToOtherPartyYesOrNo === YesOrNo.YES) {
     return true;
   }
 
   if (
-    ObjectUtils.isNotEmpty(app.value?.respondCollection) &&
-    app.value?.respondCollection?.some((r: TseRespondTypeItem) => {
+    ObjectUtils.isNotEmpty(app.respondCollection) &&
+    app.respondCollection?.some((r: TseRespondTypeItem) => {
       return isAdminResponseShareToRespondent(r.value);
     })
   ) {
@@ -76,8 +78,8 @@ export const isApplicationShare = (app: GenericTseApplicationTypeItem): boolean 
   }
 
   return (
-    ObjectUtils.isNotEmpty(app.value?.adminDecision) &&
-    app.value?.adminDecision?.some((d: TseAdminDecisionItem) => {
+    ObjectUtils.isNotEmpty(app.adminDecision) &&
+    app.adminDecision?.some((d: TseAdminDecisionItem) => {
       return isDecisionShareToRespondent(d.value);
     })
   );
