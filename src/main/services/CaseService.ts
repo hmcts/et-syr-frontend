@@ -202,6 +202,7 @@ export class CaseApi {
           contactApplicationFile: caseItem.contactApplicationFile,
           copyToOtherPartyYesOrNo: caseItem.copyToOtherPartyYesOrNo,
           copyToOtherPartyText: caseItem.copyToOtherPartyText,
+          respondentIdamId: caseItem.selectedGenericTseApplication.value.applicantIdamId,
         },
       });
     } catch (error) {
