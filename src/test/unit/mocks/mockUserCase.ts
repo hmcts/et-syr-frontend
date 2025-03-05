@@ -7,7 +7,7 @@ export default {
   createdDate: 'August 19, 2022',
   lastModified: 'August 19, 2022',
   respondents: undefined,
-  et1OnlineSubmission: 'submitted Et1 Form',
+  et1OnlineSubmission: 'Yes',
   hubLinksStatuses: {},
   caseSource: undefined,
   claimantRepresentedQuestion: 'No',

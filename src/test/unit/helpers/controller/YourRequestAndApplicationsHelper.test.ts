@@ -1,10 +1,9 @@
 import { GenericTseApplicationTypeItem } from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
-import { HubLinkStatus } from '../../../../main/definitions/hub';
-import { LinkStatus, linkStatusColorMap } from '../../../../main/definitions/links';
+import { LinkStatus } from '../../../../main/definitions/links';
 import {
-  getApplicationCollection,
+  getYourApplicationCollection,
   updateAppsDisplayInfo,
 } from '../../../../main/helpers/controller/YourRequestAndApplicationsHelper';
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
@@ -26,13 +25,19 @@ describe('Your Request and Applications Helper', () => {
 
     it('should update applications with linkValue, redirectUrl, statusColor, and displayStatus', () => {
       const req = mockRequestWithTranslation({ session: { userCase: mockUserCase } }, translations);
+      req.session.user.id = '382afa39-0acf-467b-ad19-740b77ab3945';
       const apps: GenericTseApplicationTypeItem[] = [
         {
           id: 'fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c',
           value: {
             applicant: Applicant.RESPONDENT,
             type: application.CHANGE_PERSONAL_DETAILS.code,
-            applicationState: HubLinkStatus.NOT_STARTED_YET,
+            respondentState: [
+              {
+                userIdamId: '382afa39-0acf-467b-ad19-740b77ab3945',
+                applicationState: LinkStatus.NOT_STARTED_YET,
+              },
+            ],
           },
         },
         {
@@ -40,14 +45,31 @@ describe('Your Request and Applications Helper', () => {
           value: {
             applicant: Applicant.CLAIMANT,
             type: application.AMEND_RESPONSE.claimant,
-            applicationState: HubLinkStatus.NOT_VIEWED,
+            respondentState: [
+              {
+                userIdamId: 'b305e3eb-6aa6-4e7a-a506-f3c97c997953',
+                applicationState: LinkStatus.NOT_VIEWED,
+              },
+              {
+                userIdamId: '382afa39-0acf-467b-ad19-740b77ab3945',
+                applicationState: LinkStatus.VIEWED,
+              },
+            ],
+          },
+        },
+        {
+          id: 'fc80aca1-d884-4a29-a42d-df5862e40efc',
+          value: {
+            applicant: Applicant.CLAIMANT,
+            type: application.POSTPONE_HEARING.claimant,
           },
         },
       ];
 
       const updatedApps = updateAppsDisplayInfo(apps, req);
 
-      expect(updatedApps).toHaveLength(2);
+      expect(updatedApps).toHaveLength(3);
+
       expect(updatedApps[0].linkValue).toBe('Change my personal details');
       expect(updatedApps[0].redirectUrl).toBe('/application-details/fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c?lng=en');
       expect(updatedApps[0].statusColor).toBe('--red');
@@ -55,8 +77,13 @@ describe('Your Request and Applications Helper', () => {
 
       expect(updatedApps[1].linkValue).toBe('Amend my response');
       expect(updatedApps[1].redirectUrl).toBe('/application-details/04a5064e-0766-4833-b740-d02520c604f2?lng=en');
-      expect(updatedApps[1].statusColor).toBe('--red');
-      expect(updatedApps[1].displayStatus).toBe('Not viewed yet');
+      expect(updatedApps[1].statusColor).toBe('--turquoise');
+      expect(updatedApps[1].displayStatus).toBe('Viewed');
+
+      expect(updatedApps[2].linkValue).toBe('Postpone a hearing');
+      expect(updatedApps[2].redirectUrl).toBe('/application-details/fc80aca1-d884-4a29-a42d-df5862e40efc?lng=en');
+      expect(updatedApps[2].statusColor).toBe('--grey');
+      expect(updatedApps[2].displayStatus).toBe('Not available yet');
     });
   });
 
@@ -66,16 +93,23 @@ describe('Your Request and Applications Helper', () => {
       ...caseDetailsStatusJson,
     };
 
-    it('should return filtered and formatted claimant items', () => {
-      const request = mockRequestWithTranslation({ session: { userCase: mockUserCase } }, translations);
-      request.url = '/url';
-      request.session.userCase.genericTseApplicationCollection = [
+    it('should return filtered and formatted user applications', () => {
+      const req = mockRequestWithTranslation({ session: { userCase: mockUserCase } }, translations);
+      req.url = '/url';
+      req.session.user.id = '77734122-ddd9-4e29-921d-65a7efb2f9eb';
+      req.session.userCase.genericTseApplicationCollection = [
         {
-          id: '1',
+          id: 'c7816b56-2e08-4acf-8b96-542456fcb96e',
           value: {
             applicant: Applicant.RESPONDENT,
+            applicantIdamId: '77734122-ddd9-4e29-921d-65a7efb2f9eb',
             type: application.CHANGE_PERSONAL_DETAILS.code,
-            applicationState: LinkStatus.IN_PROGRESS,
+            respondentState: [
+              {
+                userIdamId: '77734122-ddd9-4e29-921d-65a7efb2f9eb',
+                applicationState: LinkStatus.IN_PROGRESS,
+              },
+            ],
           },
         },
         {
@@ -83,29 +117,17 @@ describe('Your Request and Applications Helper', () => {
           value: {
             applicant: Applicant.CLAIMANT,
             type: application.AMEND_RESPONSE.code,
-            applicationState: LinkStatus.WAITING_FOR_TRIBUNAL,
           },
         },
       ];
 
-      const expectedOutput = [
-        {
-          id: '1',
-          value: {
-            applicant: Applicant.RESPONDENT,
-            type: application.CHANGE_PERSONAL_DETAILS.code,
-            applicationState: 'inProgress',
-          },
-          linkValue: 'Change my personal details',
-          redirectUrl: '/application-details/1?lng=en',
-          statusColor: linkStatusColorMap.get(LinkStatus.IN_PROGRESS),
-          displayStatus: 'In progress',
-        },
-      ];
+      const result = getYourApplicationCollection(req);
 
-      const result = getApplicationCollection(request);
-
-      expect(result).toEqual(expectedOutput);
+      expect(result).toHaveLength(1);
+      expect(result[0].linkValue).toBe('Change my personal details');
+      expect(result[0].redirectUrl).toBe('/application-details/c7816b56-2e08-4acf-8b96-542456fcb96e?lng=en');
+      expect(result[0].statusColor).toBe('--yellow');
+      expect(result[0].displayStatus).toBe('In progress');
     });
 
     it('should return an empty array if no Respondent application exist', () => {
@@ -122,7 +144,7 @@ describe('Your Request and Applications Helper', () => {
         },
       ];
 
-      const result = getApplicationCollection(request);
+      const result = getYourApplicationCollection(request);
 
       expect(result).toEqual([]);
     });
