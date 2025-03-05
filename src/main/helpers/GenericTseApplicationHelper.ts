@@ -24,7 +24,7 @@ export const findSelectedGenericTseApplication = (req: AppRequest): GenericTseAp
  * @param app application
  */
 export const isApplicantRespondent = (app: GenericTseApplicationType): boolean => {
-  return app.applicant === Applicant.RESPONDENT || app.applicant === Applicant.RESPONDENT_REP;
+  return app?.applicant === Applicant.RESPONDENT || app?.applicant === Applicant.RESPONDENT_REP;
 };
 
 /**
@@ -32,7 +32,7 @@ export const isApplicantRespondent = (app: GenericTseApplicationType): boolean =
  * @param app application
  */
 export const isApplicantClaimant = (app: GenericTseApplicationType): boolean => {
-  return app.applicant === Applicant.CLAIMANT || app.applicant === Applicant.CLAIMANT_REP;
+  return app?.applicant === Applicant.CLAIMANT || app?.applicant === Applicant.CLAIMANT_REP;
 };
 
 /**
@@ -51,12 +51,8 @@ export const getApplicationDisplay = (app: GenericTseApplicationType, translatio
  * @param app application in GenericTseApplicationType
  */
 export const isTypeAOrB = (app: GenericTseApplicationType): boolean => {
-  if (!app?.applicant || !app?.type) {
-    return undefined;
-  }
-
   const matchingApp = Object.values(application).find(appData =>
-    isApplicantRespondent(app) ? appData.code === app.type : appData.claimant === app.type
+    isApplicantRespondent(app) ? appData.code === app?.type : appData.claimant === app?.type
   );
   return matchingApp ? matchingApp.type === ApplicationType.A || matchingApp.type === ApplicationType.B : undefined;
 };

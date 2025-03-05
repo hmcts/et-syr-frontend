@@ -68,5 +68,5 @@ export const getYourApplicationCollection = (req: AppRequest): GenericTseApplica
  * @param user user details
  */
 export const isYourApplication = (app: GenericTseApplicationType, user: UserDetails): boolean => {
-  return app.applicant === Applicant.RESPONDENT && app.applicantIdamId === user.id;
+  return app?.applicant === Applicant.RESPONDENT && app?.applicantIdamId === user?.id;
 };

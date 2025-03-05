@@ -1,9 +1,14 @@
-import { GenericTseApplicationTypeItem } from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
+import { UserDetails } from '../../../../main/definitions/appRequest';
+import {
+  GenericTseApplicationType,
+  GenericTseApplicationTypeItem,
+} from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import { LinkStatus } from '../../../../main/definitions/links';
 import {
   getYourApplicationCollection,
+  isYourApplication,
   updateAppsDisplayInfo,
 } from '../../../../main/helpers/controller/YourRequestAndApplicationsHelper';
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
@@ -147,6 +152,55 @@ describe('Your Request and Applications Helper', () => {
       const result = getYourApplicationCollection(request);
 
       expect(result).toEqual([]);
+    });
+  });
+
+  describe('isYourApplication', () => {
+    it('should return true when applicant is Respondent and ID matches', () => {
+      const app: GenericTseApplicationType = { applicant: Applicant.RESPONDENT, applicantIdamId: 'user123' };
+      const user: UserDetails = { id: 'user123' } as UserDetails;
+      const result = isYourApplication(app, user);
+      expect(result).toEqual(true);
+    });
+
+    it('should return false when applicant is not Respondent', () => {
+      const app: GenericTseApplicationType = { applicant: Applicant.CLAIMANT, applicantIdamId: 'user123' };
+      const user: UserDetails = { id: 'user123' } as UserDetails;
+      const result = isYourApplication(app, user);
+      expect(result).toEqual(false);
+    });
+
+    it('should return false when applicant ID does not match user ID', () => {
+      const app: GenericTseApplicationType = { applicant: Applicant.RESPONDENT, applicantIdamId: 'user123' };
+      const user: UserDetails = { id: 'user456' } as UserDetails;
+      const result = isYourApplication(app, user);
+      expect(result).toEqual(false);
+    });
+
+    it('should return false when applicantIdamId is undefined', () => {
+      const app: GenericTseApplicationType = { applicant: Applicant.RESPONDENT, applicantIdamId: undefined };
+      const user: UserDetails = { id: 'user123' } as UserDetails;
+      const result = isYourApplication(app, user);
+      expect(result).toEqual(false);
+    });
+
+    it('should return false when GenericTseApplicationType is undefined', () => {
+      const user: UserDetails = { id: 'user123' } as UserDetails;
+      const result = isYourApplication(undefined, user);
+      expect(result).toEqual(false);
+    });
+
+    it('should return false when user ID is undefined', () => {
+      const app: GenericTseApplicationType = { applicant: Applicant.RESPONDENT, applicantIdamId: 'user123' };
+      const user: UserDetails = { id: undefined } as UserDetails;
+      const result = isYourApplication(app, user);
+      expect(result).toEqual(false);
+    });
+
+    it('should return false when user is undefined', () => {
+      const app: GenericTseApplicationType = { applicant: Applicant.RESPONDENT, applicantIdamId: 'user123' };
+      const result = isYourApplication(app, undefined);
+      expect(result).toEqual(false);
     });
   });
 });

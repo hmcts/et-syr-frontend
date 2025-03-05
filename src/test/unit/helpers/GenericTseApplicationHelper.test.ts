@@ -8,6 +8,8 @@ import { AnyRecord } from '../../../main/definitions/util-types';
 import {
   findSelectedGenericTseApplication,
   getApplicationDisplay,
+  isApplicantClaimant,
+  isApplicantRespondent,
   isTypeAOrB,
 } from '../../../main/helpers/GenericTseApplicationHelper';
 import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
@@ -60,6 +62,80 @@ describe('Generic Tse Application Helper', () => {
       request.params.appId = '2';
       const result = findSelectedGenericTseApplication(request);
       expect(result).toBeUndefined();
+    });
+  });
+
+  describe('isApplicantRespondent', () => {
+    it('should return true when applicant is Respondent', () => {
+      const app: GenericTseApplicationType = { applicant: Applicant.RESPONDENT };
+      const result = isApplicantRespondent(app);
+      expect(result).toEqual(true);
+    });
+
+    it('should return true when applicant is Respondent Representative', () => {
+      const app: GenericTseApplicationType = { applicant: Applicant.RESPONDENT_REP };
+      const result = isApplicantRespondent(app);
+      expect(result).toEqual(true);
+    });
+
+    it('should return false when applicant is Claimant', () => {
+      const app: GenericTseApplicationType = { applicant: Applicant.CLAIMANT };
+      const result = isApplicantRespondent(app);
+      expect(result).toEqual(false);
+    });
+
+    it('should return false when applicant is Claimant Representative', () => {
+      const app: GenericTseApplicationType = { applicant: Applicant.CLAIMANT_REP };
+      const result = isApplicantRespondent(app);
+      expect(result).toEqual(false);
+    });
+
+    it('should return false when applicant is undefined', () => {
+      const app: GenericTseApplicationType = { applicant: undefined };
+      const result = isApplicantRespondent(app);
+      expect(result).toEqual(false);
+    });
+
+    it('should return false when GenericTseApplicationType is undefined', () => {
+      const result = isApplicantRespondent(undefined);
+      expect(result).toEqual(false);
+    });
+  });
+
+  describe('isApplicantClaimant', () => {
+    it('should return true when applicant is Claimant', () => {
+      const app: GenericTseApplicationType = { applicant: Applicant.CLAIMANT };
+      const result = isApplicantClaimant(app);
+      expect(result).toEqual(true);
+    });
+
+    it('should return true when applicant is Claimant Representative', () => {
+      const app: GenericTseApplicationType = { applicant: Applicant.CLAIMANT_REP };
+      const result = isApplicantClaimant(app);
+      expect(result).toEqual(true);
+    });
+
+    it('should return false when applicant is Respondent', () => {
+      const app: GenericTseApplicationType = { applicant: Applicant.RESPONDENT };
+      const result = isApplicantClaimant(app);
+      expect(result).toEqual(false);
+    });
+
+    it('should return false when applicant is Respondent Representative', () => {
+      const app: GenericTseApplicationType = { applicant: Applicant.RESPONDENT_REP };
+      const result = isApplicantClaimant(app);
+      expect(result).toEqual(false);
+    });
+
+    it('should return false when applicant is undefined', () => {
+      const app: GenericTseApplicationType = { applicant: undefined };
+      const result = isApplicantClaimant(app);
+      expect(result).toEqual(false);
+    });
+
+    it('should return false when GenericTseApplicationType is undefined', () => {
+      const result = isApplicantClaimant(undefined);
+      expect(result).toEqual(false);
     });
   });
 
@@ -129,6 +205,24 @@ describe('Generic Tse Application Helper', () => {
       };
       const result = isTypeAOrB(app);
       expect(result).toEqual(false);
+    });
+
+    it('should return false when applicant is undefined', () => {
+      const app: GenericTseApplicationType = {
+        applicant: undefined,
+        type: application.ORDER_WITNESS_ATTEND.claimant,
+      };
+      const result = isTypeAOrB(app);
+      expect(result).toEqual(false);
+    });
+
+    it('should return undefined when type is undefined', () => {
+      const app: GenericTseApplicationType = {
+        applicant: Applicant.CLAIMANT,
+        type: undefined,
+      };
+      const result = isTypeAOrB(app);
+      expect(result).toBeUndefined();
     });
 
     it('should return undefined when application is undefined', () => {
