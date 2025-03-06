@@ -2,7 +2,6 @@ import { YesOrNo } from '../../../../main/definitions/case';
 import { GenericTseApplicationType } from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant, Parties } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
-import { HubLinkStatus } from '../../../../main/definitions/hub';
 import {
   getAllResponses,
   getApplicationContent,
@@ -33,9 +32,7 @@ describe('Application Details Helper', () => {
         copyToOtherPartyYesOrNo: YesOrNo.YES,
         details: 'Test application details text',
         number: '1',
-        status: HubLinkStatus.NOT_VIEWED,
         dueDate: '2022-05-12',
-        applicationState: HubLinkStatus.NOT_VIEWED,
       };
       const result = getApplicationContent(app, req);
       expect(result).toHaveLength(5);
@@ -61,9 +58,7 @@ describe('Application Details Helper', () => {
         copyToOtherPartyYesOrNo: YesOrNo.NO,
         copyToOtherPartyText: 'No details',
         number: '1',
-        status: HubLinkStatus.NOT_VIEWED,
         dueDate: '2022-05-12',
-        applicationState: HubLinkStatus.NOT_VIEWED,
         documentUpload: {
           document_url: 'http://dm-store:8080/documents/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa',
           document_filename: 'test-file.pdf',

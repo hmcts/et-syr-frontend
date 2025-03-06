@@ -1,15 +1,3 @@
-import {
-  postcode_Bristol,
-  postcode_Glasgow,
-  postcode_Leeds,
-  postcode_LondonCentral,
-  postcode_LondonEast,
-  postcode_LondonSouth,
-  postcode_Manchester,
-  postcode_MidlandsEast,
-  postcode_Newcastle,
-} from './postcode';
-
 export const LegacyUrls = {
   SIGN_UP: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_up',
   SIGN_IN: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_in',
@@ -350,18 +338,6 @@ export const CITIZEN_ROLE = 'citizen';
 export const TYPE_OF_CLAIMANT = 'Individual';
 export const FILE_SIZE_LIMIT = 83886500;
 
-export const inScopeLocations = [].concat(
-  postcode_Glasgow,
-  postcode_Leeds,
-  postcode_Bristol,
-  postcode_MidlandsEast,
-  postcode_LondonCentral,
-  postcode_LondonEast,
-  postcode_LondonSouth,
-  postcode_Manchester,
-  postcode_Newcastle
-);
-
 export const ET3_FORM = 'ET3';
 
 export const et1DocTypes = ['ET1'];
@@ -371,8 +347,6 @@ export const responseAcceptedDocTypes = ['2.11', 'Letter 14'];
 export const responseRejectedDocTypes = ['2.12', '2.13', '2.14', '2.15', 'Letter 10', 'Letter 11'];
 export const et3FormDocTypes = [ET3_FORM];
 export const et3AttachmentDocTypes = ['ET3 Attachment'];
-
-export const CHANGE = 'Change';
 
 export const languages = {
   WELSH: 'cy',
@@ -384,12 +358,6 @@ export const languages = {
   WELSH_URL_PARAMETER: '?lng=cy',
   ENGLISH_URL_PARAMETER: '?lng=en',
 };
-
-export const Rule92Types = {
-  CONTACT: 'Contact',
-  RESPOND: 'Respond',
-  TRIBUNAL: 'Tribunal',
-} as const;
 
 export const Parties = {
   BOTH_PARTIES: 'Both parties',
@@ -429,8 +397,6 @@ export const NotificationSubjects = {
   ORDER_OR_REQUEST: 'Case management orders / requests',
   ECC: 'Employer Contract Claim',
 } as const;
-
-export const NoticeOfECC = 'Notice of Employer Contract Claim';
 
 export const DOCUMENT_CONTENT_TYPES = {
   DOCX: ['docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
@@ -490,13 +456,6 @@ export const ResponseStatus = {
   STORED_STATE: 'Stored',
 } as const;
 
-export const FEATURE_FLAGS = {
-  WELSH: 'welsh-language',
-  BUNDLES: 'bundles',
-  ECC: 'ecc',
-  MUL2: 'MUL2',
-} as const;
-
 export const SessionErrors = {
   ERROR_DESTROYING_SESSION: 'Error destroying session',
   ERROR_FAILED_TO_RETRIEVE_USER_CASE_FROM_REQUEST_SESSION: 'User case not found in the request session',
@@ -507,10 +466,6 @@ export const GenericTestConstants = {
   TRUE: true,
   FALSE: false,
   TEST_FIELD_VALUE: 'Test pension correct details',
-} as const;
-
-export const CallbackTestConstants = {
-  REDIS_ERROR: 'redisError',
 } as const;
 
 export const DefaultValues = {

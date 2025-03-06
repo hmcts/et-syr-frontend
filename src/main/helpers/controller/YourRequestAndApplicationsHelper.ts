@@ -6,6 +6,7 @@ import {
 import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constants';
 import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
+import CollectionUtils from '../../utils/CollectionUtils';
 import ObjectUtils from '../../utils/ObjectUtils';
 import { getApplicationDisplay } from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
@@ -27,16 +28,25 @@ export const updateAppsDisplayInfo = (
     ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
   };
   apps.forEach(app => {
-    updateAppDisplayInfo(app, translations, req.url);
+    updateAppDisplayInfo(app, translations, req);
   });
   return apps;
 };
 
-const updateAppDisplayInfo = (app: GenericTseApplicationTypeItem, translations: AnyRecord, url: string): void => {
-  // TODO: replace claimant's applicationState to user's application state
-  const appState: LinkStatus = <LinkStatus>app.value.applicationState;
+const getApplicationState = (app: GenericTseApplicationType, user: UserDetails): LinkStatus => {
+  if (CollectionUtils.isNotEmpty(app.respondentState)) {
+    const respondentState = app.respondentState.find(state => state.userIdamId === user.id);
+    if (respondentState) {
+      return <LinkStatus>respondentState.applicationState;
+    }
+  }
+  return LinkStatus.NOT_YET_AVAILABLE;
+};
+
+const updateAppDisplayInfo = (app: GenericTseApplicationTypeItem, translations: AnyRecord, req: AppRequest): void => {
+  const appState: LinkStatus = getApplicationState(app.value, req.session.user);
   app.linkValue = getApplicationDisplay(app.value, translations);
-  app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
+  app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(req.url);
   app.statusColor = linkStatusColorMap.get(appState);
   app.displayStatus = translations[appState];
 };
@@ -45,7 +55,7 @@ const updateAppDisplayInfo = (app: GenericTseApplicationTypeItem, translations: 
  * Get user's applications
  * @param req request
  */
-export const getApplicationCollection = (req: AppRequest): GenericTseApplicationTypeItem[] => {
+export const getYourApplicationCollection = (req: AppRequest): GenericTseApplicationTypeItem[] => {
   const yourApps = (req.session.userCase?.genericTseApplicationCollection || []).filter(app =>
     isYourApplication(app.value, req.session.user)
   );
@@ -58,5 +68,5 @@ export const getApplicationCollection = (req: AppRequest): GenericTseApplication
  * @param user user details
  */
 export const isYourApplication = (app: GenericTseApplicationType, user: UserDetails): boolean => {
-  return app.applicant === Applicant.RESPONDENT && app.applicantIdamId === user.id;
+  return app?.applicant === Applicant.RESPONDENT && app?.applicantIdamId === user?.id;
 };
