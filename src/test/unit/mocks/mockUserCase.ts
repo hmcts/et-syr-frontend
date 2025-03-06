@@ -13,7 +13,6 @@ export default {
   claimantRepresentedQuestion: 'No',
   contactApplicationType: 'Change personal details',
   copyToOtherPartyYesOrNo: YesOrNo.YES,
-  selectedGenericTseApplication: { value: { applicantIdamId: '1' } },
   ruleCopyState: undefined,
   representativeClaimantType: {
     myHmctsOrganisation: {
