@@ -196,6 +196,7 @@ export class CaseApi {
         case_type_id: caseItem.caseTypeId,
         type_c: application.ORDER_WITNESS_ATTEND.code.includes(caseItem.contactApplicationType),
         respondent_tse: {
+          respondentIdamId: req.session.user.id,
           contactApplicationType: caseItem.contactApplicationType,
           contactApplicationClaimantType: appType ? appType.claimant : null,
           contactApplicationText: caseItem.contactApplicationText,
@@ -216,7 +217,7 @@ export class CaseApi {
         case_type_id: caseItem.caseTypeId,
         applicationId: caseItem.selectedGenericTseApplication.id,
         supportingMaterialFile: caseItem.supportingMaterialFile,
-        isRespondingToRequestOrOrder: caseItem.isRespondingToRequestOrOrder,
+        isRespondingToRequestOrOrder: false,
         response: {
           response: caseItem.responseText,
           hasSupportingMaterial: caseItem.hasSupportingMaterial,
