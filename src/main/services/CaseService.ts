@@ -190,21 +190,18 @@ export class CaseApi {
   submitRespondentTse = async (req: AppRequest): Promise<AxiosResponse<CaseApiDataResponse>> => {
     try {
       const caseItem = req.session.userCase;
-      const selectedGenericTseApplication = caseItem ? caseItem.selectedGenericTseApplication : null;
-      const tseAppItem = selectedGenericTseApplication ? selectedGenericTseApplication.value : null;
       const appType = getApplicationByCode(caseItem.contactApplicationType);
       return await this.axios.put(JavaApiUrls.SUBMIT_RESPONDENT_APPLICATION, {
         case_id: caseItem.id,
         case_type_id: caseItem.caseTypeId,
         type_c: application.ORDER_WITNESS_ATTEND.code.includes(caseItem.contactApplicationType),
         respondent_tse: {
-          contactApplicationType: caseItem ? caseItem.contactApplicationType : null,
+          contactApplicationType: caseItem.contactApplicationType,
           contactApplicationClaimantType: appType ? appType.claimant : null,
-          contactApplicationText: caseItem ? caseItem.contactApplicationText : null,
-          contactApplicationFile: caseItem ? caseItem.contactApplicationFile : null,
-          copyToOtherPartyYesOrNo: caseItem ? caseItem.copyToOtherPartyYesOrNo : null,
-          copyToOtherPartyText: caseItem ? caseItem.copyToOtherPartyText : null,
-          respondentIdamId: tseAppItem ? tseAppItem.applicantIdamId : null,
+          contactApplicationText: caseItem.contactApplicationText,
+          contactApplicationFile: caseItem.contactApplicationFile,
+          copyToOtherPartyYesOrNo: caseItem.copyToOtherPartyYesOrNo,
+          copyToOtherPartyText: caseItem.copyToOtherPartyText,
         },
       });
     } catch (error) {

@@ -69,7 +69,6 @@ describe('Contact Tribunal Submit Controller', () => {
     req.session.userCase = mockUserCase;
     req.url = PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE;
     req.session.userCase.copyToOtherPartyYesOrNo = YesOrNo.YES;
-    req.session.userCase.selectedGenericTseApplication.value.applicantIdamId = '123';
     req.url = '/test-url';
     jest.spyOn(getCaseApi(req.session.user?.accessToken), 'submitRespondentTse').mockImplementation(() => {
       throw new Error('Test error');
