@@ -29,11 +29,11 @@
     },
     "AMEND_RESPONSE": {
       "label": "Apply to amend my response",
-      "body": "Request to amend your ET1 claim - including adding or removing claims or details of your claim."
+      "body": "Request to amend your ET3 response – including removing responses or details of your response."
     },
     "ORDER_OTHER_PARTY": {
       "label": "Order the claimant to do something",
-      "body": "Apply to order the applicant to do or provide something."
+      "body": "Apply to order the claimant to do or provide something."
     },
     "ORDER_WITNESS_ATTEND": {
       "label": "Order a witness to give evidence",
@@ -41,7 +41,7 @@
     },
     "CLAIMANT_NOT_COMPLIED": {
       "label": "Tell the tribunal the claimant has not complied with an order",
-      "body": "Tell us that the applicant has not complied with all or part of an order from the tribunal."
+      "body": "Tell us that the claimant has not complied with all or part of an order from the tribunal."
     },
     "RESTRICT_PUBLICITY": {
       "label": "Apply to restrict publicity",
@@ -49,7 +49,7 @@
     },
     "STRIKE_OUT_CLAIM": {
       "label": "Strike out all or part of the claimant's claim",
-      "body": "You can request that the tribunal strike out all or parts of the applicant's response."
+      "body": "You can request that the tribunal strike out all or parts of the claimant’s claim."
     },
     "RECONSIDER_JUDGMENT": {
       "label": "Apply for the judgment to be reconsidered",
