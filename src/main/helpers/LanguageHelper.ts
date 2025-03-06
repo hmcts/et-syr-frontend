@@ -23,6 +23,7 @@ export const setUrlLanguage = (req: AppRequest, redirectUrl: string): string => 
 };
 
 export const addLanguageParameterToUrl = (req: AppRequest, redirectUrl: string): string => {
+  redirectUrl = UrlUtils.getValidUrl(redirectUrl);
   if (StringUtils.isNotBlank(req?.url) && req?.url.includes(languages.WELSH_URL_POSTFIX)) {
     redirectUrl = addParameterToUrl(redirectUrl, languages.WELSH_URL_POSTFIX);
     req.session.lang = languages.WELSH;
