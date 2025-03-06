@@ -446,16 +446,6 @@ export const YES = 'Yes';
 export const NO = 'No';
 export const MY_HMCTS = 'MyHMCTS';
 
-export const TseStatus = {
-  OPEN_STATE: 'Open',
-  CLOSED_STATE: 'Closed',
-  STORED_STATE: 'Stored',
-} as const;
-
-export const ResponseStatus = {
-  STORED_STATE: 'Stored',
-} as const;
-
 export const SessionErrors = {
   ERROR_DESTROYING_SESSION: 'Error destroying session',
   ERROR_FAILED_TO_RETRIEVE_USER_CASE_FROM_REQUEST_SESSION: 'User case not found in the request session',

@@ -40,7 +40,7 @@ const getApplicationState = (app: GenericTseApplicationType, user: UserDetails):
       return <LinkStatus>respondentState.applicationState;
     }
   }
-  return LinkStatus.NOT_YET_AVAILABLE;
+  return LinkStatus.NOT_VIEWED;
 };
 
 const updateAppDisplayInfo = (app: GenericTseApplicationTypeItem, translations: AnyRecord, req: AppRequest): void => {

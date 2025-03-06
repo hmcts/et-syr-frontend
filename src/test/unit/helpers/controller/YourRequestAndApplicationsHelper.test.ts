@@ -87,8 +87,8 @@ describe('Your Request and Applications Helper', () => {
 
       expect(updatedApps[2].linkValue).toBe('Postpone a hearing');
       expect(updatedApps[2].redirectUrl).toBe('/application-details/fc80aca1-d884-4a29-a42d-df5862e40efc?lng=en');
-      expect(updatedApps[2].statusColor).toBe('--grey');
-      expect(updatedApps[2].displayStatus).toBe('Not available yet');
+      expect(updatedApps[2].statusColor).toBe('--red');
+      expect(updatedApps[2].displayStatus).toBe('Not viewed yet');
     });
   });
 
