@@ -26,7 +26,11 @@ export const getClaimantsApplications = (req: AppRequest): ApplicationList[] => 
   return updateAppsDisplayInfo(claimantApps, req);
 };
 
-const isClaimantApplicationShare = (app: GenericTseApplicationType): boolean => {
+/**
+ * Check if claimant's application is shared to other party
+ * @param app application
+ */
+export const isClaimantApplicationShare = (app: GenericTseApplicationType): boolean => {
   return isApplicantClaimant(app) && isApplicationShare(app);
 };
 

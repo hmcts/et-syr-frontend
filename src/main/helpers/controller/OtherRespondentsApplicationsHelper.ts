@@ -1,4 +1,4 @@
-import { AppRequest } from '../../definitions/appRequest';
+import { AppRequest, UserDetails } from '../../definitions/appRequest';
 import { ApplicationList } from '../../definitions/applicationList';
 import { GenericTseApplicationType } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { isApplicantRespondent } from '../GenericTseApplicationHelper';
@@ -12,11 +12,16 @@ import { updateAppsDisplayInfo } from './YourRequestAndApplicationsHelper';
  */
 export const getOtherRespondentsApplications = (req: AppRequest): ApplicationList[] => {
   const otherRespApps = (req.session.userCase.genericTseApplicationCollection || []).filter(app =>
-    isOtherRespApplicationShare(app.value, req)
+    isOtherRespApplicationShare(app.value, req.session.user)
   );
   return updateAppsDisplayInfo(otherRespApps, req);
 };
 
-const isOtherRespApplicationShare = (app: GenericTseApplicationType, req: AppRequest): boolean => {
-  return isApplicantRespondent(app) && app.applicantIdamId !== req.session.user.id && isApplicationShare(app);
+/**
+ * Check if other respondent's application is shared to other party
+ * @param app application
+ * @param user user details
+ */
+export const isOtherRespApplicationShare = (app: GenericTseApplicationType, user: UserDetails): boolean => {
+  return isApplicantRespondent(app) && app.applicantIdamId !== user.id && isApplicationShare(app);
 };
