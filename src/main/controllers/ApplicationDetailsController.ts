@@ -4,7 +4,6 @@ import { AppRequest } from '../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { ErrorPages, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
 import { LinkStatus } from '../definitions/links';
-import { changeApplicationState } from '../helpers/ApplicationStateHelper';
 import { findSelectedGenericTseApplication, getApplicationDisplay } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import {
@@ -31,7 +30,6 @@ export default class ApplicationDetailsController {
       const newStatus: LinkStatus = getApplicationStatusAfterViewed(selectedApplication.value, req.session.user);
       if (newStatus) {
         await getCaseApi(req.session.user?.accessToken).changeApplicationStatus(req, selectedApplication, newStatus);
-        changeApplicationState(selectedApplication.value, req.session.user, newStatus);
       }
     } catch (error) {
       logger.error(TseErrors.ERROR_UPDATE_LINK_STATUS);

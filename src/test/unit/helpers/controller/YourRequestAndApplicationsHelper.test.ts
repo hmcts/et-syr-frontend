@@ -39,8 +39,11 @@ describe('Your Request and Applications Helper', () => {
             type: application.CHANGE_PERSONAL_DETAILS.code,
             respondentState: [
               {
-                userIdamId: '382afa39-0acf-467b-ad19-740b77ab3945',
-                applicationState: LinkStatus.NOT_STARTED_YET,
+                id: '1d8e8ad8-b6bf-458e-a4bc-b47d9193a2df',
+                value: {
+                  userIdamId: '382afa39-0acf-467b-ad19-740b77ab3945',
+                  applicationState: LinkStatus.NOT_STARTED_YET,
+                },
               },
             ],
           },
@@ -52,12 +55,18 @@ describe('Your Request and Applications Helper', () => {
             type: application.AMEND_RESPONSE.claimant,
             respondentState: [
               {
-                userIdamId: 'b305e3eb-6aa6-4e7a-a506-f3c97c997953',
-                applicationState: LinkStatus.NOT_VIEWED,
+                id: '7449576e-b8dc-4392-8e3f-c92c73712f64',
+                value: {
+                  userIdamId: 'b305e3eb-6aa6-4e7a-a506-f3c97c997953',
+                  applicationState: LinkStatus.NOT_VIEWED,
+                },
               },
               {
-                userIdamId: '382afa39-0acf-467b-ad19-740b77ab3945',
-                applicationState: LinkStatus.VIEWED,
+                id: '4eae42e3-79c1-4af9-ac45-65aed07d4f3e',
+                value: {
+                  userIdamId: '382afa39-0acf-467b-ad19-740b77ab3945',
+                  applicationState: LinkStatus.VIEWED,
+                },
               },
             ],
           },
@@ -111,8 +120,11 @@ describe('Your Request and Applications Helper', () => {
             type: application.CHANGE_PERSONAL_DETAILS.code,
             respondentState: [
               {
-                userIdamId: '77734122-ddd9-4e29-921d-65a7efb2f9eb',
-                applicationState: LinkStatus.IN_PROGRESS,
+                id: '3a72a43b-b674-49de-9fc1-472813d3456c',
+                value: {
+                  userIdamId: '77734122-ddd9-4e29-921d-65a7efb2f9eb',
+                  applicationState: LinkStatus.IN_PROGRESS,
+                },
               },
             ],
           },

@@ -5,12 +5,6 @@ import { DocumentTypeItem } from './documentTypeItem';
 export interface GenericTseApplicationTypeItem {
   id?: string;
   value?: GenericTseApplicationType;
-  //Field created for visualization only
-  linkValue?: string;
-  //Url for navigating used in et-syr-front only
-  redirectUrl?: string;
-  statusColor?: string;
-  displayStatus?: string;
 }
 
 export interface GenericTseApplicationType {
@@ -28,10 +22,15 @@ export interface GenericTseApplicationType {
   status?: string;
   dueDate?: string;
   applicationState?: string; // used for CUI and so viewed/not viewed refers to claimant
-  respondentState?: TseStatusType[];
+  respondentState?: TseStatusTypeItem[];
   respondentResponseRequired?: string;
   claimantResponseRequired?: string;
   adminDecision?: TseAdminDecisionItem[];
+}
+
+export interface TseStatusTypeItem {
+  id: string;
+  value: TseStatusType;
 }
 
 export interface TseStatusType {
@@ -42,9 +41,6 @@ export interface TseStatusType {
 export interface TseAdminDecisionItem {
   id?: string;
   value?: TseAdminDecision;
-  redirectUrl?: string;
-  statusColor?: string;
-  displayStatus?: string;
 }
 
 export interface TseAdminDecision {
@@ -89,6 +85,8 @@ export interface TseRespondType {
   selectPartyRespond?: string;
   selectPartyNotify?: string;
   viewedByClaimant?: string;
+  // Work Allocation enablers
+  dateTime?: string;
 }
 
 export interface TseRespondSupportingMaterialItem {

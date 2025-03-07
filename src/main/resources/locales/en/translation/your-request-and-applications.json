@@ -2,5 +2,6 @@
   "title": "Your applications to the tribunal",
   "submitDate": "Date submitted",
   "application": "Application",
-  "status": "Status"
+  "status": "Status",
+  "lastUpdated": "Last Updated"
 }
