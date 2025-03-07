@@ -22,10 +22,15 @@ export interface GenericTseApplicationType {
   status?: string;
   dueDate?: string;
   applicationState?: string; // used for CUI and so viewed/not viewed refers to claimant
-  respondentState?: TseStatusType[];
+  respondentState?: TseStatusTypeItem[];
   respondentResponseRequired?: string;
   claimantResponseRequired?: string;
   adminDecision?: TseAdminDecisionItem[];
+}
+
+export interface TseStatusTypeItem {
+  id: string;
+  value: TseStatusType;
 }
 
 export interface TseStatusType {
@@ -36,9 +41,6 @@ export interface TseStatusType {
 export interface TseAdminDecisionItem {
   id?: string;
   value?: TseAdminDecision;
-  redirectUrl?: string;
-  statusColor?: string;
-  displayStatus?: string;
 }
 
 export interface TseAdminDecision {
