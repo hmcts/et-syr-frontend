@@ -1,31 +1,62 @@
-import { AppRequest } from '../../definitions/appRequest';
-import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
+import { AppRequest, UserDetails } from '../../definitions/appRequest';
+import {
+  GenericTseApplicationType,
+  GenericTseApplicationTypeItem,
+} from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constants';
 import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import ObjectUtils from '../../utils/ObjectUtils';
-import { getApplicationDisplayByCode } from '../ApplicationHelper';
+import { getApplicationState } from '../ApplicationStateHelper';
+import { getApplicationDisplay } from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
-export const getApplicationCollection = (req: AppRequest): GenericTseApplicationTypeItem[] => {
-  const userCase = req.session.userCase;
-  const respondentApps = (userCase.genericTseApplicationCollection || []).filter(
-    app => app.value?.applicant === Applicant.RESPONDENT
-  );
-  if (ObjectUtils.isEmpty(respondentApps)) {
+/**
+ * Update applications' display info
+ * @param apps application list
+ * @param req request
+ */
+export const updateAppsDisplayInfo = (
+  apps: GenericTseApplicationTypeItem[],
+  req: AppRequest
+): GenericTseApplicationTypeItem[] => {
+  if (ObjectUtils.isEmpty(apps)) {
     return [];
   }
-
-  const url = req.url;
   const translations: AnyRecord = {
     ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
     ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
   };
-  respondentApps.forEach(app => {
-    app.linkValue = getApplicationDisplayByCode(app.value.type, translations);
-    app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(url);
-    app.statusColor = linkStatusColorMap.get(<LinkStatus>app.value.applicationState);
-    app.displayStatus = translations[app.value.applicationState];
+  apps.forEach(app => {
+    updateAppDisplayInfo(app, translations, req);
   });
-  return respondentApps;
+  return apps;
+};
+
+const updateAppDisplayInfo = (app: GenericTseApplicationTypeItem, translations: AnyRecord, req: AppRequest): void => {
+  const appState: LinkStatus = getApplicationState(app.value, req.session.user);
+  app.linkValue = getApplicationDisplay(app.value, translations);
+  app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(req.url);
+  app.statusColor = linkStatusColorMap.get(appState);
+  app.displayStatus = translations[appState];
+};
+
+/**
+ * Get user's applications
+ * @param req request
+ */
+export const getYourApplicationCollection = (req: AppRequest): GenericTseApplicationTypeItem[] => {
+  const yourApps = (req.session.userCase?.genericTseApplicationCollection || []).filter(app =>
+    isYourApplication(app.value, req.session.user)
+  );
+  return updateAppsDisplayInfo(yourApps, req);
+};
+
+/**
+ * Check if application applied by current user
+ * @param app application
+ * @param user user details
+ */
+export const isYourApplication = (app: GenericTseApplicationType, user: UserDetails): boolean => {
+  return app?.applicant === Applicant.RESPONDENT && app?.applicantIdamId === user?.id;
 };

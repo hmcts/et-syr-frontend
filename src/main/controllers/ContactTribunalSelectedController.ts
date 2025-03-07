@@ -4,7 +4,7 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { continueButton } from '../definitions/buttons';
 import { CaseWithId } from '../definitions/case';
-import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys } from '../definitions/constants';
+import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { getApplicationByUrl, getApplicationDisplayByUrl } from '../helpers/ApplicationHelper';
@@ -74,6 +74,7 @@ export default class ContactTribunalSelectedController {
 
     const selectedApplication = getApplicationByUrl(req.params.selectedOption);
     if (!selectedApplication) {
+      logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.selectedOption);
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
@@ -105,6 +106,7 @@ export default class ContactTribunalSelectedController {
     this.uploadedFileName = req?.session?.userCase?.contactApplicationFile?.document_filename;
     const selectedApplication = getApplicationByUrl(req.params?.selectedOption);
     if (!selectedApplication) {
+      logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.selectedOption);
       return res.redirect(PageUrls.CONTACT_TRIBUNAL);
     }
 

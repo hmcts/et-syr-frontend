@@ -1,6 +1,6 @@
 import RespondentEnterPostCodeController from '../../../main/controllers/RespondentEnterPostCodeController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import { saveForLaterButton, saveAndContinueButton } from '../../../main/definitions/radios';
+import { saveAndContinueButton, saveForLaterButton } from '../../../main/definitions/radios';
 import { isValidUKPostcode } from '../../../main/validators/address_validator';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';

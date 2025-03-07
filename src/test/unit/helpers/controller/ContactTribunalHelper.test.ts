@@ -1,5 +1,6 @@
 import { CaseWithId, YesOrNo } from '../../../../main/definitions/case';
 import { PageUrls } from '../../../../main/definitions/constants';
+import { HubLinkStatus, HubLinksStatuses } from '../../../../main/definitions/hub';
 import { AnyRecord } from '../../../../main/definitions/util-types';
 import {
   clearTempFields,
@@ -24,7 +25,7 @@ describe('Contact Tribunal Helper', () => {
     it('should return true when ET1 online submission is defined', () => {
       const userCase = {
         id: 'case123',
-        et1OnlineSubmission: 'submitted Et1 Form',
+        et1OnlineSubmission: 'Yes',
       } as CaseWithId;
       const result = isClaimantSystemUser(userCase);
       expect(result).toBe(true);
@@ -33,7 +34,17 @@ describe('Contact Tribunal Helper', () => {
     it('should return true when hub links statuses are defined', () => {
       const userCase = {
         id: 'case123',
-        hubLinksStatuses: {},
+        hubLinksStatuses: {
+          documents: HubLinkStatus.READY_TO_VIEW,
+          et1ClaimForm: HubLinkStatus.SUBMITTED,
+          hearingDetails: HubLinkStatus.NOT_YET_AVAILABLE,
+          tribunalOrders: HubLinkStatus.NOT_YET_AVAILABLE,
+          contactTribunal: HubLinkStatus.OPTIONAL,
+          respondentResponse: HubLinkStatus.NOT_YET_AVAILABLE,
+          tribunalJudgements: HubLinkStatus.NOT_YET_AVAILABLE,
+          respondentApplications: HubLinkStatus.UPDATED,
+          requestsAndApplications: HubLinkStatus.WAITING_FOR_TRIBUNAL,
+        } as HubLinksStatuses,
       } as CaseWithId;
       const result = isClaimantSystemUser(userCase);
       expect(result).toBe(true);

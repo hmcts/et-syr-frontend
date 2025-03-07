@@ -15,6 +15,7 @@ export interface GenericTseApplicationTypeItem {
 
 export interface GenericTseApplicationType {
   applicant?: string;
+  applicantIdamId?: string;
   date?: string;
   type?: string;
   copyToOtherPartyText?: string;
@@ -23,14 +24,19 @@ export interface GenericTseApplicationType {
   documentUpload?: Document;
   number?: string;
   respondCollection?: TseRespondTypeItem[];
-  respondStoredCollection?: TseRespondTypeItem[];
   responsesCount?: string;
   status?: string;
   dueDate?: string;
   applicationState?: string; // used for CUI and so viewed/not viewed refers to claimant
+  respondentState?: TseStatusType[];
   respondentResponseRequired?: string;
   claimantResponseRequired?: string;
   adminDecision?: TseAdminDecisionItem[];
+}
+
+export interface TseStatusType {
+  userIdamId: string;
+  applicationState: string;
 }
 
 export interface TseAdminDecisionItem {
@@ -65,10 +71,12 @@ export interface TseRespondType {
   date?: string;
   status?: string;
   // Respondent / Claimant Reply
+  fromIdamId?: string;
   response?: string;
   copyToOtherParty?: string;
   hasSupportingMaterial?: YesOrNo;
   supportingMaterial?: TseRespondSupportingMaterialItem[];
+  copyNoGiveDetails?: string;
   // Admin Reply
   addDocument?: DocumentTypeItem[];
   additionalInformation?: string;

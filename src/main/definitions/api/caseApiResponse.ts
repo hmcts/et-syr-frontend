@@ -55,6 +55,7 @@ export interface CaseData {
   claimantWorkAddressQuestion?: YesOrNo;
   claimantWorkAddress?: WorkAddressDetails;
   et3ResponseReceived?: boolean;
+  et1OnlineSubmission?: string;
   receiptDate?: string;
   hubLinksStatuses?: HubLinksStatuses;
   managingOffice?: string;

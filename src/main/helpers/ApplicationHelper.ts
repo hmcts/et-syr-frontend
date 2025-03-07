@@ -52,3 +52,13 @@ export const getApplicationDisplayByCode = (appCode: string, translations: AnyRe
   const appKey = Object.keys(application).find(key => application[key].code === appCode);
   return appKey ? translations[appKey] : '';
 };
+
+/**
+ * Get Application Type as heading by application code
+ * @param appCode code of application
+ * @param translations translation of the page
+ */
+export const getApplicationDisplayByClaimantCode = (appCode: string, translations: AnyRecord): string => {
+  const appKey = Object.keys(application).find(key => application[key].claimant === appCode);
+  return appKey ? translations[appKey] : '';
+};
