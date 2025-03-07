@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
-import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants';
+import { ErrorPages, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
 import { LinkStatus } from '../definitions/links';
 import { changeApplicationState } from '../helpers/ApplicationStateHelper';
 import { findSelectedGenericTseApplication, getApplicationDisplay } from '../helpers/GenericTseApplicationHelper';
@@ -14,12 +14,16 @@ import {
   getDecisionContent,
   isResponseToTribunalRequired,
 } from '../helpers/controller/ApplicationDetailsHelper';
+import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
+
+const logger = getLogger('ApplicationDetailsController');
 
 export default class ApplicationDetailsController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const selectedApplication: GenericTseApplicationTypeItem = findSelectedGenericTseApplication(req);
     if (!selectedApplication) {
+      logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.appId);
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
@@ -30,6 +34,7 @@ export default class ApplicationDetailsController {
         changeApplicationState(selectedApplication.value, req.session.user, newStatus);
       }
     } catch (error) {
+      logger.error(TseErrors.ERROR_UPDATE_LINK_STATUS);
       res.redirect(ErrorPages.NOT_FOUND);
     }
 
