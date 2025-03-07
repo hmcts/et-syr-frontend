@@ -1,8 +1,8 @@
 import { AppRequest } from '../../definitions/appRequest';
+import { ApplicationList } from '../../definitions/applicationList';
 import { YesOrNo } from '../../definitions/case';
 import {
   GenericTseApplicationType,
-  GenericTseApplicationTypeItem,
   TseAdminDecision,
   TseAdminDecisionItem,
   TseRespondType,
@@ -19,7 +19,7 @@ import { updateAppsDisplayInfo } from './YourRequestAndApplicationsHelper';
  * Get claimant's applications
  * @param req request
  */
-export const getClaimantsApplications = (req: AppRequest): GenericTseApplicationTypeItem[] => {
+export const getClaimantsApplications = (req: AppRequest): ApplicationList[] => {
   const claimantApps = (req.session.userCase.genericTseApplicationCollection || []).filter(app =>
     isClaimantApplicationShare(app.value)
   );

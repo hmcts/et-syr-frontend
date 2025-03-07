@@ -5,12 +5,6 @@ import { DocumentTypeItem } from './documentTypeItem';
 export interface GenericTseApplicationTypeItem {
   id?: string;
   value?: GenericTseApplicationType;
-  //Field created for visualization only
-  linkValue?: string;
-  //Url for navigating used in et-syr-front only
-  redirectUrl?: string;
-  statusColor?: string;
-  displayStatus?: string;
 }
 
 export interface GenericTseApplicationType {
@@ -89,6 +83,8 @@ export interface TseRespondType {
   selectPartyRespond?: string;
   selectPartyNotify?: string;
   viewedByClaimant?: string;
+  // Work Allocation enablers
+  dateTime?: string;
 }
 
 export interface TseRespondSupportingMaterialItem {

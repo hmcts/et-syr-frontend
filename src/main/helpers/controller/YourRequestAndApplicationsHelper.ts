@@ -1,4 +1,5 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
+import { ApplicationList } from '../../definitions/applicationList';
 import {
   GenericTseApplicationType,
   GenericTseApplicationTypeItem,
@@ -16,10 +17,7 @@ import { getLanguageParam } from '../RouterHelpers';
  * @param apps application list
  * @param req request
  */
-export const updateAppsDisplayInfo = (
-  apps: GenericTseApplicationTypeItem[],
-  req: AppRequest
-): GenericTseApplicationTypeItem[] => {
+export const updateAppsDisplayInfo = (apps: GenericTseApplicationTypeItem[], req: AppRequest): ApplicationList[] => {
   if (ObjectUtils.isEmpty(apps)) {
     return [];
   }
@@ -27,25 +25,39 @@ export const updateAppsDisplayInfo = (
     ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
     ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
   };
-  apps.forEach(app => {
-    updateAppDisplayInfo(app, translations, req);
+  return apps.map(app => {
+    const appState: LinkStatus = getApplicationState(app.value, req.session.user);
+    return {
+      submitDate: app.value.date,
+      redirectUrl: PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(req.url),
+      linkValue: getApplicationDisplay(app.value, translations),
+      displayStatus: translations[appState],
+      statusColor: linkStatusColorMap.get(appState),
+      lastUpdatedDate: findLatestUpdateDate(app.value),
+    };
   });
-  return apps;
 };
 
-const updateAppDisplayInfo = (app: GenericTseApplicationTypeItem, translations: AnyRecord, req: AppRequest): void => {
-  const appState: LinkStatus = getApplicationState(app.value, req.session.user);
-  app.linkValue = getApplicationDisplay(app.value, translations);
-  app.redirectUrl = PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(req.url);
-  app.statusColor = linkStatusColorMap.get(appState);
-  app.displayStatus = translations[appState];
+const findLatestUpdateDate = (application: GenericTseApplicationType): Date => {
+  const dates: Date[] = [
+    application.date ? new Date(application.date) : null,
+    ...(
+      application.respondCollection?.flatMap(respond =>
+        [respond.value?.date, respond.value?.dateTime].filter(date => date)
+      ) ?? []
+    ).map(date => new Date(date)),
+    ...(application.adminDecision?.flatMap(decision => (decision.value?.date ? [new Date(decision.value.date)] : [])) ??
+      []),
+  ].filter((date): date is Date => date instanceof Date);
+
+  return dates.length > 0 ? new Date(Math.max(...dates.map(date => date.getTime()))) : undefined;
 };
 
 /**
  * Get user's applications
  * @param req request
  */
-export const getYourApplicationCollection = (req: AppRequest): GenericTseApplicationTypeItem[] => {
+export const getYourApplicationCollection = (req: AppRequest): ApplicationList[] => {
   const yourApps = (req.session.userCase?.genericTseApplicationCollection || []).filter(app =>
     isYourApplication(app.value, req.session.user)
   );

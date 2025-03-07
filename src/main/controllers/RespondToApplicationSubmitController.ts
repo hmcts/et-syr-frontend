@@ -14,9 +14,6 @@ export default class RespondToApplicationSubmitController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const userCase = req.session?.userCase;
     try {
-      // Update Hub Links Statuses
-      // TODO: update Statuses
-
       // Submit response to application
       await getCaseApi(req.session.user?.accessToken).submitRespondentResponseToApplication(userCase);
 
