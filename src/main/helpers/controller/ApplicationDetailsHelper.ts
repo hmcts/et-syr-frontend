@@ -8,9 +8,11 @@ import {
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant, DefaultValues, Parties, TranslationKeys } from '../../definitions/constants';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
+import { LinkStatus } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import CollectionUtils from '../../utils/CollectionUtils';
 import ObjectUtils from '../../utils/ObjectUtils';
+import { getApplicationState } from '../ApplicationStateHelper';
 import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../DocumentHelpers';
 import { getApplicationDisplay } from '../GenericTseApplicationHelper';
 import { datesStringToDateInLocale } from '../dateInLocale';
@@ -281,4 +283,21 @@ const getLatestDateFromResponses = (responses: TseRespondTypeItem[]): Date => {
   return (
     responses.map(response => new Date(response.value.date!)).sort((a, b) => b.getTime() - a.getTime())[0] || undefined
   );
+};
+
+/**
+ * Get new application state after viewed
+ * @param app application
+ * @param user current user
+ */
+export const getApplicationStatusAfterViewed = (app: GenericTseApplicationType, user: UserDetails): LinkStatus => {
+  const currentState = getApplicationState(app, user);
+  if (currentState === LinkStatus.NOT_VIEWED) {
+    return LinkStatus.VIEWED;
+  } else if (currentState === LinkStatus.UPDATED) {
+    return LinkStatus.IN_PROGRESS;
+  } else if (currentState === LinkStatus.NOT_STARTED_YET && isResponseToTribunalRequired(app, user)) {
+    return LinkStatus.IN_PROGRESS;
+  }
+  return undefined;
 };

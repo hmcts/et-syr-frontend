@@ -6,8 +6,8 @@ import {
 import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constants';
 import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
-import CollectionUtils from '../../utils/CollectionUtils';
 import ObjectUtils from '../../utils/ObjectUtils';
+import { getApplicationState } from '../ApplicationStateHelper';
 import { getApplicationDisplay } from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
@@ -31,16 +31,6 @@ export const updateAppsDisplayInfo = (
     updateAppDisplayInfo(app, translations, req);
   });
   return apps;
-};
-
-const getApplicationState = (app: GenericTseApplicationType, user: UserDetails): LinkStatus => {
-  if (CollectionUtils.isNotEmpty(app.respondentState)) {
-    const respondentState = app.respondentState.find(state => state.userIdamId === user.id);
-    if (respondentState) {
-      return <LinkStatus>respondentState.applicationState;
-    }
-  }
-  return LinkStatus.NOT_YET_AVAILABLE;
 };
 
 const updateAppDisplayInfo = (app: GenericTseApplicationTypeItem, translations: AnyRecord, req: AppRequest): void => {

@@ -5,6 +5,7 @@ import commonJson from '../../../main/resources/locales/en/translation/common.js
 import { mockGenericTseCollection } from '../mocks/mockGenericTseCollection';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+import { mockUserDetails } from '../mocks/mockUser';
 import mockUserCase from '../mocks/mockUserCase';
 
 describe('Application Details Controller', () => {
@@ -20,13 +21,14 @@ describe('Application Details Controller', () => {
   });
 
   describe('GET method', () => {
-    it('should render the page APPLICATION_DETAILS', () => {
+    it('should render the page APPLICATION_DETAILS', async () => {
       request = mockRequestWithTranslation({}, translationJsons);
+      request.session.user = mockUserDetails;
       request.session.userCase = mockUserCase;
       request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
       request.session.userCase.genericTseApplicationCollection[1].value.respondentResponseRequired = 'Yes';
       request.params.appId = '5d0118c9-bdd6-4d32-9131-6aa6f5ec718e';
-      controller.get(request, response);
+      await controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(
         TranslationKeys.APPLICATION_DETAILS,
         expect.objectContaining({

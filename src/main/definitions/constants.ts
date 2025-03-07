@@ -268,6 +268,7 @@ export const JavaApiUrls = {
   FIND_CASE_BY_ETHOS_CASE_REFERENCE_PARAM_NAME: 'ethosCaseReference',
   SUBMIT_RESPONDENT_APPLICATION: 'respondentTSE/submit-respondent-application',
   SUBMIT_RESPONDENT_RESPONSE_TO_APP: 'respondentTSE/respond-to-claimant-application',
+  CHANGE_RESPONDENT_APPLICATION_STATUS: 'respondentTSE/change-respondent-application-status',
 } as const;
 
 export const Roles = {
@@ -446,16 +447,6 @@ export const YES = 'Yes';
 export const NO = 'No';
 export const MY_HMCTS = 'MyHMCTS';
 
-export const TseStatus = {
-  OPEN_STATE: 'Open',
-  CLOSED_STATE: 'Closed',
-  STORED_STATE: 'Stored',
-} as const;
-
-export const ResponseStatus = {
-  STORED_STATE: 'Stored',
-} as const;
-
 export const SessionErrors = {
   ERROR_DESTROYING_SESSION: 'Error destroying session',
   ERROR_FAILED_TO_RETRIEVE_USER_CASE_FROM_REQUEST_SESSION: 'User case not found in the request session',
@@ -576,6 +567,14 @@ export const LoggerConstants = {
   ERROR_API: 'An error occurred while calling API, ',
   ERROR_SYSTEM: 'System error. ',
 };
+
+export const TseErrors = {
+  ERROR_APPLICATION_NOT_FOUND: 'Selected application not found: ',
+  ERROR_UPDATE_LINK_STATUS: 'An error occurred while update LinkStatus',
+  ERROR_NO_RESPOND_REQUIRED: 'No respond is required for this application',
+  ERROR_SUBMIT_APPLICATION: 'An error occurred while submitting an application',
+  ERROR_RESPOND_TO_APPLICATION: 'An error occurred while responding to an application',
+} as const;
 
 export const ControllerNames = {
   CLAIMANT_PENSION_AND_BENEFITS_CONTROLLER: 'ClaimantPensionAndBenefitsController',

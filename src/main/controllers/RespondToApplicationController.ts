@@ -4,7 +4,7 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, YesOrNo } from '../definitions/case';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
-import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants';
+import { ErrorPages, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
@@ -17,8 +17,11 @@ import {
   isResponseToTribunalRequired,
 } from '../helpers/controller/ApplicationDetailsHelper';
 import { getFormDataError } from '../helpers/controller/RespondToApplicationHelper';
+import { getLogger } from '../logger';
 import UrlUtils from '../utils/UrlUtils';
 import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
+
+const logger = getLogger('RespondToApplicationController');
 
 export default class RespondToApplicationController {
   private readonly form: Form;
@@ -62,6 +65,7 @@ export default class RespondToApplicationController {
   public post = (req: AppRequest, res: Response): void => {
     const selectedApplication: GenericTseApplicationTypeItem = findSelectedGenericTseApplication(req);
     if (!selectedApplication) {
+      logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.appId);
       return res.redirect(ErrorPages.NOT_FOUND + getLanguageParam(req.url));
     }
 
@@ -89,10 +93,12 @@ export default class RespondToApplicationController {
   public get = (req: AppRequest, res: Response): void => {
     const selectedApplication: GenericTseApplicationTypeItem = findSelectedGenericTseApplication(req);
     if (!selectedApplication) {
+      logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.appId);
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
     if (!isResponseToTribunalRequired(selectedApplication.value, req.session.user)) {
+      logger.error(TseErrors.ERROR_NO_RESPOND_REQUIRED);
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 

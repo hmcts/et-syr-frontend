@@ -7,8 +7,10 @@ import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { UploadedFile } from '../definitions/api/uploadedFile';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
+import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { application } from '../definitions/contact-tribunal-applications';
+import { LinkStatus } from '../definitions/links';
 import { toApiFormat } from '../helpers/ApiFormatter';
 import { getApplicationByCode } from '../helpers/ApplicationHelper';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
@@ -227,6 +229,25 @@ export class CaseApi {
       });
     } catch (error) {
       throw new Error('Error responding to tse application: ' + axiosErrorDetails(error));
+    }
+  };
+
+  changeApplicationStatus = async (
+    req: AppRequest,
+    selectedApplication: GenericTseApplicationTypeItem,
+    newStatus: LinkStatus
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      const caseItem = req.session.userCase;
+      return await this.axios.put(JavaApiUrls.CHANGE_RESPONDENT_APPLICATION_STATUS, {
+        case_id: caseItem.id,
+        case_type_id: caseItem.caseTypeId,
+        application_id: selectedApplication.id,
+        user_idam_id: req.session.user.id,
+        new_status: newStatus,
+      });
+    } catch (error) {
+      throw new Error('Error changing tse application status: ' + axiosErrorDetails(error));
     }
   };
 }
