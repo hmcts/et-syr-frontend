@@ -15,11 +15,7 @@ export default class ContactTribunalCYAController {
       hideContactUs: true,
       ethosCaseReference: req.session.userCase.ethosCaseReference,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
-      cyaContent: getCyaContent(req, {
-        ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
-        ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
-        ...req.t(TranslationKeys.CONTACT_TRIBUNAL_CYA, { returnObjects: true }),
-      }),
+      cyaContent: getCyaContent(req),
       submitLink: InterceptPaths.CONTACT_TRIBUNAL_SUBMIT + getLanguageParam(req.url),
     });
   };

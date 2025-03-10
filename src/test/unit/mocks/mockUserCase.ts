@@ -1,4 +1,4 @@
-import { CaseWithId } from '../../../main/definitions/case';
+import { CaseWithId, YesOrNo } from '../../../main/definitions/case';
 import { CaseState } from '../../../main/definitions/definition';
 
 export default {
@@ -7,10 +7,13 @@ export default {
   createdDate: 'August 19, 2022',
   lastModified: 'August 19, 2022',
   respondents: undefined,
-  et1OnlineSubmission: 'submitted Et1 Form',
+  et1OnlineSubmission: 'Yes',
   hubLinksStatuses: {},
   caseSource: undefined,
   claimantRepresentedQuestion: 'No',
+  contactApplicationType: 'Change personal details',
+  copyToOtherPartyYesOrNo: YesOrNo.YES,
+  ruleCopyState: undefined,
   representativeClaimantType: {
     myHmctsOrganisation: {
       organisationID: undefined,

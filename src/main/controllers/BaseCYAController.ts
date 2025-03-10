@@ -1,7 +1,7 @@
 import { Form } from '../components/form';
 import { YesOrNo } from '../definitions/case';
 import { FormContent, FormFields } from '../definitions/form';
-import { saveForLaterButton, saveAndContinueButton } from '../definitions/radios';
+import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { isOptionSelected } from '../validators/validator';
 
