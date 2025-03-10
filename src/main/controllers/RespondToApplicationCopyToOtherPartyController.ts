@@ -26,7 +26,6 @@ export default class RespondToApplicationCopyToOtherPartyController {
   }
 
   public post = (req: AppRequest, res: Response): void => {
-    // TODO: Get values from inputs and Save them
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     req.session.errors = this.form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
