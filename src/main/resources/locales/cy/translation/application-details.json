@@ -25,6 +25,8 @@
   "Case worker": "[W]Case worker",
   "name": "Enw",
   "sentTo": "Anfonwyd at",
+  "Respondent only": "[W]Respondent only",
+  "Claimant only": "[W]Claimant only",
   "responseFrom": "Ymateb gan",
   "responseDate": "Dyddiad yr ymateb",
   "responseText": "[W]What's your response to the application?",

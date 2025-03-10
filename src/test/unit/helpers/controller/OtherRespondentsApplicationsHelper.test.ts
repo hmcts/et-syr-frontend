@@ -1,5 +1,5 @@
 import { YesOrNo } from '../../../../main/definitions/case';
-import { Applicant, Parties } from '../../../../main/definitions/constants';
+import { Applicant, PartiesNotify } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import { getOtherRespondentsApplications } from '../../../../main/helpers/controller/OtherRespondentsApplicationsHelper';
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
@@ -122,7 +122,7 @@ describe('Other Respondents Applications Helper', () => {
               {
                 value: {
                   from: Applicant.ADMIN,
-                  selectPartyNotify: Parties.RESPONDENT_ONLY,
+                  selectPartyNotify: PartiesNotify.RESPONDENT_ONLY,
                 },
               },
             ],
@@ -143,7 +143,7 @@ describe('Other Respondents Applications Helper', () => {
             adminDecision: [
               {
                 value: {
-                  selectPartyNotify: Parties.RESPONDENT_ONLY,
+                  selectPartyNotify: PartiesNotify.RESPONDENT_ONLY,
                 },
               },
             ],

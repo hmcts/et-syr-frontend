@@ -360,7 +360,13 @@ export const languages = {
   ENGLISH_URL_PARAMETER: '?lng=en',
 };
 
-export const Parties = {
+export const PartiesRespond = {
+  BOTH_PARTIES: 'Both parties',
+  CLAIMANT: 'Claimant',
+  RESPONDENT: 'Respondent',
+} as const;
+
+export const PartiesNotify = {
   BOTH_PARTIES: 'Both parties',
   CLAIMANT_ONLY: 'Claimant only',
   RESPONDENT_ONLY: 'Respondent only',
@@ -597,4 +603,10 @@ export const CLAIM_TYPES = {
   UNFAIR_DISMISSAL: 'Unfair dismissal',
   WHISTLEBLOWING: 'Whistleblowing',
   OTHER: 'Other type of claim',
+};
+
+export const IsCmoOrRequest = {
+  CASE_MANAGEMENT_ORDER: 'Case management order',
+  REQUEST: 'Request',
+  NEITHER: 'Neither',
 };

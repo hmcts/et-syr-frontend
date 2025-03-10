@@ -6,7 +6,7 @@ import {
   TseRespondType,
   TseRespondTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, DefaultValues, Parties, TranslationKeys } from '../../definitions/constants';
+import { Applicant, IsCmoOrRequest, PartiesNotify, PartiesRespond, TranslationKeys } from '../../definitions/constants';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
 import { LinkStatus } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
@@ -95,8 +95,8 @@ const getLastAdminShareDate = (responses: TseRespondTypeItem[]): Date => {
     responses.filter(
       item =>
         item.value?.from === Applicant.ADMIN &&
-        (item.value?.selectPartyNotify === Parties.BOTH_PARTIES ||
-          item.value?.selectPartyNotify === Parties.RESPONDENT_ONLY) &&
+        (item.value?.selectPartyNotify === PartiesNotify.BOTH_PARTIES ||
+          item.value?.selectPartyNotify === PartiesNotify.RESPONDENT_ONLY) &&
         item.value?.date
     )
   );
@@ -117,9 +117,12 @@ const addNonAdminResponse = (response: TseRespondType, translations: AnyRecord, 
 
   rows.push(
     addSummaryRow(translations.responseFrom, translations[response.from]),
-    addSummaryRow(translations.responseDate, datesStringToDateInLocale(response.date, req.url)),
-    addSummaryRow(translations.responseText, response.response || DefaultValues.STRING_DASH)
+    addSummaryRow(translations.responseDate, datesStringToDateInLocale(response.date, req.url))
   );
+
+  if (response.response) {
+    rows.push(addSummaryRow(translations.responseText, response.response));
+  }
 
   if (response.supportingMaterial) {
     const docType = getDocumentFromDocumentTypeItems(response.supportingMaterial);
@@ -147,12 +150,15 @@ const addAdminResponse = (response: TseRespondType, translations: AnyRecord, req
     addSummaryRow(translations.orderOrRequest, translations[response.isCmoOrRequest])
   );
 
-  if (response.isResponseRequired) {
+  if (
+    response.isCmoOrRequest === IsCmoOrRequest.CASE_MANAGEMENT_ORDER ||
+    response.isCmoOrRequest === IsCmoOrRequest.REQUEST
+  ) {
     rows.push(addSummaryRow(translations.responseDue, translations[response.isResponseRequired]));
-  }
 
-  if (response.selectPartyRespond) {
-    rows.push(addSummaryRow(translations.partyToRespond, translations[response.selectPartyRespond]));
+    if (response.isResponseRequired === YesOrNo.YES) {
+      rows.push(addSummaryRow(translations.partyToRespond, translations[response.selectPartyRespond]));
+    }
   }
 
   if (response.additionalInformation) {
@@ -162,20 +168,25 @@ const addAdminResponse = (response: TseRespondType, translations: AnyRecord, req
   if (response.addDocument && ObjectUtils.isNotEmpty(response.addDocument)) {
     const docType = getDocumentFromDocumentTypeItems(response.addDocument);
     const link = getLinkFromDocument(docType.uploadedDocument);
-    rows.push(
-      addSummaryRow(translations.description, docType.shortDescription),
-      addSummaryHtmlRow(translations.document, link)
-    );
+    if (docType.shortDescription) {
+      rows.push(addSummaryRow(translations.description, docType.shortDescription));
+    }
+    rows.push(addSummaryHtmlRow(translations.document, link));
   }
 
-  if (response.requestMadeBy) {
-    rows.push(addSummaryRow(translations.requestMadeBy, translations[response.requestMadeBy]));
-  } else if (response.cmoMadeBy) {
-    rows.push(addSummaryRow(translations.requestMadeBy, translations[response.cmoMadeBy]));
-  }
+  if (
+    response.isCmoOrRequest === IsCmoOrRequest.CASE_MANAGEMENT_ORDER ||
+    response.isCmoOrRequest === IsCmoOrRequest.REQUEST
+  ) {
+    if (response.requestMadeBy) {
+      rows.push(addSummaryRow(translations.requestMadeBy, translations[response.requestMadeBy]));
+    } else if (response.cmoMadeBy) {
+      rows.push(addSummaryRow(translations.requestMadeBy, translations[response.cmoMadeBy]));
+    }
 
-  if (response.madeByFullName) {
-    rows.push(addSummaryRow(translations.name, response.madeByFullName));
+    if (response.madeByFullName) {
+      rows.push(addSummaryRow(translations.name, response.madeByFullName));
+    }
   }
 
   rows.push(addSummaryRow(translations.sentTo, translations[response.selectPartyNotify]));
@@ -254,8 +265,8 @@ export const isResponseToTribunalRequired = (app: GenericTseApplicationType, use
     app.respondCollection.filter(
       response =>
         response.value.from === Applicant.ADMIN &&
-        (response.value.selectPartyRespond === Parties.BOTH_PARTIES ||
-          response.value.selectPartyRespond === Parties.RESPONDENT_ONLY)
+        (response.value.selectPartyRespond === PartiesRespond.BOTH_PARTIES ||
+          response.value.selectPartyRespond === PartiesRespond.RESPONDENT)
     )
   );
 
@@ -280,9 +291,11 @@ export const isResponseToTribunalRequired = (app: GenericTseApplicationType, use
 };
 
 const getLatestDateFromResponses = (responses: TseRespondTypeItem[]): Date => {
-  return (
-    responses.map(response => new Date(response.value.date!)).sort((a, b) => b.getTime() - a.getTime())[0] || undefined
-  );
+  const dates = responses.map(response => {
+    const dateToCompare = response.value.dateTime || response.value.date;
+    return new Date(dateToCompare!);
+  });
+  return dates.sort((a, b) => b.getTime() - a.getTime())[0] || undefined;
 };
 
 /**
