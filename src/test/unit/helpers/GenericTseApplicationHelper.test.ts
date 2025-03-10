@@ -207,18 +207,18 @@ describe('Generic Tse Application Helper', () => {
       expect(result).toEqual(false);
     });
 
-    it('should return false when applicant is undefined', () => {
+    it('should return undefined when applicant is undefined', () => {
       const app: GenericTseApplicationType = {
         applicant: undefined,
         type: application.ORDER_WITNESS_ATTEND.claimant,
       };
       const result = isTypeAOrB(app);
-      expect(result).toEqual(false);
+      expect(result).toBeUndefined();
     });
 
     it('should return undefined when type is undefined', () => {
       const app: GenericTseApplicationType = {
-        applicant: Applicant.CLAIMANT,
+        applicant: Applicant.RESPONDENT,
         type: undefined,
       };
       const result = isTypeAOrB(app);

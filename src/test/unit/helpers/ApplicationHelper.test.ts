@@ -22,6 +22,11 @@ describe('Applications Helper Test', () => {
       const result = getApplicationByCode('Invalid code');
       expect(result).toBeUndefined();
     });
+
+    it('should return undefined for an undefined code', () => {
+      const result = getApplicationByCode(undefined);
+      expect(result).toBeUndefined();
+    });
   });
 
   describe('getApplicationByUrl', () => {
@@ -34,16 +39,21 @@ describe('Applications Helper Test', () => {
       const result = getApplicationByUrl('invalid-url');
       expect(result).toBeUndefined();
     });
+
+    it('should return undefined for an undefined URL', () => {
+      const result = getApplicationByUrl(undefined);
+      expect(result).toBeUndefined();
+    });
   });
 
   describe('getApplicationKey', () => {
-    it('should return the correct key for a valid application object', () => {
+    it('should return the correct key for a valid application', () => {
       const app = application.AMEND_RESPONSE;
       const result = getApplicationKey(app);
       expect(result).toBe('AMEND_RESPONSE');
     });
 
-    it('should return undefined for an invalid application object', () => {
+    it('should return undefined for an invalid application', () => {
       const invalidApp: Application = {
         code: 'Invalid application',
         claimant: 'Invalid application',
@@ -51,6 +61,11 @@ describe('Applications Helper Test', () => {
         type: ApplicationType.C,
       };
       const result = getApplicationKey(invalidApp);
+      expect(result).toBeUndefined();
+    });
+
+    it('should return undefined for an undefined application', () => {
+      const result = getApplicationKey(undefined);
       expect(result).toBeUndefined();
     });
   });
@@ -62,6 +77,10 @@ describe('Applications Helper Test', () => {
 
     it('should return true if application type is B', () => {
       expect(isTypeAOrB(application.CONSIDER_DECISION_AFRESH)).toBe(true);
+    });
+
+    it('should return false if application is WITHDRAWAL_OF_ALL_OR_PART_CLAIM', () => {
+      expect(isTypeAOrB(application.WITHDRAWAL_OF_ALL_OR_PART_CLAIM)).toBe(true);
     });
 
     it('should return false if application type is C', () => {

@@ -8,7 +8,7 @@ import {
   TseRespondType,
   TseRespondTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, Parties } from '../../definitions/constants';
+import { Applicant, PartiesNotify } from '../../definitions/constants';
 import { application } from '../../definitions/contact-tribunal-applications';
 import ObjectUtils from '../../utils/ObjectUtils';
 import { isApplicantClaimant } from '../GenericTseApplicationHelper';
@@ -44,7 +44,8 @@ export const isAdminResponseShareToRespondent = (response: TseRespondType): bool
   }
   return (
     response.from === Applicant.ADMIN &&
-    (response.selectPartyNotify === Parties.BOTH_PARTIES || response.selectPartyNotify === Parties.RESPONDENT_ONLY)
+    (response.selectPartyNotify === PartiesNotify.BOTH_PARTIES ||
+      response.selectPartyNotify === PartiesNotify.RESPONDENT_ONLY)
   );
 };
 
@@ -56,7 +57,10 @@ export const isDecisionShareToRespondent = (decision: TseAdminDecision): boolean
   if (!decision) {
     return false;
   }
-  return decision.selectPartyNotify === Parties.BOTH_PARTIES || decision.selectPartyNotify === Parties.RESPONDENT_ONLY;
+  return (
+    decision.selectPartyNotify === PartiesNotify.BOTH_PARTIES ||
+    decision.selectPartyNotify === PartiesNotify.RESPONDENT_ONLY
+  );
 };
 
 /**

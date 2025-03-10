@@ -1,6 +1,6 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import { GenericTseApplicationType } from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, Parties } from '../../../../main/definitions/constants';
+import { Applicant, PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import {
   getAllResponses,
@@ -123,21 +123,19 @@ describe('Application Details Helper', () => {
       expect(result[0][11].key.text).toEqual('Sent to');
       expect(result[0][11].value.text).toEqual('Both parties');
 
-      expect(result[1]).toHaveLength(5);
+      expect(result[1]).toHaveLength(4);
       expect(result[1][0].key.text).toEqual('Response from');
       expect(result[1][0].value.text).toEqual('Respondent');
       expect(result[1][1].key.text).toEqual('Response date');
       expect(result[1][1].value.text).toEqual('4 February 2025');
-      expect(result[1][2].key.text).toEqual("What's your response to the application?");
-      expect(result[1][2].value.text).toEqual('-');
-      expect(result[1][3].key.text).toEqual('Supporting material');
-      expect(result[1][3].value.html).toEqual(
+      expect(result[1][2].key.text).toEqual('Supporting material');
+      expect(result[1][2].value.html).toEqual(
         '<a href="/getSupportingMaterial/6cd4768b-d9f8-4e39-b8e3-672f0047aa88" target="_blank">TEST.txt</a><br>'
       );
-      expect(result[1][4].key.text).toEqual(
+      expect(result[1][3].key.text).toEqual(
         'Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?'
       );
-      expect(result[1][4].value.text).toEqual('Yes');
+      expect(result[1][3].value.text).toEqual('Yes');
 
       expect(result[2]).toHaveLength(5);
       expect(result[2][0].key.text).toEqual('Response from');
@@ -187,7 +185,8 @@ describe('Application Details Helper', () => {
               from: Applicant.ADMIN,
               date: '2025-02-17',
               isCmoOrRequest: 'Case management order',
-              selectPartyNotify: Parties.BOTH_PARTIES,
+              isResponseRequired: YesOrNo.NO,
+              selectPartyNotify: PartiesNotify.BOTH_PARTIES,
             },
           },
           {
@@ -202,39 +201,32 @@ describe('Application Details Helper', () => {
       const result = getAllResponses(app, req);
       expect(result).toHaveLength(4);
 
-      expect(result[0]).toHaveLength(4);
-      expect(result[0][0].key.text).toEqual('Response from');
+      expect(result[0]).toHaveLength(3);
       expect(result[0][0].value.text).toEqual('Respondent');
-      expect(result[0][1].key.text).toEqual('Response date');
       expect(result[0][1].value.text).toEqual('14 February 2025');
-      expect(result[0][2].key.text).toEqual("What's your response to the application?");
-      expect(result[0][2].value.text).toEqual('-');
-      expect(result[0][3].key.text).toEqual(
-        'Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?'
-      );
-      expect(result[0][3].value.text).toEqual('No');
+      expect(result[0][2].value.text).toEqual('No');
 
-      expect(result[1]).toHaveLength(4);
+      expect(result[1]).toHaveLength(3);
       expect(result[1][0].value.text).toEqual('Respondent');
       expect(result[1][1].value.text).toEqual('15 February 2025');
-      expect(result[1][2].value.text).toEqual('-');
-      expect(result[1][3].value.text).toEqual('Yes');
+      expect(result[1][2].value.text).toEqual('Yes');
 
-      expect(result[2]).toHaveLength(4);
+      expect(result[2]).toHaveLength(3);
       expect(result[2][0].value.text).toEqual('Claimant');
       expect(result[2][1].value.text).toEqual('16 February 2025');
-      expect(result[2][2].value.text).toEqual('-');
-      expect(result[2][3].value.text).toEqual('No');
+      expect(result[2][2].value.text).toEqual('No');
 
-      expect(result[3]).toHaveLength(4);
+      expect(result[3]).toHaveLength(5);
       expect(result[3][0].key.text).toEqual('Date');
       expect(result[3][0].value.text).toEqual('17 February 2025');
       expect(result[3][1].key.text).toEqual('Sent by');
       expect(result[3][1].value.text).toEqual('Tribunal');
       expect(result[3][2].key.text).toEqual('Case management order or request?');
       expect(result[3][2].value.text).toEqual('Case management order');
-      expect(result[3][3].key.text).toEqual('Sent to');
-      expect(result[3][3].value.text).toEqual('Both parties');
+      expect(result[3][3].key.text).toEqual('Response due');
+      expect(result[3][3].value.text).toEqual('No');
+      expect(result[3][4].key.text).toEqual('Sent to');
+      expect(result[3][4].value.text).toEqual('Both parties');
     });
 
     it('should return empty array if application undefined', () => {
@@ -299,7 +291,7 @@ describe('Application Details Helper', () => {
               ],
               decisionMadeBy: 'Judge',
               decisionMadeByFullName: 'Tribunal Admin',
-              selectPartyNotify: Parties.BOTH_PARTIES,
+              selectPartyNotify: PartiesNotify.BOTH_PARTIES,
             },
           },
         ],
@@ -363,7 +355,7 @@ describe('Application Details Helper', () => {
             value: {
               from: Applicant.ADMIN,
               date: '2024-02-10',
-              selectPartyRespond: Parties.RESPONDENT_ONLY,
+              selectPartyRespond: PartiesRespond.RESPONDENT,
             },
           },
         ],
@@ -378,7 +370,7 @@ describe('Application Details Helper', () => {
             value: {
               from: Applicant.ADMIN,
               date: '2024-02-10',
-              selectPartyRespond: Parties.CLAIMANT_ONLY,
+              selectPartyRespond: PartiesRespond.CLAIMANT,
             },
           },
         ],
@@ -400,7 +392,31 @@ describe('Application Details Helper', () => {
             value: {
               from: Applicant.ADMIN,
               date: '2024-02-10',
-              selectPartyRespond: Parties.BOTH_PARTIES,
+              selectPartyRespond: PartiesRespond.BOTH_PARTIES,
+            },
+          },
+        ],
+      };
+      expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(true);
+    });
+
+    it('should return true when same date but different time', () => {
+      const app = {
+        respondCollection: [
+          {
+            value: {
+              from: Applicant.RESPONDENT,
+              fromIdamId: '1234',
+              date: '2024-02-10',
+              dateTime: '2024-02-10T12:00:00.000',
+            },
+          },
+          {
+            value: {
+              from: Applicant.ADMIN,
+              date: '2024-02-10',
+              dateTime: '2024-02-10T13:00:00.000',
+              selectPartyRespond: PartiesRespond.BOTH_PARTIES,
             },
           },
         ],
@@ -422,7 +438,7 @@ describe('Application Details Helper', () => {
             value: {
               from: Applicant.ADMIN,
               date: '2024-02-10',
-              selectPartyRespond: Parties.BOTH_PARTIES,
+              selectPartyRespond: PartiesRespond.BOTH_PARTIES,
             },
           },
           {

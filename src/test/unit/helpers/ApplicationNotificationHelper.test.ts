@@ -1,6 +1,6 @@
 import { YesOrNo } from '../../../main/definitions/case';
 import { GenericTseApplicationTypeItem } from '../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, Parties } from '../../../main/definitions/constants';
+import { Applicant, PartiesRespond } from '../../../main/definitions/constants';
 import { application } from '../../../main/definitions/contact-tribunal-applications';
 import { AnyRecord } from '../../../main/definitions/util-types';
 import { getAppNotificationFromAdmin } from '../../../main/helpers/notification/ApplicationNotificationHelper';
@@ -28,7 +28,7 @@ describe('getApplicationNotificationFromAdmin', () => {
               value: {
                 from: Applicant.ADMIN,
                 isResponseRequired: YesOrNo.YES,
-                selectPartyRespond: Parties.RESPONDENT_ONLY,
+                selectPartyRespond: PartiesRespond.RESPONDENT,
               },
             },
           ],
@@ -56,7 +56,7 @@ describe('getApplicationNotificationFromAdmin', () => {
               value: {
                 from: Applicant.ADMIN,
                 isResponseRequired: YesOrNo.YES,
-                selectPartyRespond: Parties.RESPONDENT_ONLY,
+                selectPartyRespond: PartiesRespond.RESPONDENT,
               },
             },
           ],
@@ -74,7 +74,7 @@ describe('getApplicationNotificationFromAdmin', () => {
               value: {
                 from: Applicant.ADMIN,
                 isResponseRequired: YesOrNo.YES,
-                selectPartyRespond: Parties.BOTH_PARTIES,
+                selectPartyRespond: PartiesRespond.BOTH_PARTIES,
               },
             },
           ],
@@ -113,7 +113,7 @@ describe('getApplicationNotificationFromAdmin', () => {
               value: {
                 from: Applicant.ADMIN,
                 isResponseRequired: YesOrNo.YES,
-                selectPartyRespond: Parties.CLAIMANT_ONLY,
+                selectPartyRespond: PartiesRespond.CLAIMANT,
               },
             },
           ],
