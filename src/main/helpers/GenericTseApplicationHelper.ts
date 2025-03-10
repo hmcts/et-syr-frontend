@@ -51,6 +51,9 @@ export const getApplicationDisplay = (app: GenericTseApplicationType, translatio
  * @param app application in GenericTseApplicationType
  */
 export const isTypeAOrB = (app: GenericTseApplicationType): boolean => {
+  if (app?.type === undefined || app?.applicant === undefined) {
+    return undefined;
+  }
   const matchingApp = Object.values(application).find(appData =>
     isApplicantRespondent(app) ? appData.code === app?.type : appData.claimant === app?.type
   );
