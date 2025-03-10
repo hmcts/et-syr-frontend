@@ -6,6 +6,7 @@ import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { ET3Status } from '../definitions/definition';
 import {
   ET3CaseDetailsLinkNames,
+  ET3CaseDetailsLinksStatuses,
   LinkStatus,
   SectionIndexToEt3CaseDetailsLinkNames,
   linkStatusColorMap,
@@ -46,7 +47,10 @@ export default class CaseDetailsController {
     }
     respondentResponseDeadline = ET3DataModelUtil.getRespondentResponseDeadline(req);
     const currentState = currentET3StatusFn(selectedRespondent);
-    const et3CaseDetailsLinksStatuses = getET3CaseDetailsLinkNames(selectedRespondent.et3CaseDetailsLinksStatuses, req);
+    const et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses = await getET3CaseDetailsLinkNames(
+      selectedRespondent.et3CaseDetailsLinksStatuses,
+      req
+    );
     const languageParam = getLanguageParam(req.url);
     const sections = Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
       return {
