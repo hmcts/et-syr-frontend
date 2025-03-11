@@ -7,12 +7,12 @@ describe('Applications State Helper', () => {
   describe('getApplicationState', () => {
     it('should return NOT_VIEWED when respondentState is empty', () => {
       const app: GenericTseApplicationType = { respondentState: [] };
-      expect(getApplicationState(app, mockUserDetails)).toBe(LinkStatus.NOT_VIEWED);
+      expect(getApplicationState(app, mockUserDetails)).toBe(LinkStatus.NOT_STARTED_YET);
     });
 
     it('should return NOT_VIEWED when respondentState is undefined', () => {
       const app: GenericTseApplicationType = {};
-      expect(getApplicationState(app, mockUserDetails)).toBe(LinkStatus.NOT_VIEWED);
+      expect(getApplicationState(app, mockUserDetails)).toBe(LinkStatus.NOT_STARTED_YET);
     });
 
     it('should return the correct application state when userId matches', () => {
@@ -42,7 +42,7 @@ describe('Applications State Helper', () => {
           },
         ],
       };
-      expect(getApplicationState(app, mockUserDetails)).toBe(LinkStatus.NOT_VIEWED);
+      expect(getApplicationState(app, mockUserDetails)).toBe(LinkStatus.NOT_STARTED_YET);
     });
 
     it('should return the correct application state when multiple respondents exist', () => {

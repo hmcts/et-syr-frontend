@@ -3,6 +3,7 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
 import { ErrorPages, PageUrls, TseErrors } from '../definitions/constants';
+import { LinkStatus } from '../definitions/links';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { clearTempFields } from '../helpers/controller/RespondToApplicationSubmitHelper';
 import { getLogger } from '../logger';
@@ -16,6 +17,13 @@ export default class RespondToApplicationSubmitController {
     try {
       // Submit response to application
       await getCaseApi(req.session.user?.accessToken).submitRespondentResponseToApplication(userCase);
+
+      // Update application state
+      await getCaseApi(req.session.user?.accessToken).changeApplicationStatus(
+        req,
+        userCase.selectedGenericTseApplication,
+        LinkStatus.WAITING_FOR_TRIBUNAL
+      );
 
       // Clear temporary fields
       userCase.ruleCopyState = userCase.copyToOtherPartyYesOrNo && userCase.copyToOtherPartyYesOrNo === YesOrNo.YES;

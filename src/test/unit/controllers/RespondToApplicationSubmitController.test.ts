@@ -42,6 +42,8 @@ describe('Respond To Application Submit Controller', () => {
     } as AxiosResponse<CaseApiDataResponse>)
   );
 
+  caseApi.changeApplicationStatus = jest.fn().mockResolvedValue(Promise.resolve(mockUserCase));
+
   beforeEach(() => {});
 
   it('should redirect to RESPOND_TO_APPLICATION_COMPLETE with language param', async () => {
