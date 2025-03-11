@@ -16,6 +16,7 @@ import { getApplicationDisplay } from '../GenericTseApplicationHelper';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
 import { isAdminResponseShareToRespondent, isDecisionShareToRespondent } from './ClaimantsApplicationsHelper';
+import { isYourApplication } from './YourRequestAndApplicationsHelper';
 
 /**
  * Display details of selected application.
@@ -251,4 +252,13 @@ const getTseApplicationDecisionDetails = (
   );
 
   return rows;
+};
+
+/**
+ * Check if current user never respond to other's application before
+ * @param app application
+ * @param user current user
+ */
+export const isNeverResponseBefore = (app: GenericTseApplicationType, user: UserDetails): boolean => {
+  return !isYourApplication(app, user) && !app.respondCollection?.some(r => r.value.fromIdamId === user.id);
 };

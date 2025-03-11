@@ -30,8 +30,10 @@
         }) }}
       {% endfor %}
 
-      {% if isRespondButton %}
-        <p class="govuk-body">{{ mustRespond }}</p>
+      {% if isRespondButton or isAdminRespondButton %}
+        {% if isAdminRespondButton %}
+          <p class="govuk-body">{{ mustRespond }}</p>
+        {% endif %}
         {{ govukButton({
           text: respondButton,
           href: respondRedirectUrl

@@ -6,6 +6,7 @@ import { CaseWithId } from '../../definitions/case';
  */
 export const clearTempFields = (userCase: CaseWithId): void => {
   userCase.selectedGenericTseApplication = undefined;
+  userCase.isRespondingToRequestOrOrder = undefined;
   userCase.responseText = undefined;
   userCase.hasSupportingMaterial = undefined;
   userCase.supportingMaterialFile = undefined;
