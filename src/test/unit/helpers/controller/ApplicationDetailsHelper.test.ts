@@ -160,17 +160,41 @@ describe('Application Details Helper', () => {
           {
             value: {
               from: Applicant.RESPONDENT,
-              date: '2025-02-14',
               fromIdamId: '4d148fe6-3fc9-408f-9d6a-7e93fa5533d4',
+              date: '2025-02-11',
               copyToOtherParty: YesOrNo.NO,
             },
           },
           {
             value: {
               from: Applicant.RESPONDENT,
-              date: '2025-02-15',
               fromIdamId: '05e628f7-2182-4fc6-a57d-21425c358f7e',
-              copyToOtherParty: YesOrNo.YES,
+              date: '2025-02-12',
+              copyToOtherParty: YesOrNo.NO,
+            },
+          },
+          {
+            value: {
+              from: Applicant.CLAIMANT,
+              date: '2025-02-13',
+              copyToOtherParty: YesOrNo.NO,
+            },
+          },
+          {
+            value: {
+              from: Applicant.ADMIN,
+              date: '2025-02-14',
+              isCmoOrRequest: 'Case management order',
+              isResponseRequired: YesOrNo.NO,
+              selectPartyNotify: PartiesNotify.BOTH_PARTIES,
+            },
+          },
+          {
+            value: {
+              from: Applicant.RESPONDENT,
+              fromIdamId: '4d148fe6-3fc9-408f-9d6a-7e93fa5533d4',
+              date: '2025-02-15',
+              copyToOtherParty: YesOrNo.NO,
             },
           },
           {
@@ -182,51 +206,43 @@ describe('Application Details Helper', () => {
           },
           {
             value: {
-              from: Applicant.ADMIN,
+              from: Applicant.RESPONDENT,
+              fromIdamId: '05e628f7-2182-4fc6-a57d-21425c358f7e',
               date: '2025-02-17',
-              isCmoOrRequest: 'Case management order',
-              isResponseRequired: YesOrNo.NO,
-              selectPartyNotify: PartiesNotify.BOTH_PARTIES,
-            },
-          },
-          {
-            value: {
-              from: Applicant.CLAIMANT,
-              date: '2025-02-18',
               copyToOtherParty: YesOrNo.NO,
             },
           },
         ],
       };
       const result = getAllResponses(app, req);
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(5);
 
       expect(result[0]).toHaveLength(3);
       expect(result[0][0].value.text).toEqual('Respondent');
-      expect(result[0][1].value.text).toEqual('14 February 2025');
+      expect(result[0][1].value.text).toEqual('11 February 2025');
       expect(result[0][2].value.text).toEqual('No');
 
       expect(result[1]).toHaveLength(3);
       expect(result[1][0].value.text).toEqual('Respondent');
-      expect(result[1][1].value.text).toEqual('15 February 2025');
-      expect(result[1][2].value.text).toEqual('Yes');
+      expect(result[1][1].value.text).toEqual('12 February 2025');
+      expect(result[1][2].value.text).toEqual('No');
 
       expect(result[2]).toHaveLength(3);
       expect(result[2][0].value.text).toEqual('Claimant');
-      expect(result[2][1].value.text).toEqual('16 February 2025');
+      expect(result[2][1].value.text).toEqual('13 February 2025');
       expect(result[2][2].value.text).toEqual('No');
 
       expect(result[3]).toHaveLength(5);
-      expect(result[3][0].key.text).toEqual('Date');
-      expect(result[3][0].value.text).toEqual('17 February 2025');
-      expect(result[3][1].key.text).toEqual('Sent by');
+      expect(result[3][0].value.text).toEqual('14 February 2025');
       expect(result[3][1].value.text).toEqual('Tribunal');
-      expect(result[3][2].key.text).toEqual('Case management order or request?');
       expect(result[3][2].value.text).toEqual('Case management order');
-      expect(result[3][3].key.text).toEqual('Response due');
       expect(result[3][3].value.text).toEqual('No');
-      expect(result[3][4].key.text).toEqual('Sent to');
       expect(result[3][4].value.text).toEqual('Both parties');
+
+      expect(result[4]).toHaveLength(3);
+      expect(result[4][0].value.text).toEqual('Respondent');
+      expect(result[4][1].value.text).toEqual('15 February 2025');
+      expect(result[4][2].value.text).toEqual('No');
     });
 
     it('should return empty array if application undefined', () => {
@@ -354,7 +370,6 @@ describe('Application Details Helper', () => {
           {
             value: {
               from: Applicant.ADMIN,
-              date: '2024-02-10',
               selectPartyRespond: PartiesRespond.RESPONDENT,
             },
           },
@@ -369,7 +384,6 @@ describe('Application Details Helper', () => {
           {
             value: {
               from: Applicant.ADMIN,
-              date: '2024-02-10',
               selectPartyRespond: PartiesRespond.CLAIMANT,
             },
           },
@@ -385,37 +399,11 @@ describe('Application Details Helper', () => {
             value: {
               from: Applicant.RESPONDENT,
               fromIdamId: '1234',
-              date: '2024-02-05',
             },
           },
           {
             value: {
               from: Applicant.ADMIN,
-              date: '2024-02-10',
-              selectPartyRespond: PartiesRespond.BOTH_PARTIES,
-            },
-          },
-        ],
-      };
-      expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(true);
-    });
-
-    it('should return true when same date but different time', () => {
-      const app = {
-        respondCollection: [
-          {
-            value: {
-              from: Applicant.RESPONDENT,
-              fromIdamId: '1234',
-              date: '2024-02-10',
-              dateTime: '2024-02-10T12:00:00.000',
-            },
-          },
-          {
-            value: {
-              from: Applicant.ADMIN,
-              date: '2024-02-10',
-              dateTime: '2024-02-10T13:00:00.000',
               selectPartyRespond: PartiesRespond.BOTH_PARTIES,
             },
           },
@@ -431,13 +419,11 @@ describe('Application Details Helper', () => {
             value: {
               from: Applicant.RESPONDENT,
               fromIdamId: '1234',
-              date: '2024-02-05',
             },
           },
           {
             value: {
               from: Applicant.ADMIN,
-              date: '2024-02-10',
               selectPartyRespond: PartiesRespond.BOTH_PARTIES,
             },
           },
@@ -445,7 +431,6 @@ describe('Application Details Helper', () => {
             value: {
               from: Applicant.RESPONDENT,
               fromIdamId: '1234',
-              date: '2024-02-15',
             },
           },
         ],
