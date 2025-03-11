@@ -75,41 +75,45 @@ export const getAllResponses = (app: GenericTseApplicationType, req: AppRequest)
     ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
   };
 
-  const lastAdminShareDate = getLastAdminShareDate(app.respondCollection);
-  for (const r of app.respondCollection) {
+  const lastAdminShareIndex = getLastAdminShareIndex(app.respondCollection);
+  app.respondCollection.forEach((r, index) => {
     if (
       (r.value.from === Applicant.RESPONDENT || r.value.from === Applicant.CLAIMANT) &&
-      isOtherPartyResponseShare(r.value, req.session.user, lastAdminShareDate)
+      isOtherPartyResponseShare(r.value, index, req.session.user, lastAdminShareIndex)
     ) {
       allResponses.push(addNonAdminResponse(r.value, translations, req));
     } else if (r.value.from === Applicant.ADMIN && isAdminResponseShareToRespondent(r.value)) {
       allResponses.push(addAdminResponse(r.value, translations, req));
     }
-  }
+  });
 
   return allResponses;
 };
 
-const getLastAdminShareDate = (responses: TseRespondTypeItem[]): Date => {
-  return getLatestDateFromResponses(
-    responses.filter(
-      item =>
-        item.value?.from === Applicant.ADMIN &&
-        (item.value?.selectPartyNotify === PartiesNotify.BOTH_PARTIES ||
-          item.value?.selectPartyNotify === PartiesNotify.RESPONDENT_ONLY) &&
-        item.value?.date
-    )
+const getLastAdminShareIndex = (respondCollection: TseRespondTypeItem[]): number => {
+  const indexes = respondCollection.map((response, index) =>
+    response.value.from === Applicant.ADMIN &&
+    (response.value?.selectPartyNotify === PartiesNotify.BOTH_PARTIES ||
+      response.value?.selectPartyNotify === PartiesNotify.RESPONDENT_ONLY)
+      ? index
+      : -1
   );
+  return Math.max(...indexes);
 };
 
-const isOtherPartyResponseShare = (response: TseRespondType, user: UserDetails, lastAdminShareDate: Date): boolean => {
+const isOtherPartyResponseShare = (
+  response: TseRespondType,
+  responseIndex: number,
+  user: UserDetails,
+  lastAdminShareIndex: number
+): boolean => {
   if (response.fromIdamId && response.fromIdamId === user.id) {
     return true;
   }
   if (response.copyToOtherParty === YesOrNo.YES) {
     return true;
   }
-  return new Date(response.date) < lastAdminShareDate;
+  return responseIndex < lastAdminShareIndex;
 };
 
 const addNonAdminResponse = (response: TseRespondType, translations: AnyRecord, req: AppRequest): SummaryListRow[] => {
@@ -261,41 +265,35 @@ export const isResponseToTribunalRequired = (app: GenericTseApplicationType, use
     return false;
   }
 
-  const lastAdminRequireDate = getLatestDateFromResponses(
-    app.respondCollection.filter(
-      response =>
-        response.value.from === Applicant.ADMIN &&
-        (response.value.selectPartyRespond === PartiesRespond.BOTH_PARTIES ||
-          response.value.selectPartyRespond === PartiesRespond.RESPONDENT)
-    )
-  );
-
-  if (!lastAdminRequireDate) {
+  const lastAdminRespondIndex = getLastAdminRespondIndex(app.respondCollection);
+  if (lastAdminRespondIndex === -1) {
     return false;
   }
 
-  const lastUserRespondDate = getLatestDateFromResponses(
-    app.respondCollection.filter(
-      response =>
-        response.value.from === Applicant.RESPONDENT &&
-        response.value.fromIdamId &&
-        response.value.fromIdamId === user.id
-    )
-  );
-
-  if (!lastUserRespondDate) {
+  const lastUserRespondIndex = getLastUserRespondIndex(app.respondCollection, user);
+  if (lastUserRespondIndex === -1) {
     return true;
   }
 
-  return lastAdminRequireDate > lastUserRespondDate;
+  return lastAdminRespondIndex > lastUserRespondIndex;
 };
 
-const getLatestDateFromResponses = (responses: TseRespondTypeItem[]): Date => {
-  const dates = responses.map(response => {
-    const dateToCompare = response.value.dateTime || response.value.date;
-    return new Date(dateToCompare!);
-  });
-  return dates.sort((a, b) => b.getTime() - a.getTime())[0] || undefined;
+const getLastAdminRespondIndex = (respondCollection: TseRespondTypeItem[]): number => {
+  const indexes = respondCollection.map((response, index) =>
+    response.value.from === Applicant.ADMIN &&
+    (response.value.selectPartyRespond === PartiesRespond.BOTH_PARTIES ||
+      response.value.selectPartyRespond === PartiesRespond.RESPONDENT)
+      ? index
+      : -1
+  );
+  return Math.max(...indexes);
+};
+
+const getLastUserRespondIndex = (respondCollection: TseRespondTypeItem[], user: UserDetails): number => {
+  const userIndexes = respondCollection.map((response, index) =>
+    response.value.from === Applicant.RESPONDENT && response.value.fromIdamId === user.id ? index : -1
+  );
+  return Math.max(...userIndexes);
 };
 
 /**

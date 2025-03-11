@@ -1,12 +1,11 @@
 import RespondToApplicationController from '../../../main/controllers/RespondToApplicationController';
 import { YesOrNo } from '../../../main/definitions/case';
-import { ErrorPages, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { Applicant, ErrorPages, PageUrls, PartiesRespond, TranslationKeys } from '../../../main/definitions/constants';
 import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
 import commonJson from '../../../main/resources/locales/en/translation/common.json';
 import { mockGenericTseCollection } from '../mocks/mockGenericTseCollection';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
-import mockUserCase from '../mocks/mockUserCase';
 
 describe('Respond to Application Controller', () => {
   const translationJsons = { ...applicationTypeJson, ...commonJson };
@@ -16,38 +15,52 @@ describe('Respond to Application Controller', () => {
 
   beforeEach(() => {
     controller = new RespondToApplicationController();
-    request = mockRequest({});
+    request = mockRequestWithTranslation({}, translationJsons);
     response = mockResponse();
   });
 
   describe('GET method', () => {
     it('should render the page RESPOND_TO_APPLICATION', () => {
-      request = mockRequestWithTranslation({}, translationJsons);
-      request.session.userCase = mockUserCase;
-      request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
+      request.session.userCase.genericTseApplicationCollection = [
+        {
+          id: '5d0118c9-bdd6-4d32-9131-6aa6f5ec718e',
+          value: {
+            applicant: Applicant.RESPONDENT,
+            respondCollection: [
+              {
+                value: {
+                  from: Applicant.ADMIN,
+                  isResponseRequired: YesOrNo.YES,
+                  selectPartyRespond: PartiesRespond.RESPONDENT,
+                },
+              },
+            ],
+          },
+        },
+      ];
       request.params.appId = '5d0118c9-bdd6-4d32-9131-6aa6f5ec718e';
       controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.RESPOND_TO_APPLICATION, expect.anything());
     });
 
-    it('should redirect to NOT_FOUND page if missing appId', async () => {
-      request.session.userCase = mockUserCase;
+    it('should redirect to NOT_FOUND page if missing appId', () => {
       request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
-      await controller.get(request, response);
+      request.params.appId = undefined;
+      controller.get(request, response);
       expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
     });
 
-    it('should redirect to NOT_FOUND page if application invalid', async () => {
-      request.session.userCase = mockUserCase;
+    it('should redirect to NOT_FOUND page if application undefined', () => {
       request.session.userCase.genericTseApplicationCollection = undefined;
-      request.params.appId = '1';
-      await controller.get(request, response);
+      request.params.appId = '5d0118c9-bdd6-4d32-9131-6aa6f5ec718e';
+      controller.get(request, response);
       expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
     });
 
-    it('should redirect to NOT_FOUND page if missing userCase', async () => {
+    it('should redirect to NOT_FOUND page if userCase undefined', () => {
+      request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
       request.session.userCase = undefined;
-      await controller.get(request, response);
+      controller.get(request, response);
       expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
     });
   });

@@ -15,5 +15,8 @@ export const getApplicationState = (app: GenericTseApplicationType, user: UserDe
       return <LinkStatus>existingState.value.applicationState;
     }
   }
-  return LinkStatus.NOT_VIEWED;
+  if (app?.applicantIdamId === user?.id) {
+    return LinkStatus.IN_PROGRESS;
+  }
+  return LinkStatus.NOT_STARTED_YET;
 };

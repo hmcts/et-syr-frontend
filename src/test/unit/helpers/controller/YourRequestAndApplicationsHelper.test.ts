@@ -6,6 +6,7 @@ import {
 import { Applicant } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import { LinkStatus } from '../../../../main/definitions/links';
+import { AnyRecord } from '../../../../main/definitions/util-types';
 import {
   getYourApplicationCollection,
   isYourApplication,
@@ -18,7 +19,7 @@ import mockUserCase from '../../mocks/mockUserCase';
 
 describe('Your Request and Applications Helper', () => {
   describe('updateAppsDisplayInfo', () => {
-    const translations = {
+    const translations: AnyRecord = {
       ...applicationTypeJson,
       ...caseDetailsStatusJson,
     };
@@ -97,7 +98,7 @@ describe('Your Request and Applications Helper', () => {
       expect(updatedApps[2].linkValue).toBe('Postpone a hearing');
       expect(updatedApps[2].redirectUrl).toBe('/application-details/fc80aca1-d884-4a29-a42d-df5862e40efc?lng=en');
       expect(updatedApps[2].statusColor).toBe('--red');
-      expect(updatedApps[2].displayStatus).toBe('Not viewed yet');
+      expect(updatedApps[2].displayStatus).toBe('Not started yet');
     });
   });
 
