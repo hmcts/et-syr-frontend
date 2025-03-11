@@ -4,7 +4,7 @@ import {
   TseAdminDecision,
   TseRespondType,
 } from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, Parties } from '../../../../main/definitions/constants';
+import { Applicant, PartiesNotify } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import {
   getClaimantsApplications,
@@ -86,7 +86,7 @@ describe('Claimants Applications Helper', () => {
               {
                 value: {
                   from: Applicant.ADMIN,
-                  selectPartyNotify: Parties.BOTH_PARTIES,
+                  selectPartyNotify: PartiesNotify.BOTH_PARTIES,
                 },
               },
             ],
@@ -106,7 +106,7 @@ describe('Claimants Applications Helper', () => {
             adminDecision: [
               {
                 value: {
-                  selectPartyNotify: Parties.RESPONDENT_ONLY,
+                  selectPartyNotify: PartiesNotify.RESPONDENT_ONLY,
                 },
               },
             ],
@@ -122,7 +122,7 @@ describe('Claimants Applications Helper', () => {
     it('should return true when from is ADMIN and selectPartyNotify is BOTH_PARTIES', () => {
       const mockResponse: TseRespondType = {
         from: Applicant.ADMIN,
-        selectPartyNotify: Parties.BOTH_PARTIES,
+        selectPartyNotify: PartiesNotify.BOTH_PARTIES,
       };
       expect(isAdminResponseShareToRespondent(mockResponse)).toBe(true);
     });
@@ -130,7 +130,7 @@ describe('Claimants Applications Helper', () => {
     it('should return true when from is ADMIN and selectPartyNotify is RESPONDENT_ONLY', () => {
       const mockResponse: TseRespondType = {
         from: Applicant.ADMIN,
-        selectPartyNotify: Parties.RESPONDENT_ONLY,
+        selectPartyNotify: PartiesNotify.RESPONDENT_ONLY,
       };
       expect(isAdminResponseShareToRespondent(mockResponse)).toBe(true);
     });
@@ -138,7 +138,7 @@ describe('Claimants Applications Helper', () => {
     it('should return false when from is not ADMIN', () => {
       const mockResponse: TseRespondType = {
         from: Applicant.RESPONDENT,
-        selectPartyNotify: Parties.BOTH_PARTIES,
+        selectPartyNotify: PartiesNotify.BOTH_PARTIES,
       };
       expect(isAdminResponseShareToRespondent(mockResponse)).toBe(false);
     });
@@ -146,7 +146,7 @@ describe('Claimants Applications Helper', () => {
     it('should return false when selectPartyNotify is CLAIMANT_ONLY', () => {
       const mockResponse: TseRespondType = {
         from: Applicant.ADMIN,
-        selectPartyNotify: Parties.CLAIMANT_ONLY,
+        selectPartyNotify: PartiesNotify.CLAIMANT_ONLY,
       };
       expect(isAdminResponseShareToRespondent(mockResponse)).toBe(false);
     });
@@ -164,21 +164,21 @@ describe('Claimants Applications Helper', () => {
   describe('isDecisionShareToRespondent', () => {
     it('should return true when selectPartyNotify is BOTH_PARTIES', () => {
       const mockDecision: TseAdminDecision = {
-        selectPartyNotify: Parties.BOTH_PARTIES,
+        selectPartyNotify: PartiesNotify.BOTH_PARTIES,
       };
       expect(isDecisionShareToRespondent(mockDecision)).toBe(true);
     });
 
     it('should return true when selectPartyNotify is RESPONDENT_ONLY', () => {
       const mockDecision: TseAdminDecision = {
-        selectPartyNotify: Parties.RESPONDENT_ONLY,
+        selectPartyNotify: PartiesNotify.RESPONDENT_ONLY,
       };
       expect(isDecisionShareToRespondent(mockDecision)).toBe(true);
     });
 
     it('should return false when selectPartyNotify is CLAIMANT_ONLY', () => {
       const mockDecision: TseAdminDecision = {
-        selectPartyNotify: Parties.CLAIMANT_ONLY,
+        selectPartyNotify: PartiesNotify.CLAIMANT_ONLY,
       };
       expect(isDecisionShareToRespondent(mockDecision)).toBe(false);
     });
@@ -222,7 +222,7 @@ describe('Claimants Applications Helper', () => {
             id: '0c28f1f0-0c2f-43bb-ae2c-e335c92a7e5c',
             value: {
               from: Applicant.ADMIN,
-              selectPartyNotify: Parties.BOTH_PARTIES,
+              selectPartyNotify: PartiesNotify.BOTH_PARTIES,
             },
           },
         ],
@@ -235,7 +235,7 @@ describe('Claimants Applications Helper', () => {
         adminDecision: [
           {
             value: {
-              selectPartyNotify: Parties.BOTH_PARTIES,
+              selectPartyNotify: PartiesNotify.BOTH_PARTIES,
             },
           },
         ],
