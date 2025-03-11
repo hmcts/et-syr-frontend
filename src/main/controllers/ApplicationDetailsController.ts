@@ -4,14 +4,17 @@ import { AppRequest } from '../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { ErrorPages, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
 import { LinkStatus } from '../definitions/links';
-import { findSelectedGenericTseApplication, getApplicationDisplay } from '../helpers/GenericTseApplicationHelper';
+import { getApplicationStatusAfterViewed } from '../helpers/ApplicationStateHelper';
+import {
+  findSelectedGenericTseApplication,
+  getApplicationDisplay,
+  isResponseToTribunalRequired,
+} from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import {
   getAllResponses,
   getApplicationContent,
-  getApplicationStatusAfterViewed,
   getDecisionContent,
-  isResponseToTribunalRequired,
 } from '../helpers/controller/ApplicationDetailsHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';

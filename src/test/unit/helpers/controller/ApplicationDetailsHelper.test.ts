@@ -1,19 +1,17 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import { GenericTseApplicationType } from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
+import { Applicant, PartiesNotify } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import {
   getAllResponses,
   getApplicationContent,
   getDecisionContent,
-  isResponseToTribunalRequired,
 } from '../../../../main/helpers/controller/ApplicationDetailsHelper';
 import applicationDetailsJson from '../../../../main/resources/locales/en/translation/application-details.json';
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
 import commonJson from '../../../../main/resources/locales/en/translation/common.json';
 import { mockGenericTseCollection } from '../../mocks/mockGenericTseCollection';
 import { mockRequestWithTranslation } from '../../mocks/mockRequest';
-import { mockUserDetails } from '../../mocks/mockUser';
 
 describe('Application Details Helper', () => {
   describe('getApplicationContent', () => {
@@ -360,101 +358,6 @@ describe('Application Details Helper', () => {
       const app: GenericTseApplicationType = {};
       const result = getDecisionContent(app, req);
       expect(result).toHaveLength(0);
-    });
-  });
-
-  describe('isResponseToTribunalRequired', () => {
-    it('should return true when user has not responded', () => {
-      const app = {
-        respondCollection: [
-          {
-            value: {
-              from: Applicant.ADMIN,
-              selectPartyRespond: PartiesRespond.RESPONDENT,
-            },
-          },
-        ],
-      };
-      expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(true);
-    });
-
-    it('should return false when admin not require responded', () => {
-      const app = {
-        respondCollection: [
-          {
-            value: {
-              from: Applicant.ADMIN,
-              selectPartyRespond: PartiesRespond.CLAIMANT,
-            },
-          },
-        ],
-      };
-      expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(false);
-    });
-
-    it('should return true when admin latest required response date is after user latest response date', () => {
-      const app = {
-        respondCollection: [
-          {
-            value: {
-              from: Applicant.RESPONDENT,
-              fromIdamId: '1234',
-            },
-          },
-          {
-            value: {
-              from: Applicant.ADMIN,
-              selectPartyRespond: PartiesRespond.BOTH_PARTIES,
-            },
-          },
-        ],
-      };
-      expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(true);
-    });
-
-    it('should return false when user latest response date is after admin required response date', () => {
-      const app = {
-        respondCollection: [
-          {
-            value: {
-              from: Applicant.RESPONDENT,
-              fromIdamId: '1234',
-            },
-          },
-          {
-            value: {
-              from: Applicant.ADMIN,
-              selectPartyRespond: PartiesRespond.BOTH_PARTIES,
-            },
-          },
-          {
-            value: {
-              from: Applicant.RESPONDENT,
-              fromIdamId: '1234',
-            },
-          },
-        ],
-      };
-      expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(false);
-    });
-
-    it('should return false when user is undefined', () => {
-      const app: GenericTseApplicationType = mockGenericTseCollection[0].value;
-      expect(isResponseToTribunalRequired(app, undefined)).toBe(false);
-    });
-
-    it('should return false when application is undefined', () => {
-      expect(isResponseToTribunalRequired(undefined, mockUserDetails)).toBe(false);
-    });
-
-    it('should return false when respondCollection is undefined', () => {
-      const app: GenericTseApplicationType = { respondCollection: undefined };
-      expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(false);
-    });
-
-    it('should return false when respondCollection is empty', () => {
-      const app: GenericTseApplicationType = { respondCollection: [] };
-      expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(false);
     });
   });
 });

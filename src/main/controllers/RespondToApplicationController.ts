@@ -8,13 +8,15 @@ import { ErrorPages, PageUrls, TranslationKeys, TseErrors } from '../definitions
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
-import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
+import {
+  findSelectedGenericTseApplication,
+  isResponseToTribunalRequired,
+} from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import {
   getAllResponses,
   getApplicationContent,
   getDecisionContent,
-  isResponseToTribunalRequired,
 } from '../helpers/controller/ApplicationDetailsHelper';
 import { getFormDataError } from '../helpers/controller/RespondToApplicationHelper';
 import { getLogger } from '../logger';

@@ -6,13 +6,11 @@ import {
   TseRespondType,
   TseRespondTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, IsCmoOrRequest, PartiesNotify, PartiesRespond, TranslationKeys } from '../../definitions/constants';
+import { Applicant, IsCmoOrRequest, PartiesNotify, TranslationKeys } from '../../definitions/constants';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
-import { LinkStatus } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import CollectionUtils from '../../utils/CollectionUtils';
 import ObjectUtils from '../../utils/ObjectUtils';
-import { getApplicationState } from '../ApplicationStateHelper';
 import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../DocumentHelpers';
 import { getApplicationDisplay } from '../GenericTseApplicationHelper';
 import { datesStringToDateInLocale } from '../dateInLocale';
@@ -253,62 +251,4 @@ const getTseApplicationDecisionDetails = (
   );
 
   return rows;
-};
-
-/**
- * Boolean if respond to Application is required.
- * @param app selected application
- * @param user user in request
- */
-export const isResponseToTribunalRequired = (app: GenericTseApplicationType, user: UserDetails): boolean => {
-  if (!app || ObjectUtils.isEmpty(app.respondCollection) || !user) {
-    return false;
-  }
-
-  const lastAdminRespondIndex = getLastAdminRespondIndex(app.respondCollection);
-  if (lastAdminRespondIndex === -1) {
-    return false;
-  }
-
-  const lastUserRespondIndex = getLastUserRespondIndex(app.respondCollection, user);
-  if (lastUserRespondIndex === -1) {
-    return true;
-  }
-
-  return lastAdminRespondIndex > lastUserRespondIndex;
-};
-
-const getLastAdminRespondIndex = (respondCollection: TseRespondTypeItem[]): number => {
-  const indexes = respondCollection.map((response, index) =>
-    response.value.from === Applicant.ADMIN &&
-    (response.value.selectPartyRespond === PartiesRespond.BOTH_PARTIES ||
-      response.value.selectPartyRespond === PartiesRespond.RESPONDENT)
-      ? index
-      : -1
-  );
-  return Math.max(...indexes);
-};
-
-const getLastUserRespondIndex = (respondCollection: TseRespondTypeItem[], user: UserDetails): number => {
-  const userIndexes = respondCollection.map((response, index) =>
-    response.value.from === Applicant.RESPONDENT && response.value.fromIdamId === user.id ? index : -1
-  );
-  return Math.max(...userIndexes);
-};
-
-/**
- * Get new application state after viewed
- * @param app application
- * @param user current user
- */
-export const getApplicationStatusAfterViewed = (app: GenericTseApplicationType, user: UserDetails): LinkStatus => {
-  const currentState = getApplicationState(app, user);
-  if (currentState === LinkStatus.NOT_VIEWED) {
-    return LinkStatus.VIEWED;
-  } else if (currentState === LinkStatus.UPDATED) {
-    return LinkStatus.IN_PROGRESS;
-  } else if (currentState === LinkStatus.NOT_STARTED_YET && isResponseToTribunalRequired(app, user)) {
-    return LinkStatus.IN_PROGRESS;
-  }
-  return undefined;
 };
