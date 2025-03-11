@@ -6,12 +6,14 @@ import {
   getAllResponses,
   getApplicationContent,
   getDecisionContent,
+  isNeverResponseBefore,
 } from '../../../../main/helpers/controller/ApplicationDetailsHelper';
 import applicationDetailsJson from '../../../../main/resources/locales/en/translation/application-details.json';
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
 import commonJson from '../../../../main/resources/locales/en/translation/common.json';
 import { mockGenericTseCollection } from '../../mocks/mockGenericTseCollection';
 import { mockRequestWithTranslation } from '../../mocks/mockRequest';
+import { mockUserDetails } from '../../mocks/mockUser';
 
 describe('Application Details Helper', () => {
   describe('getApplicationContent', () => {
@@ -358,6 +360,49 @@ describe('Application Details Helper', () => {
       const app: GenericTseApplicationType = {};
       const result = getDecisionContent(app, req);
       expect(result).toHaveLength(0);
+    });
+  });
+
+  describe('isNeverResponseBefore', () => {
+    test('returns true if the application does not belong to the user and user has never responded', () => {
+      const app: GenericTseApplicationType = {
+        respondCollection: [],
+      };
+      expect(isNeverResponseBefore(app, mockUserDetails)).toBe(true);
+    });
+
+    test('returns true if user has not responded and application does not belong to them', () => {
+      const app: GenericTseApplicationType = {
+        respondCollection: [{ value: { fromIdamId: 'test' } }],
+      };
+      expect(isNeverResponseBefore(app, mockUserDetails)).toBe(true);
+    });
+
+    test('returns false if the application belongs to the user', () => {
+      const app: GenericTseApplicationType = {
+        applicant: Applicant.RESPONDENT,
+        applicantIdamId: '1234',
+        respondCollection: [],
+      };
+      expect(isNeverResponseBefore(app, mockUserDetails)).toBe(false);
+    });
+
+    test('returns false if the user has responded before', () => {
+      const app: GenericTseApplicationType = {
+        respondCollection: [{ value: { fromIdamId: '1234' } }],
+      };
+      expect(isNeverResponseBefore(app, mockUserDetails)).toBe(false);
+    });
+
+    test('returns true if respondCollection is undefined', () => {
+      const app: GenericTseApplicationType = {
+        applicant: Applicant.RESPONDENT,
+      };
+      expect(isNeverResponseBefore(app, mockUserDetails)).toBe(true);
+    });
+
+    test('returns true if application is undefined', () => {
+      expect(isNeverResponseBefore(undefined, mockUserDetails)).toBe(false);
     });
   });
 });

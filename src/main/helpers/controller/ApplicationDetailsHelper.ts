@@ -260,5 +260,9 @@ const getTseApplicationDecisionDetails = (
  * @param user current user
  */
 export const isNeverResponseBefore = (app: GenericTseApplicationType, user: UserDetails): boolean => {
-  return !isYourApplication(app, user) && !app.respondCollection?.some(r => r.value.fromIdamId === user.id);
+  return (
+    ObjectUtils.isNotEmpty(app) &&
+    !isYourApplication(app, user) &&
+    !app.respondCollection?.some(r => r.value.fromIdamId === user.id)
+  );
 };
