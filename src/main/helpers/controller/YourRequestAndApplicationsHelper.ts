@@ -1,10 +1,12 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
 import { ApplicationList } from '../../definitions/applicationList';
+import { YesOrNo } from '../../definitions/case';
 import {
   GenericTseApplicationType,
   GenericTseApplicationTypeItem,
+  TseRespondType,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constants';
+import { Applicant, PageUrls, PartiesNotify, TranslationKeys } from '../../definitions/constants';
 import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import ObjectUtils from '../../utils/ObjectUtils';
@@ -33,24 +35,43 @@ export const updateAppsDisplayInfo = (apps: GenericTseApplicationTypeItem[], req
       linkValue: getApplicationDisplay(app.value, translations),
       displayStatus: translations[appState],
       statusColor: linkStatusColorMap.get(appState),
-      lastUpdatedDate: findLatestUpdateDate(app.value),
+      lastUpdatedDate: findLatestUpdateDate(app.value, req.session.user),
     };
   });
 };
 
-const findLatestUpdateDate = (application: GenericTseApplicationType): Date => {
-  const dates: Date[] = [
-    application.date ? new Date(application.date) : null,
-    ...(
-      application.respondCollection?.flatMap(respond =>
-        [respond.value?.date, respond.value?.dateTime].filter(date => date)
-      ) ?? []
-    ).map(date => new Date(date)),
-    ...(application.adminDecision?.flatMap(decision => (decision.value?.date ? [new Date(decision.value.date)] : [])) ??
-      []),
-  ].filter((date): date is Date => date instanceof Date);
+const findLatestUpdateDate = (application: GenericTseApplicationType, user: UserDetails): Date => {
+  const applicationDate = application.date ? new Date(application.date) : null;
 
-  return dates.length > 0 ? new Date(Math.max(...dates.map(date => date.getTime()))) : undefined;
+  const responseDates = application.respondCollection
+    ?.filter(respond => isResponseShare(respond.value, user))
+    .flatMap(respond => (respond.value?.date ? [new Date(respond.value.date)] : []));
+
+  const adminDecisionDates = application.adminDecision?.flatMap(decision =>
+    decision.value?.date ? [new Date(decision.value.date)] : []
+  );
+
+  const allDates = [applicationDate, ...(responseDates ?? []), ...(adminDecisionDates ?? [])].filter(
+    (date): date is Date => date instanceof Date
+  );
+
+  return allDates.length > 0 ? new Date(Math.max(...allDates.map(date => date.getTime()))) : undefined;
+};
+
+const isResponseShare = (response: TseRespondType, user: UserDetails): boolean => {
+  if (!response) {
+    return false;
+  }
+  if (response.from === Applicant.ADMIN) {
+    return (
+      response?.selectPartyNotify === PartiesNotify.BOTH_PARTIES ||
+      response?.selectPartyNotify === PartiesNotify.RESPONDENT_ONLY
+    );
+  }
+  if (response.fromIdamId === user.id) {
+    return true;
+  }
+  return response.copyToOtherParty === YesOrNo.YES;
 };
 
 /**
