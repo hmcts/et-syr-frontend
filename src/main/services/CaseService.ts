@@ -225,6 +225,7 @@ export class CaseApi {
           hasSupportingMaterial: caseItem.hasSupportingMaterial,
           copyToOtherParty: caseItem.copyToOtherPartyYesOrNo,
           copyNoGiveDetails: caseItem.copyToOtherPartyText,
+          fromIdamId: caseItem.idamId,
         },
       });
     } catch (error) {
