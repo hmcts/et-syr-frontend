@@ -3,7 +3,7 @@ import {
   GenericTseApplicationType,
   GenericTseApplicationTypeItem,
 } from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant } from '../../../../main/definitions/constants';
+import { Applicant, PartiesNotify } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import { LinkStatus } from '../../../../main/definitions/links';
 import { AnyRecord } from '../../../../main/definitions/util-types';
@@ -36,8 +36,27 @@ describe('Your Request and Applications Helper', () => {
         {
           id: 'fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c',
           value: {
+            date: '1 February 2025',
             applicant: Applicant.RESPONDENT,
             type: application.CHANGE_PERSONAL_DETAILS.code,
+            respondCollection: [
+              {
+                id: '3f0460c8-0b46-4dcb-a22e-63482e51a6b2',
+                value: {
+                  date: '4 February 2025',
+                  from: 'Respondent',
+                  copyToOtherParty: 'Yes',
+                },
+              },
+              {
+                id: '3f0460c8-0b46-4dcb-a22e-63482e51a6b2',
+                value: {
+                  date: '5 February 2025',
+                  from: 'Claimant',
+                  copyToOtherParty: 'No',
+                },
+              },
+            ],
             respondentState: [
               {
                 id: '1d8e8ad8-b6bf-458e-a4bc-b47d9193a2df',
@@ -52,8 +71,19 @@ describe('Your Request and Applications Helper', () => {
         {
           id: '04a5064e-0766-4833-b740-d02520c604f2',
           value: {
+            date: '2 February 2025',
             applicant: Applicant.CLAIMANT,
             type: application.AMEND_RESPONSE.claimant,
+            respondCollection: [
+              {
+                id: '1a17e36a-62ed-4c72-9421-dd6afdccd728',
+                value: {
+                  date: '6 February 2025',
+                  from: 'Admin',
+                  selectPartyNotify: PartiesNotify.BOTH_PARTIES,
+                },
+              },
+            ],
             respondentState: [
               {
                 id: '7449576e-b8dc-4392-8e3f-c92c73712f64',
@@ -75,6 +105,7 @@ describe('Your Request and Applications Helper', () => {
         {
           id: 'fc80aca1-d884-4a29-a42d-df5862e40efc',
           value: {
+            date: '3 February 2025',
             applicant: Applicant.CLAIMANT,
             type: application.POSTPONE_HEARING.claimant,
           },
@@ -85,20 +116,26 @@ describe('Your Request and Applications Helper', () => {
 
       expect(updatedApps).toHaveLength(3);
 
-      expect(updatedApps[0].linkValue).toBe('Change my personal details');
+      expect(updatedApps[0].submitDate).toBe('1 February 2025');
       expect(updatedApps[0].redirectUrl).toBe('/application-details/fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c?lng=en');
-      expect(updatedApps[0].statusColor).toBe('--red');
+      expect(updatedApps[0].linkValue).toBe('Change my personal details');
       expect(updatedApps[0].displayStatus).toBe('Not started yet');
+      expect(updatedApps[0].statusColor).toBe('--red');
+      expect(updatedApps[0].lastUpdatedDate).toEqual(new Date('2025-02-04'));
 
-      expect(updatedApps[1].linkValue).toBe('Amend my response');
+      expect(updatedApps[1].submitDate).toBe('2 February 2025');
       expect(updatedApps[1].redirectUrl).toBe('/application-details/04a5064e-0766-4833-b740-d02520c604f2?lng=en');
-      expect(updatedApps[1].statusColor).toBe('--turquoise');
+      expect(updatedApps[1].linkValue).toBe('Amend my response');
       expect(updatedApps[1].displayStatus).toBe('Viewed');
+      expect(updatedApps[1].statusColor).toBe('--turquoise');
+      expect(updatedApps[1].lastUpdatedDate).toEqual(new Date('2025-02-06'));
 
-      expect(updatedApps[2].linkValue).toBe('Postpone a hearing');
+      expect(updatedApps[2].submitDate).toBe('3 February 2025');
       expect(updatedApps[2].redirectUrl).toBe('/application-details/fc80aca1-d884-4a29-a42d-df5862e40efc?lng=en');
-      expect(updatedApps[2].statusColor).toBe('--red');
+      expect(updatedApps[2].linkValue).toBe('Postpone a hearing');
       expect(updatedApps[2].displayStatus).toBe('Not started yet');
+      expect(updatedApps[2].statusColor).toBe('--red');
+      expect(updatedApps[2].lastUpdatedDate).toEqual(new Date('2025-02-03'));
     });
   });
 
