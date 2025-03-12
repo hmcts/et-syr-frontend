@@ -219,7 +219,7 @@ export class CaseApi {
         case_type_id: caseItem.caseTypeId,
         applicationId: caseItem.selectedGenericTseApplication.id,
         supportingMaterialFile: caseItem.supportingMaterialFile,
-        isRespondingToRequestOrOrder: false,
+        isRespondingToRequestOrOrder: caseItem.isRespondingToRequestOrOrder,
         response: {
           response: caseItem.responseText,
           hasSupportingMaterial: caseItem.hasSupportingMaterial,

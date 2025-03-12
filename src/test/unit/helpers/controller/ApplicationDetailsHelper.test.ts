@@ -1,12 +1,12 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import { GenericTseApplicationType } from '../../../../main/definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
+import { Applicant, PartiesNotify } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import {
   getAllResponses,
   getApplicationContent,
   getDecisionContent,
-  isResponseToTribunalRequired,
+  isNeverResponseBefore,
 } from '../../../../main/helpers/controller/ApplicationDetailsHelper';
 import applicationDetailsJson from '../../../../main/resources/locales/en/translation/application-details.json';
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
@@ -363,98 +363,46 @@ describe('Application Details Helper', () => {
     });
   });
 
-  describe('isResponseToTribunalRequired', () => {
-    it('should return true when user has not responded', () => {
-      const app = {
-        respondCollection: [
-          {
-            value: {
-              from: Applicant.ADMIN,
-              selectPartyRespond: PartiesRespond.RESPONDENT,
-            },
-          },
-        ],
+  describe('isNeverResponseBefore', () => {
+    test('returns true if the application does not belong to the user and user has never responded', () => {
+      const app: GenericTseApplicationType = {
+        respondCollection: [],
       };
-      expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(true);
+      expect(isNeverResponseBefore(app, mockUserDetails)).toBe(true);
     });
 
-    it('should return false when admin not require responded', () => {
-      const app = {
-        respondCollection: [
-          {
-            value: {
-              from: Applicant.ADMIN,
-              selectPartyRespond: PartiesRespond.CLAIMANT,
-            },
-          },
-        ],
+    test('returns true if user has not responded and application does not belong to them', () => {
+      const app: GenericTseApplicationType = {
+        respondCollection: [{ value: { fromIdamId: 'test' } }],
       };
-      expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(false);
+      expect(isNeverResponseBefore(app, mockUserDetails)).toBe(true);
     });
 
-    it('should return true when admin latest required response date is after user latest response date', () => {
-      const app = {
-        respondCollection: [
-          {
-            value: {
-              from: Applicant.RESPONDENT,
-              fromIdamId: '1234',
-            },
-          },
-          {
-            value: {
-              from: Applicant.ADMIN,
-              selectPartyRespond: PartiesRespond.BOTH_PARTIES,
-            },
-          },
-        ],
+    test('returns false if the application belongs to the user', () => {
+      const app: GenericTseApplicationType = {
+        applicant: Applicant.RESPONDENT,
+        applicantIdamId: '1234',
+        respondCollection: [],
       };
-      expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(true);
+      expect(isNeverResponseBefore(app, mockUserDetails)).toBe(false);
     });
 
-    it('should return false when user latest response date is after admin required response date', () => {
-      const app = {
-        respondCollection: [
-          {
-            value: {
-              from: Applicant.RESPONDENT,
-              fromIdamId: '1234',
-            },
-          },
-          {
-            value: {
-              from: Applicant.ADMIN,
-              selectPartyRespond: PartiesRespond.BOTH_PARTIES,
-            },
-          },
-          {
-            value: {
-              from: Applicant.RESPONDENT,
-              fromIdamId: '1234',
-            },
-          },
-        ],
+    test('returns false if the user has responded before', () => {
+      const app: GenericTseApplicationType = {
+        respondCollection: [{ value: { fromIdamId: '1234' } }],
       };
-      expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(false);
+      expect(isNeverResponseBefore(app, mockUserDetails)).toBe(false);
     });
 
-    it('should return false when user is undefined', () => {
-      const app: GenericTseApplicationType = mockGenericTseCollection[0].value;
-      expect(isResponseToTribunalRequired(app, undefined)).toBe(false);
+    test('returns true if respondCollection is undefined', () => {
+      const app: GenericTseApplicationType = {
+        applicant: Applicant.RESPONDENT,
+      };
+      expect(isNeverResponseBefore(app, mockUserDetails)).toBe(true);
     });
 
-    it('should return false when application is undefined', () => {
-      expect(isResponseToTribunalRequired(undefined, mockUserDetails)).toBe(false);
-    });
-
-    it('should return false when respondCollection is undefined', () => {
-      const app: GenericTseApplicationType = { respondCollection: undefined };
-      expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(false);
-    });
-
-    it('should return false when respondCollection is empty', () => {
-      const app: GenericTseApplicationType = { respondCollection: [] };
-      expect(isResponseToTribunalRequired(app, mockUserDetails)).toBe(false);
+    test('returns true if application is undefined', () => {
+      expect(isNeverResponseBefore(undefined, mockUserDetails)).toBe(false);
     });
   });
 });

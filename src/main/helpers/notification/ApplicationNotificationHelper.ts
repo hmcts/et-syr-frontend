@@ -6,9 +6,13 @@ import {
 import { PageUrls, TranslationKeys } from '../../definitions/constants';
 import { ApplicationNotification } from '../../definitions/notification/applicationNotification';
 import { AnyRecord } from '../../definitions/util-types';
-import { getApplicationDisplay, isApplicantClaimant, isApplicantRespondent } from '../GenericTseApplicationHelper';
+import {
+  getApplicationDisplay,
+  isApplicantClaimant,
+  isApplicantRespondent,
+  isResponseToTribunalRequired,
+} from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
-import { isResponseToTribunalRequired } from '../controller/ApplicationDetailsHelper';
 import { isYourApplication } from '../controller/YourRequestAndApplicationsHelper';
 
 export const getAppNotificationFromAdmin = (

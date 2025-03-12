@@ -1,11 +1,13 @@
-import { AppRequest } from '../definitions/appRequest';
+import { AppRequest, UserDetails } from '../definitions/appRequest';
 import {
   GenericTseApplicationType,
   GenericTseApplicationTypeItem,
+  TseRespondTypeItem,
 } from '../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant } from '../definitions/constants';
+import { Applicant, PartiesRespond } from '../definitions/constants';
 import { ApplicationType, application } from '../definitions/contact-tribunal-applications';
 import { AnyRecord } from '../definitions/util-types';
+import ObjectUtils from '../utils/ObjectUtils';
 
 import { getApplicationDisplayByClaimantCode, getApplicationDisplayByCode } from './ApplicationHelper';
 
@@ -58,4 +60,45 @@ export const isTypeAOrB = (app: GenericTseApplicationType): boolean => {
     isApplicantRespondent(app) ? appData.code === app?.type : appData.claimant === app?.type
   );
   return matchingApp ? matchingApp.type === ApplicationType.A || matchingApp.type === ApplicationType.B : undefined;
+};
+
+/**
+ * Boolean if respond to Application is required.
+ * @param app selected application
+ * @param user user in request
+ */
+export const isResponseToTribunalRequired = (app: GenericTseApplicationType, user: UserDetails): boolean => {
+  if (!app || ObjectUtils.isEmpty(app.respondCollection) || !user) {
+    return false;
+  }
+
+  const lastAdminRespondIndex = getLastAdminRespondIndex(app.respondCollection);
+  if (lastAdminRespondIndex === -1) {
+    return false;
+  }
+
+  const lastUserRespondIndex = getLastUserRespondIndex(app.respondCollection, user);
+  if (lastUserRespondIndex === -1) {
+    return true;
+  }
+
+  return lastAdminRespondIndex > lastUserRespondIndex;
+};
+
+const getLastAdminRespondIndex = (respondCollection: TseRespondTypeItem[]): number => {
+  const indexes = respondCollection.map((response, index) =>
+    response.value.from === Applicant.ADMIN &&
+    (response.value.selectPartyRespond === PartiesRespond.BOTH_PARTIES ||
+      response.value.selectPartyRespond === PartiesRespond.RESPONDENT)
+      ? index
+      : -1
+  );
+  return Math.max(...indexes);
+};
+
+const getLastUserRespondIndex = (respondCollection: TseRespondTypeItem[], user: UserDetails): number => {
+  const userIndexes = respondCollection.map((response, index) =>
+    response.value.from === Applicant.RESPONDENT && response.value.fromIdamId === user.id ? index : -1
+  );
+  return Math.max(...userIndexes);
 };

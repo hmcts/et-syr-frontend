@@ -8,13 +8,16 @@ import { ErrorPages, PageUrls, TranslationKeys, TseErrors } from '../definitions
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
-import { findSelectedGenericTseApplication } from '../helpers/GenericTseApplicationHelper';
+import {
+  findSelectedGenericTseApplication,
+  isResponseToTribunalRequired,
+} from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import {
   getAllResponses,
   getApplicationContent,
   getDecisionContent,
-  isResponseToTribunalRequired,
+  isNeverResponseBefore,
 } from '../helpers/controller/ApplicationDetailsHelper';
 import { getFormDataError } from '../helpers/controller/RespondToApplicationHelper';
 import { getLogger } from '../logger';
@@ -79,9 +82,11 @@ export default class RespondToApplicationController {
       );
     }
 
-    req.session.userCase.selectedGenericTseApplication = selectedApplication;
-    req.session.userCase.responseText = formData.responseText;
-    req.session.userCase.hasSupportingMaterial = formData.hasSupportingMaterial;
+    const userCase = req.session.userCase;
+    userCase.selectedGenericTseApplication = selectedApplication;
+    userCase.isRespondingToRequestOrOrder = isResponseToTribunalRequired(selectedApplication.value, req.session.user);
+    userCase.responseText = formData.responseText;
+    userCase.hasSupportingMaterial = formData.hasSupportingMaterial;
 
     const redirectUrl =
       formData.hasSupportingMaterial === YesOrNo.YES
@@ -97,7 +102,10 @@ export default class RespondToApplicationController {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
-    if (!isResponseToTribunalRequired(selectedApplication.value, req.session.user)) {
+    if (
+      !isNeverResponseBefore(selectedApplication.value, req.session.user) &&
+      !isResponseToTribunalRequired(selectedApplication.value, req.session.user)
+    ) {
       logger.error(TseErrors.ERROR_NO_RESPOND_REQUIRED);
       return res.redirect(ErrorPages.NOT_FOUND);
     }

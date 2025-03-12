@@ -4,14 +4,18 @@ import { AppRequest } from '../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { ErrorPages, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
 import { LinkStatus } from '../definitions/links';
-import { findSelectedGenericTseApplication, getApplicationDisplay } from '../helpers/GenericTseApplicationHelper';
+import { getApplicationStatusAfterViewed } from '../helpers/ApplicationStateHelper';
+import {
+  findSelectedGenericTseApplication,
+  getApplicationDisplay,
+  isResponseToTribunalRequired,
+} from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import {
   getAllResponses,
   getApplicationContent,
-  getApplicationStatusAfterViewed,
   getDecisionContent,
-  isResponseToTribunalRequired,
+  isNeverResponseBefore,
 } from '../helpers/controller/ApplicationDetailsHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
@@ -47,7 +51,8 @@ export default class ApplicationDetailsController {
       appContent: getApplicationContent(selectedApplication.value, req),
       allResponses: getAllResponses(selectedApplication.value, req),
       decisionContent: getDecisionContent(selectedApplication.value, req),
-      isRespondButton: isResponseToTribunalRequired(selectedApplication.value, req.session.user),
+      isRespondButton: isNeverResponseBefore(selectedApplication.value, req.session.user),
+      isAdminRespondButton: isResponseToTribunalRequired(selectedApplication.value, req.session.user),
       respondRedirectUrl:
         PageUrls.RESPOND_TO_APPLICATION.replace(':appId', selectedApplication.id) + getLanguageParam(req.url),
     });
