@@ -19,10 +19,7 @@ export const getApplicationState = (app: GenericTseApplicationType, user: UserDe
       return <LinkStatus>existingState.value.applicationState;
     }
   }
-  if (app?.applicantIdamId === user?.id) {
-    return LinkStatus.IN_PROGRESS;
-  }
-  return LinkStatus.NOT_STARTED_YET;
+  return app?.applicantIdamId === user?.id ? LinkStatus.IN_PROGRESS : LinkStatus.NOT_STARTED_YET;
 };
 
 /**
@@ -31,7 +28,7 @@ export const getApplicationState = (app: GenericTseApplicationType, user: UserDe
  * @param user current user
  */
 export const getApplicationStatusAfterViewed = (app: GenericTseApplicationType, user: UserDetails): LinkStatus => {
-  const currentState = getApplicationState(app, user);
+  const currentState: LinkStatus = getApplicationState(app, user);
   if (currentState === LinkStatus.NOT_VIEWED) {
     return LinkStatus.VIEWED;
   } else if (currentState === LinkStatus.UPDATED) {
@@ -42,6 +39,8 @@ export const getApplicationStatusAfterViewed = (app: GenericTseApplicationType, 
     isResponseToTribunalRequired(app, user)
   ) {
     return LinkStatus.IN_PROGRESS;
+  } else if (!app.respondentState.some(state => state.value.userIdamId === user.id)) {
+    return currentState;
   }
   return undefined;
 };
