@@ -1,5 +1,5 @@
 import { AppRequest } from '../definitions/appRequest';
-import { DefaultValues, languages } from '../definitions/constants';
+import { DefaultValues, PageUrls, languages } from '../definitions/constants';
 import CollectionUtils from '../utils/CollectionUtils';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
@@ -47,7 +47,28 @@ export const addParameterToUrl = (url: string, parameter: string): string => {
       url = url + DefaultValues.STRING_QUESTION_MARK + parameter;
     }
   }
-  return url;
+  if (containsBasePath(url)) {
+    return url;
+  }
+  return PageUrls.NOT_FOUND;
+};
+
+// Convert object values to an array of paths
+const basePaths = Object.values(PageUrls)
+  .map(path => path.replace(/:[^/]+/g, '[^/]+')) // Replace dynamic params with regex match
+  .map(path => path.replace(/\//g, '\\/')); // Escape slashes for regex
+
+// Construct regex that matches the base paths only at the start of pathname
+const regexPattern = new RegExp(`^(${basePaths.join('|')})($|/)`);
+
+// Function to check if a URL contains a valid base path
+export const containsBasePath = (url: string): boolean => {
+  try {
+    const pathname = new URL(url).pathname; // Extract pathname from URL
+    return regexPattern.test(pathname); // Test only against pathname
+  } catch {
+    return false; // Return false for invalid URLs
+  }
 };
 
 export const setChangeAnswersUrlLanguage = (req: AppRequest): string => {
