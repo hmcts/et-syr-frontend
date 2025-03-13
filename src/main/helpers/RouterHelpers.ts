@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { DefaultValues, ErrorPages, LegacyUrls, PageUrls, languages } from '../definitions/constants';
+import { DefaultValues, ErrorPages, PageUrls, languages } from '../definitions/constants';
 import { FormFields } from '../definitions/form';
 import ObjectUtils from '../utils/ObjectUtils';
 import RespondentUtils from '../utils/RespondentUtils';
@@ -51,7 +51,6 @@ export const returnNextPage = (req: AppRequest, res: Response, redirectUrl: stri
 export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): string => {
   // if undefined use PageURLs
   validUrls = validUrls ?? Object.values(PageUrls);
-  validUrls.push(LegacyUrls.SIGN_IN);
   // split url, first part will always be the url (in a format similar to that in PageUrls)
   const urlStr = redirectUrl.split('?');
   const baseUrl = urlStr[0];

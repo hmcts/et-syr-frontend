@@ -162,6 +162,8 @@ export const PageUrls = {
   APPLICATION_DETAILS: '/application-details/:appId',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
+  LEGACY_URL_SIGN_IN: LegacyUrls.SIGN_IN,
+  LEGACY_URL_SIGN_UP: LegacyUrls.SIGN_UP,
 } as const;
 
 export const InterceptPaths = {

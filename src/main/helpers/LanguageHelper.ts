@@ -42,7 +42,9 @@ export const addParameterToUrl = (url: string, parameter: string): string => {
   }
   if (!url.includes(parameter)) {
     if (url.includes(DefaultValues.STRING_QUESTION_MARK)) {
-      url = url + DefaultValues.STRING_AMPERSAND + parameter;
+      url = containsBasePath(url + DefaultValues.STRING_AMPERSAND + parameter)
+        ? url + DefaultValues.STRING_AMPERSAND + parameter
+        : PageUrls.NOT_FOUND;
     } else {
       url = containsBasePath(url + DefaultValues.STRING_QUESTION_MARK + parameter)
         ? url + DefaultValues.STRING_QUESTION_MARK + parameter
