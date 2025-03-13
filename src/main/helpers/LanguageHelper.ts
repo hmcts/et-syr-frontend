@@ -44,13 +44,12 @@ export const addParameterToUrl = (url: string, parameter: string): string => {
     if (url.includes(DefaultValues.STRING_QUESTION_MARK)) {
       url = url + DefaultValues.STRING_AMPERSAND + parameter;
     } else {
-      url = url + DefaultValues.STRING_QUESTION_MARK + parameter;
+      url = containsBasePath(url + DefaultValues.STRING_QUESTION_MARK + parameter)
+        ? url + DefaultValues.STRING_QUESTION_MARK + parameter
+        : PageUrls.NOT_FOUND;
     }
   }
-  if (containsBasePath(url)) {
-    return url;
-  }
-  return PageUrls.NOT_FOUND;
+  return url;
 };
 
 // Convert object values to an array of paths
