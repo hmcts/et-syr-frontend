@@ -1,16 +1,17 @@
-import AxiosInstance, { AxiosResponse } from 'axios';
+import AxiosInstance from 'axios';
 
 import ContactTribunalSubmitController from '../../../main/controllers/ContactTribunalSubmitController';
-import { CaseApiDataResponse } from '../../../main/definitions/api/caseApiResponse';
 import { YesOrNo } from '../../../main/definitions/case';
-import { ErrorPages, PageUrls } from '../../../main/definitions/constants';
+import { Applicant, ErrorPages, PageUrls } from '../../../main/definitions/constants';
 import { ET3CaseDetailsLinksStatuses } from '../../../main/definitions/links';
 import { CaseApi, getCaseApi } from '../../../main/services/CaseService';
 import * as CaseService from '../../../main/services/CaseService';
 import ET3Util from '../../../main/utils/ET3Util';
+import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+import { mockUserDetails } from '../mocks/mockUser';
 import mockUserCase from '../mocks/mockUserCase';
 
 jest.mock('config');
@@ -24,35 +25,31 @@ describe('Contact Tribunal Submit Controller', () => {
   };
   const caseApi: CaseApi = mockCaseApi as unknown as CaseApi;
   jest.spyOn(CaseService, 'getCaseApi').mockReturnValue(caseApi);
+  caseApi.submitRespondentTse = jest
+    .fn()
+    .mockResolvedValue(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse));
+  caseApi.changeApplicationStatus = jest
+    .fn()
+    .mockResolvedValue(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse));
 
-  caseApi.submitRespondentTse = jest.fn().mockResolvedValue(
-    Promise.resolve({
-      data: {
-        id: '135',
-        created_date: '2022-08-19T09:19:25.79202',
-        last_modified: '2022-08-19T09:19:25.817549',
-        case_data: {
-          tseApplicationStoredCollection: [
-            {
-              id: '246',
-              value: {
-                applicant: 'Claimant',
-              },
-            },
-          ],
-        },
+  const mockCaseWithId = mockCaseWithIdWithRespondents;
+  mockCaseWithId.genericTseApplicationCollection = [
+    {
+      id: '246',
+      value: {
+        applicant: Applicant.RESPONDENT,
+        applicantIdamId: '1234',
       },
-    } as AxiosResponse<CaseApiDataResponse>)
-  );
-
-  const updateCaseDetailsLinkStatuses = jest.spyOn(ET3Util, 'updateCaseDetailsLinkStatuses');
-  updateCaseDetailsLinkStatuses.mockResolvedValueOnce(Promise.resolve(mockCaseWithIdWithRespondents));
+    },
+  ];
+  jest.spyOn(ET3Util, 'updateCaseDetailsLinkStatuses').mockResolvedValueOnce(Promise.resolve(mockCaseWithId));
 
   beforeEach(() => {});
 
   it('should redirect to CONTACT_TRIBUNAL_SUBMIT_COMPLETE with language param', async () => {
     const res = mockResponse();
     const req = mockRequest({});
+    req.session.user = mockUserDetails;
     req.session.userCase = mockUserCase;
     req.session.userCase.et3CaseDetailsLinksStatuses = new ET3CaseDetailsLinksStatuses();
     req.url = PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE;
