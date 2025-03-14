@@ -1,6 +1,7 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../../definitions/links';
+import { isApplicationWithUserState } from '../ApplicationStateHelper';
 import { isResponseToTribunalRequired } from '../GenericTseApplicationHelper';
 
 import { isClaimantApplicationShare } from './ClaimantsApplicationsHelper';
@@ -80,10 +81,7 @@ const getLinkStatus = (apps: GenericTseApplicationTypeItem[], user: UserDetails,
 };
 
 const getAdminDecisionNotViewed = (apps: GenericTseApplicationTypeItem[], user: UserDetails): boolean => {
-  return apps.some(
-    app =>
-      app.value.adminDecision?.length && !app.value.respondentState?.some(state => state.value?.userIdamId === user.id)
-  );
+  return apps.some(app => app.value.adminDecision?.length && !isApplicationWithUserState(app.value, user));
 };
 
 const getUserApplicationStates = (apps: GenericTseApplicationTypeItem[], user: UserDetails): string[] => {

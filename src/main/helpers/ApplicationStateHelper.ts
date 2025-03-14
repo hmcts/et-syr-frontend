@@ -44,3 +44,12 @@ export const getApplicationStatusAfterViewed = (app: GenericTseApplicationType, 
   }
   return undefined;
 };
+
+/**
+ * Check if application contains current user state
+ * @param app application
+ * @param user current user
+ */
+export const isApplicationWithUserState = (app: GenericTseApplicationType, user: UserDetails): boolean => {
+  return app?.respondentState?.some(state => state.value?.userIdamId === user.id);
+};
