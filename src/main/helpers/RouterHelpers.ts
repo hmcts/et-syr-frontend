@@ -65,7 +65,7 @@ export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): strin
       for (const param of parameters) {
         // Should never add clear selection parameter.
         if (param !== DefaultValues.CLEAR_SELECTION_URL_PARAMETER) {
-          validUrl = addParameterToUrl(validUrl, param);
+          validUrl = addParameterToUrl(validUrl, param, validUrls);
         }
       }
       return validUrl;

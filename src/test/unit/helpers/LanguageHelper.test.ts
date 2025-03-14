@@ -18,7 +18,7 @@ describe('Language Helper Functions', () => {
     it('should append Welsh language parameter to the redirect URL and set session.lang to Welsh when URL contains Welsh parameter', () => {
       req.url = '/some-url?lng=cy';
       const redirectUrl = '/redirect-url';
-      const result = setUrlLanguage(req, redirectUrl);
+      const result = setUrlLanguage(req, redirectUrl, ['/redirect-url']);
 
       expect(result).toBe(redirectUrl + languages.WELSH_URL_PARAMETER);
       expect(req.session.lang).toBe(languages.WELSH);
@@ -27,7 +27,7 @@ describe('Language Helper Functions', () => {
     it('should append English language parameter to the redirect URL and set session.lang to English when URL contains English parameter', () => {
       req.url = '/some-url?lng=en';
       const redirectUrl = '/redirect-url';
-      const result = setUrlLanguage(req, redirectUrl);
+      const result = setUrlLanguage(req, redirectUrl, ['/redirect-url']);
 
       expect(result).toBe(redirectUrl + languages.ENGLISH_URL_PARAMETER);
       expect(req.session.lang).toBe(languages.ENGLISH);
