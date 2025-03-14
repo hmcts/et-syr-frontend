@@ -4,7 +4,7 @@ import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from
 import { isApplicationWithUserState } from '../ApplicationStateHelper';
 import { isResponseToTribunalRequired } from '../GenericTseApplicationHelper';
 
-import { isClaimantApplicationShare } from './ClaimantsApplicationsHelper';
+import { isClaimantApplicationShare, isDecisionShareToRespondent } from './ClaimantsApplicationsHelper';
 import { isOtherRespApplicationShare } from './OtherRespondentsApplicationsHelper';
 import { isYourApplication } from './YourRequestAndApplicationsHelper';
 
@@ -22,34 +22,49 @@ export const getET3CaseDetailsLinkNames = async (
   req: AppRequest
 ): Promise<ET3CaseDetailsLinksStatuses> => {
   const apps = req.session?.userCase?.genericTseApplicationCollection;
-  statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(
-    apps,
-    req.session.user
-  );
-  statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = updateClaimantAppsLinkStatus(apps, req.session.user);
-  statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = updateOtherRespondentAppsLinkStatus(
-    apps,
-    req.session.user
-  );
+  updateYourRequestsAndApplications(statuses, apps, req.session.user);
+  updateClaimantAppsLinkStatus(statuses, apps, req.session.user);
+  updateOtherRespondentAppsLinkStatus(statuses, apps, req.session.user);
   return statuses;
 };
 
-const getYourRequestsAndApplications = (allApps: GenericTseApplicationTypeItem[], user: UserDetails): LinkStatus => {
+const updateYourRequestsAndApplications = (
+  statuses: ET3CaseDetailsLinksStatuses,
+  allApps: GenericTseApplicationTypeItem[],
+  user: UserDetails
+): void => {
   const apps = allApps?.filter(app => isYourApplication(app.value, user));
-  return getLinkStatus(apps, user, true);
+  const currentStatus = statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications];
+  const newStatus = getLinkStatus(apps, user, true);
+  if (currentStatus !== newStatus) {
+    statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = newStatus;
+  }
 };
 
-const updateClaimantAppsLinkStatus = (allApps: GenericTseApplicationTypeItem[], user: UserDetails): LinkStatus => {
+const updateClaimantAppsLinkStatus = (
+  statuses: ET3CaseDetailsLinksStatuses,
+  allApps: GenericTseApplicationTypeItem[],
+  user: UserDetails
+): void => {
   const apps = allApps?.filter(app => isClaimantApplicationShare(app.value));
-  return getLinkStatus(apps, user, false);
+  const currentStatus = statuses[ET3CaseDetailsLinkNames.ClaimantApplications];
+  const newStatus = getLinkStatus(apps, user, false);
+  if (currentStatus !== newStatus) {
+    statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = newStatus;
+  }
 };
 
 const updateOtherRespondentAppsLinkStatus = (
+  statuses: ET3CaseDetailsLinksStatuses,
   allApps: GenericTseApplicationTypeItem[],
   user: UserDetails
-): LinkStatus => {
+): void => {
   const apps = allApps?.filter(app => isOtherRespApplicationShare(app.value, user));
-  return getLinkStatus(apps, user, false);
+  const currentStatus = statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications];
+  const newStatus = getLinkStatus(apps, user, false);
+  if (currentStatus !== newStatus) {
+    statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = newStatus;
+  }
 };
 
 const getLinkStatus = (apps: GenericTseApplicationTypeItem[], user: UserDetails, isYours: boolean): LinkStatus => {
@@ -61,7 +76,7 @@ const getLinkStatus = (apps: GenericTseApplicationTypeItem[], user: UserDetails,
     return LinkStatus.NOT_STARTED_YET;
   }
 
-  if (getAdminDecisionNotViewed(apps, user)) {
+  if (hasAdminDecisionNotViewed(apps, user)) {
     return LinkStatus.NOT_VIEWED;
   }
 
@@ -80,8 +95,12 @@ const getLinkStatus = (apps: GenericTseApplicationTypeItem[], user: UserDetails,
   return isYours ? LinkStatus.IN_PROGRESS : LinkStatus.NOT_STARTED_YET;
 };
 
-const getAdminDecisionNotViewed = (apps: GenericTseApplicationTypeItem[], user: UserDetails): boolean => {
-  return apps.some(app => app.value.adminDecision?.length && !isApplicationWithUserState(app.value, user));
+const hasAdminDecisionNotViewed = (apps: GenericTseApplicationTypeItem[], user: UserDetails): boolean => {
+  return apps.some(
+    app =>
+      app.value.adminDecision?.filter(d => isDecisionShareToRespondent(d.value)) &&
+      !isApplicationWithUserState(app.value, user)
+  );
 };
 
 const getUserApplicationStates = (apps: GenericTseApplicationTypeItem[], user: UserDetails): string[] => {
