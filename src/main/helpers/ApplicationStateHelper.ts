@@ -54,18 +54,9 @@ export const getApplicationStatusAfterViewed = (app: GenericTseApplicationType, 
 };
 
 /**
- * Check if application contains current user state
+ * Get application state if not exist in application
  * @param app application
  * @param user current user
- */
-export const isApplicationWithUserState = (app: GenericTseApplicationType, user: UserDetails): boolean => {
-  return app?.respondentState?.some(state => state.value?.userIdamId === user.id);
-};
-
-/**
- * Get application state if not exist in application
- * @param app
- * @param user
  */
 export const getApplicationStateIfNotExist = (app: GenericTseApplicationType, user: UserDetails): LinkStatus => {
   if (isResponseToTribunalRequired(app, user)) {

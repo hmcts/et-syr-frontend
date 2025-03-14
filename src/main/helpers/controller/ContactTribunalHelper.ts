@@ -5,7 +5,6 @@ import { MY_HMCTS, PageUrls, YES } from '../../definitions/constants';
 import { application } from '../../definitions/contact-tribunal-applications';
 import { AccordionItem, addAccordionRow } from '../../definitions/govuk/govukAccordion';
 import { AnyRecord } from '../../definitions/util-types';
-import { isApplicationWithUserState } from '../ApplicationStateHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
 import { isYourApplication } from './YourRequestAndApplicationsHelper';
@@ -85,8 +84,6 @@ export const getLatestApplication = (
   apps: GenericTseApplicationTypeItem[],
   user: UserDetails
 ): GenericTseApplicationTypeItem => {
-  const filteredItem = apps?.filter(
-    app => isYourApplication(app.value, user) && !isApplicationWithUserState(app.value, user)
-  );
+  const filteredItem = apps?.filter(app => isYourApplication(app.value, user));
   return filteredItem[filteredItem.length - 1];
 };
