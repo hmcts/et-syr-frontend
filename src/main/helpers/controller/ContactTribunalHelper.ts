@@ -1,13 +1,9 @@
-import { UserDetails } from '../../definitions/appRequest';
 import { CaseWithId } from '../../definitions/case';
-import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { MY_HMCTS, PageUrls, YES } from '../../definitions/constants';
 import { application } from '../../definitions/contact-tribunal-applications';
 import { AccordionItem, addAccordionRow } from '../../definitions/govuk/govukAccordion';
 import { AnyRecord } from '../../definitions/util-types';
 import { getLanguageParam } from '../RouterHelpers';
-
-import { isYourApplication } from './YourRequestAndApplicationsHelper';
 
 /**
  * List all applications in the Contact Tribunal page
@@ -61,29 +57,4 @@ const isClaimantRepresentedWithMyHMCTSCase = (userCase: CaseWithId): boolean => 
     userCase.representativeClaimantType !== undefined &&
     userCase.representativeClaimantType.myHmctsOrganisation !== undefined
   );
-};
-
-/**
- * Clear temporary fields stored in session
- * @param userCase session userCase
- */
-export const clearTempFields = (userCase: CaseWithId): void => {
-  userCase.contactApplicationType = undefined;
-  userCase.contactApplicationText = undefined;
-  userCase.contactApplicationFile = undefined;
-  userCase.copyToOtherPartyYesOrNo = undefined;
-  userCase.copyToOtherPartyText = undefined;
-};
-
-/**
- * Get last application which is just created by user
- * @param apps application collection
- * @param user current user
- */
-export const getLatestApplication = (
-  apps: GenericTseApplicationTypeItem[],
-  user: UserDetails
-): GenericTseApplicationTypeItem => {
-  const filteredItem = apps?.filter(app => isYourApplication(app.value, user));
-  return filteredItem[filteredItem.length - 1];
 };

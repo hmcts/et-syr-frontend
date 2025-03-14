@@ -5,7 +5,7 @@ import { YesOrNo } from '../definitions/case';
 import { ErrorPages, PageUrls, TseErrors } from '../definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { clearTempFields, getLatestApplication } from '../helpers/controller/ContactTribunalHelper';
+import { clearTempFields, getLatestApplication } from '../helpers/controller/ContactTribunalSubmitHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import ET3Util from '../utils/ET3Util';
