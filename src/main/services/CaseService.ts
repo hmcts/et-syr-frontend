@@ -7,8 +7,12 @@ import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { UploadedFile } from '../definitions/api/uploadedFile';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
+import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
+import { application } from '../definitions/contact-tribunal-applications';
+import { LinkStatus } from '../definitions/links';
 import { toApiFormat } from '../helpers/ApiFormatter';
+import { getApplicationByCode } from '../helpers/ApplicationHelper';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ErrorUtils from '../utils/ErrorUtils';
 
@@ -25,24 +29,6 @@ export class CaseApi {
     }
   };
 
-  updateHubLinksStatuses = async (caseItem: CaseWithId): Promise<AxiosResponse<CaseApiDataResponse>> => {
-    try {
-      return await this.axios.put(
-        JavaApiUrls.UPDATE_CASE_SUBMITTED +
-          DefaultValues.STRING_QUESTION_MARK +
-          JavaApiUrls.ROLE_PARAM_NAME +
-          DefaultValues.STRING_EQUALS +
-          Roles.DEFENDANT_ROLE_WITHOUT_BRACKETS,
-        {
-          case_id: caseItem.id,
-          case_type_id: caseItem.caseTypeId,
-          hub_links_statuses: caseItem.hubLinksStatuses,
-        }
-      );
-    } catch (error) {
-      throw new Error('Error updating hub links statuses: ' + axiosErrorDetails(error));
-    }
-  };
   /**
    * Retrieves case data by userCase value of the session(req.session.userCase).
    * throws an exception when there is no value of userCase in the session.
@@ -200,6 +186,69 @@ export class CaseApi {
       });
     } catch (error) {
       throw new Error('Error uploading document: ' + axiosErrorDetails(error));
+    }
+  };
+
+  submitRespondentTse = async (req: AppRequest): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      const caseItem = req.session.userCase;
+      const appType = getApplicationByCode(caseItem.contactApplicationType);
+      return await this.axios.put(JavaApiUrls.SUBMIT_RESPONDENT_APPLICATION, {
+        case_id: caseItem.id,
+        case_type_id: caseItem.caseTypeId,
+        type_c: application.ORDER_WITNESS_ATTEND.code.includes(caseItem.contactApplicationType),
+        respondent_tse: {
+          respondentIdamId: req.session.user.id,
+          contactApplicationType: caseItem.contactApplicationType,
+          contactApplicationClaimantType: appType ? appType.claimant : null,
+          contactApplicationText: caseItem.contactApplicationText,
+          contactApplicationFile: caseItem.contactApplicationFile,
+          copyToOtherPartyYesOrNo: caseItem.copyToOtherPartyYesOrNo,
+          copyToOtherPartyText: caseItem.copyToOtherPartyText,
+        },
+      });
+    } catch (error) {
+      throw new Error('Error submitting respondent tse application: ' + axiosErrorDetails(error));
+    }
+  };
+
+  submitRespondentResponseToApplication = async (caseItem: CaseWithId): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      return await this.axios.put(JavaApiUrls.SUBMIT_RESPONDENT_RESPONSE_TO_APP, {
+        case_id: caseItem.id,
+        case_type_id: caseItem.caseTypeId,
+        applicationId: caseItem.selectedGenericTseApplication.id,
+        supportingMaterialFile: caseItem.supportingMaterialFile,
+        isRespondingToRequestOrOrder: caseItem.isRespondingToRequestOrOrder,
+        response: {
+          response: caseItem.responseText,
+          hasSupportingMaterial: caseItem.hasSupportingMaterial,
+          copyToOtherParty: caseItem.copyToOtherPartyYesOrNo,
+          copyNoGiveDetails: caseItem.copyToOtherPartyText,
+          fromIdamId: caseItem.idamId,
+        },
+      });
+    } catch (error) {
+      throw new Error('Error responding to tse application: ' + axiosErrorDetails(error));
+    }
+  };
+
+  changeApplicationStatus = async (
+    req: AppRequest,
+    selectedApplication: GenericTseApplicationTypeItem,
+    newStatus: LinkStatus
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      const caseItem = req.session.userCase;
+      return await this.axios.put(JavaApiUrls.CHANGE_RESPONDENT_APPLICATION_STATUS, {
+        case_id: caseItem.id,
+        case_type_id: caseItem.caseTypeId,
+        application_id: selectedApplication.id,
+        user_idam_id: req.session.user.id,
+        new_status: newStatus,
+      });
+    } catch (error) {
+      throw new Error('Error changing tse application status: ' + axiosErrorDetails(error));
     }
   };
 }

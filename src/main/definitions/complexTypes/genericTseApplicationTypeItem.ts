@@ -5,16 +5,11 @@ import { DocumentTypeItem } from './documentTypeItem';
 export interface GenericTseApplicationTypeItem {
   id?: string;
   value?: GenericTseApplicationType;
-  //Field created for visualization only
-  linkValue?: string;
-  //Url for navigating used in et-syr-front only
-  redirectUrl?: string;
-  statusColor?: string;
-  displayStatus?: string;
 }
 
 export interface GenericTseApplicationType {
   applicant?: string;
+  applicantIdamId?: string;
   date?: string;
   type?: string;
   copyToOtherPartyText?: string;
@@ -23,22 +18,29 @@ export interface GenericTseApplicationType {
   documentUpload?: Document;
   number?: string;
   respondCollection?: TseRespondTypeItem[];
-  respondStoredCollection?: TseRespondTypeItem[];
   responsesCount?: string;
   status?: string;
   dueDate?: string;
   applicationState?: string; // used for CUI and so viewed/not viewed refers to claimant
+  respondentState?: TseStatusTypeItem[];
   respondentResponseRequired?: string;
   claimantResponseRequired?: string;
   adminDecision?: TseAdminDecisionItem[];
 }
 
+export interface TseStatusTypeItem {
+  id: string;
+  value: TseStatusType;
+}
+
+export interface TseStatusType {
+  userIdamId: string;
+  applicationState: string;
+}
+
 export interface TseAdminDecisionItem {
   id?: string;
   value?: TseAdminDecision;
-  redirectUrl?: string;
-  statusColor?: string;
-  displayStatus?: string;
 }
 
 export interface TseAdminDecision {
@@ -65,10 +67,12 @@ export interface TseRespondType {
   date?: string;
   status?: string;
   // Respondent / Claimant Reply
+  fromIdamId?: string;
   response?: string;
   copyToOtherParty?: string;
   hasSupportingMaterial?: YesOrNo;
   supportingMaterial?: TseRespondSupportingMaterialItem[];
+  copyNoGiveDetails?: string;
   // Admin Reply
   addDocument?: DocumentTypeItem[];
   additionalInformation?: string;
@@ -81,6 +85,8 @@ export interface TseRespondType {
   selectPartyRespond?: string;
   selectPartyNotify?: string;
   viewedByClaimant?: string;
+  // Work Allocation enablers
+  dateTime?: string;
 }
 
 export interface TseRespondSupportingMaterialItem {

@@ -64,24 +64,6 @@ export const handleUpdateDraftCase = async (req: AppRequest, logger: Logger): Pr
   }
 };
 
-/**
- * Updates the status of hub links in the case.
- * Makes an API call to update the hub links statuses for the current case.
- * Logs a success message if the update is successful, and logs an error message otherwise.
- *
- * @param {AppRequest} req
- * @param {Logger} logger
- * @return {Promise<void>}
- */
-export const handleUpdateHubLinksStatuses = async (req: AppRequest, logger: Logger): Promise<void> => {
-  try {
-    await getCaseApi(req.session.user?.accessToken).updateHubLinksStatuses(req.session.userCase);
-    logger.info(`Updated hub links statuses for case: ${req.session.userCase.id}`);
-  } catch (error) {
-    logger.error(error.message);
-  }
-};
-
 export const setUserCase = (req: AppRequest, formData: Partial<CaseWithId>, fieldsToReset: string[]): void => {
   if (!req.session.userCase) {
     req.session.userCase = {} as CaseWithId;

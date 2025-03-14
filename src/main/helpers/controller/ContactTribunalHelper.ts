@@ -11,11 +11,13 @@ import { getLanguageParam } from '../RouterHelpers';
  * @param translations translation of the page
  */
 export const getApplicationsAccordionItems = (url: string, translations: AnyRecord): AccordionItem[] => {
-  return (Object.keys(application) as (keyof typeof application)[]).map(key => {
-    const applicationHeading = translations.sections[key].label;
-    const applicationContent = getContentHtml(key, translations, getLanguageParam(url));
-    return addAccordionRow(applicationHeading, applicationContent);
-  });
+  return (Object.keys(application) as (keyof typeof application)[])
+    .filter(key => application[key].code !== undefined)
+    .map(key => {
+      const applicationHeading = translations.sections[key].label;
+      const applicationContent = getContentHtml(key, translations, getLanguageParam(url));
+      return addAccordionRow(applicationHeading, applicationContent);
+    });
 };
 
 const getContentHtml = (key: keyof typeof application, translations: AnyRecord, languageParam: string): string => {

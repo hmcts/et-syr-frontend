@@ -1,5 +1,5 @@
 import { CaseWithId } from './case';
-import { GenericTseApplicationType, TseAdminDecisionItem } from './complexTypes/genericTseApplicationTypeItem';
+
 export const enum TypesOfClaim {
   BREACH_OF_CONTRACT = 'breachOfContract',
   DISCRIMINATION = 'discrimination',
@@ -21,14 +21,6 @@ export const enum CaseState {
   AWAITING_SUBMISSION_TO_HMCTS = 'AWAITING_SUBMISSION_TO_HMCTS',
   SUBMITTED = 'Submitted',
   ACCEPTED = 'Accepted',
-}
-
-export const enum HubCaseState {
-  SUBMITTED = 'SUBMITTED',
-  ACCEPTED = 'ACCEPTED',
-  RESPONSE_RECEIVED = 'RESPONSE_RECEIVED',
-  HEARING_DETAILS = 'HEARING_DETAILS',
-  CLAIM_DECISION = 'CLAIM_DECISION',
 }
 
 export const enum ET3Status {
@@ -69,13 +61,6 @@ export const enum TellUsWhatYouWant {
   ANOTHER_JOB = 'anotherJob',
 }
 
-export const enum sectionStatus {
-  notStarted = 'NOT STARTED',
-  completed = 'COMPLETED',
-  inProgress = 'IN PROGRESS',
-  cannotStartYet = 'CANNOT START YET',
-}
-
 export interface ApplicationTableRecord {
   userCase: CaseWithId;
   respondents: string;
@@ -91,32 +76,4 @@ export interface DocumentDetail {
   originalDocumentName?: string;
   createdOn?: string;
   type?: string;
-}
-
-export interface RespondentApplicationDetails {
-  respondentApplicationHeader?: string;
-  respondToRespondentAppRedirectUrl?: string;
-  dueDate?: Date;
-  dueDateDayMonthYear?: string;
-  respondByDate?: string;
-  applicant?: string;
-  copyToOtherPartyYesOrNo?: string;
-  applicationType?: string;
-  number?: string;
-  applicationState?: string;
-  type?: string;
-  date?: string;
-}
-
-export interface DecisionAndApplicationDetails {
-  decisionOfApp?: TseAdminDecisionItem;
-  id?: string;
-  value?: GenericTseApplicationType;
-  linkValue?: string;
-  redirectUrl?: string;
-  statusColor?: string;
-  displayStatus?: string;
-  applicant?: string;
-  decisionBannerHeader?: string;
-  applicationType?: string;
 }

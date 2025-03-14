@@ -6,6 +6,7 @@ import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { ET3Status } from '../definitions/definition';
 import {
   ET3CaseDetailsLinkNames,
+  ET3CaseDetailsLinksStatuses,
   LinkStatus,
   SectionIndexToEt3CaseDetailsLinkNames,
   linkStatusColorMap,
@@ -15,6 +16,8 @@ import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helper
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
+import { getET3CaseDetailsLinkNames } from '../helpers/controller/CaseDetailsHelper';
+import { getAppNotificationFromAdmin } from '../helpers/notification/ApplicationNotificationHelper';
 import { currentET3StatusFn } from '../helpers/state-sequence';
 import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -44,7 +47,10 @@ export default class CaseDetailsController {
     }
     respondentResponseDeadline = ET3DataModelUtil.getRespondentResponseDeadline(req);
     const currentState = currentET3StatusFn(selectedRespondent);
-    const et3CaseDetailsLinksStatuses = selectedRespondent.et3CaseDetailsLinksStatuses;
+    const et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses = await getET3CaseDetailsLinkNames(
+      selectedRespondent.et3CaseDetailsLinksStatuses,
+      req
+    );
     const languageParam = getLanguageParam(req.url);
     const sections = Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
       return {
@@ -85,6 +91,7 @@ export default class CaseDetailsController {
       showSavedResponseAlert: req.session.userCase.et3Status === ET3Status.IN_PROGRESS,
       showViewResponseAlert: req.session.userCase.responseReceived === YesOrNo.YES,
       respondentResponseDeadline,
+      appNotifications: getAppNotificationFromAdmin(req.session.userCase.genericTseApplicationCollection, req),
       languageParam: getLanguageParam(req.url),
     });
   }

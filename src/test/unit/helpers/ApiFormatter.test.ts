@@ -421,6 +421,7 @@ describe('Format Case Data to Frontend Model', () => {
       workEnterPostcode: undefined,
       workAddressPostcode: undefined,
       et3ResponseReceived: false,
+      et1OnlineSubmission: undefined,
       claimSummaryFile: undefined,
       submittedDate: undefined,
       hubLinksStatuses: undefined,

@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { TranslationKeys } from '../definitions/constants';
-import { getApplicationCollection } from '../helpers/controller/YourRequestAndApplicationsHelper';
+import { getYourApplicationCollection } from '../helpers/controller/YourRequestAndApplicationsHelper';
 
 export default class YourRequestAndApplicationsController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
@@ -11,7 +11,7 @@ export default class YourRequestAndApplicationsController {
       ...req.t(TranslationKeys.YOUR_REQUEST_AND_APPLICATIONS, { returnObjects: true }),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
-      appList: getApplicationCollection(req),
+      appList: getYourApplicationCollection(req),
     });
   };
 }
