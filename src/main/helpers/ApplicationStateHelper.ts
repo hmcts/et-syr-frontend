@@ -1,9 +1,11 @@
 import { UserDetails } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
 import { GenericTseApplicationType } from '../definitions/complexTypes/genericTseApplicationTypeItem';
+import { Applicant } from '../definitions/constants';
 import { LinkStatus } from '../definitions/links';
 
 import { isResponseToTribunalRequired } from './GenericTseApplicationHelper';
+import { isDecisionShareToRespondent } from './controller/ClaimantsApplicationsHelper';
 import { isYourApplication } from './controller/YourRequestAndApplicationsHelper';
 
 /**
@@ -16,7 +18,6 @@ export const getApplicationState = (app: GenericTseApplicationType, user: UserDe
   if (existingState?.value?.applicationState) {
     return existingState.value.applicationState as LinkStatus;
   }
-
   return app?.applicantIdamId === user?.id ? LinkStatus.IN_PROGRESS : LinkStatus.NOT_STARTED_YET;
 };
 
@@ -49,13 +50,6 @@ export const getApplicationStatusAfterViewed = (app: GenericTseApplicationType, 
     return LinkStatus.IN_PROGRESS;
   }
 
-  if (!currentState) {
-    if (app.adminDecision?.length) {
-      return LinkStatus.NOT_VIEWED;
-    }
-    return app.applicantIdamId === user?.id ? LinkStatus.IN_PROGRESS : LinkStatus.NOT_STARTED_YET;
-  }
-
   return undefined;
 };
 
@@ -66,4 +60,35 @@ export const getApplicationStatusAfterViewed = (app: GenericTseApplicationType, 
  */
 export const isApplicationWithUserState = (app: GenericTseApplicationType, user: UserDetails): boolean => {
   return app?.respondentState?.some(state => state.value?.userIdamId === user.id);
+};
+
+/**
+ * Get application state if not exist in application
+ * @param app
+ * @param user
+ */
+export const getApplicationStateIfNotExist = (app: GenericTseApplicationType, user: UserDetails): LinkStatus => {
+  if (isResponseToTribunalRequired(app, user)) {
+    return LinkStatus.NOT_STARTED_YET;
+  }
+
+  const adminDecisionExist = app.adminDecision?.some(d => isDecisionShareToRespondent(d.value));
+  if (adminDecisionExist) {
+    return LinkStatus.NOT_VIEWED;
+  }
+
+  const isYours = isYourApplication(app, user);
+  if (!isYours) {
+    return LinkStatus.NOT_STARTED_YET;
+  }
+
+  if (app.respondCollection?.length === 0) {
+    return LinkStatus.IN_PROGRESS;
+  }
+
+  if (app.respondCollection?.some(r => r.value.from === Applicant.ADMIN || r.value.fromIdamId !== user.id)) {
+    return LinkStatus.UPDATED;
+  }
+
+  return LinkStatus.IN_PROGRESS;
 };

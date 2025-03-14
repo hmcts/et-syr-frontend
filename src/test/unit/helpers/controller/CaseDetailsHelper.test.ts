@@ -1,9 +1,13 @@
+import AxiosInstance from 'axios';
+
 import { AppRequest } from '../../../../main/definitions/appRequest';
 import { YesOrNo } from '../../../../main/definitions/case';
 import { Applicant, PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../../../../main/definitions/links';
 import { isResponseToTribunalRequired } from '../../../../main/helpers/GenericTseApplicationHelper';
 import { getET3CaseDetailsLinkNames } from '../../../../main/helpers/controller/CaseDetailsHelper';
+import { CaseApi } from '../../../../main/services/CaseService';
+import * as CaseService from '../../../../main/services/CaseService';
 import { mockRequest } from '../../mocks/mockRequest';
 import { mockUserDetails } from '../../mocks/mockUser';
 import mockUserCase from '../../mocks/mockUserCase';
@@ -11,6 +15,15 @@ import mockUserCase from '../../mocks/mockUserCase';
 describe('Case Details Helper', () => {
   describe('getET3CaseDetailsLinkNames', () => {
     let req: AppRequest;
+
+    jest.mock('axios');
+    const mockCaseApi = {
+      axios: AxiosInstance,
+      submitRespondentResponseToApplication: jest.fn(),
+    };
+    const caseApi: CaseApi = mockCaseApi as unknown as CaseApi;
+    jest.spyOn(CaseService, 'getCaseApi').mockReturnValue(caseApi);
+    caseApi.changeApplicationStatus = jest.fn().mockResolvedValue(Promise.resolve(mockUserCase));
 
     beforeEach(() => {
       req = mockRequest({});
