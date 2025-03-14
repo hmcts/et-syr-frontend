@@ -8,6 +8,7 @@
     "PostCode": "claimantWorkAddressPostCode",
     "PostTown": "claimantWorkAddressPostTown"
   },
+  "respondent_hearing_panel_preference_reason": "",
   "conciliationAndEmployeeDetailsSection": "conciliationAndEmployeeDetailsSection",
   "contactDetailsSection": "contactDetailsSection",
   "contestClaimSection": "contestClaimSection",

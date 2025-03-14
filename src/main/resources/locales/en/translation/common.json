@@ -183,5 +183,10 @@
   "ydyYesOrNo": {
     "yes": "Yes",
     "no": "No"
+  },
+  "hearingPanelPreference": {
+    "noPreference": "No preference",
+    "judge": "Judge",
+    "panel": "Panel"
   }
 }
