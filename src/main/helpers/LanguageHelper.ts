@@ -42,34 +42,16 @@ export const addParameterToUrl = (url: string, parameter: string): string => {
   }
   if (!url.includes(parameter)) {
     if (url.includes(DefaultValues.STRING_QUESTION_MARK)) {
-      url = containsBasePath(url + DefaultValues.STRING_AMPERSAND + parameter)
+      url = UrlUtils.isValidUrl(url + DefaultValues.STRING_AMPERSAND + parameter)
         ? url + DefaultValues.STRING_AMPERSAND + parameter
         : PageUrls.NOT_FOUND;
     } else {
-      url = containsBasePath(url + DefaultValues.STRING_QUESTION_MARK + parameter)
+      url = UrlUtils.isValidUrl(url + DefaultValues.STRING_QUESTION_MARK + parameter)
         ? url + DefaultValues.STRING_QUESTION_MARK + parameter
         : PageUrls.NOT_FOUND;
     }
   }
   return url;
-};
-
-// Convert object values to an array of paths
-const basePaths = Object.values(PageUrls)
-  .map(path => path.replace(/:[^/]+/g, '[^/]+')) // Replace dynamic params with regex match
-  .map(path => path.replace(/\//g, '\\/')); // Escape slashes for regex
-
-// Construct regex that matches the base paths only at the start of pathname
-const regexPattern = new RegExp(`^(${basePaths.join('|')})($|/)`);
-
-// Function to check if a URL contains a valid base path
-export const containsBasePath = (url: string): boolean => {
-  try {
-    const pathname = new URL(url).pathname; // Extract pathname from URL
-    return regexPattern.test(pathname); // Test only against pathname
-  } catch {
-    return false; // Return false for invalid URLs
-  }
 };
 
 export const setChangeAnswersUrlLanguage = (req: AppRequest): string => {
