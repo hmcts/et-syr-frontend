@@ -168,13 +168,17 @@ export default class UrlUtils {
    * @result true if string contains any of the PageURls
    */
   public static isValidUrl(url: string, validUrls?: string[]): boolean {
-    validUrls = validUrls ?? Object.values(PageUrls);
-    validUrls.push(LegacyUrls.SIGN_IN);
-    validUrls.push(LegacyUrls.SIGN_UP);
-    const urlStr = url.split('?');
-    const baseUrl = urlStr[0];
+    const urlStr: string[] = url.split('?');
+    const baseUrl: string = urlStr[0];
+    if (baseUrl === LegacyUrls.SIGN_IN || baseUrl === LegacyUrls.SIGN_UP || baseUrl === '/' || baseUrl === '#') {
+      return true;
+    }
+    validUrls = CollectionUtils.isNotEmpty(validUrls) ? validUrls : Object.values(PageUrls);
     for (const validUrl of validUrls) {
-      if (baseUrl === validUrl) {
+      if (validUrl === '/' || validUrl === '#') {
+        continue;
+      }
+      if (baseUrl.includes(validUrl)) {
         return true;
       }
     }

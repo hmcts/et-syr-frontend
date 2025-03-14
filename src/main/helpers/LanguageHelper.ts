@@ -4,12 +4,12 @@ import CollectionUtils from '../utils/CollectionUtils';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
 
-export const setUrlLanguage = (req: AppRequest, redirectUrl: string): string => {
+export const setUrlLanguage = (req: AppRequest, redirectUrl: string, validUrls?: string[]): string => {
   if (StringUtils.isBlank(req.url) && StringUtils.isBlank(redirectUrl)) {
     return DefaultValues.STRING_HASH;
   }
   if (StringUtils.isBlank(redirectUrl)) {
-    return addLanguageParameterToUrl(req, req.url);
+    return addLanguageParameterToUrl(req, req.url, validUrls);
   }
   const requestParams: string[] = UrlUtils.getRequestParamsFromUrl(req.url);
   if (CollectionUtils.isNotEmpty(requestParams)) {
@@ -19,21 +19,21 @@ export const setUrlLanguage = (req: AppRequest, redirectUrl: string): string => 
       }
     }
   }
-  return addLanguageParameterToUrl(req, redirectUrl);
+  return addLanguageParameterToUrl(req, redirectUrl, validUrls);
 };
 
-export const addLanguageParameterToUrl = (req: AppRequest, redirectUrl: string): string => {
+export const addLanguageParameterToUrl = (req: AppRequest, redirectUrl: string, validUrls?: string[]): string => {
   if (StringUtils.isNotBlank(req?.url) && req?.url.includes(languages.WELSH_URL_POSTFIX)) {
-    redirectUrl = addParameterToUrl(redirectUrl, languages.WELSH_URL_POSTFIX);
+    redirectUrl = addParameterToUrl(redirectUrl, languages.WELSH_URL_POSTFIX, validUrls);
     req.session.lang = languages.WELSH;
   } else if (StringUtils.isNotBlank(req?.url) && req?.url.includes(languages.ENGLISH_URL_POSTFIX)) {
-    redirectUrl = addParameterToUrl(redirectUrl, languages.ENGLISH_URL_POSTFIX);
+    redirectUrl = addParameterToUrl(redirectUrl, languages.ENGLISH_URL_POSTFIX, validUrls);
     req.session.lang = languages.ENGLISH;
   }
   return redirectUrl;
 };
 
-export const addParameterToUrl = (url: string, parameter: string): string => {
+export const addParameterToUrl = (url: string, parameter: string, validUrls?: string[]): string => {
   if (StringUtils.isBlank(url)) {
     return DefaultValues.STRING_EMPTY;
   }
@@ -42,11 +42,11 @@ export const addParameterToUrl = (url: string, parameter: string): string => {
   }
   if (!url.includes(parameter)) {
     if (url.includes(DefaultValues.STRING_QUESTION_MARK)) {
-      url = UrlUtils.isValidUrl(url + DefaultValues.STRING_AMPERSAND + parameter)
+      url = UrlUtils.isValidUrl(url + DefaultValues.STRING_AMPERSAND + parameter, validUrls)
         ? url + DefaultValues.STRING_AMPERSAND + parameter
         : PageUrls.NOT_FOUND;
     } else {
-      url = UrlUtils.isValidUrl(url + DefaultValues.STRING_QUESTION_MARK + parameter)
+      url = UrlUtils.isValidUrl(url + DefaultValues.STRING_QUESTION_MARK + parameter, validUrls)
         ? url + DefaultValues.STRING_QUESTION_MARK + parameter
         : PageUrls.NOT_FOUND;
     }
