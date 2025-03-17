@@ -34,11 +34,13 @@ export default class ContactTribunalSubmitController {
         req.session?.userCase?.genericTseApplicationCollection,
         req.session?.user
       );
-      await getCaseApi(req.session.user?.accessToken).changeApplicationStatus(
-        req,
-        latestApplication,
-        LinkStatus.IN_PROGRESS
-      );
+      if (latestApplication) {
+        await getCaseApi(req.session.user?.accessToken).changeApplicationStatus(
+          req,
+          latestApplication,
+          LinkStatus.IN_PROGRESS
+        );
+      }
 
       req.session.userCase.ruleCopyState = ruleCopyState;
       return res.redirect(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE + getLanguageParam(req.url));
