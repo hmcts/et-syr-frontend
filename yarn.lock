@@ -9182,16 +9182,16 @@ __metadata:
   linkType: hard
 
 "i18next@npm:^24.0.0":
-  version: 24.2.2
-  resolution: "i18next@npm:24.2.2"
+  version: 24.2.3
+  resolution: "i18next@npm:24.2.3"
   dependencies:
-    "@babel/runtime": ^7.23.2
+    "@babel/runtime": ^7.26.10
   peerDependencies:
     typescript: ^5
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: dc87ff61c45366a1197c9732c4b36cd20bbae3ae14b7672e5d7d3d1ec21ec1cd2edc25cbfd10dc776d2a8c24b88d123f3c32369ac4eb50ba5c8f9cbcf3c14ec9
+  checksum: e826e0267750ac51968cc7401ddeaf3f9747524e8f89f15baa8d54b5026a5272c1d7040831d9af2caea6abb06b7d088e60000c3f8b2df5a09159751cc232b151
   languageName: node
   linkType: hard
 
@@ -14035,8 +14035,8 @@ __metadata:
   linkType: hard
 
 "shelljs@npm:^0.9.0":
-  version: 0.9.1
-  resolution: "shelljs@npm:0.9.1"
+  version: 0.9.2
+  resolution: "shelljs@npm:0.9.2"
   dependencies:
     execa: ^1.0.0
     fast-glob: ^3.3.2
@@ -14044,7 +14044,7 @@ __metadata:
     rechoir: ^0.6.2
   bin:
     shjs: bin/shjs
-  checksum: 8e4945d0a7b314be264e3e239f8110c4ca1f9f170ec723ec9df671f565f11b370511bd5eac35ed022c0746a0a29518e7dfeaf754d7d87a6f1ed171f44d439087
+  checksum: 22ab43a710ab341edaf7ea9115d2a5c704896a8fd52bdbb99c0aeda7d51c7810726ea43e7ae8246d68f21a3f77ba59bd35825db032e6c7c2e0d050ab3cabbb52
   languageName: node
   linkType: hard
 
