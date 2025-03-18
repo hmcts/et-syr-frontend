@@ -49,7 +49,7 @@
     },
     "STRIKE_OUT_CLAIM": {
       "label": "[W]Strike out all or part of the claimant's claim",
-      "body": "[W]You can request that the tribunal strike out all or parts of the claimant’s claim."
+      "body": "Gallwch ofyn i’r tribiwnlys ddileu’r hawliad cyfan neu rannau ohono."
     },
     "RECONSIDER_JUDGMENT": {
       "label": "[W]Apply for the judgment to be reconsidered",
