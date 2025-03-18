@@ -1,17 +1,17 @@
 {
-  "title": "[W]Claimant not complied",
+  "title": "Nid yw'r hawlydd wedi cydymffurfio",
   "content": [
     {
       "type": "paragraph",
-      "text": "[W]Use this form to tell us that the claimant has not complied with all or part of an order from the tribunal."
+      "text": "Defnyddiwch y ffurflen hon i ddweud wrthym nad yw’r hawlydd wedi cydymffurfio â rhan o orchymyn, neu orchymyn cyfan, gan y tribiwnlys."
     },
     {
       "type": "paragraph",
-      "text": "[W]You should try to resolve your complaint with the claimant. Only use this form if that is not possible."
+      "text": "Dylech geisio datrys eich cwyn gyda’r hawlydd. Dylech ond defnyddio’r ffurflen hon os nad yw hynny’n bosibl."
     },
     {
       "type": "bold-paragraph",
-      "text": "[W]Details to include in your application:"
+      "text": "Manylion i’w cynnwys yn eich cais:"
     },
     {
       "type": "list",

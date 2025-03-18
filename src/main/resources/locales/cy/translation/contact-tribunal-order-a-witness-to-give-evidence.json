@@ -1,29 +1,29 @@
 {
-  "title": "[W]Order a witness to attend to give evidence",
+  "title": "Gorchymyn bod tyst yn mynychu i roi tystiolaeth",
   "content": [
     {
       "type": "paragraph",
-      "text": "[W]You can ask the tribunal to order a witness to attend to give evidence."
+      "text": "Gallwch ofyn i'r tribiwnlys orchymyn bod tyst yn mynychu i roi tystiolaeth."
     },
     {
       "type": "paragraph",
-      "text": "[W]The witness must be in Great Britain (England, Scotland and Wales). This does not include Northern Ireland. "
+      "text": "Rhaid i’r tyst fod ym Mhrydain Fawr (Cymru, Lloegr a’r Alban). Nid yw hyn yn cynnwys Gogledd Iwerddon. "
     },
     {
       "type": "paragraph",
-      "text": "[W]The tribunal can limit the number of witnesses to be called to give evidence on a particular issue, especially if that issue is not central to the case."
+      "text": "Gall y tribiwnlys gyfyngu ar nifer y tystion y gellir eu galw i roi tystiolaeth ar fater penodol, yn enwedig os nad yw'r mater hwnnw yn ganolog i'r achos."
     },
     {
       "type": "paragraph",
-      "text": "[W]The respondent may also be liable for the costs incurred by the witness’s attendance."
+      "text": "Efallai y bydd yr atebydd hefyd yn gyfrifol am dalu costau'r tyst."
     },
     {
       "type": "paragraph",
-      "text": "[W]You should consider whether the evidence of this witness is likely to help your case."
+      "text": "Dylech ystyried a yw tystiolaeth y tyst hwn yn debygol o helpu eich achos."
     },
     {
       "type": "bold-paragraph",
-      "text": "[W]Details to include in your application:"
+      "text": "Manylion i’w cynnwys yn eich cais:"
     },
     {
       "type": "list",
@@ -36,7 +36,7 @@
     },
     {
       "type": "paragraph",
-      "text": "[W]If the order is granted, the witness will be ordered to attend on the first day of the hearing. If you want them to attend on another day or days, tell us: "
+      "text": "Os bydd y gorchymyn yn cael ei ganiatáu, bydd y tyst yn cael ei orchymyn i fod yn bresennol ar ddiwrnod cyntaf y gwrandawiad. Os ydych chi eisiau iddo fynychu ar ddiwrnod arall neu ddiwrnodau eraill, dywedwch wrthym: "
     },
     {
       "type": "list",
@@ -47,7 +47,7 @@
     },
     {
       "type": "paragraph",
-      "text": "[W]If you want the witness to bring documents, tell us:"
+      "text": "Os ydych chi eisiau i’r tyst ddod â dogfennau efo nhw, dywedwch wrthym:"
     },
     {
       "type": "list",

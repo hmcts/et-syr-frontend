@@ -1,34 +1,34 @@
 {
-  "title": "[W]Amend response",
+  "title": "Diwygio ymateb",
   "content": [
     {
       "type": "paragraph",
-      "text": "[W]Use this form to apply to amend the ET3 response."
+      "text": "Defnyddiwch y ffurflen hon i wneud cais i ddiwygio’r ymateb ET3."
     },
     {
       "type": "paragraph",
-      "text": "[W]The tribunal will decide if you can make the amendment by judging the fairness of the application. This decision may be made at a hearing."
+      "text": "Bydd y tribiwnlys yn penderfynu os cewch chi wneud y diwygiad drwy feirniadu tegwch y cais. Mae’n bosib y bydd y penderfyniad hwn yn cael ei wneud mewn gwrandawiad."
     },
     {
       "type": "paragraph",
-      "text": "[W]The tribunal also needs to know if you consider the amendment minor or substantial."
+      "text": "Mae’r tribiwnlys angen gwybod hefyd os ydych chi’n ystyried y diwygiad yn fân ddiwygiad neu’n ddiwygiad sylweddol."
     },
     {
       "type": "paragraph",
-      "text": "[W]Providing details of why you want to amend the response and the importance of the amendment will help the tribunal to decide your application more quickly."
+      "text": "Bydd darparu manylion dros pam eich bod eisiau diwygio’r ymateb a phwysigrwydd y diwygiad yn helpu'r tribiwnlys i benderfynu ar eich cais yn gyflymach."
     },
     {
       "type": "bold-paragraph",
-      "text": "[W]Details to include in your application:"
+      "text": "Manylion i’w cynnwys yn eich cais:"
     },
     {
       "type": "list",
       "items": [
-        "[W]what you want to amend in your response. Be specific and refer to your ET3 response form if possible",
-        "[W]if you consider it a minor or substantial amendment ",
-        "[W]why you want to make this amendment",
-        "[W]why you are asking to make this amendment now",
-        "[W]how this amendment will benefit you and how could it disadvantage you if not granted"
+        "beth ydych chi eisiau ei ddiwygio yn eich ymateb. Byddwch yn benodol a chyfeirio at eich ffurflen ymateb ET3 os yn bosibl.",
+        "os ydych chi’n ystyried hyn yn fân ddiwygiad neu’n ddiwygiad sylweddol ",
+        "pam ydych chi eisiau gwneud y diwygiad hwn",
+        "pam ydych chi’n gofyn am gael gwneud y diwygiad hwn nawr",
+        "sut bydd y diwygiad hwn o fudd i chi a sut y gallai eich rhoi dan anfantais pe na bai’n cael ei ganiatáu"
       ]
     }
   ]

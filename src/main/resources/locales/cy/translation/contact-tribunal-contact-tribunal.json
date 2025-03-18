@@ -1,13 +1,13 @@
 {
-  "title": "[W]Contact the tribunal",
+  "title": "Cysylltu â’r tribiwnlys",
   "content": [
     {
       "type": "paragraph",
-      "text": "[W]Tell or ask the tribunal about something relevant to this case."
+      "text": "Dweud neu ofyn i’r tribiwnlys am rywbeth sy’n berthnasol i’r achos hwn."
     },
     {
       "type": "bold-paragraph",
-      "text": "[W]Do not use this form to:"
+      "text": "Peidiwch â defnyddio'r ffurflen hon i:"
     },
     {
       "type": "list",

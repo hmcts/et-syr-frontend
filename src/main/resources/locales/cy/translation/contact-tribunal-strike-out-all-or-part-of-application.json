@@ -1,9 +1,9 @@
 {
-  "title": "[W]Strike out all or part of the claim",
+  "title": "Dileu’r hawliad cyfan neu ran o’r hawliad",
   "content": [
     {
       "type": "paragraph",
-      "text": "[W]You can request that the tribunal strike out all or parts of the claim."
+      "text": "Gallwch ofyn i’r tribiwnlys ddileu’r cyfan neu rannau o’r hawliad."
     },
     {
       "type": "paragraph",
@@ -11,15 +11,15 @@
     },
     {
       "type": "paragraph",
-      "text": "[W]The tribunal can strike out all or parts of the claimant’s claim on their own initiative or after a request from the respondent."
+      "text": "Gall y tribiwnlys ddileu’r cyfan neu rannau o hawliad yr hawlydd o’i wirfodd ei hun neu yn dilyn cais gan yr atebydd."
     },
     {
       "type": "paragraph",
-      "text": "[W]A strike out request must be based on at least one of the grounds of Rule 37 of the Employment Tribunals Rules of Procedure."
+      "text": "Rhaid i gais i ddileu fod yn seiliedig ar o leiaf un o agweddau Rheol 37 Rheolau Trefniadaeth y Tribiwnlysoedd Cyflogaeth."
     },
     {
       "type": "bold-paragraph",
-      "text": "[W]Details to include in your application:"
+      "text": "Manylion i’w cynnwys yn eich cais:"
     },
     {
       "type": "list",

@@ -1,21 +1,21 @@
 {
-  "title": "[W]Vary or revoke an order",
+  "title": "Amrywio neu ddiddymu gorchymyn",
   "content": [
     {
       "type": "paragraph",
-      "text": "[W]Use this form to apply to vary or revoke an order the tribunal has issued."
+      "text": "Defnyddiwch y ffurflen hon i amrywio neu ddiddymu gorchymyn y mae'r tribiwnlys wedi ei gyhoeddi"
     },
     {
       "type": "paragraph",
-      "text": "[W]Tribunal orders will not usually be varied or revoked unless there has been a material change in circumstances since the order was made, which make the variation in the interests of justice."
+      "text": "Ni fydd gorchmynion tribiwnlys fel arfer yn cael eu hamrywio neu eu diddymu oni bai bod newid materol wedi bod mewn amgylchiadau ers i’r gorchymyn gael ei wneud, sy’n gwneud yr amrywiad er budd cyfiawnder."
     },
     {
       "type": "paragraph",
-      "text": "[W]The tribunal will consider your reasons for varying or revoking the order and any supporting materials you provide then make a decision."
+      "text": "Bydd y tribiwnlys yn ystyried eich rhesymau dros amrywio neu ddiddymu’r gorchymyn ac unrhyw ddeunyddiau ategol y byddwch yn eu darparu ac yna'n gwneud penderfyniad."
     },
     {
       "type": "bold-paragraph",
-      "text": "[W]Details to include in your application:"
+      "text": "Manylion i’w cynnwys yn eich cais:"
     },
     {
       "type": "list",
