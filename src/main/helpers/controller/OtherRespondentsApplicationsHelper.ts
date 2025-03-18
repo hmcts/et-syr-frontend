@@ -7,7 +7,7 @@ import { isApplicationShare } from './ClaimantsApplicationsHelper';
 import { updateAppsDisplayInfo } from './YourRequestAndApplicationsHelper';
 
 /**
- * Get other respondent's applications
+ * Get other respondent applications
  * @param req request
  */
 export const getOtherRespondentsApplications = (req: AppRequest): ApplicationList[] => {
