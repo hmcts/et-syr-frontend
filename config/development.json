@@ -10,7 +10,7 @@
     },
     "addressLookup": {
       "url": "https://api.os.uk/search/places/v1/postcode",
-      "token": "TO BE PICKED FROM ENV"
+      "token": "Da8zarIOqLo6AYwRxN7TuyGrv6neZJAy"
     },
     "etSyaApi": {
       "host": "http://localhost:4550/"
@@ -22,7 +22,7 @@
       "enabled": "true"
     },
     "launchDarkly": {
-      "key": "TO BE PICKED FROM ENV"
+      "key": "sdk-0356f703-08eb-4f8d-bdc0-c21301f8b446"
     }
   },
   "session": {
