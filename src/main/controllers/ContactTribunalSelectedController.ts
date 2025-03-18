@@ -49,7 +49,14 @@ export default class ContactTribunalSelectedController {
         type: 'button',
         name: 'upload',
         value: 'true',
-        divider: false,
+      },
+      remove: {
+        label: (l: AnyRecord): string => l.files.removeButton,
+        classes: 'govuk-button--secondary',
+        type: 'button',
+        id: 'remove',
+        name: 'remove',
+        value: 'true',
       },
       contactApplicationText: {
         type: 'charactercount',
@@ -76,6 +83,10 @@ export default class ContactTribunalSelectedController {
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.selectedOption);
       return res.redirect(ErrorPages.NOT_FOUND);
+    }
+
+    if (req.body?.remove && req.session?.userCase?.contactApplicationFile) {
+      req.session.userCase.contactApplicationFile = undefined;
     }
 
     if (req.body?.upload) {
