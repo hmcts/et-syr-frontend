@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, RespondentET3Model } from '../definitions/case';
-import { DefaultValues, PageUrls } from '../definitions/constants';
+import { DefaultValues, LegacyUrls, PageUrls } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 
 import CollectionUtils from './CollectionUtils';
@@ -144,5 +144,44 @@ export default class UrlUtils {
       selectedRespondent.ccdId +
       getLanguageParam(req.url)
     );
+  }
+
+  /**
+   * Checks if the given input string value is a valid URL.
+   * @param text string value to be checked.
+   * @return boolean true if valid URL else false.
+   */
+  public static isUrl(text: string): boolean {
+    try {
+      return Boolean(new URL(text));
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /**
+   * Checks if the given string has any of the PageURLs or equal to any of the Legacy Urls.
+   * For legacy URLs checks with an If clause and for {@PageURLs} check by validating with regexPattern.
+   * @param url url string that should be checked.
+   * @param validUrls optional parameter to check if URL exists in valid urls. If this parameter is empty checks URL
+   *                  with the {@PageUrls} constant values.
+   * @result true if string contains any of the PageURls
+   */
+  public static isValidUrl(url: string, validUrls?: string[]): boolean {
+    const urlStr: string[] = url.split('?');
+    const baseUrl: string = urlStr[0];
+    if (baseUrl === LegacyUrls.SIGN_IN || baseUrl === LegacyUrls.SIGN_UP || baseUrl === '/' || baseUrl === '#') {
+      return true;
+    }
+    validUrls = CollectionUtils.isNotEmpty(validUrls) ? validUrls : Object.values(PageUrls);
+    for (const validUrl of validUrls) {
+      if (validUrl === '/' || validUrl === '#') {
+        continue;
+      }
+      if (baseUrl.includes(validUrl)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

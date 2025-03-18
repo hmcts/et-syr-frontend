@@ -2192,24 +2192,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@launchdarkly/js-server-sdk-common@npm:2.11.1":
-  version: 2.11.1
-  resolution: "@launchdarkly/js-server-sdk-common@npm:2.11.1"
+"@launchdarkly/js-server-sdk-common@npm:2.12.0":
+  version: 2.12.0
+  resolution: "@launchdarkly/js-server-sdk-common@npm:2.12.0"
   dependencies:
     "@launchdarkly/js-sdk-common": 2.13.0
     semver: 7.5.4
-  checksum: e8e404dd80e7b10e2f906c0e83574cb488add5b7613c51a92b473826de2bdfbb26e2c83d04a2133331ea1f144e8eb33d0b91cafc4d3d9863b82d1405065ea1a4
+  checksum: 6b472e58ab3f5a2feb64d5a9979f445fb1db79ad78f88be87c65c598cf48f6b1081cecc4414854a4b13b348ef386c10a15be0973a104345175788e5a6f370c30
   languageName: node
   linkType: hard
 
 "@launchdarkly/node-server-sdk@npm:^9.0.0":
-  version: 9.7.4
-  resolution: "@launchdarkly/node-server-sdk@npm:9.7.4"
+  version: 9.7.5
+  resolution: "@launchdarkly/node-server-sdk@npm:9.7.5"
   dependencies:
-    "@launchdarkly/js-server-sdk-common": 2.11.1
+    "@launchdarkly/js-server-sdk-common": 2.12.0
     https-proxy-agent: ^5.0.1
     launchdarkly-eventsource: 2.0.3
-  checksum: 58f144bd46ef4cabdc85a6d82b373c5b47711a8b9337eff5c790758372d485c68c5dce8c361651735a70f692070ae55ca2bccefa7559beb260a2bfb72ee0552e
+  checksum: f6278e1cc1a56fded49f4ef41a23e5d4fb092a7372826b777b186d167f299716843c7377f12fee4df8322bae0e842ce75e6f8626d63e1ad7d3098acf42e2f289
   languageName: node
   linkType: hard
 
@@ -12635,27 +12635,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.51.0":
-  version: 1.51.0
-  resolution: "playwright-core@npm:1.51.0"
+"playwright-core@npm:1.51.1":
+  version: 1.51.1
+  resolution: "playwright-core@npm:1.51.1"
   bin:
     playwright-core: cli.js
-  checksum: e14798a7323539e1d6f076a6aa0492ea7c5fa89f4db85a53b27001b0f84bde2a5f8b14e25e05c5396594c89173a48398728522932bb7bd2006dd4bb48c8b0979
+  checksum: 1eb37e22e97435a5ed6389b4caa666fbe618348861cae97e67586e20c8fed9ac3d3dc899ff3b9237d0ddfcf087d5b552b80be247e246fc45b75282f96be714bb
   languageName: node
   linkType: hard
 
 "playwright@npm:^1.32.3":
-  version: 1.51.0
-  resolution: "playwright@npm:1.51.0"
+  version: 1.51.1
+  resolution: "playwright@npm:1.51.1"
   dependencies:
     fsevents: 2.3.2
-    playwright-core: 1.51.0
+    playwright-core: 1.51.1
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
     playwright: cli.js
-  checksum: 02ec1077e2997872415fd40c9a5df6fd796d9cc15dade24bff9a88a16a451217744d850bdfc09efd4812d05c2fc856f92bfe106aae036fe21defa62c6d5b8ea5
+  checksum: 2d78f53eed438d26df9743f98227d2e33bb5a378c8d0144a4ed75b4010c9c517d5a6ee6c1c9245ad61dc615054c5e19d2ded5a6e285e35d2bca39b05bc9c4a35
   languageName: node
   linkType: hard
 
