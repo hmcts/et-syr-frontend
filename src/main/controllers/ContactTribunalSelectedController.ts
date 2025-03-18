@@ -130,7 +130,6 @@ export default class ContactTribunalSelectedController {
     res.render(TranslationKeys.CONTACT_TRIBUNAL_SELECTED, {
       ...content,
       hideContactUs: true,
-      ethosCaseReference: req.session.userCase.ethosCaseReference,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
       applicationType: getApplicationDisplayByUrl(req.params?.selectedOption, {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
