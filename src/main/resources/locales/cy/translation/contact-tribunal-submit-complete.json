@@ -4,8 +4,8 @@
   "pHead": "Beth fydd yn digwydd nesaf ",
   "pNo": "Bydd y tribiwnlys yn ystyried pob gohebiaeth ac yn rhoi gwybod i chi beth fydd yn digwydd nesaf. ",
   "pYes": {
-    "p1": "[W]You have sent a copy of your application to the respondent. They will have until ",
-    "p1a": " i ymateb.",
+    "p1": "[W]You have sent a copy of your application to the claimant. They will have until ",
+    "p1a": "[W] to respond.",
     "p2": "Os byddant yn ymateb, mae disgwyl iddynt anfon yr ymateb atoch chi.",
     "p3": "Efallai y gofynnir ichi ddarparu rhagor o wybodaeth. Bydd y tribiwnlys yn ystyried pob gohebiaeth ac yn rhoi gwybod i chi beth fydd yn digwydd nesaf."
   },
