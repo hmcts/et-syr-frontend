@@ -24,10 +24,10 @@
     {
       "type": "list",
       "items": [
-        "that a hearing that would otherwise be in public be conducted, in whole or in part, in private",
-        "that the identities of specified parties, witnesses or other persons referred to in the proceedings should not be disclosed to the public, by the use of anonymisation or otherwise",
-        "for measures preventing witnesses at a public hearing being identifiable by members of the public",
-        "restricting the reporting of the case in the media"
+        "bod gwrandawiad a fyddai fel arall yn gyhoeddus yn cael ei gynnal, yn gyfan gwbl neu’n rhannol breifat",
+        "na ddylid datgelu hunaniaethau partïon penodedig, tystion neu unigolion eraill y cyfeirir atynt yn yr achos i’r cyhoedd, a'u bod yn ddienw neu fel arall",
+        "am fesurau sy’n atal tystion mewn gwrandawiad cyhoeddus rhag cael eu hadnabod gan aelodau'r cyhoedd",
+        "cyfyngu ar riportio'r achos yn y cyfryngau"
       ]
     },
     {
@@ -37,9 +37,9 @@
     {
       "type": "list",
       "items": [
-        "how the tribunal should prevent or restrict publicity in this case",
-        "why the restrictions you want are needed. The tribunal must make the least restrictive order possible. Tell us why fewer restrictions would not be enough",
-        "any media interest in this case. Include names of media organisations or journalists that are interested. The tribunal might seek their comments before making a decision"
+        "sut y dylai’r tribiwnlys atal neu gyfyngu ar gyhoeddusrwydd yn yr achos hwn",
+        "pam fod arnoch angen y cyfyngiadau hyn. Rhaid i'r tribiwnlys wneud y gorchymyn lleiaf cyfyngol posibl. Dywedwch wrthym pam na fyddai llai o gyfyngiadau'n ddigon",
+        "a oes gan y cyfryngau unrhyw ddiddordeb yn yr achos hwn. Dylech gynnwys enwau sefydliadau cyfryngau neu newyddiadurwyr sydd â diddordeb. Fe allai'r tribiwnlys ofyn am eu sylwadau cyn gwneud penderfyniad"
       ]
     }
   ]
