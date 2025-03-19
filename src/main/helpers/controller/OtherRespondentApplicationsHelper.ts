@@ -10,7 +10,7 @@ import { updateAppsDisplayInfo } from './YourRequestAndApplicationsHelper';
  * Get other respondent applications
  * @param req request
  */
-export const getOtherRespondentsApplications = (req: AppRequest): ApplicationList[] => {
+export const getOtherRespondentApplications = (req: AppRequest): ApplicationList[] => {
   const otherRespApps = (req.session.userCase.genericTseApplicationCollection || []).filter(app =>
     isOtherRespApplicationShare(app.value, req.session.user)
   );

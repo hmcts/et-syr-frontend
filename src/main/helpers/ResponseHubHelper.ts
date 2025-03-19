@@ -56,7 +56,7 @@ export const getET3CaseDetailsLinksUrlMap = (
   );
   caseDetailsLinksMap.set(
     ET3CaseDetailsLinkNames.OtherRespondentApplications,
-    PageUrls.OTHER_RESPONDENTS_APPLICATIONS + baseUrls[languageParam]
+    PageUrls.OTHER_RESPONDENT_APPLICATIONS + baseUrls[languageParam]
   );
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.ContactTribunal, PageUrls.CONTACT_TRIBUNAL + baseUrls[languageParam]);
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.TribunalOrders, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);

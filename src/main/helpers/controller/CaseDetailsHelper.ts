@@ -5,7 +5,7 @@ import { getCaseApi } from '../../services/CaseService';
 import { getApplicationStateIfNotExist } from '../ApplicationStateHelper';
 
 import { isClaimantApplicationShare } from './ClaimantsApplicationsHelper';
-import { isOtherRespApplicationShare } from './OtherRespondentsApplicationsHelper';
+import { isOtherRespApplicationShare } from './OtherRespondentApplicationsHelper';
 import { isYourApplication } from './YourRequestAndApplicationsHelper';
 
 const priorityOrder = [
