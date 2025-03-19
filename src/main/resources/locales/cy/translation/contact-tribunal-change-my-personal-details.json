@@ -1,25 +1,25 @@
 {
-  "title": "[W]Change personal details",
+  "title": "Newid manylion personol",
   "content": [
     {
       "type": "paragraph",
-      "text": "[W]Use this form to apply to change details like the company address, email or telephone number. "
+      "text": "Defnyddiwch y ffurflen hon i wneud cais i newid manylion fel cyfeiriad y cwmni, e-bost neu rif ffôn."
     },
     {
       "type": "paragraph",
-      "text": "[W]If you change the postal or email address, we’ll send any letters to the new address."
+      "text": "Os byddwch chi'n newid y cyfeiriad post neu gyfeiriad e-bost, byddwn yn anfon unrhyw lythyrau i’r cyfeiriad newydd."
     },
     {
       "type": "paragraph",
-      "text": "[W]If you change the telephone number, we’ll contact you using the new number if we have questions about your response."
+      "text": "Os byddwch yn newid y rhif ffôn, byddwn yn defnyddio'r rhif newydd i gysylltu â chi os bydd gennym unrhyw gwestiynau am eich ymateb."
     },
     {
       "type": "bold-paragraph",
-      "text": "[W]Details you can apply to change:"
+      "text": "Manylion y gellid gwneud cais i’w newid:"
     },
     {
       "type": "list",
-      "items": ["[W]name", "[W]sex and preferred title", "[W]address", "[W]telephone number", "[W]email address"]
+      "items": ["enw", "rhyw a’r teitl sydd orau gennych", "cyfeiriad", "rhif ffôn", "cyfeiriad e-bost"]
     }
   ]
 }

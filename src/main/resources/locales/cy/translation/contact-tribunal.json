@@ -7,7 +7,7 @@
   "hideSection": "Cuddio",
   "landing_text": {
     "p1": "Defnyddiwch y ffurflen briodol i gyfathrebu â'r tribiwnlys.",
-    "p2": "[W]These requests and applications will be reviewed by the tribunal and copied to the applicant who will have an opportunity to respond.",
+    "p2": "Bydd y ceisiadau hyn yn cael eu hadolygu gan y tribiwnlys a’u hanfon at y ceisydd a fydd yn cael cyfle i ymateb.",
     "p3": "[W]You may be able to request that some details do not get shared with the applicant."
   },
   "sections": {
@@ -28,11 +28,11 @@
       "body": "Os ydych yn anghytuno â dyfarniad neu orchymyn a wnaed gan swyddog cyfreithiol yn eich achos chi, gallwch ofyn i farnwr cyflogaeth edrych ar y penderfyniad hwnnw eto."
     },
     "AMEND_RESPONSE": {
-      "label": "[W]Apply to amend my response",
+      "label": "Gwneud cais i ddiwygio fy ymateb",
       "body": "[W]Request to amend your ET3 response – including removing responses or details of your response."
     },
     "ORDER_OTHER_PARTY": {
-      "label": "[W]Order the claimant to do something",
+      "label": "Gorchymyn yr hawlydd i wneud rhywbeth",
       "body": "[W]Apply to order the claimant to do or provide something."
     },
     "ORDER_WITNESS_ATTEND": {
@@ -40,8 +40,8 @@
       "body": "Gwneud cais i orchymyn bod tyst yn bresennol i roi tystiolaeth yn eich achos chi."
     },
     "CLAIMANT_NOT_COMPLIED": {
-      "label": "[W]Tell the tribunal the claimant has not complied with an order",
-      "body": "[W]Tell us that the claimant has not complied with all or part of an order from the tribunal."
+      "label": "Dweud wrth y tribiwnlys nad yw’r hawlydd wedi cydymffurfio â gorchymyn",
+      "body": "Dweud wrthym nad yw’r hawlydd wedi cydymffurfio â rhan o orchymyn, neu orchymyn cyfan, gan y tribiwnlys."
     },
     "RESTRICT_PUBLICITY": {
       "label": "Gwneud cais i gyfyngu ar gyhoeddusrwydd",
@@ -49,7 +49,7 @@
     },
     "STRIKE_OUT_CLAIM": {
       "label": "[W]Strike out all or part of the claimant's claim",
-      "body": "[W]You can request that the tribunal strike out all or parts of the claimant’s claim."
+      "body": "Gallwch ofyn i’r tribiwnlys ddileu’r hawliad cyfan neu rannau ohono."
     },
     "RECONSIDER_JUDGMENT": {
       "label": "[W]Apply for the judgment to be reconsidered",
