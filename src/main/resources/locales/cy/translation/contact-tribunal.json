@@ -8,7 +8,7 @@
   "landing_text": {
     "p1": "Defnyddiwch y ffurflen briodol i gyfathrebu â'r tribiwnlys.",
     "p2": "Bydd y ceisiadau hyn yn cael eu hadolygu gan y tribiwnlys a’u hanfon at y ceisydd a fydd yn cael cyfle i ymateb.",
-    "p3": "[W]You may be able to request that some details do not get shared with the applicant."
+    "p3": "Efallai y byddwch yn gallu gofyn nad yw rhai manylion yn cael eu rhannu gyda’r ceisydd."
   },
   "sections": {
     "CHANGE_PERSONAL_DETAILS": {
@@ -29,14 +29,14 @@
     },
     "AMEND_RESPONSE": {
       "label": "Gwneud cais i ddiwygio fy ymateb",
-      "body": "[W]Request to amend your ET3 response – including removing responses or details of your response."
+      "body": "Gwneud cais i ddiwygio eich ymateb ET3 - gan gynnwys dileu ymatebion neu fanylion eich ymateb."
     },
     "ORDER_OTHER_PARTY": {
       "label": "Gorchymyn yr hawlydd i wneud rhywbeth",
-      "body": "[W]Apply to order the claimant to do or provide something."
+      "body": "Gwneud cais i orchymyn yr hawlydd i wneud neu ddarparu rhywbeth."
     },
     "ORDER_WITNESS_ATTEND": {
-      "label": "[W]Order a witness to give evidence",
+      "label": "Gorchymyn bod tyst yn rhoi tystiolaeth",
       "body": "Gwneud cais i orchymyn bod tyst yn bresennol i roi tystiolaeth yn eich achos chi."
     },
     "CLAIMANT_NOT_COMPLIED": {
@@ -48,11 +48,11 @@
       "body": "Gwneud cais i atal neu gyfyngu ar gyhoeddusrwydd yn eich achos chi. Gall y tribiwnlys gynnal gwrandawiadau yn breifat neu gadw manylion partïon a thystion penodol yn gyfrinachol os oes angen."
     },
     "STRIKE_OUT_CLAIM": {
-      "label": "[W]Strike out all or part of the claimant's claim",
+      "label": "Dileu’r hawliad cyfan neu ran o hawliad yr hawlydd",
       "body": "Gallwch ofyn i’r tribiwnlys ddileu’r hawliad cyfan neu rannau ohono."
     },
     "RECONSIDER_JUDGMENT": {
-      "label": "[W]Apply for the judgment to be reconsidered",
+      "label": "Gwneud cais i’r dyfarniad gael ei ailystyried",
       "body": "Gofyn i ddyfarniad a wnaed gan farnwr gael ei ailystyried."
     },
     "CONTACT_TRIBUNAL": {

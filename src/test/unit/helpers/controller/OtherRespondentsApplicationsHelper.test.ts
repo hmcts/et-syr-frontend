@@ -1,14 +1,14 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import { Applicant, PartiesNotify } from '../../../../main/definitions/constants';
 import { application } from '../../../../main/definitions/contact-tribunal-applications';
-import { getOtherRespondentsApplications } from '../../../../main/helpers/controller/OtherRespondentsApplicationsHelper';
+import { getOtherRespondentApplications } from '../../../../main/helpers/controller/OtherRespondentApplicationsHelper';
 import applicationTypeJson from '../../../../main/resources/locales/en/translation/application-type.json';
 import caseDetailsStatusJson from '../../../../main/resources/locales/en/translation/case-details-status.json';
 import { mockRequestWithTranslation } from '../../mocks/mockRequest';
 import mockUserCase from '../../mocks/mockUserCase';
 
-describe('Other Respondents Applications Helper', () => {
-  describe('getOtherRespondentsApplications', () => {
+describe('Other Respondent Applications Helper', () => {
+  describe('getOtherRespondentApplications', () => {
     const translations = {
       ...applicationTypeJson,
       ...caseDetailsStatusJson,
@@ -18,13 +18,13 @@ describe('Other Respondents Applications Helper', () => {
 
     it('should return an empty array when genericTseApplicationCollection is undefined', () => {
       req.session.userCase.genericTseApplicationCollection = undefined;
-      const result = getOtherRespondentsApplications(req);
+      const result = getOtherRespondentApplications(req);
       expect(result).toEqual([]);
     });
 
     it('should return an empty array when genericTseApplicationCollection is empty', () => {
       req.session.userCase.genericTseApplicationCollection = [];
-      const result = getOtherRespondentsApplications(req);
+      const result = getOtherRespondentApplications(req);
       expect(result).toEqual([]);
     });
 
@@ -38,7 +38,7 @@ describe('Other Respondents Applications Helper', () => {
           },
         },
       ];
-      const result = getOtherRespondentsApplications(req);
+      const result = getOtherRespondentApplications(req);
       expect(result).toEqual([]);
     });
 
@@ -52,7 +52,7 @@ describe('Other Respondents Applications Helper', () => {
           },
         },
       ];
-      const result = getOtherRespondentsApplications(req);
+      const result = getOtherRespondentApplications(req);
       expect(result).toEqual([]);
     });
 
@@ -66,7 +66,7 @@ describe('Other Respondents Applications Helper', () => {
           },
         },
       ];
-      const result = getOtherRespondentsApplications(req);
+      const result = getOtherRespondentApplications(req);
       expect(result).toEqual([]);
     });
 
@@ -80,7 +80,7 @@ describe('Other Respondents Applications Helper', () => {
           },
         },
       ];
-      const result = getOtherRespondentsApplications(req);
+      const result = getOtherRespondentApplications(req);
       expect(result).toEqual([]);
     });
 
@@ -94,7 +94,7 @@ describe('Other Respondents Applications Helper', () => {
           },
         },
       ];
-      const result = getOtherRespondentsApplications(req);
+      const result = getOtherRespondentApplications(req);
       expect(result).toHaveLength(1);
     });
 
@@ -107,7 +107,7 @@ describe('Other Respondents Applications Helper', () => {
           },
         },
       ];
-      const result = getOtherRespondentsApplications(req);
+      const result = getOtherRespondentApplications(req);
       expect(result).toHaveLength(1);
     });
 
@@ -129,7 +129,7 @@ describe('Other Respondents Applications Helper', () => {
           },
         },
       ];
-      const result = getOtherRespondentsApplications(req);
+      const result = getOtherRespondentApplications(req);
       expect(result).toHaveLength(1);
     });
 
@@ -150,7 +150,7 @@ describe('Other Respondents Applications Helper', () => {
           },
         },
       ];
-      const result = getOtherRespondentsApplications(req);
+      const result = getOtherRespondentApplications(req);
       expect(result).toHaveLength(1);
     });
   });

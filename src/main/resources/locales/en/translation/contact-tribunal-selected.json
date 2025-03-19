@@ -31,7 +31,7 @@
       "fileBufferEmpty": "The file you are trying to upload is empty.",
       "fileNameNotSelected": "Please select a file.",
       "fileAlreadyExists": "The file you are trying to upload already exists. Please remove existing one first.",
-      "WithoutUploadButton": "Please press Upload file button after select file."
+      "WithoutUploadButton": "No file has been uploaded - click 'Upload file'"
     }
   }
 }

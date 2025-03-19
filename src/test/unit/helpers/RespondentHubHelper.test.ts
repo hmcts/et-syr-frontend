@@ -54,7 +54,7 @@ describe('getET3CaseDetailsLinksUrlMap', () => {
     [ET3CaseDetailsLinkNames.ClaimantApplications, PageUrls.CLAIMANTS_APPLICATIONS + languages.WELSH_URL_PARAMETER],
     [
       ET3CaseDetailsLinkNames.OtherRespondentApplications,
-      PageUrls.OTHER_RESPONDENTS_APPLICATIONS + languages.WELSH_URL_PARAMETER,
+      PageUrls.OTHER_RESPONDENT_APPLICATIONS + languages.WELSH_URL_PARAMETER,
     ],
     [ET3CaseDetailsLinkNames.ContactTribunal, PageUrls.CONTACT_TRIBUNAL + languages.WELSH_URL_PARAMETER],
     [ET3CaseDetailsLinkNames.TribunalOrders, PageUrls.NOT_IMPLEMENTED + languages.WELSH_URL_PARAMETER],
@@ -68,7 +68,7 @@ describe('getET3CaseDetailsLinksUrlMap', () => {
     [ET3CaseDetailsLinkNames.HearingDetails, PageUrls.NOT_IMPLEMENTED],
     [ET3CaseDetailsLinkNames.YourRequestsAndApplications, PageUrls.YOUR_REQUEST_AND_APPLICATIONS],
     [ET3CaseDetailsLinkNames.ClaimantApplications, PageUrls.CLAIMANTS_APPLICATIONS],
-    [ET3CaseDetailsLinkNames.OtherRespondentApplications, PageUrls.OTHER_RESPONDENTS_APPLICATIONS],
+    [ET3CaseDetailsLinkNames.OtherRespondentApplications, PageUrls.OTHER_RESPONDENT_APPLICATIONS],
     [ET3CaseDetailsLinkNames.ContactTribunal, PageUrls.CONTACT_TRIBUNAL],
     [ET3CaseDetailsLinkNames.TribunalOrders, PageUrls.NOT_IMPLEMENTED],
     [ET3CaseDetailsLinkNames.TribunalJudgements, PageUrls.NOT_IMPLEMENTED],
