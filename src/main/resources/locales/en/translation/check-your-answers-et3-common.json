@@ -22,6 +22,8 @@
   "section2": {
     "header": "Hearing format and employer details",
     "participateInHearings": "Would you be able to take part in hearings by video and phone? (optional)",
+    "hearingPanelPreference": "How do you prefer to have your case heard? (Optional)",
+    "hearingPanelPreferenceReason": "Give reason",
     "explainReason": "Explain why you are unable to take part in video or phone hearings",
     "disabilitySupport": "Do you have a physical, mental or learning disability or health condition that means you need support during your case? (optional)",
     "disabilitySupportNotSure": "I'm not sure yet",

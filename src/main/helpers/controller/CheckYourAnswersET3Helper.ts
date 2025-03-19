@@ -3,6 +3,7 @@ import {
   CaseWithId,
   EmailOrPost,
   EnglishOrWelsh,
+  HearingPanelPreference,
   HearingPreferenceET3,
   TypeOfOrganisation,
   YesOrNo,
@@ -192,6 +193,44 @@ export const getEt3Section2 = (
       hideChangeLink ? undefined : sectionCya
     )
   );
+
+  et3ResponseSection2.push(
+    addSummaryRowWithAction(
+      translations.section2.hearingPanelPreference,
+      {
+        [HearingPanelPreference.NO_PREFERENCE]: translations.hearingPanelPreference.noPreference,
+        [HearingPanelPreference.JUDGE]: translations.hearingPanelPreference.judge,
+        [HearingPanelPreference.PANEL]: translations.hearingPanelPreference.panel,
+      }[userCase.respondentHearingPanelPreference] ?? DefaultValues.STRING_DASH,
+      PageUrls.RESPONDENT_HEARING_PANEL_PREFERENCE,
+      hideChangeLink ? undefined : translations.change,
+      hideChangeLink ? undefined : sectionCya
+    )
+  );
+
+  if (userCase.respondentHearingPanelPreference === HearingPanelPreference.JUDGE) {
+    et3ResponseSection2.push(
+      addSummaryRowWithAction(
+        translations.section2.hearingPanelPreferenceReason,
+        userCase.respondentHearingPanelPreferenceReasonJudge,
+        PageUrls.RESPONDENT_HEARING_PANEL_PREFERENCE,
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
+      )
+    );
+  }
+
+  if (userCase.respondentHearingPanelPreference === HearingPanelPreference.PANEL) {
+    et3ResponseSection2.push(
+      addSummaryRowWithAction(
+        translations.section2.hearingPanelPreferenceReason,
+        userCase.respondentHearingPanelPreferenceReasonPanel,
+        PageUrls.RESPONDENT_HEARING_PANEL_PREFERENCE,
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
+      )
+    );
+  }
 
   et3ResponseSection2.push(
     addSummaryRowWithAction(
