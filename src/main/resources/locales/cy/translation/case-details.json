@@ -23,7 +23,7 @@
   "hearingDetailsWording": "Gweld manylion eich gwrandawiadau",
   "respondentRequestsAndApplications": "Eich cais a’ch ceisiadau",
   "claimantApplications": "Ceisiadau’r Hawlydd",
-  "otherRespondentApplications": "[W]Other respondent applications",
+  "otherRespondentApplications": "Ceisiadau eraill gan yr atebydd",
   "contactTribunal": "Cysylltu â’r tribiwnlys ynglŷn â’ch achos",
   "tribunalOrders": "Pob gorchymyn a phob cais a gyhoeddir gan y tribiwnlys",
   "tribunalJudgements": "Gweld pob dyfarniad",
@@ -82,6 +82,6 @@
   "withdraw": "tynnu’r cyfan/rhan o’r hawliad yn ôl",
   "Amend response": "diwygio’r ymateb",
   "your": "eich",
-  "theClaimant": "[W]the claimant's",
+  "theClaimant": "yr hawlydd",
   "theRespondent": "yr atebydd"
 }
