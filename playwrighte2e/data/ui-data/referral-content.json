@@ -1,0 +1,17 @@
+{
+    "tabName": "Referrals",
+    "createNewReferral": "Send a new referral",
+    "replyToReferral": "Reply to a referral",
+    "closeReferral": "Close a referral",
+    "details": "This is a test referral",
+    "createRefConfirmationMsg": "Your referral has been sent",
+    "directionDetails": "This is a test direction",
+    "replyRefConfirmationMsg": "We have recorded your reply",
+    "closeRefNotes": "This is a test close referral",
+    "closeRefConfirmationMsg": "We have closed this referral",
+    "awaitingStatus": "Awaiting instructions",
+    "subject": "ET1",
+    "issuedStatus": "Instructions issued",
+    "expReferredTo": "Judge",
+    "closedStatus": "Closed"
+}
