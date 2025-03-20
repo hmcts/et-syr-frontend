@@ -1,27 +1,24 @@
+import { Locator, Page } from '@playwright/test';
 
-import { Page, expect, Locator } from "@playwright/test";
-import { WebAction } from "../common/web.action";
-
+import { WebAction } from '../common/web.action';
 
 export abstract class BasePage {
   readonly page: Page;
   readonly continueButton: Locator;
-  readonly saveAsDraftButton:Locator;
-  readonly closeAndReturnButton:Locator;
-  readonly submit:Locator;
-  readonly postcode:Locator;
+  readonly saveAsDraftButton: Locator;
+  readonly closeAndReturnButton: Locator;
+  readonly submit: Locator;
+  readonly postcode: Locator;
   readonly findAddress: Locator;
-  readonly signout:Locator;
-  readonly startNow:Locator;
-  readonly saveAndContinue:Locator;
-  readonly nextButton:Locator;
-  readonly applyFilterButton:Locator;
+  readonly signout: Locator;
+  readonly startNow: Locator;
+  readonly saveAndContinue: Locator;
+  readonly nextButton: Locator;
+  readonly applyFilterButton: Locator;
   readonly addNewBtn: Locator;
   readonly newhearingBtn: string;
   readonly newUploadDocBtn: Locator;
   readonly webActions: WebAction;
-  
-
 
   constructor(page: Page) {
     this.page = page;
@@ -34,31 +31,31 @@ export abstract class BasePage {
     this.webActions = new WebAction(this.page);
   }
 
-  async wait(time: number) {
-    await this.page.waitForTimeout(time)
+  async wait(time: number): Promise<void> {
+    await this.page.waitForTimeout(time);
   }
 
-  async clickContinue() {
+  async clickContinue(): Promise<void> {
     await this.webActions.clickElementByRole('button', { name: 'Continue' });
   }
 
-  async saveAsDraft() {
+  async saveAsDraft(): Promise<void> {
     await this.saveAsDraftButton.click();
   }
 
-  async closeAndReturn() {
+  async closeAndReturn(): Promise<void> {
     await this.closeAndReturnButton.click();
   }
 
-  async submitButton(){
+  async submitButton(): Promise<void> {
     await this.webActions.clickElementByRole('button', { name: 'Submit' });
   }
 
-  async delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+  async delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async clickNextButton(){
+  async clickNextButton(): Promise<void> {
     await this.webActions.clickElementByRole('button', { name: 'Next' });
   }
 
@@ -66,39 +63,31 @@ export abstract class BasePage {
     await this.page.click(elementLocator);
   }
 
-  async enterPostCode(postcode){
-    await this.webActions.fillFieldByRole('textbox', { name: 'Enter a UK postcode' }, postcode);
-    await this.wait(3000);
-    await this.webActions.clickElementByRole('button', { name: 'Find address' });
-    await this.wait(3000);
-    await this.page.getByLabel('Select an address').selectOption('1: Object');
-  }
-
-  async signoutButton(){
+  async signoutButton(): Promise<void> {
     await this.webActions.clickElementByText('Sign out');
   }
 
-  async clickStartNow(){
-    await this.webActions.clickElementByRole('button', { name: 'Start now' });
-  }
+  // async clickStartNow(): Promise<void> {
+  //   await this.webActions.clickElementByRole('button', { name: 'Start now' });
+  // }
 
-  async saveAndContinueButton(){
-    await this.webActions.clickElementByRole('button', { name: 'Save and continue' });
-  }
+  // async saveAndContinueButton(): Promise<void> {
+  //   await this.webActions.clickElementByRole('button', { name: 'Save and continue' });
+  // }
 
-  async addNewButtonClick(){
+  async addNewButtonClick(): Promise<void> {
     await this.addNewBtn.click();
   }
 
-  async addNewHearingButtonClick(){
+  async addNewHearingButtonClick(): Promise<void> {
     await this.webActions.clickElementByCss(this.newhearingBtn);
   }
 
-  async addNewUploadDocButtonClick(){
+  async addNewUploadDocButtonClick(): Promise<void> {
     await this.newUploadDocBtn.click();
   }
 
-  async processPreLoginPagesForTheDraftApplication(postcode: string) {
+  async processPreLoginPagesForTheDraftApplication(postcode: string): Promise<void> {
     await this.startDraftApplication();
     await this.processBeforeYourContinuePage();
     await this.processWhatsThePostCodeYouHaveWorkedForPage(postcode);
@@ -108,44 +97,44 @@ export abstract class BasePage {
     await this.processWhatKindOfClaimAreYouMaking();
   }
 
-  async startDraftApplication() {
+  async startDraftApplication(): Promise<void> {
     await this.page.waitForSelector('text=Make a claim to an employment tribunal', { timeout: 30000 });
     await this.page.click('text=Start now');
   }
 
-  async processBeforeYourContinuePage() {
+  async processBeforeYourContinuePage(): Promise<void> {
     await this.page.waitForSelector('#main-content', { timeout: 5000 });
     await this.page.click('text=Continue');
   }
 
-    async processWhatsThePostCodeYouHaveWorkedForPage(postcode: string) {
+  async processWhatsThePostCodeYouHaveWorkedForPage(postcode: string): Promise<void> {
     await this.page.waitForSelector('#main-content', { timeout: 5000 });
     await this.page.fill('#workPostcode', postcode);
     await this.page.click('text=Continue');
-    }
+  }
 
-    async processAreYouMakingTheClaimForYourselfPage() {
+  async processAreYouMakingTheClaimForYourselfPage(): Promise<void> {
     await this.page.waitForSelector('#main-form', { timeout: 5000 });
     await this.page.check('input[id=lip-or-representative]');
     await this.page.click('text=Continue');
-    }
+  }
 
-    async processAreYouMakingTheClaimOnYourOwnPage() {
+  async processAreYouMakingTheClaimOnYourOwnPage(): Promise<void> {
     await this.page.waitForSelector('#main-form', { timeout: 5000 });
     await this.page.check('input[id=single-or-multiple-claim]');
     await this.page.click('text=Continue');
-    }
+  }
 
-    async processDoYouHaveAnACASEarlyConciliation() {
+  async processDoYouHaveAnACASEarlyConciliation(): Promise<void> {
     await this.page.waitForSelector('#main-form', { timeout: 5000 });
     await this.page.check('input[id=acas-multiple]');
     await this.page.click('text=Continue');
-    }
+  }
 
-    async processWhatKindOfClaimAreYouMaking() {
+  async processWhatKindOfClaimAreYouMaking(): Promise<void> {
     await this.page.waitForSelector('#typeOfClaim-hint', { timeout: 5000 });
     await this.page.check('input[value=discrimination]');
     await this.page.check('input[value=whistleBlowing]');
     await this.page.click('text=Continue');
-    }
+  }
 }

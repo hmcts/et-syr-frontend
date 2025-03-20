@@ -1,37 +1,38 @@
-import { params } from "../utils/config";
-import { BaseStep } from "./base";
 import { Page } from '@playwright/test';
 
+import { params } from '../utils/config';
+
+import { BaseStep } from './base';
 
 let subRef: string;
 let submissionRef: string;
 let caseNumber;
 
-const userDetailsData = require('../data/ui-data/user-details.json');
-
 export default class createAndAcceptCase extends BaseStep {
+  constructor(page: Page) {
+    super(page);
+  }
 
-   constructor(page: Page) {
-          super(page);
-    }
+  async setupCaseCreatedViaApi(
+    page: Page,
+    region: string,
+    caseType: string
+  ): Promise<{ subRef: string; caseNumber: any }> {
+    submissionRef = await this.createCaseThroughApi.processCaseToAcceptedState(region, caseType);
+    subRef = submissionRef.toString();
 
-    async setupCaseCreatedViaApi(page: any, region: string, caseType: string) {
+    await page.goto(params.TestUrlForManageCaseAAT);
+    await this.loginPage.processLogin(params.TestEnvETCaseWorkerUser, params.TestEnvETPassword);
+    const searchReference = region === 'England' ? 'Eng/Wales - Singles' : `${region} - Singles`;
+    await this.caseListPage.searchCaseApplicationWithSubmissionReference(searchReference, subRef);
+    caseNumber = await this.caseListPage.processCaseFromCaseList();
 
-        submissionRef = await this.createCaseThroughApi.processCaseToAcceptedState(region, caseType);
-        subRef = submissionRef.toString();
+    // Accept case
+    await Promise.all([
+      await this.caseListPage.selectNextEvent('Accept/Reject Case'),
+      await this.et1CaseServingPage.processET1CaseServingPages(),
+    ]);
 
-        await page.goto(params.TestUrlForManageCaseAAT);
-        await this.loginPage.processLogin(params.TestEnvETCaseWorkerUser, params.TestEnvETPassword);
-        const searchReference = region === "England" ? 'Eng/Wales - Singles' : `${region} - Singles`;
-        await this.caseListPage.searchCaseApplicationWithSubmissionReference(searchReference, subRef);
-        caseNumber = await this.caseListPage.processCaseFromCaseList();
-
-        // Accept case
-        await Promise.all([
-          await this.caseListPage.selectNextEvent('Accept/Reject Case'),
-          await this.et1CaseServingPage.processET1CaseServingPages()
-        ]);
-
-        return {subRef, caseNumber};
-    }
+    return { subRef, caseNumber };
+  }
 }

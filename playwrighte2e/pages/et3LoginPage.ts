@@ -1,10 +1,10 @@
-import { BasePage } from "./basePage";
-import { params } from "../utils/config";
-import { expect, Page } from '@playwright/test';
+import { Page } from '@playwright/test';
 
+import { params } from '../utils/config';
+
+import { BasePage } from './basePage';
 
 export default class Et3LoginPage extends BasePage {
-
   constructor(page: Page) {
     super(page);
   }
@@ -13,20 +13,19 @@ export default class Et3LoginPage extends BasePage {
     return new Et3LoginPage(page);
   }
 
-  elements={
-
-    returnToExistingResponse:this.page.locator('[href="/return-to-existing?lng=en"]'),
-    submit:this.page.locator('[type="submit"]'),
-    startNow:this.page.locator('[href="/case-number-check"]'),
+  elements = {
+    returnToExistingResponse: this.page.locator('[href="/return-to-existing?lng=en"]'),
+    submit: this.page.locator('[type="submit"]'),
+    startNow: this.page.locator('[href="/case-number-check"]'),
     respondToNewClaim: '[href="/case-number-check?lng=en&redirect=selfAssignment"]',
     caseNumber: '#ethosCaseReference',
     submissionRefNumber: '#caseReferenceId',
-    respName:'#respondentName',
-    claimantFirstName:'#claimantFirstName',
-    claimantLastName:'#claimantLastName',
-    caseRefNumber:this.page.locator('#ethosCaseReference')
-  }
-  async processRespondentLogin(username: string, password: string, caseNumber: string) {
+    respName: '#respondentName',
+    claimantFirstName: '#claimantFirstName',
+    claimantLastName: '#claimantLastName',
+    caseRefNumber: this.page.locator('#ethosCaseReference'),
+  };
+  async processRespondentLogin(username: string, password: string, caseNumber: string): Promise<void> {
     await this.page.goto(params.TestUrlRespondentUi);
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Introduction');
     await this.webActions.clickElementByCss('[href="/case-number-check"]');
@@ -37,14 +36,13 @@ export default class Et3LoginPage extends BasePage {
     await this.loginRespondentUi(username, password);
   }
 
-  async loginRespondentUi(username: string, password: string){
+  async loginRespondentUi(username: string, password: string): Promise<void> {
     await this.webActions.fillField('#username', username);
     await this.webActions.fillField('#password', password);
     await this.elements.submit.click();
   }
 
-
-  async replyToNewClaim(submissionRef: string, caseNumber: string){
+  async replyToNewClaim(submissionRef: string, caseNumber: string): Promise<void> {
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Before you continue');
 
     await this.clickContinue();
@@ -55,14 +53,14 @@ export default class Et3LoginPage extends BasePage {
     await this.checkAndSubmitPage(caseNumber);
   }
 
-  async caseNumberPage(caseNumber: string){
+  async caseNumberPage(caseNumber: string): Promise<void> {
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Case Number');
     await this.webActions.fillField(this.elements.caseNumber, caseNumber.toString());
 
     await this.clickContinue();
   }
 
-  async caseDetailsPage(submissionRef: string){
+  async caseDetailsPage(submissionRef: string): Promise<void> {
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Case Details');
     await this.webActions.fillField(this.elements.submissionRefNumber, submissionRef.toString());
 
@@ -74,7 +72,7 @@ export default class Et3LoginPage extends BasePage {
     await this.clickContinue();
   }
 
-  async checkAndSubmitPage(caseNumber: string){
+  async checkAndSubmitPage(caseNumber: string): Promise<void> {
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Check and submit');
     await this.webActions.checkElementById('#confirmation');
     await this.submitButton();
@@ -85,5 +83,4 @@ export default class Et3LoginPage extends BasePage {
     await this.webActions.verifyElementToBeVisible(this.page.locator(this.elements.respondToNewClaim));
     await this.webActions.clickElementByLabel('view ' + caseNumber.toString() + ':');
   }
-
 }
