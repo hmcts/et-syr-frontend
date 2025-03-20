@@ -16,6 +16,29 @@
         rows: appContent
       }) }}
 
+      {% for response in allResponses %}
+        <h2 class="govuk-heading-m">{{ responseItem }} {{ loop.index }}</h2>
+        {{ govukSummaryList({
+          rows: response
+        }) }}
+      {% endfor %}
+
+      {% for decisionContent in decisionContent %}
+        <h2 class="govuk-heading-m">{{ decisionItem }} {{ loop.index }}</h2>
+        {{ govukSummaryList({
+          rows: decisionContent
+        }) }}
+      {% endfor %}
+
+      {% if isRespondButton or isAdminRespondButton %}
+        {% if isAdminRespondButton %}
+          <p class="govuk-body">{{ mustRespond }}</p>
+        {% endif %}
+        {{ govukButton({
+          text: respondButton,
+          href: respondRedirectUrl
+        }) }}
+      {% endif %}
     </div>
 
     <div class="govuk-grid-column-one-third-from-desktop">

@@ -23,6 +23,7 @@
   "hearingDetailsWording": "View details of your hearings",
   "respondentRequestsAndApplications": "Your request and applications",
   "claimantApplications": "Claimant's applications",
+  "otherRespondentApplications": "Other respondent applications",
   "contactTribunal": "Contact the tribunal about your case",
   "tribunalOrders": "All orders and requests issued by the tribunal",
   "tribunalJudgements": "View all judgments",
@@ -31,10 +32,6 @@
   "submittedAlert": "You have submitted your claim to the tribunal",
   "processClaim": "We aim to process your claim by",
   "busyPeriod": ". In busy periods it may take longer.",
-  "tribunalRespondedP1": "The tribunal has responded to ",
-  "tribunalRespondedP2": " application to ",
-  "respondToTribunal": "Respond to the tribunal",
-  "mustRespond": "You must respond to this.",
   "notificationBanner": {
     "viewResponse": {
       "header": "The tribunal has acknowledged a claim against ",
@@ -54,57 +51,11 @@
       "link": "View the claim rejection",
       "p1": "The tribunal will close your claim."
     },
-    "respondentReceived": {
-      "header": "The tribunal has received a response from the respondent",
-      "p1": "We will process the response and contact you soon to tell you what will happen next."
-    },
-    "respondentRejection": {
-      "header": "The tribunal has rejected the respondent's response.",
-      "link": "View the rejection letter"
-    },
-    "respondentAcknowledgement": {
-      "header": "The tribunal has acknowledged the respondent's response."
-    },
-    "respondentApplicationReceived": {
-      "header": "The respondent has applied to ",
-      "p1TypeB": "You do not need to respond to this application.",
-      "p1": "If you have any objections or responses to their application you must send them to the tribunal as soon as possible and by ",
-      "p1a": " at the latest.",
-      "link": "Respond to the application"
-    },
-    "ecc": {
-      "title": "The tribunal has sent you a notification: "
-    },
-    "orderOrRequest": {
-      "responseRequired": "The tribunal requires some information from you.",
-      "noResponseRequired": "The tribunal has sent you a notification",
-      "link": "View the notification",
-      "respond": "Respond to the tribunal"
-    },
-    "judgment": {
-      "header": "The tribunal has made a decision on your case.",
-      "link": "View the decision"
-    },
-    "decisionJudgment": {
-      "headerClaimant": "The tribunal has made a decision on your application to ",
-      "headerRespondent": "The tribunal has made a decision on the respondent's application to ",
-      "link": "View the decision"
-    },
-    "storedPending": {
-      "header": "You have stored correspondence which you have not submitted to the tribunal",
-      "line1": "You must send a copy of this correspondence and all supporting documents to the other party before you submit it to the tribunal.",
-      "line2": "If the other party does respond to your application, they are expected to copy their response to you.",
-      "link": "View correspondence"
-    },
-    "claimantResponseToTribunal": {
-      "title": {
-        "rule92Yes": "You have sent a response to the tribunal and copied it to the respondent.",
-        "rule92No": {
-          "p1": "You have sent a response to the tribunal and given your reasons not to copy it to the respondent.",
-          "p2": "The tribunal will consider your reasons and let you know what happens next."
-        }
-      },
-      "link": "View your response"
+    "application": {
+      "p1": "The tribunal has responded to ",
+      "p2": " application to ",
+      "mustRespond": "You must respond to this.",
+      "respondToTribunal": "Respond to the tribunal"
     }
   },
   "multiples": {
@@ -131,5 +82,6 @@
   "withdraw": "withdraw all/part of claim",
   "Amend response": "amend response",
   "your": "your",
+  "theClaimant": "the claimant's",
   "theRespondent": "the respondent's"
 }

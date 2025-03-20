@@ -1,4 +1,4 @@
-export enum HubLinkNames {
+enum HubLinkNames {
   AboutYou = 'aboutYou',
   RespondentResponse = 'respondentResponse',
   Et1ClaimForm = 'et1ClaimForm',
@@ -48,47 +48,3 @@ export const enum HubLinkStatus {
   UPDATED = 'updated',
   READY_TO_VIEW = 'readyToView',
 }
-
-const COLORS = {
-  TURQUOISE: '--turquoise',
-  GREEN: '--green',
-  BLUE: '--blue',
-  RED: '--red',
-  GREY: '--grey',
-  YELLOW: '--yellow',
-};
-
-export const statusColorMap = new Map<HubLinkStatus, string>([
-  [HubLinkStatus.COMPLETED, COLORS.GREEN],
-  [HubLinkStatus.SUBMITTED, COLORS.TURQUOISE],
-  [HubLinkStatus.OPTIONAL, COLORS.BLUE],
-  [HubLinkStatus.VIEWED, COLORS.TURQUOISE],
-  [HubLinkStatus.NOT_VIEWED, COLORS.RED],
-  [HubLinkStatus.NOT_YET_AVAILABLE, COLORS.GREY],
-  [HubLinkStatus.WAITING_FOR_TRIBUNAL, COLORS.GREY],
-  [HubLinkStatus.SUBMITTED_AND_VIEWED, COLORS.TURQUOISE],
-  [HubLinkStatus.IN_PROGRESS, COLORS.YELLOW],
-  [HubLinkStatus.STORED, COLORS.YELLOW],
-  [HubLinkStatus.NOT_STARTED_YET, COLORS.RED],
-  [HubLinkStatus.UPDATED, COLORS.BLUE],
-  [HubLinkStatus.READY_TO_VIEW, COLORS.BLUE],
-]);
-
-export const displayStatusColorMap = new Map<HubLinkStatus, string>([
-  [HubLinkStatus.SUBMITTED, COLORS.GREEN],
-  [HubLinkStatus.VIEWED, COLORS.GREEN],
-  [HubLinkStatus.NOT_VIEWED, COLORS.RED],
-  [HubLinkStatus.NOT_STARTED_YET, COLORS.RED],
-  [HubLinkStatus.STORED, COLORS.YELLOW],
-]);
-
-export const sectionIndexToLinkNames: HubLinkNames[][] = [
-  [HubLinkNames.AboutYou],
-  [HubLinkNames.Et1ClaimForm],
-  [HubLinkNames.RespondentResponse],
-  [HubLinkNames.HearingDetails],
-  [HubLinkNames.RequestsAndApplications, HubLinkNames.RespondentApplications, HubLinkNames.ContactTribunal],
-  [HubLinkNames.TribunalOrders],
-  [HubLinkNames.TribunalJudgements],
-  [HubLinkNames.Documents],
-];
