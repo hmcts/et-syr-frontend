@@ -121,7 +121,7 @@ describe('Contact Tribunal CYA Helper', () => {
         },
       ];
 
-      const cyaContent = getCyaContent(req, translations);
+      const cyaContent = getCyaContent(req);
 
       expect(cyaContent).toEqual(expectedRows);
     });

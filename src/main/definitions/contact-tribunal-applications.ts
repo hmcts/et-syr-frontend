@@ -5,9 +5,9 @@ export enum ApplicationType {
 }
 
 export interface Application {
-  code: string; // ListElementCode in config
+  code?: string; // ListElementCode in config
   claimant: string; // Claimant version
-  url: string;
+  url?: string;
   type: ApplicationType;
 }
 
@@ -83,5 +83,9 @@ export const application: { [key: string]: Application } = {
     claimant: 'Contact about something else',
     url: 'contact-tribunal',
     type: ApplicationType.A,
+  },
+  WITHDRAWAL_OF_ALL_OR_PART_CLAIM: {
+    claimant: 'Withdraw all/part of claim',
+    type: ApplicationType.B,
   },
 };
