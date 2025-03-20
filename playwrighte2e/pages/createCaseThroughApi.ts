@@ -33,10 +33,6 @@ export default class CreateCaseThroughApi extends BasePage {
     console.log('case Id is:' + case_id);
     const response = await this.performCaseVettingEventGetRequest(authToken, serviceToken, case_id);
     await this.performCaseVettingEventPostRequest(authToken, serviceToken, case_id, response);
-    //Initiate accept case
-    // const acceptCaseToken= await this.acceptTheCaseEventFirstRequest(authToken, serviceToken, case_id);
-    // console.log('token to accept the case:' +acceptCaseToken);
-    //await this.acceptTheCaseEventSecondRequest(authToken, serviceToken, case_id, acceptCaseToken);
     return case_id;
   }
 
