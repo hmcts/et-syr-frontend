@@ -60,7 +60,7 @@ describe('Contact Tribunal Selected Controller', () => {
       expect(request.session.errors).toEqual([{ propertyName: 'contactApplicationText', errorType: 'required' }]);
     });
 
-    it('should render the same page when No is selected but summary text exceeds 2500 characters', async () => {
+    it('should render the same page when summary text exceeds 2500 characters', async () => {
       request = mockRequest({
         body: {
           contactApplicationText: '1'.repeat(2501),

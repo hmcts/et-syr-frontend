@@ -4,7 +4,7 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { continueButton } from '../definitions/buttons';
 import { CaseWithId } from '../definitions/case';
-import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys } from '../definitions/constants';
+import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { getApplicationByUrl, getApplicationDisplayByUrl } from '../helpers/ApplicationHelper';
@@ -49,7 +49,14 @@ export default class ContactTribunalSelectedController {
         type: 'button',
         name: 'upload',
         value: 'true',
-        divider: false,
+      },
+      remove: {
+        label: (l: AnyRecord): string => l.files.removeButton,
+        classes: 'govuk-button--secondary',
+        type: 'button',
+        id: 'remove',
+        name: 'remove',
+        value: 'true',
       },
       contactApplicationText: {
         type: 'charactercount',
@@ -74,7 +81,12 @@ export default class ContactTribunalSelectedController {
 
     const selectedApplication = getApplicationByUrl(req.params.selectedOption);
     if (!selectedApplication) {
+      logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.selectedOption);
       return res.redirect(ErrorPages.NOT_FOUND);
+    }
+
+    if (req.body?.remove && req.session?.userCase?.contactApplicationFile) {
+      req.session.userCase.contactApplicationFile = undefined;
     }
 
     if (req.body?.upload) {
@@ -105,6 +117,7 @@ export default class ContactTribunalSelectedController {
     this.uploadedFileName = req?.session?.userCase?.contactApplicationFile?.document_filename;
     const selectedApplication = getApplicationByUrl(req.params?.selectedOption);
     if (!selectedApplication) {
+      logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.selectedOption);
       return res.redirect(PageUrls.CONTACT_TRIBUNAL);
     }
 
@@ -117,7 +130,6 @@ export default class ContactTribunalSelectedController {
     res.render(TranslationKeys.CONTACT_TRIBUNAL_SELECTED, {
       ...content,
       hideContactUs: true,
-      ethosCaseReference: req.session.userCase.ethosCaseReference,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
       applicationType: getApplicationDisplayByUrl(req.params?.selectedOption, {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),

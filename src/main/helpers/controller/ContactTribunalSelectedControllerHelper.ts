@@ -93,7 +93,7 @@ export const getThisPage = (app: Application, req: AppRequest): string => {
  * @param req request
  */
 export const getNextPage = (app: Application, req: AppRequest): string => {
-  if (req.body?.upload) {
+  if (req.body?.upload || req.body?.remove) {
     return getThisPage(app, req);
   }
   return (isTypeAOrB(app) ? PageUrls.COPY_TO_OTHER_PARTY : PageUrls.CONTACT_TRIBUNAL_CYA) + getLanguageParam(req.url);

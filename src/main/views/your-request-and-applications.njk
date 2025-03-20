@@ -17,13 +17,14 @@
           <th scope="col" class="govuk-table__header">{{ submitDate }}</th>
           <th scope="col" class="govuk-table__header">{{ application }}</th>
           <th scope="col" class="govuk-table__header">{{ status }}</th>
+          <th scope="col" class="govuk-table__header">{{ lastUpdated }}</th>
         </tr>
         </thead>
         <tbody class="govuk-table__body">
         {% for app in appList %}
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
-            {{ dateToLocale(app.value.date) }}
+            {{ dateToLocale(app.submitDate) }}
           </td>
           <td class="govuk-table__cell">
             <a href="{{ getContent(app.redirectUrl) }}" class="govuk-link"> {{ app.linkValue }} </a>
@@ -33,6 +34,9 @@
               text: app.displayStatus,
               classes: "no-text-transform govuk-tag" + app.statusColor
             }) }}
+          </td>
+          <td class="govuk-table__cell">
+            {{ dateToLocale(app.lastUpdatedDate) }}
           </td>
         </tr>
         {% endfor %}
