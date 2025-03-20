@@ -15,6 +15,7 @@ parameters([
 
 @Library("Infrastructure")
 
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def type = "nodejs"
 def product = "et"
 def component = "syr"
