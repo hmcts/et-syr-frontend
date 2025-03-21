@@ -29,7 +29,7 @@ export const getCyaContent = (req: AppRequest): SummaryListRow[] => {
   rows.push(
     addSummaryRowWithAction(
       translations.applicationType,
-      translations[getApplicationKey(selectedApplication)],
+      translations.respondentAppName[getApplicationKey(selectedApplication)] || '',
       PageUrls.CONTACT_TRIBUNAL + languageParam,
       translations.change,
       ''

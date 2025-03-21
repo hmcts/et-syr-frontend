@@ -160,7 +160,7 @@ describe('Generic Tse Application Helper', () => {
         type: application.AMEND_RESPONSE.claimant,
       };
       const result = getApplicationDisplay(app, translations);
-      expect(result).toEqual('Amend my response');
+      expect(result).toEqual('Amend my claim');
     });
 
     it('should return empty when applicant not match the code', () => {

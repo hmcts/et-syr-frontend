@@ -37,7 +37,7 @@ describe('Respond to Application CYA Helper', () => {
         {
           key: {
             classes: 'govuk-!-font-weight-regular-m',
-            text: translations.legend,
+            text: "What's your response to the tribunal?",
           },
           value: {
             text: userCase.responseText,
@@ -46,8 +46,8 @@ describe('Respond to Application CYA Helper', () => {
             items: [
               {
                 href: '/respond-to-application/1?lng=en',
-                text: translations.change,
-                visuallyHiddenText: translations.legend,
+                text: 'Change',
+                visuallyHiddenText: "What's your response to the tribunal?",
               },
             ],
           },
@@ -55,7 +55,7 @@ describe('Respond to Application CYA Helper', () => {
         {
           key: {
             classes: 'govuk-!-font-weight-regular-m',
-            text: translations.hasSupportingMaterial,
+            text: 'Do you have any supporting material you want to provide?',
           },
           value: {
             text: userCase.hasSupportingMaterial,
@@ -64,8 +64,8 @@ describe('Respond to Application CYA Helper', () => {
             items: [
               {
                 href: '/respond-to-application/1?lng=en',
-                text: translations.change,
-                visuallyHiddenText: translations.hasSupportingMaterial,
+                text: 'Change',
+                visuallyHiddenText: 'Do you have any supporting material you want to provide?',
               },
             ],
           },
@@ -73,7 +73,7 @@ describe('Respond to Application CYA Helper', () => {
         {
           key: {
             classes: 'govuk-!-font-weight-regular-m',
-            text: translations.supportingMaterial,
+            text: 'Supporting material',
           },
           value: {
             html: '<a href="/getSupportingMaterial/6cd4768b-d9f8-4e39-b8e3-672f0047aa88" target="_blank">TEST.txt</a><br>',
@@ -82,8 +82,8 @@ describe('Respond to Application CYA Helper', () => {
             items: [
               {
                 href: '/respond-to-application-supporting-material?lng=en',
-                text: translations.change,
-                visuallyHiddenText: translations.supportingMaterial,
+                text: 'Change',
+                visuallyHiddenText: 'Supporting material',
               },
             ],
           },
@@ -91,7 +91,7 @@ describe('Respond to Application CYA Helper', () => {
         {
           key: {
             classes: 'govuk-!-font-weight-regular-m',
-            text: translations.copyToOtherPartyYesOrNo,
+            text: 'Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?',
           },
           value: {
             text: 'No',
@@ -100,8 +100,9 @@ describe('Respond to Application CYA Helper', () => {
             items: [
               {
                 href: '/respond-to-application-copy-to-other-party?lng=en',
-                text: translations.change,
-                visuallyHiddenText: translations.copyToOtherPartyYesOrNo,
+                text: 'Change',
+                visuallyHiddenText:
+                  'Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?',
               },
             ],
           },
@@ -109,7 +110,7 @@ describe('Respond to Application CYA Helper', () => {
         {
           key: {
             classes: 'govuk-!-font-weight-regular-m',
-            text: translations.copyToOtherPartyText,
+            text: 'Reason for not informing other party',
           },
           value: {
             text: userCase.copyToOtherPartyText,
@@ -118,8 +119,8 @@ describe('Respond to Application CYA Helper', () => {
             items: [
               {
                 href: '/respond-to-application-copy-to-other-party?lng=en',
-                text: translations.change,
-                visuallyHiddenText: translations.copyToOtherPartyText,
+                text: 'Change',
+                visuallyHiddenText: 'Reason for not informing other party',
               },
             ],
           },
