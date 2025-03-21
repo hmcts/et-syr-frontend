@@ -7,14 +7,10 @@ import { CaseWithId } from '../definitions/case';
 import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
-import { getApplicationByUrl, getApplicationDisplayByUrl } from '../helpers/ApplicationHelper';
+import { getApplicationByUrl, getApplicationDisplayByUrl, isTypeAOrB } from '../helpers/ApplicationHelper';
 import { getPageContent } from '../helpers/FormHelper';
-import {
-  getFormError,
-  getNextPage,
-  getThisPage,
-  handleFileUpload,
-} from '../helpers/controller/ContactTribunalSelectedControllerHelper';
+import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getFormError, handleFileUpload } from '../helpers/controller/ContactTribunalSelectedControllerHelper';
 import { getLogger } from '../logger';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
@@ -89,13 +85,17 @@ export default class ContactTribunalSelectedController {
       req.session.userCase.contactApplicationFile = undefined;
     }
 
+    const thisPage =
+      PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) +
+      getLanguageParam(req.url);
+
     if (req.body?.upload) {
       const fileErrorRedirect = handleFileUpload(
         req,
         FormFieldNames.CONTACT_TRIBUNAL_SELECTED.CONTACT_APPLICATION_FILE_NAME
       );
       if (await fileErrorRedirect) {
-        return res.redirect(getThisPage(selectedApplication, req));
+        return res.redirect(thisPage);
       }
     }
 
@@ -104,13 +104,20 @@ export default class ContactTribunalSelectedController {
     const contactApplicationError = getFormError(req, formData);
     if (contactApplicationError) {
       req.session.errors.push(contactApplicationError);
-      return res.redirect(getThisPage(selectedApplication, req));
+      return res.redirect(thisPage);
     }
 
     req.session.userCase.contactApplicationType = selectedApplication.code;
     req.session.userCase.contactApplicationText = formData.contactApplicationText;
 
-    res.redirect(getNextPage(selectedApplication, req));
+    if (req.body?.upload || req.body?.remove) {
+      return res.redirect(thisPage);
+    }
+
+    const nextPage =
+      (isTypeAOrB(selectedApplication) ? PageUrls.COPY_TO_OTHER_PARTY : PageUrls.CONTACT_TRIBUNAL_CYA) +
+      getLanguageParam(req.url);
+    res.redirect(nextPage);
   };
 
   public get = (req: AppRequest, res: Response): void => {
