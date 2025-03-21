@@ -32,7 +32,7 @@ describe('Contact Tribunal CYA Helper', () => {
         {
           key: {
             classes: 'govuk-!-font-weight-regular-m',
-            text: translations.applicationType,
+            text: 'Application type',
           },
           value: {
             text: 'Strike out the claim',
@@ -41,8 +41,8 @@ describe('Contact Tribunal CYA Helper', () => {
             items: [
               {
                 href: '/contact-tribunal?lng=en',
-                text: translations.change,
-                visuallyHiddenText: translations.applicationType,
+                text: 'Change',
+                visuallyHiddenText: 'Application type',
               },
             ],
           },
@@ -50,7 +50,7 @@ describe('Contact Tribunal CYA Helper', () => {
         {
           key: {
             classes: 'govuk-!-font-weight-regular-m',
-            text: translations.legend,
+            text: 'What do you want to tell or ask the tribunal?',
           },
           value: {
             text: userCase.contactApplicationText,
@@ -59,8 +59,8 @@ describe('Contact Tribunal CYA Helper', () => {
             items: [
               {
                 href: '/contact-tribunal/strike-out-all-or-part-of-application?lng=en',
-                text: translations.change,
-                visuallyHiddenText: translations.legend,
+                text: 'Change',
+                visuallyHiddenText: 'What do you want to tell or ask the tribunal?',
               },
             ],
           },
@@ -68,7 +68,7 @@ describe('Contact Tribunal CYA Helper', () => {
         {
           key: {
             classes: 'govuk-!-font-weight-regular-m',
-            text: translations.supportingMaterial,
+            text: 'Supporting material',
           },
           value: {
             html: '<a href="/getSupportingMaterial/10dbc31c-5bf6-4ecf-9ad7-6bbf58492afa" target="_blank">test-file.pdf</a><br>',
@@ -77,8 +77,8 @@ describe('Contact Tribunal CYA Helper', () => {
             items: [
               {
                 href: '/contact-tribunal/strike-out-all-or-part-of-application?lng=en',
-                text: translations.change,
-                visuallyHiddenText: translations.supportingMaterial,
+                text: 'Change',
+                visuallyHiddenText: 'Supporting material',
               },
             ],
           },
@@ -86,7 +86,7 @@ describe('Contact Tribunal CYA Helper', () => {
         {
           key: {
             classes: 'govuk-!-font-weight-regular-m',
-            text: translations.copyToOtherPartyYesOrNo,
+            text: 'Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?',
           },
           value: {
             text: 'No',
@@ -95,8 +95,9 @@ describe('Contact Tribunal CYA Helper', () => {
             items: [
               {
                 href: '/copy-to-other-party?lng=en',
-                text: translations.change,
-                visuallyHiddenText: translations.copyToOtherPartyYesOrNo,
+                text: 'Change',
+                visuallyHiddenText:
+                  'Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?',
               },
             ],
           },
@@ -104,7 +105,7 @@ describe('Contact Tribunal CYA Helper', () => {
         {
           key: {
             classes: 'govuk-!-font-weight-regular-m',
-            text: translations.copyToOtherPartyText,
+            text: 'Details of why you do not want to inform the other party',
           },
           value: {
             text: userCase.copyToOtherPartyText,
@@ -113,8 +114,8 @@ describe('Contact Tribunal CYA Helper', () => {
             items: [
               {
                 href: '/copy-to-other-party?lng=en',
-                text: translations.change,
-                visuallyHiddenText: translations.copyToOtherPartyText,
+                text: 'Change',
+                visuallyHiddenText: 'Details of why you do not want to inform the other party',
               },
             ],
           },

@@ -1,17 +1,19 @@
 import ContactTribunalSelectedController from '../../../main/controllers/ContactTribunalSelectedController';
 import { ErrorPages, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import { application } from '../../../main/definitions/contact-tribunal-applications';
-import { mockRequest } from '../mocks/mockRequest';
+import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
+import contactTribunalCYAJson from '../../../main/resources/locales/en/translation/contact-tribunal-check-your-answers.json';
+import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
 describe('Contact Tribunal Selected Controller', () => {
   let controller: ContactTribunalSelectedController;
-  let request: ReturnType<typeof mockRequest>;
+  let request: ReturnType<typeof mockRequestWithTranslation>;
   let response: ReturnType<typeof mockResponse>;
 
   beforeEach(() => {
     controller = new ContactTribunalSelectedController();
-    request = mockRequest({});
+    request = mockRequestWithTranslation({}, { ...applicationTypeJson, ...contactTribunalCYAJson });
     response = mockResponse();
   });
 

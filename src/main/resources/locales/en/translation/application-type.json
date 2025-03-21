@@ -1,15 +1,31 @@
 {
-  "CHANGE_PERSONAL_DETAILS": "Change my personal details",
-  "POSTPONE_HEARING": "Postpone a hearing",
-  "VARY_OR_REVOKE_ORDER": "Vary or revoke an order",
-  "CONSIDER_DECISION_AFRESH": "Consider a decision afresh",
-  "AMEND_RESPONSE": "Amend my response",
-  "ORDER_OTHER_PARTY": "Order the claimant",
-  "ORDER_WITNESS_ATTEND": "Order a witness to attend",
-  "CLAIMANT_NOT_COMPLIED": "Claimant has not complied",
-  "RESTRICT_PUBLICITY": "Restrict publicity",
-  "STRIKE_OUT_CLAIM": "Strike out the claim",
-  "RECONSIDER_JUDGMENT": "Reconsider a judgment",
-  "CONTACT_TRIBUNAL": "Contact the tribunal",
-  "WITHDRAWAL_OF_ALL_OR_PART_CLAIM": "Withdraw all or part of claim"
+  "respondentAppName": {
+    "CHANGE_PERSONAL_DETAILS": "Change my personal details",
+    "POSTPONE_HEARING": "Postpone a hearing",
+    "VARY_OR_REVOKE_ORDER": "Vary or revoke an order",
+    "CONSIDER_DECISION_AFRESH": "Consider a decision afresh",
+    "AMEND_RESPONSE": "Amend my response",
+    "ORDER_OTHER_PARTY": "Order the claimant",
+    "ORDER_WITNESS_ATTEND": "Order a witness to attend",
+    "CLAIMANT_NOT_COMPLIED": "Claimant has not complied",
+    "RESTRICT_PUBLICITY": "Restrict publicity",
+    "STRIKE_OUT_CLAIM": "Strike out the claim",
+    "RECONSIDER_JUDGMENT": "Reconsider a judgment",
+    "CONTACT_TRIBUNAL": "Contact the tribunal"
+  },
+  "claimantAppName": {
+    "CHANGE_PERSONAL_DETAILS": "Change my personal details",
+    "POSTPONE_HEARING": "Postpone a hearing",
+    "VARY_OR_REVOKE_ORDER": "Vary or revoke an order",
+    "CONSIDER_DECISION_AFRESH": "Consider a decision afresh",
+    "AMEND_RESPONSE": "Amend my claim",
+    "ORDER_OTHER_PARTY": "Order respondent to do something",
+    "ORDER_WITNESS_ATTEND": "Order a witness to attend",
+    "CLAIMANT_NOT_COMPLIED": "Tell tribunal respondent not complied",
+    "RESTRICT_PUBLICITY": "Restrict publicity",
+    "STRIKE_OUT_CLAIM": "Strike out the claim",
+    "RECONSIDER_JUDGMENT": "Reconsider a judgment",
+    "CONTACT_TRIBUNAL": "Contact the tribunal",
+    "WITHDRAWAL_OF_ALL_OR_PART_CLAIM": "Withdraw all or part of claim"
+  }
 }

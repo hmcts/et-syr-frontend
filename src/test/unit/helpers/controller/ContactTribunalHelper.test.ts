@@ -15,8 +15,8 @@ describe('Contact Tribunal Helper', () => {
       const translations: AnyRecord = contactTribunalJson;
       const accordionItems = getApplicationsAccordionItems(url, translations);
       expect(accordionItems).toBeInstanceOf(Array);
-      expect(accordionItems).toHaveLength(Object.keys(translations.sections).length);
-      expect(accordionItems[0].heading.text).toBe(contactTribunalJson.sections.CHANGE_PERSONAL_DETAILS.label);
+      expect(accordionItems).toHaveLength(12);
+      expect(accordionItems[0].heading.text).toBe('I want to change my personal details');
     });
   });
 

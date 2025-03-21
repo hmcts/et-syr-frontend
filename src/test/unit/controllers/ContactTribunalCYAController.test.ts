@@ -1,17 +1,19 @@
 import ContactTribunalCYAController from '../../../main/controllers/ContactTribunalCYAController';
 import { TranslationKeys } from '../../../main/definitions/constants';
-import { mockRequest } from '../mocks/mockRequest';
+import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
+import contactTribunalCYAJson from '../../../main/resources/locales/en/translation/contact-tribunal-check-your-answers.json';
+import { mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import mockUserCase from '../mocks/mockUserCase';
 
 describe('Contact Tribunal CYA Controller', () => {
   let controller: ContactTribunalCYAController;
-  let request: ReturnType<typeof mockRequest>;
+  let request: ReturnType<typeof mockRequestWithTranslation>;
   let response: ReturnType<typeof mockResponse>;
 
   beforeEach(() => {
     controller = new ContactTribunalCYAController();
-    request = mockRequest({});
+    request = mockRequestWithTranslation({}, { ...applicationTypeJson, ...contactTribunalCYAJson });
     response = mockResponse();
   });
 

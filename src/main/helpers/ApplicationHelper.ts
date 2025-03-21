@@ -43,7 +43,7 @@ export const getApplicationDisplayByUrl = (url: string, translations: AnyRecord)
     return '';
   }
   const appKey = Object.keys(application).find(key => application[key].url === url);
-  return appKey ? translations[appKey] : '';
+  return appKey ? translations.respondentAppName[appKey] : '';
 };
 
 /**
@@ -56,7 +56,7 @@ export const getApplicationDisplayByCode = (appCode: string, translations: AnyRe
     return '';
   }
   const appKey = Object.keys(application).find(key => application[key].code === appCode);
-  return appKey ? translations[appKey] : '';
+  return appKey ? translations.respondentAppName[appKey] : '';
 };
 
 /**
@@ -69,5 +69,5 @@ export const getApplicationDisplayByClaimantCode = (appCode: string, translation
     return '';
   }
   const appKey = Object.keys(application).find(key => application[key].claimant === appCode);
-  return appKey ? translations[appKey] : '';
+  return appKey ? translations.claimantAppName[appKey] : '';
 };

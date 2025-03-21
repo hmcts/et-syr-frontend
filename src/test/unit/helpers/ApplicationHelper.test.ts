@@ -92,8 +92,8 @@ describe('Applications Helper Test', () => {
     const translations: AnyRecord = applicationTypeJson;
 
     it('should return the correct translation for a valid URL', () => {
-      const result = getApplicationDisplayByUrl(application.CHANGE_PERSONAL_DETAILS.url, translations);
-      expect(result).toBe(translations['CHANGE_PERSONAL_DETAILS']);
+      const result = getApplicationDisplayByUrl(application.AMEND_RESPONSE.url, translations);
+      expect(result).toBe('Amend my response');
     });
 
     it('should return an empty string if URL is empty', () => {
@@ -116,8 +116,8 @@ describe('Applications Helper Test', () => {
     const translations: AnyRecord = applicationTypeJson;
 
     it('should return the correct translation for a valid application code', () => {
-      const result = getApplicationDisplayByCode(application.CHANGE_PERSONAL_DETAILS.code, translations);
-      expect(result).toBe(translations['CHANGE_PERSONAL_DETAILS']);
+      const result = getApplicationDisplayByCode(application.AMEND_RESPONSE.code, translations);
+      expect(result).toBe('Amend my response');
     });
 
     it('should return an empty string if application code is empty', () => {
@@ -140,8 +140,8 @@ describe('Applications Helper Test', () => {
     const translations: AnyRecord = applicationTypeJson;
 
     it('should return the correct translation for a valid application code', () => {
-      const result = getApplicationDisplayByClaimantCode(application.CHANGE_PERSONAL_DETAILS.claimant, translations);
-      expect(result).toBe(translations['CHANGE_PERSONAL_DETAILS']);
+      const result = getApplicationDisplayByClaimantCode(application.AMEND_RESPONSE.claimant, translations);
+      expect(result).toBe('Amend my claim');
     });
 
     it('should return an empty string if application code is empty', () => {
