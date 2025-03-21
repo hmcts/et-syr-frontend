@@ -38,7 +38,7 @@
     "test:fullfunctional-disabled": "NODE_TLS_REJECT_UNAUTHORIZED=0 codeceptjs run --steps -c src/test/end-to-end/codecept.conf.js --steps --reporter mocha-multi --verbose --grep @RET-BAT",
     "test:crossbrowser": "./bin/run-crossbrowser-tests.sh",
     "test-crossbrowser-e2e": "IGNORE_SESSION_VALIDATION=true NODE_ENV=testing LOG_LEVEL=OFF NODE_PATH=. node_modules/.bin/codeceptjs run-multiple  ${BROWSER_GROUP:-'--all'} -c src/test/end-to-end/saucelabs.conf.js --grep @RET-XB --steps --reporter mocha-multi",
-    "test:smoke": "NODE_TLS_REJECT_UNAUTHORIZED=0 codeceptjs --config ./src/test/smoke/codecept.smoke.conf.js run-workers 2 parallel",
+    "test:smoke": "yarn playwright install chromium && yarn playwright test --project=chromium --grep @smoke",
     "cichecks": "yarn && yarn build && yarn lint && yarn test && yarn tests:a11y",
     "prepare": "husky install"
   },
@@ -66,6 +66,7 @@
     "@types/session-file-store": "^1.2.2",
     "applicationinsights": "2.9.6",
     "autobind-decorator": "^2.4.0",
+    "chance": "^1.1.11",
     "codeceptjs": "3.4.1",
     "config": "^3.3.9",
     "connect-redis": "^6.1.3",
@@ -99,6 +100,7 @@
     "serve-favicon": "^2.5.0",
     "session-file-store": "^1.5.0",
     "swc_mut_cjs_exports": "^0.109.0",
+    "totp-generator": "1.0.0",
     "ts-node": "^10.9.1",
     "ts-transformer-keys": "^0.4.4",
     "tsconfig-paths": "^4.2.0",
@@ -106,11 +108,13 @@
     "uuid": "^11.0.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.10.0",
     "@babel/core": "^7.21.4",
     "@babel/eslint-parser": "^7.21.3",
     "@babel/preset-env": "^7.21.4",
     "@codeceptjs/allure-legacy": "^1.0.2",
     "@jest/globals": "^29.5.0",
+    "@playwright/test": "^1.51.0",
     "@swc/core": "^1.3.100",
     "@swc/helpers": "^0.5.1",
     "@swc/jest": "^0.2.29",
