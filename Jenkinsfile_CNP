@@ -1,5 +1,16 @@
 #!groovy
 
+properties([
+parameters([
+                choice(name: 'ENVIRONMENT_VARS', choices: ['aat', 'demo'], description: 'Environment to test'),
+                string(name: 'ET_SYR_URL_TO_TEST', defaultValue: 'https://et-syr.aat.platform.hmcts.net/', description: 'The URL you want to run these tests against'),
+                string(name: 'IDAM_URL', defaultValue: 'https://idam-api.aat.platform.hmcts.net/testing-support/accounts', description: 'Idam url'),
+                string(name: 'CCD_CALLBACKS_URL', defaultValue: 'https://manage-case.aat.platform.hmcts.net/cases', description: 'ccd url'),
+                string(name: 'ET_CASE_API_URL', defaultValue: 'http://et-sya-api-aat.service.core-compute-aat.internal/cases/initiate-case/', description: 'The Url for creating draft cases'),
+                string(name: 'ET_SUBMIT_DRAFT_CASE_URL', defaultValue: 'http://et-sya-api-aat.service.core-compute-aat.internal/cases/submit-case/', description: 'The Endpoint for submitting a darft case'),
+        ])
+])
+
 @Library("Infrastructure")
 
 import uk.gov.hmcts.contino.AppPipelineDsl
@@ -13,8 +24,21 @@ def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 def secrets = [
     'et-${env}': [
-        secret('test-username', 'TEST_CASE_USERNAME'),
-        secret('test-password', 'TEST_CASE_PASSWORD')
+        secret('et-citizen-10-user-name', 'ET_CITIZEN_USER_NAME'),
+        secret('et-citizen-10-password', 'ET_CITIZEN_PASSWORD')
+    ],
+    'et-cos-${env}': [
+        secret('et-caseworker-5-username', 'ET_CASEWORKER_USER_NAME'),
+        secret('et-caseworker-5-password', 'ET_CASEWORKER_PASSWORD'),
+        secret('et-citizen-user-name', 'ET_CITIZEN_USER_NAME'),
+        secret('et-citizen-password', 'ET_CITIZEN_PASSWORD'),
+        secret('et-ccd-api-user-name','ET_CCD_API_USER_NAME'),
+        secret('et-ccd-api-password','ET_CCD_API_PASSWORD'),
+        secret('et3-resp-user-name','ET3_REPSONDENT_USER_NAME'),
+        secret('et3-resp-password','ET3_REPSONDENT_PASSWORD')
+    ],
+    's2s-${env}':  [
+        secret('microservicekey-ccd-gw', 'MICROSERVICE_CCD_GW')
     ]
 ]
 
@@ -45,7 +69,39 @@ withPipeline(type, product, component) {
   syncBranchesWithMaster(branchesToSync)
   enableSlackNotifications('#et-builds')
 
+   env.TEST_URL = params.ET_SYA_URL_TO_TEST
+   env.IDAM_URL = params.IDAM_URL
+   env.TEST_MANAGE_CASE_URL = params.CCD_CALLBACKS_URL
+   env.ET_CASE_API_URL = params.ET_CASE_API_URL
+   env.RUNNING_ENV = params.ENVIRONMENT_VARS
+   env.TEST_RESP_URL = params.ET_SYR_URL_TO_TEST
+
+
   afterAlways('build') {
     yarnBuilder.yarn('build')
+  }
+
+  afterAlways('smoketest:preview') {
+    publishHTML([
+                    allowMissing         : true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll              : true,
+                    reportDir            : 'playwright-report',
+                    reportFiles          : 'index.html',
+                    reportName           : 'ET Smoke Test Report'
+    ])
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'playwright-report/**'
+  }
+
+  afterAlways('smoketest:aat') {
+    publishHTML([
+                    allowMissing         : true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll              : true,
+                    reportDir            : 'playwright-report',
+                    reportFiles          : 'index.html',
+                    reportName           : 'ET Smoke Test Report'
+    ])
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'playwright-report/**'
   }
 }
