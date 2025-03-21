@@ -81,13 +81,20 @@ export default class ContactTribunalSelectedController {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
-    if (req.body?.remove && req.session?.userCase?.contactApplicationFile) {
-      req.session.userCase.contactApplicationFile = undefined;
-    }
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    req.session.userCase.contactApplicationType = selectedApplication.code;
+    req.session.userCase.contactApplicationText = formData.contactApplicationText;
 
     const thisPage =
       PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) +
       getLanguageParam(req.url);
+
+    if (req.body?.remove) {
+      if (req.session?.userCase?.contactApplicationFile) {
+        req.session.userCase.contactApplicationFile = undefined;
+      }
+      return res.redirect(thisPage);
+    }
 
     if (req.body?.upload) {
       const fileErrorRedirect = handleFileUpload(
@@ -100,17 +107,13 @@ export default class ContactTribunalSelectedController {
     }
 
     req.session.errors = [];
-    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const contactApplicationError = getFormError(req, formData);
     if (contactApplicationError) {
       req.session.errors.push(contactApplicationError);
       return res.redirect(thisPage);
     }
 
-    req.session.userCase.contactApplicationType = selectedApplication.code;
-    req.session.userCase.contactApplicationText = formData.contactApplicationText;
-
-    if (req.body?.upload || req.body?.remove) {
+    if (req.body?.upload) {
       return res.redirect(thisPage);
     }
 
