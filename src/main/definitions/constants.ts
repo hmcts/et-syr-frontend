@@ -575,6 +575,7 @@ export const LoggerConstants = {
 };
 
 export const TseErrors = {
+  ERROR_PARAM_NOT_FOUND: 'Param not found: ',
   ERROR_APPLICATION_NOT_FOUND: 'Selected application not found: ',
   ERROR_UPDATE_LINK_STATUS: 'An error occurred while update LinkStatus',
   ERROR_NO_RESPOND_REQUIRED: 'No respond is required for this application',

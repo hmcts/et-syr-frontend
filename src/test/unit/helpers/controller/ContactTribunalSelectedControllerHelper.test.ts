@@ -1,10 +1,7 @@
 import { AppRequest } from '../../../../main/definitions/appRequest';
-import { PageUrls, ValidationErrors, languages } from '../../../../main/definitions/constants';
-import { application } from '../../../../main/definitions/contact-tribunal-applications';
+import { ValidationErrors } from '../../../../main/definitions/constants';
 import {
   getFormError,
-  getNextPage,
-  getThisPage,
   handleFileUpload,
 } from '../../../../main/helpers/controller/ContactTribunalSelectedControllerHelper';
 import FileUtils from '../../../../main/utils/FileUtils';
@@ -135,38 +132,6 @@ describe('Contact Tribunal Selected Controller Helper', () => {
       const formData = { contactApplicationText: 'Valid text content' };
       const error = getFormError(req, formData);
       expect(error).toBeUndefined();
-    });
-  });
-
-  describe('getThisPage', () => {
-    it('should return CONTACT_TRIBUNAL_SELECTED page URL', () => {
-      const app = application.CHANGE_PERSONAL_DETAILS;
-      const req: AppRequest = mockRequest({});
-      req.url = '/some-url?lng=en';
-      const result = getThisPage(app, req);
-      expect(result).toBe('/contact-tribunal/change-my-personal-details?lng=en');
-    });
-  });
-
-  describe('getNextPage', () => {
-    it('should return the current page URL if upload is present in request body', () => {
-      const req: AppRequest = mockRequest({
-        body: { upload: true },
-      });
-      const app = application.CHANGE_PERSONAL_DETAILS;
-      const result = getNextPage(app, req);
-      expect(result).toBe('/contact-tribunal/change-my-personal-details?lng=en');
-    });
-
-    const req: AppRequest = mockRequest({});
-    it('should return COPY_TO_OTHER_PARTY page for Type A/B applications when claimant is system user', () => {
-      const nextPage = getNextPage(application.CHANGE_PERSONAL_DETAILS, req);
-      expect(nextPage).toBe(PageUrls.COPY_TO_OTHER_PARTY + languages.ENGLISH_URL_PARAMETER);
-    });
-
-    it('should return CONTACT_TRIBUNAL_CYA page for Type C', () => {
-      const nextPage = getNextPage(application.ORDER_WITNESS_ATTEND, req);
-      expect(nextPage).toBe(PageUrls.CONTACT_TRIBUNAL_CYA + languages.ENGLISH_URL_PARAMETER);
     });
   });
 });
