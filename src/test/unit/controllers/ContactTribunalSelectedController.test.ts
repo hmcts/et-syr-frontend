@@ -37,8 +37,15 @@ describe('Contact Tribunal Selected Controller', () => {
       expect(response.end).toHaveBeenCalledWith('Thank you for your submission. You will be contacted in due course.');
     });
 
+    it('should redirect to error page when params not found', async () => {
+      request = mockRequest({ body: {} });
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+    });
+
     it('should redirect to error page when application invalid', async () => {
       request = mockRequest({ body: {} });
+      request.params.selectedOption = 'Test';
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
     });

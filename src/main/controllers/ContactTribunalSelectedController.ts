@@ -5,6 +5,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { continueButton } from '../definitions/buttons';
 import { CaseWithId } from '../definitions/case';
 import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
+import { application } from '../definitions/contact-tribunal-applications';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { getApplicationByUrl, getApplicationDisplayByUrl, isTypeAOrB } from '../helpers/ApplicationHelper';
@@ -75,7 +76,12 @@ export default class ContactTribunalSelectedController {
       return;
     }
 
-    const selectedApplication = getApplicationByUrl(req.params.selectedOption);
+    if (req.params?.selectedOption === undefined) {
+      logger.error(TseErrors.ERROR_PARAM_NOT_FOUND + 'selectedOption');
+      return res.redirect(ErrorPages.NOT_FOUND);
+    }
+
+    const selectedApplication = Object.values(application).find(app => app.url === req.params?.selectedOption);
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.selectedOption);
       return res.redirect(ErrorPages.NOT_FOUND);
