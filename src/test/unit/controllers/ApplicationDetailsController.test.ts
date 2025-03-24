@@ -1,5 +1,6 @@
 import ApplicationDetailsController from '../../../main/controllers/ApplicationDetailsController';
 import { ErrorPages, TranslationKeys } from '../../../main/definitions/constants';
+import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
 import commonJson from '../../../main/resources/locales/en/translation/common.json';
 import { mockGenericTseCollection } from '../mocks/mockGenericTseCollection';
@@ -21,6 +22,8 @@ describe('Application Details Controller', () => {
   });
 
   describe('GET method', () => {
+    jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(true);
+
     it('should render the page APPLICATION_DETAILS', async () => {
       request = mockRequestWithTranslation({}, translationJsons);
       request.session.user = mockUserDetails;

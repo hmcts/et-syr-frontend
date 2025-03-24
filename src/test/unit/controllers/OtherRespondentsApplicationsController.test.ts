@@ -1,5 +1,6 @@
 import OtherRespondentApplicationsController from '../../../main/controllers/OtherRespondentApplicationsController';
 import { TranslationKeys } from '../../../main/definitions/constants';
+import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import { mockUserDetails } from '../mocks/mockUser';
@@ -17,10 +18,12 @@ describe('Other Respondent Applications Controller', () => {
   });
 
   describe('GET method', () => {
-    it('should render the page OTHER_RESPONDENT_APPLICATIONS', () => {
+    jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(true);
+
+    it('should render the page OTHER_RESPONDENT_APPLICATIONS', async () => {
       request.session.user = mockUserDetails;
       request.session.userCase = mockUserCase;
-      controller.get(request, response);
+      await controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.YOUR_REQUEST_AND_APPLICATIONS, expect.anything());
     });
   });
