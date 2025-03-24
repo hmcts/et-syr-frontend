@@ -73,8 +73,8 @@ export const application: { [key: string]: Application } = {
     type: ApplicationType.A,
   },
   RECONSIDER_JUDGMENT: {
-    code: 'Reconsider judgment',
-    claimant: 'Reconsider judgment',
+    code: 'Reconsider judgement',
+    claimant: 'Reconsider judgement',
     url: 'apply-for-judgment-to-be-reconsidered',
     type: ApplicationType.B,
   },
