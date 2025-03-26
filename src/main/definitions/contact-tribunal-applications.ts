@@ -5,7 +5,7 @@ export enum ApplicationType {
 }
 
 export interface Application {
-  code?: string; // Respondent Legal Rep version
+  code?: string; // SYR and Respondent Legal Rep version
   claimant: string; // Claimant version
   claimantLegalRep: string; // Claimant Legal Rep version
   url?: string;
