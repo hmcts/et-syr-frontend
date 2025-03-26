@@ -4,6 +4,8 @@
   "applicant": "Applicant",
   "Respondent": "Respondent",
   "Claimant": "Claimant",
+  "Respondent Representative": "Respondent Representative",
+  "Claimant Representative": "Claimant Representative",
   "requestDate": "Application date",
   "applicationType": "Application type",
   "legend": "What do you want to tell or ask the tribunal?",

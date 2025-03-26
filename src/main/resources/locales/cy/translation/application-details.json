@@ -4,6 +4,8 @@
   "applicant": "Ceisydd",
   "Respondent": "Atebydd",
   "Claimant": "Hawlydd",
+  "Respondent Representative": "Respondent Representative",
+  "Claimant Representative": "Claimant Representative",
   "requestDate": "Dyddiad y cais",
   "applicationType": "Math o gais",
   "legend": "Beth ydych chi eisiau ei ddweud neu ofyn i’rtribiwnlys?",
