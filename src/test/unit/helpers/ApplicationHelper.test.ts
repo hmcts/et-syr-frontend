@@ -57,8 +57,10 @@ describe('Applications Helper Test', () => {
       const invalidApp: Application = {
         code: 'Invalid application',
         claimant: 'Invalid application',
+        claimantLegalRep: 'Invalid application',
         url: 'invalid-url',
         type: ApplicationType.C,
+        isRespondentApp: true,
       };
       const result = getApplicationKey(invalidApp);
       expect(result).toBeUndefined();
