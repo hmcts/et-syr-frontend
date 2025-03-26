@@ -12,7 +12,7 @@ import { getLanguageParam } from '../RouterHelpers';
  */
 export const getApplicationsAccordionItems = (url: string, translations: AnyRecord): AccordionItem[] => {
   return (Object.keys(application) as (keyof typeof application)[])
-    .filter(key => application[key].code !== undefined)
+    .filter(key => application[key].isRespondentApp)
     .map(key => {
       const applicationHeading = translations.sections[key].label;
       const applicationContent = getContentHtml(key, translations, getLanguageParam(url));

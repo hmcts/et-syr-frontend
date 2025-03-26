@@ -57,7 +57,9 @@ export const isTypeAOrB = (app: GenericTseApplicationType): boolean => {
     return undefined;
   }
   const matchingApp = Object.values(application).find(appData =>
-    isApplicantRespondent(app) ? appData.code === app?.type : appData.claimant === app?.type
+    isApplicantRespondent(app)
+      ? appData.code === app?.type
+      : appData.claimant === app?.type || appData.claimantLegalRep === app?.type
   );
   return matchingApp ? matchingApp.type === ApplicationType.A || matchingApp.type === ApplicationType.B : undefined;
 };

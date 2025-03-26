@@ -81,7 +81,9 @@ export default class ContactTribunalSelectedController {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
-    const selectedApplication = Object.values(application).find(app => app.url === req.params?.selectedOption);
+    const selectedApplication = Object.values(application).find(
+      app => app.isRespondentApp && app.url === req.params?.selectedOption
+    );
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.selectedOption);
       return res.redirect(ErrorPages.NOT_FOUND);
