@@ -14146,8 +14146,8 @@ __metadata:
   linkType: hard
 
 "sinon@npm:^19.0.0":
-  version: 19.0.4
-  resolution: "sinon@npm:19.0.4"
+  version: 19.0.5
+  resolution: "sinon@npm:19.0.5"
   dependencies:
     "@sinonjs/commons": ^3.0.1
     "@sinonjs/fake-timers": ^13.0.5
@@ -14155,7 +14155,7 @@ __metadata:
     diff: ^7.0.0
     nise: ^6.1.1
     supports-color: ^7.2.0
-  checksum: a8fa79ac98a90392008e4c8c200bd91cdf250caf2f1a529b4105f5267e92baffd8afdb6c8d9d3691561e3f0a9c13729c12f2d95c492e0dcdb4429adde9875bd3
+  checksum: 483b59d648895fa053f1fb6c7c1a2657437e7fa2cddd5fa79422c84bb3e96e93f1ca258a883314dce90982d15f5cba3041027ee764d5f2854f4bbe0a770acb16
   languageName: node
   linkType: hard
 
