@@ -18,12 +18,18 @@ import {
   isNeverResponseBefore,
 } from '../helpers/controller/ApplicationDetailsHelper';
 import { getLogger } from '../logger';
+import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import { getCaseApi } from '../services/CaseService';
 
 const logger = getLogger('ApplicationDetailsController');
 
 export default class ApplicationDetailsController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
+    const isContactTribunalEnabled = await getFlagValue('et3-contact-tribunal', null);
+    if (!isContactTribunalEnabled) {
+      return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
+    }
+
     const selectedApplication: GenericTseApplicationTypeItem = findSelectedGenericTseApplication(req);
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.appId);

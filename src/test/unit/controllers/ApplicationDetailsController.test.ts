@@ -1,5 +1,6 @@
 import ApplicationDetailsController from '../../../main/controllers/ApplicationDetailsController';
-import { ErrorPages, TranslationKeys } from '../../../main/definitions/constants';
+import { ErrorPages, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
+import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
 import commonJson from '../../../main/resources/locales/en/translation/common.json';
 import { mockGenericTseCollection } from '../mocks/mockGenericTseCollection';
@@ -21,6 +22,8 @@ describe('Application Details Controller', () => {
   });
 
   describe('GET method', () => {
+    jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(true);
+
     it('should render the page APPLICATION_DETAILS', async () => {
       request = mockRequestWithTranslation({}, translationJsons);
       request.session.user = mockUserDetails;
@@ -58,6 +61,12 @@ describe('Application Details Controller', () => {
       request.session.userCase = undefined;
       await controller.get(request, response);
       expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+    });
+
+    it('should redirect to holding page if feature flag is disabled', async () => {
+      jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(false);
+      await controller.get(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.HOLDING_PAGE + languages.ENGLISH_URL_PARAMETER);
     });
   });
 });
