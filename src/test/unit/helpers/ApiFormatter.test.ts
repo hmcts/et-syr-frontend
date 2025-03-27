@@ -4,9 +4,7 @@ import {
   HearingBundleType,
 } from '../../../main/definitions/api/caseApiResponse';
 import { DocumentUploadResponse } from '../../../main/definitions/api/documentApiResponse';
-import { UserDetails } from '../../../main/definitions/appRequest';
 import {
-  CaseDataCacheKey,
   CaseType,
   CaseTypeId,
   CaseWithId,
@@ -43,36 +41,12 @@ import {
   returnPreferredTitle,
   setDocumentValues,
   toApiFormat,
-  toApiFormatCreate,
 } from '../../../main/helpers/ApiFormatter';
-import { mockEt1DataModel, mockEt1DataModelUpdate } from '../mocks/mockEt1DataModel';
+import { mockEt1DataModelUpdate } from '../mocks/mockEt1DataModel';
 import mockUserCaseComplete from '../mocks/mockUserCaseComplete';
 import { mockedApiData } from '../mocks/mockedApiData';
 
 describe('Should return data in api format', () => {
-  it('should transform triage and Idam credentials to api format', () => {
-    const userDataMap: Map<CaseDataCacheKey, string> = new Map<CaseDataCacheKey, string>([
-      [CaseDataCacheKey.POSTCODE, 'SW1A 1AA'],
-      [CaseDataCacheKey.CLAIMANT_REPRESENTED, 'Yes'],
-      [CaseDataCacheKey.CASE_TYPE, 'Single'],
-      [CaseDataCacheKey.TYPES_OF_CLAIM, JSON.stringify(['discrimination', 'payRelated'])],
-      [CaseDataCacheKey.OTHER_CLAIM_TYPE, 'other claim description'],
-      [CaseDataCacheKey.ACAS_MULTIPLE, 'Yes'],
-      [CaseDataCacheKey.VALID_NO_ACAS_REASON, 'Reason'],
-    ]);
-
-    const mockUserDetails: UserDetails = {
-      id: '1234',
-      givenName: 'Bobby',
-      familyName: 'Ryan',
-      email: 'bobby@gmail.com',
-      accessToken: 'xxxx',
-      isCitizen: true,
-    };
-    const apiData = toApiFormatCreate(userDataMap, mockUserDetails);
-    expect(apiData).toEqual(mockEt1DataModel);
-  });
-
   it('should transform case data to api format', () => {
     const caseItem: CaseWithId = {
       id: '1234',
@@ -432,6 +406,7 @@ describe('Format Case Data to Frontend Model', () => {
       acknowledgementOfClaimLetterDetail: undefined,
       respondentResponseDeadline: undefined,
       rejectionOfClaimDocumentDetail: undefined,
+      representativeClaimantType: undefined,
       responseAcknowledgementDocumentDetail: undefined,
       responseRejectionDocumentDetail: undefined,
       responseEt3FormDocumentDetail: [],
@@ -441,6 +416,7 @@ describe('Format Case Data to Frontend Model', () => {
       documentCollection: undefined,
       representatives: undefined,
       bundleDocuments: [],
+      caseSource: undefined,
       multipleFlag: undefined,
       leadClaimant: undefined,
       caseStayed: undefined,

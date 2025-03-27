@@ -68,7 +68,11 @@ export const isDecisionShareToRespondent = (decision: TseAdminDecision): boolean
  * @param app claimant's application
  */
 export const isApplicationShare = (app: GenericTseApplicationType): boolean => {
-  if (app.type === application.ORDER_WITNESS_ATTEND.code) {
+  if (
+    app.type === application.ORDER_WITNESS_ATTEND.code ||
+    app.type === application.ORDER_WITNESS_ATTEND.claimant ||
+    app.type === application.ORDER_WITNESS_ATTEND.claimantLegalRep
+  ) {
     return false;
   }
 

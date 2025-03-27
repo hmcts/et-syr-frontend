@@ -6,7 +6,7 @@ import { AnyRecord } from '../definitions/util-types';
  * @param code application code
  */
 export const getApplicationByCode = (code: string): Application => {
-  return code && Object.values(application).find(app => app.code === code);
+  return code && Object.values(application).find(app => app.isRespondentApp && app.code === code);
 };
 
 /**
@@ -14,7 +14,7 @@ export const getApplicationByCode = (code: string): Application => {
  * @param url application url
  */
 export const getApplicationByUrl = (url: string): Application => {
-  return url && Object.values(application).find(app => app.url === url);
+  return url && Object.values(application).find(app => app.isRespondentApp && app.url === url);
 };
 
 /**
@@ -42,7 +42,7 @@ export const getApplicationDisplayByUrl = (url: string, translations: AnyRecord)
   if (url === undefined) {
     return '';
   }
-  const appKey = Object.keys(application).find(key => application[key].url === url);
+  const appKey = Object.keys(application).find(key => application[key].isRespondentApp && application[key].url === url);
   return appKey ? translations.respondentAppName[appKey] : '';
 };
 
@@ -55,12 +55,14 @@ export const getApplicationDisplayByCode = (appCode: string, translations: AnyRe
   if (appCode === undefined) {
     return '';
   }
-  const appKey = Object.keys(application).find(key => application[key].code === appCode);
+  const appKey = Object.keys(application).find(
+    key => application[key].isRespondentApp && application[key].code === appCode
+  );
   return appKey ? translations.respondentAppName[appKey] : '';
 };
 
 /**
- * Get Application Type as heading by application code
+ * Get Application Type as heading by application claimant code
  * @param appCode code of application
  * @param translations translation of the page
  */
@@ -68,6 +70,8 @@ export const getApplicationDisplayByClaimantCode = (appCode: string, translation
   if (appCode === undefined) {
     return '';
   }
-  const appKey = Object.keys(application).find(key => application[key].claimant === appCode);
+  const appKey = Object.keys(application).find(
+    key => application[key].claimant === appCode || application[key].claimantLegalRep === appCode
+  );
   return appKey ? translations.claimantAppName[appKey] : '';
 };

@@ -543,22 +543,7 @@ export const enum TypeOfOrganisation {
 }
 
 export interface RepresentedTypeC {
-  representativeId?: string;
-  nameOfRepresentative?: string;
-  nameOfOrganisation?: string;
-  representativeReference?: string;
-  representativeOccupation?: string;
-  representativeOccupationOther?: string;
-  representativeAddress?: Et1Address;
-  representativePhoneNumber?: string;
-  representativeMobileNumber?: string;
-  representativeEmailAddress?: string;
-  representativePreference?: string;
-  organisationId?: string;
   myHmctsOrganisation?: Organisation;
-  hearingContactLanguage?: string[];
-  contactLanguageQuestion?: string[];
-  representativeAttendHearing?: string[];
 }
 
 export interface Organisation {
