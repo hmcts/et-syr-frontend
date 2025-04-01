@@ -174,12 +174,10 @@
     "minimist": "^1.2.6",
     "semver": "^7.5.2",
     "merge": "^2.1.1",
-    "follow-redirects": "^1.15.4",
     "ws": "^8.17.1",
     "cookie": "^1.0.0",
     "shelljs": "^0.9.0",
     "cross-spawn": "^7.0.5",
-    "@babel/runtime": "^7.26.10",
     "puppeteer": "^24.0.0"
   },
   "packageManager": "yarn@3.8.7"
