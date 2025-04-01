@@ -1,5 +1,4 @@
 export interface ApplicationNotification {
-  appName?: string;
-  from?: string;
+  text?: string;
   appUrl?: string;
 }

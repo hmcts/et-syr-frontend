@@ -38,8 +38,7 @@ describe('getApplicationNotificationFromAdmin', () => {
     ];
     const result = getAppNotificationFromAdmin(apps, req);
     expect(result).toHaveLength(1);
-    expect(result[0].appName).toEqual('Change my personal details');
-    expect(result[0].from).toEqual('your');
+    expect(result[0].text).toEqual('The tribunal has responded to your application to Change my personal details');
     expect(result[0].appUrl).toEqual('/application-details/fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c?lng=en');
   });
 
@@ -84,8 +83,8 @@ describe('getApplicationNotificationFromAdmin', () => {
     ];
     const result = getAppNotificationFromAdmin(apps, req);
     expect(result).toHaveLength(2);
-    expect(result[0].appName).toEqual('Change my personal details');
-    expect(result[1].appName).toEqual('Postpone a hearing');
+    expect(result[0].text).toEqual('The tribunal has responded to your application to Change my personal details');
+    expect(result[1].text).toEqual("The tribunal has responded to the claimant's application to Postpone a hearing");
   });
 
   it('should return empty array when applications have no respondCollection', () => {
@@ -93,12 +92,22 @@ describe('getApplicationNotificationFromAdmin', () => {
       {
         id: 'fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c',
         value: {
+          applicant: Applicant.CLAIMANT,
           type: application.CHANGE_PERSONAL_DETAILS.code,
+        },
+      },
+      {
+        id: '6b5fb921-0522-4700-b81f-d391ac9b6ec4',
+        value: {
+          applicant: Applicant.RESPONDENT_REP,
+          type: application.POSTPONE_HEARING.claimant,
         },
       },
     ];
     const result = getAppNotificationFromAdmin(apps, req);
-    expect(result).toHaveLength(0);
+    expect(result).toHaveLength(2);
+    expect(result[0].text).toEqual('The claimant has submitted the application.');
+    expect(result[1].text).toEqual('The respondent representative has submitted the application.');
   });
 
   it('should return empty array when no response required', () => {

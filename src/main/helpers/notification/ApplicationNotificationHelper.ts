@@ -13,6 +13,7 @@ import {
   isResponseToTribunalRequired,
 } from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
+import { isNeverResponseBefore } from '../controller/ApplicationDetailsHelper';
 import { isYourApplication } from '../controller/YourRequestAndApplicationsHelper';
 
 export const getAppNotificationFromAdmin = (
@@ -27,24 +28,57 @@ export const getAppNotificationFromAdmin = (
   const languageParam = getLanguageParam(req.url);
   for (const app of apps || []) {
     if (isResponseToTribunalRequired(app.value, req.session.user)) {
-      appNotifications.push({
-        appName: getApplicationDisplay(app.value, translations),
-        from: getFrom(app.value, req.session.user, translations),
-        appUrl: PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + languageParam,
-      });
+      appNotifications.push(getFromAdminDetails(translations, app, req.session.user, languageParam));
+    } else if (isNeverResponseBefore(app.value, req.session.user)) {
+      appNotifications.push(getAppSubmitDetails(translations, app, req.session.user, languageParam));
     }
   }
 
   return appNotifications;
 };
 
-const getFrom = (app: GenericTseApplicationType, user: UserDetails, translations: AnyRecord) => {
+const getFromAdminDetails = (
+  translations: AnyRecord,
+  app: GenericTseApplicationTypeItem,
+  user: UserDetails,
+  languageParam: string
+): ApplicationNotification => {
+  const text =
+    translations.notificationBanner.tseFromTribunal.p1 +
+    getFromForAdmin(app.value, user, translations) +
+    translations.notificationBanner.tseFromTribunal.p2 +
+    getApplicationDisplay(app.value, translations);
+  const appUrl = getAppUrl(app, languageParam);
+  return { text, appUrl };
+};
+
+const getFromForAdmin = (app: GenericTseApplicationType, user: UserDetails, translations: AnyRecord): string => {
   if (isApplicantClaimant(app)) {
-    return translations.theClaimant;
-  } else if (isYourApplication(app, user)) {
-    return translations.your;
-  } else if (isApplicantRespondent(app)) {
-    return translations.theRespondent;
+    return translations.notificationBanner.tseFromTribunal.theClaimant;
+  }
+  if (isYourApplication(app, user)) {
+    return translations.notificationBanner.tseFromTribunal.your;
+  }
+  if (isApplicantRespondent(app)) {
+    return translations.notificationBanner.tseFromTribunal.theRespondent;
   }
   return '';
+};
+
+const getAppSubmitDetails = (
+  translations: AnyRecord,
+  app: GenericTseApplicationTypeItem,
+  user: UserDetails,
+  languageParam: string
+): ApplicationNotification => {
+  const text =
+    translations.notificationBanner.tseHasSubmit.p1 +
+    translations.notificationBanner.tseHasSubmit[app?.value?.applicant] +
+    translations.notificationBanner.tseHasSubmit.p2;
+  const appUrl = getAppUrl(app, languageParam);
+  return { text, appUrl };
+};
+
+const getAppUrl = (app: GenericTseApplicationTypeItem, languageParam: string): string => {
+  return PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + languageParam;
 };
