@@ -11,11 +11,13 @@ import { getLanguageParam } from '../RouterHelpers';
  * @param translations translation of the page
  */
 export const getApplicationsAccordionItems = (url: string, translations: AnyRecord): AccordionItem[] => {
-  return (Object.keys(application) as (keyof typeof application)[]).map(key => {
-    const applicationHeading = translations.sections[key].label;
-    const applicationContent = getContentHtml(key, translations, getLanguageParam(url));
-    return addAccordionRow(applicationHeading, applicationContent);
-  });
+  return (Object.keys(application) as (keyof typeof application)[])
+    .filter(key => application[key].isRespondentApp)
+    .map(key => {
+      const applicationHeading = translations.sections[key].label;
+      const applicationContent = getContentHtml(key, translations, getLanguageParam(url));
+      return addAccordionRow(applicationHeading, applicationContent);
+    });
 };
 
 const getContentHtml = (key: keyof typeof application, translations: AnyRecord, languageParam: string): string => {
@@ -52,19 +54,6 @@ const isClaimantRepresentedWithMyHMCTSCase = (userCase: CaseWithId): boolean => 
   return (
     MY_HMCTS === userCase.caseSource &&
     YES === userCase.claimantRepresentedQuestion &&
-    userCase.representativeClaimantType !== undefined &&
-    userCase.representativeClaimantType.myHmctsOrganisation !== undefined
+    userCase.representativeClaimantType?.myHmctsOrganisation !== undefined
   );
-};
-
-/**
- * Clear temporary fields stored in session
- * @param userCase session userCase
- */
-export const clearTempFields = (userCase: CaseWithId): void => {
-  userCase.contactApplicationType = undefined;
-  userCase.contactApplicationText = undefined;
-  userCase.contactApplicationFile = undefined;
-  userCase.copyToOtherPartyYesOrNo = undefined;
-  userCase.copyToOtherPartyText = undefined;
 };

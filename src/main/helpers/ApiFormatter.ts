@@ -1,4 +1,4 @@
-import { CreateCaseBody, RespondentRequestBody, UpdateCaseBody } from '../definitions/api/caseApiBody';
+import { RespondentRequestBody, UpdateCaseBody } from '../definitions/api/caseApiBody';
 import {
   CaseApiDataResponse,
   CaseData,
@@ -8,9 +8,8 @@ import {
   RespondentApiModel,
 } from '../definitions/api/caseApiResponse';
 import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
-import { AppRequest, UserDetails } from '../definitions/appRequest';
+import { AppRequest } from '../definitions/appRequest';
 import {
-  CaseDataCacheKey,
   CaseDate,
   CaseWithId,
   Document,
@@ -50,43 +49,6 @@ import { retrieveCurrentLocale } from './ApplicationTableRecordTranslationHelper
 import { returnTranslatedDateString } from './DateHelper';
 import { combineDocuments } from './DocumentHelpers';
 
-export function toApiFormatCreate(
-  userDataMap: Map<CaseDataCacheKey, string>,
-  userDetails: UserDetails
-): CreateCaseBody {
-  const caseBody: CreateCaseBody = {
-    post_code: userDataMap.get(CaseDataCacheKey.POSTCODE),
-    case_data: {
-      caseType: userDataMap.get(CaseDataCacheKey.CASE_TYPE),
-      claimantRepresentedQuestion: userDataMap.get(CaseDataCacheKey.CLAIMANT_REPRESENTED),
-      typesOfClaim: JSON.parse(userDataMap.get(CaseDataCacheKey.TYPES_OF_CLAIM)),
-      caseSource: CcdDataModel.CASE_SOURCE,
-      claimant_TypeOfClaimant: TYPE_OF_CLAIMANT,
-      claimantIndType: {
-        claimant_first_names: userDetails.givenName,
-        claimant_last_name: userDetails.familyName,
-      },
-      claimantType: {
-        claimant_email_address: userDetails.email,
-      },
-      claimantRequests: {
-        other_claim: userDataMap.get(CaseDataCacheKey.OTHER_CLAIM_TYPE),
-      },
-      triageQuestions: {
-        postcode: userDataMap.get(CaseDataCacheKey.POSTCODE),
-        claimantRepresentedQuestion: userDataMap.get(CaseDataCacheKey.CLAIMANT_REPRESENTED),
-        caseType: userDataMap.get(CaseDataCacheKey.CASE_TYPE),
-        acasMultiple: userDataMap.get(CaseDataCacheKey.ACAS_MULTIPLE),
-        typesOfClaim: JSON.parse(userDataMap.get(CaseDataCacheKey.TYPES_OF_CLAIM)),
-      },
-    },
-  };
-  if (userDataMap.get(CaseDataCacheKey.VALID_NO_ACAS_REASON) !== undefined) {
-    caseBody.case_data.triageQuestions.validNoAcasReason = userDataMap.get(CaseDataCacheKey.VALID_NO_ACAS_REASON);
-  }
-  return caseBody;
-}
-
 export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataResponse, req?: AppRequest): CaseWithId {
   if (ObjectUtils.isEmpty(fromApiCaseData)) {
     return undefined;
@@ -104,6 +66,8 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
     state: fromApiCaseData.state,
     caseTypeId: fromApiCaseData.case_type_id,
     claimantRepresentedQuestion: fromApiCaseData.case_data?.claimantRepresentedQuestion,
+    caseSource: fromApiCaseData.case_data?.caseSource,
+    representativeClaimantType: fromApiCaseData.case_data?.representativeClaimantType,
     caseType: fromApiCaseData.case_data?.caseType,
     firstName: fromApiCaseData.case_data?.claimantIndType?.claimant_first_names,
     lastName: fromApiCaseData.case_data?.claimantIndType?.claimant_last_name,
@@ -177,6 +141,7 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
     workAddressCountry: fromApiCaseData.case_data?.claimantWorkAddress?.claimant_work_address?.Country,
     workAddressPostcode: fromApiCaseData.case_data?.claimantWorkAddress?.claimant_work_address?.PostCode,
     workEnterPostcode: fromApiCaseData.case_data?.claimantWorkAddress?.claimant_work_address?.PostCode,
+    et1OnlineSubmission: fromApiCaseData?.case_data?.et1OnlineSubmission,
     et3ResponseReceived: hasResponseFromRespondentList(fromApiCaseData.case_data),
     submittedDate: parseDateFromString(fromApiCaseData.case_data?.receiptDate),
     hubLinksStatuses: fromApiCaseData.case_data?.hubLinksStatuses,

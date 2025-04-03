@@ -1,9 +1,9 @@
 import { HearingModel, PreAcceptCase } from './api/caseApiResponse';
 import { DocumentTypeItem } from './complexTypes/documentTypeItem';
 import { Et1Address } from './complexTypes/et1Address';
-import { GenericTseApplicationTypeItem, TseRespondTypeItem } from './complexTypes/genericTseApplicationTypeItem';
+import { GenericTseApplicationTypeItem } from './complexTypes/genericTseApplicationTypeItem';
 import { ET3VettingCommonTypes, ET3VettingType } from './complexTypes/respondent';
-import { PseResponseType, SendNotificationTypeItem } from './complexTypes/sendNotificationTypeItem';
+import { SendNotificationTypeItem } from './complexTypes/sendNotificationTypeItem';
 import {
   CaseState,
   ClaimOutcomes,
@@ -14,7 +14,7 @@ import {
 } from './definition';
 import { HubLinksStatuses } from './hub';
 import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from './links';
-import { TypeItem, UnknownRecord } from './util-types';
+import { UnknownRecord } from './util-types';
 
 export enum Checkbox {
   Checked = 'checked',
@@ -348,9 +348,6 @@ export interface Case {
   genericTseApplicationCollection?: GenericTseApplicationTypeItem[];
   tseApplicationStoredCollection?: GenericTseApplicationTypeItem[];
   selectedGenericTseApplication?: GenericTseApplicationTypeItem;
-  selectedStoredTseResponse?: TseRespondTypeItem;
-  selectedStoredPseResponse?: TypeItem<PseResponseType>;
-  storeState?: string;
   responseText?: string;
   hasSupportingMaterial?: YesOrNo;
   supportingMaterialFile?: Document;
@@ -371,7 +368,7 @@ export interface Case {
 
   /* Used to save the Rule 90 state to render the "Completed" page under various conditions, after submitting the CYA,
   all temporary fields such as copyToOtherPartyYesOrNo, contactApplicationText, etc. are cleared.*/
-  ruleCopystate?: boolean;
+  ruleCopyState?: boolean;
   documentCollection?: DocumentTypeItem[];
   respondentEnterPostcode?: string;
   workEnterPostcode?: string;
@@ -556,22 +553,7 @@ export const enum TypeOfOrganisation {
 }
 
 export interface RepresentedTypeC {
-  representativeId?: string;
-  nameOfRepresentative?: string;
-  nameOfOrganisation?: string;
-  representativeReference?: string;
-  representativeOccupation?: string;
-  representativeOccupationOther?: string;
-  representativeAddress?: Et1Address;
-  representativePhoneNumber?: string;
-  representativeMobileNumber?: string;
-  representativeEmailAddress?: string;
-  representativePreference?: string;
-  organisationId?: string;
   myHmctsOrganisation?: Organisation;
-  hearingContactLanguage?: string[];
-  contactLanguageQuestion?: string[];
-  representativeAttendHearing?: string[];
 }
 
 export interface Organisation {

@@ -17,11 +17,7 @@
         <div class="govuk-grid-column-two-thirds-from-desktop">
             <span class="govuk-caption-l">{{ caption }}</span>
             <h1 class="govuk-heading-l">{{ title }}</h1>
-
-            {{ govukInsetText({
-                text: inset
-            }) }}
-
+            <p class="govuk-body">{{ inset }}</p>
             {% block form %}
                 {% include "form/form.njk" %}
             {% endblock %}

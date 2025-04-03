@@ -1,15 +1,3 @@
-import {
-  postcode_Bristol,
-  postcode_Glasgow,
-  postcode_Leeds,
-  postcode_LondonCentral,
-  postcode_LondonEast,
-  postcode_LondonSouth,
-  postcode_Manchester,
-  postcode_MidlandsEast,
-  postcode_Newcastle,
-} from './postcode';
-
 export const LegacyUrls = {
   SIGN_UP: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_up',
   SIGN_IN: 'https://tribunal-response.employmenttribunals.service.gov.uk/users/sign_in',
@@ -84,9 +72,16 @@ export const TranslationKeys = {
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: 'contact-tribunal-submit-complete',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
+  CLAIMANTS_APPLICATIONS: 'claimants-applications',
+  OTHER_RESPONDENT_APPLICATIONS: 'other-respondent-applications',
   APPLICATION_DETAILS: 'application-details',
   // Respondent hearing panel preference
   RESPONDENT_HEARING_PANEL_PREFERENCE: 'respondent-hearing-panel-preference',
+  RESPOND_TO_APPLICATION: 'respond-to-application',
+  RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: 'respond-to-application-supporting-material',
+  RESPOND_TO_APPLICATION_CYA: 'respond-to-application-check-your-answers',
+  RESPOND_TO_APPLICATION_COMPLETE: 'respond-to-application-complete',
+  RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: 'respond-to-application-copy-to-other-party',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
 } as const;
@@ -167,7 +162,14 @@ export const PageUrls = {
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
+  CLAIMANTS_APPLICATIONS: '/claimants-applications',
+  OTHER_RESPONDENT_APPLICATIONS: '/other-respondent-applications',
   APPLICATION_DETAILS: '/application-details/:appId',
+  RESPOND_TO_APPLICATION: '/respond-to-application/:appId',
+  RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: '/respond-to-application-supporting-material',
+  RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: '/respond-to-application-copy-to-other-party',
+  RESPOND_TO_APPLICATION_CYA: '/respond-to-application-check-your-answers',
+  RESPOND_TO_APPLICATION_COMPLETE: '/respond-to-application-complete',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
 } as const;
@@ -187,6 +189,7 @@ export const InterceptPaths = {
   REMOVE_FILE: '/remove-uploaded-file',
   // Contact Tribunal
   CONTACT_TRIBUNAL_SUBMIT: '/submitContactTribunal',
+  RESPOND_TO_APPLICATION_SUBMIT: '/submitRespondToApplication',
 } as const;
 
 export const RedirectKeys = {
@@ -268,10 +271,12 @@ export const JavaApiUrls = {
   INITIATE_CASE_DRAFT: 'cases/initiate-case',
   UPDATE_CASE_DRAFT: 'cases/update-case',
   SUBMIT_CASE: 'cases/submit-case',
-  UPDATE_CASE_SUBMITTED: 'cases/update-hub-links-statuses',
   ROLE_PARAM_NAME: 'case_user_role',
   MODIFY_ET3_DATA: '/et3/modifyEt3Data',
   FIND_CASE_BY_ETHOS_CASE_REFERENCE_PARAM_NAME: 'ethosCaseReference',
+  SUBMIT_RESPONDENT_APPLICATION: 'respondentTSE/submit-respondent-application',
+  SUBMIT_RESPONDENT_RESPONSE_TO_APP: 'respondentTSE/respond-to-claimant-application',
+  CHANGE_RESPONDENT_APPLICATION_STATUS: 'respondentTSE/change-respondent-application-status',
 } as const;
 
 export const Roles = {
@@ -342,18 +347,6 @@ export const CITIZEN_ROLE = 'citizen';
 export const TYPE_OF_CLAIMANT = 'Individual';
 export const FILE_SIZE_LIMIT = 83886500;
 
-export const inScopeLocations = [].concat(
-  postcode_Glasgow,
-  postcode_Leeds,
-  postcode_Bristol,
-  postcode_MidlandsEast,
-  postcode_LondonCentral,
-  postcode_LondonEast,
-  postcode_LondonSouth,
-  postcode_Manchester,
-  postcode_Newcastle
-);
-
 export const ET3_FORM = 'ET3';
 
 export const et1DocTypes = ['ET1'];
@@ -363,8 +356,6 @@ export const responseAcceptedDocTypes = ['2.11', 'Letter 14'];
 export const responseRejectedDocTypes = ['2.12', '2.13', '2.14', '2.15', 'Letter 10', 'Letter 11'];
 export const et3FormDocTypes = [ET3_FORM];
 export const et3AttachmentDocTypes = ['ET3 Attachment'];
-
-export const CHANGE = 'Change';
 
 export const languages = {
   WELSH: 'cy',
@@ -377,13 +368,13 @@ export const languages = {
   ENGLISH_URL_PARAMETER: '?lng=en',
 };
 
-export const Rule92Types = {
-  CONTACT: 'Contact',
-  RESPOND: 'Respond',
-  TRIBUNAL: 'Tribunal',
+export const PartiesRespond = {
+  BOTH_PARTIES: 'Both parties',
+  CLAIMANT: 'Claimant',
+  RESPONDENT: 'Respondent',
 } as const;
 
-export const Parties = {
+export const PartiesNotify = {
   BOTH_PARTIES: 'Both parties',
   CLAIMANT_ONLY: 'Claimant only',
   RESPONDENT_ONLY: 'Respondent only',
@@ -397,6 +388,8 @@ export const ResponseRequired = {
 export const Applicant = {
   CLAIMANT: 'Claimant',
   RESPONDENT: 'Respondent',
+  CLAIMANT_REP: 'Claimant Representative',
+  RESPONDENT_REP: 'Respondent Representative',
   ADMIN: 'Admin',
 } as const;
 
@@ -419,8 +412,6 @@ export const NotificationSubjects = {
   ORDER_OR_REQUEST: 'Case management orders / requests',
   ECC: 'Employer Contract Claim',
 } as const;
-
-export const NoticeOfECC = 'Notice of Employer Contract Claim';
 
 export const DOCUMENT_CONTENT_TYPES = {
   DOCX: ['docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
@@ -470,23 +461,6 @@ export const YES = 'Yes';
 export const NO = 'No';
 export const MY_HMCTS = 'MyHMCTS';
 
-export const TseStatus = {
-  OPEN_STATE: 'Open',
-  CLOSED_STATE: 'Closed',
-  STORED_STATE: 'Stored',
-} as const;
-
-export const ResponseStatus = {
-  STORED_STATE: 'Stored',
-} as const;
-
-export const FEATURE_FLAGS = {
-  WELSH: 'welsh-language',
-  BUNDLES: 'bundles',
-  ECC: 'ecc',
-  MUL2: 'MUL2',
-} as const;
-
 export const SessionErrors = {
   ERROR_DESTROYING_SESSION: 'Error destroying session',
   ERROR_FAILED_TO_RETRIEVE_USER_CASE_FROM_REQUEST_SESSION: 'User case not found in the request session',
@@ -497,10 +471,6 @@ export const GenericTestConstants = {
   TRUE: true,
   FALSE: false,
   TEST_FIELD_VALUE: 'Test pension correct details',
-} as const;
-
-export const CallbackTestConstants = {
-  REDIS_ERROR: 'redisError',
 } as const;
 
 export const DefaultValues = {
@@ -559,6 +529,9 @@ export const FormFieldNames = {
   CONTACT_TRIBUNAL_SELECTED: {
     CONTACT_APPLICATION_FILE_NAME: 'contactApplicationFile',
   },
+  RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: {
+    SUPPORTING_MATERIAL_FILE: 'supportingMaterialFile',
+  },
 } as const;
 
 export const ServiceErrors = {
@@ -609,6 +582,15 @@ export const LoggerConstants = {
   ERROR_SYSTEM: 'System error. ',
 };
 
+export const TseErrors = {
+  ERROR_PARAM_NOT_FOUND: 'Param not found: ',
+  ERROR_APPLICATION_NOT_FOUND: 'Selected application not found: ',
+  ERROR_UPDATE_LINK_STATUS: 'An error occurred while update LinkStatus',
+  ERROR_NO_RESPOND_REQUIRED: 'No respond is required for this application',
+  ERROR_SUBMIT_APPLICATION: 'An error occurred while submitting an application',
+  ERROR_RESPOND_TO_APPLICATION: 'An error occurred while responding to an application',
+} as const;
+
 export const ControllerNames = {
   CLAIMANT_PENSION_AND_BENEFITS_CONTROLLER: 'ClaimantPensionAndBenefitsController',
 };
@@ -630,4 +612,10 @@ export const CLAIM_TYPES = {
   UNFAIR_DISMISSAL: 'Unfair dismissal',
   WHISTLEBLOWING: 'Whistleblowing',
   OTHER: 'Other type of claim',
+};
+
+export const IsCmoOrRequest = {
+  CASE_MANAGEMENT_ORDER: 'Case management order',
+  REQUEST: 'Request',
+  NEITHER: 'Neither',
 };

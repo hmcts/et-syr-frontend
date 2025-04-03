@@ -1,21 +1,21 @@
 {
-  "title": "[W]Order other party",
+  "title": "Gorchymyn yr hawlydd i wneud rhywbeth",
   "content": [
     {
       "type": "paragraph",
-      "text": "[W]Use this form to ask the tribunal to order the claimant to do or provide something."
+      "text": "Defnyddiwch y ffurflen hon i ofyn i'r tribiwnlys orchymyn i'r hawlydd wneud neu ddarparu rhywbeth."
     },
     {
       "type": "bold-paragraph",
-      "text": "[W]Details to include in your application:"
+      "text": "Manylion i’w cynnwys yn eich cais:"
     },
     {
       "type": "list",
       "items": [
-        "what you want the claimant to do",
-        "why it is relevant to your response",
-        "if you have already asked the claimant to do or provide this thing. If you have, tell us when you asked and what their response was",
-        "if you have not asked the claimant to do or provide this thing yet, explain why"
+        "beth ydych chi eisiau i'r hawlydd ei wneud",
+        "pam fod hyn yn berthnasol i’ch ymateb",
+        "os ydych chi eisoes wedi gofyn i’r hawlydd wneud neu ddarparu'r peth hwn. Os ydych chi wedi gwneud hynny, dywedwch wrthym pryd y gwnaethoch chi ofyn a beth oedd ei ymateb",
+        "os nad ydych chi wedi gofyn i’r hawlydd wneud neu ddarparu'r peth hwn eto, esboniwch pam"
       ]
     }
   ]

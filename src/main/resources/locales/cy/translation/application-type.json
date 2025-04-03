@@ -1,14 +1,31 @@
 {
-  "CHANGE_PERSONAL_DETAILS": "Newid fy manylion personol",
-  "POSTPONE_HEARING": "Gohirio gwrandawiad",
-  "VARY_OR_REVOKE_ORDER": "Amrywio neu ddirymu gorchymyn",
-  "CONSIDER_DECISION_AFRESH": "Ystyried penderfyniad o'r newydd",
-  "AMEND_RESPONSE": "Diwygio fy ymateb",
-  "ORDER_OTHER_PARTY": "Gorchymyn yr hawlydd",
-  "ORDER_WITNESS_ATTEND": "Gorchymyn tyst i fynychu",
-  "CLAIMANT_NOT_COMPLIED": "Nid yw’r hawlydd wedi cydymffurfio",
-  "RESTRICT_PUBLICITY": "Cyfyngu ar gyhoeddusrwydd",
-  "STRIKE_OUT_CLAIM": "Dileu’r hawliad",
-  "RECONSIDER_JUDGMENT": "Ailystyried dyfarniad",
-  "CONTACT_TRIBUNAL": "Cysylltu â’r tribiwnlys"
+  "respondentAppName": {
+    "CHANGE_PERSONAL_DETAILS": "Newid fy manylion personol",
+    "POSTPONE_HEARING": "Gohirio gwrandawiad",
+    "VARY_OR_REVOKE_ORDER": "Amrywio neu ddirymu gorchymyn",
+    "CONSIDER_DECISION_AFRESH": "Ystyried penderfyniad o'r newydd",
+    "AMEND_RESPONSE": "Diwygio fy ymateb",
+    "ORDER_OTHER_PARTY": "Gorchymyn yr hawlydd",
+    "ORDER_WITNESS_ATTEND": "Gorchymyn tyst i fynychu",
+    "CLAIMANT_NOT_COMPLIED": "Nid yw’r hawlydd wedi cydymffurfio",
+    "RESTRICT_PUBLICITY": "Cyfyngu ar gyhoeddusrwydd",
+    "STRIKE_OUT_CLAIM": "Dileu’r hawliad",
+    "RECONSIDER_JUDGMENT": "Ailystyried dyfarniad",
+    "CONTACT_TRIBUNAL": "Cysylltu â’r tribiwnlys"
+  },
+  "claimantAppName": {
+    "CHANGE_PERSONAL_DETAILS": "Newid fy manylion personol",
+    "POSTPONE_HEARING": "Gohirio gwrandawiad",
+    "VARY_OR_REVOKE_ORDER": "Amrywio neu ddirymu gorchymyn",
+    "CONSIDER_DECISION_AFRESH": "Ystyried penderfyniad o'r newydd",
+    "AMEND_RESPONSE": "Ddiwygio fy hawliad",
+    "ORDER_OTHER_PARTY": "Gorchymyn i’r atebydd wneud rhywbeth",
+    "ORDER_WITNESS_ATTEND": "Gorchymyn tyst i fynychu",
+    "CLAIMANT_NOT_COMPLIED": "Dweud wrth y tribiwnlys na fu cydymffurfio",
+    "RESTRICT_PUBLICITY": "Cyfyngu ar gyhoeddusrwydd",
+    "STRIKE_OUT_CLAIM": "Dileu’r hawliad",
+    "RECONSIDER_JUDGMENT": "Ailystyried dyfarniad",
+    "CONTACT_TRIBUNAL": "Cysylltu â’r tribiwnlys",
+    "WITHDRAWAL_OF_ALL_OR_PART_CLAIM": "Tynnu’r cyfan neu ran o’r hawliad yn ôl"
+  }
 }

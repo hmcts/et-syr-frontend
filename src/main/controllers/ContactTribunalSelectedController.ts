@@ -4,17 +4,14 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { continueButton } from '../definitions/buttons';
 import { CaseWithId } from '../definitions/case';
-import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys } from '../definitions/constants';
+import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
+import { application } from '../definitions/contact-tribunal-applications';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
-import { getApplicationByUrl, getApplicationDisplayByUrl } from '../helpers/ApplicationHelper';
+import { getApplicationByUrl, getApplicationDisplayByUrl, isTypeAOrB } from '../helpers/ApplicationHelper';
 import { getPageContent } from '../helpers/FormHelper';
-import {
-  getFormError,
-  getNextPage,
-  getThisPage,
-  handleFileUpload,
-} from '../helpers/controller/ContactTribunalSelectedControllerHelper';
+import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getFormError, handleFileUpload } from '../helpers/controller/ContactTribunalSelectedControllerHelper';
 import { getLogger } from '../logger';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
@@ -49,7 +46,14 @@ export default class ContactTribunalSelectedController {
         type: 'button',
         name: 'upload',
         value: 'true',
-        divider: false,
+      },
+      remove: {
+        label: (l: AnyRecord): string => l.files.removeButton,
+        classes: 'govuk-button--secondary',
+        type: 'button',
+        id: 'remove',
+        name: 'remove',
+        value: 'true',
       },
       contactApplicationText: {
         type: 'charactercount',
@@ -72,9 +76,32 @@ export default class ContactTribunalSelectedController {
       return;
     }
 
-    const selectedApplication = getApplicationByUrl(req.params.selectedOption);
-    if (!selectedApplication) {
+    if (req.params?.selectedOption === undefined) {
+      logger.error(TseErrors.ERROR_PARAM_NOT_FOUND + 'selectedOption');
       return res.redirect(ErrorPages.NOT_FOUND);
+    }
+
+    const selectedApplication = Object.values(application).find(
+      app => app.isRespondentApp && app.url === req.params?.selectedOption
+    );
+    if (!selectedApplication) {
+      logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.selectedOption);
+      return res.redirect(ErrorPages.NOT_FOUND);
+    }
+
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    req.session.userCase.contactApplicationType = selectedApplication.code;
+    req.session.userCase.contactApplicationText = formData.contactApplicationText;
+
+    const thisPage =
+      PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) +
+      getLanguageParam(req.url);
+
+    if (req.body?.remove) {
+      if (req.session?.userCase?.contactApplicationFile) {
+        req.session.userCase.contactApplicationFile = undefined;
+      }
+      return res.redirect(thisPage);
     }
 
     if (req.body?.upload) {
@@ -83,28 +110,32 @@ export default class ContactTribunalSelectedController {
         FormFieldNames.CONTACT_TRIBUNAL_SELECTED.CONTACT_APPLICATION_FILE_NAME
       );
       if (await fileErrorRedirect) {
-        return res.redirect(getThisPage(selectedApplication, req));
+        return res.redirect(thisPage);
       }
     }
 
     req.session.errors = [];
-    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const contactApplicationError = getFormError(req, formData);
     if (contactApplicationError) {
       req.session.errors.push(contactApplicationError);
-      return res.redirect(getThisPage(selectedApplication, req));
+      return res.redirect(thisPage);
     }
 
-    req.session.userCase.contactApplicationType = selectedApplication.code;
-    req.session.userCase.contactApplicationText = formData.contactApplicationText;
+    if (req.body?.upload) {
+      return res.redirect(thisPage);
+    }
 
-    res.redirect(getNextPage(selectedApplication, req));
+    const nextPage =
+      (isTypeAOrB(selectedApplication) ? PageUrls.COPY_TO_OTHER_PARTY : PageUrls.CONTACT_TRIBUNAL_CYA) +
+      getLanguageParam(req.url);
+    res.redirect(nextPage);
   };
 
   public get = (req: AppRequest, res: Response): void => {
     this.uploadedFileName = req?.session?.userCase?.contactApplicationFile?.document_filename;
     const selectedApplication = getApplicationByUrl(req.params?.selectedOption);
     if (!selectedApplication) {
+      logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.selectedOption);
       return res.redirect(PageUrls.CONTACT_TRIBUNAL);
     }
 
@@ -117,7 +148,6 @@ export default class ContactTribunalSelectedController {
     res.render(TranslationKeys.CONTACT_TRIBUNAL_SELECTED, {
       ...content,
       hideContactUs: true,
-      ethosCaseReference: req.session.userCase.ethosCaseReference,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
       applicationType: getApplicationDisplayByUrl(req.params?.selectedOption, {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),

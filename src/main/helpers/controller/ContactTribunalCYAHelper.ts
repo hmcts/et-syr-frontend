@@ -1,6 +1,6 @@
 import { AppRequest } from '../../definitions/appRequest';
 import { YesOrNo } from '../../definitions/case';
-import { PageUrls } from '../../definitions/constants';
+import { PageUrls, TranslationKeys } from '../../definitions/constants';
 import {
   SummaryListRow,
   addSummaryHtmlRowWithAction,
@@ -14,10 +14,14 @@ import { getLanguageParam } from '../RouterHelpers';
 /**
  * Get Contact Tribunal Check your answer content
  * @param req request
- * @param translations translations
  * */
-export const getCyaContent = (req: AppRequest, translations: AnyRecord): SummaryListRow[] => {
+export const getCyaContent = (req: AppRequest): SummaryListRow[] => {
   const rows: SummaryListRow[] = [];
+  const translations: AnyRecord = {
+    ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
+    ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
+    ...req.t(TranslationKeys.CONTACT_TRIBUNAL_CYA, { returnObjects: true }),
+  };
   const userCase = req.session.userCase;
   const selectedApplication = getApplicationByCode(userCase.contactApplicationType);
   const languageParam = getLanguageParam(req.url);
@@ -25,7 +29,7 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
   rows.push(
     addSummaryRowWithAction(
       translations.applicationType,
-      translations[getApplicationKey(selectedApplication)],
+      translations.respondentAppName[getApplicationKey(selectedApplication)],
       PageUrls.CONTACT_TRIBUNAL + languageParam,
       translations.change,
       ''
@@ -35,7 +39,7 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
   rows.push(
     addSummaryRowWithAction(
       translations.legend,
-      userCase.contactApplicationText,
+      userCase.contactApplicationText || translations.notProvided,
       PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) + languageParam,
       translations.change,
       ''
@@ -46,7 +50,7 @@ export const getCyaContent = (req: AppRequest, translations: AnyRecord): Summary
   rows.push(
     addSummaryHtmlRowWithAction(
       translations.supportingMaterial,
-      link,
+      link || translations.notProvided,
       PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', selectedApplication.url) + languageParam,
       translations.change,
       ''

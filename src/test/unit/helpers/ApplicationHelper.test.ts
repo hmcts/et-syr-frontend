@@ -3,6 +3,7 @@ import { AnyRecord } from '../../../main/definitions/util-types';
 import {
   getApplicationByCode,
   getApplicationByUrl,
+  getApplicationDisplayByClaimantCode,
   getApplicationDisplayByCode,
   getApplicationDisplayByUrl,
   getApplicationKey,
@@ -21,6 +22,11 @@ describe('Applications Helper Test', () => {
       const result = getApplicationByCode('Invalid code');
       expect(result).toBeUndefined();
     });
+
+    it('should return undefined for an undefined code', () => {
+      const result = getApplicationByCode(undefined);
+      expect(result).toBeUndefined();
+    });
   });
 
   describe('getApplicationByUrl', () => {
@@ -33,23 +39,35 @@ describe('Applications Helper Test', () => {
       const result = getApplicationByUrl('invalid-url');
       expect(result).toBeUndefined();
     });
+
+    it('should return undefined for an undefined URL', () => {
+      const result = getApplicationByUrl(undefined);
+      expect(result).toBeUndefined();
+    });
   });
 
   describe('getApplicationKey', () => {
-    it('should return the correct key for a valid application object', () => {
+    it('should return the correct key for a valid application', () => {
       const app = application.AMEND_RESPONSE;
       const result = getApplicationKey(app);
       expect(result).toBe('AMEND_RESPONSE');
     });
 
-    it('should return undefined for an invalid application object', () => {
+    it('should return undefined for an invalid application', () => {
       const invalidApp: Application = {
         code: 'Invalid application',
         claimant: 'Invalid application',
+        claimantLegalRep: 'Invalid application',
         url: 'invalid-url',
         type: ApplicationType.C,
+        isRespondentApp: true,
       };
       const result = getApplicationKey(invalidApp);
+      expect(result).toBeUndefined();
+    });
+
+    it('should return undefined for an undefined application', () => {
+      const result = getApplicationKey(undefined);
       expect(result).toBeUndefined();
     });
   });
@@ -63,6 +81,10 @@ describe('Applications Helper Test', () => {
       expect(isTypeAOrB(application.CONSIDER_DECISION_AFRESH)).toBe(true);
     });
 
+    it('should return false if application is WITHDRAWAL_OF_ALL_OR_PART_CLAIM', () => {
+      expect(isTypeAOrB(application.WITHDRAWAL_OF_ALL_OR_PART_CLAIM)).toBe(true);
+    });
+
     it('should return false if application type is C', () => {
       expect(isTypeAOrB(application.ORDER_WITNESS_ATTEND)).toBe(false);
     });
@@ -72,8 +94,8 @@ describe('Applications Helper Test', () => {
     const translations: AnyRecord = applicationTypeJson;
 
     it('should return the correct translation for a valid URL', () => {
-      const result = getApplicationDisplayByUrl(application.CHANGE_PERSONAL_DETAILS.url, translations);
-      expect(result).toBe(translations['CHANGE_PERSONAL_DETAILS']);
+      const result = getApplicationDisplayByUrl(application.AMEND_RESPONSE.url, translations);
+      expect(result).toBe('Amend my response');
     });
 
     it('should return an empty string if URL is empty', () => {
@@ -96,8 +118,8 @@ describe('Applications Helper Test', () => {
     const translations: AnyRecord = applicationTypeJson;
 
     it('should return the correct translation for a valid application code', () => {
-      const result = getApplicationDisplayByCode(application.CHANGE_PERSONAL_DETAILS.code, translations);
-      expect(result).toBe(translations['CHANGE_PERSONAL_DETAILS']);
+      const result = getApplicationDisplayByCode(application.AMEND_RESPONSE.code, translations);
+      expect(result).toBe('Amend my response');
     });
 
     it('should return an empty string if application code is empty', () => {
@@ -112,6 +134,30 @@ describe('Applications Helper Test', () => {
 
     it('should return an empty string if no translation exists for the application code', () => {
       const result = getApplicationDisplayByCode('Non-existent code', translations);
+      expect(result).toBe('');
+    });
+  });
+
+  describe('getApplicationDisplayByClaimantCode', () => {
+    const translations: AnyRecord = applicationTypeJson;
+
+    it('should return the correct translation for a valid application code', () => {
+      const result = getApplicationDisplayByClaimantCode(application.AMEND_RESPONSE.claimant, translations);
+      expect(result).toBe('Amend my claim');
+    });
+
+    it('should return an empty string if application code is empty', () => {
+      const result = getApplicationDisplayByClaimantCode('', translations);
+      expect(result).toBe('');
+    });
+
+    it('should return an empty string if application code is undefined', () => {
+      const result = getApplicationDisplayByClaimantCode(undefined, translations);
+      expect(result).toBe('');
+    });
+
+    it('should return an empty string if no translation exists for the application code', () => {
+      const result = getApplicationDisplayByClaimantCode('Non-existent code', translations);
       expect(result).toBe('');
     });
   });

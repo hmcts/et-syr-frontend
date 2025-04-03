@@ -15,16 +15,17 @@
   "employerDetailsSection": "employerDetailsSection",
   "employersContractClaimSection": "employersContractClaimSection",
   "et3CaseDetailsLinksStatuses": {
-    "claimantApplications": "notAvailableYet",
-    "contactTribunal": "optional",
-    "documents": "optional",
-    "et1ClaimForm": "notViewedYet",
-    "hearingDetails": "notAvailableYet",
     "personalDetails": "notAvailableYet",
-    "respondentRequestsAndApplications": "notAvailableYet",
+    "et1ClaimForm": "notViewedYet",
     "respondentResponse": "notStartedYet",
+    "hearingDetails": "notAvailableYet",
+    "respondentRequestsAndApplications": "notAvailableYet",
+    "claimantApplications": "notAvailableYet",
+    "otherRespondentApplications": "notAvailableYet",
+    "contactTribunal": "optional",
+    "tribunalOrders": "notAvailableYet",
     "tribunalJudgements": "notAvailableYet",
-    "tribunalOrders": "notAvailableYet"
+    "documents": "optional"
   },
   "et3Form": {
     "category_id": "et3FormCategoryId",

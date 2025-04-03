@@ -1,18 +1,19 @@
 import CopyToOtherPartyController from '../../../main/controllers/CopyToOtherPartyController';
 import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
-import { mockRequest } from '../mocks/mockRequest';
+import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
+import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import mockUserCase from '../mocks/mockUserCase';
 
 describe('Copy to Other Party Controller', () => {
   let controller: CopyToOtherPartyController;
-  let request: ReturnType<typeof mockRequest>;
+  let request: ReturnType<typeof mockRequestWithTranslation>;
   let response: ReturnType<typeof mockResponse>;
 
   beforeEach(() => {
     controller = new CopyToOtherPartyController();
-    request = mockRequest({});
+    request = mockRequestWithTranslation({}, { ...applicationTypeJson });
     response = mockResponse();
   });
 

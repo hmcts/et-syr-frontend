@@ -1,0 +1,21 @@
+export const params = {
+
+  TestUrlCitizenUi: process.env.TEST_URL || 'https://et-sya.aat.platform.hmcts.net',
+  TestUrlRespondentUi: process.env.TEST_RESP_URL || 'https://et-syr.aat.platform.hmcts.net',
+  TestUrlForManageCaseAAT: process.env.TEST_MANAGE_CASE_URL || 'https://manage-case.aat.platform.hmcts.net',
+  TestUrlForManageOrg: process.env.MANAGE_ORG_URL || 'https://manage-org.aat.platform.hmcts.net',
+  TestIdamUrl: process.env.IDAM_URL || 'https://idam-api.aat.platform.hmcts.net/testing-support/accounts',
+  IdamAcccountUrl: process.env.IDAM_ACCOUNT_URL || 'https://idam-api.aat.platform.hmcts.net/testing-support/accounts',
+  TestEnvETClaimantEmailAddress: process.env.ET_CITIZEN_USER_NAME || '',
+  TestEnvETClaimantPassword: process.env.ET_CITIZEN_PASSWORD || '',
+  TestEnvETNewClaimantEmailAddress: process.env.ET_NEW_CITIZEN_USER_NAME || '',
+  TestApiKey: process.env.API_KEY || '',
+  TestEnvETCaseWorkerUser: process.env.ET_CASEWORKER_USER_NAME || '',
+  TestEnvETPassword: process.env.ET_CASEWORKER_PASSWORD || '',
+  TestEnvET3RespondentEmailAddress: process.env.ET3_REPSONDENT_USER_NAME || '',
+  TestEnvET3RespondentPassword: process.env.ET3_REPSONDENT_PASSWORD || '',
+  TestEnv: process.env.RUNNING_ENV || '',
+  TestEnvApiUser: process.env.ET_CCD_API_USER_NAME || '',
+  TestEnvApiPassword: process.env.ET_CCD_API_PASSWORD || '',
+  TestCcdGwSecret: process.env.MICROSERVICE_CCD_GW || '',
+};

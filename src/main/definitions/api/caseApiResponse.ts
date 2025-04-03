@@ -1,4 +1,4 @@
-import { CaseType, CaseTypeId, Document, YesOrNo } from '../case';
+import { CaseType, CaseTypeId, Document, RepresentedTypeC, YesOrNo } from '../case';
 import { ClaimantCorrespondence } from '../complexTypes/claimantCorrespondence';
 import { ClaimantEmploymentDetails } from '../complexTypes/claimantEmploymentDetails';
 import { ClaimantHearingPreference } from '../complexTypes/claimantHearingPreference';
@@ -14,10 +14,6 @@ import { WorkAddressDetails } from '../complexTypes/workAddressDetails';
 import { CaseState } from '../definition';
 import { HubLinksStatuses } from '../hub';
 import { TypeItem } from '../util-types';
-
-export interface CreateCaseResponse {
-  data: CaseApiDataResponse;
-}
 
 export interface CaseApiDataResponse {
   id: string;
@@ -43,6 +39,7 @@ export interface CaseData {
   typesOfClaim?: string[];
   caseSource?: string;
   claimantRepresentedQuestion?: YesOrNo;
+  representativeClaimantType?: RepresentedTypeC;
   claimant_TypeOfClaimant?: string;
   claimantIndType?: ClaimantIndividual;
   claimantType?: ClaimantCorrespondence;
@@ -55,6 +52,7 @@ export interface CaseData {
   claimantWorkAddressQuestion?: YesOrNo;
   claimantWorkAddress?: WorkAddressDetails;
   et3ResponseReceived?: boolean;
+  et1OnlineSubmission?: string;
   receiptDate?: string;
   hubLinksStatuses?: HubLinksStatuses;
   managingOffice?: string;

@@ -33,6 +33,7 @@ import ClaimantPayDetailsController from '../../controllers/ClaimantPayDetailsCo
 import ClaimantPayDetailsEnterController from '../../controllers/ClaimantPayDetailsEnterController';
 import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPensionAndBenefitsController';
 import ClearSelectionController from '../../controllers/ClearSelectionController';
+import ClaimantsApplicationsController from '../../controllers/ClaimantsApplicationsController';
 import ContactTribunalCYAController from '../../controllers/ContactTribunalCYAController';
 import ContactTribunalController from '../../controllers/ContactTribunalController';
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
@@ -49,8 +50,15 @@ import HoldingPageController from '../../controllers/HoldingPageController';
 import HomeController from '../../controllers/HomeController';
 import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
+import OtherRespondentApplicationsController from '../../controllers/OtherRespondentApplicationsController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
+import RespondToApplicationCYAController from '../../controllers/RespondToApplicationCYAController';
+import RespondToApplicationCompleteController from '../../controllers/RespondToApplicationCompleteController';
+import RespondToApplicationController from '../../controllers/RespondToApplicationController';
+import RespondToApplicationCopyToOtherPartyController from '../../controllers/RespondToApplicationCopyToOtherPartyController';
+import RespondToApplicationSubmitController from '../../controllers/RespondToApplicationSubmitController';
+import RespondToApplicationSupportingMaterialController from '../../controllers/RespondToApplicationSupportingMaterialController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
@@ -113,6 +121,7 @@ export class Routes {
     const respondentContestClaimReasonController = new RespondentContestClaimReasonController();
     const employersContractClaimDetailsController = new EmployersContractClaimDetailsController();
     const contactTribunalSelectedController = new ContactTribunalSelectedController();
+    const respondToApplicationSupportingMaterialController = new RespondToApplicationSupportingMaterialController();
     app.get(InterceptPaths.CHANGE_DETAILS, new ChangeDetailsController().get);
     // Page URLs
     app.get(PageUrls.HOME, new HomeController().get);
@@ -264,7 +273,29 @@ export class Routes {
     app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
     // Your request and applications
     app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
+    app.get(PageUrls.CLAIMANTS_APPLICATIONS, new ClaimantsApplicationsController().get);
+    app.get(PageUrls.OTHER_RESPONDENT_APPLICATIONS, new OtherRespondentApplicationsController().get);
     app.get(PageUrls.APPLICATION_DETAILS, new ApplicationDetailsController().get);
+    app.get(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().get);
+    app.post(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().post);
+    app.get(PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL, respondToApplicationSupportingMaterialController.get);
+    app.post(
+      PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
+      limiter,
+      handleUploads.single('supportingMaterialFile'),
+      respondToApplicationSupportingMaterialController.post
+    );
+    app.get(
+      PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY,
+      new RespondToApplicationCopyToOtherPartyController().get
+    );
+    app.post(
+      PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY,
+      new RespondToApplicationCopyToOtherPartyController().post
+    );
+    app.get(PageUrls.RESPOND_TO_APPLICATION_CYA, new RespondToApplicationCYAController().get);
+    app.get(InterceptPaths.RESPOND_TO_APPLICATION_SUBMIT, new RespondToApplicationSubmitController().get);
+    app.get(PageUrls.RESPOND_TO_APPLICATION_COMPLETE, new RespondToApplicationCompleteController().get);
     // others
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);

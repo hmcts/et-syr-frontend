@@ -32,7 +32,7 @@ describe('Contact Tribunal Controller', () => {
 
   it('should render contact application page', async () => {
     jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(true);
-    request.session.userCase.et1OnlineSubmission = 'submitted Et1 Form';
+    request.session.userCase.et1OnlineSubmission = 'Yes';
     await controller.get(request, response);
     expect(response.render).toHaveBeenCalledWith(
       TranslationKeys.CONTACT_TRIBUNAL,

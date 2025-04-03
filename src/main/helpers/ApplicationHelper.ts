@@ -5,23 +5,23 @@ import { AnyRecord } from '../definitions/util-types';
  * Get application by code
  * @param code application code
  */
-export const getApplicationByCode = (code: string): Application | undefined => {
-  return Object.values(application).find(app => app.code === code);
+export const getApplicationByCode = (code: string): Application => {
+  return code && Object.values(application).find(app => app.isRespondentApp && app.code === code);
 };
 
 /**
  * Get application by url
  * @param url application url
  */
-export const getApplicationByUrl = (url: string): Application | undefined => {
-  return Object.values(application).find(app => app.url === url);
+export const getApplicationByUrl = (url: string): Application => {
+  return url && Object.values(application).find(app => app.isRespondentApp && app.url === url);
 };
 
 /**
  * Get application by key
  * @param app application key
  */
-export const getApplicationKey = (app: Application): string | undefined => {
+export const getApplicationKey = (app: Application): string => {
   return Object.keys(application).find(key => application[key] === app);
 };
 
@@ -39,8 +39,11 @@ export const isTypeAOrB = (app: Application): boolean => {
  * @param translations translation of the page
  */
 export const getApplicationDisplayByUrl = (url: string, translations: AnyRecord): string => {
-  const appKey = Object.keys(application).find(key => application[key].url === url);
-  return appKey ? translations[appKey] : '';
+  if (url === undefined) {
+    return '';
+  }
+  const appKey = Object.keys(application).find(key => application[key].isRespondentApp && application[key].url === url);
+  return appKey ? translations.respondentAppName[appKey] : '';
 };
 
 /**
@@ -49,6 +52,26 @@ export const getApplicationDisplayByUrl = (url: string, translations: AnyRecord)
  * @param translations translation of the page
  */
 export const getApplicationDisplayByCode = (appCode: string, translations: AnyRecord): string => {
-  const appKey = Object.keys(application).find(key => application[key].code === appCode);
-  return appKey ? translations[appKey] : '';
+  if (appCode === undefined) {
+    return '';
+  }
+  const appKey = Object.keys(application).find(
+    key => application[key].isRespondentApp && application[key].code === appCode
+  );
+  return appKey ? translations.respondentAppName[appKey] : '';
+};
+
+/**
+ * Get Application Type as heading by application claimant code
+ * @param appCode code of application
+ * @param translations translation of the page
+ */
+export const getApplicationDisplayByClaimantCode = (appCode: string, translations: AnyRecord): string => {
+  if (appCode === undefined) {
+    return '';
+  }
+  const appKey = Object.keys(application).find(
+    key => application[key].claimant === appCode || application[key].claimantLegalRep === appCode
+  );
+  return appKey ? translations.claimantAppName[appKey] : '';
 };
