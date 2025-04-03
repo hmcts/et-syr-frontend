@@ -49,19 +49,26 @@ export const getApplicationDisplay = (app: GenericTseApplicationType, translatio
 };
 
 /**
+ * Get application Type
+ * @param app application in GenericTseApplicationType
+ */
+export const getAppType = (app: GenericTseApplicationType): string => {
+  if (app?.type === undefined || app?.applicant === undefined) {
+    return undefined;
+  }
+  const matchingApp = Object.values(application).find(
+    appData => appData.code === app?.type || appData.claimant === app?.type || appData.claimantLegalRep === app?.type
+  );
+  return matchingApp?.type;
+};
+
+/**
  * Check if application is Type A or Type B
  * @param app application in GenericTseApplicationType
  */
 export const isTypeAOrB = (app: GenericTseApplicationType): boolean => {
-  if (app?.type === undefined || app?.applicant === undefined) {
-    return undefined;
-  }
-  const matchingApp = Object.values(application).find(appData =>
-    isApplicantRespondent(app)
-      ? appData.code === app?.type
-      : appData.claimant === app?.type || appData.claimantLegalRep === app?.type
-  );
-  return matchingApp ? matchingApp.type === ApplicationType.A || matchingApp.type === ApplicationType.B : undefined;
+  const appType = getAppType(app);
+  return appType ? appType === ApplicationType.A || appType === ApplicationType.B : undefined;
 };
 
 /**

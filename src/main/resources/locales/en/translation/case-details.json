@@ -52,23 +52,25 @@
       "p1": "The tribunal will close your claim."
     },
     "tseFromTribunal": {
-      "p1": "The tribunal has responded to ",
+      "p1a": "The tribunal has responded to",
       "your": "your",
       "theClaimant": "the claimant's",
       "theRespondent": "the respondent's",
-      "p2": " application to ",
-      "mustRespond": "You must respond to this.",
-      "respondToTribunal": "Respond to the tribunal"
+      "p1b": "application to",
+      "p2": "You must respond to this.",
+      "linkText": "Respond to the tribunal"
     },
     "tseHasSubmit": {
-      "p1": "The ",
-      "Respondent": "respondent",
-      "Claimant": "claimant",
-      "Respondent Representative": "respondent representative",
-      "Claimant Representative": "claimant representative",
-      "p2": " has submitted the application.",
-      "mustRespond": "You must respond to this.",
-      "respondToTribunal": "Respond to the tribunal"
+      "p1a": "The",
+      "Respondent": "Respondent",
+      "Claimant": "Claimant",
+      "Respondent Representative": "Respondent Representative",
+      "Claimant Representative": "Claimant Representative",
+      "p1b": "has applied to",
+      "p2TypeB": "You do not need to respond to this application.",
+      "p3a": "If you have any objections or responses to their application you must send them to the tribunal as soon as possible and by",
+      "p3b": "at the latest.",
+      "linkText": "Respond to the application"
     }
   },
   "multiples": {

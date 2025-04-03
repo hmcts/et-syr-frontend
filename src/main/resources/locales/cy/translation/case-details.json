@@ -52,23 +52,25 @@
       "p1": "Bydd y tribiwnlys yn cau eich hawliad."
     },
     "tseFromTribunal": {
-      "p1": "Mae'r tribiwnlys wedi ymateb i ",
+      "p1a": "Mae'r tribiwnlys wedi ymateb i",
       "your": "eich",
       "theClaimant": "yr hawlydd",
       "theRespondent": "yr atebydd",
-      "p2": " cais i ",
-      "mustRespond": "Rhaid ichi ymateb i hyn.",
-      "respondToTribunal": "Ymateb i'r tribiwnlys"
+      "p1b": "cais i",
+      "p2": "Rhaid ichi ymateb i hyn.",
+      "linkText": "Ymateb i'r tribiwnlys"
     },
     "tseHasSubmit": {
-      "p1": "The ",
-      "Respondent": "atebydd",
-      "Claimant": "hawlydd",
-      "Respondent Representative": "cynrychiolydd yr atebydd",
-      "Claimant Representative": "cynrychiolydd yr hawlydd",
-      "p2": " has submitted the application.",
-      "mustRespond": "Rhaid ichi ymateb i hyn.",
-      "respondToTribunal": "Ymateb i'r tribiwnlys"
+      "p1a": "The",
+      "Respondent": "Atebydd",
+      "Claimant": "Hawlydd",
+      "Respondent Representative": "Cynrychiolydd yr Atebydd",
+      "Claimant Representative": "Cynrychiolydd yr Hawlydd",
+      "p1b": "has applied to",
+      "p2TypeB": "You do not need to respond to this application.",
+      "p3a": "If you have any objections or responses to their application you must send them to the tribunal as soon as possible and by",
+      "p3b": "at the latest.",
+      "linkText": "Respond to the application"
     }
   },
   "multiples": {

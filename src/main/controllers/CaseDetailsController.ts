@@ -17,7 +17,10 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import { getET3CaseDetailsLinkNames } from '../helpers/controller/CaseDetailsHelper';
-import { getAppNotificationFromAdmin } from '../helpers/notification/ApplicationNotificationHelper';
+import {
+  getAppNotificationFromSubmit,
+  getAppRequestNotification,
+} from '../helpers/notification/ApplicationNotificationHelper';
 import { currentET3StatusFn } from '../helpers/state-sequence';
 import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -91,7 +94,8 @@ export default class CaseDetailsController {
       showSavedResponseAlert: req.session.userCase.et3Status === ET3Status.IN_PROGRESS,
       showViewResponseAlert: req.session.userCase.responseReceived === YesOrNo.YES,
       respondentResponseDeadline,
-      appNotifications: getAppNotificationFromAdmin(req.session.userCase.genericTseApplicationCollection, req),
+      appRequestNotifications: getAppRequestNotification(req.session.userCase.genericTseApplicationCollection, req),
+      appSubmitNotifications: getAppNotificationFromSubmit(req.session.userCase.genericTseApplicationCollection, req),
       languageParam: getLanguageParam(req.url),
     });
   }

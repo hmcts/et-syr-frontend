@@ -3,10 +3,11 @@ import { GenericTseApplicationTypeItem } from '../../../main/definitions/complex
 import { Applicant, PartiesRespond } from '../../../main/definitions/constants';
 import { application } from '../../../main/definitions/contact-tribunal-applications';
 import { AnyRecord } from '../../../main/definitions/util-types';
-import { getAppNotificationFromAdmin } from '../../../main/helpers/notification/ApplicationNotificationHelper';
+import { getAppRequestNotification } from '../../../main/helpers/notification/ApplicationNotificationHelper';
 import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
 import caseDetailsJson from '../../../main/resources/locales/en/translation/case-details.json';
 import { mockRequestWithTranslation } from '../mocks/mockRequest';
+import { mockUserDetails } from '../mocks/mockUser';
 
 describe('getApplicationNotificationFromAdmin', () => {
   const translations: AnyRecord = {
@@ -14,6 +15,7 @@ describe('getApplicationNotificationFromAdmin', () => {
     ...caseDetailsJson,
   };
   const req = mockRequestWithTranslation({}, translations);
+  req.session.user = mockUserDetails;
 
   it('should return notification banner when input valid', () => {
     const apps: GenericTseApplicationTypeItem[] = [
@@ -21,6 +23,7 @@ describe('getApplicationNotificationFromAdmin', () => {
         id: 'fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c',
         value: {
           applicant: Applicant.RESPONDENT,
+          applicantIdamId: '1234',
           type: application.CHANGE_PERSONAL_DETAILS.code,
           respondCollection: [
             {
@@ -36,9 +39,10 @@ describe('getApplicationNotificationFromAdmin', () => {
         },
       },
     ];
-    const result = getAppNotificationFromAdmin(apps, req);
+    const result = getAppRequestNotification(apps, req);
     expect(result).toHaveLength(1);
-    expect(result[0].text).toEqual('The tribunal has responded to your application to Change my personal details');
+    expect(result[0].from).toEqual('your');
+    expect(result[0].appName).toEqual('change my personal details');
     expect(result[0].appUrl).toEqual('/application-details/fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c?lng=en');
   });
 
@@ -81,10 +85,12 @@ describe('getApplicationNotificationFromAdmin', () => {
         },
       },
     ];
-    const result = getAppNotificationFromAdmin(apps, req);
+    const result = getAppRequestNotification(apps, req);
     expect(result).toHaveLength(2);
-    expect(result[0].text).toEqual('The tribunal has responded to your application to Change my personal details');
-    expect(result[1].text).toEqual("The tribunal has responded to the claimant's application to Postpone a hearing");
+    expect(result[0].from).toEqual("the respondent's");
+    expect(result[0].appName).toEqual('change my personal details');
+    expect(result[1].from).toEqual("the claimant's");
+    expect(result[1].appName).toEqual('postpone a hearing');
   });
 
   it('should return empty array when applications have no respondCollection', () => {
@@ -96,18 +102,9 @@ describe('getApplicationNotificationFromAdmin', () => {
           type: application.CHANGE_PERSONAL_DETAILS.code,
         },
       },
-      {
-        id: '6b5fb921-0522-4700-b81f-d391ac9b6ec4',
-        value: {
-          applicant: Applicant.RESPONDENT_REP,
-          type: application.POSTPONE_HEARING.claimant,
-        },
-      },
     ];
-    const result = getAppNotificationFromAdmin(apps, req);
-    expect(result).toHaveLength(2);
-    expect(result[0].text).toEqual('The claimant has submitted the application.');
-    expect(result[1].text).toEqual('The respondent representative has submitted the application.');
+    const result = getAppRequestNotification(apps, req);
+    expect(result).toHaveLength(0);
   });
 
   it('should return empty array when no response required', () => {
@@ -130,18 +127,18 @@ describe('getApplicationNotificationFromAdmin', () => {
         },
       },
     ];
-    const result = getAppNotificationFromAdmin(apps, req);
+    const result = getAppRequestNotification(apps, req);
     expect(result).toHaveLength(0);
   });
 
   it('should return an empty array when applications is empty', () => {
     const apps: GenericTseApplicationTypeItem[] = [];
-    const result = getAppNotificationFromAdmin(apps, req);
+    const result = getAppRequestNotification(apps, req);
     expect(result).toHaveLength(0);
   });
 
   it('should return empty array when applications is undefined', () => {
-    const result = getAppNotificationFromAdmin(undefined, req);
+    const result = getAppRequestNotification(undefined, req);
     expect(result).toHaveLength(0);
   });
 });
