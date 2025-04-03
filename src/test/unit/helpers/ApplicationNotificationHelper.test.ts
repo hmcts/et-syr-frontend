@@ -3,234 +3,100 @@ import { GenericTseApplicationTypeItem } from '../../../main/definitions/complex
 import { Applicant, PartiesRespond } from '../../../main/definitions/constants';
 import { application } from '../../../main/definitions/contact-tribunal-applications';
 import { AnyRecord } from '../../../main/definitions/util-types';
-import {
-  getAppNotificationFromSubmit,
-  getAppRequestNotification,
-} from '../../../main/helpers/notification/ApplicationNotificationHelper';
+import { getAppNotifications } from '../../../main/helpers/notification/ApplicationNotificationHelper';
 import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
 import caseDetailsJson from '../../../main/resources/locales/en/translation/case-details.json';
 import { mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockUserDetails } from '../mocks/mockUser';
 
 describe('Application Notification Helper', () => {
-  const translations: AnyRecord = {
-    ...applicationTypeJson,
-    ...caseDetailsJson,
-  };
-  const req = mockRequestWithTranslation({}, translations);
-  req.session.user = mockUserDetails;
-
-  describe('getApplicationNotificationFromAdmin', () => {
-    it('should return notification banner when input valid', () => {
-      const apps: GenericTseApplicationTypeItem[] = [
-        {
-          id: 'fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c',
-          value: {
-            applicant: Applicant.RESPONDENT,
-            applicantIdamId: '1234',
-            type: application.CHANGE_PERSONAL_DETAILS.code,
-            respondCollection: [
-              {
-                id: '0c28f1f0-0c2f-43bb-ae2c-e335c92a7e5c',
-                value: {
-                  from: Applicant.ADMIN,
-                  isResponseRequired: YesOrNo.YES,
-                  selectPartyRespond: PartiesRespond.RESPONDENT,
-                },
-              },
-            ],
-            respondentResponseRequired: YesOrNo.YES,
-          },
+  describe('getAppNotifications', () => {
+    const translations: AnyRecord = {
+      ...applicationTypeJson,
+      ...caseDetailsJson,
+    };
+    const req = mockRequestWithTranslation({}, translations);
+    req.session.user = mockUserDetails;
+    const apps: GenericTseApplicationTypeItem[] = [
+      {
+        id: '3f2b8b62-7b36-4f29-a3c3-89e2c1a4b6f7',
+        value: {
+          applicant: Applicant.CLAIMANT,
+          type: application.CHANGE_PERSONAL_DETAILS.claimant,
+          dueDate: '10 February 2025',
         },
-      ];
-      const result = getAppRequestNotification(apps, req);
-      expect(result).toHaveLength(1);
-      expect(result[0].from).toEqual('your');
-      expect(result[0].appName).toEqual('change my personal details');
-      expect(result[0].appUrl).toEqual('/application-details/fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c?lng=en');
+      },
+    ];
+
+    it('should return notification when other party submit application', () => {
+      const result = getAppNotifications(apps, req);
+      expect(result.appRequestNotifications).toHaveLength(0);
+      expect(result.appSubmitNotifications).toHaveLength(1);
+      expect(result.appSubmitNotifications[0].from).toEqual('claimant');
+      expect(result.appSubmitNotifications[0].appName).toEqual('change my personal details');
+      expect(result.appSubmitNotifications[0].appType).toEqual('B');
+      expect(result.appSubmitNotifications[0].dueDate).toEqual(new Date('10 February 2025'));
+      expect(result.appSubmitNotifications[0].appUrl).toEqual(
+        '/application-details/3f2b8b62-7b36-4f29-a3c3-89e2c1a4b6f7?lng=en'
+      );
     });
 
-    it('should return multiple notifications for multiple responses', () => {
-      const apps: GenericTseApplicationTypeItem[] = [
-        {
-          id: 'fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c',
-          value: {
-            applicant: Applicant.RESPONDENT,
-            type: application.CHANGE_PERSONAL_DETAILS.code,
-            respondCollection: [
-              {
-                id: '0c28f1f0-0c2f-43bb-ae2c-e335c92a7e5c',
-                value: {
-                  from: Applicant.ADMIN,
-                  isResponseRequired: YesOrNo.YES,
-                  selectPartyRespond: PartiesRespond.RESPONDENT,
-                },
-              },
-            ],
-            respondentResponseRequired: YesOrNo.YES,
-          },
+    it('should return notification when user responded the application', () => {
+      apps[0].value.respondCollection = [];
+      apps[0].value.respondCollection.push({
+        id: '0c28f1f0-0c2f-43bb-ae2c-e335c92a7e5c',
+        value: {
+          from: Applicant.RESPONDENT,
+          fromIdamId: '1234',
         },
-        {
-          id: '6b5fb921-0522-4700-b81f-d391ac9b6ec4',
-          value: {
-            applicant: Applicant.CLAIMANT,
-            type: application.POSTPONE_HEARING.claimant,
-            respondCollection: [
-              {
-                id: '3d01849d-c586-4f43-8d2b-8c6432827dec',
-                value: {
-                  from: Applicant.ADMIN,
-                  isResponseRequired: YesOrNo.YES,
-                  selectPartyRespond: PartiesRespond.BOTH_PARTIES,
-                },
-              },
-            ],
-            respondentResponseRequired: YesOrNo.YES,
-          },
-        },
-      ];
-      const result = getAppRequestNotification(apps, req);
-      expect(result).toHaveLength(2);
-      expect(result[0].from).toEqual("the respondent's");
-      expect(result[0].appName).toEqual('change my personal details');
-      expect(result[1].from).toEqual("the claimant's");
-      expect(result[1].appName).toEqual('postpone a hearing');
+      });
+      const result = getAppNotifications(apps, req);
+      expect(result.appRequestNotifications).toHaveLength(0);
+      expect(result.appSubmitNotifications).toHaveLength(0);
     });
 
-    it('should return empty array when applications have no respondCollection', () => {
-      const apps: GenericTseApplicationTypeItem[] = [
-        {
-          id: 'fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c',
-          value: {
-            applicant: Applicant.CLAIMANT,
-            type: application.CHANGE_PERSONAL_DETAILS.code,
-          },
+    it('should return notification when tribunal require user response', () => {
+      apps[0].value.respondCollection.push({
+        id: '0c28f1f0-0c2f-43bb-ae2c-e335c92a7e5c',
+        value: {
+          from: Applicant.ADMIN,
+          isResponseRequired: YesOrNo.YES,
+          selectPartyRespond: PartiesRespond.RESPONDENT,
         },
-      ];
-      const result = getAppRequestNotification(apps, req);
-      expect(result).toHaveLength(0);
+      });
+      const result = getAppNotifications(apps, req);
+      expect(result.appRequestNotifications).toHaveLength(1);
+      expect(result.appSubmitNotifications).toHaveLength(0);
+      expect(result.appRequestNotifications[0].from).toEqual("the claimant's");
+      expect(result.appRequestNotifications[0].appName).toEqual('change my personal details');
+      expect(result.appRequestNotifications[0].appUrl).toEqual(
+        '/application-details/3f2b8b62-7b36-4f29-a3c3-89e2c1a4b6f7?lng=en'
+      );
     });
 
-    it('should return empty array when no response required', () => {
-      const apps: GenericTseApplicationTypeItem[] = [
-        {
-          id: 'fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c',
-          value: {
-            type: application.CHANGE_PERSONAL_DETAILS.code,
-            respondCollection: [
-              {
-                id: '0c28f1f0-0c2f-43bb-ae2c-e335c92a7e5c',
-                value: {
-                  from: Applicant.ADMIN,
-                  isResponseRequired: YesOrNo.YES,
-                  selectPartyRespond: PartiesRespond.CLAIMANT,
-                },
-              },
-            ],
-            respondentResponseRequired: YesOrNo.NO,
-          },
+    it('should return notification when user responded to tribunal', () => {
+      apps[0].value.respondCollection.push({
+        id: 'd8a57e44-2e9c-4e25-9853-6c2a312a3e6f',
+        value: {
+          from: Applicant.RESPONDENT,
+          fromIdamId: '1234',
         },
-      ];
-      const result = getAppRequestNotification(apps, req);
-      expect(result).toHaveLength(0);
-    });
-
-    it('should return an empty array when applications is empty', () => {
-      const apps: GenericTseApplicationTypeItem[] = [];
-      const result = getAppRequestNotification(apps, req);
-      expect(result).toHaveLength(0);
-    });
-
-    it('should return empty array when applications is undefined', () => {
-      const result = getAppRequestNotification(undefined, req);
-      expect(result).toHaveLength(0);
-    });
-  });
-
-  describe('getAppNotificationFromSubmit', () => {
-    it('should return notifications for multiple applications with respondent responses required', () => {
-      const apps: GenericTseApplicationTypeItem[] = [
-        {
-          id: 'fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c',
-          value: {
-            applicant: Applicant.RESPONDENT,
-            type: application.CHANGE_PERSONAL_DETAILS.code,
-          },
-        },
-        {
-          id: '6b5fb921-0522-4700-b81f-d391ac9b6ec4',
-          value: {
-            applicant: Applicant.CLAIMANT,
-            type: application.POSTPONE_HEARING.claimant,
-          },
-        },
-      ];
-      const result = getAppNotificationFromSubmit(apps, req);
-      expect(result).toHaveLength(2);
-      expect(result[0].from).toEqual('respondent');
-      expect(result[0].appName).toEqual('change my personal details');
-      expect(result[0].appType).toEqual('B');
-      expect(result[1].from).toEqual('claimant');
-      expect(result[1].appName).toEqual('postpone a hearing');
-      expect(result[1].appType).toEqual('A');
-    });
-
-    it('should return empty array when respondent response is required', () => {
-      const apps: GenericTseApplicationTypeItem[] = [
-        {
-          id: 'fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c',
-          value: {
-            applicant: Applicant.CLAIMANT,
-            type: application.CHANGE_PERSONAL_DETAILS.code,
-            respondCollection: [
-              {
-                id: '0c28f1f0-0c2f-43bb-ae2c-e335c92a7e5c',
-                value: {
-                  from: Applicant.ADMIN,
-                  isResponseRequired: YesOrNo.YES,
-                  selectPartyRespond: PartiesRespond.RESPONDENT,
-                },
-              },
-            ],
-          },
-        },
-      ];
-      const result = getAppNotificationFromSubmit(apps, req);
-      expect(result).toHaveLength(0);
-    });
-
-    it('should return empty array when user has responded', () => {
-      const apps: GenericTseApplicationTypeItem[] = [
-        {
-          id: 'fef3d0ac-fb9d-4bf9-8d6e-497cee4c103c',
-          value: {
-            applicant: Applicant.CLAIMANT,
-            type: application.CHANGE_PERSONAL_DETAILS.code,
-            respondCollection: [
-              {
-                id: '0c28f1f0-0c2f-43bb-ae2c-e335c92a7e5c',
-                value: {
-                  from: Applicant.RESPONDENT,
-                  fromIdamId: '1234',
-                },
-              },
-            ],
-          },
-        },
-      ];
-      const result = getAppNotificationFromSubmit(apps, req);
-      expect(result).toHaveLength(0);
+      });
+      const result = getAppNotifications(apps, req);
+      expect(result.appRequestNotifications).toHaveLength(0);
+      expect(result.appSubmitNotifications).toHaveLength(0);
     });
 
     it('should return empty array when no applications are provided', () => {
-      const apps: GenericTseApplicationTypeItem[] = [];
-      const result = getAppNotificationFromSubmit(apps, req);
-      expect(result).toHaveLength(0);
+      const result = getAppNotifications([], req);
+      expect(result.appRequestNotifications).toHaveLength(0);
+      expect(result.appSubmitNotifications).toHaveLength(0);
     });
 
     it('should return empty array when applications parameter is undefined', () => {
-      const result = getAppNotificationFromSubmit(undefined, req);
-      expect(result).toHaveLength(0);
+      const result = getAppNotifications(undefined, req);
+      expect(result.appRequestNotifications).toHaveLength(0);
+      expect(result.appSubmitNotifications).toHaveLength(0);
     });
   });
 });
