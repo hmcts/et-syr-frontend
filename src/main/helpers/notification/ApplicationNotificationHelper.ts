@@ -81,9 +81,12 @@ export const getAppNotificationFromSubmit = (
   const languageParam = getLanguageParam(req.url);
 
   for (const app of apps || []) {
-    if (isNeverResponseBefore(app.value, req.session.user)) {
+    if (
+      isNeverResponseBefore(app.value, req.session.user) &&
+      !isResponseToTribunalRequired(app.value, req.session.user)
+    ) {
       items.push({
-        from: translations[app.value.applicant].toLowerCase(),
+        from: translations.notificationBanner.tseHasSubmit[app.value.applicant].toLowerCase(),
         appName: getApplicationDisplay(app.value, translations).toLowerCase(),
         appType: getAppType(app.value),
         dueDate: new Date(Date.parse(app.value.dueDate)),
