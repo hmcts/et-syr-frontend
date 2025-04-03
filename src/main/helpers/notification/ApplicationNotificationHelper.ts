@@ -4,6 +4,7 @@ import {
   GenericTseApplicationTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { PageUrls, TranslationKeys } from '../../definitions/constants';
+import { ApplicationType } from '../../definitions/contact-tribunal-applications';
 import {
   TseNotification,
   TseRequestNotification,
@@ -85,7 +86,7 @@ const getSubmitItems = (
   return {
     from: translations.notificationBanner.tseHasSubmit[app.value.applicant].toLowerCase(),
     appName: getApplicationDisplay(app.value, translations).toLowerCase(),
-    appType: getAppType(app.value),
+    isTypeB: getAppType(app.value) === ApplicationType.B,
     dueDate: new Date(Date.parse(app.value.dueDate)),
     appUrl: PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + languageParam,
   };

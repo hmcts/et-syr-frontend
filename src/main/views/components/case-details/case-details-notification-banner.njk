@@ -77,7 +77,7 @@
   {% if (loop.index <= 5) %}
     {% set htmlForAppSubmitNotifications %}
       <h3 class="govuk-notification-banner__heading">{{ notificationBanner.tseHasSubmit.p1a }} {{ app.from }} {{ notificationBanner.tseHasSubmit.p1b }} {{ app.appName }}</h3>
-      {% if app.appType === "B" %}
+      {% if app.isTypeB %}
         <p class="govuk-body">{{ notificationBanner.tseHasSubmit.p2TypeB }}</p>
       {% endif %}
       <p class="govuk-body">{{ notificationBanner.tseHasSubmit.p3a }} <b>{{ dateToLocale(app.dueDate) }}</b> {{ notificationBanner.tseHasSubmit.p3b }}</p>

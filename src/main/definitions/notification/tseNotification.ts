@@ -7,7 +7,7 @@ export interface TseRequestNotification {
 export interface TseSubmitNotification {
   from: string;
   appName: string;
-  appType: string;
+  isTypeB: boolean;
   dueDate: Date;
   appUrl: string;
 }

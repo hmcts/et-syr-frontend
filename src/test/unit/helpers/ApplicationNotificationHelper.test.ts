@@ -34,7 +34,7 @@ describe('Application Notification Helper', () => {
       expect(result.appSubmitNotifications).toHaveLength(1);
       expect(result.appSubmitNotifications[0].from).toEqual('claimant');
       expect(result.appSubmitNotifications[0].appName).toEqual('change my personal details');
-      expect(result.appSubmitNotifications[0].appType).toEqual('B');
+      expect(result.appSubmitNotifications[0].isTypeB).toEqual(true);
       expect(result.appSubmitNotifications[0].dueDate).toEqual(new Date('10 February 2025'));
       expect(result.appSubmitNotifications[0].appUrl).toEqual(
         '/application-details/3f2b8b62-7b36-4f29-a3c3-89e2c1a4b6f7?lng=en'
