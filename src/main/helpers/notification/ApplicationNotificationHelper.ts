@@ -21,6 +21,7 @@ import {
 } from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 import { isNeverResponseBefore } from '../controller/ApplicationDetailsHelper';
+import { isApplicationShare } from '../controller/ClaimantsApplicationsHelper';
 import { isYourApplication } from '../controller/YourRequestAndApplicationsHelper';
 
 /**
@@ -42,7 +43,11 @@ export const getAppNotifications = (apps: GenericTseApplicationTypeItem[], req: 
   };
   const languageParam = getLanguageParam(req.url);
 
-  for (const app of apps) {
+  const filterApps = apps.filter(
+    app => isYourApplication(app.value, req.session.user) || isApplicationShare(app.value)
+  );
+
+  for (const app of filterApps) {
     if (isResponseToTribunalRequired(app.value, req.session.user)) {
       requestNotifications.push(getRequestItems(app, req.session.user, translations, languageParam));
     } else if (isNeverResponseBefore(app.value, req.session.user)) {

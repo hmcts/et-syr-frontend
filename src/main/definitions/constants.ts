@@ -576,9 +576,10 @@ export const LoggerConstants = {
 
 export const TseErrors = {
   ERROR_PARAM_NOT_FOUND: 'Param not found: ',
-  ERROR_APPLICATION_NOT_FOUND: 'Selected application not found: ',
-  ERROR_UPDATE_LINK_STATUS: 'An error occurred while update LinkStatus',
-  ERROR_NO_RESPOND_REQUIRED: 'No respond is required for this application',
+  ERROR_APPLICATION_NOT_FOUND: 'Application not found: ',
+  ERROR_APPLICATION_NOT_SHARE: 'Application not shared: ',
+  ERROR_NO_RESPOND_REQUIRED: 'Respond not allowed for this application: ',
+  ERROR_UPDATE_LINK_STATUS: 'An error occurred while updating LinkStatus',
   ERROR_SUBMIT_APPLICATION: 'An error occurred while submitting an application',
   ERROR_RESPOND_TO_APPLICATION: 'An error occurred while responding to an application',
 } as const;

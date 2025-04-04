@@ -9,9 +9,9 @@ import {
   TseRespondTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { Applicant, PartiesNotify } from '../../definitions/constants';
-import { application } from '../../definitions/contact-tribunal-applications';
+import { ApplicationType } from '../../definitions/contact-tribunal-applications';
 import ObjectUtils from '../../utils/ObjectUtils';
-import { isApplicantClaimant } from '../GenericTseApplicationHelper';
+import { getAppType, isApplicantClaimant } from '../GenericTseApplicationHelper';
 
 import { updateAppsDisplayInfo } from './YourRequestAndApplicationsHelper';
 
@@ -68,11 +68,7 @@ export const isDecisionShareToRespondent = (decision: TseAdminDecision): boolean
  * @param app claimant's application
  */
 export const isApplicationShare = (app: GenericTseApplicationType): boolean => {
-  if (
-    app.type === application.ORDER_WITNESS_ATTEND.code ||
-    app.type === application.ORDER_WITNESS_ATTEND.claimant ||
-    app.type === application.ORDER_WITNESS_ATTEND.claimantLegalRep
-  ) {
+  if (getAppType(app) === ApplicationType.C) {
     return false;
   }
 
