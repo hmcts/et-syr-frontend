@@ -305,7 +305,7 @@ describe('Generic Tse Application Helper', () => {
         type: application.ORDER_WITNESS_ATTEND.claimant,
       };
       const result = isTypeAOrB(app);
-      expect(result).toBeUndefined();
+      expect(result).toEqual(false);
     });
 
     it('should return undefined when type is undefined', () => {
@@ -314,7 +314,7 @@ describe('Generic Tse Application Helper', () => {
         type: undefined,
       };
       const result = isTypeAOrB(app);
-      expect(result).toBeUndefined();
+      expect(result).toEqual(false);
     });
 
     it('should return undefined when applicant not match the code', () => {
@@ -323,12 +323,12 @@ describe('Generic Tse Application Helper', () => {
         type: 'Test',
       };
       const result = isTypeAOrB(app);
-      expect(result).toBeUndefined();
+      expect(result).toEqual(false);
     });
 
     it('should return undefined when application is undefined', () => {
       const result = isTypeAOrB(undefined);
-      expect(result).toBeUndefined();
+      expect(result).toEqual(false);
     });
   });
 

@@ -33,21 +33,22 @@ export const getAppNotifications = (apps: GenericTseApplicationTypeItem[], req: 
   const requestNotifications: TseRequestNotification[] = [];
   const submitNotifications: TseSubmitNotification[] = [];
 
+  const user = req.session.user;
+  const respondents = req.session.userCase?.respondents ?? [];
+  const languageParam = getLanguageParam(req.url);
+
   const translations: AnyRecord = {
     ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
     ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER, { returnObjects: true }),
   };
-  const languageParam = getLanguageParam(req.url);
 
-  const filterApps = apps?.filter(
-    app => isYourApplication(app.value, req.session.user) || isApplicationShare(app.value)
-  );
+  const visibleApps = apps?.filter(app => isYourApplication(app.value, user) || isApplicationShare(app.value));
 
-  for (const app of filterApps || []) {
-    if (isResponseToTribunalRequired(app.value, req.session.user)) {
-      requestNotifications.push(getRequestItems(app, req.session.user, translations, languageParam));
-    } else if (isNeverResponseBefore(app.value, req.session.user)) {
-      submitNotifications.push(getSubmitItems(app, translations, languageParam, req.session.userCase?.respondents));
+  for (const app of visibleApps || []) {
+    if (isResponseToTribunalRequired(app.value, user)) {
+      requestNotifications.push(getRequestItems(app, user, translations, languageParam));
+    } else if (isNeverResponseBefore(app.value, user)) {
+      submitNotifications.push(getSubmitItems(app, translations, languageParam, respondents));
     }
   }
 
@@ -61,23 +62,10 @@ const getRequestItems = (
   languageParam: string
 ): TseRequestNotification => {
   return {
-    from: getFrom(app.value, user, translations),
+    from: getFromLabel(app.value, user, translations),
     appName: getApplicationDisplay(app.value, translations).toLowerCase(),
-    appUrl: PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + languageParam,
+    appUrl: getAppUrl(app, languageParam),
   };
-};
-
-const getFrom = (app: GenericTseApplicationType, user: UserDetails, translations: AnyRecord): string => {
-  if (isApplicantClaimant(app)) {
-    return translations.notificationBanner.tseFromTribunal.theClaimant;
-  }
-  if (isYourApplication(app, user)) {
-    return translations.notificationBanner.tseFromTribunal.your;
-  }
-  if (isApplicantRespondent(app)) {
-    return translations.notificationBanner.tseFromTribunal.theRespondent;
-  }
-  return '';
 };
 
 const getSubmitItems = (
@@ -92,13 +80,30 @@ const getSubmitItems = (
     appName: getApplicationDisplay(app.value, translations).toLowerCase(),
     isTypeB: getAppType(app.value) === ApplicationType.B,
     dueDate: new Date(Date.parse(app.value.dueDate)),
-    appUrl: PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + languageParam,
+    appUrl: getAppUrl(app, languageParam),
   };
 };
 
+const getFromLabel = (app: GenericTseApplicationType, user: UserDetails, translations: AnyRecord): string => {
+  if (isApplicantClaimant(app)) {
+    return translations.notificationBanner.tseFromTribunal.theClaimant;
+  }
+  if (isYourApplication(app, user)) {
+    return translations.notificationBanner.tseFromTribunal.your;
+  }
+  if (isApplicantRespondent(app)) {
+    return translations.notificationBanner.tseFromTribunal.theRespondent;
+  }
+  return '';
+};
+
 const getFromName = (app: GenericTseApplicationType, respondents: RespondentET3Model[]): string => {
-  if (app?.applicantIdamId && app?.applicant === Applicant.RESPONDENT) {
+  if (app?.applicant === Applicant.RESPONDENT && app?.applicantIdamId) {
     return respondents.find(r => r.idamId === app.applicantIdamId)?.respondentName || '';
   }
   return '';
+};
+
+const getAppUrl = (app: GenericTseApplicationTypeItem, languageParam: string): string => {
+  return PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + languageParam;
 };
