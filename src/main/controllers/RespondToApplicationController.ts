@@ -106,7 +106,7 @@ export default class RespondToApplicationController {
       !isNeverResponseBefore(selectedApplication.value, req.session.user) &&
       !isResponseToTribunalRequired(selectedApplication.value, req.session.user)
     ) {
-      logger.error(TseErrors.ERROR_NO_RESPOND_REQUIRED);
+      logger.error(TseErrors.ERROR_NO_RESPOND_REQUIRED + req.params?.appId);
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 

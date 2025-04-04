@@ -17,6 +17,8 @@ import {
   getDecisionContent,
   isNeverResponseBefore,
 } from '../helpers/controller/ApplicationDetailsHelper';
+import { isApplicationShare } from '../helpers/controller/ClaimantsApplicationsHelper';
+import { isYourApplication } from '../helpers/controller/YourRequestAndApplicationsHelper';
 import { getLogger } from '../logger';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import { getCaseApi } from '../services/CaseService';
@@ -33,6 +35,14 @@ export default class ApplicationDetailsController {
     const selectedApplication: GenericTseApplicationTypeItem = findSelectedGenericTseApplication(req);
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.appId);
+      return res.redirect(ErrorPages.NOT_FOUND);
+    }
+
+    if (
+      !isYourApplication(selectedApplication.value, req.session.user) &&
+      !isApplicationShare(selectedApplication.value)
+    ) {
+      logger.error(TseErrors.ERROR_APPLICATION_NOT_SHARE + req.params?.appId);
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
