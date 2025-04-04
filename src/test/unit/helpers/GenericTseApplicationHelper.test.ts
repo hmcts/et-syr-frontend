@@ -175,7 +175,7 @@ describe('Generic Tse Application Helper', () => {
   });
 
   describe('getAppType', () => {
-    it('should return true when applicant is Respondent and type A', () => {
+    it('should return A when applicant is Respondent and type A', () => {
       const app: GenericTseApplicationType = {
         applicant: Applicant.RESPONDENT,
         type: application.AMEND_RESPONSE.code,
@@ -184,7 +184,7 @@ describe('Generic Tse Application Helper', () => {
       expect(result).toEqual('A');
     });
 
-    it('should return true when applicant is Respondent and type B', () => {
+    it('should return B when applicant is Respondent and type B', () => {
       const app: GenericTseApplicationType = {
         applicant: Applicant.RESPONDENT,
         type: application.CHANGE_PERSONAL_DETAILS.code,
@@ -193,7 +193,7 @@ describe('Generic Tse Application Helper', () => {
       expect(result).toEqual('B');
     });
 
-    it('should return false when applicant is Respondent and type C', () => {
+    it('should return C when applicant is Respondent and type C', () => {
       const app: GenericTseApplicationType = {
         applicant: Applicant.RESPONDENT,
         type: application.ORDER_WITNESS_ATTEND.code,
@@ -202,7 +202,7 @@ describe('Generic Tse Application Helper', () => {
       expect(result).toEqual('C');
     });
 
-    it('should return true when applicant is Claimant and type A', () => {
+    it('should return A when applicant is Claimant and type A', () => {
       const app: GenericTseApplicationType = {
         applicant: Applicant.CLAIMANT,
         type: application.AMEND_RESPONSE.claimant,
@@ -220,7 +220,7 @@ describe('Generic Tse Application Helper', () => {
       expect(result).toEqual('B');
     });
 
-    it('should return false when applicant is Claimant and type C', () => {
+    it('should return C when applicant is Claimant and type C', () => {
       const app: GenericTseApplicationType = {
         applicant: Applicant.CLAIMANT,
         type: application.ORDER_WITNESS_ATTEND.claimant,

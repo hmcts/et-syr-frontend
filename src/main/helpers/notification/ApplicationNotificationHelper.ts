@@ -1,9 +1,10 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
+import { RespondentET3Model } from '../../definitions/case';
 import {
   GenericTseApplicationType,
   GenericTseApplicationTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { PageUrls, TranslationKeys } from '../../definitions/constants';
+import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constants';
 import { ApplicationType } from '../../definitions/contact-tribunal-applications';
 import {
   TseNotification,
@@ -45,7 +46,7 @@ export const getAppNotifications = (apps: GenericTseApplicationTypeItem[], req: 
     if (isResponseToTribunalRequired(app.value, req.session.user)) {
       requestNotifications.push(getRequestItems(app, req.session.user, translations, languageParam));
     } else if (isNeverResponseBefore(app.value, req.session.user)) {
-      submitNotifications.push(getSubmitItems(app, translations, languageParam));
+      submitNotifications.push(getSubmitItems(app, translations, languageParam, req.session.userCase?.respondents));
     }
   }
 
@@ -81,13 +82,22 @@ const getFrom = (app: GenericTseApplicationType, user: UserDetails, translations
 const getSubmitItems = (
   app: GenericTseApplicationTypeItem,
   translations: AnyRecord,
-  languageParam: string
+  languageParam: string,
+  respondents: RespondentET3Model[]
 ): TseSubmitNotification => {
   return {
     from: translations.notificationBanner.tseHasSubmit[app.value.applicant].toLowerCase(),
+    fromName: getFromName(app.value, respondents),
     appName: getApplicationDisplay(app.value, translations).toLowerCase(),
     isTypeB: getAppType(app.value) === ApplicationType.B,
     dueDate: new Date(Date.parse(app.value.dueDate)),
     appUrl: PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + languageParam,
   };
+};
+
+const getFromName = (app: GenericTseApplicationType, respondents: RespondentET3Model[]): string => {
+  if (app?.applicantIdamId && app?.applicant === Applicant.RESPONDENT) {
+    return respondents.find(r => r.idamId === app.applicantIdamId)?.respondentName || '';
+  }
+  return '';
 };
