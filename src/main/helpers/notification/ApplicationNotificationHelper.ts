@@ -30,10 +30,6 @@ import { isYourApplication } from '../controller/YourRequestAndApplicationsHelpe
  * @param req
  */
 export const getAppNotifications = (apps: GenericTseApplicationTypeItem[], req: AppRequest): TseNotification => {
-  if (!apps) {
-    return { appRequestNotifications: [], appSubmitNotifications: [] };
-  }
-
   const requestNotifications: TseRequestNotification[] = [];
   const submitNotifications: TseSubmitNotification[] = [];
 
@@ -43,11 +39,11 @@ export const getAppNotifications = (apps: GenericTseApplicationTypeItem[], req: 
   };
   const languageParam = getLanguageParam(req.url);
 
-  const filterApps = apps.filter(
+  const filterApps = apps?.filter(
     app => isYourApplication(app.value, req.session.user) || isApplicationShare(app.value)
   );
 
-  for (const app of filterApps) {
+  for (const app of filterApps || []) {
     if (isResponseToTribunalRequired(app.value, req.session.user)) {
       requestNotifications.push(getRequestItems(app, req.session.user, translations, languageParam));
     } else if (isNeverResponseBefore(app.value, req.session.user)) {
