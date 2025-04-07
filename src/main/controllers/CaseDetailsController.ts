@@ -28,30 +28,29 @@ import ET3Util from '../utils/ET3Util';
 const DAYS_FOR_PROCESSING = 7;
 export default class CaseDetailsController {
   public async get(req: AppRequest, res: Response): Promise<void> {
-    const et1FormUrl = setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM);
-    const respondToClaimUrl = setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_LANDING);
-    const et3Response = setUrlLanguage(req, PageUrls.YOUR_RESPONSE_FORM);
-    let respondentResponseDeadline: string = '';
     req.session.userCase = formatApiCaseDataToCaseWithId(
       (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseSubmissionReference)).data,
       req
     );
     req.session.selectedRespondentIndex = ET3Util.findSelectedRespondentIndex(req);
+
     if (CollectionUtils.isNotEmpty(req.session.errors)) {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CASE_LIST)));
     }
+
     const selectedRespondent: RespondentET3Model =
       req.session.userCase.respondents[req.session.selectedRespondentIndex];
     ET3DataModelUtil.setSelectedRespondentDataToCaseWithId(req);
+
     if (CollectionUtils.isNotEmpty(req.session.errors)) {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CASE_LIST)));
     }
-    respondentResponseDeadline = ET3DataModelUtil.getRespondentResponseDeadline(req);
-    const currentState = currentET3StatusFn(selectedRespondent);
+
     const et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses = await getET3CaseDetailsLinkNames(
       selectedRespondent.et3CaseDetailsLinksStatuses,
       req
     );
+
     const languageParam = getLanguageParam(req.url);
     const sections = Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
       return {
@@ -71,6 +70,7 @@ export default class CaseDetailsController {
         }),
       };
     });
+
     const appNotifications: TseNotification = getAppNotifications(
       req.session.userCase.genericTseApplicationCollection,
       req
@@ -83,19 +83,19 @@ export default class CaseDetailsController {
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,
       userCase: req.session.userCase,
-      currentState,
+      currentState: currentET3StatusFn(selectedRespondent),
       sections,
-      et1FormUrl,
-      respondToClaimUrl,
+      et1FormUrl: setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM),
+      respondToClaimUrl: setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_LANDING),
       selectedRespondent: req.session.userCase.respondents[req.session.selectedRespondentIndex],
-      et3Response,
+      et3Response: setUrlLanguage(req, PageUrls.YOUR_RESPONSE_FORM),
       hideContactUs: true,
       processingDueDate: getDueDate(formatDate(req.session.userCase.submittedDate), DAYS_FOR_PROCESSING),
       showAcknowledgementAlert:
         et3CaseDetailsLinksStatuses[ET3CaseDetailsLinkNames.RespondentResponse] === LinkStatus.NOT_STARTED_YET,
       showSavedResponseAlert: req.session.userCase.et3Status === ET3Status.IN_PROGRESS,
       showViewResponseAlert: req.session.userCase.responseReceived === YesOrNo.YES,
-      respondentResponseDeadline,
+      respondentResponseDeadline: ET3DataModelUtil.getRespondentResponseDeadline(req),
       appRequestNotifications: appNotifications.appRequestNotifications,
       appSubmitNotifications: appNotifications.appSubmitNotifications,
       languageParam: getLanguageParam(req.url),
