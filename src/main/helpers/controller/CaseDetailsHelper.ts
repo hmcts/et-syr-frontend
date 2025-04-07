@@ -35,10 +35,16 @@ export const getET3CaseDetailsLinkNames = async (
 ): Promise<ET3CaseDetailsLinksStatuses> => {
   const apps = req.session?.userCase?.genericTseApplicationCollection;
   await updateApplicationsStatusIfNotExist(apps, req);
-  updateClaimantContactDetails(statuses, req.session.userCase);
-  updateYourRequestsAndApplications(statuses, apps, req.session.user);
-  updateClaimantAppsLinkStatus(statuses, apps, req.session.user);
-  updateOtherRespondentAppsLinkStatus(statuses, apps, req.session.user);
+  statuses[ET3CaseDetailsLinkNames.ClaimantContactDetails] = getClaimantContactDetails(req.session.userCase);
+  statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(
+    apps,
+    req.session.user
+  );
+  statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getClaimantAppsLinkStatus(apps, req.session.user);
+  statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = getOtherRespondentAppsLinkStatus(
+    apps,
+    req.session.user
+  );
   return statuses;
 };
 
@@ -55,36 +61,23 @@ const updateApplicationsStatusIfNotExist = async (
   }
 };
 
-const updateClaimantContactDetails = (statuses: ET3CaseDetailsLinksStatuses, userCase: CaseWithId): void => {
-  statuses[ET3CaseDetailsLinkNames.ClaimantContactDetails] =
-    userCase?.state === CaseState.ACCEPTED ? LinkStatus.READY_TO_VIEW : LinkStatus.NOT_YET_AVAILABLE;
+const getClaimantContactDetails = (userCase: CaseWithId): LinkStatus => {
+  return userCase?.state === CaseState.ACCEPTED ? LinkStatus.READY_TO_VIEW : LinkStatus.NOT_YET_AVAILABLE;
 };
 
-const updateYourRequestsAndApplications = (
-  statuses: ET3CaseDetailsLinksStatuses,
-  allApps: GenericTseApplicationTypeItem[],
-  user: UserDetails
-): void => {
+const getYourRequestsAndApplications = (allApps: GenericTseApplicationTypeItem[], user: UserDetails): LinkStatus => {
   const apps = allApps?.filter(app => isYourApplication(app.value, user)) || [];
-  statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getLinkStatus(apps, user, true);
+  return getLinkStatus(apps, user, true);
 };
 
-const updateClaimantAppsLinkStatus = (
-  statuses: ET3CaseDetailsLinksStatuses,
-  allApps: GenericTseApplicationTypeItem[],
-  user: UserDetails
-): void => {
+const getClaimantAppsLinkStatus = (allApps: GenericTseApplicationTypeItem[], user: UserDetails): LinkStatus => {
   const apps = allApps?.filter(app => isClaimantApplicationShare(app.value)) || [];
-  statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getLinkStatus(apps, user, false);
+  return getLinkStatus(apps, user, false);
 };
 
-const updateOtherRespondentAppsLinkStatus = (
-  statuses: ET3CaseDetailsLinksStatuses,
-  allApps: GenericTseApplicationTypeItem[],
-  user: UserDetails
-): void => {
+const getOtherRespondentAppsLinkStatus = (allApps: GenericTseApplicationTypeItem[], user: UserDetails): LinkStatus => {
   const apps = allApps?.filter(app => isOtherRespApplicationShare(app.value, user)) || [];
-  statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = getLinkStatus(apps, user, false);
+  return getLinkStatus(apps, user, false);
 };
 
 const getLinkStatus = (apps: GenericTseApplicationTypeItem[], user: UserDetails, isYours: boolean): LinkStatus => {
