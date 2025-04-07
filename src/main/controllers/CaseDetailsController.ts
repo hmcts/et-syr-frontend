@@ -4,20 +4,12 @@ import { AppRequest } from '../definitions/appRequest';
 import { RespondentET3Model, YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { ET3Status } from '../definitions/definition';
-import {
-  ET3CaseDetailsLinkNames,
-  ET3CaseDetailsLinksStatuses,
-  LinkStatus,
-  SectionIndexToEt3CaseDetailsLinkNames,
-  linkStatusColorMap,
-} from '../definitions/links';
+import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../definitions/links';
 import { TseNotification } from '../definitions/notification/tseNotification';
-import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
-import { getET3CaseDetailsLinkNames } from '../helpers/controller/CaseDetailsHelper';
+import { getET3CaseDetailsLinkNames, getSections } from '../helpers/controller/CaseDetailsHelper';
 import { getAppNotifications } from '../helpers/notification/ApplicationNotificationHelper';
 import { currentET3StatusFn } from '../helpers/state-sequence';
 import { getCaseApi } from '../services/CaseService';
@@ -51,25 +43,7 @@ export default class CaseDetailsController {
       req
     );
 
-    const languageParam = getLanguageParam(req.url);
-    const sections = Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
-      return {
-        title: (l: AnyRecord): string => l[`section${index + 1}`],
-        links: SectionIndexToEt3CaseDetailsLinkNames[index].map(linkName => {
-          const status = et3CaseDetailsLinksStatuses[linkName];
-          return {
-            linkTxt: (l: AnyRecord): string => l[linkName],
-            status: (l: AnyRecord): string => l[status],
-            shouldShow: shouldCaseDetailsLinkBeClickable(status),
-            url: () =>
-              getET3CaseDetailsLinksUrlMap(languageParam, selectedRespondent.et3Status, req.session.userCase).get(
-                linkName
-              ),
-            statusColor: () => linkStatusColorMap.get(status),
-          };
-        }),
-      };
-    });
+    const sections = getSections(et3CaseDetailsLinksStatuses, selectedRespondent, req);
 
     const appNotifications: TseNotification = getAppNotifications(
       req.session.userCase.genericTseApplicationCollection,
