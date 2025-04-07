@@ -2,6 +2,7 @@ import { AppRequest, UserDetails } from '../../definitions/appRequest';
 import { CaseWithId, RespondentET3Model } from '../../definitions/case';
 import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { TranslationKeys } from '../../definitions/constants';
+import { CaseState } from '../../definitions/definition';
 import {
   ET3CaseDetailsLinkNames,
   ET3CaseDetailsLinksStatuses,
@@ -34,6 +35,7 @@ export const getET3CaseDetailsLinkNames = async (
 ): Promise<ET3CaseDetailsLinksStatuses> => {
   const apps = req.session?.userCase?.genericTseApplicationCollection;
   await updateApplicationsStatusIfNotExist(apps, req);
+  updateClaimantContactDetails(statuses, req.session.userCase);
   updateYourRequestsAndApplications(statuses, apps, req.session.user);
   updateClaimantAppsLinkStatus(statuses, apps, req.session.user);
   updateOtherRespondentAppsLinkStatus(statuses, apps, req.session.user);
@@ -51,6 +53,11 @@ const updateApplicationsStatusIfNotExist = async (
     const newState: LinkStatus = getApplicationStateIfNotExist(app.value, req.session.user);
     await getCaseApi(req.session.user?.accessToken).changeApplicationStatus(req, app, newState);
   }
+};
+
+const updateClaimantContactDetails = (statuses: ET3CaseDetailsLinksStatuses, userCase: CaseWithId): void => {
+  statuses[ET3CaseDetailsLinkNames.ClaimantContactDetails] =
+    userCase?.state === CaseState.ACCEPTED ? LinkStatus.READY_TO_VIEW : LinkStatus.NOT_YET_AVAILABLE;
 };
 
 const updateYourRequestsAndApplications = (
