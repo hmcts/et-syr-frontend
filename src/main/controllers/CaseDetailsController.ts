@@ -11,13 +11,14 @@ import {
   SectionIndexToEt3CaseDetailsLinkNames,
   linkStatusColorMap,
 } from '../definitions/links';
+import { TseNotification } from '../definitions/notification/tseNotification';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import { getET3CaseDetailsLinkNames } from '../helpers/controller/CaseDetailsHelper';
-import { getAppNotificationFromAdmin } from '../helpers/notification/ApplicationNotificationHelper';
+import { getAppNotifications } from '../helpers/notification/ApplicationNotificationHelper';
 import { currentET3StatusFn } from '../helpers/state-sequence';
 import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -70,6 +71,10 @@ export default class CaseDetailsController {
         }),
       };
     });
+    const appNotifications: TseNotification = getAppNotifications(
+      req.session.userCase.genericTseApplicationCollection,
+      req
+    );
 
     res.render(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
@@ -91,7 +96,8 @@ export default class CaseDetailsController {
       showSavedResponseAlert: req.session.userCase.et3Status === ET3Status.IN_PROGRESS,
       showViewResponseAlert: req.session.userCase.responseReceived === YesOrNo.YES,
       respondentResponseDeadline,
-      appNotifications: getAppNotificationFromAdmin(req.session.userCase.genericTseApplicationCollection, req),
+      appRequestNotifications: appNotifications.appRequestNotifications,
+      appSubmitNotifications: appNotifications.appSubmitNotifications,
       languageParam: getLanguageParam(req.url),
     });
   }

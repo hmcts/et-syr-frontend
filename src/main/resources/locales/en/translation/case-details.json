@@ -51,11 +51,26 @@
       "link": "View the claim rejection",
       "p1": "The tribunal will close your claim."
     },
-    "application": {
-      "p1": "The tribunal has responded to ",
-      "p2": " application to ",
-      "mustRespond": "You must respond to this.",
-      "respondToTribunal": "Respond to the tribunal"
+    "tseFromTribunal": {
+      "p1a": "The tribunal has responded to",
+      "your": "your",
+      "theClaimant": "the claimant's",
+      "theRespondent": "the respondent's",
+      "p1b": "application to",
+      "p2": "You must respond to this.",
+      "linkText": "Respond to the tribunal"
+    },
+    "tseHasSubmit": {
+      "p1a": "The",
+      "Respondent": "Respondent",
+      "Claimant": "Claimant",
+      "Respondent Representative": "Respondent Representative",
+      "Claimant Representative": "Claimant Representative",
+      "p1b": "has applied to",
+      "p2TypeB": "You do not need to respond to this application.",
+      "p3a": "If you have any objections or responses to their application you must send them to the tribunal as soon as possible and by",
+      "p3b": "at the latest.",
+      "linkText": "Respond to the application"
     }
   },
   "multiples": {
@@ -66,22 +81,5 @@
     "stayed": "Your individual claim is stayed. The group claim will progress. You will be notified of the progress of the group claim.",
     "nonLead": "You will be notified of the progress of the group claim.",
     "viewClaim": "View the group claim"
-  },
-  "Change personal details": "change personal details",
-  "Claimant not complied": "tell the tribunal the claimant has not complied",
-  "Consider a decision afresh": "consider a decision afresh",
-  "Contact the tribunal": "contact the tribunal",
-  "Order other party": "order other party",
-  "Order a witness to attend to give evidence": "order a witness to attend to give evidence",
-  "Postpone a hearing": "postpone a hearing",
-  "Reconsider judgement": "reconsider judgement",
-  "Restrict publicity": "restrict publicity",
-  "Strike out all or part of a claim": "strike out all or part of a claim",
-  "Vary or revoke an order": "vary or revoke an order",
-  "Withdraw all/part of claim": "withdraw all/part of claim",
-  "withdraw": "withdraw all/part of claim",
-  "Amend response": "amend response",
-  "your": "your",
-  "theClaimant": "the claimant's",
-  "theRespondent": "the respondent's"
+  }
 }
