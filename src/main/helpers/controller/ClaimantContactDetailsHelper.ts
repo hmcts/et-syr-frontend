@@ -29,13 +29,13 @@ const getClaimantLegalRepInfo = (userCase: CaseWithId, translations: AnyRecord):
 
   const address = rep.representative_address;
   const addressString = answersAddressFormatter(
-    address.AddressLine1,
-    address.AddressLine2,
-    address.AddressLine3,
-    address.PostTown,
-    address.County,
-    address.PostCode,
-    address.Country
+    address?.AddressLine1,
+    address?.AddressLine2,
+    address?.AddressLine3,
+    address?.PostTown,
+    address?.County,
+    address?.PostCode,
+    address?.Country
   );
   details.push(addSummaryRow(translations.address, addressString));
 
