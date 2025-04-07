@@ -61,16 +61,16 @@
       "linkText": "Ymateb i'r tribiwnlys"
     },
     "tseHasSubmit": {
-      "p1a": "The",
+      "p1a": "Mae'r",
       "Respondent": "Atebydd",
       "Claimant": "Hawlydd",
       "Respondent Representative": "Cynrychiolydd yr Atebydd",
       "Claimant Representative": "Cynrychiolydd yr Hawlydd",
-      "p1b": "has applied to",
-      "p2TypeB": "You do not need to respond to this application.",
-      "p3a": "If you have any objections or responses to their application you must send them to the tribunal as soon as possible and by",
-      "p3b": "at the latest.",
-      "linkText": "Respond to the application"
+      "p1b": "wedi gwneud cais i",
+      "p2TypeB": "Nid oes arnoch angen ymateb i’r cais hwn.",
+      "p3a": "Os oes gennych unrhyw wrthwynebiadau neu ymatebion i’w cais, rhaid i chi eu hanfon i’r tribiwnlys cyn gynted â phosibl ac erbyn ",
+      "p3b": "fan bellaf.",
+      "linkText": "Ymateb i’r cais"
     }
   },
   "multiples": {
