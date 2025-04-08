@@ -50,7 +50,7 @@ export const isClaimantSystemUser = (userCase: CaseWithId): boolean => {
   return false;
 };
 
-export const isClaimantRepresentedWithMyHMCTSCase = (userCase: CaseWithId): boolean => {
+const isClaimantRepresentedWithMyHMCTSCase = (userCase: CaseWithId): boolean => {
   return (
     MY_HMCTS === userCase.caseSource &&
     YES === userCase.claimantRepresentedQuestion &&

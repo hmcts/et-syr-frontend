@@ -20,7 +20,6 @@ describe('Claimant Contact Details Helper', () => {
         addressPostcode: 'W1A 1AA',
         addressCountry: 'UK',
         email: 'john@example.com',
-        claimantRepresentedQuestion: 'No',
       } as CaseWithId;
 
       const req = mockRequestWithTranslation({ session: { userCase } }, translations);
@@ -37,16 +36,11 @@ describe('Claimant Contact Details Helper', () => {
 
     it('should return legal rep details when user is represented with MyHMCTS', () => {
       const userCase: CaseWithId = {
-        caseSource: 'MyHMCTS',
         claimantRepresentedQuestion: YesOrNo.YES,
         representativeClaimantType: {
           name_of_representative: 'Jane Lawyer',
           name_of_organisation: 'Law Co',
           representative_email_address: 'jane@lawco.com',
-          myHmctsOrganisation: {
-            organisationID: 'orgId',
-            organisationName: 'orgName',
-          },
           representative_address: {
             AddressLine1: '456 Court Rd',
             AddressLine2: '',
