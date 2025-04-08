@@ -1,9 +1,9 @@
 {
-  "title": "[W]Claimant contact details",
-  "claimant": "[W]Claimant",
-  "legalRepresentativesName": "[W]Legal representative’s name",
-  "legalRepsOrganisation": "[W]Legal rep’s organisation",
-  "name": "[W]Name",
-  "address": "[W]Address",
-  "email": "[W]Email"
+  "title": "Manylion cyswllt yr hawlydd",
+  "claimant": "Hawlydd",
+  "legalRepresentativesName": "Enw’r cynrychiolydd cyfreithiol",
+  "legalRepsOrganisation": "Sefydliad y cynrychiolydd cyfreithiol",
+  "name": "Enw",
+  "address": "Cyfeiriad",
+  "email": "E-bost"
 }
