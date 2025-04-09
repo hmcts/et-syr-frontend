@@ -34,7 +34,7 @@ describe('Claimant Contact Details Helper', () => {
       expect(result[2].value.text).toBe('john@example.com');
     });
 
-    it('should return legal rep details when user is represented with MyHMCTS', () => {
+    it('should return legal rep details when user is represented', () => {
       const userCase: CaseWithId = {
         claimantRepresentedQuestion: YesOrNo.YES,
         representativeClaimantType: {
