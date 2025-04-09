@@ -10,7 +10,7 @@ describe('Claimant Contact Details Helper', () => {
       ...claimantContactDetailsJson,
     };
 
-    it('should return claimant details when user is not represented', () => {
+    it('should return claimant details when claimant is not represented', () => {
       const userCase: CaseWithId = {
         firstName: 'John',
         lastName: 'Doe',
@@ -34,7 +34,7 @@ describe('Claimant Contact Details Helper', () => {
       expect(result[2].value.text).toBe('john@example.com');
     });
 
-    it('should return legal rep details when user is represented', () => {
+    it('should return legal rep details when claimant is represented', () => {
       const userCase: CaseWithId = {
         claimantRepresentedQuestion: YesOrNo.YES,
         representativeClaimantType: {
