@@ -19,6 +19,7 @@ import {
   getDecisionContent,
   isNeverResponseBefore,
 } from '../helpers/controller/ApplicationDetailsHelper';
+import { isClaimantSystemUser } from '../helpers/controller/ContactTribunalHelper';
 import { getFormDataError } from '../helpers/controller/RespondToApplicationHelper';
 import { getLogger } from '../logger';
 import UrlUtils from '../utils/UrlUtils';
@@ -96,6 +97,10 @@ export default class RespondToApplicationController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    if (!isClaimantSystemUser(req.session.userCase)) {
+      return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
+    }
+
     const selectedApplication: GenericTseApplicationTypeItem = findSelectedGenericTseApplication(req);
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.appId);

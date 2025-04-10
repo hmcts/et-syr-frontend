@@ -1,6 +1,13 @@
 import RespondToApplicationController from '../../../main/controllers/RespondToApplicationController';
 import { YesOrNo } from '../../../main/definitions/case';
-import { Applicant, ErrorPages, PageUrls, PartiesRespond, TranslationKeys } from '../../../main/definitions/constants';
+import {
+  Applicant,
+  ErrorPages,
+  PageUrls,
+  PartiesRespond,
+  TranslationKeys,
+  languages,
+} from '../../../main/definitions/constants';
 import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
 import commonJson from '../../../main/resources/locales/en/translation/common.json';
 import { mockGenericTseCollection } from '../mocks/mockGenericTseCollection';
@@ -16,6 +23,7 @@ describe('Respond to Application Controller', () => {
   beforeEach(() => {
     controller = new RespondToApplicationController();
     request = mockRequestWithTranslation({}, translationJsons);
+    request.session.userCase.et1OnlineSubmission = 'Yes';
     response = mockResponse();
   });
 
@@ -48,6 +56,7 @@ describe('Respond to Application Controller', () => {
       request.params.appId = undefined;
       controller.get(request, response);
       expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+      expect(response.render).not.toHaveBeenCalled();
     });
 
     it('should redirect to NOT_FOUND page if application undefined', () => {
@@ -55,13 +64,14 @@ describe('Respond to Application Controller', () => {
       request.params.appId = '5d0118c9-bdd6-4d32-9131-6aa6f5ec718e';
       controller.get(request, response);
       expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+      expect(response.render).not.toHaveBeenCalled();
     });
 
-    it('should redirect to NOT_FOUND page if userCase undefined', () => {
-      request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
-      request.session.userCase = undefined;
+    it('should redirect to holding page if claimant is not represented', async () => {
+      request.session.userCase.et1OnlineSubmission = undefined;
       controller.get(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.HOLDING_PAGE + languages.ENGLISH_URL_PARAMETER);
+      expect(response.render).not.toHaveBeenCalled();
     });
   });
 
