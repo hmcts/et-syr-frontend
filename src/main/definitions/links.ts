@@ -25,7 +25,7 @@ export class ET3CaseDetailsLinksStatuses {
       } else if (name === ET3CaseDetailsLinkNames.ET1ClaimForm) {
         this[name] = LinkStatus.NOT_VIEWED;
       } else if (name === ET3CaseDetailsLinkNames.ClaimantContactDetails) {
-        this[name] = LinkStatus.NOT_YET_AVAILABLE;
+        this[name] = LinkStatus.READY_TO_VIEW;
       } else if (name === ET3CaseDetailsLinkNames.RespondentResponse) {
         this[name] = LinkStatus.NOT_STARTED_YET;
       } else if (name === ET3CaseDetailsLinkNames.HearingDetails) {
