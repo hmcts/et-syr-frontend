@@ -1,8 +1,19 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
+import { CaseWithId, RespondentET3Model } from '../../definitions/case';
 import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../../definitions/links';
+import { TranslationKeys } from '../../definitions/constants';
+import {
+  ET3CaseDetailsLinkNames,
+  ET3CaseDetailsLinksStatuses,
+  LinkStatus,
+  SectionIndexToEt3CaseDetailsLinkNames,
+  linkStatusColorMap,
+} from '../../definitions/links';
+import { AnyRecord } from '../../definitions/util-types';
 import { getCaseApi } from '../../services/CaseService';
 import { getApplicationStateIfNotExist } from '../ApplicationStateHelper';
+import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../ResponseHubHelper';
+import { getLanguageParam } from '../RouterHelpers';
 
 import { isClaimantApplicationShare } from './ClaimantsApplicationsHelper';
 import { isOtherRespApplicationShare } from './OtherRespondentApplicationsHelper';
@@ -23,9 +34,16 @@ export const getET3CaseDetailsLinkNames = async (
 ): Promise<ET3CaseDetailsLinksStatuses> => {
   const apps = req.session?.userCase?.genericTseApplicationCollection;
   await updateApplicationsStatusIfNotExist(apps, req);
-  updateYourRequestsAndApplications(statuses, apps, req.session.user);
-  updateClaimantAppsLinkStatus(statuses, apps, req.session.user);
-  updateOtherRespondentAppsLinkStatus(statuses, apps, req.session.user);
+  statuses[ET3CaseDetailsLinkNames.ClaimantContactDetails] = LinkStatus.READY_TO_VIEW;
+  statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(
+    apps,
+    req.session.user
+  );
+  statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getClaimantAppsLinkStatus(apps, req.session.user);
+  statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = getOtherRespondentAppsLinkStatus(
+    apps,
+    req.session.user
+  );
   return statuses;
 };
 
@@ -42,31 +60,19 @@ const updateApplicationsStatusIfNotExist = async (
   }
 };
 
-const updateYourRequestsAndApplications = (
-  statuses: ET3CaseDetailsLinksStatuses,
-  allApps: GenericTseApplicationTypeItem[],
-  user: UserDetails
-): void => {
+const getYourRequestsAndApplications = (allApps: GenericTseApplicationTypeItem[], user: UserDetails): LinkStatus => {
   const apps = allApps?.filter(app => isYourApplication(app.value, user)) || [];
-  statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getLinkStatus(apps, user, true);
+  return getLinkStatus(apps, user, true);
 };
 
-const updateClaimantAppsLinkStatus = (
-  statuses: ET3CaseDetailsLinksStatuses,
-  allApps: GenericTseApplicationTypeItem[],
-  user: UserDetails
-): void => {
+const getClaimantAppsLinkStatus = (allApps: GenericTseApplicationTypeItem[], user: UserDetails): LinkStatus => {
   const apps = allApps?.filter(app => isClaimantApplicationShare(app.value)) || [];
-  statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getLinkStatus(apps, user, false);
+  return getLinkStatus(apps, user, false);
 };
 
-const updateOtherRespondentAppsLinkStatus = (
-  statuses: ET3CaseDetailsLinksStatuses,
-  allApps: GenericTseApplicationTypeItem[],
-  user: UserDetails
-): void => {
+const getOtherRespondentAppsLinkStatus = (allApps: GenericTseApplicationTypeItem[], user: UserDetails): LinkStatus => {
   const apps = allApps?.filter(app => isOtherRespApplicationShare(app.value, user)) || [];
-  statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = getLinkStatus(apps, user, false);
+  return getLinkStatus(apps, user, false);
 };
 
 const getLinkStatus = (apps: GenericTseApplicationTypeItem[], user: UserDetails, isYours: boolean): LinkStatus => {
@@ -94,3 +100,73 @@ const getUserApplicationStates = (apps: GenericTseApplicationTypeItem[], user: U
     ) || []
   );
 };
+
+interface SectionLink {
+  linkTxt: string;
+  status: string;
+  shouldShow: boolean;
+  url: string;
+  statusColor: string;
+}
+
+interface Section {
+  title: string;
+  links: SectionLink[];
+}
+
+function getSectionLink(
+  translations: AnyRecord,
+  linkName: ET3CaseDetailsLinkNames,
+  status: LinkStatus,
+  languageParam: string,
+  selectedRespondent: RespondentET3Model,
+  userCase: CaseWithId
+): SectionLink {
+  return {
+    linkTxt: translations[linkName],
+    status: translations[status],
+    shouldShow: shouldCaseDetailsLinkBeClickable(status),
+    url: getET3CaseDetailsLinksUrlMap(languageParam, selectedRespondent.et3Status, userCase).get(linkName),
+    statusColor: linkStatusColorMap.get(status),
+  };
+}
+
+function getSection(
+  translations: AnyRecord,
+  index: number,
+  et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses,
+  languageParam: string,
+  selectedRespondent: RespondentET3Model,
+  userCase: CaseWithId
+): Section {
+  return {
+    title: translations[`section${index + 1}`],
+    links: SectionIndexToEt3CaseDetailsLinkNames[index].map(linkName => {
+      const status = et3CaseDetailsLinksStatuses[linkName];
+      return getSectionLink(translations, linkName, status, languageParam, selectedRespondent, userCase);
+    }),
+  };
+}
+
+export function getSections(
+  et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses,
+  selectedRespondent: RespondentET3Model,
+  req: AppRequest
+): Section[] {
+  const languageParam = getLanguageParam(req.url);
+  const translations: AnyRecord = {
+    ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
+    ...req.t(TranslationKeys.CASE_DETAILS_STATUS as never, { returnObjects: true } as never),
+    ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER as never, { returnObjects: true } as never),
+  };
+  return Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
+    return getSection(
+      translations,
+      index,
+      et3CaseDetailsLinksStatuses,
+      languageParam,
+      selectedRespondent,
+      req.session.userCase
+    );
+  });
+}
