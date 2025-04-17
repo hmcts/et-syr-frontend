@@ -22,6 +22,8 @@
   "section2": {
     "header": "Fformat y gwrandawiad a manylion y cyflogwr",
     "participateInHearings": "A fyddech chi’n gallu cymryd rhan mewn gwrandawiadau drwy fideo a dros y ffôn? (dewisol)",
+    "hearingPanelPreference": "[W]How do you prefer to have your case heard? (Optional)",
+    "hearingPanelPreferenceReason": "[W]Give reason",
     "explainReason": "Eglurwch pam na allwch gymryd rhan mewn gwrandawiadau fideo neu wrandawiadau dros y ffôn",
     "disabilitySupport": "A oes gennych anabledd corfforol, meddyliol neu addysgol neu gyflwr iechyd sy’n golygu bod angen cymorth arnoch yn ystod eich achos? (dewisol)",
     "disabilitySupportNotSure": "Nid wyf yn siŵr ar hyn o bryd",
