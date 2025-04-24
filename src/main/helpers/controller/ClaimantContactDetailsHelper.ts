@@ -1,10 +1,14 @@
 import { AppRequest } from '../../definitions/appRequest';
-import { CaseWithId } from '../../definitions/case';
+import { CaseWithId, EmailOrPost } from '../../definitions/case';
 import { TranslationKeys, YES } from '../../definitions/constants';
 import { SummaryListRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import { answersAddressFormatter } from '../AddressHelper';
 
+/**
+ * Get claimant contact details
+ * @param req request
+ */
 export const getClaimantContactDetails = (req: AppRequest): SummaryListRow[] => {
   const userCase = req.session?.userCase;
   const translations: AnyRecord = {
@@ -25,9 +29,11 @@ const getClaimantLegalRepInfo = (userCase: CaseWithId, translations: AnyRecord):
   const details: SummaryListRow[] = [];
   const rep = userCase.representativeClaimantType;
 
-  details.push(addSummaryRow(translations.legalRepresentativesName, rep.name_of_representative || ''));
+  details.push(
+    addSummaryRow(translations.legalRepresentativesName, rep.name_of_representative || translations.notProvided)
+  );
 
-  details.push(addSummaryRow(translations.legalRepsOrganisation, rep.name_of_organisation || ''));
+  details.push(addSummaryRow(translations.legalRepsOrganisation, rep.name_of_organisation || translations.notProvided));
 
   const address = rep.representative_address;
   const addressString = answersAddressFormatter(
@@ -41,7 +47,12 @@ const getClaimantLegalRepInfo = (userCase: CaseWithId, translations: AnyRecord):
   );
   details.push(addSummaryRow(translations.address, addressString));
 
-  details.push(addSummaryRow(translations.email, rep.representative_email_address || ''));
+  details.push(addSummaryRow(translations.email, rep.representative_email_address || translations.notProvided));
+
+  if (rep.representative_preference) {
+    const preference = rep.representative_preference === EmailOrPost.EMAIL ? translations.email : translations.post;
+    details.push(addSummaryRow(translations.preferredMethod, preference));
+  }
 
   return details;
 };
@@ -60,7 +71,13 @@ const getClaimantInfo = (userCase: CaseWithId, translations: AnyRecord): Summary
   );
   details.push(addSummaryRow(translations.address, addressString));
 
-  details.push(addSummaryRow(translations.email, userCase.email || ''));
+  details.push(addSummaryRow(translations.email, userCase.email || translations.notProvided));
+
+  if (userCase.claimantContactPreference) {
+    const preference =
+      userCase.claimantContactPreference === EmailOrPost.EMAIL ? translations.email : translations.post;
+    details.push(addSummaryRow(translations.preferredMethod, preference));
+  }
 
   return details;
 };

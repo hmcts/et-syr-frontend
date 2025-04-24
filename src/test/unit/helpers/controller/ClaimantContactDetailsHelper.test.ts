@@ -1,4 +1,4 @@
-import { CaseWithId, YesOrNo } from '../../../../main/definitions/case';
+import { CaseWithId, EmailOrPost, YesOrNo } from '../../../../main/definitions/case';
 import { AnyRecord } from '../../../../main/definitions/util-types';
 import { getClaimantContactDetails } from '../../../../main/helpers/controller/ClaimantContactDetailsHelper';
 import claimantContactDetailsJson from '../../../../main/resources/locales/en/translation/claimant-contact-details.json';
@@ -20,18 +20,21 @@ describe('Claimant Contact Details Helper', () => {
         addressPostcode: 'W1A 1AA',
         addressCountry: 'UK',
         email: 'john@example.com',
+        claimantContactPreference: EmailOrPost.EMAIL,
       } as CaseWithId;
 
       const req = mockRequestWithTranslation({ session: { userCase } }, translations);
 
       const result = getClaimantContactDetails(req);
-      expect(result).toHaveLength(3);
+      expect(result).toHaveLength(4);
       expect(result[0].key.text).toBe('Name');
       expect(result[0].value.text).toBe('John Doe');
       expect(result[1].key.text).toBe('Address');
       expect(result[1].value.text).toBe('123 Street, Apt 1, London, W1A 1AA, UK');
       expect(result[2].key.text).toBe('Email');
       expect(result[2].value.text).toBe('john@example.com');
+      expect(result[3].key.text).toBe('Preferred method of contact');
+      expect(result[3].value.text).toBe('Email');
     });
 
     it('should return legal rep details when claimant is represented', () => {
@@ -50,13 +53,14 @@ describe('Claimant Contact Details Helper', () => {
             PostCode: 'M1 2AB',
             Country: 'UK',
           },
+          representative_preference: 'Post',
         },
       } as CaseWithId;
 
       const req = mockRequestWithTranslation({ session: { userCase } }, translations);
 
       const result = getClaimantContactDetails(req);
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(5);
       expect(result[0].key.text).toBe('Legal representative’s name');
       expect(result[0].value.text).toBe('Jane Lawyer');
       expect(result[1].key.text).toBe('Legal rep’s organisation');
@@ -65,6 +69,8 @@ describe('Claimant Contact Details Helper', () => {
       expect(result[2].value.text).toBe('456 Court Rd, Manchester, Greater Manchester, M1 2AB, UK');
       expect(result[3].key.text).toBe('Email');
       expect(result[3].value.text).toBe('jane@lawco.com');
+      expect(result[4].key.text).toBe('Preferred method of contact');
+      expect(result[4].value.text).toBe('Post');
     });
   });
 });
