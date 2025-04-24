@@ -37,6 +37,24 @@ describe('Claimant Contact Details Helper', () => {
       expect(result[3].value.text).toBe('Email');
     });
 
+    it('should return claimant details when claimant info is undefined', () => {
+      const userCase: CaseWithId = {
+        firstName: 'John',
+        lastName: 'Doe',
+      } as CaseWithId;
+
+      const req = mockRequestWithTranslation({ session: { userCase } }, translations);
+
+      const result = getClaimantContactDetails(req);
+      expect(result).toHaveLength(3);
+      expect(result[0].key.text).toBe('Name');
+      expect(result[0].value.text).toBe('John Doe');
+      expect(result[1].key.text).toBe('Address');
+      expect(result[1].value.text).toBe('Not provided');
+      expect(result[2].key.text).toBe('Email');
+      expect(result[2].value.text).toBe('Not provided');
+    });
+
     it('should return legal rep details when claimant is represented', () => {
       const userCase: CaseWithId = {
         claimantRepresentedQuestion: YesOrNo.YES,
@@ -71,6 +89,26 @@ describe('Claimant Contact Details Helper', () => {
       expect(result[3].value.text).toBe('jane@lawco.com');
       expect(result[4].key.text).toBe('Preferred method of contact');
       expect(result[4].value.text).toBe('Post');
+    });
+
+    it('should return legal rep details when legal rep info is undefined', () => {
+      const userCase: CaseWithId = {
+        claimantRepresentedQuestion: YesOrNo.YES,
+        representativeClaimantType: {},
+      } as CaseWithId;
+
+      const req = mockRequestWithTranslation({ session: { userCase } }, translations);
+
+      const result = getClaimantContactDetails(req);
+      expect(result).toHaveLength(4);
+      expect(result[0].key.text).toBe('Legal representative’s name');
+      expect(result[0].value.text).toBe('Not provided');
+      expect(result[1].key.text).toBe('Legal rep’s organisation');
+      expect(result[1].value.text).toBe('Not provided');
+      expect(result[2].key.text).toBe('Address');
+      expect(result[2].value.text).toBe('Not provided');
+      expect(result[3].key.text).toBe('Email');
+      expect(result[3].value.text).toBe('Not provided');
     });
   });
 });

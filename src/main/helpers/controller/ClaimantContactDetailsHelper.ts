@@ -45,7 +45,7 @@ const getClaimantLegalRepInfo = (userCase: CaseWithId, translations: AnyRecord):
     address?.PostCode,
     address?.Country
   );
-  details.push(addSummaryRow(translations.address, addressString));
+  details.push(addSummaryRow(translations.address, addressString || translations.notProvided));
 
   details.push(addSummaryRow(translations.email, rep.representative_email_address || translations.notProvided));
 
@@ -69,7 +69,7 @@ const getClaimantInfo = (userCase: CaseWithId, translations: AnyRecord): Summary
     userCase.addressPostcode,
     userCase.addressCountry
   );
-  details.push(addSummaryRow(translations.address, addressString));
+  details.push(addSummaryRow(translations.address, addressString || translations.notProvided));
 
   details.push(addSummaryRow(translations.email, userCase.email || translations.notProvided));
 
