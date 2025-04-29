@@ -6,7 +6,7 @@
   "name": "Enw",
   "address": "Cyfeiriad",
   "email": "E-bost",
-  "preferredMethod": "[W]Preferred method of contact",
+  "preferredMethod": "Dull cysylltu dewisol",
   "post": "Trwy’r post",
   "notProvided": "Dim byd wedi ei ddarparu"
 }
