@@ -55,6 +55,7 @@ export default class CaseListPage extends BasePage {
     await this.webActions.fillField(this.elements.submissionReferenceLocator, submissionReference);
     await expect(async () => {
       await this.webActions.clickElementByCss(this.elements.applyButton);
+      await this.webActions.waitForElementToBeVisible('search-result');
       await this.webActions.verifyElementContainsText(this.page.locator('#search-result'), submissionReference);
     }).toPass({
       intervals: [2_000, 5_000, 10_000],
