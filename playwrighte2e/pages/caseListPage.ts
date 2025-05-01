@@ -30,8 +30,10 @@ export default class CaseListPage extends BasePage {
   };
 
   async searchCaseApplicationWithSubmissionReference(option: string, submissionReference: string): Promise<void> {
-    await this.page.reload();
-    await this.webActions.verifyElementToBeVisible(this.page.locator(this.elements.caseListLink));
+    await expect(async () => {
+      await this.page.reload();
+      await this.webActions.verifyElementToBeVisible(this.page.locator(this.elements.caseListLink));
+    }).toPass();
 
     await this.webActions.clickElementByCss(this.elements.caseListLink);
     await this.webActions.verifyElementToBeVisible(this.page.locator(this.elements.caseTypeDropdown));
