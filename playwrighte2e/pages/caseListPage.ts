@@ -53,8 +53,10 @@ export default class CaseListPage extends BasePage {
       console.error('invalid option', error.message);
     }
     await this.webActions.fillField(this.elements.submissionReferenceLocator, submissionReference);
-    await this.webActions.clickElementByCss(this.elements.applyButton);
-    await this.webActions.verifyElementContainsText(this.page.locator('#search-result'), submissionReference);
+    await expect(async () => {
+      await this.webActions.clickElementByCss(this.elements.applyButton);
+      await this.webActions.verifyElementContainsText(this.page.locator('#search-result'), submissionReference);
+    }).toPass();
   }
 
   async processCaseFromCaseList(): Promise<string[]> {
