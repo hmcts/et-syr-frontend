@@ -177,7 +177,8 @@
     "cookie": "^1.0.0",
     "shelljs": "^0.9.0",
     "cross-spawn": "^7.0.5",
-    "tar-fs": "^3.0.8"
+    "tar-fs": "^3.0.8",
+    "formidable": "^3.5.3"
   },
   "packageManager": "yarn@3.8.7"
 }
