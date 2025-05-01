@@ -56,7 +56,10 @@ export default class CaseListPage extends BasePage {
     await expect(async () => {
       await this.webActions.clickElementByCss(this.elements.applyButton);
       await this.webActions.verifyElementContainsText(this.page.locator('#search-result'), submissionReference);
-    }).toPass();
+    }).toPass({
+      intervals: [2_000, 5_000, 10_000],
+      timeout: 80_000,
+    });
   }
 
   async processCaseFromCaseList(): Promise<string[]> {
