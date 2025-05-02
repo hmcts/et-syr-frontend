@@ -30,10 +30,8 @@ export default class CaseListPage extends BasePage {
   };
 
   async searchCaseApplicationWithSubmissionReference(option: string, submissionReference: string): Promise<void> {
-    await expect(async () => {
-      await this.page.reload();
-      await this.webActions.verifyElementToBeVisible(this.page.locator(this.elements.caseListLink));
-    }).toPass();
+    await this.page.reload();
+    await this.webActions.verifyElementToBeVisible(this.page.locator(this.elements.caseListLink));
 
     await this.webActions.clickElementByCss(this.elements.caseListLink);
     await this.webActions.verifyElementToBeVisible(this.page.locator(this.elements.caseTypeDropdown));
@@ -57,6 +55,7 @@ export default class CaseListPage extends BasePage {
     await this.webActions.fillField(this.elements.submissionReferenceLocator, submissionReference);
     await expect(async () => {
       await this.webActions.clickElementByCss(this.elements.applyButton);
+      await this.page.reload();
       await this.webActions.verifyElementContainsText(this.page.locator('#search-result'), submissionReference);
     }).toPass();
   }
