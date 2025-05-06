@@ -22,6 +22,7 @@ export const TranslationKeys = {
   RESPONSE_SAVED: 'response-saved',
   CHECK_YOUR_ANSWERS_ET3: 'check-your-answers-et3',
   CLAIMANT_ET1_FORM: 'claimant-et1-form',
+  CLAIMANT_CONTACT_DETAILS: 'claimant-contact-details',
   DOCUMENTS: 'documents',
   RESPONDENT_RESPONSE_LANDING: 'respondent-response-landing',
   RESPONDENT_RESPONSE_TASK_LIST: 'respondent-response-task-list',
@@ -112,6 +113,7 @@ export const PageUrls = {
   CHECK_YOUR_ANSWERS_ET3: '/check-your-answers-et3',
   NEW_SELF_ASSIGNMENT_REQUEST: '/new-self-assignment-request',
   CLAIMANT_ET1_FORM: '/claimant-et1-form',
+  CLAIMANT_CONTACT_DETAILS: '/claimant-contact-details',
   RESPONDENT_RESPONSE_LANDING: '/respondent-response-landing',
   RESPONDENT_RESPONSE_TASK_LIST: '/respondent-response-task-list',
   RESPONDENT_NAME: '/respondent-name',
@@ -584,9 +586,10 @@ export const LoggerConstants = {
 
 export const TseErrors = {
   ERROR_PARAM_NOT_FOUND: 'Param not found: ',
-  ERROR_APPLICATION_NOT_FOUND: 'Selected application not found: ',
-  ERROR_UPDATE_LINK_STATUS: 'An error occurred while update LinkStatus',
-  ERROR_NO_RESPOND_REQUIRED: 'No respond is required for this application',
+  ERROR_APPLICATION_NOT_FOUND: 'Application not found: ',
+  ERROR_APPLICATION_NOT_SHARE: 'Application not shared: ',
+  ERROR_NO_RESPOND_REQUIRED: 'Respond not allowed for this application: ',
+  ERROR_UPDATE_LINK_STATUS: 'An error occurred while updating LinkStatus',
   ERROR_SUBMIT_APPLICATION: 'An error occurred while submitting an application',
   ERROR_RESPOND_TO_APPLICATION: 'An error occurred while responding to an application',
 } as const;

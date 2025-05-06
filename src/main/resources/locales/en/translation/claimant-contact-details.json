@@ -1,0 +1,9 @@
+{
+  "title": "Claimant contact details",
+  "claimant": "Claimant",
+  "legalRepresentativesName": "Legal representative’s name",
+  "legalRepsOrganisation": "Legal rep’s organisation",
+  "name": "Name",
+  "address": "Address",
+  "email": "Email"
+}

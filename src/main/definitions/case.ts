@@ -553,6 +553,10 @@ export const enum TypeOfOrganisation {
 }
 
 export interface RepresentedTypeC {
+  name_of_representative?: string;
+  name_of_organisation?: string;
+  representative_address?: Et1Address;
+  representative_email_address?: string;
   myHmctsOrganisation?: Organisation;
 }
 

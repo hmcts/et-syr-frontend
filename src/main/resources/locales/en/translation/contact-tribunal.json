@@ -13,7 +13,7 @@
   "sections": {
     "CHANGE_PERSONAL_DETAILS": {
       "label": "I want to change my personal details",
-      "body": "Change the personal details you gave when making your claim."
+      "body": "Change the personal details you have provided."
     },
     "POSTPONE_HEARING": {
       "label": "Apply to postpone my hearing",
@@ -62,7 +62,7 @@
   },
   "call": {
     "h1": "Call the Employment Tribunal customer contact centre",
-    "p1": "Call if you have any questions about your claim. They cannot give you legal advice or process any updates to your case.",
+    "p1": "Call if you have any questions about your response. They cannot give you legal advice or process any updates to your case.",
     "p2": "Use the contact forms to make a request or to provide something for the tribunal.",
     "english": {
       "h1": "England & Wales",

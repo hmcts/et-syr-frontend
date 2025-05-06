@@ -13,7 +13,7 @@
   "sections": {
     "CHANGE_PERSONAL_DETAILS": {
       "label": "Rwyf eisiau newid fy manylion personol",
-      "body": "Newid y manylion personol y bu i chi eu rhoi wrth wneud eich hawliad."
+      "body": "Newid y manylion personol y bu i chi eu rhoi."
     },
     "POSTPONE_HEARING": {
       "label": "Gwneud cais i ohirio fy ngwrandawiad",
@@ -62,7 +62,7 @@
   },
   "call": {
     "h1": "Ffonio canolfan gyswllt cwsmeriaid y Tribiwnlys Cyflogaeth",
-    "p1": "Ffoniwch os oes gennych unrhyw gwestiynau ynglŷn â’ch hawliad. Ni allant roi cyngor cyfreithiol i chi na phrosesu unrhyw ddiweddariadau i'ch achos.",
+    "p1": "Ffoniwch os oes gennych unrhyw gwestiynau am eich ymateb. Ni allant roi cyngor cyfreithiol i chi na phrosesu unrhyw ddiweddariadau i'ch achos.",
     "p2": "Defnyddiwch y ffurflenni cyswllt i wneud cais neu i ddarparu rhywbeth i'r tribiwnlys.",
     "english": {
       "h1": "Cymru a Lloegr",

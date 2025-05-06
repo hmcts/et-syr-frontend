@@ -24,6 +24,7 @@ import CheckYourAnswersHearingPreferencesController from '../../controllers/Chec
 import CheckYourAnswersPayPensionAndBenefitsController from '../../controllers/CheckYourAnswersPayPensionAndBenefitsController';
 import ChecklistController from '../../controllers/ChecklistController';
 import ClaimantAverageWeeklyWorkHoursController from '../../controllers/ClaimantAverageWeeklyWorkHoursController';
+import ClaimantContactDetailsController from '../../controllers/ClaimantContactDetailsController';
 import ClaimantET1FormController from '../../controllers/ClaimantET1FormController';
 import ClaimantEmploymentDatesController from '../../controllers/ClaimantEmploymentDatesController';
 import ClaimantEmploymentDatesEnterController from '../../controllers/ClaimantEmploymentDatesEnterController';
@@ -142,6 +143,7 @@ export class Routes {
     app.post(PageUrls.CHECK_YOUR_ANSWERS_ET3, new CheckYourAnswersET3Controller().post);
     // hub links
     app.get(PageUrls.CLAIMANT_ET1_FORM, new ClaimantET1FormController().get);
+    app.get(PageUrls.CLAIMANT_CONTACT_DETAILS, new ClaimantContactDetailsController().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_LANDING, new RespondentResponseLandingController().get);
     // ET3 task list
     app.get(PageUrls.RESPONDENT_RESPONSE_TASK_LIST, new RespondentResponseTaskListController().get);
