@@ -110,5 +110,23 @@ describe('Claimant Contact Details Helper', () => {
       expect(result[3].key.text).toBe('Email');
       expect(result[3].value.text).toBe('Not provided');
     });
+
+    it('should skip legal rep preference when preference is not EmailOrPost', () => {
+      const userCase: CaseWithId = {
+        claimantRepresentedQuestion: YesOrNo.YES,
+        representativeClaimantType: {
+          representative_preference: 'DX Number',
+        },
+      } as CaseWithId;
+
+      const req = mockRequestWithTranslation({ session: { userCase } }, translations);
+
+      const result = getClaimantContactDetails(req);
+      expect(result).toHaveLength(4);
+      expect(result[0].key.text).toBe('Legal representative’s name');
+      expect(result[1].key.text).toBe('Legal rep’s organisation');
+      expect(result[2].key.text).toBe('Address');
+      expect(result[3].key.text).toBe('Email');
+    });
   });
 });

@@ -49,7 +49,8 @@ const getClaimantLegalRepInfo = (userCase: CaseWithId, translations: AnyRecord):
 
   details.push(addSummaryRow(translations.email, rep.representative_email_address || translations.notProvided));
 
-  if (rep.representative_preference) {
+  const validPreferences: string[] = [EmailOrPost.EMAIL, EmailOrPost.POST];
+  if (rep.representative_preference && validPreferences.includes(rep.representative_preference)) {
     const preference = rep.representative_preference === EmailOrPost.EMAIL ? translations.email : translations.post;
     details.push(addSummaryRow(translations.preferredMethod, preference));
   }
