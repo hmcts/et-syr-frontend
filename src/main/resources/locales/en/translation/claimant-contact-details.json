@@ -5,5 +5,8 @@
   "legalRepsOrganisation": "Legal rep’s organisation",
   "name": "Name",
   "address": "Address",
-  "email": "Email"
+  "email": "Email",
+  "preferredMethod": "Preferred method of contact",
+  "post": "Post",
+  "notProvided": "Not provided"
 }

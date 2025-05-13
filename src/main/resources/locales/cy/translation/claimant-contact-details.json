@@ -5,5 +5,8 @@
   "legalRepsOrganisation": "Sefydliad y cynrychiolydd cyfreithiol",
   "name": "Enw",
   "address": "Cyfeiriad",
-  "email": "E-bost"
+  "email": "E-bost",
+  "preferredMethod": "Dull cysylltu dewisol",
+  "post": "Trwy’r post",
+  "notProvided": "Dim byd wedi ei ddarparu"
 }
