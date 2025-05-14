@@ -76,6 +76,8 @@ export const TranslationKeys = {
   CLAIMANTS_APPLICATIONS: 'claimants-applications',
   OTHER_RESPONDENT_APPLICATIONS: 'other-respondent-applications',
   APPLICATION_DETAILS: 'application-details',
+  // Respondent hearing panel preference
+  RESPONDENT_HEARING_PANEL_PREFERENCE: 'respondent-hearing-panel-preference',
   RESPOND_TO_APPLICATION: 'respond-to-application',
   RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: 'respond-to-application-supporting-material',
   RESPOND_TO_APPLICATION_CYA: 'respond-to-application-check-your-answers',
@@ -83,6 +85,10 @@ export const TranslationKeys = {
   RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: 'respond-to-application-copy-to-other-party',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
+} as const;
+
+export const ParameterizedUrls = {
+  CLEAR_SELECTION: 'clear-selection',
 } as const;
 
 export const PageUrls = {
@@ -122,6 +128,7 @@ export const PageUrls = {
   RESPONDENT_CONTACT_PREFERENCES: '/respondent-contact-preferences',
   CHECK_YOUR_ANSWERS_CONTACT_DETAILS: '/check-your-answers-contact-details',
   HEARING_PREFERENCES: '/hearing-preferences',
+  RESPONDENT_HEARING_PANEL_PREFERENCE: '/respondent-hearing-panel-preference',
   REASONABLE_ADJUSTMENTS: '/reasonable-adjustments',
   RESPONDENT_EMPLOYEES: '/respondent-employees',
   RESPONDENT_SITES: '/respondent-sites',
@@ -147,6 +154,7 @@ export const PageUrls = {
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: '/employers-contract-claim-details',
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: '/check-your-answers-employers-contract-claim',
   GET_CASE_DOCUMENT: '/getCaseDocument/:docId',
+  CLEAR_SELECTION: '/clear-selection/:pageName',
   GET_SUPPORTING_MATERIAL: '/getSupportingMaterial/:docId',
   // Contact the tribunal about your case
   CONTACT_TRIBUNAL: '/contact-tribunal',
