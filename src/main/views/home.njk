@@ -13,7 +13,12 @@
       <p class="govuk-body">{{ serviceInfo }}</p>
 
       {{ govukInsetText({
-        html: infoTxt + ' <a href="' + infoTxtLinkUrl + '" class="govuk-link" target="_blank">' + infoTxtLink + '</a>'
+        html:
+          infoTxt +
+          ' <a href="' + infoTxtLinkUrl + '" class="govuk-link" target="_blank">' + infoTxtLink + '</a>' +
+          '<br><br>' +
+          infoTxt2 +
+          ' <a href="' + infoTxtLinkUrl2 + '" class="govuk-link" target="_blank">' + infoTxtLink2 + '</a>'
       }) }}
 
       <h2 class="govuk-heading-m">{{ whatYouNeedHeading }}</h2>
