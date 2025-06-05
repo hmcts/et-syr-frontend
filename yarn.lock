@@ -13267,7 +13267,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer@npm:^24.10.0":
+"puppeteer@npm:^24.0.0":
   version: 24.10.0
   resolution: "puppeteer@npm:24.10.0"
   dependencies:
