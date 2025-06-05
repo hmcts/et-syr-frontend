@@ -323,7 +323,7 @@ export const RedisErrors = {
   FAILED_TO_CONNECT: 'Error when attempting to connect to Redis',
   FAILED_TO_SAVE: 'Error when attempting to save to Redis',
   FAILED_TO_RETRIEVE: 'Error when attempting to retrieve value from Redis',
-  FAILED_TO_RETRIEVE_PRE_LOGIN_URL: 'Error when attempting to retrieve preLoginUrl from Redis',
+  PRE_LOGIN_URL_NOT_FOUND: 'Pre login URL not found in Redis',
   CLIENT_NOT_FOUND: 'Redis client does not exist',
 } as const;
 
