@@ -125,10 +125,9 @@ export const idamCallbackHandler = async (req: AppRequest, res: Response, servic
     const preLoginUrl = await getPreLoginUrl(redisClient, guid);
     if (preLoginUrl) {
       return res.redirect(preLoginUrl);
-    } else {
-      return res.redirect(PageUrls.HOME);
     }
+    return res.redirect(PageUrls.CHECKLIST);
   } catch (err) {
-    return res.redirect(PageUrls.HOME);
+    return res.redirect(PageUrls.CHECKLIST);
   }
 };
