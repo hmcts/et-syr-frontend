@@ -1,6 +1,7 @@
 import {
   EmailOrPost,
   EnglishOrWelsh,
+  HearingPanelPreference,
   HearingPreferenceET3,
   NoAcasNumberReason,
   PayFrequency,
@@ -127,6 +128,8 @@ export interface RespondentType {
   workAddressPostcode?: string;
   et3Status?: string;
   et3IsRespondentAddressCorrect?: YesOrNo;
+  respondent_hearing_panel_preference?: HearingPanelPreference;
+  respondent_hearing_panel_preference_reason?: string;
 }
 
 export interface ET3VettingType extends ET3VettingCommonTypes {

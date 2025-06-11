@@ -36,25 +36,25 @@ describe('Claimant pay details page', () => {
       });
   });
 
-  it('should display title', () => {
+  it('should display title for claimant pay details', () => {
     const title = htmlRes.getElementsByClassName(titleClass);
     expect(title[0].innerHTML).contains(expectedTitle, 'Page title does not exist');
   });
 
-  it('should display 3 input fields', () => {
+  it('should display 3 input fields for claimant pay details', () => {
     const radioButtons = htmlRes.getElementsByClassName(radioClass);
     expect(radioButtons.length).equal(3, `only ${radioButtons.length} found`);
   });
 
-  it('should display inputs with valid labels', () => {
+  it('should display inputs with valid labels for claimant pay details', () => {
     const radioButtons = htmlRes.getElementsByClassName(radioClass);
-    expect(radioButtons[0].innerHTML).contains(
-      expectedRadioLabel1,
-      'Could not find the radio button with label ' + expectedRadioLabel1
-    );
     expect(radioButtons[1].innerHTML).contains(
       expectedRadioLabel2,
       'Could not find the radio button with label ' + expectedRadioLabel2
+    );
+    expect(radioButtons[0].innerHTML).contains(
+      expectedRadioLabel1,
+      'Could not find the radio button with label ' + expectedRadioLabel1
     );
     expect(radioButtons[2].innerHTML).contains(
       expectedRadioLabel3,
@@ -62,7 +62,7 @@ describe('Claimant pay details page', () => {
     );
   });
 
-  it('should display save and continue button', () => {
+  it('should display save and continue button for claimant pay details', () => {
     const button = htmlRes.getElementsByClassName(buttonClass);
     expect(button[5].innerHTML).contains('Save and continue', 'Could not find the button');
   });

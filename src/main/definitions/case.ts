@@ -205,6 +205,10 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3HubLinksStatuses?: ET3HubLinksStatuses;
   et3IsRespondentAddressCorrect?: YesOrNo;
   et3Status?: string;
+  //Hearing panel preferences
+  respondentHearingPanelPreference?: HearingPanelPreference;
+  respondentHearingPanelPreferenceReasonJudge?: string;
+  respondentHearingPanelPreferenceReasonPanel?: string;
 }
 
 export interface RespondentApiModel {
@@ -488,6 +492,12 @@ export const enum HearingPreference {
   VIDEO = 'Video',
   PHONE = 'Phone',
   NEITHER = 'Neither',
+}
+
+export const enum HearingPanelPreference {
+  NO_PREFERENCE = 'No preference',
+  JUDGE = 'Judge',
+  PANEL = 'Panel',
 }
 
 export const enum HearingPreferenceET3 {

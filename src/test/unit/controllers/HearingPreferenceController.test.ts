@@ -38,10 +38,10 @@ describe('HearingPreferencesController', () => {
           et3ResponseHearingRespondent: HearingPreference.VIDEO,
         },
       });
-      request.url = PageUrls.REASONABLE_ADJUSTMENTS;
+      request.url = PageUrls.RESPONDENT_HEARING_PANEL_PREFERENCE;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_HEARING_PANEL_PREFERENCE);
     });
 
     it('should redirect to next page when NEITHER is selected and details is filled in', async () => {
@@ -50,10 +50,10 @@ describe('HearingPreferencesController', () => {
           et3ResponseHearingRespondent: HearingPreference.NEITHER,
         },
       });
-      request.url = PageUrls.REASONABLE_ADJUSTMENTS;
+      request.url = PageUrls.RESPONDENT_HEARING_PANEL_PREFERENCE;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_HEARING_PANEL_PREFERENCE);
     });
   });
 });

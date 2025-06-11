@@ -213,5 +213,6 @@
   "workAddress2": "workAddressLine2",
   "workAddressCountry": "workAddressCountry",
   "workAddressPostcode": "workAddressPostcode",
-  "workAddressTown": "workAddressTown"
+  "workAddressTown": "workAddressTown",
+  "respondent_hearing_panel_preference_reason": ""
 }
