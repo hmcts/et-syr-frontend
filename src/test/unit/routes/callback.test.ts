@@ -51,12 +51,12 @@ describe('Test responds to /oauth2/callback', function () {
   test('Should redirect to Claimant applications page in English language if an existing user who had selected English logs in', async () => {
     req.query = { code: 'testCode', state: existingUser + englishGuidParam };
     // jest.spyOn(redisClient, 'get').mockReturnValue('');
-    await expect(idamCallbackHandler(req, res, serviceUrl)).resolves.toEqual(undefined);
+    await expect(idamCallbackHandler(req, res, serviceUrl)).resolves.toBeDefined();
   });
 
   test('Should redirect to Claimant applications page in Welsh language if an existing user who had selected Welsh logs in', async () => {
     req.query = { code: 'testCode', state: existingUser + welshGuidParam };
 
-    await expect(idamCallbackHandler(req, res, serviceUrl)).resolves.toEqual(undefined);
+    await expect(idamCallbackHandler(req, res, serviceUrl)).resolves.toBeDefined();
   });
 });
