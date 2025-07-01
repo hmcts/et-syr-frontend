@@ -505,8 +505,8 @@ export const getEt3Section5 = (
     et3ResponseSection5.push(
       addSummaryRowWithAction(
         translations.section5.contestExplanation1 + userCase.respondentName + translations.section5.contestExplanation2,
-        userCase.et3ResponseContestClaimDetails,
-        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON ?? translations.notProvided,
+        userCase.et3ResponseContestClaimDetails ?? translations.notProvided,
+        PageUrls.RESPONDENT_CONTEST_CLAIM_REASON,
         hideChangeLink ? undefined : translations.change,
         hideChangeLink ? undefined : sectionCya
       ),
