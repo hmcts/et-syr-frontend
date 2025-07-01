@@ -6,6 +6,13 @@
 
 {% block head %}
   {% include "../../webpack/css.njk" %}
+  <link rel="icon" sizes="48x48" href="/assets/rebrand/images/favicon.ico">
+  <link rel="icon" sizes="any" href="/assets/rebrand/images/favicon.svg" type="image/svg+xml">
+  <link rel="mask-icon" href="/assets/rebrand/images/govuk-icon-mask.svg" color="#1d70b8">
+  <link rel="apple-touch-icon" href="/assets/rebrand/images/govuk-icon-180.png">
+  <link rel="manifest" href="/assets/rebrand/manifest.json">
+  <meta property="og:image" content="/assets/rebrand/images/govuk-opengraph-image.png">
+  <meta name="theme-color" content="#1d70b8">
   <script>
     window.dataLayer = window.dataLayer || [];
   </script>
@@ -48,10 +55,11 @@ if isLoggedIn %}
   {{ govukHeader({
     containerClasses: "govuk-width-container",
     homepageUrl: "https://www.gov.uk",
-    serviceName: serviceName,
+    productName: serviceName,
     serviceUrl: "/",
     navigationClasses: 'govuk-header__navigation--end',
-    navigation: [logInOrOut]
+    navigation: [logInOrOut],
+    rebrand: true
   }) }}
 {% endblock %}
 
@@ -100,7 +108,8 @@ if isLoggedIn %}
       tag: {
           text: beta
       },
-      html: phaseBarHtml
+      html: phaseBarHtml,
+      rebrand: true
   }) }}
 {% endblock %}
 

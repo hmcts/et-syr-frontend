@@ -15,6 +15,7 @@ const copyGovukTemplateAssets = new CopyWebpackPlugin({
   patterns: [
     { from: images, to: 'assets/images' },
     { from: fonts, to: 'assets/fonts' },
+    { from: path.resolve(assets, 'rebrand'), to: 'assets/rebrand' },
   ],
 });
 
