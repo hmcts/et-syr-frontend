@@ -54,9 +54,8 @@ if isLoggedIn %}
   {% include "./cookie-banner.njk" %}
   {{ govukHeader({
     containerClasses: "govuk-width-container",
-    homepageUrl: "https://www.gov.uk",
+    homepageUrl: "/",
     productName: serviceName,
-    serviceUrl: "/",
     navigationClasses: 'govuk-header__navigation--end',
     navigation: [logInOrOut],
     rebrand: true
