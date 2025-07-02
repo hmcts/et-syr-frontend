@@ -3,12 +3,19 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getApplicationsAccordionItems, isClaimantSystemUser } from '../helpers/controller/ContactTribunalHelper';
+import {
+  getApplicationsAccordionItems,
+  getRepresentativeForCurrentRespondent,
+  isClaimantSystemUser,
+} from '../helpers/controller/ContactTribunalHelper';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 
 export default class ContactTribunalController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const isContactTribunalEnabled = await getFlagValue('et3-contact-tribunal', null);
+    const representatives = req.session.userCase.representatives;
+    const respondentRepresented = getRepresentativeForCurrentRespondent(representatives, req.session.user.id);
+
     if (!isContactTribunalEnabled) {
       return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
     }
@@ -17,14 +24,20 @@ export default class ContactTribunalController {
       return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
     }
 
+    const applicationsAccordionItems =
+      respondentRepresented !== undefined
+        ? getApplicationsAccordionItems(req.url, {
+            ...req.t(TranslationKeys.CONTACT_TRIBUNAL, { returnObjects: true }),
+          })
+        : [];
+
     res.render(TranslationKeys.CONTACT_TRIBUNAL, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
       ...req.t(TranslationKeys.CONTACT_TRIBUNAL, { returnObjects: true }),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
-      applicationsAccordionItems: getApplicationsAccordionItems(req.url, {
-        ...req.t(TranslationKeys.CONTACT_TRIBUNAL, { returnObjects: true }),
-      }),
+      applicationsAccordionItems,
+      respondentRepresented,
     });
   };
 }
