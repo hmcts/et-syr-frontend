@@ -781,6 +781,7 @@ export const mapRepresentatives = (representatives: RepresentativeApiModel[]): R
     return {
       hasMyHMCTSAccount: rep.value.myHmctsYesNo,
       respondentId: rep.value.respondentId,
+      nameOfOrganisation: rep.value.nameOfOrganisation,
     };
   });
 };
