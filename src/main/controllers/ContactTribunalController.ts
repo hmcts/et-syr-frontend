@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getApplicationsAccordionItems } from '../helpers/controller/ContactTribunalHelper';
+import { getApplicationsAccordionItems, isClaimantSystemUser } from '../helpers/controller/ContactTribunalHelper';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 
 export default class ContactTribunalController {
@@ -15,9 +15,9 @@ export default class ContactTribunalController {
       return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
     }
 
-    // if (!isClaimantSystemUser(req.session.userCase)) {
-    //   return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
-    // }
+    if (!isClaimantSystemUser(req.session.userCase)) {
+      return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
+    }
 
     const applicationsAccordionItems =
       respondentRepresented === undefined

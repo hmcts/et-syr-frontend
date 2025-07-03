@@ -174,7 +174,7 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
     hearingCollection: fromApiCaseData?.case_data?.hearingCollection,
     documentCollection: fromApiCaseData.case_data?.documentCollection,
     representatives: mapRepresentatives(fromApiCaseData.case_data?.repCollection),
-    respondentRepresented: mapRespondentToRep(fromApiCaseData.case_data, req.session.user.id),
+    respondentRepresented: mapRespondentToRep(fromApiCaseData.case_data, req?.session?.user?.id),
     bundleDocuments: [
       ...combineDocuments<DocumentTypeItem>(
         mapBundlesDocs(
