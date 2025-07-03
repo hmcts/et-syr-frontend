@@ -1,13 +1,13 @@
 {
-  "title": "Nid yw'r hawlydd wedi cydymffurfio",
+  "title": "Nid yw'r parti arall wedi cydymffurfio",
   "content": [
     {
       "type": "paragraph",
-      "text": "Defnyddiwch y ffurflen hon i ddweud wrthym nad yw’r hawlydd wedi cydymffurfio â rhan o orchymyn, neu orchymyn cyfan, gan y tribiwnlys."
+      "text": "Defnyddiwch y ffurflen hon i ddweud wrthym nad yw’r parti arall wedi cydymffurfio â rhan o orchymyn, neu orchymyn cyfan, gan y tribiwnlys."
     },
     {
       "type": "paragraph",
-      "text": "Dylech geisio datrys eich cwyn gyda’r hawlydd. Dylech ond defnyddio’r ffurflen hon os nad yw hynny’n bosibl."
+      "text": "Dylech geisio datrys eich cwyn gyda’r parti arall. Dylech ond defnyddio’r ffurflen hon os nad yw hynny’n bosibl."
     },
     {
       "type": "bold-paragraph",
@@ -18,7 +18,7 @@
       "items": [
         "pa orchymyn nas cydymffurfiwyd ag ef",
         "y dyddiad y cyhoeddodd y tribiwnlys y gorchymyn",
-        "yr hyn nad yw’r hawlydd wedi’i wneud",
+        "yr hyn nad yw’r parti arall wedi’i wneud",
         "beth ydych chi eisiau i’r tribiwnlys ei wneud nesaf "
       ]
     }
