@@ -1,4 +1,4 @@
-import { CaseWithId, Representative } from '../../definitions/case';
+import { CaseWithId } from '../../definitions/case';
 import { MY_HMCTS, PageUrls, YES } from '../../definitions/constants';
 import { application } from '../../definitions/contact-tribunal-applications';
 import { AccordionItem, addAccordionRow } from '../../definitions/govuk/govukAccordion';
@@ -56,17 +56,4 @@ const isClaimantRepresentedWithMyHMCTSCase = (userCase: CaseWithId): boolean => 
     YES === userCase.claimantRepresentedQuestion &&
     userCase.representativeClaimantType?.myHmctsOrganisation !== undefined
   );
-};
-
-/**
- * Get the representative for the current respondent
- * @param representatives list of representatives
- * @param currentRespondentId id of the current respondent
- * @returns Representative object or undefined if not found
- */
-export const getRepresentativeForCurrentRespondent = (
-  representatives: Representative[],
-  currentRespondentId: string
-): Representative => {
-  return representatives.find(rep => rep.respondentId === currentRespondentId);
 };
