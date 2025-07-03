@@ -7,7 +7,7 @@ import {
   YesOrNoOrNotApplicable,
   YesOrNoOrNotSure,
 } from '../../../../main/definitions/case';
-import { DefaultValues, PageUrls } from '../../../../main/definitions/constants';
+import { PageUrls } from '../../../../main/definitions/constants';
 import {
   SummaryListRow,
   addSummaryHtmlRowWithAction,
@@ -287,7 +287,7 @@ describe('CheckYourAnswersET3Helper', () => {
     expectedRows.push(
       addSummaryHtmlRowWithAction(
         expect.any(String), // field3
-        DefaultValues.STRING_DASH, // exampleData
+        'Not provided', // exampleData
         PageUrls.RESPONDENT_CONTEST_CLAIM_REASON, // URL for supportingEvidence
         expect.any(String) // change label
       )
@@ -322,7 +322,7 @@ describe('CheckYourAnswersET3Helper', () => {
     expectedRows.push(
       addSummaryHtmlRowWithAction(
         expect.any(String), // field3
-        DefaultValues.STRING_DASH, // exampleData
+        'Not provided', // exampleData
         PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS, // URL for supportingEvidence
         expect.any(String) // change label
       )
