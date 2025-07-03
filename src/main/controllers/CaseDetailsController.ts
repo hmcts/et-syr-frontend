@@ -72,6 +72,7 @@ export default class CaseDetailsController {
       appRequestNotifications: appNotifications.appRequestNotifications,
       appSubmitNotifications: appNotifications.appSubmitNotifications,
       languageParam: getLanguageParam(req.url),
+      respondentRepresented: req.session.userCase.respondentRepresented,
     });
   }
 }

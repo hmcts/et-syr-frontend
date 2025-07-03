@@ -1,5 +1,8 @@
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
+{% include "components/case-details/notifications-respondent-represented.njk" %}
+
+{% if not respondentRepresented %}
 
 {% set htmlForAcknowledgementAlert %}
 
@@ -91,3 +94,4 @@
     }) }}
   {% endif %}
 {% endfor %}
+{% endif %}
