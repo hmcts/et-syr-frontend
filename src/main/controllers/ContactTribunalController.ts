@@ -3,18 +3,13 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import {
-  getApplicationsAccordionItems,
-  getRepresentativeForCurrentRespondent,
-  isClaimantSystemUser,
-} from '../helpers/controller/ContactTribunalHelper';
+import { getApplicationsAccordionItems, isClaimantSystemUser } from '../helpers/controller/ContactTribunalHelper';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 
 export default class ContactTribunalController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const isContactTribunalEnabled = await getFlagValue('et3-contact-tribunal', null);
-    const representatives = req.session.userCase.representatives;
-    const respondentRepresented = getRepresentativeForCurrentRespondent(representatives, req.session.user.id);
+    const respondentRepresented = req.session.userCase?.respondentRepresented;
 
     if (!isContactTribunalEnabled) {
       return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
@@ -25,7 +20,7 @@ export default class ContactTribunalController {
     }
 
     const applicationsAccordionItems =
-      respondentRepresented !== undefined
+      respondentRepresented === undefined
         ? getApplicationsAccordionItems(req.url, {
             ...req.t(TranslationKeys.CONTACT_TRIBUNAL, { returnObjects: true }),
           })

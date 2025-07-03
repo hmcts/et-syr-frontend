@@ -174,6 +174,7 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
     hearingCollection: fromApiCaseData?.case_data?.hearingCollection,
     documentCollection: fromApiCaseData.case_data?.documentCollection,
     representatives: mapRepresentatives(fromApiCaseData.case_data?.repCollection),
+    respondentRepresented: mapRespondentToRep(fromApiCaseData.case_data, req?.session?.user?.id),
     bundleDocuments: [
       ...combineDocuments<DocumentTypeItem>(
         mapBundlesDocs(
@@ -781,9 +782,30 @@ export const mapRepresentatives = (representatives: RepresentativeApiModel[]): R
     return {
       hasMyHMCTSAccount: rep.value.myHmctsYesNo,
       respondentId: rep.value.respondentId,
-      nameOfOrganisation: rep.value.nameOfOrganisation,
+      nameOfOrganisation: rep.value.name_of_organisation,
     };
   });
+};
+
+export const mapRespondentToRep = (caseData: CaseData, userId: string): Representative => {
+  const respondents = caseData.respondentCollection;
+
+  const currentRespondent = respondents?.find(respondent => respondent.value.idamId === userId);
+
+  const repCollection = caseData.repCollection;
+
+  if (!repCollection || repCollection.length === 0) {
+    return undefined;
+  }
+
+  const respondentRep = repCollection.find(
+    r =>
+      r.value.myHmctsYesNo === YesOrNo.YES &&
+      r.value.name_of_organisation &&
+      currentRespondent.value.respondent_name === r.value.resp_rep_name
+  );
+
+  return respondentRep?.value;
 };
 
 export const setRespondentApiFormat = (respondents: RespondentET3Model[]): RespondentRequestBody[] => {
