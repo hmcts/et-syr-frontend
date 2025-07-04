@@ -11,7 +11,7 @@ import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { returnValidUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
-import { isValidUKPostcode } from '../validators/address_validator';
+import { isValidUKPostcode } from '../validators/address-validator';
 
 const logger = getLogger('RespondentEnterPostCodeController');
 

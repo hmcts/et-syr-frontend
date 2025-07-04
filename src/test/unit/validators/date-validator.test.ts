@@ -12,7 +12,7 @@ import {
   isDateNotInPast,
   isDateNotPartial,
   isFirstDateBeforeSecond,
-} from '../../../main/validators/dateValidators';
+} from '../../../main/validators/date-validator';
 
 describe('areDateFieldsFilledIn()', () => {
   it('Should check if values in object exist', () => {

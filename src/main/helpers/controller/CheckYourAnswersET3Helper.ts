@@ -27,7 +27,7 @@ import {
   ydyYesOrNoMap,
   ydyYesOrNoOrNotApplicableMap,
 } from '../../utils/TranslationUtils';
-import { convertCaseDateToDate } from '../../validators/dateValidators';
+import { convertCaseDateToDate } from '../../validators/date-validator';
 import { answersAddressFormatter } from '../AddressHelper';
 import { dateInLocale } from '../dateInLocale';
 

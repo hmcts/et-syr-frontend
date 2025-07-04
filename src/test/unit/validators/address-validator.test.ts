@@ -4,7 +4,7 @@ import {
   isValidAddressSecondLine,
   isValidCountryTownOrCity,
   isValidUKPostcode,
-} from '../../../main/validators/address_validator';
+} from '../../../main/validators/address-validator';
 
 describe('Validation', () => {
   describe('isValidUKPostcode()', () => {

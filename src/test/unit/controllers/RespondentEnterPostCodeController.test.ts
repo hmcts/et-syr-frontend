@@ -1,12 +1,12 @@
 import RespondentEnterPostCodeController from '../../../main/controllers/RespondentEnterPostCodeController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { saveAndContinueButton, saveForLaterButton } from '../../../main/definitions/radios';
-import { isValidUKPostcode } from '../../../main/validators/address_validator';
+import { isValidUKPostcode } from '../../../main/validators/address-validator';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
 jest.mock('../../../main/helpers/CaseHelpers');
-jest.mock('../../../main/validators/address_validator');
+jest.mock('../../../main/validators/address-validator');
 
 describe('RespondentEnterPostCodeController', () => {
   let controller: RespondentEnterPostCodeController;

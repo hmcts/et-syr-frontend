@@ -4,7 +4,7 @@ import { AppRequest } from '../../definitions/appRequest';
 import { CaseDate } from '../../definitions/case';
 import { PageUrls, ValidationErrors } from '../../definitions/constants';
 import ErrorUtils from '../../utils/ErrorUtils';
-import { isDateEmpty, isDateInputInvalid, isFirstDateBeforeSecond } from '../../validators/dateValidators';
+import { isDateEmpty, isDateInputInvalid, isFirstDateBeforeSecond } from '../../validators/date-validator';
 import { setUrlLanguage } from '../LanguageHelper';
 import { returnValidUrl } from '../RouterHelpers';
 

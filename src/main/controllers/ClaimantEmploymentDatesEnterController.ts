@@ -18,7 +18,7 @@ import {
   isEndDateBeforeStartDate,
 } from '../helpers/controller/ClaimantEmploymentDatesEnterHelper';
 import ET3Util from '../utils/ET3Util';
-import { isDateInPast, isDateInputInvalid } from '../validators/dateValidators';
+import { isDateInPast, isDateInputInvalid } from '../validators/date-validator';
 
 const employment_date_common_fields = {
   classes: 'govuk-date-input',
