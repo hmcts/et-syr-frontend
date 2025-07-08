@@ -1,5 +1,6 @@
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
+{% if respondentRepresented %}
   {% set htmlForRespondentRepresentedBanner %}
     <h3 class="govuk-notification-banner__heading">
     {{ notificationBanner.respondentRepresented.title }} {{respondentRepresented.name_of_organisation}}. </h3>
@@ -15,3 +16,4 @@
     html: htmlForRespondentRepresentedBanner,
     titleText: important
   }) }}
+{% endif %}
