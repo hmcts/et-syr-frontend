@@ -31,7 +31,7 @@ export const getContactPreferencesDetails = (
     ),
     addSummaryRow(
       translations.dxAddress,
-      userCase.et3ResponseDXAddress ?? '-',
+      userCase.et3ResponseDXAddress ?? translations.notProvided,
       createChangeAction(
         PageUrls.RESPONDENT_DX_ADDRESS + InterceptPaths.RESPONDENT_CONTACT_PREFERENCES,
         translations.change,
@@ -40,7 +40,7 @@ export const getContactPreferencesDetails = (
     ),
     addSummaryRow(
       translations.contactPhoneNumber,
-      userCase.responseRespondentPhone1 ?? '-',
+      userCase.responseRespondentPhone1 ?? translations.notProvided,
       createChangeAction(
         PageUrls.RESPONDENT_CONTACT_PHONE_NUMBER + InterceptPaths.RESPONDENT_CONTACT_PREFERENCES,
         translations.change,
