@@ -1,5 +1,4 @@
 export const params = {
-
   TestUrlCitizenUi: process.env.TEST_URL || 'https://et-sya.aat.platform.hmcts.net',
   TestUrlRespondentUi: process.env.TEST_RESP_URL || 'https://et-syr.aat.platform.hmcts.net',
   TestUrlForManageCaseAAT: process.env.TEST_MANAGE_CASE_URL || 'https://manage-case.aat.platform.hmcts.net',
