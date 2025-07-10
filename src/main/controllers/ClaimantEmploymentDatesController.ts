@@ -13,7 +13,7 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { conditionalRedirect, isClearSelection, startSubSection } from '../helpers/RouterHelpers';
 import { dateInLocale } from '../helpers/dateInLocale';
 import ET3Util from '../utils/ET3Util';
-import { convertCaseDateToDate } from '../validators/dateValidators';
+import { convertCaseDateToDate } from '../validators/date-validator';
 
 export default class ClaimantEmploymentDatesController {
   private readonly form: Form;

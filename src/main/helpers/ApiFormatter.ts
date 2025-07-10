@@ -39,7 +39,7 @@ import { DocumentDetail } from '../definitions/definition';
 import { TypeItem } from '../definitions/util-types';
 import DateUtils from '../utils/DateUtils';
 import NumberUtils from '../utils/NumberUtils';
-import { isDateEmpty } from '../validators/dateValidators';
+import { isDateEmpty } from '../validators/date-validator';
 
 import { retrieveCurrentLocale } from './ApplicationTableRecordTranslationHelper';
 import { returnTranslatedDateString } from './DateHelper';

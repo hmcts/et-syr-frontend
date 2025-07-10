@@ -20,7 +20,7 @@ import ErrorUtils from '../utils/ErrorUtils';
 import NumberUtils from '../utils/NumberUtils';
 import ObjectUtils from '../utils/ObjectUtils';
 import StringUtils from '../utils/StringUtils';
-import { isValidCurrency } from '../validators/validator';
+import { isValidCurrency } from '../validators/currency-validator';
 
 const logger = getLogger('ClaimantPayDetailsEnterController');
 
@@ -57,7 +57,7 @@ export default class ClaimantPayDetailsEnterController {
         label: (l: AnyRecord): string => l.et3ResponsePayBeforeTax.label,
         hint: (l: AnyRecord): string => l.et3ResponsePayBeforeTax.hintLabel,
         attributes: {
-          maxLength: 16,
+          maxLength: 15,
         },
         validator: isValidCurrency,
       },
@@ -67,7 +67,7 @@ export default class ClaimantPayDetailsEnterController {
         label: (l: AnyRecord): string => l.et3ResponsePayTakehome.label,
         hint: (l: AnyRecord): string => l.et3ResponsePayTakehome.hintLabel,
         attributes: {
-          maxLength: 16,
+          maxLength: 15,
         },
         validator: isValidCurrency,
       },

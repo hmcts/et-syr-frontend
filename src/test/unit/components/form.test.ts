@@ -2,7 +2,7 @@ import { Form } from '../../../main/components/form';
 import { convertToDateObject } from '../../../main/components/parser';
 import { Case, CaseDate, Checkbox, YesOrNo } from '../../../main/definitions/case';
 import { FormContent, FormFields, FormFieldsFn } from '../../../main/definitions/form';
-import { areDateFieldsFilledIn } from '../../../main/validators/dateValidators';
+import { areDateFieldsFilledIn } from '../../../main/validators/date-validator';
 import { isFieldFilledIn } from '../../../main/validators/validator';
 
 describe('Form', () => {

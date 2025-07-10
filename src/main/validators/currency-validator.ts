@@ -1,0 +1,26 @@
+import { ValidationErrors } from '../definitions/constants';
+
+import { Validator } from './validator';
+
+const validNumberPattern = /^[0-9.,]+$/;
+const validCurrencyPattern = /^(\d{1,3}(,\d{3})+|\d+)(\.\d{1,2})?$/;
+
+export const isValidCurrency: Validator = value => {
+  if (isEmpty(value)) {
+    return;
+  }
+
+  if (isInvalidNumber(value)) {
+    return ValidationErrors.INVALID_CURRENCY;
+  }
+};
+
+const isEmpty = (value: string | string[]): boolean => {
+  value = (value as string)?.trim();
+  return !value || value.length === 0;
+};
+
+const isInvalidNumber = (value: string | string[]): boolean => {
+  value = (value as string)?.trim();
+  return !validNumberPattern.test(value) || !validCurrencyPattern.test(value);
+};
