@@ -1,13 +1,13 @@
 {
-  "title": "Claimant not complied",
+  "title": "Other party not complied",
   "content": [
     {
       "type": "paragraph",
-      "text": "Use this form to tell us that the claimant has not complied with all or part of an order from the tribunal."
+      "text": "Use this form to tell us that the other party has not complied with all or part of an order from the tribunal."
     },
     {
       "type": "paragraph",
-      "text": "You should try to resolve your complaint with the claimant. Only use this form if that is not possible."
+      "text": "You should try to resolve your complaint with the other party. Only use this form if that is not possible."
     },
     {
       "type": "bold-paragraph",
@@ -18,7 +18,7 @@
       "items": [
         "which order has not been complied with",
         "the date the tribunal issued the order",
-        "what the claimant has not done",
+        "what the other party has not done",
         "what you want the tribunal to do next "
       ]
     }

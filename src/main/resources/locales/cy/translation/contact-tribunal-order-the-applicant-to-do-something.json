@@ -1,9 +1,9 @@
 {
-  "title": "Gorchymyn yr hawlydd i wneud rhywbeth",
+  "title": "Gorchymyn y parti arall i wneud rhywbeth",
   "content": [
     {
       "type": "paragraph",
-      "text": "Defnyddiwch y ffurflen hon i ofyn i'r tribiwnlys orchymyn i'r hawlydd wneud neu ddarparu rhywbeth."
+      "text": "Defnyddiwch y ffurflen hon i ofyn i'r tribiwnlys orchymyn i'r parti arall wneud neu ddarparu rhywbeth."
     },
     {
       "type": "bold-paragraph",
@@ -12,10 +12,10 @@
     {
       "type": "list",
       "items": [
-        "beth ydych chi eisiau i'r hawlydd ei wneud",
+        "beth ydych chi eisiau i'r parti arall ei wneud",
         "pam fod hyn yn berthnasol i’ch ymateb",
-        "os ydych chi eisoes wedi gofyn i’r hawlydd wneud neu ddarparu'r peth hwn. Os ydych chi wedi gwneud hynny, dywedwch wrthym pryd y gwnaethoch chi ofyn a beth oedd ei ymateb",
-        "os nad ydych chi wedi gofyn i’r hawlydd wneud neu ddarparu'r peth hwn eto, esboniwch pam"
+        "os ydych chi eisoes wedi gofyn i’r parti arall wneud neu ddarparu'r peth hwn. Os ydych chi wedi gwneud hynny, dywedwch wrthym pryd y gwnaethoch chi ofyn a beth oedd ei ymateb",
+        "os nad ydych chi wedi gofyn i’r parti arall wneud neu ddarparu'r peth hwn eto, esboniwch pam"
       ]
     }
   ]
