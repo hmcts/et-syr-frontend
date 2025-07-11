@@ -133,6 +133,10 @@ export default class ContactTribunalSelectedController {
 
   public get = (req: AppRequest, res: Response): void => {
     this.uploadedFileName = req?.session?.userCase?.contactApplicationFile?.document_filename;
+
+    if (req.session.userCase?.respondentRepresented) {
+      return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
+    }
     const selectedApplication = getApplicationByUrl(req.params?.selectedOption);
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.selectedOption);
