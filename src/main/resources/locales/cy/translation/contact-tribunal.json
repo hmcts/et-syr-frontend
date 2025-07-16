@@ -7,8 +7,8 @@
   "hideSection": "Cuddio",
   "landing_text": {
     "p1": "Defnyddiwch y ffurflen briodol i gyfathrebu â'r tribiwnlys.",
-    "p2": "Bydd y ceisiadau hyn yn cael eu hadolygu gan y tribiwnlys a’u hanfon at y ceisydd a fydd yn cael cyfle i ymateb.",
-    "p3": "Efallai y byddwch yn gallu gofyn nad yw rhai manylion yn cael eu rhannu gyda’r ceisydd."
+    "p2": "Bydd y ceisiadau hyn yn cael eu hadolygu gan y tribiwnlys a’u hanfon at y parti arall a fydd yn cael cyfle i ymateb.",
+    "p3": "Efallai y byddwch yn gallu gofyn nad yw rhai manylion yn cael eu rhannu gyda’r parti arall."
   },
   "sections": {
     "CHANGE_PERSONAL_DETAILS": {
@@ -32,23 +32,23 @@
       "body": "Gwneud cais i ddiwygio eich ymateb ET3 - gan gynnwys dileu ymatebion neu fanylion eich ymateb."
     },
     "ORDER_OTHER_PARTY": {
-      "label": "Gorchymyn yr hawlydd i wneud rhywbeth",
-      "body": "Gwneud cais i orchymyn yr hawlydd i wneud neu ddarparu rhywbeth."
+      "label": "Gorchymyn y parti arall i wneud rhywbeth",
+      "body": "Gwneud cais i orchymyn y parti arall i wneud neu ddarparu rhywbeth."
     },
     "ORDER_WITNESS_ATTEND": {
       "label": "Gorchymyn bod tyst yn rhoi tystiolaeth",
       "body": "Gwneud cais i orchymyn bod tyst yn bresennol i roi tystiolaeth yn eich achos chi."
     },
     "CLAIMANT_NOT_COMPLIED": {
-      "label": "Dweud wrth y tribiwnlys nad yw’r hawlydd wedi cydymffurfio â gorchymyn",
-      "body": "Dweud wrthym nad yw’r hawlydd wedi cydymffurfio â rhan o orchymyn, neu orchymyn cyfan, gan y tribiwnlys."
+      "label": "Dweud wrth y tribiwnlys nad yw’r parti arall wedi cydymffurfio â gorchymyn",
+      "body": "Dweud wrthym nad yw’r parti arall wedi cydymffurfio â rhan o orchymyn, neu orchymyn cyfan, gan y tribiwnlys."
     },
     "RESTRICT_PUBLICITY": {
       "label": "Gwneud cais i gyfyngu ar gyhoeddusrwydd",
       "body": "Gwneud cais i atal neu gyfyngu ar gyhoeddusrwydd yn eich achos chi. Gall y tribiwnlys gynnal gwrandawiadau yn breifat neu gadw manylion partïon a thystion penodol yn gyfrinachol os oes angen."
     },
     "STRIKE_OUT_CLAIM": {
-      "label": "Dileu’r hawliad cyfan neu ran o hawliad yr hawlydd",
+      "label": "Dileu’r hawliad cyfan neu ran o hawliad y parti arall",
       "body": "Gallwch ofyn i’r tribiwnlys ddileu’r hawliad cyfan neu rannau ohono."
     },
     "RECONSIDER_JUDGMENT": {
