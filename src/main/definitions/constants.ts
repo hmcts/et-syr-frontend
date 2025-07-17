@@ -231,6 +231,7 @@ export const ValidationErrors = {
   SESSION_RESPONDENT: 'sessionRespondent',
   SESSION_NOT_FOUND: 'sessionNotFound',
   TOO_LONG: 'tooLong',
+  TOO_HIGH_CURRENCY: 'tooHighCurrency',
   USER_ID_NOT_FOUND: 'userId',
   RESPONDENT_NOT_FOUND_BY_RESPONDENT_INDEX: 'respondentNotFoundByRespondentIndex',
   RESPONDENT_INDEX_NOT_FOUND: 'respondentIndexNotFound',
