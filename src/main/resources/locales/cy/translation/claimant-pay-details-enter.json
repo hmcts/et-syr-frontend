@@ -15,12 +15,12 @@
   },
   "errors": {
     "et3ResponsePayBeforeTax": {
-      "invalidCurrency": "<W>Enter pay before tax in the correct format, for example £600 or £193.54",
-      "tooHighCurrency": "<W>Pay before tax must be £9,999,999.99 or less"
+      "invalidCurrency": "Rhowch cyflog cyn treth yn y fformat cywir, er enghraifft £600 neu £193.54",
+      "tooHighCurrency": "Rhaid i cyflog cyn treth fod yn £9,999,999.99 neu lai"
     },
     "et3ResponsePayTakehome": {
-      "invalidCurrency": "<W>Enter pay after tax in the correct format, for example £600 or £193.54",
-      "tooHighCurrency": "<W>Pay after tax must be £9,999,999.99 or less"
+      "invalidCurrency": "Rhowch cyflog ar ôl treth yn y fformat cywir, er enghraifft £600 neu £193.54",
+      "tooHighCurrency": "Rhaid i cyflog ar ôl treth fod yn £9,999,999.99 neu lai"
     },
     "hiddenErrorField": {
       "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",

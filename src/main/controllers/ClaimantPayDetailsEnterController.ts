@@ -57,7 +57,7 @@ export default class ClaimantPayDetailsEnterController {
         label: (l: AnyRecord): string => l.et3ResponsePayBeforeTax.label,
         hint: (l: AnyRecord): string => l.et3ResponsePayBeforeTax.hintLabel,
         attributes: {
-          maxLength: 15,
+          maxLength: 13,
         },
         validator: isValidCurrency,
       },
@@ -67,7 +67,7 @@ export default class ClaimantPayDetailsEnterController {
         label: (l: AnyRecord): string => l.et3ResponsePayTakehome.label,
         hint: (l: AnyRecord): string => l.et3ResponsePayTakehome.hintLabel,
         attributes: {
-          maxLength: 15,
+          maxLength: 13,
         },
         validator: isValidCurrency,
       },
