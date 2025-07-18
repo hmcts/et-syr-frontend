@@ -83,12 +83,6 @@ export default class ClaimantPayDetailsEnterController {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     req.session.errors = [];
     const formData: Partial<CaseWithId> = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    const errors = this.form.getValidatorErrors(formData);
-    if (errors.length > 0) {
-      req.session.errors = errors;
-      return res.redirect(setUrlLanguage(req, PageUrls.CLAIMANT_PAY_DETAILS_ENTER));
-    }
-
     const et3ResponsePayBeforeTax: number = NumberUtils.convertStringToNumber(formData.et3ResponsePayBeforeTax);
     const et3ResponsePayTakeHome: number = NumberUtils.convertStringToNumber(formData.et3ResponsePayTakehome);
     if (NumberUtils.isNotEmpty(et3ResponsePayBeforeTax)) {
@@ -109,6 +103,12 @@ export default class ClaimantPayDetailsEnterController {
       ET3HubLinkNames.PayPensionBenefitDetails,
       LinkStatus.IN_PROGRESS
     );
+
+    const validatorErrors = this.form.getValidatorErrors(formData);
+    if (validatorErrors.length > 0) {
+      req.session.errors.push(...validatorErrors);
+    }
+
     if (CollectionUtils.isEmpty(req.session.errors) && ObjectUtils.isNotEmpty(userCase)) {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CLAIMANT_NOTICE_PERIOD)));
     }
