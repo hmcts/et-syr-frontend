@@ -15,10 +15,12 @@
   },
   "errors": {
     "et3ResponsePayBeforeTax": {
-      "invalidCurrency": "Rhaid i dâl cyn treth fod yn rhif ac yn ffigyrau dwbl o leiaf. Er enghraifft 10"
+      "invalidCurrency": "Rhowch cyflog cyn treth yn y fformat cywir, er enghraifft £600 neu £193.54",
+      "tooHighCurrency": "Rhaid i cyflog cyn treth fod yn £9,999,999.99 neu lai"
     },
     "et3ResponsePayTakehome": {
-      "invalidCurrency": "Rhaid i dâl ar ôl treth fod yn rhif ac yn ffigyrau dwbl o leiaf. Er enghraifft 10"
+      "invalidCurrency": "Rhowch cyflog ar ôl treth yn y fformat cywir, er enghraifft £600 neu £193.54",
+      "tooHighCurrency": "Rhaid i cyflog ar ôl treth fod yn £9,999,999.99 neu lai"
     },
     "hiddenErrorField": {
       "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
