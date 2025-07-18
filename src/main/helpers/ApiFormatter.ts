@@ -570,7 +570,7 @@ export const formatToCcdAcceptedNumber = (amount: number): number => {
   if (amount === undefined) {
     return;
   }
-  return parseFloat(amount.toString().replace(/,/g, ''));
+  return parseFloat(amount.toString().replace(/[£,]/g, ''));
 };
 
 export const formatDate = (date: CaseDate): string => {
