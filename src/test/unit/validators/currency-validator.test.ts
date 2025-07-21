@@ -41,6 +41,7 @@ describe('Currency Validation', () => {
       { mockRef: '10.123', expected: 'invalidCurrency' },
       { mockRef: '1 0', expected: 'invalidCurrency' },
       { mockRef: '0', expected: 'invalidCurrency' },
+      { mockRef: '100£', expected: 'invalidCurrency' },
     ];
 
     const tooHighCurrency: ValidationTestCase[] = [
