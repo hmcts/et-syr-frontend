@@ -68,6 +68,15 @@ describe('Claimant pay details enter details Controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_NOTICE_PERIOD);
     });
 
+    it('should redirect to next page when et3ResponsePayBeforeTax is valid', async () => {
+      request = mockRequest({ body: { et3ResponsePayBeforeTax: ' £12,345 ' } });
+      request.url = PageUrls.CLAIMANT_PAY_DETAILS_ENTER;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(request.session.userCase.et3ResponsePayBeforeTax).toEqual('1234500');
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_NOTICE_PERIOD);
+    });
+
     it('should return error when et3ResponsePayBeforeTax is text', async () => {
       request = mockRequest({ body: { et3ResponsePayBeforeTax: 'test' } });
       request.url = PageUrls.CLAIMANT_PAY_DETAILS_ENTER;
