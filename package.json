@@ -177,7 +177,8 @@
     "cookie": "^1.0.0",
     "shelljs": "^0.9.0",
     "cross-spawn": "^7.0.5",
-    "brace-expansion": "^2.0.2"
+    "brace-expansion": "^2.0.2",
+    "form-data": "^4.0.4"
   },
   "packageManager": "yarn@3.8.7"
 }
