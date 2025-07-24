@@ -72,6 +72,12 @@
       "p3a": "Os oes gennych unrhyw wrthwynebiadau neu ymatebion i’w cais, rhaid i chi eu hanfon i’r tribiwnlys cyn gynted â phosibl ac erbyn ",
       "p3b": "fan bellaf.",
       "linkText": "Ymateb i’r cais"
+    },
+    "respondentRepresented": {
+      "title": "<placeholder>",
+      "p1": "<placeholder>",
+      "l1": "<placeholder>",
+      "l2": "<placeholder>"
     }
   },
   "multiples": {
