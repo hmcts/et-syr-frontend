@@ -3,7 +3,7 @@
   "inset": "The tribunal must operate in a way fair to both sides. This means that each party must see or hear what the other party tells the tribunal. The rules therefore require all communications with the tribunal to be copied to the other party, apart from in exceptional circumstances.",
   "copyToOtherPartyYesOrNo": {
     "label": "Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?",
-    "yes": "Yes, I confirm I want to copy this correspondence to the other party to satisfy the Employment Tribunal Rules of Procedure. By selecting this option, a copy of this correspondence will be sent to the other party upon submission. The other party will be notified that any objections to your application should be sent to the tribunal as soon as possible and in any event within 7 days.",
+    "yes": "Yes, I confirm I want to copy this correspondence to the other party to satisfy the Employment Tribunal Procedure Rules. By selecting this option, a copy of this correspondence will be sent to the other party upon submission. The other party will be notified that any objections to your application should be sent to the tribunal as soon as possible and in any event within 7 days.",
     "no": "No, I do not want to copy this correspondence to the other party. You must tell the tribunal why you do not want to inform the other party. The tribunal will consider your reasons and decide if you must inform the other party or not."
   },
   "copyToOtherPartyText": {
