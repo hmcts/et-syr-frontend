@@ -43,4 +43,9 @@ export default class NumberUtils {
     }
     return Number(stringValue);
   }
+
+  public static convertCurrencyStringToNumber(stringValue: string): number {
+    const str = stringValue?.replace(/[£,]/g, '');
+    return NumberUtils.convertStringToNumber(str);
+  }
 }

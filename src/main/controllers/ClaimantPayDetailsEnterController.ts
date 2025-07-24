@@ -20,7 +20,7 @@ import ErrorUtils from '../utils/ErrorUtils';
 import NumberUtils from '../utils/NumberUtils';
 import ObjectUtils from '../utils/ObjectUtils';
 import StringUtils from '../utils/StringUtils';
-import { isValidCurrency } from '../validators/validator';
+import { isValidCurrency } from '../validators/currency-validator';
 
 const logger = getLogger('ClaimantPayDetailsEnterController');
 
@@ -57,7 +57,7 @@ export default class ClaimantPayDetailsEnterController {
         label: (l: AnyRecord): string => l.et3ResponsePayBeforeTax.label,
         hint: (l: AnyRecord): string => l.et3ResponsePayBeforeTax.hintLabel,
         attributes: {
-          maxLength: 16,
+          maxLength: 13,
         },
         validator: isValidCurrency,
       },
@@ -67,7 +67,7 @@ export default class ClaimantPayDetailsEnterController {
         label: (l: AnyRecord): string => l.et3ResponsePayTakehome.label,
         hint: (l: AnyRecord): string => l.et3ResponsePayTakehome.hintLabel,
         attributes: {
-          maxLength: 16,
+          maxLength: 13,
         },
         validator: isValidCurrency,
       },
@@ -83,8 +83,8 @@ export default class ClaimantPayDetailsEnterController {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     req.session.errors = [];
     const formData: Partial<CaseWithId> = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    const et3ResponsePayBeforeTax: number = NumberUtils.convertStringToNumber(formData.et3ResponsePayBeforeTax);
-    const et3ResponsePayTakeHome: number = NumberUtils.convertStringToNumber(formData.et3ResponsePayTakehome);
+    const et3ResponsePayBeforeTax: number = NumberUtils.convertCurrencyStringToNumber(formData.et3ResponsePayBeforeTax);
+    const et3ResponsePayTakeHome: number = NumberUtils.convertCurrencyStringToNumber(formData.et3ResponsePayTakehome);
     if (NumberUtils.isNotEmpty(et3ResponsePayBeforeTax)) {
       req.session.userCase.et3ResponsePayBeforeTax = String((et3ResponsePayBeforeTax * 100).toFixed(0));
     } else {
@@ -103,6 +103,12 @@ export default class ClaimantPayDetailsEnterController {
       ET3HubLinkNames.PayPensionBenefitDetails,
       LinkStatus.IN_PROGRESS
     );
+
+    const validatorErrors = this.form.getValidatorErrors(formData);
+    if (validatorErrors.length > 0) {
+      req.session.errors.push(...validatorErrors);
+    }
+
     if (CollectionUtils.isEmpty(req.session.errors) && ObjectUtils.isNotEmpty(userCase)) {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CLAIMANT_NOTICE_PERIOD)));
     }
