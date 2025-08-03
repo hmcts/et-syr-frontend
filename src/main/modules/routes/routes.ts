@@ -16,6 +16,7 @@ import CaseListCheckController from '../../controllers/CaseListCheckController';
 import CaseListController from '../../controllers/CaseListController';
 import CaseNumberCheckController from '../../controllers/CaseNumberCheckController';
 import ChangeDetailsController from '../../controllers/ChangeDetailsController';
+import ChangeLegalRepresentativeController from '../../controllers/ChangeLegalRepresentativeController';
 import CheckYourAnswersContactDetailsController from '../../controllers/CheckYourAnswersContactDetailsController';
 import CheckYourAnswersContestClaimController from '../../controllers/CheckYourAnswersContestClaimController';
 import CheckYourAnswersET3Controller from '../../controllers/CheckYourAnswersET3Controller';
@@ -306,6 +307,8 @@ export class Routes {
     app.get(PageUrls.DOCUMENTS, new DocumentsController().get);
     app.get(PageUrls.REMOVE_FILE, new RemoveFileController().get);
     app.get(PageUrls.APPOINT_LEGAL_REPRESENTATIVE, new AppointLegalRepController().get);
+    app.get(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().get);
+    app.post(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().post);
     app.get(
       Urls.INFO,
       infoRequestHandler({

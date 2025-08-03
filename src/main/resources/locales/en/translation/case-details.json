@@ -33,6 +33,8 @@
   "submittedAlert": "You have submitted your claim to the tribunal",
   "processClaim": "We aim to process your claim by",
   "busyPeriod": ". In busy periods it may take longer.",
+  "appointLegalRepresentative": "Appoint a legal representative",
+  "changeLegalRepresentative": "Change my legal representative",
   "notificationBanner": {
     "viewResponse": {
       "header": "The tribunal has acknowledged a claim against ",

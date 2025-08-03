@@ -172,6 +172,17 @@ export class CaseApi {
     }
   };
 
+  removeRespondentRepresentative = async (req: AppRequest): Promise<AxiosResponse<string>> => {
+    try {
+      return await this.axios.post(
+        `${JavaApiUrls.REVOKE_RESPONDENT_REPRESENTATIVE}?caseSubmissionReference=${req.session.userCase.id}`,
+        {}
+      );
+    } catch (error) {
+      throw new Error(ServiceErrors.ERROR_REVOKING_USER_ROLE + axiosErrorDetails(error));
+    }
+  };
+
   uploadDocument = async (file: UploadedFile, caseTypeId: string): Promise<AxiosResponse<DocumentUploadResponse>> => {
     try {
       const formData: FormData = new FormData();
