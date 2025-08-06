@@ -4,94 +4,106 @@
 
 {% if not respondentRepresented %}
 
-{% set htmlForAcknowledgementAlert %}
+  {% set htmlForAcknowledgementAlert %}
+    {% if showAcknowledgementAlert or showSavedResponseAlert%}
+      <h3 class="govuk-notification-banner__heading">
+        {{notificationBanner.acknowledgement.header }}
+        {% if selectedRespondent.respondentName !== null
+                and selectedRespondent.respondentName !== ""
+                and selectedRespondent.respondentName !== undefined %}
+          {{ selectedRespondent.respondentName }}
+        {% elif (selectedRespondent.respondentOrganisation !== null
+                  and selectedRespondent.respondentOrganisation !== ""
+                  and selectedRespondent.respondentOrganisation !== undefined) %}
+          {{ selectedRespondent.respondentOrganisation }}
+        {% else %}
+          {{ selectedRespondent.respondentFirstName + " " + selectedRespondent.respondentLastName }}
+        {% endif %}
+      </h3>
 
-{% if showAcknowledgementAlert or showSavedResponseAlert%}
-  <h3 class="govuk-notification-banner__heading">
-    {{notificationBanner.acknowledgement.header }}
-    {% if selectedRespondent.respondentName !== null
-            and selectedRespondent.respondentName !== ""
-            and selectedRespondent.respondentName !== undefined %}
-      {{ selectedRespondent.respondentName }}
-    {% elif (selectedRespondent.respondentOrganisation !== null
-              and selectedRespondent.respondentOrganisation !== ""
-              and selectedRespondent.respondentOrganisation !== undefined) %}
-      {{ selectedRespondent.respondentOrganisation }}
-    {% else %}
-      {{ selectedRespondent.respondentFirstName + " " + selectedRespondent.respondentLastName }}
+      <p class="govuk-body">
+        {{notificationBanner.acknowledgement.p1 + respondentResponseDeadline}}
+      </p>
+
+      {% if showAcknowledgementAlert %}
+        <p class="govuk-body">
+          <a class="govuk-link" href="{{ et1FormUrl }}"><b>{{notificationBanner.acknowledgement.link}}</b></a><br>
+          <a class="govuk-link" href="{{ respondToClaimUrl }}"><b>{{notificationBanner.acknowledgement.link2}}</b></a>
+        </p>
+      {% elif showSavedResponseAlert and not showAcknowledgementAlert %}
+        <p class="govuk-body">
+          <a class="govuk-link" href="{{ respondToClaimUrl }}"><b>{{notificationBanner.acknowledgement.returnToResponse}}</b></a>
+        </p>
+      {% endif %}
     {% endif %}
-  </h3>
 
-  <p class="govuk-body">
-    {{notificationBanner.acknowledgement.p1 + respondentResponseDeadline}}
-  </p>
+    {% if showViewResponseAlert %}
+      <h3 class="govuk-notification-banner__heading">
+        {{notificationBanner.viewResponse.header + userCase.respondents[0].respondentName }}
+      </h3>
+      <p class="govuk-body">
+        {{notificationBanner.viewResponse.p1}}
+      </p>
+      <p class="govuk-body">
+        <a class="govuk-link" href="{{ et3Response }}"><b>{{notificationBanner.viewResponse.link}}</b></a><br>
+      </p>
+    {% endif %}
 
-  {% if showAcknowledgementAlert %}
-    <p class="govuk-body">
-      <a class="govuk-link" href="{{ et1FormUrl }}"><b>{{notificationBanner.acknowledgement.link}}</b></a><br>
-      <a class="govuk-link" href="{{ respondToClaimUrl }}"><b>{{notificationBanner.acknowledgement.link2}}</b></a>
-    </p>
+  {% endset %}
 
-  {% elif showSavedResponseAlert and not showAcknowledgementAlert %}
-    <p class="govuk-body">
-      <a class="govuk-link" href="{{ respondToClaimUrl }}"><b>{{notificationBanner.acknowledgement.returnToResponse}}</b></a>
-    </p>
+  {% if showAcknowledgementAlert or showViewResponseAlert or showSavedResponseAlert %}
+    {{ govukNotificationBanner({
+     html: htmlForAcknowledgementAlert,
+     titleText: important
+    }) }}
   {% endif %}
+
+  {% for app in appRequestNotifications %}
+    {% set htmlForAppRequestNotifications %}
+      <p class="govuk-notification-banner__heading">{{ notificationBanner.tseFromTribunal.p1a }} {{ app.from }} {{ notificationBanner.tseFromTribunal.p1b }} {{ app.appName }}</p>
+      <p class="govuk-body">{{ notificationBanner.tseFromTribunal.p2 }}</p>
+      <p class="govuk-notification-banner__heading">
+        <a class="govuk-link" href="{{ app.appUrl }}">{{ notificationBanner.tseFromTribunal.linkText }}</a>
+      </p>
+    {% endset %}
+    {{ govukNotificationBanner({
+      html: htmlForAppRequestNotifications,
+      titleText: important
+    }) }}
+  {% endfor %}
+
+  {% for app in appSubmitNotifications %}
+    {% if (loop.index <= 5) %}
+      {% set htmlForAppSubmitNotifications %}
+        <h3 class="govuk-notification-banner__heading">{{ notificationBanner.tseHasSubmit.p1a }} {{ app.from }} {{ app.fromName }} {{ notificationBanner.tseHasSubmit.p1b }} {{ app.appName }}</h3>
+        {% if app.isTypeB %}
+          <p class="govuk-body">{{ notificationBanner.tseHasSubmit.p2TypeB }}</p>
+        {% endif %}
+        <p class="govuk-body">{{ notificationBanner.tseHasSubmit.p3a }} <b>{{ dateToLocale(app.dueDate) }}</b> {{ notificationBanner.tseHasSubmit.p3b }}</p>
+        <h3 class="govuk-notification-banner__heading">
+          <a class="govuk-link" href="{{ app.appUrl }}">{{ notificationBanner.tseHasSubmit.linkText }}</a>
+        </h3>
+      {% endset %}
+      {{ govukNotificationBanner({
+        html: htmlForAppSubmitNotifications,
+        titleText: important
+      }) }}
+    {% endif %}
+  {% endfor %}
 {% endif %}
 
-{% if showViewResponseAlert %}
-  <h3 class="govuk-notification-banner__heading">
-    {{notificationBanner.viewResponse.header + userCase.respondents[0].respondentName }}
-  </h3>
-
-  <p class="govuk-body">
-    {{notificationBanner.viewResponse.p1}}
-  </p>
-
-  <p class="govuk-body">
-    <a class="govuk-link" href="{{ et3Response }}"><b>{{notificationBanner.viewResponse.link}}</b></a><br>
-  </p>
-{% endif %}
-
-{% endset %}
-
-{% if showAcknowledgementAlert or showViewResponseAlert or showSavedResponseAlert %}
-  {{ govukNotificationBanner({
-   html: htmlForAcknowledgementAlert,
-   titleText: important
-  }) }}
-{% endif %}
-
-{% for app in appRequestNotifications %}
-  {% set htmlForAppRequestNotifications %}
-    <p class="govuk-notification-banner__heading">{{ notificationBanner.tseFromTribunal.p1a }} {{ app.from }} {{ notificationBanner.tseFromTribunal.p1b }} {{ app.appName }}</p>
-    <p class="govuk-body">{{ notificationBanner.tseFromTribunal.p2 }}</p>
-    <p class="govuk-notification-banner__heading">
-      <a class="govuk-link" href="{{ app.appUrl }}">{{ notificationBanner.tseFromTribunal.linkText }}</a>
+{% if selectedRespondent.representativeRemoved and selectedRespondent.representativeRemoved === 'Yes'  %}
+  {% set htmlForClaimantNotRepresentedBanner %}
+    <p class="govuk-body">
+      {{ notificationBanner.claimantNotRepresented.p1 }}
+    </p>
+    <p class="govuk-body">
+      {{ notificationBanner.claimantNotRepresented.p2 }}
     </p>
   {% endset %}
   {{ govukNotificationBanner({
-    html: htmlForAppRequestNotifications,
-    titleText: important
-  }) }}
-{% endfor %}
-
-{% for app in appSubmitNotifications %}
-  {% if (loop.index <= 5) %}
-    {% set htmlForAppSubmitNotifications %}
-      <h3 class="govuk-notification-banner__heading">{{ notificationBanner.tseHasSubmit.p1a }} {{ app.from }} {{ app.fromName }} {{ notificationBanner.tseHasSubmit.p1b }} {{ app.appName }}</h3>
-      {% if app.isTypeB %}
-        <p class="govuk-body">{{ notificationBanner.tseHasSubmit.p2TypeB }}</p>
-      {% endif %}
-      <p class="govuk-body">{{ notificationBanner.tseHasSubmit.p3a }} <b>{{ dateToLocale(app.dueDate) }}</b> {{ notificationBanner.tseHasSubmit.p3b }}</p>
-      <h3 class="govuk-notification-banner__heading">
-        <a class="govuk-link" href="{{ app.appUrl }}">{{ notificationBanner.tseHasSubmit.linkText }}</a>
-      </h3>
-    {% endset %}
-    {{ govukNotificationBanner({
-      html: htmlForAppSubmitNotifications,
+      html: htmlForClaimantNotRepresentedBanner,
       titleText: important
-    }) }}
-  {% endif %}
-{% endfor %}
+    })
+  }}
 {% endif %}

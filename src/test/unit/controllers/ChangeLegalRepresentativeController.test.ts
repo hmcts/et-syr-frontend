@@ -6,8 +6,10 @@ import { AppRequest } from '../../../main/definitions/appRequest';
 import { LEGAL_REPRESENTATIVE_CHANGE_OPTIONS, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import * as CaseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
+import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+import { mockUserDetails } from '../mocks/mockUser';
 
 const changeLegalRepresentativeController = new ChangeLegalRepresentativeController();
 const mockCaseApi = {
@@ -48,12 +50,14 @@ describe('ChangeLegalRepresentative Controller', () => {
   it('should render the citizen hub page when remove radio button is selected', async () => {
     const body = { legalRep: LEGAL_REPRESENTATIVE_CHANGE_OPTIONS.remove };
 
-    const userCase = { id: '1234567890123456' };
+    const userCase = mockCaseWithIdWithRespondents;
     const request = <AppRequest>mockRequest({ userCase });
     request.body = body;
+    request.session.selectedRespondentIndex = 0;
+    request.session.user = mockUserDetails;
     const res = mockResponse();
     await changeLegalRepresentativeController.post(request, res);
 
-    expect(res.redirect).toHaveBeenCalledWith('/citizen-hub/1234567890123456?language=?lng=en');
+    expect(res.redirect).toHaveBeenCalledWith('/case-details/1234/3453xaa?language=?lng=en');
   });
 });

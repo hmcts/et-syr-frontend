@@ -1,5 +1,6 @@
 import { AppRequest } from '../../../main/definitions/appRequest';
-import RespondentUtils from '../../../main/utils/RespondentUtils';
+import { RespondentSolicitorType } from '../../../main/definitions/enums/respondentSolicitorType';
+import { RespondentUtils } from '../../../main/utils/RespondentUtils';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockRespondentET3Model } from '../mocks/mockRespondentET3Model';
 
@@ -46,6 +47,64 @@ describe('RespondentUtils tests', () => {
       request.session.userCase.respondents = [mockRespondentET3Model];
       request.session.selectedRespondentIndex = 0;
       expect(RespondentUtils.findSelectedRespondentByRequest(request)).toStrictEqual(mockRespondentET3Model);
+    });
+  });
+  describe('respondentRepresented', () => {
+    const baseRequest = {
+      session: {
+        selectedRespondentIndex: 0,
+        userCase: {},
+      },
+    } as unknown as AppRequest;
+
+    const solicitorTypes = Object.values(RespondentSolicitorType);
+
+    it.each(solicitorTypes)('should return true when organisation is present for %s', type => {
+      const req = {
+        ...baseRequest,
+        session: {
+          ...baseRequest.session,
+          userCase: {
+            [`respondentOrganisationPolicy${solicitorTypes.indexOf(type)}`]: {
+              Organisation: { Name: 'Some Org' },
+            },
+          },
+          selectedRespondentIndex: solicitorTypes.indexOf(type),
+        },
+      } as unknown as AppRequest;
+
+      const result = RespondentUtils.respondentRepresented(req);
+      expect(result).toBe(true);
+    });
+
+    it('should return false when organisation is undefined', () => {
+      const req = {
+        ...baseRequest,
+        session: {
+          ...baseRequest.session,
+          userCase: {
+            respondentOrganisationPolicy0: { Organisation: undefined },
+          },
+        },
+      } as unknown as AppRequest;
+
+      const result = RespondentUtils.respondentRepresented(req);
+      expect(result).toBe(false);
+    });
+
+    it('should return false when policy does not exist', () => {
+      const req = {
+        ...baseRequest,
+        session: {
+          ...baseRequest.session,
+          userCase: {
+            // respondentOrganisationPolicy1 is missing
+          },
+        },
+      } as unknown as AppRequest;
+
+      const result = RespondentUtils.respondentRepresented(req);
+      expect(result).toBe(false);
     });
   });
 });

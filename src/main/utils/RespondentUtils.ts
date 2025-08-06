@@ -1,11 +1,15 @@
 import { AppRequest } from '../definitions/appRequest';
 import { RespondentET3Model } from '../definitions/case';
+import {
+  RespondentSolicitorType,
+  getRespondentSolicitorTypeByIndex,
+} from '../definitions/enums/respondentSolicitorType';
 
 import CollectionUtils from './CollectionUtils';
 import NumberUtils from './NumberUtils';
 import ObjectUtils from './ObjectUtils';
 
-export default class RespondentUtils {
+export class RespondentUtils {
   public static findSelectedRespondentByRequest(request: AppRequest): RespondentET3Model {
     if (
       CollectionUtils.isEmpty(request?.session?.userCase?.respondents) ||
@@ -30,18 +34,27 @@ export default class RespondentUtils {
    * @returns `true` if the selected respondent has a matching representative; otherwise, `false`.
    */
   public static respondentRepresented(req: AppRequest): boolean {
-    if (CollectionUtils.isEmpty(req.session.userCase?.representatives)) {
-      return false;
-    }
-    const respondent: RespondentET3Model = this.findSelectedRespondentByRequest(req);
-    if (ObjectUtils.isEmpty(respondent)) {
-      return false;
-    }
-    for (const representative of req.session.userCase.representatives) {
-      if (representative.respondentId === respondent.ccdId) {
-        return true;
-      }
-    }
-    return false;
+    const currentSolicitorType = getRespondentSolicitorTypeByIndex(req.session.selectedRespondentIndex);
+    const policyMap: Record<RespondentSolicitorType, string> = {
+      [RespondentSolicitorType.SOLICITORA]: 'respondentOrganisationPolicy0',
+      [RespondentSolicitorType.SOLICITORB]: 'respondentOrganisationPolicy1',
+      [RespondentSolicitorType.SOLICITORC]: 'respondentOrganisationPolicy2',
+      [RespondentSolicitorType.SOLICITORD]: 'respondentOrganisationPolicy3',
+      [RespondentSolicitorType.SOLICITORE]: 'respondentOrganisationPolicy4',
+      [RespondentSolicitorType.SOLICITORF]: 'respondentOrganisationPolicy5',
+      [RespondentSolicitorType.SOLICITORG]: 'respondentOrganisationPolicy6',
+      [RespondentSolicitorType.SOLICITORH]: 'respondentOrganisationPolicy7',
+      [RespondentSolicitorType.SOLICITORI]: 'respondentOrganisationPolicy8',
+      [RespondentSolicitorType.SOLICITORJ]: 'respondentOrganisationPolicy9',
+    };
+
+    const policyKey = policyMap[currentSolicitorType];
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    const policy = req.session.userCase?.[policyKey];
+
+    // Return true only if the policy exists and its organization is defined
+    return ObjectUtils.isNotEmpty(policy?.Organisation);
   }
 }

@@ -13,6 +13,7 @@ import { TaskListCheckType } from '../complexTypes/taskListCheckType';
 import { WorkAddressDetails } from '../complexTypes/workAddressDetails';
 import { CaseState } from '../definition';
 import { HubLinksStatuses } from '../hub';
+import { OrganisationPolicy } from '../types/organisationPolicy';
 import { TypeItem } from '../util-types';
 
 export interface CaseApiDataResponse {
@@ -74,6 +75,16 @@ export interface CaseData {
   leadClaimant?: YesOrNo;
   batchCaseStayed?: YesOrNo;
   preAcceptCase?: PreAcceptCase;
+  respondentOrganisationPolicy0?: OrganisationPolicy;
+  respondentOrganisationPolicy1?: OrganisationPolicy;
+  respondentOrganisationPolicy2?: OrganisationPolicy;
+  respondentOrganisationPolicy3?: OrganisationPolicy;
+  respondentOrganisationPolicy4?: OrganisationPolicy;
+  respondentOrganisationPolicy5?: OrganisationPolicy;
+  respondentOrganisationPolicy6?: OrganisationPolicy;
+  respondentOrganisationPolicy7?: OrganisationPolicy;
+  respondentOrganisationPolicy8?: OrganisationPolicy;
+  respondentOrganisationPolicy9?: OrganisationPolicy;
 }
 
 export type PreAcceptCase = {

@@ -191,6 +191,16 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
     leadClaimant: fromApiCaseData?.case_data?.leadClaimant,
     caseStayed: fromApiCaseData?.case_data?.batchCaseStayed,
     preAcceptCase: fromApiCaseData?.case_data?.preAcceptCase,
+    respondentOrganisationPolicy0: fromApiCaseData?.case_data?.respondentOrganisationPolicy0,
+    respondentOrganisationPolicy1: fromApiCaseData?.case_data?.respondentOrganisationPolicy1,
+    respondentOrganisationPolicy2: fromApiCaseData?.case_data?.respondentOrganisationPolicy2,
+    respondentOrganisationPolicy3: fromApiCaseData?.case_data?.respondentOrganisationPolicy3,
+    respondentOrganisationPolicy4: fromApiCaseData?.case_data?.respondentOrganisationPolicy4,
+    respondentOrganisationPolicy5: fromApiCaseData?.case_data?.respondentOrganisationPolicy5,
+    respondentOrganisationPolicy6: fromApiCaseData?.case_data?.respondentOrganisationPolicy6,
+    respondentOrganisationPolicy7: fromApiCaseData?.case_data?.respondentOrganisationPolicy7,
+    respondentOrganisationPolicy8: fromApiCaseData?.case_data?.respondentOrganisationPolicy8,
+    respondentOrganisationPolicy9: fromApiCaseData?.case_data?.respondentOrganisationPolicy9,
   };
   if (NumberUtils.isNotEmpty(req?.session?.selectedRespondentIndex)) {
     mapResponseApiDataToCaseWithId(fromApiCaseData, caseWithId, req);
