@@ -175,7 +175,7 @@ export class CaseApi {
   removeRespondentRepresentative = async (req: AppRequest): Promise<AxiosResponse<string>> => {
     try {
       return await this.axios.post(
-        `${JavaApiUrls.REVOKE_RESPONDENT_REPRESENTATIVE}?caseSubmissionReference=${req.session.userCase.id}`,
+        `${JavaApiUrls.REVOKE_RESPONDENT_REPRESENTATIVE}?caseSubmissionReference=${req.session.userCase.id}&respondentIndex=${req.session.selectedRespondentIndex}`,
         {}
       );
     } catch (error) {

@@ -16,6 +16,7 @@ import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ET3Util from '../utils/ET3Util';
+import RespondentUtils from '../utils/RespondentUtils';
 
 const DAYS_FOR_PROCESSING = 7;
 export default class CaseDetailsController {
@@ -72,7 +73,7 @@ export default class CaseDetailsController {
       appRequestNotifications: appNotifications.appRequestNotifications,
       appSubmitNotifications: appNotifications.appSubmitNotifications,
       languageParam: getLanguageParam(req.url),
-      respondentRepresented: req.session.userCase.respondentRepresented,
+      respondentRepresented: RespondentUtils.respondentRepresented(req),
     });
   }
 }

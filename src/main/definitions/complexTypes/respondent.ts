@@ -127,6 +127,7 @@ export interface RespondentType {
   workAddressPostcode?: string;
   et3Status?: string;
   et3IsRespondentAddressCorrect?: YesOrNo;
+  representativeRemoved?: YesOrNo;
 }
 
 export interface ET3VettingType extends ET3VettingCommonTypes {

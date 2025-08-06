@@ -205,6 +205,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3HubLinksStatuses?: ET3HubLinksStatuses;
   et3IsRespondentAddressCorrect?: YesOrNo;
   et3Status?: string;
+  representativeRemoved?: YesOrNo;
 }
 
 export interface RespondentApiModel {

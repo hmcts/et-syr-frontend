@@ -5,5 +5,7 @@ import { getLanguageParam } from './RouterHelpers';
 
 export const removeRespondentRepresentative = async (req: AppRequest): Promise<string> => {
   await getCaseApi(req.session.user?.accessToken)?.removeRespondentRepresentative(req);
-  return '/citizen-hub/' + req.session.userCase.id + '?language=' + getLanguageParam(req.url);
+  return (
+    '/case-details/' + req.session.userCase.id + '/' + req.session.user.id + '?language=' + getLanguageParam(req.url)
+  );
 };
