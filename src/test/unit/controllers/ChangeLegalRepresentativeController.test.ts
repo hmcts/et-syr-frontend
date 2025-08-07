@@ -44,7 +44,7 @@ describe('ChangeLegalRepresentative Controller', () => {
     const res = mockResponse();
     await changeLegalRepresentativeController.post(req, res);
 
-    expect(res.redirect).toHaveBeenCalledWith(PageUrls.APPOINT_LEGAL_REPRESENTATIVE);
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.APPOINT_LEGAL_REPRESENTATIVE + '?lng=en');
   });
 
   it('should render the citizen hub page when remove radio button is selected', async () => {
@@ -58,6 +58,6 @@ describe('ChangeLegalRepresentative Controller', () => {
     const res = mockResponse();
     await changeLegalRepresentativeController.post(request, res);
 
-    expect(res.redirect).toHaveBeenCalledWith('/case-details/1234/3453xaa?language=?lng=en');
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.CONTACT_TRIBUNAL + '?lng=en');
   });
 });
