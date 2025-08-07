@@ -5,7 +5,6 @@ import { AppRequest } from '../definitions/appRequest';
 import { LEGAL_REPRESENTATIVE_CHANGE_OPTIONS, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
-import { removeRespondentRepresentative } from '../helpers/CaseRoleHelper';
 import { getPageContent } from '../helpers/FormHelper';
 import { conditionalRedirect, getLanguageParam } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
@@ -54,7 +53,7 @@ export default class ChangeLegalRepresentativeController {
         LEGAL_REPRESENTATIVE_CHANGE_OPTIONS.change
       )
         ? PageUrls.APPOINT_LEGAL_REPRESENTATIVE
-        : await removeRespondentRepresentative(req);
+        : PageUrls.CONTACT_TRIBUNAL;
       res.redirect(redirectUrl);
     } catch (error) {
       logger.info(error);
