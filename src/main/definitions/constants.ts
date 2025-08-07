@@ -81,6 +81,8 @@ export const TranslationKeys = {
   RESPOND_TO_APPLICATION_CYA: 'respond-to-application-check-your-answers',
   RESPOND_TO_APPLICATION_COMPLETE: 'respond-to-application-complete',
   RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: 'respond-to-application-copy-to-other-party',
+  // NoC
+  APPOINT_LEGAL_REPRESENTATIVE: 'appoint-legal-representative',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
 } as const;
@@ -164,6 +166,8 @@ export const PageUrls = {
   RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: '/respond-to-application-copy-to-other-party',
   RESPOND_TO_APPLICATION_CYA: '/respond-to-application-check-your-answers',
   RESPOND_TO_APPLICATION_COMPLETE: '/respond-to-application-complete',
+  // NoC
+  APPOINT_LEGAL_REPRESENTATIVE: '/appoint-legal-representative',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
 } as const;

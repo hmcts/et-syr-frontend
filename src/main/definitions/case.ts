@@ -383,6 +383,7 @@ export interface Case {
   claimantDetails?: YesOrNo;
   respondentResponse?: YesOrNo;
   preAcceptCase?: PreAcceptCase;
+  respondentRepresented?: Representative;
 }
 
 export const enum StillWorking {
@@ -532,6 +533,8 @@ export interface UploadedDocumentType {
 export interface Representative {
   hasMyHMCTSAccount?: YesOrNo;
   respondentId?: string;
+  nameOfOrganisation?: string;
+  respRepName?: string;
 }
 
 export const enum TypeOfOrganisation {
