@@ -11,7 +11,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { isClearSelection, returnValidUrl } from '../helpers/RouterHelpers';
+import { endSubSection, isClearSelection, returnValidUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -81,6 +81,7 @@ export default class ClaimantPayDetailsEnterController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    endSubSection(req);
     req.session.errors = [];
     const formData: Partial<CaseWithId> = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const et3ResponsePayBeforeTax: number = NumberUtils.convertStringToNumber(formData.et3ResponsePayBeforeTax);
