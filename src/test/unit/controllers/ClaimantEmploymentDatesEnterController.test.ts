@@ -1,5 +1,5 @@
 import ClaimantEmploymentDatesEnterController from '../../../main/controllers/ClaimantEmploymentDatesEnterController';
-import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/acas-early-conciliation-certificate.json';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -166,6 +166,41 @@ describe('Claimant employment dates enter Controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
       expect(request.session.errors).toHaveLength(length);
       expect(request.session.errors).toEqual(errors);
+    });
+
+    it('should render the page', async () => {
+      request = mockRequest({
+        body: {
+          'et3ResponseEmploymentStartDate-day': '',
+          'et3ResponseEmploymentStartDate-month': '',
+          'et3ResponseEmploymentStartDate-year': '',
+          'et3ResponseEmploymentEndDate-day': '',
+          'et3ResponseEmploymentEndDate-month': '',
+          'et3ResponseEmploymentEndDate-year': '',
+        },
+      });
+      request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
+    });
+
+    it('should render the page with CYA', async () => {
+      request = mockRequest({
+        body: {
+          'et3ResponseEmploymentStartDate-day': '',
+          'et3ResponseEmploymentStartDate-month': '',
+          'et3ResponseEmploymentStartDate-year': '',
+          'et3ResponseEmploymentEndDate-day': '',
+          'et3ResponseEmploymentEndDate-month': '',
+          'et3ResponseEmploymentEndDate-year': '',
+        },
+      });
+      request.session.subSectionUrl = PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER;
+      request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER);
     });
   });
 });

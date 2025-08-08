@@ -85,6 +85,19 @@ describe('RespondentContestClaimController', () => {
       expect(response.redirect).toHaveBeenCalledWith(expect.stringContaining(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
     });
 
+    it('should redirect to contest claim reason page when CYA and response is NO', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseRespondentContestClaim: YesOrNo.YES,
+        },
+      });
+      request.session.returnUrl = PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER;
+      request.url = PageUrls.RESPONDENT_CONTEST_CLAIM_REASON;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(expect.stringContaining(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON));
+    });
+
     it('should call ET3Util.updateET3ResponseWithET3Form with the correct parameters when response is YES', async () => {
       request = mockRequest({
         body: {
@@ -96,6 +109,19 @@ describe('RespondentContestClaimController', () => {
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM);
+    });
+
+    it('should call ET3Util.updateET3ResponseWithET3Form with the correct parameters when CYA response is YES', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseRespondentContestClaim: YesOrNo.NO,
+        },
+      });
+      request.session.returnUrl = PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER;
+      request.url = PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER);
     });
   });
 });

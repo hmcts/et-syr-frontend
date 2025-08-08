@@ -1,6 +1,6 @@
 import ClaimantPayDetailsController from '../../../main/controllers/ClaimantPayDetailsController';
 import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
-import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
@@ -79,6 +79,32 @@ describe('Claimant pay details Controller', () => {
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_NOTICE_PERIOD);
+    });
+
+    it('should redirect to next page when CYA and yes is selected', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseEarningDetailsCorrect: YesOrNoOrNotApplicable.YES,
+        },
+      });
+      request.session.returnUrl = PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER;
+      request.url = PageUrls.CLAIMANT_PAY_DETAILS;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER);
+    });
+
+    it('should redirect to next page when CYA and no is selected', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseEarningDetailsCorrect: YesOrNoOrNotApplicable.NO,
+        },
+      });
+      request.session.returnUrl = PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER;
+      request.url = PageUrls.CLAIMANT_PAY_DETAILS;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_PAY_DETAILS_ENTER);
     });
   });
 });

@@ -12,7 +12,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
+import { endSubSection, getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import RespondentContestClaimReasonControllerHelper from '../helpers/controller/RespondentContestClaimReasonControllerHelper';
 import { getLogger } from '../logger';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -151,6 +151,7 @@ export default class RespondentContestClaimReasonController {
     }
     RespondentContestClaimReasonControllerHelper.areInputValuesValid(req, formData);
 
+    endSubSection(req);
     if (req.session.errors && req.session.errors.length === 0 && (req.body?.submit || req.body?.saveAsDraft)) {
       req.session.userCase.et3ResponseContestClaimDetails = formData.et3ResponseContestClaimDetails;
       const userCase = await ET3Util.updateET3Data(req, ET3HubLinkNames.ContestClaim, LinkStatus.IN_PROGRESS);

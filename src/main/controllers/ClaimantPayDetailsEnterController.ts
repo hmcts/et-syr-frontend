@@ -11,7 +11,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { isClearSelection, returnValidUrl } from '../helpers/RouterHelpers';
+import { endSubSection, isClearSelection, returnValidUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -98,6 +98,7 @@ export default class ClaimantPayDetailsEnterController {
     if (StringUtils.isNotBlank(formData.et3ResponsePayFrequency)) {
       req.session.userCase.et3ResponsePayFrequency = formData.et3ResponsePayFrequency;
     }
+    endSubSection(req);
     const userCase: CaseWithId = await ET3Util.updateET3Data(
       req,
       ET3HubLinkNames.PayPensionBenefitDetails,
