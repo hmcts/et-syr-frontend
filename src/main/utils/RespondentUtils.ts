@@ -1,13 +1,8 @@
 import { AppRequest } from '../definitions/appRequest';
 import { RespondentET3Model } from '../definitions/case';
-import {
-  RespondentSolicitorType,
-  getRespondentSolicitorTypeByIndex,
-} from '../definitions/enums/respondentSolicitorType';
 
 import CollectionUtils from './CollectionUtils';
 import NumberUtils from './NumberUtils';
-import ObjectUtils from './ObjectUtils';
 
 export class RespondentUtils {
   public static findSelectedRespondentByRequest(request: AppRequest): RespondentET3Model {
@@ -33,28 +28,21 @@ export class RespondentUtils {
    * @param req - The current HTTP request object, containing the session and user case context.
    * @returns `true` if the selected respondent has a matching representative; otherwise, `false`.
    */
-  public static respondentRepresented(req: AppRequest): boolean {
-    const currentSolicitorType = getRespondentSolicitorTypeByIndex(req.session.selectedRespondentIndex);
-    const policyMap: Record<RespondentSolicitorType, string> = {
-      [RespondentSolicitorType.SOLICITORA]: 'respondentOrganisationPolicy0',
-      [RespondentSolicitorType.SOLICITORB]: 'respondentOrganisationPolicy1',
-      [RespondentSolicitorType.SOLICITORC]: 'respondentOrganisationPolicy2',
-      [RespondentSolicitorType.SOLICITORD]: 'respondentOrganisationPolicy3',
-      [RespondentSolicitorType.SOLICITORE]: 'respondentOrganisationPolicy4',
-      [RespondentSolicitorType.SOLICITORF]: 'respondentOrganisationPolicy5',
-      [RespondentSolicitorType.SOLICITORG]: 'respondentOrganisationPolicy6',
-      [RespondentSolicitorType.SOLICITORH]: 'respondentOrganisationPolicy7',
-      [RespondentSolicitorType.SOLICITORI]: 'respondentOrganisationPolicy8',
-      [RespondentSolicitorType.SOLICITORJ]: 'respondentOrganisationPolicy9',
-    };
-
-    const policyKey = policyMap[currentSolicitorType];
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    const policy = req.session.userCase?.[policyKey];
-
-    // Return true only if the policy exists and its organization is defined
-    return ObjectUtils.isNotEmpty(policy?.Organisation);
+  public static isSelectedRespondentRepresented(req: AppRequest): boolean {
+    const userCase = req?.session?.userCase;
+    const selectedIndex = req?.session?.selectedRespondentIndex;
+    if (
+      !userCase ||
+      CollectionUtils.isEmpty(userCase.respondents) ||
+      CollectionUtils.isEmpty(userCase.representatives) ||
+      NumberUtils.isEmpty(selectedIndex)
+    ) {
+      return false;
+    }
+    const selectedRespondent = userCase.respondents[selectedIndex];
+    if (!selectedRespondent?.ccdId) {
+      return false;
+    }
+    return userCase.representatives.some(rep => rep?.respondentId === selectedRespondent.ccdId);
   }
 }

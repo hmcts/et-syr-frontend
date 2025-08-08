@@ -422,16 +422,6 @@ describe('Format Case Data to Frontend Model', () => {
       leadClaimant: undefined,
       caseStayed: undefined,
       preAcceptCase: undefined,
-      respondentOrganisationPolicy0: undefined,
-      respondentOrganisationPolicy1: undefined,
-      respondentOrganisationPolicy2: undefined,
-      respondentOrganisationPolicy3: undefined,
-      respondentOrganisationPolicy4: undefined,
-      respondentOrganisationPolicy5: undefined,
-      respondentOrganisationPolicy6: undefined,
-      respondentOrganisationPolicy7: undefined,
-      respondentOrganisationPolicy8: undefined,
-      respondentOrganisationPolicy9: undefined,
     });
   });
 

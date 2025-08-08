@@ -53,7 +53,7 @@ export default class ChangeLegalRepresentativeController {
         LEGAL_REPRESENTATIVE_CHANGE_OPTIONS.change
       )
         ? PageUrls.APPOINT_LEGAL_REPRESENTATIVE + getLanguageParam(req.url)
-        : PageUrls.CONTACT_TRIBUNAL + getLanguageParam(req.url);
+        : PageUrls.CONTACT_TRIBUNAL + PageUrls.CONTACT_TRIBUNAL + getLanguageParam(req.url);
       res.redirect(redirectUrl);
     } catch (error) {
       logger.info(error);

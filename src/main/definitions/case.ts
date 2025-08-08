@@ -14,7 +14,6 @@ import {
 } from './definition';
 import { HubLinksStatuses } from './hub';
 import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from './links';
-import { OrganisationPolicy } from './types/organisationPolicy';
 import { UnknownRecord } from './util-types';
 
 export enum Checkbox {
@@ -386,16 +385,6 @@ export interface Case {
   respondentResponse?: YesOrNo;
   preAcceptCase?: PreAcceptCase;
   respondentRepresented?: Representative;
-  respondentOrganisationPolicy0?: OrganisationPolicy;
-  respondentOrganisationPolicy1?: OrganisationPolicy;
-  respondentOrganisationPolicy2?: OrganisationPolicy;
-  respondentOrganisationPolicy3?: OrganisationPolicy;
-  respondentOrganisationPolicy4?: OrganisationPolicy;
-  respondentOrganisationPolicy5?: OrganisationPolicy;
-  respondentOrganisationPolicy6?: OrganisationPolicy;
-  respondentOrganisationPolicy7?: OrganisationPolicy;
-  respondentOrganisationPolicy8?: OrganisationPolicy;
-  respondentOrganisationPolicy9?: OrganisationPolicy;
 }
 
 export const enum StillWorking {

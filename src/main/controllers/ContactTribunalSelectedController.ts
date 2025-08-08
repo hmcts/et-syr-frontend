@@ -21,7 +21,7 @@ const logger = getLogger('ContactTribunalSelectedController');
 export default class ContactTribunalSelectedController {
   private readonly form: Form;
   private uploadedFileName = '';
-  private getHint = (label: AnyRecord): string => {
+  private readonly getHint = (label: AnyRecord): string => {
     if (StringUtils.isNotBlank(this.uploadedFileName)) {
       return (label.contactApplicationFile.hintExisting as string).replace('{{filename}}', this.uploadedFileName);
     } else {
@@ -134,9 +134,14 @@ export default class ContactTribunalSelectedController {
   public get = (req: AppRequest, res: Response): void => {
     this.uploadedFileName = req?.session?.userCase?.contactApplicationFile?.document_filename;
 
-    if (req.session.userCase?.respondentRepresented) {
-      return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
-    }
+    // Checks if the respondent is represented.
+    // Normally, if represented, the "Contact Tribunal" page should be disabled:
+    // However, as a temporary workaround, we allow all respondents to contact the tribunal —
+    // even if represented to enable them to remove their representative.
+    // That is why we do not redirect to the holding page here.
+    // if (req.session.userCase?.respondentRepresented) {
+    // return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
+    // }
     const selectedApplication = getApplicationByUrl(req.params?.selectedOption);
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.selectedOption);

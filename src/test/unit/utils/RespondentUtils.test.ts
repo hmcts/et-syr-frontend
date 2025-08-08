@@ -1,5 +1,4 @@
 import { AppRequest } from '../../../main/definitions/appRequest';
-import { RespondentSolicitorType } from '../../../main/definitions/enums/respondentSolicitorType';
 import { RespondentUtils } from '../../../main/utils/RespondentUtils';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockRespondentET3Model } from '../mocks/mockRespondentET3Model';
@@ -49,61 +48,84 @@ describe('RespondentUtils tests', () => {
       expect(RespondentUtils.findSelectedRespondentByRequest(request)).toStrictEqual(mockRespondentET3Model);
     });
   });
-  describe('respondentRepresented', () => {
-    const baseRequest = {
-      session: {
-        selectedRespondentIndex: 0,
-        userCase: {},
-      },
-    } as unknown as AppRequest;
 
-    const solicitorTypes = Object.values(RespondentSolicitorType);
-
-    it.each(solicitorTypes)('should return true when organisation is present for %s', type => {
-      const req = {
-        ...baseRequest,
-        session: {
-          ...baseRequest.session,
-          userCase: {
-            [`respondentOrganisationPolicy${solicitorTypes.indexOf(type)}`]: {
-              Organisation: { Name: 'Some Org' },
-            },
-          },
-          selectedRespondentIndex: solicitorTypes.indexOf(type),
-        },
-      } as unknown as AppRequest;
-
-      const result = RespondentUtils.respondentRepresented(req);
-      expect(result).toBe(true);
+  describe('RespondentUtils.isSelectedRespondentRepresented', () => {
+    afterEach(() => {
+      jest.resetAllMocks();
     });
 
-    it('should return false when organisation is undefined', () => {
+    it('should return false when respondents are empty', () => {
       const req = {
-        ...baseRequest,
         session: {
-          ...baseRequest.session,
           userCase: {
-            respondentOrganisationPolicy0: { Organisation: undefined },
+            respondents: [],
+            representatives: [{}],
           },
+          selectedRespondentIndex: 0,
         },
       } as unknown as AppRequest;
 
-      const result = RespondentUtils.respondentRepresented(req);
+      const result = RespondentUtils.isSelectedRespondentRepresented(req);
       expect(result).toBe(false);
     });
 
-    it('should return false when policy does not exist', () => {
+    it('should return false when representatives are empty', () => {
       const req = {
-        ...baseRequest,
         session: {
-          ...baseRequest.session,
           userCase: {
-            // respondentOrganisationPolicy1 is missing
+            respondents: [{}],
+            representatives: [],
           },
+          selectedRespondentIndex: 0,
         },
       } as unknown as AppRequest;
 
-      const result = RespondentUtils.respondentRepresented(req);
+      const result = RespondentUtils.isSelectedRespondentRepresented(req);
+      expect(result).toBe(false);
+    });
+
+    it('should return false when selectedRespondentIndex is empty', () => {
+      const req = {
+        session: {
+          userCase: {
+            respondents: [{}],
+            representatives: [{}],
+          },
+          selectedRespondentIndex: null,
+        },
+      } as unknown as AppRequest;
+
+      const result = RespondentUtils.isSelectedRespondentRepresented(req);
+      expect(result).toBe(false);
+    });
+
+    it('should return true when a respondent matches a representative', () => {
+      const req = {
+        session: {
+          userCase: {
+            respondents: [{ ccdId: '123' }],
+            representatives: [{ respondentId: '123' }],
+          },
+          selectedRespondentIndex: 0,
+        },
+      } as unknown as AppRequest;
+
+      const result = RespondentUtils.isSelectedRespondentRepresented(req);
+      expect(result).toBe(true);
+    });
+
+    it('should return false when no respondents match representatives', () => {
+      const req = {
+        session: {
+          userCase: {
+            respondents: [{ ccdId: '111' }],
+            representatives: [{ respondentId: '222' }],
+          },
+          selectedRespondentIndex: 0,
+        },
+      } as unknown as AppRequest;
+
+      const result = RespondentUtils.isSelectedRespondentRepresented(req);
       expect(result).toBe(false);
     });
   });
