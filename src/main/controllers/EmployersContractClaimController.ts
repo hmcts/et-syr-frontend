@@ -10,7 +10,7 @@ import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { isClearSelectionWithoutRequestUserCaseCheck } from '../helpers/RouterHelpers';
+import { isClearSelectionWithoutRequestUserCaseCheck, startSubSection } from '../helpers/RouterHelpers';
 import EmployersContractClaimDetailsControllerHelper from '../helpers/controller/EmployersContractClaimControllerHelper';
 import ET3Util from '../utils/ET3Util';
 import ErrorUtils from '../utils/ErrorUtils';
@@ -57,11 +57,7 @@ export default class EmployersContractClaimController {
     let nextPage = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
     if (formData.et3ResponseEmployerClaim === YesOrNo.YES) {
       nextPage = PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS;
-      //force redirect through the flow before going back to CYA screen
-      //if not save for later
-      if (!req.body?.saveForLater) {
-        req.session.returnUrl = nextPage;
-      }
+      startSubSection(req, nextPage);
     } else {
       EmployersContractClaimDetailsControllerHelper.resetEmployersContractClaimDetails(req);
     }

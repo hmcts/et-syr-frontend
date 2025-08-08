@@ -106,7 +106,6 @@ export default class RespondentContestClaimReasonController {
       res.status(200).end('Thank you for your submission. You will be contacted in due course.');
       return;
     }
-    endSubSection(req);
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     if (ObjectUtils.isNotEmpty(req.file)) {
       if (req.fileTooLarge) {
@@ -152,6 +151,7 @@ export default class RespondentContestClaimReasonController {
     }
     RespondentContestClaimReasonControllerHelper.areInputValuesValid(req, formData);
 
+    endSubSection(req);
     if (req.session.errors && req.session.errors.length === 0 && (req.body?.submit || req.body?.saveAsDraft)) {
       req.session.userCase.et3ResponseContestClaimDetails = formData.et3ResponseContestClaimDetails;
       const userCase = await ET3Util.updateET3Data(req, ET3HubLinkNames.ContestClaim, LinkStatus.IN_PROGRESS);

@@ -81,7 +81,6 @@ export default class ClaimantPayDetailsEnterController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    endSubSection(req);
     req.session.errors = [];
     const formData: Partial<CaseWithId> = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const et3ResponsePayBeforeTax: number = NumberUtils.convertStringToNumber(formData.et3ResponsePayBeforeTax);
@@ -99,6 +98,7 @@ export default class ClaimantPayDetailsEnterController {
     if (StringUtils.isNotBlank(formData.et3ResponsePayFrequency)) {
       req.session.userCase.et3ResponsePayFrequency = formData.et3ResponsePayFrequency;
     }
+    endSubSection(req);
     const userCase: CaseWithId = await ET3Util.updateET3Data(
       req,
       ET3HubLinkNames.PayPensionBenefitDetails,
