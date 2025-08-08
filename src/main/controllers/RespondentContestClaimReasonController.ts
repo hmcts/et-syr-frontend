@@ -12,7 +12,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
+import { endSubSection, getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import RespondentContestClaimReasonControllerHelper from '../helpers/controller/RespondentContestClaimReasonControllerHelper';
 import { getLogger } from '../logger';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -106,6 +106,7 @@ export default class RespondentContestClaimReasonController {
       res.status(200).end('Thank you for your submission. You will be contacted in due course.');
       return;
     }
+    endSubSection(req);
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     if (ObjectUtils.isNotEmpty(req.file)) {
       if (req.fileTooLarge) {
