@@ -3,7 +3,7 @@ import { RespondentET3Model } from '../../definitions/case';
 import { DefaultValues } from '../../definitions/constants';
 import DocumentUtils from '../../utils/DocumentUtils';
 import ObjectUtils from '../../utils/ObjectUtils';
-import RespondentUtils from '../../utils/RespondentUtils';
+import { RespondentUtils } from '../../utils/RespondentUtils';
 
 export default class EmployersContractClaimControllerHelper {
   public static resetEmployersContractClaimDetails(req: AppRequest): void {

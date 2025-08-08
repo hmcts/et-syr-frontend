@@ -774,6 +774,7 @@ export const mapRespondent = (respondent: RespondentType): RespondentET3Model =>
     et3CaseDetailsLinksStatuses: respondent?.et3CaseDetailsLinksStatuses,
     et3HubLinksStatuses: respondent?.et3HubLinksStatuses,
     et3Status: respondent?.et3Status,
+    representativeRemoved: respondent?.representativeRemoved,
   };
 };
 
