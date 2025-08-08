@@ -1,6 +1,6 @@
 import ClaimantEmploymentDatesController from '../../../main/controllers/ClaimantEmploymentDatesController';
 import { YesOrNoOrNotApplicable } from '../../../main/definitions/case';
-import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import ET3Util from '../../../main/utils/ET3Util';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
@@ -49,12 +49,38 @@ describe('Claimant employment dates Controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
     });
 
+    it('should redirect to next page when CYA and yes is selected', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseAreDatesCorrect: YesOrNoOrNotApplicable.YES,
+        },
+      });
+      request.session.returnUrl = PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER;
+      request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER);
+    });
+
     it('should redirect to next page when no is selected', async () => {
       request = mockRequest({
         body: {
           et3ResponseAreDatesCorrect: YesOrNoOrNotApplicable.NO,
         },
       });
+      request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
+    });
+
+    it('should redirect to next page when CYA and no is selected', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponseAreDatesCorrect: YesOrNoOrNotApplicable.NO,
+        },
+      });
+      request.session.returnUrl = PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER;
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
