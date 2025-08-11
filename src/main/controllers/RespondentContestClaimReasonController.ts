@@ -151,7 +151,6 @@ export default class RespondentContestClaimReasonController {
     }
     RespondentContestClaimReasonControllerHelper.areInputValuesValid(req, formData);
 
-    endSubSection(req);
     if (req.session.errors && req.session.errors.length === 0 && (req.body?.submit || req.body?.saveAsDraft)) {
       req.session.userCase.et3ResponseContestClaimDetails = formData.et3ResponseContestClaimDetails;
       const userCase = await ET3Util.updateET3Data(req, ET3HubLinkNames.ContestClaim, LinkStatus.IN_PROGRESS);
@@ -163,6 +162,7 @@ export default class RespondentContestClaimReasonController {
         );
         return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM_REASON)));
       }
+      endSubSection(req);
       req.session.userCase = userCase;
       if (req.body?.submit) {
         return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM)));
