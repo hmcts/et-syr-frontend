@@ -116,6 +116,7 @@ describe('Contact Tribunal Selected Controller', () => {
     it('should allow exactly 2500 characters for contactApplicationText', async () => {
       request = mockRequest({ body: { contactApplicationText: 'A'.repeat(2500) } });
       request.params.selectedOption = application.CHANGE_PERSONAL_DETAILS.url;
+      request.session.userCase.et1OnlineSubmission = 'Yes';
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith('/copy-to-other-party?lng=en');
     });
@@ -123,6 +124,7 @@ describe('Contact Tribunal Selected Controller', () => {
     it('should redirect to COPY_TO_OTHER_PARTY when application type is A', async () => {
       request = mockRequest({ body: { contactApplicationText: 'Test' } });
       request.params.selectedOption = application.POSTPONE_HEARING.url;
+      request.session.userCase.et1OnlineSubmission = 'Yes';
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith('/copy-to-other-party?lng=en');
     });
@@ -130,6 +132,7 @@ describe('Contact Tribunal Selected Controller', () => {
     it('should redirect to COPY_TO_OTHER_PARTY when application type is B', async () => {
       request = mockRequest({ body: { contactApplicationText: 'Test' } });
       request.params.selectedOption = application.CHANGE_PERSONAL_DETAILS.url;
+      request.session.userCase.et1OnlineSubmission = 'Yes';
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith('/copy-to-other-party?lng=en');
     });

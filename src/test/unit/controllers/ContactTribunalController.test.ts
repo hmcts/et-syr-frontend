@@ -23,13 +23,6 @@ describe('Contact Tribunal Controller', () => {
     expect(response.render).not.toHaveBeenCalled();
   });
 
-  it('should redirect to holding page if other party is offline', async () => {
-    jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(true);
-    await controller.get(request, response);
-    expect(response.redirect).toHaveBeenCalledWith(PageUrls.HOLDING_PAGE + languages.ENGLISH_URL_PARAMETER);
-    expect(response.render).not.toHaveBeenCalled();
-  });
-
   it('should render contact application page', async () => {
     jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(true);
     request.session.userCase.et1OnlineSubmission = 'Yes';
