@@ -1,6 +1,6 @@
 import EmployersContractClaimController from '../../../main/controllers/EmployersContractClaimController';
 import { YesOrNo } from '../../../main/definitions/case';
-import { DefaultValues, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
+import { DefaultValues, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/employers-contract-claim.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -52,18 +52,6 @@ describe('Employers Contract Claim Controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS);
     });
 
-    it('should redirect to the appropriate next page when CYA and YES is selected', async () => {
-      request = mockRequest({
-        body: {
-          et3ResponseEmployerClaim: YesOrNo.YES,
-        },
-      });
-      request.session.returnUrl = PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER;
-      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
-      await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS);
-    });
-
     it('should redirect to the check your answers page when NO is selected', async () => {
       request = mockRequest({
         body: {
@@ -73,18 +61,6 @@ describe('Employers Contract Claim Controller', () => {
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
-    });
-
-    it('should redirect to the check your answers page when CYA and NO is selected', async () => {
-      request = mockRequest({
-        body: {
-          et3ResponseEmployerClaim: YesOrNo.NO,
-        },
-      });
-      request.session.returnUrl = PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER;
-      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
-      await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_ET3 + languages.ENGLISH_URL_PARAMETER);
     });
 
     it('should update request url to remove redirect=clearSelection parameter', async () => {

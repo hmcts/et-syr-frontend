@@ -10,7 +10,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { endSubSection, returnValidUrl } from '../helpers/RouterHelpers';
+import { returnValidUrl } from '../helpers/RouterHelpers';
 import EmployersContractClaimDetailsControllerHelper from '../helpers/controller/EmployersContractClaimDetailsControllerHelper';
 import { getLogger } from '../logger';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -132,7 +132,6 @@ export default class EmployersContractClaimDetailsController {
     if (req.body?.upload) {
       redirectUrl = PageUrls.EMPLOYERS_CONTRACT_CLAIM_DETAILS;
     }
-    endSubSection(req);
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
