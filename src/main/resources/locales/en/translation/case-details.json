@@ -81,8 +81,8 @@
       "l1": "Submit applications",
       "l2": "Directly respond to applications or notifications"
     },
-    "claimantNotRepresented": {
-      "p1": "You no longer legally represented.",
+    "respondentNotRepresented": {
+      "p1": "You are no longer legally represented.",
       "p2": "You may continue to represent yourself or you may wish to appoint a new legal representative."
     }
   },
