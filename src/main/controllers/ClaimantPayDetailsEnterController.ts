@@ -11,7 +11,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { isClearSelection, returnValidUrl } from '../helpers/RouterHelpers';
+import { endSubSectionReturnNextPage, isClearSelection, returnValidUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -104,7 +104,7 @@ export default class ClaimantPayDetailsEnterController {
       LinkStatus.IN_PROGRESS
     );
     if (CollectionUtils.isEmpty(req.session.errors) && ObjectUtils.isNotEmpty(userCase)) {
-      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CLAIMANT_NOTICE_PERIOD)));
+      return res.redirect(returnValidUrl(endSubSectionReturnNextPage(req, PageUrls.CLAIMANT_NOTICE_PERIOD)));
     }
     if (ObjectUtils.isEmpty(userCase)) {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(

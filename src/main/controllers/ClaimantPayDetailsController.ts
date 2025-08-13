@@ -10,7 +10,7 @@ import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { isClearSelection } from '../helpers/RouterHelpers';
+import { isClearSelection, startSubSection } from '../helpers/RouterHelpers';
 import ET3Util from '../utils/ET3Util';
 
 export default class ClaimantPayDetailsController {
@@ -55,6 +55,7 @@ export default class ClaimantPayDetailsController {
     let nextPage = setUrlLanguage(req, PageUrls.CLAIMANT_NOTICE_PERIOD);
     if (formData.et3ResponseEarningDetailsCorrect === YesOrNoOrNotApplicable.NO) {
       nextPage = setUrlLanguage(req, PageUrls.CLAIMANT_PAY_DETAILS_ENTER);
+      startSubSection(req, nextPage);
     }
 
     await ET3Util.updateET3ResponseWithET3Form(

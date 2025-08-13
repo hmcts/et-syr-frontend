@@ -6,6 +6,7 @@ import { FormFields } from '../../../main/definitions/form';
 import {
   conditionalRedirect,
   endSubSection,
+  endSubSectionReturnNextPage,
   getLanguageParam,
   isClearSelection,
   isClearSelectionWithoutRequestUserCaseCheck,
@@ -218,6 +219,38 @@ describe('RouterHelper', () => {
       endSubSection(req);
 
       expect(req.session).toEqual(initialSession);
+    });
+  });
+
+  describe('endSubSectionReturnNextPage', () => {
+    let req: ReturnType<typeof mockRequest>;
+
+    beforeEach(() => {
+      req = mockRequest({});
+    });
+
+    it('should set returnUrl to subSectionUrl and clear subSectionUrl if subSectionUrl matches a CYA page', () => {
+      req.session.subSectionUrl = PageUrls.CHECK_YOUR_ANSWERS_ET3;
+
+      const result = endSubSectionReturnNextPage(req, PageUrls.CLAIMANT_NOTICE_PERIOD);
+
+      expect(result).toBe(PageUrls.CHECK_YOUR_ANSWERS_ET3);
+      expect(req.session.subSectionUrl).toBeUndefined();
+    });
+
+    it('should not modify session if subSectionUrl does not match a CYA page', () => {
+      req.session.subSectionUrl = '/some-other-page';
+
+      const result = endSubSectionReturnNextPage(req, PageUrls.CLAIMANT_NOTICE_PERIOD);
+
+      expect(result).toBe(PageUrls.CLAIMANT_NOTICE_PERIOD);
+      expect(req.session.subSectionUrl).toBe('/some-other-page');
+    });
+
+    it('should do nothing if subSectionUrl is not set', () => {
+      const result = endSubSectionReturnNextPage(req, PageUrls.CLAIMANT_NOTICE_PERIOD);
+
+      expect(result).toEqual(PageUrls.CLAIMANT_NOTICE_PERIOD);
     });
   });
 
