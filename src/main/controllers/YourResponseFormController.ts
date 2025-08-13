@@ -1,8 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { CLAIM_TYPES, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
-import { TypesOfClaim } from '../definitions/definition';
+import { InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
@@ -15,7 +14,6 @@ import {
   getEt3Section6,
 } from '../helpers/controller/CheckYourAnswersET3Helper';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
-import CollectionUtils from '../utils/CollectionUtils';
 import DocumentUtils from '../utils/DocumentUtils';
 
 export default class YourResponseFormController {
@@ -24,14 +22,6 @@ export default class YourResponseFormController {
     const redirectUrl: string = setUrlLanguage(req, PageUrls.YOUR_RESPONSE_FORM);
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
     const et3FormId: string = DocumentUtils.findET3FormIdByRequest(req);
-    let isSection6Visible = false;
-    if (
-      CollectionUtils.isNotEmpty(req.session.userCase.typeOfClaim) &&
-      (req.session.userCase.typeOfClaim.includes(CLAIM_TYPES.BREACH_OF_CONTRACT) ||
-        req.session.userCase.typeOfClaim.includes(TypesOfClaim.BREACH_OF_CONTRACT))
-    ) {
-      isSection6Visible = true;
-    }
     const userCase = req.session.userCase;
     const sectionTranslations: AnyRecord = {
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
@@ -54,7 +44,6 @@ export default class YourResponseFormController {
       redirectUrl,
       languageParam: getLanguageParam(req.url),
       welshEnabled,
-      isSection6Visible,
       et3FormId,
     });
   };
