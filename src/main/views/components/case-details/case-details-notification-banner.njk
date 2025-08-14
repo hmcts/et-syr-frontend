@@ -93,16 +93,16 @@
 {% endif %}
 
 {% if selectedRespondent.representativeRemoved and selectedRespondent.representativeRemoved === 'Yes'  %}
-  {% set htmlForClaimantNotRepresentedBanner %}
+  {% set htmlForRespondentNotRepresentedBanner %}
     <p class="govuk-body">
-      {{ notificationBanner.claimantNotRepresented.p1 }}
+      {{ notificationBanner.respondentNotRepresented.p1 }}
     </p>
     <p class="govuk-body">
-      {{ notificationBanner.claimantNotRepresented.p2 }}
+      {{ notificationBanner.respondentNotRepresented.p2 }}
     </p>
   {% endset %}
   {{ govukNotificationBanner({
-      html: htmlForClaimantNotRepresentedBanner,
+      html: htmlForRespondentNotRepresentedBanner,
       titleText: important
     })
   }}
