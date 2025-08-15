@@ -28,7 +28,7 @@ import CollectionUtils from './CollectionUtils';
 import DateUtils from './DateUtils';
 import ErrorUtils from './ErrorUtils';
 import ObjectUtils from './ObjectUtils';
-import RespondentUtils from './RespondentUtils';
+import { RespondentUtils } from './RespondentUtils';
 import StringUtils from './StringUtils';
 
 const logger = getLogger('ET3Util');

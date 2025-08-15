@@ -1,4 +1,3 @@
-
 import { BasePage } from './basePage';
 
 declare global {

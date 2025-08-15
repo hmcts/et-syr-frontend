@@ -33,6 +33,8 @@
   "submittedAlert": "Rydych wedi cyflwyno eich hawliad i’r tribiwnlys",
   "processClaim": "Byddwn yn anelu at brosesu eich hawliad erbyn",
   "busyPeriod": ". Gall gymryd mwy o amser na hyn ar adegau prysur.",
+  "appointLegalRepresentative": "[W]Appoint a legal representative",
+  "changeLegalRepresentative": "[W]Change my legal representative",
   "notificationBanner": {
     "viewResponse": {
       "header": "Mae’r tribiwnlys wedi cydnabod hawliad yn erbyn ",
@@ -78,6 +80,10 @@
       "p1": "Byddwch yn cael eich diweddaru gyda gohebiaeth ynghylch yr achos ond ni fyddwch yn gallu gwneud y canlynol mwyach",
       "l1": "Cyflwyno ceisiadau",
       "l2": "Ymateb yn uniongyrchol i geisiadau a hysbysiadau"
+    },
+    "respondentNotRepresented": {
+      "p1": "[W]You are no longer legally represented.",
+      "p2": "[W]You may continue to represent yourself or you may wish to appoint a new legal representative."
     }
   },
   "multiples": {
