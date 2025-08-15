@@ -134,11 +134,7 @@ export default class ContactTribunalSelectedController {
   public get = (req: AppRequest, res: Response): void => {
     this.uploadedFileName = req?.session?.userCase?.contactApplicationFile?.document_filename;
 
-    // Checks if the respondent is represented.
-    // Normally, if represented, the "Contact Tribunal" page should be disabled:
-    // However, as a temporary workaround, we allow all respondents to contact the tribunal —
-    // even if represented to enable them to remove their representative.
-    // That is why we do not redirect to the holding page here.
+    // TODO: Uncomment when respondent representative will be able to removed is implemented
     // if (req.session.userCase?.respondentRepresented) {
     // return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
     // }
