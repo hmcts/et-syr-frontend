@@ -3,6 +3,7 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
+import { RespondentUtils } from '../utils/RespondentUtils';
 
 export default class AppointLegalRepController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
@@ -14,6 +15,7 @@ export default class AppointLegalRepController {
     const languageParam = getLanguageParam(req.url);
     const userCase = req.session.userCase;
     const allDocumentsUrl = PageUrls.DOCUMENTS;
+    const selectedRespondent = RespondentUtils.findSelectedRespondentByRequest(req);
 
     res.render(TranslationKeys.APPOINT_LEGAL_REPRESENTATIVE, {
       ...content,
@@ -21,6 +23,7 @@ export default class AppointLegalRepController {
       languageParam,
       userCase,
       allDocumentsUrl,
+      selectedRespondent,
     });
   };
 }
