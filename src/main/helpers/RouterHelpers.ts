@@ -8,7 +8,7 @@ import RespondentUtils from '../utils/RespondentUtils';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
 
-import { addParameterToUrl } from './LanguageHelper';
+import { addParameterToUrl, setUrlLanguage } from './LanguageHelper';
 
 export const getLanguageParam = (url: string): string => {
   if (url?.includes(languages.WELSH_URL_POSTFIX)) {
@@ -180,4 +180,12 @@ export const endSubSection = (req: AppRequest): void => {
       req.session.subSectionUrl = undefined;
     }
   }
+};
+
+export const endSubSectionReturnNextPage = (req: AppRequest, nextPage: string): string => {
+  if (req.session.subSectionUrl?.includes(PageUrls.CHECK_YOUR_ANSWERS_ET3)) {
+    req.session.subSectionUrl = undefined;
+    return setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3);
+  }
+  return setUrlLanguage(req, nextPage);
 };
