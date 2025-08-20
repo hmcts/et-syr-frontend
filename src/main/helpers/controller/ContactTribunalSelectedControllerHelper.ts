@@ -11,6 +11,8 @@ import { fromApiFormatDocument } from '../ApiFormatter';
 import { isTypeAOrB } from '../ApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
+import { isClaimantSystemUser } from './ContactTribunalHelper';
+
 /**
  * Handle file upload. Return true when error occur.
  * @param req request
@@ -79,22 +81,19 @@ export const getFormError = (req: AppRequest, formData: Partial<CaseWithId>): Fo
 };
 
 /**
- * Return CONTACT_TRIBUNAL_SELECTED page
- * @param app selected application
+ * When Type A or B
+ *  return COPY_TO_OTHER_PARTY when claimant system user
+ *  return COPY_TO_OTHER_PARTY_OFFLINE when claimant is not system user
+ * otherwise return CONTACT_TRIBUNAL_CYA
+ * @param selectedApplication application
  * @param req request
  */
-export const getThisPage = (app: Application, req: AppRequest): string => {
-  return PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', app.url) + getLanguageParam(req.url);
-};
-
-/**
- * Return COPY_TO_OTHER_PARTY when Type A or B, otherwise return CONTACT_TRIBUNAL_CYA
- * @param app selected application
- * @param req request
- */
-export const getNextPage = (app: Application, req: AppRequest): string => {
-  if (req.body?.upload || req.body?.remove) {
-    return getThisPage(app, req);
+export const getNextPage = (selectedApplication: Application, req: AppRequest): string => {
+  const langParam = getLanguageParam(req.url);
+  if (isTypeAOrB(selectedApplication)) {
+    return isClaimantSystemUser(req.session.userCase)
+      ? PageUrls.COPY_TO_OTHER_PARTY + langParam
+      : PageUrls.COPY_TO_OTHER_PARTY_OFFLINE + langParam;
   }
-  return (isTypeAOrB(app) ? PageUrls.COPY_TO_OTHER_PARTY : PageUrls.CONTACT_TRIBUNAL_CYA) + getLanguageParam(req.url);
+  return PageUrls.CONTACT_TRIBUNAL_CYA + langParam;
 };
