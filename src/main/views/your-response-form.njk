@@ -48,13 +48,11 @@
         rows: et3ResponseSection5
       }) }}
 
-      {% if isSection6Visible %}
-        <h2 class="govuk-heading-m">{{ section6.header }}</h2>
-        {{ govukSummaryList({
-          classes: "govuk-!-margin-bottom-9",
-          rows: et3ResponseSection6
-        }) }}
-      {% endif %}
+      <h2 class="govuk-heading-m">{{ section6.header }}</h2>
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-9",
+        rows: et3ResponseSection6
+      }) }}
     </div>
 
     <div class="govuk-grid-column-one-third-from-desktop">
