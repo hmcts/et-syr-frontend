@@ -12,7 +12,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
+import { endSubSectionReturnNextPage, getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import RespondentContestClaimReasonControllerHelper from '../helpers/controller/RespondentContestClaimReasonControllerHelper';
 import { getLogger } from '../logger';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -164,7 +164,9 @@ export default class RespondentContestClaimReasonController {
       }
       req.session.userCase = userCase;
       if (req.body?.submit) {
-        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM)));
+        return res.redirect(
+          returnValidUrl(endSubSectionReturnNextPage(req, PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM))
+        );
       }
       if (req.body?.saveAsDraft) {
         return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONSE_SAVED)));
