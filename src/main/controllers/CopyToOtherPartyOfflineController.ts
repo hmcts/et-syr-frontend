@@ -34,7 +34,7 @@ export default class CopyToOtherPartyOfflineController {
 
     req.session.userCase.copyToOtherPartyYesOrNo = formData.copyToOtherPartyYesOrNo;
     req.session.userCase.copyToOtherPartyText = formData.copyToOtherPartyText;
-    res.redirect(PageUrls.CONTACT_TRIBUNAL_CYA + getLanguageParam(req.url));
+    res.redirect(PageUrls.CONTACT_TRIBUNAL_OFFLINE_CYA + getLanguageParam(req.url));
   };
 
   public get = (req: AppRequest, res: Response): void => {
