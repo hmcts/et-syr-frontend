@@ -35,6 +35,7 @@ import ClaimantPayDetailsEnterController from '../../controllers/ClaimantPayDeta
 import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPensionAndBenefitsController';
 import ClaimantsApplicationsController from '../../controllers/ClaimantsApplicationsController';
 import ContactTribunalCYAController from '../../controllers/ContactTribunalCYAController';
+import ContactTribunalCYAOfflineController from '../../controllers/ContactTribunalCYAOfflineController';
 import ContactTribunalController from '../../controllers/ContactTribunalController';
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
 import ContactTribunalSubmitCompleteController from '../../controllers/ContactTribunalSubmitCompleteController';
@@ -270,6 +271,7 @@ export class Routes {
     app.get(PageUrls.COPY_TO_OTHER_PARTY_OFFLINE, new CopyToOtherPartyOfflineController().get);
     app.post(PageUrls.COPY_TO_OTHER_PARTY_OFFLINE, new CopyToOtherPartyOfflineController().post);
     app.get(PageUrls.CONTACT_TRIBUNAL_CYA, new ContactTribunalCYAController().get);
+    app.get(PageUrls.CONTACT_TRIBUNAL_CYA_OFFLINE, new ContactTribunalCYAOfflineController().get);
     app.get(InterceptPaths.CONTACT_TRIBUNAL_SUBMIT, new ContactTribunalSubmitController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
     // Your request and applications

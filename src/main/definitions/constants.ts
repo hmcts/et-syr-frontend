@@ -71,7 +71,7 @@ export const TranslationKeys = {
   COPY_TO_OTHER_PARTY: 'copy-to-other-party',
   COPY_TO_OTHER_PARTY_OFFLINE: 'copy-to-other-party-offline',
   CONTACT_TRIBUNAL_CYA: 'contact-tribunal-check-your-answers',
-  CONTACT_TRIBUNAL_OFFLINE_CYA: 'contact-tribunal-offline-check-your-answers',
+  CONTACT_TRIBUNAL_OFFLINE_CYA: 'contact-tribunal-check-your-answers-offline',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: 'contact-tribunal-submit-complete',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
@@ -156,7 +156,7 @@ export const PageUrls = {
   COPY_TO_OTHER_PARTY: '/copy-to-other-party',
   COPY_TO_OTHER_PARTY_OFFLINE: '/copy-to-other-party-offline',
   CONTACT_TRIBUNAL_CYA: '/contact-tribunal-check-your-answers',
-  CONTACT_TRIBUNAL_OFFLINE_CYA: '/contact-tribunal-offline-check-your-answers',
+  CONTACT_TRIBUNAL_CYA_OFFLINE: '/contact-tribunal-check-your-answers-offline',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
@@ -187,6 +187,7 @@ export const InterceptPaths = {
   REMOVE_FILE: '/remove-uploaded-file',
   // Contact Tribunal
   CONTACT_TRIBUNAL_SUBMIT: '/submitContactTribunal',
+  CONTACT_TRIBUNAL_STORE: '/storeContactTribunal',
   RESPOND_TO_APPLICATION_SUBMIT: '/submitRespondToApplication',
 } as const;
 

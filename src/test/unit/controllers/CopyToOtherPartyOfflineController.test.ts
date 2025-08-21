@@ -34,7 +34,7 @@ describe('Copy to Other Party Offline Controller', () => {
       });
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.CONTACT_TRIBUNAL_OFFLINE_CYA + languages.ENGLISH_URL_PARAMETER
+        PageUrls.CONTACT_TRIBUNAL_CYA_OFFLINE + languages.ENGLISH_URL_PARAMETER
       );
     });
 
@@ -47,7 +47,7 @@ describe('Copy to Other Party Offline Controller', () => {
       });
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.CONTACT_TRIBUNAL_OFFLINE_CYA + languages.ENGLISH_URL_PARAMETER
+        PageUrls.CONTACT_TRIBUNAL_CYA_OFFLINE + languages.ENGLISH_URL_PARAMETER
       );
     });
 

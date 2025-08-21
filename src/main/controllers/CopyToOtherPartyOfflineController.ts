@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { continueButton } from '../definitions/buttons';
-import { CaseWithId } from '../definitions/case';
+import { CaseWithId, YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { CopyToOtherPartyOfflineRadioFormFields } from '../definitions/radios';
@@ -34,7 +34,12 @@ export default class CopyToOtherPartyOfflineController {
 
     req.session.userCase.copyToOtherPartyYesOrNo = formData.copyToOtherPartyYesOrNo;
     req.session.userCase.copyToOtherPartyText = formData.copyToOtherPartyText;
-    res.redirect(PageUrls.CONTACT_TRIBUNAL_OFFLINE_CYA + getLanguageParam(req.url));
+
+    const nextPage =
+      req.body.copyToOtherPartyYesOrNo === YesOrNo.YES
+        ? PageUrls.CONTACT_TRIBUNAL_CYA_OFFLINE + getLanguageParam(req.url)
+        : PageUrls.CONTACT_TRIBUNAL_CYA + getLanguageParam(req.url);
+    res.redirect(nextPage);
   };
 
   public get = (req: AppRequest, res: Response): void => {
