@@ -10,7 +10,8 @@ nodejs:
       secrets:
         - AppInsightsInstrumentationKey
         - idam-secret
-        - redis-access-key
+        - name: redis-access-key
+          alias: et-syr-redis-access-key
         - os-places-token
         - pcq-token-key
         - launch-darkly-sdk-key
