@@ -41,6 +41,7 @@ import ContactTribunalSubmitCompleteController from '../../controllers/ContactTr
 import ContactTribunalSubmitController from '../../controllers/ContactTribunalSubmitController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import CopyToOtherPartyController from '../../controllers/CopyToOtherPartyController';
+import CopyToOtherPartyOfflineController from '../../controllers/CopyToOtherPartyOfflineController';
 import DocumentsController from '../../controllers/DocumentsController';
 import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
@@ -266,6 +267,8 @@ export class Routes {
     );
     app.get(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().get);
     app.post(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().post);
+    app.get(PageUrls.COPY_TO_OTHER_PARTY_OFFLINE, new CopyToOtherPartyOfflineController().get);
+    app.post(PageUrls.COPY_TO_OTHER_PARTY_OFFLINE, new CopyToOtherPartyOfflineController().post);
     app.get(PageUrls.CONTACT_TRIBUNAL_CYA, new ContactTribunalCYAController().get);
     app.get(InterceptPaths.CONTACT_TRIBUNAL_SUBMIT, new ContactTribunalSubmitController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
