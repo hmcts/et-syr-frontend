@@ -46,6 +46,7 @@ export class Session {
               port: 6379,
               tls: false,
               connect_timeout: 15000,
+              prefix: 'et-syr-session:',
             }
           : {
               host: redisHost,
