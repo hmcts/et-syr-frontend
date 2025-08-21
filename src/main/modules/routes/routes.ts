@@ -38,6 +38,8 @@ import ContactTribunalCYAController from '../../controllers/ContactTribunalCYACo
 import ContactTribunalCYAOfflineController from '../../controllers/ContactTribunalCYAOfflineController';
 import ContactTribunalController from '../../controllers/ContactTribunalController';
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
+import ContactTribunalStoreCompleteController from '../../controllers/ContactTribunalStoreCompleteController';
+import ContactTribunalStoreController from '../../controllers/ContactTribunalStoreController';
 import ContactTribunalSubmitCompleteController from '../../controllers/ContactTribunalSubmitCompleteController';
 import ContactTribunalSubmitController from '../../controllers/ContactTribunalSubmitController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
@@ -274,6 +276,8 @@ export class Routes {
     app.get(PageUrls.CONTACT_TRIBUNAL_CYA_OFFLINE, new ContactTribunalCYAOfflineController().get);
     app.get(InterceptPaths.CONTACT_TRIBUNAL_SUBMIT, new ContactTribunalSubmitController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
+    app.get(InterceptPaths.CONTACT_TRIBUNAL_STORE, new ContactTribunalStoreController().get);
+    app.get(PageUrls.CONTACT_TRIBUNAL_STORE_COMPLETE, new ContactTribunalStoreCompleteController().get);
     // Your request and applications
     app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
     app.get(PageUrls.CLAIMANTS_APPLICATIONS, new ClaimantsApplicationsController().get);

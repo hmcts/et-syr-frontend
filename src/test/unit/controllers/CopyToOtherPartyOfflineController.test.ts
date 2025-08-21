@@ -46,9 +46,7 @@ describe('Copy to Other Party Offline Controller', () => {
         },
       });
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.CONTACT_TRIBUNAL_CYA_OFFLINE + languages.ENGLISH_URL_PARAMETER
-      );
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CONTACT_TRIBUNAL_CYA + languages.ENGLISH_URL_PARAMETER);
     });
 
     it('should render the same page when copyToOtherPartyYesOrNo empty', async () => {

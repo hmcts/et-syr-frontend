@@ -73,6 +73,7 @@ export const TranslationKeys = {
   CONTACT_TRIBUNAL_CYA: 'contact-tribunal-check-your-answers',
   CONTACT_TRIBUNAL_OFFLINE_CYA: 'contact-tribunal-check-your-answers-offline',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: 'contact-tribunal-submit-complete',
+  CONTACT_TRIBUNAL_STORE_COMPLETE: 'contact-tribunal-store-complete',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
   CLAIMANTS_APPLICATIONS: 'claimants-applications',
@@ -158,6 +159,7 @@ export const PageUrls = {
   CONTACT_TRIBUNAL_CYA: '/contact-tribunal-check-your-answers',
   CONTACT_TRIBUNAL_CYA_OFFLINE: '/contact-tribunal-check-your-answers-offline',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
+  CONTACT_TRIBUNAL_STORE_COMPLETE: '/contact-tribunal-store-complete',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
   CLAIMANTS_APPLICATIONS: '/claimants-applications',
@@ -586,6 +588,7 @@ export const TseErrors = {
   ERROR_APPLICATION_NOT_SHARE: 'Application not shared: ',
   ERROR_NO_RESPOND_REQUIRED: 'Respond not allowed for this application: ',
   ERROR_UPDATE_LINK_STATUS: 'An error occurred while updating LinkStatus',
+  ERROR_STORE_APPLICATION: 'An error occurred while storing an application',
   ERROR_SUBMIT_APPLICATION: 'An error occurred while submitting an application',
   ERROR_RESPOND_TO_APPLICATION: 'An error occurred while responding to an application',
 } as const;
