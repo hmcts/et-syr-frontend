@@ -46,6 +46,7 @@ export class Session {
               port: 6379,
               tls: false,
               connect_timeout: 15000,
+              prefix: 'et-syr-session:',
             }
           : {
               host: redisHost,
@@ -53,6 +54,7 @@ export class Session {
               tls: true,
               connect_timeout: 15000,
               password: config.get('session.redis.key') as string,
+              prefix: 'et-syr-session:',
             };
 
       const client = createClient(clientOptions);

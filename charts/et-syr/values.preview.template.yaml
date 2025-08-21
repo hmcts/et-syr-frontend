@@ -10,10 +10,12 @@ nodejs:
       secrets:
         - AppInsightsInstrumentationKey
         - idam-secret
-        - et-syr-redis-access-key
+        - redis-access-key
         - os-places-token
         - pcq-token-key
         - launch-darkly-sdk-key
+  environment:
+    REDIS_HOST: 'et-sya-session-storage-aat.redis.cache.windows.net'
 idam-pr:
   enabled: true
   redirect_uris:
