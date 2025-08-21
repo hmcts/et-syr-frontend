@@ -11,7 +11,7 @@ import { fromApiFormatDocument } from '../ApiFormatter';
 import { isTypeAOrB } from '../ApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
-import { isClaimantSystemUser } from './ContactTribunalHelper';
+import { getCopyToOtherPartyPageUrl } from './ContactTribunalHelper';
 
 /**
  * Handle file upload. Return true when error occur.
@@ -89,11 +89,7 @@ export const getFormError = (req: AppRequest, formData: Partial<CaseWithId>): Fo
  * @param req request
  */
 export const getNextPage = (selectedApplication: Application, req: AppRequest): string => {
-  const langParam = getLanguageParam(req.url);
-  if (isTypeAOrB(selectedApplication)) {
-    return isClaimantSystemUser(req.session.userCase)
-      ? PageUrls.COPY_TO_OTHER_PARTY + langParam
-      : PageUrls.COPY_TO_OTHER_PARTY_OFFLINE + langParam;
-  }
-  return PageUrls.CONTACT_TRIBUNAL_CYA + langParam;
+  return isTypeAOrB(selectedApplication)
+    ? getCopyToOtherPartyPageUrl(req.session.userCase) + getLanguageParam(req.url)
+    : PageUrls.CONTACT_TRIBUNAL_CYA + getLanguageParam(req.url);
 };

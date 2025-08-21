@@ -216,10 +216,9 @@ export class CaseApi {
     try {
       const caseItem = req.session.userCase;
       const appType = getApplicationByCode(caseItem.contactApplicationType);
-      return await this.axios.put(JavaApiUrls.SUBMIT_RESPONDENT_APPLICATION, {
+      return await this.axios.put(JavaApiUrls.STORE_RESPONDENT_APPLICATION, {
         case_id: caseItem.id,
         case_type_id: caseItem.caseTypeId,
-        type_c: application.ORDER_WITNESS_ATTEND.code.includes(caseItem.contactApplicationType),
         respondent_tse: {
           respondentIdamId: req.session.user.id,
           contactApplicationType: caseItem.contactApplicationType,
