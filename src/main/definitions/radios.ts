@@ -51,11 +51,11 @@ export const CopyToOtherPartyOfflineRadioFormFields = {
     {
       label: (l: AnyRecord): string =>
         '<p class="govuk-body">' +
-        l.noIDoNotWantTo +
+        l.copyToOtherPartyYesOrNo.no1 +
         '</p><p class="govuk-body"><strong>' +
-        l.important +
+        l.copyToOtherPartyYesOrNo.important +
         ':</strong> ' +
-        l.youMustTellTheTribunal +
+        l.copyToOtherPartyYesOrNo.no2 +
         '</p>',
       value: YesOrNo.NO,
       subFields: {

@@ -22,7 +22,7 @@ describe('Contact Tribunal CYA Controller', () => {
       request.session.userCase = mockUserCase;
       request.session.userCase.contactApplicationType = 'Change personal details';
       controller.get(request, response);
-      expect(response.render).toHaveBeenCalledWith(TranslationKeys.CONTACT_TRIBUNAL_OFFLINE_CYA, expect.anything());
+      expect(response.render).toHaveBeenCalledWith(TranslationKeys.CONTACT_TRIBUNAL_CYA_OFFLINE, expect.anything());
     });
   });
 });

@@ -27,13 +27,13 @@ export default class CopyToOtherPartyOfflineController {
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    req.session.userCase.copyToOtherPartyYesOrNo = formData.copyToOtherPartyYesOrNo;
+    req.session.userCase.copyToOtherPartyText = formData.copyToOtherPartyText;
+
     req.session.errors = this.form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
       return res.redirect(PageUrls.COPY_TO_OTHER_PARTY_OFFLINE + getLanguageParam(req.url));
     }
-
-    req.session.userCase.copyToOtherPartyYesOrNo = formData.copyToOtherPartyYesOrNo;
-    req.session.userCase.copyToOtherPartyText = formData.copyToOtherPartyText;
 
     const nextPage =
       req.body.copyToOtherPartyYesOrNo === YesOrNo.YES
