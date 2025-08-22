@@ -57,3 +57,12 @@ const isClaimantRepresentedWithMyHMCTSCase = (userCase: CaseWithId): boolean => 
     userCase.representativeClaimantType?.myHmctsOrganisation !== undefined
   );
 };
+
+/**
+ * Get copy to other party page url based on other party online or offline
+ * @param userCase
+ * @returns boolean
+ */
+export const getCopyToOtherPartyPageUrl = (userCase: CaseWithId): string => {
+  return isClaimantSystemUser(userCase) ? PageUrls.COPY_TO_OTHER_PARTY : PageUrls.COPY_TO_OTHER_PARTY_OFFLINE;
+};

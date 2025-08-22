@@ -1,7 +1,9 @@
 import { AppRequest } from '../../../../main/definitions/appRequest';
 import { ValidationErrors } from '../../../../main/definitions/constants';
+import { application } from '../../../../main/definitions/contact-tribunal-applications';
 import {
   getFormError,
+  getNextPage,
   handleFileUpload,
 } from '../../../../main/helpers/controller/ContactTribunalSelectedControllerHelper';
 import FileUtils from '../../../../main/utils/FileUtils';
@@ -132,6 +134,40 @@ describe('Contact Tribunal Selected Controller Helper', () => {
       const formData = { contactApplicationText: 'Valid text content' };
       const error = getFormError(req, formData);
       expect(error).toBeUndefined();
+    });
+  });
+
+  describe('getNextPage', () => {
+    it('should return COPY_TO_OTHER_PARTY when type A and claimant is system user', () => {
+      const req: AppRequest = mockRequest({
+        userCase: {
+          et1OnlineSubmission: 'Yes',
+        },
+      });
+      const result = getNextPage(application.POSTPONE_HEARING, req);
+      expect(result).toBe('/copy-to-other-party?lng=en');
+    });
+
+    it('should return COPY_TO_OTHER_PARTY_OFFLINE when type A and claimant is not system user', () => {
+      const req: AppRequest = mockRequest({});
+      const result = getNextPage(application.POSTPONE_HEARING, req);
+      expect(result).toBe('/copy-to-other-party-offline?lng=en');
+    });
+
+    it('should return CONTACT_TRIBUNAL_CYA when type C and claimant is system user', () => {
+      const req: AppRequest = mockRequest({
+        userCase: {
+          et1OnlineSubmission: 'Yes',
+        },
+      });
+      const result = getNextPage(application.ORDER_WITNESS_ATTEND, req);
+      expect(result).toBe('/contact-tribunal-check-your-answers?lng=en');
+    });
+
+    it('should return CONTACT_TRIBUNAL_CYA when type C and claimant is not system user', () => {
+      const req: AppRequest = mockRequest({});
+      const result = getNextPage(application.ORDER_WITNESS_ATTEND, req);
+      expect(result).toBe('/contact-tribunal-check-your-answers?lng=en');
     });
   });
 });

@@ -11,6 +11,8 @@ import { getApplicationByCode, getApplicationKey, isTypeAOrB } from '../Applicat
 import { getSupportingMaterialLink } from '../DocumentHelpers';
 import { getLanguageParam } from '../RouterHelpers';
 
+import { getCopyToOtherPartyPageUrl } from './ContactTribunalHelper';
+
 /**
  * Get Contact Tribunal Check your answer content
  * @param req request
@@ -58,11 +60,12 @@ export const getCyaContent = (req: AppRequest): SummaryListRow[] => {
   );
 
   if (isTypeAOrB(selectedApplication)) {
+    const copyPageUrl = getCopyToOtherPartyPageUrl(req.session.userCase) + languageParam;
     rows.push(
       addSummaryRowWithAction(
         translations.copyToOtherPartyYesOrNo,
         userCase.copyToOtherPartyYesOrNo === YesOrNo.YES ? translations.yes : translations.no,
-        PageUrls.COPY_TO_OTHER_PARTY + languageParam,
+        copyPageUrl,
         translations.change,
         ''
       )
@@ -73,7 +76,7 @@ export const getCyaContent = (req: AppRequest): SummaryListRow[] => {
         addSummaryRowWithAction(
           translations.copyToOtherPartyText,
           userCase.copyToOtherPartyText,
-          PageUrls.COPY_TO_OTHER_PARTY + languageParam,
+          copyPageUrl,
           translations.change,
           ''
         )

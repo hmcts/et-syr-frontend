@@ -5,5 +5,7 @@
   "legend": "Beth ydych chi eisiau ei ddweud neu ofyn i’r tribiwnlys?",
   "supportingMaterial": "Deunydd ategol",
   "copyToOtherPartyYesOrNo": "Ydych chi eisiau anfon copi o’r ohebiaeth hon at y parti arall i fodloni’r Rheolau Trefniadaeth?",
-  "copyToOtherPartyText": "Y rhesymau dros pam nad ydych chi eisiau rhoi gwybod i’r parti arall"
+  "copyToOtherPartyText": "Y rhesymau dros pam nad ydych chi eisiau rhoi gwybod i’r parti arall",
+  "storeNotes": "Ni allwch wneud newidiadau pellach i'r ohebiaeth hon ar ôl i chi ei storio",
+  "storeBtn": "Gwneud cais i storio’r wybodaeth"
 }
