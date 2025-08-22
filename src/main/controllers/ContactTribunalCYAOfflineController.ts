@@ -10,10 +10,9 @@ export default class ContactTribunalCYAOfflineController {
   public get = (req: AppRequest, res: Response): void => {
     res.render(TranslationKeys.CONTACT_TRIBUNAL_CYA_OFFLINE, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
-      ...req.t(TranslationKeys.CONTACT_TRIBUNAL_CYA_OFFLINE, { returnObjects: true }),
+      ...req.t(TranslationKeys.CONTACT_TRIBUNAL_CYA, { returnObjects: true }),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
-      ethosCaseReference: req.session.userCase.ethosCaseReference,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
       cyaContent: getCyaContent(req),
       submitLink: InterceptPaths.CONTACT_TRIBUNAL_STORE + getLanguageParam(req.url),
