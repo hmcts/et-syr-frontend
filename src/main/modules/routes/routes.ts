@@ -84,6 +84,7 @@ import ReturnToExistingResponseController from '../../controllers/ReturnToExisti
 import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheckController';
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
+import StoredTseSubmitFormController from '../../controllers/StoredTseSubmitFormController';
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
 import YourRequestAndApplicationsController from '../../controllers/YourRequestAndApplicationsController';
 import YourResponseFormController from '../../controllers/YourResponseFormController';
@@ -278,6 +279,8 @@ export class Routes {
     app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
     app.get(InterceptPaths.CONTACT_TRIBUNAL_STORE, new ContactTribunalStoreController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL_STORE_COMPLETE, new ContactTribunalStoreCompleteController().get);
+    app.get(PageUrls.STORED_TSE_SUBMIT_FORM, new StoredTseSubmitFormController().get);
+    app.post(PageUrls.STORED_TSE_SUBMIT_FORM, new StoredTseSubmitFormController().post);
     // Your request and applications
     app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
     app.get(PageUrls.CLAIMANTS_APPLICATIONS, new ClaimantsApplicationsController().get);

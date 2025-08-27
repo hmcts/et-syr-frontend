@@ -11,6 +11,7 @@ import {
   TseRequestNotification,
   TseSubmitNotification,
 } from '../../definitions/notification/tseNotification';
+import { TseStoreNotification } from '../../definitions/notification/tseStoreNotification';
 import { AnyRecord } from '../../definitions/util-types';
 import {
   getAppType,
@@ -22,6 +23,7 @@ import {
 import { getLanguageParam } from '../RouterHelpers';
 import { isNeverResponseBefore } from '../controller/ApplicationDetailsHelper';
 import { isApplicationShare } from '../controller/ClaimantsApplicationsHelper';
+import { getYourStoredApplicationList } from '../controller/StoredToSubmitControllerHelper';
 import { isYourApplication } from '../controller/YourRequestAndApplicationsHelper';
 
 /**
@@ -106,4 +108,28 @@ const getFromName = (app: GenericTseApplicationType, respondents: RespondentET3M
 
 const getAppUrl = (app: GenericTseApplicationTypeItem, languageParam: string): string => {
   return PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + languageParam;
+};
+
+/**
+ * Get notification banner for stored applications
+ * @param req request
+ */
+export const getStoredTseBannerList = (req: AppRequest): TseStoreNotification[] => {
+  const notifications: TseStoreNotification[] = [];
+  const languageParam = getLanguageParam(req.url);
+
+  const yourStoredApps: GenericTseApplicationTypeItem[] = getYourStoredApplicationList(req);
+  notifications.push(...getStoredApplication(yourStoredApps, languageParam));
+
+  return notifications;
+};
+
+const getStoredApplication = (apps: GenericTseApplicationTypeItem[], languageParam: string): TseStoreNotification[] => {
+  const notifications: TseStoreNotification[] = [];
+  for (const app of apps || []) {
+    notifications.push({
+      viewUrl: PageUrls.STORED_TSE_SUBMIT_FORM.replace(':appId', app.id) + languageParam,
+    });
+  }
+  return notifications;
 };
