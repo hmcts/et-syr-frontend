@@ -23,7 +23,7 @@ import {
 import { getLanguageParam } from '../RouterHelpers';
 import { isNeverResponseBefore } from '../controller/ApplicationDetailsHelper';
 import { isApplicationShare } from '../controller/ClaimantsApplicationsHelper';
-import { getYourStoredApplicationList } from '../controller/StoredToSubmitControllerHelper';
+import { getYourStoredApplicationList } from '../controller/StoredTseSubmitFormControllerHelper';
 import { isYourApplication } from '../controller/YourRequestAndApplicationsHelper';
 
 /**

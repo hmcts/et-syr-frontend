@@ -3,9 +3,11 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { ErrorPages, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
+import { getLinkFromDocument } from '../helpers/DocumentHelpers';
 import { getApplicationDisplay } from '../helpers/GenericTseApplicationHelper';
+import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
-import { getYourStoredApplication } from '../helpers/controller/StoredToSubmitControllerHelper';
+import { getAppDetailsLink, getYourStoredApplication } from '../helpers/controller/StoredTseSubmitFormControllerHelper';
 import { getLogger } from '../logger';
 import UrlUtils from '../utils/UrlUtils';
 
@@ -23,16 +25,16 @@ export default class StoredTseSubmitFormController {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
-    res.render(TranslationKeys.APPLICATION_DETAILS, {
+    res.render(TranslationKeys.STORED_TSE_SUBMIT_FORM, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
       ...req.t(TranslationKeys.STORED_TSE_SUBMIT_FORM, { returnObjects: true }),
       applicationType: getApplicationDisplay(selectedApplication.value, {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
       }),
       appContent: getApplicationContent(selectedApplication.value, req),
-      viewCorrespondenceLink: '',
+      viewCorrespondenceLink: getAppDetailsLink(req.params.appId, getLanguageParam(req.url)),
       document: selectedApplication.value?.documentUpload,
-      viewCorrespondenceFileLink: '',
+      viewCorrespondenceFileLink: getLinkFromDocument(selectedApplication.value.documentUpload),
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
     });
   };

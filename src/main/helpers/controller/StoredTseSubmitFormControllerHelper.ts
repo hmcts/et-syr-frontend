@@ -1,5 +1,6 @@
 import { AppRequest } from '../../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
+import { PageUrls } from '../../definitions/constants';
 
 import { isYourApplication } from './YourRequestAndApplicationsHelper';
 
@@ -11,4 +12,8 @@ export const getYourStoredApplicationList = (req: AppRequest): GenericTseApplica
   return req.session.userCase.tseRespondentStoredCollection?.filter(app =>
     isYourApplication(app.value, req.session.user)
   );
+};
+
+export const getAppDetailsLink = (appId: string, languageParam: string): string => {
+  return PageUrls.APPLICATION_DETAILS.replace(':appId', appId) + languageParam;
 };
