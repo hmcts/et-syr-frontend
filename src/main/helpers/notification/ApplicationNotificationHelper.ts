@@ -128,7 +128,7 @@ const getStoredApplication = (apps: GenericTseApplicationTypeItem[], languagePar
   const notifications: TseStoreNotification[] = [];
   for (const app of apps || []) {
     notifications.push({
-      viewUrl: PageUrls.STORED_TSE_SUBMIT_FORM.replace(':appId', app.id) + languageParam,
+      viewUrl: PageUrls.STORED_APPLICATION_SUBMIT.replace(':appId', app.id) + languageParam,
     });
   }
   return notifications;
