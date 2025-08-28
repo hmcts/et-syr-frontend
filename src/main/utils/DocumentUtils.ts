@@ -10,7 +10,7 @@ import CollectionUtils from './CollectionUtils';
 import DateUtils from './DateUtils';
 import NumberUtils from './NumberUtils';
 import ObjectUtils from './ObjectUtils';
-import RespondentUtils from './RespondentUtils';
+import { RespondentUtils } from './RespondentUtils';
 import StringUtils from './StringUtils';
 
 export default class DocumentUtils {
