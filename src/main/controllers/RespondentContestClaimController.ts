@@ -69,7 +69,7 @@ export default class RespondentContestClaimController {
   public get = (req: AppRequest, res: Response): void => {
     const redirectUrl = setUrlLanguage(req, PageUrls.RESPONDENT_CONTEST_CLAIM);
     const userCase = req.session.userCase;
-    const respondentName = userCase.respondents[0].respondentName;
+    const respondentName = userCase.respondentName;
 
     // Updating the labels to include both yes1, no1 and respondentName, yes2, no2
     const radioButtonFields = this.form.getFormFields();
