@@ -169,7 +169,7 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
       ),
     ],
     genericTseApplicationCollection: sortApplicationByDate(fromApiCaseData.case_data?.genericTseApplicationCollection),
-    tseApplicationStoredCollection: fromApiCaseData?.case_data?.tseApplicationStoredCollection,
+    tseRespondentStoredCollection: fromApiCaseData?.case_data?.tseRespondentStoredCollection,
     sendNotificationCollection: fromApiCaseData.case_data?.sendNotificationCollection,
     hearingCollection: fromApiCaseData?.case_data?.hearingCollection,
     documentCollection: fromApiCaseData.case_data?.documentCollection,
