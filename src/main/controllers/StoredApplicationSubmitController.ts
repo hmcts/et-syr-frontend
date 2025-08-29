@@ -10,9 +10,9 @@ import { AnyRecord } from '../definitions/util-types';
 import { getLinkFromDocument } from '../helpers/DocumentHelpers';
 import { getApplicationDisplay } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getAppDetailsLink, getSelectedStoredApplication } from '../helpers/StoredApplicationHelper';
 import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
 import { clearTempFields } from '../helpers/controller/ContactTribunalSubmitHelper';
-import { getAppDetailsLink, getYourStoredApplication } from '../helpers/controller/StoredTseSubmitFormControllerHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import UrlUtils from '../utils/UrlUtils';
@@ -56,7 +56,7 @@ export default class StoredApplicationSubmitController {
     const languageParam = getLanguageParam(req.url);
 
     // get selected application
-    const selectedApplication: GenericTseApplicationTypeItem = getYourStoredApplication(req);
+    const selectedApplication: GenericTseApplicationTypeItem = getSelectedStoredApplication(req);
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.appId);
       return res.redirect(ErrorPages.NOT_FOUND + languageParam);
@@ -85,7 +85,7 @@ export default class StoredApplicationSubmitController {
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     // get selected application
-    const selectedApplication: GenericTseApplicationTypeItem = getYourStoredApplication(req);
+    const selectedApplication: GenericTseApplicationTypeItem = getSelectedStoredApplication(req);
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.appId);
       return res.redirect(ErrorPages.NOT_FOUND);

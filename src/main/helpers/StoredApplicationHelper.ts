@@ -1,10 +1,10 @@
-import { AppRequest } from '../../definitions/appRequest';
-import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { PageUrls } from '../../definitions/constants';
+import { AppRequest } from '../definitions/appRequest';
+import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
+import { PageUrls } from '../definitions/constants';
 
-import { isYourApplication } from './YourRequestAndApplicationsHelper';
+import { isYourApplication } from './controller/YourRequestAndApplicationsHelper';
 
-export const getYourStoredApplication = (req: AppRequest): GenericTseApplicationTypeItem => {
+export const getSelectedStoredApplication = (req: AppRequest): GenericTseApplicationTypeItem => {
   return getYourStoredApplicationList(req)?.find(it => it.id === req.params.appId);
 };
 

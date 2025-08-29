@@ -21,9 +21,9 @@ import {
   isResponseToTribunalRequired,
 } from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
+import { getYourStoredApplicationList } from '../StoredApplicationHelper';
 import { isNeverResponseBefore } from '../controller/ApplicationDetailsHelper';
 import { isApplicationShare } from '../controller/ClaimantsApplicationsHelper';
-import { getYourStoredApplicationList } from '../controller/StoredTseSubmitFormControllerHelper';
 import { isYourApplication } from '../controller/YourRequestAndApplicationsHelper';
 
 /**
