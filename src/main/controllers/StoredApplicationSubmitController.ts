@@ -84,11 +84,13 @@ export default class StoredApplicationSubmitController {
   };
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
+    const languageParam = getLanguageParam(req.url);
+
     // get selected application
     const selectedApplication: GenericTseApplicationTypeItem = getSelectedStoredApplication(req);
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.appId);
-      return res.redirect(ErrorPages.NOT_FOUND);
+      return res.redirect(ErrorPages.NOT_FOUND + languageParam);
     }
 
     // render page

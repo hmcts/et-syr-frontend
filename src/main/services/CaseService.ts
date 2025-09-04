@@ -230,7 +230,7 @@ export class CaseApi {
         },
       });
     } catch (error) {
-      throw new Error('Error submitting respondent tse application: ' + axiosErrorDetails(error));
+      throw new Error('Error storing respondent tse application: ' + axiosErrorDetails(error));
     }
   };
 
