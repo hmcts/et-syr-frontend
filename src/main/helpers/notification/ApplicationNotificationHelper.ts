@@ -114,7 +114,7 @@ const getAppUrl = (app: GenericTseApplicationTypeItem, languageParam: string): s
  * Get notification banner for stored applications
  * @param req request
  */
-export const getStoredTseBannerList = (req: AppRequest): TseStoreNotification[] => {
+export const getStoredBannerList = (req: AppRequest): TseStoreNotification[] => {
   const notifications: TseStoreNotification[] = [];
   const languageParam = getLanguageParam(req.url);
 
