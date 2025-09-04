@@ -32,7 +32,7 @@ export default class ContactTribunalStoreController {
 
       // refresh userCase from api
       req.session.userCase = formatApiCaseDataToCaseWithId(
-        (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseSubmissionReference)).data,
+        (await getCaseApi(req.session.user?.accessToken).getUserCase(req.session.userCase.id)).data,
         req
       );
 

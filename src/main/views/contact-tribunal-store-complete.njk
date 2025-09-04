@@ -1,0 +1,39 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% block beforeContent %}
+  {{ super() }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      {{ govukPanel({
+        titleText: title
+      }) }}
+      <h2 class="govuk-heading-m">{{ pHead }}</h2>
+      <p class="govuk-body">{{ p1 }}</p>
+      <p class="govuk-body"><a href="{{ tseLink }}" class="govuk-link" target="_blank">{{ linkView }} ({{ opensInNewTab }})</a></p>
+
+      {% if document %}
+      <p class="govuk-body">
+        {{ linkDoc }} <br/>
+        <a href="{{ documentLink }}" class="govuk-link" target="_blank">{{ document.document_filename }}</a>
+      </p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  <div class="govuk-width-container">
+    <div class="govuk-button-group">
+      {{ govukButton({
+        text: closeAndReturn,
+        href: redirectUrl
+      }) }}
+    </div>
+  </div>
+  {{ super() }}
+{% endblock %}
