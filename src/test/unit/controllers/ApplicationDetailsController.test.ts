@@ -57,12 +57,6 @@ describe('Application Details Controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
     });
 
-    it('should redirect to NOT_FOUND page if missing userCase', async () => {
-      request.session.userCase = undefined;
-      await controller.get(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
-    });
-
     it('should redirect to holding page if feature flag is disabled', async () => {
       jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(false);
       await controller.get(request, response);

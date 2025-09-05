@@ -93,7 +93,7 @@ describe('StoredApplicationSubmitController', () => {
       expect(res.render).toHaveBeenCalledWith(
         TranslationKeys.STORED_APPLICATION_SUBMIT,
         expect.objectContaining({
-          applicationType: 'Amend my response',
+          title: 'Amend my response',
           viewCorrespondenceLink: '/application-details/3f2b8b62-7b36-4f29-a3c3-89e2c1a4b6f7?lng=en',
           viewCorrespondenceFileLink:
             '<a href="/getSupportingMaterial/04ee9057-4d4b-44d0-b371-6bb396f078ca" target="_blank">Attachment.txt</a><br>',
