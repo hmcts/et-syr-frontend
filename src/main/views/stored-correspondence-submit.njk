@@ -14,19 +14,19 @@
 
   <div class="govuk-grid-row">
     <h1 class="govuk-heading-xl">{{ title }}</h1>
-    <p class="govuk-body">{{ youHaveNotSubmitted }}</p>
+    <p class="govuk-body">{{ p1 }}</p>
 
     {{ govukSummaryList({
       rows: appContent
     }) }}
 
-    <h2 class="govuk-heading-l">{{ confirmYouHaveCopied }}</h2>
-    <p class="govuk-body">{{ toSubmitYourApplication }}</p>
-    <p class="govuk-body"><a href="{{ viewCorrespondenceLink }}" class="govuk-link" target="_blank">{{ viewThisCorrespondence }} ({{ opensInNewTab }})</a></p>
+    <h2 class="govuk-heading-l">{{ h2 }}</h2>
+    <p class="govuk-body">{{ p2 }}</p>
+    <p class="govuk-body"><a href="{{ viewCorrespondenceLink }}" class="govuk-link" target="_blank">{{ linkView }} ({{ opensInNewTab }})</a></p>
 
     {% if document %}
     <p class="govuk-body">
-      {{ viewTheSupportingDocuments }} <br/>
+      {{ linkDoc }} <br/>
       <a href="{{ viewCorrespondenceFileLink }}" class="govuk-link" target="_blank">{{ document.document_filename }} ({{ opensInNewTab }})</a>
     </p>
     {% endif %}

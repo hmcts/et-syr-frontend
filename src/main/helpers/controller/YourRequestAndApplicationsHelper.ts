@@ -6,10 +6,11 @@ import {
   GenericTseApplicationTypeItem,
   TseRespondType,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, PageUrls, PartiesNotify, TranslationKeys } from '../../definitions/constants';
+import { Applicant, PartiesNotify, TranslationKeys } from '../../definitions/constants';
 import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import ObjectUtils from '../../utils/ObjectUtils';
+import { getAppDetailsLink } from '../ApplicationHelper';
 import { getApplicationState } from '../ApplicationStateHelper';
 import { getApplicationDisplay } from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
@@ -31,7 +32,7 @@ export const updateAppsDisplayInfo = (apps: GenericTseApplicationTypeItem[], req
     const appState: LinkStatus = getApplicationState(app.value, req.session.user);
     return {
       submitDate: app.value.date,
-      redirectUrl: PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + getLanguageParam(req.url),
+      redirectUrl: getAppDetailsLink(app.id, getLanguageParam(req.url)),
       linkValue: getApplicationDisplay(app.value, translations),
       displayStatus: translations[appState],
       statusColor: linkStatusColorMap.get(appState),

@@ -13,6 +13,7 @@ import {
 } from '../../definitions/notification/tseNotification';
 import { TseStoreNotification } from '../../definitions/notification/tseStoreNotification';
 import { AnyRecord } from '../../definitions/util-types';
+import { getAppDetailsLink } from '../ApplicationHelper';
 import {
   getAppType,
   getApplicationDisplay,
@@ -66,7 +67,7 @@ const getRequestItems = (
   return {
     from: getFromLabel(app.value, user, translations),
     appName: getApplicationDisplay(app.value, translations).toLowerCase(),
-    appUrl: getAppUrl(app, languageParam),
+    appUrl: getAppDetailsLink(app.id, languageParam),
   };
 };
 
@@ -82,7 +83,7 @@ const getSubmitItems = (
     appName: getApplicationDisplay(app.value, translations).toLowerCase(),
     isTypeB: getAppType(app.value) === ApplicationType.B,
     dueDate: new Date(Date.parse(app.value.dueDate)),
-    appUrl: getAppUrl(app, languageParam),
+    appUrl: getAppDetailsLink(app.id, languageParam),
   };
 };
 
@@ -104,10 +105,6 @@ const getFromName = (app: GenericTseApplicationType, respondents: RespondentET3M
     return respondents.find(r => r.idamId === app.applicantIdamId)?.respondentName || '';
   }
   return '';
-};
-
-const getAppUrl = (app: GenericTseApplicationTypeItem, languageParam: string): string => {
-  return PageUrls.APPLICATION_DETAILS.replace(':appId', app.id) + languageParam;
 };
 
 /**

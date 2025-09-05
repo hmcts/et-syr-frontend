@@ -7,10 +7,11 @@ import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/gener
 import { ErrorPages, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
+import { getAppDetailsLink } from '../helpers/ApplicationHelper';
 import { getLinkFromDocument } from '../helpers/DocumentHelpers';
 import { getApplicationDisplay } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getAppDetailsLink, getSelectedStoredApplication } from '../helpers/StoredApplicationHelper';
+import { getSelectedStoredApplication } from '../helpers/StoredApplicationHelper';
 import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
 import { clearTempFields } from '../helpers/controller/ContactTribunalSubmitHelper';
 import { getLogger } from '../logger';
@@ -101,7 +102,7 @@ export default class StoredApplicationSubmitController {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
       }),
       appContent: getApplicationContent(selectedApplication.value, req),
-      viewCorrespondenceLink: getAppDetailsLink(req.params.appId, getLanguageParam(req.url)),
+      viewCorrespondenceLink: getAppDetailsLink(selectedApplication.id, getLanguageParam(req.url)),
       document: selectedApplication.value?.documentUpload,
       viewCorrespondenceFileLink: getLinkFromDocument(selectedApplication.value.documentUpload),
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),

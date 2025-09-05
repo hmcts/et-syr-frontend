@@ -74,7 +74,7 @@ export const TranslationKeys = {
   CONTACT_TRIBUNAL_CYA_OFFLINE: 'contact-tribunal-check-your-answers-offline',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: 'contact-tribunal-submit-complete',
   CONTACT_TRIBUNAL_STORE_COMPLETE: 'contact-tribunal-store-complete',
-  STORED_APPLICATION_SUBMIT: 'stored-application-submit',
+  STORED_APPLICATION_SUBMIT: 'stored-correspondence-submit',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
   CLAIMANTS_APPLICATIONS: 'claimants-applications',
@@ -161,7 +161,7 @@ export const PageUrls = {
   CONTACT_TRIBUNAL_CYA_OFFLINE: '/contact-tribunal-check-your-answers-offline',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
   CONTACT_TRIBUNAL_STORE_COMPLETE: '/contact-tribunal-store-complete/:appId',
-  STORED_APPLICATION_SUBMIT: '/stored-application-submit/:appId',
+  STORED_APPLICATION_SUBMIT: '/stored-correspondence-submit/:appId',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
   CLAIMANTS_APPLICATIONS: '/claimants-applications',

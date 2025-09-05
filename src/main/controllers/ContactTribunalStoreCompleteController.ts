@@ -3,6 +3,8 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { ErrorPages, TranslationKeys, TseErrors } from '../definitions/constants';
+import { getAppDetailsLink } from '../helpers/ApplicationHelper';
+import { getLinkFromDocument } from '../helpers/DocumentHelpers';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getSelectedStoredApplication } from '../helpers/StoredApplicationHelper';
 import { getLogger } from '../logger';
@@ -25,9 +27,9 @@ export default class ContactTribunalStoreCompleteController {
     res.render(TranslationKeys.CONTACT_TRIBUNAL_STORE_COMPLETE, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
       ...req.t(TranslationKeys.CONTACT_TRIBUNAL_STORE_COMPLETE, { returnObjects: true }),
-      tseLink: '',
+      viewCorrespondenceLink: getAppDetailsLink(selectedApplication.id, getLanguageParam(req.url)),
       document: selectedApplication.value?.documentUpload,
-      documentLink: '',
+      viewCorrespondenceFileLink: getLinkFromDocument(selectedApplication.value.documentUpload),
       redirectUrl: UrlUtils.getCaseDetailsUrlByRequest(req),
     });
   };
