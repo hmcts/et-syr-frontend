@@ -9,6 +9,7 @@ import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { getAppDetailsLink } from '../helpers/ApplicationHelper';
 import { getLinkFromDocument } from '../helpers/DocumentHelpers';
+import { getPageContent } from '../helpers/FormHelper';
 import { getApplicationDisplay } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getSelectedStoredApplication } from '../helpers/StoredApplicationHelper';
@@ -95,10 +96,13 @@ export default class StoredApplicationSubmitController {
     }
 
     // render page
+    const content = getPageContent(req, this.formContent, [
+      TranslationKeys.COMMON,
+      TranslationKeys.STORED_APPLICATION_SUBMIT,
+    ]);
     res.render(TranslationKeys.STORED_APPLICATION_SUBMIT, {
-      ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
-      ...req.t(TranslationKeys.STORED_APPLICATION_SUBMIT, { returnObjects: true }),
-      applicationType: getApplicationDisplay(selectedApplication.value, {
+      ...content,
+      title: getApplicationDisplay(selectedApplication.value, {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
       }),
       appContent: getApplicationContent(selectedApplication.value, req),

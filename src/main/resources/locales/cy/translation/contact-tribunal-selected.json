@@ -32,6 +32,9 @@
       "fileNameNotSelected": "Dewiswch ffeil.",
       "fileAlreadyExists": "Mae’r ffeil rydych chi’n ceisio ei huwchlwytho eisoes yn bodoli. Tynnwch yr un sy’n bodoli eisoes yn gyntaf.",
       "WithoutUploadButton": "Nid oes ffeil wedi’i huwchlwytho - cliciwch ar ‘Uwchlwytho ffeil’ "
+    },
+    "hiddenErrorField": {
+      "fileUploadBackendError": "Roedd yna wall wrth uwchlwytho eich ffeil. Rhowch gynnig arall arni. Os yw’r gwall hwn yn parhau, cysylltwch â'r adran gymorth."
     }
   }
 }

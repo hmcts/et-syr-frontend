@@ -11,6 +11,7 @@ import {
   isResponseToTribunalRequired,
 } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getSelectedStoredApplication } from '../helpers/StoredApplicationHelper';
 import {
   getAllResponses,
   getApplicationContent,
@@ -32,7 +33,8 @@ export default class ApplicationDetailsController {
       return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
     }
 
-    const selectedApplication: GenericTseApplicationTypeItem = findSelectedGenericTseApplication(req);
+    const selectedApplication: GenericTseApplicationTypeItem =
+      findSelectedGenericTseApplication(req) ?? getSelectedStoredApplication(req);
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.appId);
       return res.redirect(ErrorPages.NOT_FOUND);

@@ -32,6 +32,9 @@
       "fileNameNotSelected": "Please select a file.",
       "fileAlreadyExists": "The file you are trying to upload already exists. Please remove existing one first.",
       "WithoutUploadButton": "No file has been uploaded - click 'Upload file'"
+    },
+    "hiddenErrorField": {
+      "fileUploadBackendError": "There was an error uploading your file. Please try again. If this error persists please contact support."
     }
   }
 }
