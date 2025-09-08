@@ -56,6 +56,9 @@ export default class ClaimantPayDetailsController {
     if (formData.et3ResponseEarningDetailsCorrect === YesOrNoOrNotApplicable.NO) {
       nextPage = setUrlLanguage(req, PageUrls.CLAIMANT_PAY_DETAILS_ENTER);
       startSubSection(req, nextPage);
+    } else {
+      req.session.userCase.et3ResponsePayBeforeTax = undefined;
+      req.session.userCase.et3ResponsePayTakehome = undefined;
     }
 
     await ET3Util.updateET3ResponseWithET3Form(

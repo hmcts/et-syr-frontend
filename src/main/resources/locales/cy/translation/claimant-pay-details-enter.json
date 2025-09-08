@@ -15,10 +15,14 @@
   },
   "errors": {
     "et3ResponsePayBeforeTax": {
-      "invalidCurrency": "Rhaid i dâl cyn treth fod yn rhif ac yn ffigyrau dwbl o leiaf. Er enghraifft 10"
+      "invalidCurrency": "[W]Enter the pay before tax in the correct format, for example £600 or £193.54",
+      "tooLowCurrency": "[W]Pay before tax must be £10.00 or more",
+      "tooHighCurrency": "[W]Pay before tax must be £9,999,999.99 or less"
     },
     "et3ResponsePayTakehome": {
-      "invalidCurrency": "Rhaid i dâl ar ôl treth fod yn rhif ac yn ffigyrau dwbl o leiaf. Er enghraifft 10"
+      "invalidCurrency": "[W]Enter the take-home pay in the correct format, for example £600 or £193.54",
+      "tooLowCurrency": "[W]Take-home pay must be £10.00 or more",
+      "tooHighCurrency": "[W]Take-home pay must be £9,999,999.99 or less"
     },
     "hiddenErrorField": {
       "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",

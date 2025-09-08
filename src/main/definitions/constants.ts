@@ -207,6 +207,8 @@ export const ValidationErrors = {
   INVALID_ACAS_NUMBER: 'invalidAcasNumber',
   INVALID_COMPANY_REGISTRATION_NUMBER: 'invalidCompanyRegistrationNumber',
   INVALID_CURRENCY: 'invalidCurrency',
+  TOO_HIGH_CURRENCY: 'tooHighCurrency',
+  TOO_LOW_CURRENCY: 'tooLowCurrency',
   INVALID_END_DATE_BEFORE_START_DATE: 'invalidEndDateBeforeStartDate',
   INVALID_FILE_FORMAT: 'invalidFileFormat',
   FILE_ALREADY_EXISTS: 'fileAlreadyExists',
@@ -242,6 +244,7 @@ export const ValidationErrors = {
   CASE_ALREADY_ASSIGNED: 'caseAlreadyAssigned',
   CASE_ALREADY_ASSIGNED_TO_SAME_USER: 'caseAlreadyAssignedToSameUser',
   INVALID_CASE_DETAILS: 'invalidCaseDetails',
+  CASE_UPDATE_BACKEND_ERROR: 'caseUpdateBackendError',
 } as const;
 
 export const AuthUrls = {

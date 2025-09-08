@@ -400,8 +400,8 @@ export const getEt3Section4 = (
       ),
       addSummaryRowWithAction(
         translations.section4.claimantsPayBeforeTax,
-        NumberUtils.isNumericValue(userCase.et3ResponsePayBeforeTax)
-          ? String(NumberUtils.convertStringToNumber(userCase.et3ResponsePayBeforeTax) / 100)
+        NumberUtils.isNotEmptyOrZero(userCase.et3ResponsePayBeforeTax)
+          ? userCase.et3ResponsePayBeforeTax
           : translations.notProvided,
         PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
         hideChangeLink ? undefined : translations.change,
@@ -409,8 +409,8 @@ export const getEt3Section4 = (
       ),
       addSummaryRowWithAction(
         translations.section4.claimantsPayAfterTax,
-        NumberUtils.isNumericValue(userCase.et3ResponsePayTakehome)
-          ? String(NumberUtils.convertStringToNumber(userCase.et3ResponsePayTakehome) / 100)
+        NumberUtils.isNotEmptyOrZero(userCase.et3ResponsePayTakehome)
+          ? userCase.et3ResponsePayTakehome
           : translations.notProvided,
         PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
         hideChangeLink ? undefined : translations.change,

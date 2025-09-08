@@ -15,10 +15,14 @@
   },
   "errors": {
     "et3ResponsePayBeforeTax": {
-      "invalidCurrency": "Pay before tax must be entered as a number and a minimum of double figures. For example 10"
+      "invalidCurrency": "Enter the pay before tax in the correct format, for example £600 or £193.54",
+      "tooLowCurrency": "Pay before tax must be £10.00 or more",
+      "tooHighCurrency": "Pay before tax must be £9,999,999.99 or less"
     },
     "et3ResponsePayTakehome": {
-      "invalidCurrency": "Pay after tax must be entered as a number and a minimum of double figures. For example 10"
+      "invalidCurrency": "Enter the take-home pay in the correct format, for example £600 or £193.54",
+      "tooLowCurrency": "Take-home pay must be £10.00 or more",
+      "tooHighCurrency": "Take-home pay must be £9,999,999.99 or less"
     },
     "hiddenErrorField": {
       "sessionUserCase": "User case not found in session",

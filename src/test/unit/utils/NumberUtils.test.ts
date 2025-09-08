@@ -103,7 +103,7 @@ describe('NumberUtils tests', () => {
       { value: '9999999999999', result: 9999999999999 },
       { value: '45000.32', result: 45000.32 },
     ])('check if given string value is converted to number: %o', ({ value, result }) => {
-      expect(NumberUtils.convertStringToNumber(value)).toStrictEqual(result);
+      expect(NumberUtils.toNumberOrUndefined(value)).toStrictEqual(result);
     });
   });
 });

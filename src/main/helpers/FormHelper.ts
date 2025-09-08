@@ -1,3 +1,4 @@
+import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import { PageUrls } from '../definitions/constants';
@@ -68,6 +69,49 @@ export const assignAddresses = (userCase: CaseWithId | undefined, fields: FormFi
     const caseName = (userCase as AnyRecord)[name];
     if (caseName) {
       field.values = caseName;
+    }
+  });
+};
+
+/**
+ * Updates the `userCase` object in the session with values from the provided form.
+ *
+ * This function:
+ *  - Ensures a `userCase` object exists in the session (creates an empty one if missing).
+ *  - Parses the request body using the given `Form` instance.
+ *  - Iterates over the form fields and applies only those values whose IDs match
+ *    the provided `fieldNames` array.
+ *  - Updates the matching properties on the session's `userCase` object.
+ *
+ * @param req - The current application request containing the session and user case.
+ *              If undefined or if no `userCase` exists, a new `CaseWithId` object is initialized.
+ * @param form - The `Form` instance used to parse and validate the request body.
+ * @param fieldNames - An array of field names (keys of `CaseWithId`) that are allowed
+ *                     to be updated in the session's `userCase`.
+ *
+ * @remarks
+ * - Only fields listed in `fieldNames` will be applied to the `userCase`.
+ * - Values are taken from the parsed body (`form.getParsedBody`) to ensure they follow
+ *   the form’s parsing and validation rules.
+ * - This method mutates the `req.session.userCase` object directly.
+ *
+ * @example
+ * ```ts
+ * applyFormDataToUserCase(req, myForm, ['firstName', 'lastName']);
+ * // Updates only 'firstName' and 'lastName' in req.session.userCase
+ * // if present in the form body.
+ * ```
+ */
+export const applyFormDataToUserCase = (req: AppRequest | undefined, form: Form, fieldNames: string[]): void => {
+  if (!req?.session?.userCase) {
+    req.session.userCase = <CaseWithId>{};
+    return;
+  }
+  const formData: Partial<CaseWithId> = form.getParsedBody<CaseWithId>(req.body, form.getFormFields());
+  Object.entries(form.getFormFields()).forEach(([, field]: [string, FormOptions]) => {
+    if (fieldNames.includes(field.id as keyof CaseWithId) && formData[field.id as keyof CaseWithId]) {
+      (req.session.userCase as AnyRecord)[field.id] = formData[field.id as keyof CaseWithId];
+      (req.session.userCase as AnyRecord)[field.id] = formData[field.id as keyof CaseWithId] as string;
     }
   });
 };
