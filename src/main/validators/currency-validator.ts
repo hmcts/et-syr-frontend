@@ -4,7 +4,7 @@ import { Validator } from './validator';
 
 const validCurrencyPattern = /^£?(\d{1,3}(,\d{3})*|\d+)(\.\d{0,2})?$/;
 const regExpToReplace = /[£,]/g;
-const minCurrencyValue = 10;
+const minCurrencyValue = 0.01;
 const maxCurrencyValue = 9999999.99;
 
 export const isValidCurrency: Validator = value => {
