@@ -14,7 +14,7 @@ import { getApplicationDisplay } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getSelectedStoredApplication } from '../helpers/StoredApplicationHelper';
 import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
-import { clearTempFields } from '../helpers/controller/ContactTribunalSubmitHelper';
+import { getRespondentTse } from '../helpers/controller/StoredApplicationSubmitControllerHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import UrlUtils from '../utils/UrlUtils';
@@ -54,7 +54,6 @@ export default class StoredApplicationSubmitController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const { userCase } = req.session;
     const languageParam = getLanguageParam(req.url);
 
     // get selected application
@@ -63,7 +62,6 @@ export default class StoredApplicationSubmitController {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.appId);
       return res.redirect(ErrorPages.NOT_FOUND + languageParam);
     }
-    userCase.selectedGenericTseApplication = selectedApplication;
 
     // validate form
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
@@ -74,8 +72,8 @@ export default class StoredApplicationSubmitController {
 
     // submit stored application
     try {
-      await getCaseApi(req.session.user?.accessToken).submitStoredRespondentTse(req);
-      clearTempFields(userCase);
+      const respondentTse = getRespondentTse(req.session.user, selectedApplication);
+      await getCaseApi(req.session.user?.accessToken).submitStoredRespondentTse(req, respondentTse);
     } catch (error) {
       logger.error(error.message);
       return res.redirect(ErrorPages.NOT_FOUND + languageParam);
