@@ -1,7 +1,7 @@
 import AxiosInstance from 'axios';
 import { Response } from 'express';
 
-import StoredApplicationSubmitController from '../../../main/controllers/StoredApplicationSubmitController';
+import SubmitStoredApplicationController from '../../../main/controllers/SubmitStoredApplicationController';
 import { AppRequest } from '../../../main/definitions/appRequest';
 import { YesOrNo } from '../../../main/definitions/case';
 import { Applicant, ErrorPages, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
@@ -15,7 +15,7 @@ import { mockResponse } from '../mocks/mockResponse';
 import { mockUserDetails } from '../mocks/mockUser';
 
 describe('StoredApplicationSubmitController', () => {
-  let controller: StoredApplicationSubmitController;
+  let controller: SubmitStoredApplicationController;
   let req: AppRequest;
   let res: Response;
 
@@ -31,7 +31,7 @@ describe('StoredApplicationSubmitController', () => {
     .mockResolvedValue(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse));
 
   beforeEach(() => {
-    controller = new StoredApplicationSubmitController();
+    controller = new SubmitStoredApplicationController();
 
     req = mockRequestWithTranslation({}, { ...applicationTypeJson });
     req.session.user = mockUserDetails;

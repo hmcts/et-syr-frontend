@@ -14,15 +14,15 @@ import { getApplicationDisplay } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getSelectedStoredApplication } from '../helpers/StoredApplicationHelper';
 import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
-import { getRespondentTse } from '../helpers/controller/StoredApplicationSubmitControllerHelper';
+import { getRespondentTse } from '../helpers/controller/SubmitStoredApplicationControllerHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import UrlUtils from '../utils/UrlUtils';
 import { atLeastOneFieldIsChecked } from '../validators/validator';
 
-const logger = getLogger('StoredApplicationSubmitController');
+const logger = getLogger('SubmitStoredApplicationController');
 
-export default class StoredApplicationSubmitController {
+export default class SubmitStoredApplicationController {
   private readonly form: Form;
 
   private readonly formContent: FormContent = {
