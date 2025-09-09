@@ -109,8 +109,7 @@ export const applyFormDataToUserCase = (req: AppRequest | undefined, form: Form,
   }
   const formData: Partial<CaseWithId> = form.getParsedBody<CaseWithId>(req.body, form.getFormFields());
   Object.entries(form.getFormFields()).forEach(([, field]: [string, FormOptions]) => {
-    if (fieldNames.includes(field.id as keyof CaseWithId) && formData[field.id as keyof CaseWithId]) {
-      (req.session.userCase as AnyRecord)[field.id] = formData[field.id as keyof CaseWithId];
+    if (fieldNames.includes(field.id as keyof CaseWithId)) {
       (req.session.userCase as AnyRecord)[field.id] = formData[field.id as keyof CaseWithId] as string;
     }
   });
