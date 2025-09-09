@@ -6,6 +6,7 @@ import { CaseWithId, YesOrNo } from '../definitions/case';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { ErrorPages, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { getAppDetailsLink } from '../helpers/ApplicationHelper';
 import { getLinkFromDocument } from '../helpers/DocumentHelpers';
@@ -14,15 +15,16 @@ import { getApplicationDisplay } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getSelectedStoredApplication } from '../helpers/StoredApplicationHelper';
 import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
-import { getRespondentTse } from '../helpers/controller/SubmitStoredApplicationControllerHelper';
+import { getRespondentTse } from '../helpers/controller/ContactTribunalSubmitStoredControllerHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
+import ET3Util from '../utils/ET3Util';
 import UrlUtils from '../utils/UrlUtils';
 import { atLeastOneFieldIsChecked } from '../validators/validator';
 
-const logger = getLogger('SubmitStoredApplicationController');
+const logger = getLogger('ContactTribunalSubmitStoredController');
 
-export default class SubmitStoredApplicationController {
+export default class ContactTribunalSubmitStoredController {
   private readonly form: Form;
 
   private readonly formContent: FormContent = {
@@ -74,6 +76,18 @@ export default class SubmitStoredApplicationController {
     try {
       const respondentTse = getRespondentTse(req.session.user, selectedApplication);
       await getCaseApi(req.session.user?.accessToken).submitStoredRespondentTse(req, respondentTse);
+    } catch (error) {
+      logger.error(error.message);
+      return res.redirect(ErrorPages.NOT_FOUND + languageParam);
+    }
+
+    // update et3CaseDetailsLinksStatuses
+    try {
+      req.session.userCase = await ET3Util.updateCaseDetailsLinkStatuses(
+        req,
+        ET3CaseDetailsLinkNames.YourRequestsAndApplications,
+        LinkStatus.IN_PROGRESS
+      );
     } catch (error) {
       logger.error(error.message);
       return res.redirect(ErrorPages.NOT_FOUND + languageParam);
