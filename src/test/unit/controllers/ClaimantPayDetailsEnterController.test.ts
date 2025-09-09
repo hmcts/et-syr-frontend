@@ -48,6 +48,32 @@ describe('Claimant pay details enter details Controller', () => {
   });
 
   describe('POST method', () => {
+    it('should redirect to claimant pay details enter page when there is error in the session', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponsePayFrequency: PayFrequency.WEEKLY,
+          et3ResponsePayBeforeTax: '100',
+          et3ResponseTakehomePay: '80',
+        },
+      });
+      request.url = PageUrls.CLAIMANT_PAY_DETAILS_ENTER;
+      request.session.errors = [{ propertyName: 'et3ResponsePayBeforeTax', errorType: 'invalidCurrency' }];
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_PAY_DETAILS_ENTER);
+    });
+    it('should redirect to claimant pay details enter page when updateET3Data returns empty user case', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponsePayFrequency: PayFrequency.WEEKLY,
+          et3ResponsePayBeforeTax: '100',
+          et3ResponseTakehomePay: '80',
+        },
+      });
+      request.url = PageUrls.CLAIMANT_PAY_DETAILS_ENTER;
+      updateET3DataMock.mockResolvedValue(null);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_PAY_DETAILS_ENTER);
+    });
     it('should redirect to next page when radio is selected', async () => {
       request = mockRequest({
         body: {
