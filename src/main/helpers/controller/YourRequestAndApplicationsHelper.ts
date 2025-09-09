@@ -14,6 +14,7 @@ import { getAppDetailsLink } from '../ApplicationHelper';
 import { getApplicationState } from '../ApplicationStateHelper';
 import { getApplicationDisplay } from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
+import { getSubmitStoredAppLink, getYourStoredApplicationList } from '../StoredApplicationHelper';
 
 /**
  * Update applications' display info
@@ -80,10 +81,38 @@ const isResponseShare = (response: TseRespondType, user: UserDetails): boolean =
  * @param req request
  */
 export const getYourApplicationCollection = (req: AppRequest): ApplicationList[] => {
+  const applicationList: ApplicationList[] = [];
+
+  // user submitted applications
   const yourApps = (req.session.userCase?.genericTseApplicationCollection || []).filter(app =>
     isYourApplication(app.value, req.session.user)
   );
-  return updateAppsDisplayInfo(yourApps, req);
+  applicationList.push(...updateAppsDisplayInfo(yourApps, req));
+
+  // user stored applications
+  const storedApps = getYourStoredApplicationList(req);
+  applicationList.push(...getStoredAppsDisplayInfo(storedApps, req));
+
+  return applicationList;
+};
+
+const getStoredAppsDisplayInfo = (apps: GenericTseApplicationTypeItem[], req: AppRequest): ApplicationList[] => {
+  if (ObjectUtils.isEmpty(apps)) {
+    return [];
+  }
+  const translations: AnyRecord = {
+    ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),
+    ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
+  };
+  return apps.map(app => {
+    return {
+      redirectUrl: getSubmitStoredAppLink(app.id, getLanguageParam(req.url)),
+      linkValue: getApplicationDisplay(app.value, translations),
+      displayStatus: translations[LinkStatus.STORED],
+      statusColor: linkStatusColorMap.get(LinkStatus.STORED),
+      lastUpdatedDate: new Date(app.value?.date),
+    };
+  });
 };
 
 /**
