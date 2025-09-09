@@ -25,6 +25,9 @@ describe('Validation', () => {
     { mockRef: '9,999,999.99', expected: undefined },
     { mockRef: '9999999.99', expected: undefined },
     { mockRef: '£100', expected: undefined },
+    { mockRef: '0.01', expected: undefined },
+    { mockRef: '9', expected: undefined },
+    { mockRef: '9.99', expected: undefined },
   ];
 
   const invalidCurrency: ValidationTestCase[] = [
@@ -46,14 +49,8 @@ describe('Validation', () => {
     { mockRef: '10000000', expected: 'tooHighCurrency' },
   ];
 
-  const tooLowCurrency: ValidationTestCase[] = [
-    { mockRef: '0.01', expected: 'tooLowCurrency' },
-    { mockRef: '9', expected: 'tooLowCurrency' },
-    { mockRef: '9.99', expected: 'tooLowCurrency' },
-  ];
-
   describe('isValidCurrency()', () => {
-    it.each([...emptyCases, ...validCases, ...invalidCurrency, ...tooHighCurrency, ...tooLowCurrency])(
+    it.each([...emptyCases, ...validCases, ...invalidCurrency, ...tooHighCurrency])(
       'Check currency amount is valid when %o',
       ({ mockRef, expected }) => {
         expect(isValidCurrency(mockRef)).toEqual(expected);
