@@ -12,7 +12,8 @@ export const isDocIdValid = (docId: string, req: AppRequest): boolean => {
   return (
     docId === getDocId(userCase.contactApplicationFile?.document_url) ||
     docId === getDocId(userCase.supportingMaterialFile?.document_url) ||
-    isDocOnApplicationPage(docId, userCase.genericTseApplicationCollection)
+    isDocOnApplicationPage(docId, userCase.genericTseApplicationCollection) ||
+    isDocOnApplicationPage(docId, userCase.tseRespondentStoredCollection)
   );
 };
 
