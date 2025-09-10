@@ -4,9 +4,8 @@ import { AppRequest } from '../definitions/appRequest';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { ErrorPages, TranslationKeys, TseErrors } from '../definitions/constants';
 import { getAppDetailsLink } from '../helpers/ApplicationHelper';
-import { getLinkFromDocument } from '../helpers/DocumentHelpers';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getSelectedStoredApplication } from '../helpers/StoredApplicationHelper';
+import { getLinkFromDocument, getSelectedStoredApplication } from '../helpers/StoredApplicationHelper';
 import { getLogger } from '../logger';
 import UrlUtils from '../utils/UrlUtils';
 
@@ -29,7 +28,7 @@ export default class ContactTribunalStoreCompleteController {
       ...req.t(TranslationKeys.CONTACT_TRIBUNAL_STORE_COMPLETE, { returnObjects: true }),
       viewCorrespondenceLink: getAppDetailsLink(selectedApplication.id, getLanguageParam(req.url)),
       document: selectedApplication.value?.documentUpload,
-      viewCorrespondenceFileLink: getLinkFromDocument(selectedApplication.value.documentUpload),
+      viewCorrespondenceFileLink: getLinkFromDocument(selectedApplication.value?.documentUpload),
       redirectUrl: UrlUtils.getCaseDetailsUrlByRequest(req),
     });
   };

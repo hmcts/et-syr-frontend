@@ -1,7 +1,9 @@
 import { AppRequest, UserDetails } from '../definitions/appRequest';
+import { Document } from '../definitions/case';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { PageUrls } from '../definitions/constants';
 import { RespondentTse } from '../definitions/respondentTse';
+import DocumentUtils from '../utils/DocumentUtils';
 
 import { getApplicationByCode } from './ApplicationHelper';
 import { isYourApplication } from './controller/YourRequestAndApplicationsHelper';
@@ -49,4 +51,16 @@ export const getRespondentTse = (user: UserDetails, app: GenericTseApplicationTy
  */
 export const getSubmitStoredAppLink = (appId: string, languageParam: string): string => {
   return PageUrls.STORED_APPLICATION_SUBMIT.replace(':appId', appId) + languageParam;
+};
+
+/**
+ * Get link to view supporting material from document
+ * @param doc document
+ */
+export const getLinkFromDocument = (doc: Document): string => {
+  if (!doc) {
+    return '';
+  }
+  const documentId = DocumentUtils.findDocumentIdByURL(doc.document_url);
+  return PageUrls.GET_SUPPORTING_MATERIAL.replace(':docId', documentId);
 };
