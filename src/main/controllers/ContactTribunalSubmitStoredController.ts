@@ -9,11 +9,14 @@ import { FormContent, FormFields } from '../definitions/form';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { getAppDetailsLink } from '../helpers/ApplicationHelper';
-import { getLinkFromDocument } from '../helpers/DocumentHelpers';
 import { getPageContent } from '../helpers/FormHelper';
 import { getApplicationDisplay } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getRespondentTse, getSelectedStoredApplication } from '../helpers/StoredApplicationHelper';
+import {
+  getLinkFromDocument,
+  getRespondentTse,
+  getSelectedStoredApplication,
+} from '../helpers/StoredApplicationHelper';
 import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
