@@ -14,6 +14,7 @@ import { LinkStatus } from '../definitions/links';
 import { RespondentTse } from '../definitions/respondentTse';
 import { toApiFormat } from '../helpers/ApiFormatter';
 import { getApplicationByCode } from '../helpers/ApplicationHelper';
+import { getStoreRespondentTse } from '../helpers/StoredApplicationHelper';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ErrorUtils from '../utils/ErrorUtils';
 
@@ -216,19 +217,10 @@ export class CaseApi {
   storeRespondentTse = async (req: AppRequest): Promise<AxiosResponse<CaseApiDataResponse>> => {
     try {
       const caseItem = req.session.userCase;
-      const appType = getApplicationByCode(caseItem.contactApplicationType);
       return await this.axios.put(JavaApiUrls.STORE_RESPONDENT_APPLICATION, {
         case_id: caseItem.id,
         case_type_id: caseItem.caseTypeId,
-        respondent_tse: {
-          respondentIdamId: req.session.user.id,
-          contactApplicationType: caseItem.contactApplicationType,
-          contactApplicationClaimantType: appType ? appType.claimant : null,
-          contactApplicationText: caseItem.contactApplicationText,
-          contactApplicationFile: caseItem.contactApplicationFile,
-          copyToOtherPartyYesOrNo: caseItem.copyToOtherPartyYesOrNo,
-          copyToOtherPartyText: caseItem.copyToOtherPartyText,
-        },
+        respondent_tse: getStoreRespondentTse(req.session.user, caseItem),
       });
     } catch (error) {
       throw new Error('Error storing respondent tse application: ' + axiosErrorDetails(error));

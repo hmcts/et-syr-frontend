@@ -16,6 +16,7 @@ const logger = getLogger('ContactTribunalStoreController');
 export default class ContactTribunalStoreController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const languageParam = getLanguageParam(req.url);
+
     try {
       // store application
       await getCaseApi(req.session.user?.accessToken).storeRespondentTse(req);

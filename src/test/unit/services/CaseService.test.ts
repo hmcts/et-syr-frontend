@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-import { CaseTypeId } from '../../../main/definitions/case';
+import { CaseTypeId, YesOrNo } from '../../../main/definitions/case';
 import { DefaultValues, ET3ModificationTypes, ServiceErrors } from '../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
+import { RespondentTse } from '../../../main/definitions/respondentTse';
 import { CaseApi, getCaseApi } from '../../../main/services/CaseService';
 import { mockAxiosError } from '../mocks/mockAxios';
 import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
@@ -404,12 +405,24 @@ describe('Case Service Tests', () => {
     const request = mockRequest({
       session: { userCase: mockUserCase, user: mockUserDetails },
     });
+    const respondentTse: RespondentTse = {
+      respondentIdamId: 'user1',
+      contactApplicationType: 'Change personal details',
+      contactApplicationClaimantType: 'Change my personal details',
+      contactApplicationText: 'details',
+      contactApplicationFile: {
+        document_url: 'url',
+        document_filename: 'file',
+        document_binary_url: 'binurl',
+      },
+      copyToOtherPartyYesOrNo: YesOrNo.YES,
+    };
 
     it('should submit respondent tse application successfully', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
       mockedAxios.put.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse);
-      const value = await api.storeRespondentTse(request);
+      const value = await api.storeRespondentTse(request, respondentTse);
       expect(value.data).toEqual(mockCaseApiDataResponse);
     });
 
@@ -419,7 +432,7 @@ describe('Case Service Tests', () => {
       mockedAxios.put.mockImplementation(() => {
         throw mockAxiosError('TEST', ServiceErrors.ERROR_CASE_NOT_FOUND, 404);
       });
-      await expect(() => api.storeRespondentTse(request)).rejects.toEqual(
+      await expect(() => api.storeRespondentTse(request, respondentTse)).rejects.toEqual(
         new Error('Error storing respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
       );
     });
@@ -428,7 +441,7 @@ describe('Case Service Tests', () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
       request.session.userCase.contactApplicationType = 'InvalidType';
-      await expect(() => api.storeRespondentTse(request)).rejects.toEqual(
+      await expect(() => api.storeRespondentTse(request, respondentTse)).rejects.toEqual(
         new Error('Error storing respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
       );
     });
@@ -439,7 +452,7 @@ describe('Case Service Tests', () => {
       const invalidRequest = mockRequest({
         session: { user: mockUserDetails },
       });
-      await expect(() => api.storeRespondentTse(invalidRequest)).rejects.toEqual(
+      await expect(() => api.storeRespondentTse(invalidRequest, respondentTse)).rejects.toEqual(
         new Error('Error storing respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
       );
     });
@@ -448,7 +461,7 @@ describe('Case Service Tests', () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
       request.session.userCase.contactApplicationType = undefined;
-      await expect(() => api.storeRespondentTse(request)).rejects.toEqual(
+      await expect(() => api.storeRespondentTse(request, respondentTse)).rejects.toEqual(
         new Error('Error storing respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
       );
     });
