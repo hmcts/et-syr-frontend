@@ -27,23 +27,6 @@ export const getYourStoredApplicationList = (req: AppRequest): GenericTseApplica
 };
 
 /**
- * Map new application to respondentTse
- */
-export const mapNewRespondentTse = (req: AppRequest): RespondentTse => {
-  const { user, userCase } = req.session;
-  const appType = getApplicationByCode(userCase.contactApplicationType);
-  return {
-    respondentIdamId: user.id,
-    contactApplicationType: userCase.contactApplicationType,
-    contactApplicationClaimantType: appType ? appType.claimant : null,
-    contactApplicationText: userCase.contactApplicationText,
-    contactApplicationFile: userCase.contactApplicationFile,
-    copyToOtherPartyYesOrNo: userCase.copyToOtherPartyYesOrNo,
-    copyToOtherPartyText: userCase.copyToOtherPartyText,
-  };
-};
-
-/**
  * Map stored application to respondentTse
  * @param user user
  * @param app application
