@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block content %}
+  {% block errorSummary %}
+    {% include "./form/main/error-summary.njk" %}
+  {% endblock %}
   <div class="govuk-grid-row">
       {% block form %}
         {% include "form/form.njk"%}

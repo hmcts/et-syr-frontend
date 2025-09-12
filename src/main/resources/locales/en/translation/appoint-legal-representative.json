@@ -1,12 +1,10 @@
 {
   "title": "Appoint a legal representative",
-  "p1": "You have chosen to appoint a legal representative so you will need to give the following information to your solicitor so they can perform a Notice of Change.",
-  "h2": "Claim details",
-  "caseReference": "Case reference",
-  "tribunalCaseNumber": "Tribunal case number",
-  "respondentName": "Respondent name",
-  "downloadDocuments": "Download documents",
-  "p2a": "You may also wish to",
-  "p2b": "download all your documents",
-  "p2c": "so you may share them with your legal representative."
+  "heading2": "Download documents",
+  "p1": "To appoint a legal representative, you will need to give the following information to them so they can perform a Notice of Change",
+  "p2a": "Documents relating to your claim can be downloaded",
+  "p2b": "here.",
+  "caseReference": "Online case reference number",
+  "caseNumber": "Tribunal case number",
+  "claimantName": "Claimant name"
 }
