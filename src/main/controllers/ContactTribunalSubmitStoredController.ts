@@ -15,7 +15,7 @@ import { getLanguageParam } from '../helpers/RouterHelpers';
 import {
   getLinkFromDocument,
   getSelectedStoredApplication,
-  getSubmitStoredRespondentTse,
+  mapStoredRespondentTse,
 } from '../helpers/StoredApplicationHelper';
 import { getApplicationContent } from '../helpers/controller/ApplicationDetailsHelper';
 import { getLogger } from '../logger';
@@ -76,7 +76,7 @@ export default class ContactTribunalSubmitStoredController {
 
     // submit stored application
     try {
-      const respondentTse = getSubmitStoredRespondentTse(req.session.user, selectedApplication);
+      const respondentTse = mapStoredRespondentTse(req.session.user, selectedApplication);
       await getCaseApi(req.session.user?.accessToken).submitStoredRespondentTse(req, respondentTse);
     } catch (error) {
       logger.error(error.message);

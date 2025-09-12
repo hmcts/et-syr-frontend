@@ -1,5 +1,5 @@
 import { AppRequest, UserDetails } from '../definitions/appRequest';
-import { CaseWithId, Document } from '../definitions/case';
+import { Document } from '../definitions/case';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { PageUrls } from '../definitions/constants';
 import { RespondentTse } from '../definitions/respondentTse';
@@ -27,11 +27,10 @@ export const getYourStoredApplicationList = (req: AppRequest): GenericTseApplica
 };
 
 /**
- * Map new application to respondentTse for storing
- * @param user user
- * @param userCase user case
+ * Map new application to respondentTse
  */
-export const getStoreRespondentTse = (user: UserDetails, userCase: CaseWithId): RespondentTse => {
+export const mapNewRespondentTse = (req: AppRequest): RespondentTse => {
+  const { user, userCase } = req.session;
   const appType = getApplicationByCode(userCase.contactApplicationType);
   return {
     respondentIdamId: user.id,
@@ -40,15 +39,16 @@ export const getStoreRespondentTse = (user: UserDetails, userCase: CaseWithId): 
     contactApplicationText: userCase.contactApplicationText,
     contactApplicationFile: userCase.contactApplicationFile,
     copyToOtherPartyYesOrNo: userCase.copyToOtherPartyYesOrNo,
+    copyToOtherPartyText: userCase.copyToOtherPartyText,
   };
 };
 
 /**
- * Map stored application to respondentTse for submitting
+ * Map stored application to respondentTse
  * @param user user
  * @param app application
  */
-export const getSubmitStoredRespondentTse = (user: UserDetails, app: GenericTseApplicationTypeItem): RespondentTse => {
+export const mapStoredRespondentTse = (user: UserDetails, app: GenericTseApplicationTypeItem): RespondentTse => {
   const appType = getApplicationByCode(app.value.type);
   return {
     respondentIdamId: user.id,

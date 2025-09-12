@@ -5,8 +5,8 @@ import { Applicant } from '../../../main/definitions/constants';
 import { application } from '../../../main/definitions/contact-tribunal-applications';
 import {
   getSelectedStoredApplication,
-  getSubmitStoredRespondentTse,
   getYourStoredApplicationList,
+  mapStoredRespondentTse,
 } from '../../../main/helpers/StoredApplicationHelper';
 import { mockRequest } from '../mocks/mockRequest';
 
@@ -113,7 +113,7 @@ describe('StoredApplicationHelper', () => {
 
   describe('getRespondentTse', () => {
     it('should map application and user to RespondentTse', () => {
-      const result = getSubmitStoredRespondentTse(user, appItem);
+      const result = mapStoredRespondentTse(user, appItem);
       expect(result).toEqual({
         respondentIdamId: 'user1',
         contactApplicationType: 'Change personal details',
