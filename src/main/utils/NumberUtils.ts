@@ -34,7 +34,7 @@ export default class NumberUtils {
    * @returns `true` if the value is undefined, null, or 0; otherwise `false`.
    */
   public static isEmptyOrZero(value: number): boolean {
-    return !value || value === 0;
+    return this.isEmpty(value) || value === 0;
   }
 
   /**
@@ -44,7 +44,7 @@ export default class NumberUtils {
    * @returns `true` if the value is defined and not null; otherwise `false`.
    */
   public static isNotEmpty(value: number): boolean {
-    return value !== undefined && value !== null;
+    return !this.isEmpty(value);
   }
 
   /**
@@ -54,7 +54,7 @@ export default class NumberUtils {
    * @returns `true` if the value is undefined or null; otherwise `false`.
    */
   public static isEmpty(value: number): boolean {
-    return !this.isNotEmpty(value);
+    return value === undefined || value === null || Number.isNaN(value);
   }
 
   /**
@@ -92,43 +92,55 @@ export default class NumberUtils {
   }
 
   /**
-   * Determines whether a string represents a valid numeric value.
+   * Checks whether the given string represents a valid numeric value.
    *
-   * @param stringValue - The string to validate.
-   * @returns `true` if the string is non-empty and can be converted to a number; otherwise `false`.
+   * <p>This method attempts to convert the input string to a number using
+   * {@link Number}. The string is considered numeric if:</p>
+   *
+   * - It is not empty, `null`, or `undefined`.
+   * - Conversion to a number does not result in `NaN`.
+   * - The resulting number is non-zero, OR the trimmed string equals `"0"`.
+   *
+   * @param stringValue - The string to evaluate.
+   * @returns `true` if {@code stringValue} is a valid numeric value (including zero);
+   *          `false` otherwise.
+   *
+   * @example
+   * ```typescript
+   * isNumericValue("123");    // true
+   * isNumericValue("42.5");   // true
+   * isNumericValue("0");      // true
+   * isNumericValue(" 0 ");    // true
+   * isNumericValue("abc");    // false
+   * isNumericValue("");       // false
+   * ```
    */
   public static isNumericValue(stringValue: string): boolean {
-    return !(!stringValue || isNaN(Number(stringValue)) || !Number(stringValue));
+    return !(!stringValue || isNaN(Number(stringValue)) || !Number(stringValue)) || stringValue.trim() === '0';
   }
 
   /**
-   * Determines whether a string does not represent a valid numeric value.
+   * Checks whether the given string does **not** represent a valid numeric value.
    *
-   * @param stringValue - The string to validate.
-   * @returns `true` if the string is empty, NaN, or cannot be converted to a number; otherwise `false`.
+   * <p>This method is the logical inverse of {@link isNumericValue}. It returns
+   * `true` if the input string is `null`, `undefined`, empty, cannot be converted
+   * to a number, or is otherwise considered non-numeric according to
+   * {@link isNumericValue}.</p>
+   *
+   * @param stringValue - The string to evaluate.
+   * @returns `true` if {@code stringValue} is not a valid numeric value;
+   *          `false` if it is numeric (including zero).
+   *
+   * @example
+   * ```typescript
+   * isNonNumericValue("123");   // false
+   * isNonNumericValue("0");     // false
+   * isNonNumericValue("abc");   // true
+   * isNonNumericValue("");      // true
+   * ```
    */
   public static isNonNumericValue(stringValue: string): boolean {
     return !this.isNumericValue(stringValue);
-  }
-
-  /**
-   * Formats a given monetary amount by removing currency symbols (£) and
-   *  thousands of separators (commas), returning the numeric value.
-   *
-   * <p>If the input is empty or undefined, the method returns `undefined`.
-   * Otherwise, it converts the input to a string, strips out the pound sign
-   * and commas, and parses the result into a floating-point number.</p>
-   *
-   * @param amount the monetary amount to format. Can include currency symbols
-   *               (e.g., "£1,234.56") or commas as a thousand separators.
-   * @return the numeric value of the amount without formatting, or `undefined`
-   *         if the input is empty.
-   */
-  public static formatAmountToCcdDigits(amount: number): number | undefined {
-    if (this.isEmpty(amount)) {
-      return undefined;
-    }
-    return parseFloat(amount.toString().replace(/[£,]/g, ''));
   }
 
   /**
@@ -162,5 +174,34 @@ export default class NumberUtils {
       return undefined;
     }
     return Number(stringValue.trim());
+  }
+
+  /**
+   * Converts a numeric value to its string representation, or returns `undefined`
+   * if the value is `undefined`, `null`, or `NaN`.
+   *
+   * @param numericValue - The number to convert.
+   * @returns The string representation of `numericValue`, or `undefined` if
+   *          the input is `undefined`, `null`, or `NaN`.
+   *
+   * @remarks
+   * This method relies on {@link isEmpty}, which considers a number empty if it is:
+   * - `undefined`
+   * - `null`
+   * - `NaN`
+   *
+   * @example
+   * ```typescript
+   * toStringOrUndefined(42);     // "42"
+   * toStringOrUndefined(NaN);    // undefined
+   * toStringOrUndefined(null);   // undefined
+   * toStringOrUndefined(undefined); // undefined
+   * ```
+   */
+  public static toStringOrUndefined(numericValue: number): string | undefined {
+    if (this.isEmpty(numericValue)) {
+      return undefined;
+    }
+    return numericValue.toString();
   }
 }

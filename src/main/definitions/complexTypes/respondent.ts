@@ -94,8 +94,8 @@ export interface RespondentType {
   et3ResponseClaimantCorrectHours?: string;
   et3ResponseEarningDetailsCorrect?: YesOrNoOrNotApplicable;
   et3ResponsePayFrequency?: PayFrequency;
-  et3ResponsePayBeforeTax?: number;
-  et3ResponsePayTakehome?: number;
+  et3ResponsePayBeforeTax?: string;
+  et3ResponsePayTakehome?: string;
   et3ResponseIsNoticeCorrect?: YesOrNoOrNotApplicable;
   et3ResponseCorrectNoticeDetails?: string;
   et3ResponseIsPensionCorrect?: YesOrNoOrNotApplicable;

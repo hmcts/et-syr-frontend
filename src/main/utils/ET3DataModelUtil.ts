@@ -8,6 +8,7 @@ import { getLogger } from '../logger';
 
 import AddressUtils from './AddressUtils';
 import CollectionUtils from './CollectionUtils';
+import CurrencyUtils from './CurrencyUtils';
 import DateUtils from './DateUtils';
 import ErrorUtils from './ErrorUtils';
 import NumberUtils from './NumberUtils';
@@ -209,8 +210,12 @@ export default class ET3DataModelUtil {
       et3ResponseClaimantCorrectHours: caseWithId.et3ResponseClaimantCorrectHours,
       et3ResponseEarningDetailsCorrect: caseWithId.et3ResponseEarningDetailsCorrect,
       et3ResponsePayFrequency: caseWithId.et3ResponsePayFrequency,
-      et3ResponsePayBeforeTax: NumberUtils.formatAmountToCcdDigits(caseWithId.et3ResponsePayBeforeTax),
-      et3ResponsePayTakehome: NumberUtils.formatAmountToCcdDigits(caseWithId.et3ResponsePayTakehome),
+      et3ResponsePayBeforeTax: NumberUtils.toStringOrUndefined(
+        CurrencyUtils.formatPoundsToPence(caseWithId.et3ResponsePayBeforeTax)
+      ),
+      et3ResponsePayTakehome: NumberUtils.toStringOrUndefined(
+        CurrencyUtils.formatPoundsToPence(caseWithId.et3ResponsePayTakehome)
+      ),
       et3ResponseIsNoticeCorrect: caseWithId.et3ResponseIsNoticeCorrect,
       et3ResponseCorrectNoticeDetails: caseWithId.et3ResponseCorrectNoticeDetails,
       et3ResponseIsPensionCorrect: caseWithId.et3ResponseIsPensionCorrect,
