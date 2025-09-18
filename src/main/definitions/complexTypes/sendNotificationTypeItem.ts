@@ -1,18 +1,11 @@
-import { YesOrNo } from '../../definitions/case';
-import { TypeItem } from '../../definitions/util-types';
+import { YesOrNo } from '../case';
+import { TypeItem } from '../util-types';
 
 import { DocumentTypeItem } from './documentTypeItem';
 
 export interface SendNotificationTypeItem {
   id?: string;
   value?: SendNotificationType;
-  redirectUrl?: string;
-  respondUrl?: string;
-  statusColor?: string;
-  displayStatus?: string;
-  linkText?: string;
-  needsResponse?: boolean;
-  showAlert?: boolean;
 }
 
 export interface SendNotificationType {
@@ -92,11 +85,6 @@ export interface RespondNotificationType {
   isClaimantResponseDue?: string;
 }
 
-export interface RespondNotificationTypeItem {
-  id: string;
-  value: RespondNotificationType;
-}
-
 export interface SendNotificationSelectHearingItem {
   // DynamicFixedListType
   selectedCode?: string;
@@ -112,9 +100,4 @@ export interface PseResponseType {
   hasSupportingMaterial?: string;
   copyNoGiveDetails?: string;
   responseState?: string;
-}
-
-export interface PseResponseTypeItem {
-  id: string;
-  value: PseResponseType;
 }
