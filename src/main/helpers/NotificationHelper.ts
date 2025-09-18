@@ -1,6 +1,6 @@
-import { AppRequest } from '../definitions/appRequest';
-import { SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
-import { PageUrls, PartiesNotify, TranslationKeys } from '../definitions/constants';
+import { AppRequest, UserDetails } from '../definitions/appRequest';
+import { SendNotificationType, SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
+import { PageUrls, PartiesNotify, PartiesRespond, TranslationKeys } from '../definitions/constants';
 import { LinkStatus, linkStatusColorMap } from '../definitions/links';
 import { NotificationList } from '../definitions/notificationList';
 import { AnyRecord } from '../definitions/util-types';
@@ -22,7 +22,9 @@ export const getNotificationCollection = (req: AppRequest): NotificationList[] =
   const notificationList: NotificationList[] = [];
 
   const notifications: SendNotificationTypeItem[] = getSendNotification(sendNotificationCollection);
-  notifications?.forEach(item => notificationList.push(buildSendNotification(item, translations, languageParam)));
+  notifications?.forEach(item =>
+    notificationList.push(buildSendNotification(item, translations, languageParam, req.session.user))
+  );
 
   return notificationList;
 };
@@ -32,17 +34,28 @@ const getSendNotification = (sendNotificationCollection: SendNotificationTypeIte
 };
 
 const buildSendNotification = (
-  item: SendNotificationTypeItem,
+  notification: SendNotificationTypeItem,
   translations: AnyRecord,
-  languageParam: string
+  languageParam: string,
+  user: UserDetails
 ): NotificationList => {
-  // TODO: update status based on actual status when available
-  const notificationState = LinkStatus.NOT_STARTED_YET;
+  const notificationState = getNotificationState(notification.value, user);
   return {
-    date: item.value.date,
-    redirectUrl: PageUrls.NOTIFICATION_DETAILS.replace(':itemId', item.id) + languageParam,
-    linkText: item.value.sendNotificationTitle,
+    date: notification.value.date,
+    redirectUrl: PageUrls.NOTIFICATION_DETAILS.replace(':itemId', notification.id) + languageParam,
+    linkText: notification.value.sendNotificationTitle,
     displayStatus: translations[notificationState],
     statusColor: linkStatusColorMap.get(notificationState),
   };
+};
+
+const getNotificationState = (notification: SendNotificationType, user: UserDetails): LinkStatus => {
+  const existingState = notification?.respondentState?.find(state => state.value.userIdamId === user.id);
+  if (existingState?.value?.notificationState) {
+    return existingState.value.notificationState as LinkStatus;
+  }
+  if (notification.sendNotificationSelectParties !== PartiesRespond.CLAIMANT) {
+    return LinkStatus.NOT_STARTED_YET;
+  }
+  return LinkStatus.NOT_VIEWED;
 };

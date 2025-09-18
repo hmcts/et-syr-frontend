@@ -1,38 +1,32 @@
-import { AppRequest } from '../../../main/definitions/appRequest';
-import { SendNotificationTypeItem } from '../../../main/definitions/complexTypes/sendNotificationTypeItem';
 import { PartiesNotify } from '../../../main/definitions/constants';
 import { LinkStatus } from '../../../main/definitions/links';
 import { getNotificationCollection } from '../../../main/helpers/NotificationHelper';
 import caseDetailsStatusJson from '../../../main/resources/locales/en/translation/case-details-status.json';
-
-const mockTranslation = {
-  ...caseDetailsStatusJson,
-};
+import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 
 describe('getNotificationCollection', () => {
-  const mockReq = (sendNotificationCollection: SendNotificationTypeItem[]): AppRequest =>
-    ({
-      session: {
-        userCase: { sendNotificationCollection },
-      },
-      t: jest.fn().mockImplementation(() => mockTranslation),
-      url: '/en',
-    } as unknown as AppRequest);
+  let req: ReturnType<typeof mockRequest>;
+  const mockTranslation = {
+    ...caseDetailsStatusJson,
+  };
+
+  beforeEach(() => {
+    req = mockRequestWithTranslation({}, mockTranslation);
+    req.session.user.id = 'user123';
+  });
 
   it('should return an empty array if no notifications', () => {
-    const req = mockReq([]);
     const result = getNotificationCollection(req);
     expect(result).toEqual([]);
   });
 
   it('should filter out CLAIMANT_ONLY notifications', () => {
-    const notifications: SendNotificationTypeItem[] = [
+    req.session.userCase.sendNotificationCollection = [
       {
         id: '1',
         value: {
           sendNotificationNotify: PartiesNotify.CLAIMANT_ONLY,
           sendNotificationTitle: 'Title 1',
-          notificationState: LinkStatus.NOT_STARTED_YET,
           date: '2025-09-18',
         },
       },
@@ -41,12 +35,10 @@ describe('getNotificationCollection', () => {
         value: {
           sendNotificationNotify: PartiesNotify.BOTH_PARTIES,
           sendNotificationTitle: 'Title 2',
-          notificationState: LinkStatus.NOT_STARTED_YET,
           date: '2025-09-17',
         },
       },
     ];
-    const req = mockReq(notifications);
     const result = getNotificationCollection(req);
     expect(result).toHaveLength(1);
     expect(result[0].linkText).toBe('Title 2');
@@ -54,23 +46,30 @@ describe('getNotificationCollection', () => {
   });
 
   it('should map notification fields correctly', () => {
-    const notifications: SendNotificationTypeItem[] = [
+    req.session.userCase.sendNotificationCollection = [
       {
         id: '3',
         value: {
           sendNotificationNotify: PartiesNotify.BOTH_PARTIES,
           sendNotificationTitle: 'Test Title',
-          notificationState: LinkStatus.NOT_STARTED_YET,
+          respondentState: [
+            {
+              id: 'state1',
+              value: {
+                userIdamId: 'user123',
+                notificationState: LinkStatus.NOT_STARTED_YET,
+              },
+            },
+          ],
           date: '2025-09-16',
         },
       },
     ];
-    const req = mockReq(notifications);
     const result = getNotificationCollection(req);
-    expect(result[0]).toMatchObject({
-      date: '2025-09-16',
-      linkText: 'Test Title',
-      displayStatus: 'Not started yet',
-    });
+    expect(result).toHaveLength(1);
+    expect(result[0].date).toBe('2025-09-16');
+    expect(result[0].redirectUrl).toBe('/notification-details/3?lng=en');
+    expect(result[0].linkText).toBe('Test Title');
+    expect(result[0].displayStatus).toBe('Not started yet');
   });
 });
