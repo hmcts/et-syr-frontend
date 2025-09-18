@@ -15,7 +15,7 @@ export const getNotificationCollection = (req: AppRequest): NotificationList[] =
   const { userCase } = req.session;
   const { sendNotificationCollection } = userCase;
   const translations: AnyRecord = {
-    ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
+    ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
   };
   const languageParam = getLanguageParam(req.url);
 
@@ -37,12 +37,12 @@ const buildSendNotification = (
   languageParam: string
 ): NotificationList => {
   // TODO: update status based on actual status when available
-  const appState = LinkStatus.IN_PROGRESS;
+  const notificationState = LinkStatus.NOT_STARTED_YET;
   return {
     date: item.value.date,
     redirectUrl: PageUrls.NOTIFICATION_DETAILS.replace(':itemId', item.id) + languageParam,
     linkText: item.value.sendNotificationTitle,
-    displayStatus: translations[item.value.notificationState],
-    statusColor: linkStatusColorMap.get(appState),
+    displayStatus: translations[notificationState],
+    statusColor: linkStatusColorMap.get(notificationState),
   };
 };
