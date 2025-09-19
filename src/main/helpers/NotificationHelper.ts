@@ -38,7 +38,10 @@ export const isNotificationVisible = (item: SendNotificationType): boolean => {
   if (item.respondNotificationTypeCollection?.some(r => isTribunalResponseShare(r.value))) {
     return true;
   }
-  return item.respondCollection?.some(r => isOtherPartyResponseShare(r.value));
+  if (item.respondCollection?.some(r => isOtherPartyResponseShare(r.value))) {
+    return true;
+  }
+  return false;
 };
 
 const isTribunalResponseShare = (response: RespondNotificationType): boolean => {
