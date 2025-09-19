@@ -1,8 +1,8 @@
-import { PartiesNotify } from '../../../main/definitions/constants';
-import { LinkStatus } from '../../../main/definitions/links';
-import { getNotificationCollection } from '../../../main/helpers/NotificationHelper';
-import caseDetailsStatusJson from '../../../main/resources/locales/en/translation/case-details-status.json';
-import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
+import { PartiesNotify } from '../../../../main/definitions/constants';
+import { LinkStatus } from '../../../../main/definitions/links';
+import { getNotificationCollection } from '../../../../main/helpers/controller/NotificationHelper';
+import caseDetailsStatusJson from '../../../../main/resources/locales/en/translation/case-details-status.json';
+import { mockRequest, mockRequestWithTranslation } from '../../mocks/mockRequest';
 
 describe('getNotificationCollection', () => {
   let req: ReturnType<typeof mockRequest>;

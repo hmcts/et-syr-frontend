@@ -67,7 +67,6 @@ export interface SendNotificationType {
 
   // Responses
   respondCollection?: TypeItem<PseResponseType>[];
-  respondStoredCollection?: TypeItem<PseResponseType>[];
   respondNotificationTypeCollection?: TypeItem<RespondNotificationType>[];
   sendNotificationSubjectString?: string;
 }
@@ -106,6 +105,7 @@ export interface SendNotificationSelectHearingItem {
 
 export interface PseResponseType {
   from?: string;
+  fromIdamId?: string;
   copyToOtherParty?: string;
   supportingMaterial?: DocumentTypeItem[];
   date?: string;

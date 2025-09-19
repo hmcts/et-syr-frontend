@@ -1,55 +1,77 @@
-import { AppRequest, UserDetails } from '../definitions/appRequest';
-import { SendNotificationType, SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
-import { PageUrls, PartiesNotify, PartiesRespond, TranslationKeys } from '../definitions/constants';
-import { LinkStatus, linkStatusColorMap } from '../definitions/links';
-import { NotificationList } from '../definitions/notificationList';
-import { AnyRecord } from '../definitions/util-types';
-
-import { getLanguageParam } from './RouterHelpers';
+import { UserDetails } from '../definitions/appRequest';
+import { YesOrNo } from '../definitions/case';
+import {
+  PseResponseType,
+  RespondNotificationType,
+  SendNotificationType,
+  SendNotificationTypeItem,
+} from '../definitions/complexTypes/sendNotificationTypeItem';
+import { PartiesNotify, PartiesRespond } from '../definitions/constants';
+import { LinkStatus } from '../definitions/links';
 
 /**
- * Get user's notification
- * @param req request
+ * Check if response is required for the user
+ * @param notification SendNotificationType
  */
-export const getNotificationCollection = (req: AppRequest): NotificationList[] => {
-  const { userCase } = req.session;
-  const { sendNotificationCollection } = userCase;
-  const translations: AnyRecord = {
-    ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
-  };
-  const languageParam = getLanguageParam(req.url);
+export const isResponseRequired = (notification: SendNotificationType): boolean => {
+  // TODO
+  if (
+    notification.sendNotificationSelectParties === PartiesRespond.BOTH_PARTIES ||
+    notification.sendNotificationSelectParties === PartiesRespond.RESPONDENT
+  ) {
+    return true;
+  }
+  return false;
+};
 
-  const notificationList: NotificationList[] = [];
+/**
+ * Check if sendNotification is visible to the user
+ * @param item SendNotificationType
+ */
+export const isNotificationVisible = (item: SendNotificationType): boolean => {
+  if (
+    item.sendNotificationNotify === PartiesNotify.BOTH_PARTIES ||
+    item.sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY
+  ) {
+    return true;
+  }
+  if (item.respondNotificationTypeCollection?.some(r => isTribunalResponseShare(r.value))) {
+    return true;
+  }
+  return item.respondCollection?.some(r => isOtherPartyResponseShare(r.value));
+};
 
-  const notifications: SendNotificationTypeItem[] = getSendNotification(sendNotificationCollection);
-  notifications?.forEach(item =>
-    notificationList.push(buildSendNotification(item, translations, languageParam, req.session.user))
+const isTribunalResponseShare = (response: RespondNotificationType): boolean => {
+  if (!response) {
+    return false;
+  }
+  return (
+    response.respondNotificationPartyToNotify === PartiesNotify.BOTH_PARTIES ||
+    response.respondNotificationPartyToNotify === PartiesNotify.RESPONDENT_ONLY
   );
-
-  return notificationList;
 };
 
-const getSendNotification = (sendNotificationCollection: SendNotificationTypeItem[]): SendNotificationTypeItem[] => {
-  return sendNotificationCollection?.filter(it => it.value.sendNotificationNotify !== PartiesNotify.CLAIMANT_ONLY);
+const isOtherPartyResponseShare = (response: PseResponseType): boolean => {
+  if (!response) {
+    return false;
+  }
+  return response.copyToOtherParty === YesOrNo.YES;
 };
 
-const buildSendNotification = (
-  notification: SendNotificationTypeItem,
-  translations: AnyRecord,
-  languageParam: string,
-  user: UserDetails
-): NotificationList => {
-  const notificationState = getNotificationState(notification.value, user);
-  return {
-    date: notification.value.date,
-    redirectUrl: PageUrls.NOTIFICATION_DETAILS.replace(':itemId', notification.id) + languageParam,
-    linkText: notification.value.sendNotificationTitle,
-    displayStatus: translations[notificationState],
-    statusColor: linkStatusColorMap.get(notificationState),
-  };
+/**
+ * Get visible sendNotification Collection for the user
+ * @param notifications SendNotificationTypeItem
+ */
+export const getVisibleSendNotifications = (notifications: SendNotificationTypeItem[]): SendNotificationTypeItem[] => {
+  return notifications?.filter(it => isNotificationVisible(it.value)) || [];
 };
 
-const getNotificationState = (notification: SendNotificationType, user: UserDetails): LinkStatus => {
+/**
+ * Get notification state for the user
+ * @param notification
+ * @param user
+ */
+export const getNotificationState = (notification: SendNotificationType, user: UserDetails): LinkStatus => {
   const existingState = notification?.respondentState?.find(state => state.value.userIdamId === user.id);
   if (existingState?.value?.notificationState) {
     return existingState.value.notificationState as LinkStatus;

@@ -1,0 +1,26 @@
+{% if showNotificationsBanner %}
+  {% set htmlForOrderOrRequestReceived %}
+    <h3 class="govuk-notification-banner__heading">
+      {% if notifications.isResponseRequired %}
+        {{ notificationBanner.orderOrRequest.responseRequired }}
+      {% else %}
+        {{ notificationBanner.orderOrRequest.noResponseRequired }}
+      {% endif %}
+    </h3>
+
+    {% for order in pseNotifications.notification %}
+      <p class="govuk-body">
+        {% if order.needsResponse %}
+          <a class="govuk-link" href="{{ order.redirectUrl }}">{{ notificationBanner.orderOrRequest.respond }} - {{ order.notificationTitle }}</a>
+        {% else %}
+          <a class="govuk-link" href="{{ order.redirectUrl }}">{{ notificationBanner.orderOrRequest.link }} - {{ order.notificationTitle }}</a>
+        {% endif %}
+      </p>
+    {% endfor %}
+  {% endset %}
+
+  {{ govukNotificationBanner({
+    html: htmlForOrderOrRequestReceived,
+    titleText: important
+  }) }}
+{% endif %}
