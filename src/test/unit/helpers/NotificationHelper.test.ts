@@ -3,15 +3,89 @@ import {
   SendNotificationType,
   SendNotificationTypeItem,
 } from '../../../main/definitions/complexTypes/sendNotificationTypeItem';
-import { PartiesNotify, PartiesRespond } from '../../../main/definitions/constants';
+import { Applicant, PartiesNotify, PartiesRespond } from '../../../main/definitions/constants';
 import { LinkStatus } from '../../../main/definitions/links';
 import {
   getNotificationState,
   getVisibleSendNotifications,
   isNotificationVisible,
+  isResponseRequired,
 } from '../../../main/helpers/NotificationHelper';
 
 describe('NotificationHelper', () => {
+  describe('isResponseRequired', () => {
+    const user: UserDetails = { id: 'user-1' } as UserDetails;
+
+    it('should return false if notification is undefined', () => {
+      expect(isResponseRequired(undefined, user)).toBe(false);
+    });
+
+    it('should return false if not notifying respondent', () => {
+      const notification = {
+        sendNotificationNotify: PartiesNotify.CLAIMANT_ONLY,
+        sendNotificationSelectParties: PartiesRespond.RESPONDENT,
+      } as SendNotificationType;
+      expect(isResponseRequired(notification, user)).toBe(false);
+    });
+
+    it('should return false if respondent is not selected', () => {
+      const notification = {
+        sendNotificationNotify: PartiesNotify.BOTH_PARTIES,
+        sendNotificationSelectParties: PartiesRespond.CLAIMANT,
+      } as SendNotificationType;
+      expect(isResponseRequired(notification, user)).toBe(false);
+    });
+
+    it('should return false if user has already responded', () => {
+      const notification = {
+        sendNotificationNotify: PartiesNotify.BOTH_PARTIES,
+        sendNotificationSelectParties: PartiesRespond.BOTH_PARTIES,
+        respondCollection: [
+          {
+            value: {
+              from: Applicant.RESPONDENT,
+              fromIdamId: 'user-1',
+            },
+          },
+        ],
+      } as SendNotificationType;
+      expect(isResponseRequired(notification, user)).toBe(false);
+    });
+
+    it('should return true if user has not responded and all conditions are met', () => {
+      const notification = {
+        sendNotificationNotify: PartiesNotify.BOTH_PARTIES,
+        sendNotificationSelectParties: PartiesRespond.BOTH_PARTIES,
+        respondCollection: [
+          {
+            value: {
+              from: Applicant.RESPONDENT,
+              fromIdamId: 'user-2',
+            },
+          },
+        ],
+      } as SendNotificationType;
+      expect(isResponseRequired(notification, user)).toBe(true);
+    });
+
+    it('should return true if respondCollection is empty and all conditions are met', () => {
+      const notification = {
+        sendNotificationNotify: PartiesNotify.BOTH_PARTIES,
+        sendNotificationSelectParties: PartiesRespond.RESPONDENT,
+        respondCollection: [],
+      } as SendNotificationType;
+      expect(isResponseRequired(notification, user)).toBe(true);
+    });
+
+    it('should return true if respondCollection is undefined and all conditions are met', () => {
+      const notification = {
+        sendNotificationNotify: PartiesNotify.BOTH_PARTIES,
+        sendNotificationSelectParties: PartiesRespond.RESPONDENT,
+      } as SendNotificationType;
+      expect(isResponseRequired(notification, user)).toBe(true);
+    });
+  });
+
   describe('isNotificationVisible', () => {
     it('should return true if sendNotificationNotify is BOTH_PARTIES', () => {
       const item = { sendNotificationNotify: PartiesNotify.BOTH_PARTIES } as SendNotificationType;

@@ -6,22 +6,33 @@ import {
   SendNotificationType,
   SendNotificationTypeItem,
 } from '../definitions/complexTypes/sendNotificationTypeItem';
-import { PartiesNotify, PartiesRespond } from '../definitions/constants';
+import { Applicant, PartiesNotify, PartiesRespond } from '../definitions/constants';
 import { LinkStatus } from '../definitions/links';
 
 /**
  * Check if response is required for the user
  * @param notification SendNotificationType
+ * @param user UserDetails
  */
-export const isResponseRequired = (notification: SendNotificationType): boolean => {
-  // TODO
-  if (
-    notification.sendNotificationSelectParties === PartiesRespond.BOTH_PARTIES ||
-    notification.sendNotificationSelectParties === PartiesRespond.RESPONDENT
-  ) {
-    return true;
+export const isResponseRequired = (notification: SendNotificationType, user: UserDetails): boolean => {
+  if (!notification) {
+    return false;
   }
-  return false;
+
+  const { sendNotificationNotify, sendNotificationSelectParties, respondCollection } = notification;
+  const isNotifyingRespondent =
+    sendNotificationNotify === PartiesNotify.BOTH_PARTIES || sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY;
+  const isRespondentSelected =
+    sendNotificationSelectParties === PartiesRespond.BOTH_PARTIES ||
+    sendNotificationSelectParties === PartiesRespond.RESPONDENT;
+  if (!isNotifyingRespondent || !isRespondentSelected) {
+    return false;
+  }
+
+  const hasResponded = respondCollection?.some(
+    r => r.value.from === Applicant.RESPONDENT && r.value.fromIdamId === user.id
+  );
+  return !hasResponded;
 };
 
 /**
@@ -38,10 +49,7 @@ export const isNotificationVisible = (item: SendNotificationType): boolean => {
   if (item.respondNotificationTypeCollection?.some(r => isTribunalResponseShare(r.value))) {
     return true;
   }
-  if (item.respondCollection?.some(r => isOtherPartyResponseShare(r.value))) {
-    return true;
-  }
-  return false;
+  return !!item.respondCollection?.some(r => isOtherPartyResponseShare(r.value));
 };
 
 const isTribunalResponseShare = (response: RespondNotificationType): boolean => {

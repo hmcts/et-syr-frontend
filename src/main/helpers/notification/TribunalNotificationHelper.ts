@@ -1,15 +1,14 @@
-import { AppRequest } from '../../definitions/appRequest';
+import { AppRequest, UserDetails } from '../../definitions/appRequest';
 import { SendNotificationTypeItem } from '../../definitions/complexTypes/sendNotificationTypeItem';
-import { PageUrls } from '../../definitions/constants';
+import { PageUrls, PartiesRespond } from '../../definitions/constants';
 import { NotificationDetails, PseNotification } from '../../definitions/notification/pseNotification';
-import { isResponseRequired } from '../NotificationHelper';
 
 export const getTribunalNotification = (req: AppRequest): PseNotification => {
   const notificationDetails: NotificationDetails[] = [];
-  const { userCase } = req.session;
+  const { userCase, user } = req.session;
 
   for (const item of userCase.sendNotificationCollection || []) {
-    const itemDetails = getNotificationDetails(item);
+    const itemDetails = getNotificationDetails(item, user);
     if (itemDetails) {
       notificationDetails.push(itemDetails);
     }
@@ -20,31 +19,20 @@ export const getTribunalNotification = (req: AppRequest): PseNotification => {
   return { anyResponseRequired: isNeedsRequired, notification: notificationDetails };
 };
 
-const getNotificationDetails = (item: SendNotificationTypeItem): NotificationDetails => {
-  // TODO
-  if (!isNotificationShown(item)) {
+const getNotificationDetails = (item: SendNotificationTypeItem, user: UserDetails): NotificationDetails => {
+  const found = item?.value?.respondentState?.some(state => state.value.userIdamId === user.id);
+  if (found) {
     return;
   }
-  // TODO
-  return getRequestItems(item);
-};
 
-const isNotificationShown = (item: SendNotificationTypeItem): boolean => {
-  // TODO
-  return item.value !== undefined;
-};
-
-const getRequestItems = (item: SendNotificationTypeItem): NotificationDetails => {
-  const isNeedsResponse = isResponseRequired(item.value);
+  const isNeedsResponse =
+    item.value.sendNotificationSelectParties === PartiesRespond.BOTH_PARTIES ||
+    item.value.sendNotificationSelectParties === PartiesRespond.RESPONDENT;
   return {
     isResponseRequired: isNeedsResponse,
-    redirectUrl: getRedirectUrlForNotification(item.id, isNeedsResponse),
+    redirectUrl: isNeedsResponse
+      ? PageUrls.RESPOND_TO_NOTIFICATION.replace(':itemId', item.id)
+      : PageUrls.NOTIFICATION_DETAILS.replace(':itemId', item.id),
     notificationTitle: item.value.sendNotificationTitle,
   };
-};
-
-const getRedirectUrlForNotification = (itemId: string, needsResponse: boolean): string => {
-  return needsResponse
-    ? PageUrls.RESPOND_TO_NOTIFICATION.replace(':itemId', itemId)
-    : PageUrls.NOTIFICATION_DETAILS.replace(':itemId', itemId);
 };
