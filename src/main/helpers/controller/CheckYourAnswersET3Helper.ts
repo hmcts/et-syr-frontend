@@ -544,13 +544,13 @@ export const getEt3Section6 = (
 
   if (YesOrNo.YES === userCase.et3ResponseEmployerClaim) {
     const employerClaimDocument =
-      userCase.et3ResponseEmployerClaimDocument !== undefined
-        ? '<a href="getCaseDocument/' +
+      userCase.et3ResponseEmployerClaimDocument === undefined
+        ? translations.notProvided
+        : '<a href="getCaseDocument/' +
           DocumentUtils.findDocumentIdByURL(userCase.et3ResponseEmployerClaimDocument.document_url) +
           '" target="_blank">' +
           userCase.et3ResponseEmployerClaimDocument.document_filename +
-          '</a>'
-        : translations.notProvided;
+          '</a>';
     et3ResponseSection6.push(
       addSummaryRowWithAction(
         translations.section6.employerContractClaimDetails,
