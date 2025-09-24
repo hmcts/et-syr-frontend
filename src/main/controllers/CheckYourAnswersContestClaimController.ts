@@ -44,9 +44,9 @@ export default class CheckYourAnswersContestClaimController extends BaseCYAContr
     const documents = userCase.et3ResponseContestClaimDocument;
     // Join the shortDescriptions with a comma
     const contestClaimDocumentNames =
-      userCase.et3ResponseContestClaimDocument !== undefined
-        ? documents.map(document => document.value.shortDescription).join(', ')
-        : DefaultValues.STRING_DASH;
+      userCase.et3ResponseContestClaimDocument === undefined
+        ? DefaultValues.STRING_DASH
+        : documents.map(document => document.value.shortDescription).join(', ');
 
     res.render(TranslationKeys.CHECK_YOUR_ANSWERS_CONTEST_CLAIM, {
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
