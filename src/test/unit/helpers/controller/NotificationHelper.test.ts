@@ -42,7 +42,7 @@ describe('getNotificationCollection', () => {
     const result = getNotificationCollection(req);
     expect(result).toHaveLength(1);
     expect(result[0].linkText).toBe('Title 2');
-    expect(result[0].displayStatus).toBe('Not started yet');
+    expect(result[0].displayStatus).toBe('Not viewed yet');
   });
 
   it('should map notification fields correctly', () => {

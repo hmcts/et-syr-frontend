@@ -8,6 +8,7 @@ import {
 } from '../definitions/complexTypes/sendNotificationTypeItem';
 import { Applicant, PartiesNotify, PartiesRespond } from '../definitions/constants';
 import { LinkStatus } from '../definitions/links';
+import { TypeItem } from '../definitions/util-types';
 
 /**
  * Check if response is required for the user
@@ -20,19 +21,33 @@ export const isResponseRequired = (notification: SendNotificationType, user: Use
   }
 
   const { sendNotificationNotify, sendNotificationSelectParties, respondCollection } = notification;
-  const isNotifyingRespondent =
-    sendNotificationNotify === PartiesNotify.BOTH_PARTIES || sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY;
-  const isRespondentSelected =
-    sendNotificationSelectParties === PartiesRespond.BOTH_PARTIES ||
-    sendNotificationSelectParties === PartiesRespond.RESPONDENT;
-  if (!isNotifyingRespondent || !isRespondentSelected) {
+  if (
+    !isRespondentNotified(sendNotificationNotify) ||
+    !isResponseRequiredFromRespondent(sendNotificationSelectParties)
+  ) {
     return false;
   }
 
-  const hasResponded = respondCollection?.some(
-    r => r.value.from === Applicant.RESPONDENT && r.value.fromIdamId === user.id
+  return !hasUserResponded(respondCollection, user.id);
+};
+
+const isRespondentNotified = (sendNotificationNotify: string): boolean => {
+  return (
+    sendNotificationNotify === PartiesNotify.BOTH_PARTIES || sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY
   );
-  return !hasResponded;
+};
+
+const isResponseRequiredFromRespondent = (sendNotificationSelectParties: string): boolean => {
+  return (
+    sendNotificationSelectParties === PartiesRespond.BOTH_PARTIES ||
+    sendNotificationSelectParties === PartiesRespond.RESPONDENT
+  );
+};
+
+const hasUserResponded = (respondCollection: TypeItem<PseResponseType>[], userId: string): boolean => {
+  return respondCollection
+    ? respondCollection.some(r => r?.value?.from === Applicant.RESPONDENT && r.value?.fromIdamId === userId)
+    : false;
 };
 
 /**
@@ -40,33 +55,27 @@ export const isResponseRequired = (notification: SendNotificationType, user: Use
  * @param item SendNotificationType
  */
 export const isNotificationVisible = (item: SendNotificationType): boolean => {
-  if (
-    item.sendNotificationNotify === PartiesNotify.BOTH_PARTIES ||
-    item.sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY
-  ) {
-    return true;
-  }
-  if (item.respondNotificationTypeCollection?.some(r => isTribunalResponseShare(r.value))) {
-    return true;
-  }
-  return !!item.respondCollection?.some(r => isOtherPartyResponseShare(r.value));
-};
-
-const isTribunalResponseShare = (response: RespondNotificationType): boolean => {
-  if (!response) {
-    return false;
-  }
   return (
-    response.respondNotificationPartyToNotify === PartiesNotify.BOTH_PARTIES ||
-    response.respondNotificationPartyToNotify === PartiesNotify.RESPONDENT_ONLY
+    isRespondentNotified(item.sendNotificationNotify) ||
+    hasTribunalResponseShared(item.respondNotificationTypeCollection) ||
+    hasOtherPartyResponseShared(item.respondCollection)
   );
 };
 
-const isOtherPartyResponseShare = (response: PseResponseType): boolean => {
-  if (!response) {
-    return false;
-  }
-  return response.copyToOtherParty === YesOrNo.YES;
+const hasTribunalResponseShared = (responseList: TypeItem<RespondNotificationType>[]): boolean => {
+  return responseList?.some(r => isTribunalResponseShared(r.value)) ?? false;
+};
+
+const isTribunalResponseShared = (response: RespondNotificationType): boolean => {
+  return response ? isRespondentNotified(response.respondNotificationPartyToNotify) : false;
+};
+
+const hasOtherPartyResponseShared = (responseList: TypeItem<PseResponseType>[]): boolean => {
+  return responseList?.some(r => isOtherPartyResponseShared(r.value)) ?? false;
+};
+
+const isOtherPartyResponseShared = (response: PseResponseType): boolean => {
+  return response ? response.copyToOtherParty === YesOrNo.YES : false;
 };
 
 /**
@@ -87,7 +96,7 @@ export const getNotificationState = (notification: SendNotificationType, user: U
   if (existingState?.value?.notificationState) {
     return existingState.value.notificationState as LinkStatus;
   }
-  if (notification.sendNotificationSelectParties !== PartiesRespond.CLAIMANT) {
+  if (isResponseRequiredFromRespondent(notification.sendNotificationSelectParties)) {
     return LinkStatus.NOT_STARTED_YET;
   }
   return LinkStatus.NOT_VIEWED;

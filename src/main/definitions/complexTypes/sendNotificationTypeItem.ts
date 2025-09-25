@@ -63,7 +63,7 @@ export interface SendNotificationType {
 
   //Indicates the notification status
   notificationState?: string;
-  respondentState?: PseStatusTypeItem[];
+  respondentState?: TypeItem<PseStatusType>[];
 
   // Responses
   respondCollection?: TypeItem<PseResponseType>[];
@@ -71,14 +71,10 @@ export interface SendNotificationType {
   sendNotificationSubjectString?: string;
 }
 
-export interface PseStatusTypeItem {
-  id: string;
-  value: PseStatusType;
-}
-
 export interface PseStatusType {
   userIdamId: string;
   notificationState: string;
+  dateTime?: string;
 }
 
 export interface RespondNotificationType {
@@ -104,13 +100,14 @@ export interface SendNotificationSelectHearingItem {
 }
 
 export interface PseResponseType {
+  date?: string;
   from?: string;
   fromIdamId?: string;
-  copyToOtherParty?: string;
-  supportingMaterial?: DocumentTypeItem[];
-  date?: string;
   response?: string;
   hasSupportingMaterial?: string;
+  supportingMaterial?: DocumentTypeItem[];
+  copyToOtherParty?: string;
   copyNoGiveDetails?: string;
   responseState?: string;
+  dateTime?: string;
 }
