@@ -14,6 +14,7 @@ import { getCaseApi } from '../../services/CaseService';
 import { getApplicationStateIfNotExist } from '../ApplicationStateHelper';
 import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../ResponseHubHelper';
 import { getLanguageParam } from '../RouterHelpers';
+import { getTribunalNotificationLinkStatus } from '../notification/TribunalNotificationHelper';
 
 import { isClaimantApplicationShare } from './ClaimantsApplicationsHelper';
 import { isOtherRespApplicationShare } from './OtherRespondentApplicationsHelper';
@@ -44,6 +45,7 @@ export const getET3CaseDetailsLinkNames = async (
     apps,
     req.session.user
   );
+  statuses[ET3CaseDetailsLinkNames.TribunalNotification] = getTribunalNotificationLinkStatus(req);
   return statuses;
 };
 

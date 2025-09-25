@@ -11,6 +11,38 @@ import { LinkStatus } from '../definitions/links';
 import { TypeItem } from '../definitions/util-types';
 
 /**
+ * Check if response is required from respondent
+ * @param sendNotificationSelectParties party to respond
+ */
+export const isResponseRequiredFromRespondent = (sendNotificationSelectParties: string): boolean => {
+  return (
+    sendNotificationSelectParties === PartiesRespond.BOTH_PARTIES ||
+    sendNotificationSelectParties === PartiesRespond.RESPONDENT
+  );
+};
+
+/**
+ * Check if respondent is notified
+ * @param sendNotificationNotify party to notify
+ */
+const isRespondentNotified = (sendNotificationNotify: string): boolean => {
+  return (
+    sendNotificationNotify === PartiesNotify.BOTH_PARTIES || sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY
+  );
+};
+
+/**
+ * Check if user has already responded
+ * @param respondCollection response collection
+ * @param userId user id
+ */
+const hasUserResponded = (respondCollection: TypeItem<PseResponseType>[], userId: string): boolean => {
+  return respondCollection
+    ? respondCollection.some(r => r?.value?.from === Applicant.RESPONDENT && r.value?.fromIdamId === userId)
+    : false;
+};
+
+/**
  * Check if response is required for the user
  * @param notification SendNotificationType
  * @param user UserDetails
@@ -29,25 +61,6 @@ export const isResponseRequired = (notification: SendNotificationType, user: Use
   }
 
   return !hasUserResponded(respondCollection, user.id);
-};
-
-const isRespondentNotified = (sendNotificationNotify: string): boolean => {
-  return (
-    sendNotificationNotify === PartiesNotify.BOTH_PARTIES || sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY
-  );
-};
-
-const isResponseRequiredFromRespondent = (sendNotificationSelectParties: string): boolean => {
-  return (
-    sendNotificationSelectParties === PartiesRespond.BOTH_PARTIES ||
-    sendNotificationSelectParties === PartiesRespond.RESPONDENT
-  );
-};
-
-const hasUserResponded = (respondCollection: TypeItem<PseResponseType>[], userId: string): boolean => {
-  return respondCollection
-    ? respondCollection.some(r => r?.value?.from === Applicant.RESPONDENT && r.value?.fromIdamId === userId)
-    : false;
 };
 
 /**
@@ -99,5 +112,5 @@ export const getNotificationState = (notification: SendNotificationType, user: U
   if (isResponseRequiredFromRespondent(notification.sendNotificationSelectParties)) {
     return LinkStatus.NOT_STARTED_YET;
   }
-  return LinkStatus.NOT_VIEWED;
+  return LinkStatus.READY_TO_VIEW;
 };

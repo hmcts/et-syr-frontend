@@ -205,14 +205,14 @@ describe('NotificationHelper', () => {
         ],
         sendNotificationSelectParties: PartiesRespond.CLAIMANT,
       } as SendNotificationType;
-      expect(getNotificationState(notification, user)).toBe(LinkStatus.NOT_VIEWED);
+      expect(getNotificationState(notification, user)).toBe(LinkStatus.READY_TO_VIEW);
     });
 
     it('should return NOT_VIEWED if respondentState is undefined and sendNotificationSelectParties is CLAIMANT', () => {
       const notification: SendNotificationType = {
         sendNotificationSelectParties: PartiesRespond.CLAIMANT,
       } as SendNotificationType;
-      expect(getNotificationState(notification, user)).toBe(LinkStatus.NOT_VIEWED);
+      expect(getNotificationState(notification, user)).toBe(LinkStatus.READY_TO_VIEW);
     });
 
     it('should return NOT_STARTED_YET if respondentState is undefined and sendNotificationSelectParties is not CLAIMANT', () => {
