@@ -20,18 +20,18 @@
         </tr>
         </thead>
         <tbody class="govuk-table__body">
-        {% for app in appList %}
+        {% for notification in notificationList %}
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
-            {{ dateToLocale(app.date) }}
+            {{ dateToLocale(notification.date) }}
           </td>
           <td class="govuk-table__cell">
-            <a href="{{ getContent(app.redirectUrl) }}" class="govuk-link"> {{ app.linkValue }} </a>
+            <a href="{{ getContent(notification.redirectUrl) }}" class="govuk-link"> {{ notification.linkValue }} </a>
           </td>
           <td class="govuk-table__cell">
             {{ govukTag({
-              text: app.displayStatus,
-              classes: "no-text-transform govuk-tag" + app.statusColor
+              text: notification.displayStatus,
+              classes: "no-text-transform govuk-tag" + notification.statusColor
             }) }}
           </td>
         </tr>
