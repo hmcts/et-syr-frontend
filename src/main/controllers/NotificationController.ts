@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { TranslationKeys } from '../definitions/constants';
-import { getNotificationCollection } from '../helpers/controller/NotificationHelper';
+import { getNotificationCollection } from '../helpers/controller/NotificationControllerHelper';
 
 export default class NotificationController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {

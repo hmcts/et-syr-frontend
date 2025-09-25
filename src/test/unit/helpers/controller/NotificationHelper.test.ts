@@ -1,6 +1,6 @@
 import { PartiesNotify } from '../../../../main/definitions/constants';
 import { LinkStatus } from '../../../../main/definitions/links';
-import { getNotificationCollection } from '../../../../main/helpers/controller/NotificationHelper';
+import { getNotificationCollection } from '../../../../main/helpers/controller/NotificationControllerHelper';
 import caseDetailsStatusJson from '../../../../main/resources/locales/en/translation/case-details-status.json';
 import { mockRequest, mockRequestWithTranslation } from '../../mocks/mockRequest';
 
