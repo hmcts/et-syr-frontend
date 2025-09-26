@@ -26,7 +26,7 @@
             {{ dateToLocale(notification.date) }}
           </td>
           <td class="govuk-table__cell">
-            <a href="{{ getContent(notification.redirectUrl) }}" class="govuk-link"> {{ notification.linkValue }} </a>
+            <a href="{{ getContent(notification.redirectUrl) }}" class="govuk-link"> {{ notification.linkText }} </a>
           </td>
           <td class="govuk-table__cell">
             {{ govukTag({

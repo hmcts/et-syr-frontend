@@ -24,8 +24,9 @@ export const getTribunalNotification = (req: AppRequest): PseNotification => {
   const { userCase, user } = req.session;
 
   for (const item of userCase.sendNotificationCollection || []) {
-    const itemDetails = getNotificationDetails(item, user);
-    if (itemDetails) {
+    const found = item?.value?.respondentState?.some(state => state.value.userIdamId === user.id);
+    if (!found) {
+      const itemDetails = getNotificationDetails(item);
       notificationDetails.push(itemDetails);
     }
   }
@@ -35,12 +36,7 @@ export const getTribunalNotification = (req: AppRequest): PseNotification => {
   return { anyResponseRequired: isNeedsRequired, notification: notificationDetails };
 };
 
-const getNotificationDetails = (item: SendNotificationTypeItem, user: UserDetails): NotificationDetails => {
-  const found = item?.value?.respondentState?.some(state => state.value.userIdamId === user.id);
-  if (found) {
-    return;
-  }
-
+const getNotificationDetails = (item: SendNotificationTypeItem): NotificationDetails => {
   const isNeedsResponse = isResponseRequiredFromRespondent(item.value.sendNotificationSelectParties);
   return {
     isResponseRequired: isNeedsResponse,
