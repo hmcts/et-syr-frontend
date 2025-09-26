@@ -34,12 +34,21 @@ const isRespondentNotified = (sendNotificationNotify: string): boolean => {
 /**
  * Check if user has already responded
  * @param respondCollection response collection
- * @param userId user id
+ * @param user user details
  */
-const hasUserResponded = (respondCollection: TypeItem<PseResponseType>[], userId: string): boolean => {
+const hasUserResponded = (respondCollection: TypeItem<PseResponseType>[], user: UserDetails): boolean => {
   return respondCollection
-    ? respondCollection.some(r => r?.value?.from === Applicant.RESPONDENT && r.value?.fromIdamId === userId)
+    ? respondCollection.some(r => r?.value?.from === Applicant.RESPONDENT && r.value?.fromIdamId === user.id)
     : false;
+};
+
+/**
+ * Check if user has already viewed the notification
+ * @param notification SendNotificationType
+ * @param user user details
+ */
+export const hasUserViewed = (notification: SendNotificationType, user: UserDetails): boolean => {
+  return notification ? notification.respondentState?.some(state => state.value.userIdamId === user.id) : false;
 };
 
 /**
@@ -60,7 +69,7 @@ export const isResponseRequired = (notification: SendNotificationType, user: Use
     return false;
   }
 
-  return !hasUserResponded(respondCollection, user.id);
+  return !hasUserResponded(respondCollection, user);
 };
 
 /**

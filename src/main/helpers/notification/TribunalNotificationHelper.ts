@@ -3,7 +3,8 @@ import { SendNotificationTypeItem } from '../../definitions/complexTypes/sendNot
 import { PageUrls } from '../../definitions/constants';
 import { LinkStatus } from '../../definitions/links';
 import { NotificationDetails, PseNotification } from '../../definitions/notification/pseNotification';
-import { isNotificationVisible, isResponseRequiredFromRespondent } from '../NotificationHelper';
+import { hasUserViewed, isNotificationVisible, isResponseRequiredFromRespondent } from '../NotificationHelper';
+import { getLanguageParam } from '../RouterHelpers';
 
 const priorityOrder = [
   LinkStatus.NOT_STARTED_YET,
@@ -23,26 +24,27 @@ export const getTribunalNotification = (req: AppRequest): PseNotification => {
   const notificationDetails: NotificationDetails[] = [];
   const { userCase, user } = req.session;
 
-  for (const item of userCase.sendNotificationCollection || []) {
-    const found = item?.value?.respondentState?.some(state => state.value.userIdamId === user.id);
-    if (!found) {
-      const itemDetails = getNotificationDetails(item);
-      notificationDetails.push(itemDetails);
-    }
-  }
+  const notificationList =
+    userCase.sendNotificationCollection?.filter(n => isNotificationVisible(n.value) && !hasUserViewed(n.value, user)) ||
+    [];
+
+  notificationList.forEach(item => {
+    const itemDetails = getNotificationDetails(item, getLanguageParam(req.url));
+    notificationDetails.push(itemDetails);
+  });
 
   const isNeedsRequired = notificationDetails.some(detail => detail.isResponseRequired);
 
   return { anyResponseRequired: isNeedsRequired, notification: notificationDetails };
 };
 
-const getNotificationDetails = (item: SendNotificationTypeItem): NotificationDetails => {
+const getNotificationDetails = (item: SendNotificationTypeItem, languageParam: string): NotificationDetails => {
   const isNeedsResponse = isResponseRequiredFromRespondent(item.value.sendNotificationSelectParties);
   return {
     isResponseRequired: isNeedsResponse,
     redirectUrl: isNeedsResponse
-      ? PageUrls.RESPOND_TO_NOTIFICATION.replace(':itemId', item.id)
-      : PageUrls.NOTIFICATION_DETAILS.replace(':itemId', item.id),
+      ? PageUrls.RESPOND_TO_NOTIFICATION.replace(':itemId', item.id) + languageParam
+      : PageUrls.NOTIFICATION_DETAILS.replace(':itemId', item.id) + languageParam,
     notificationTitle: item.value.sendNotificationTitle,
   };
 };
