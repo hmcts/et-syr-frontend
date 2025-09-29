@@ -12,7 +12,7 @@ describe('TribunalNotificationHelper', () => {
       } as AppRequest;
       const result = getTribunalNotificationBanner(req);
       expect(result.notificationList).toHaveLength(0);
-      expect(result).toEqual({ anyResponseRequired: false, notification: [] });
+      expect(result).toEqual({ anyResponseRequired: false, notificationList: [] });
     });
 
     it('should return notification with response required', () => {
