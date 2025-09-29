@@ -11,7 +11,7 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import { getET3CaseDetailsLinkNames, getSections } from '../helpers/controller/CaseDetailsHelper';
 import { getAppNotifications } from '../helpers/notification/ApplicationNotificationHelper';
-import { getTribunalNotification } from '../helpers/notification/TribunalNotificationHelper';
+import { getTribunalNotificationBanner } from '../helpers/notification/TribunalNotificationHelper';
 import { currentET3StatusFn } from '../helpers/state-sequence';
 import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -72,7 +72,7 @@ export default class CaseDetailsController {
       respondentResponseDeadline: ET3DataModelUtil.getRespondentResponseDeadline(req),
       appRequestNotifications: appNotifications.appRequestNotifications,
       appSubmitNotifications: appNotifications.appSubmitNotifications,
-      pseNotifications: getTribunalNotification(req),
+      pseNotifications: getTribunalNotificationBanner(req),
       languageParam: getLanguageParam(req.url),
     });
   }

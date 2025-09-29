@@ -17,10 +17,10 @@ const priorityOrder = [
 ];
 
 /**
- * Get tribunal notifications for the current user.
+ * Get tribunal notifications banner for the current user.
  * @param req AppRequest
  */
-export const getTribunalNotification = (req: AppRequest): PseNotification => {
+export const getTribunalNotificationBanner = (req: AppRequest): PseNotification => {
   const notificationDetails: NotificationDetails[] = [];
   const { userCase, user } = req.session;
 
@@ -35,7 +35,7 @@ export const getTribunalNotification = (req: AppRequest): PseNotification => {
 
   const isNeedsRequired = notificationDetails.some(detail => detail.isResponseRequired);
 
-  return { anyResponseRequired: isNeedsRequired, notification: notificationDetails };
+  return { anyResponseRequired: isNeedsRequired, notificationList: notificationDetails };
 };
 
 const getNotificationDetails = (item: SendNotificationTypeItem, languageParam: string): NotificationDetails => {

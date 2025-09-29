@@ -1,6 +1,6 @@
 import { AppRequest, UserDetails } from '../../../../main/definitions/appRequest';
 import { PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
-import { getTribunalNotification } from '../../../../main/helpers/notification/TribunalNotificationHelper';
+import { getTribunalNotificationBanner } from '../../../../main/helpers/notification/TribunalNotificationHelper';
 
 describe('TribunalNotificationHelper', () => {
   describe('getTribunalNotification', () => {
@@ -10,8 +10,8 @@ describe('TribunalNotificationHelper', () => {
       const req = {
         session: { userCase: { sendNotificationCollection: [] }, user: mockUser },
       } as AppRequest;
-      const result = getTribunalNotification(req);
-      expect(result.notification).toHaveLength(0);
+      const result = getTribunalNotificationBanner(req);
+      expect(result.notificationList).toHaveLength(0);
       expect(result).toEqual({ anyResponseRequired: false, notification: [] });
     });
 
@@ -34,10 +34,10 @@ describe('TribunalNotificationHelper', () => {
           user: mockUser,
         },
       } as AppRequest;
-      const result = getTribunalNotification(req);
-      expect(result.notification).toHaveLength(1);
-      expect(result.notification[0].isResponseRequired).toBe(true);
-      expect(result.notification[0].redirectUrl).toBe('/respond-to-notification/notif-1?lng=en');
+      const result = getTribunalNotificationBanner(req);
+      expect(result.notificationList).toHaveLength(1);
+      expect(result.notificationList[0].isResponseRequired).toBe(true);
+      expect(result.notificationList[0].redirectUrl).toBe('/respond-to-notification/notif-1?lng=en');
       expect(result.anyResponseRequired).toBe(true);
     });
 
@@ -60,10 +60,10 @@ describe('TribunalNotificationHelper', () => {
           user: mockUser,
         },
       } as AppRequest;
-      const result = getTribunalNotification(req);
-      expect(result.notification).toHaveLength(1);
-      expect(result.notification[0].isResponseRequired).toBe(false);
-      expect(result.notification[0].redirectUrl).toBe('/notification-details/notif-1?lng=en');
+      const result = getTribunalNotificationBanner(req);
+      expect(result.notificationList).toHaveLength(1);
+      expect(result.notificationList[0].isResponseRequired).toBe(false);
+      expect(result.notificationList[0].redirectUrl).toBe('/notification-details/notif-1?lng=en');
       expect(result.anyResponseRequired).toBe(false);
     });
 
@@ -92,8 +92,8 @@ describe('TribunalNotificationHelper', () => {
           user: mockUser,
         },
       } as AppRequest;
-      const result = getTribunalNotification(req);
-      expect(result.notification).toHaveLength(0);
+      const result = getTribunalNotificationBanner(req);
+      expect(result.notificationList).toHaveLength(0);
       expect(result.anyResponseRequired).toBe(false);
     });
   });

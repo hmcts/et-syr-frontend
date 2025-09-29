@@ -6,5 +6,5 @@ export interface NotificationDetails {
 
 export interface PseNotification {
   anyResponseRequired: boolean;
-  notification: NotificationDetails[];
+  notificationList: NotificationDetails[];
 }
