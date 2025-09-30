@@ -24,11 +24,11 @@ export const getTribunalNotificationBanner = (req: AppRequest): PseNotification 
   const notificationDetails: NotificationDetails[] = [];
   const { userCase, user } = req.session;
 
-  const notificationList =
+  const filteredList =
     userCase.sendNotificationCollection?.filter(n => isNotificationVisible(n.value) && !hasUserViewed(n.value, user)) ||
     [];
 
-  notificationList.forEach(item => {
+  filteredList.forEach(item => {
     const itemDetails = getNotificationDetails(item, getLanguageParam(req.url));
     notificationDetails.push(itemDetails);
   });

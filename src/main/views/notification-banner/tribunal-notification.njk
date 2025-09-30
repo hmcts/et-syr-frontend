@@ -1,19 +1,19 @@
 {% if pseNotifications and pseNotifications.notificationList.length != 0 %}
   {% set htmlForOrderOrRequestReceived %}
     <h3 class="govuk-notification-banner__heading">
-      {% if notifications.isResponseRequired %}
-        {{ notificationBanner.orderOrRequest.responseRequired }}
+      {% if pseNotifications.anyResponseRequired %}
+        {{ notificationBanner.notification.responseRequired }}
       {% else %}
-        {{ notificationBanner.orderOrRequest.noResponseRequired }}
+        {{ notificationBanner.notification.noResponseRequired }}
       {% endif %}
     </h3>
 
-    {% for order in pseNotifications.notificationList %}
+    {% for pse in pseNotifications.notificationList %}
       <p class="govuk-body">
-        {% if order.needsResponse %}
-          <a class="govuk-link" href="{{ order.redirectUrl }}">{{ notificationBanner.orderOrRequest.respond }} - {{ order.notificationTitle }}</a>
+        {% if pse.isResponseRequired %}
+          <a class="govuk-link" href="{{ pse.redirectUrl }}">{{ notificationBanner.notification.respond }} - {{ pse.notificationTitle }}</a>
         {% else %}
-          <a class="govuk-link" href="{{ order.redirectUrl }}">{{ notificationBanner.orderOrRequest.link }} - {{ order.notificationTitle }}</a>
+          <a class="govuk-link" href="{{ pse.redirectUrl }}">{{ notificationBanner.notification.link }} - {{ pse.notificationTitle }}</a>
         {% endif %}
       </p>
     {% endfor %}
