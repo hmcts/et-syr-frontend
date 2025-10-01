@@ -383,11 +383,6 @@ export const PartiesNotify = {
   RESPONDENT_ONLY: 'Respondent only',
 } as const;
 
-export const ResponseRequired = {
-  YES: 'Yes - view document for details',
-  NO: 'No',
-} as const;
-
 export const Applicant = {
   CLAIMANT: 'Claimant',
   RESPONDENT: 'Respondent',

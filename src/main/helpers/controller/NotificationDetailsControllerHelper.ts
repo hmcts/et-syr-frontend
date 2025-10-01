@@ -26,10 +26,6 @@ export const getNotificationStatusAfterViewed = (item: SendNotificationType, use
   return LinkStatus.VIEWED;
 };
 
-const formatNotificationSubjects = (keys: string[] = [], translations: AnyRecord): string => {
-  return keys.map(key => translations[key] || key).join(', ');
-};
-
 /**
  * Get notification content for the user
  * @param item
@@ -39,6 +35,7 @@ export const getNotificationContent = (item: SendNotificationType, req: AppReque
   const { url } = req;
   const translations: AnyRecord = {
     ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
+    ...req.t(TranslationKeys.NOTIFICATION_SUBJECTS, { returnObjects: true }),
     ...req.t(TranslationKeys.NOTIFICATION_DETAILS, { returnObjects: true }),
   };
   const rows: SummaryListRow[] = [];
@@ -90,4 +87,8 @@ export const getNotificationContent = (item: SendNotificationType, req: AppReque
   rows.push(addSummaryRow(translations.sentTo, translations[item.sendNotificationNotify]));
 
   return rows;
+};
+
+const formatNotificationSubjects = (keys: string[] = [], translations: AnyRecord): string => {
+  return keys.map(key => translations[key] || key).join(', ');
 };
