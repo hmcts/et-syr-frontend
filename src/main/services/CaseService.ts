@@ -8,6 +8,7 @@ import { UploadedFile } from '../definitions/api/uploadedFile';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
+import { SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { application } from '../definitions/contact-tribunal-applications';
 import { LinkStatus } from '../definitions/links';
@@ -244,6 +245,25 @@ export class CaseApi {
         case_id: caseItem.id,
         case_type_id: caseItem.caseTypeId,
         application_id: selectedApplication.id,
+        user_idam_id: req.session.user.id,
+        new_status: newStatus,
+      });
+    } catch (error) {
+      throw new Error('Error changing tse application status: ' + axiosErrorDetails(error));
+    }
+  };
+
+  changeNotificationStatus = async (
+    req: AppRequest,
+    selectedNotification: SendNotificationTypeItem,
+    newStatus: LinkStatus
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      const caseItem = req.session.userCase;
+      return await this.axios.put(JavaApiUrls.CHANGE_RESPONDENT_NOTIFICATION_STATUS, {
+        case_id: caseItem.id,
+        case_type_id: caseItem.caseTypeId,
+        application_id: selectedNotification.id,
         user_idam_id: req.session.user.id,
         new_status: newStatus,
       });
