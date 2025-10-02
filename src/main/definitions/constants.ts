@@ -173,6 +173,7 @@ export const PageUrls = {
   NOTIFICATIONS: '/notifications',
   NOTIFICATION_DETAILS: '/notification-details/:itemId',
   RESPOND_TO_NOTIFICATION: '/respond-to-notification/:itemId',
+  RESPOND_TO_NOTIFICATION_COPY_TO_ORDER_PARTY: '/respond-to-notification-copy-to-other-party',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
 } as const;

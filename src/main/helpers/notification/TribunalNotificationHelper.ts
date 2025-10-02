@@ -3,7 +3,7 @@ import { SendNotificationTypeItem } from '../../definitions/complexTypes/sendNot
 import { PageUrls } from '../../definitions/constants';
 import { LinkStatus } from '../../definitions/links';
 import { NotificationDetails, PseNotification } from '../../definitions/notification/pseNotification';
-import { hasUserViewed, isNotificationVisible, isResponseRequireSelected } from '../NotificationHelper';
+import { hasUserViewed, isNotificationVisible, isPartiesRespondRequired } from '../NotificationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
 const priorityOrder = [
@@ -39,7 +39,7 @@ export const getTribunalNotificationBanner = (req: AppRequest): PseNotification 
 };
 
 const getNotificationDetails = (item: SendNotificationTypeItem, languageParam: string): NotificationDetails => {
-  const isNeedsResponse = isResponseRequireSelected(item.value);
+  const isNeedsResponse = isPartiesRespondRequired(item.value.sendNotificationSelectParties);
   return {
     isResponseRequired: isNeedsResponse,
     redirectUrl: isNeedsResponse

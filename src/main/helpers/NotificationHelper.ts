@@ -12,35 +12,21 @@ import { TypeItem } from '../definitions/util-types';
 
 /**
  * Check if response is required from respondent
- * @param item SendNotificationType
+ * compare with sendNotificationSelectParties in SendNotificationType
+ * @param parties sendNotificationSelectParties
  */
-export const isResponseRequireSelected = (item: SendNotificationType): boolean => {
-  return (
-    item?.sendNotificationSelectParties === PartiesRespond.BOTH_PARTIES ||
-    item?.sendNotificationSelectParties === PartiesRespond.RESPONDENT
-  );
+export const isPartiesRespondRequired = (parties: string): boolean => {
+  return parties === PartiesRespond.BOTH_PARTIES || parties === PartiesRespond.RESPONDENT;
 };
 
 /**
  * Check if respondent is notified by the tribunal
- * @param item SendNotificationType
+ * for claimant / respondent response, compare with sendNotificationNotify in SendNotificationType
+ * for tribunal response, compare with respondNotificationPartyToNotify in RespondNotificationType
+ * @param parties sendNotificationNotify / respondNotificationPartyToNotify
  */
-const isNotificationNotified = (item: SendNotificationType): boolean => {
-  return (
-    item?.sendNotificationNotify === PartiesNotify.BOTH_PARTIES ||
-    item?.sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY
-  );
-};
-
-/**
- * Check if response is shared to the respondent by the tribunal
- * @param item SendNotificationType
- */
-const isTribunalResponseNotified = (item: RespondNotificationType): boolean => {
-  return (
-    item?.respondNotificationPartyToNotify === PartiesNotify.BOTH_PARTIES ||
-    item?.respondNotificationPartyToNotify === PartiesNotify.RESPONDENT_ONLY
-  );
+const isPartiesNotifyRequired = (parties: string): boolean => {
+  return parties === PartiesNotify.BOTH_PARTIES || parties === PartiesNotify.RESPONDENT_ONLY;
 };
 
 /**
@@ -69,14 +55,14 @@ export const hasUserViewed = (notification: SendNotificationType, user: UserDeta
  */
 export const isNotificationVisible = (item: SendNotificationType): boolean => {
   return (
-    isNotificationNotified(item) ||
+    isPartiesNotifyRequired(item.sendNotificationNotify) ||
     hasTribunalResponseShared(item.respondNotificationTypeCollection) ||
     hasOtherPartyResponseShared(item.respondCollection)
   );
 };
 
 const hasTribunalResponseShared = (responseList: TypeItem<RespondNotificationType>[]): boolean => {
-  return responseList?.some(r => isTribunalResponseNotified(r.value)) ?? false;
+  return responseList?.some(r => isPartiesNotifyRequired(r.value.respondNotificationPartyToNotify)) ?? false;
 };
 
 const hasOtherPartyResponseShared = (responseList: TypeItem<PseResponseType>[]): boolean => {
@@ -101,7 +87,7 @@ export const getNotificationState = (notification: SendNotificationType, user: U
   if (existingState?.value?.notificationState) {
     return existingState.value.notificationState as LinkStatus;
   }
-  if (isResponseRequireSelected(notification)) {
+  if (isPartiesRespondRequired(notification.sendNotificationSelectParties)) {
     return LinkStatus.NOT_STARTED_YET;
   }
   return LinkStatus.READY_TO_VIEW;
