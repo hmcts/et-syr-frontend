@@ -16,10 +16,14 @@ import { datesStringToDateInLocale } from '../dateInLocale';
  */
 export const getNotificationStatusAfterViewed = (item: SendNotificationType, user: UserDetails): LinkStatus => {
   if (!item || !user) {
-    return undefined;
+    return;
   }
 
-  if (isPartiesRespondRequired(item.sendNotificationSelectParties) && hasUserResponded(item.respondCollection, user)) {
+  if (hasUserResponded(item.respondCollection, user)) {
+    return;
+  }
+
+  if (isPartiesRespondRequired(item.sendNotificationSelectParties)) {
     return LinkStatus.NOT_STARTED_YET;
   }
 
@@ -54,7 +58,7 @@ export const getNotificationContent = (item: SendNotificationType, req: AppReque
       addSummaryRow(translations.orderOrRequest, translations[item.sendNotificationCaseManagement]),
       addSummaryRow(translations.responseDue, translations[item.sendNotificationResponseTribunal])
     );
-    if (item.sendNotificationResponseTribunal.startsWith(YesOrNo.YES)) {
+    if (item.sendNotificationResponseTribunal?.startsWith(YesOrNo.YES)) {
       rows.push(addSummaryRow(translations.partyToRespond, translations[item.sendNotificationSelectParties]));
     }
   }
