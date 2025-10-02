@@ -252,6 +252,8 @@ export const ValidationErrors = {
   CASE_ALREADY_ASSIGNED: 'caseAlreadyAssigned',
   CASE_ALREADY_ASSIGNED_TO_SAME_USER: 'caseAlreadyAssignedToSameUser',
   INVALID_CASE_DETAILS: 'invalidCaseDetails',
+  WITHOUT_UPLOAD_BUTTON: 'WithoutUploadButton',
+  REQUIRED_FILE: 'requiredFile',
 } as const;
 
 export const AuthUrls = {
@@ -529,6 +531,9 @@ export const FormFieldNames = {
     CONTACT_APPLICATION_FILE_NAME: 'contactApplicationFile',
   },
   RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: {
+    SUPPORTING_MATERIAL_FILE: 'supportingMaterialFile',
+  },
+  RESPOND_TO_NOTIFICATION: {
     SUPPORTING_MATERIAL_FILE: 'supportingMaterialFile',
   },
 } as const;
