@@ -1,20 +1,10 @@
-import { AppRequest, UserDetails } from '../../definitions/appRequest';
+import { AppRequest } from '../../definitions/appRequest';
 import { SendNotificationTypeItem } from '../../definitions/complexTypes/sendNotificationTypeItem';
 import { PageUrls } from '../../definitions/constants';
 import { LinkStatus } from '../../definitions/links';
 import { NotificationDetails, PseNotification } from '../../definitions/notification/pseNotification';
 import { hasUserViewed, isNotificationVisible, isPartiesRespondRequired } from '../NotificationHelper';
 import { getLanguageParam } from '../RouterHelpers';
-
-const priorityOrder = [
-  LinkStatus.NOT_STARTED_YET,
-  LinkStatus.NOT_VIEWED,
-  LinkStatus.UPDATED,
-  LinkStatus.IN_PROGRESS,
-  LinkStatus.VIEWED,
-  LinkStatus.WAITING_FOR_TRIBUNAL,
-  LinkStatus.READY_TO_VIEW,
-];
 
 /**
  * Get tribunal notifications banner for the current user.
@@ -54,34 +44,15 @@ const getNotificationDetails = (item: SendNotificationTypeItem, languageParam: s
  * @param req AppRequest
  */
 export const getTribunalNotificationLinkStatus = (req: AppRequest): LinkStatus => {
-  const { userCase, user } = req.session;
+  const { userCase } = req.session;
   const { sendNotificationCollection } = userCase;
   const notification = sendNotificationCollection?.filter(n => isNotificationVisible(n.value)) || [];
-  return getLinkStatus(notification, user);
+  return getLinkStatus(notification);
 };
 
-const getLinkStatus = (items: SendNotificationTypeItem[], user: UserDetails): LinkStatus => {
+const getLinkStatus = (items: SendNotificationTypeItem[]): LinkStatus => {
   if (!items?.length) {
     return LinkStatus.NOT_YET_AVAILABLE;
   }
-
-  const userApplicationStates = getUserNotificationStates(items, user);
-  for (const status of priorityOrder) {
-    if (userApplicationStates.includes(status)) {
-      return status;
-    }
-  }
-
   return LinkStatus.READY_TO_VIEW;
-};
-
-const getUserNotificationStates = (apps: SendNotificationTypeItem[], user: UserDetails): string[] => {
-  return (
-    apps?.flatMap(
-      app =>
-        app.value?.respondentState
-          ?.filter(state => state.value?.userIdamId === user?.id)
-          .map(state => state.value?.notificationState) || []
-    ) || []
-  );
 };
