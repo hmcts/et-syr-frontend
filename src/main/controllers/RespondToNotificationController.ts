@@ -2,6 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
+import { uploadButton } from '../definitions/buttons';
 import { CaseWithId, YesOrNo } from '../definitions/case';
 import { SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
 import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
@@ -50,22 +51,14 @@ export default class RespondToNotificationController {
             value: YesOrNo.YES,
             subFields: {
               supportingMaterialFile: {
-                id: 'supportingMaterialFile',
-                labelHidden: true,
                 type: 'upload',
+                id: 'supportingMaterialFile',
                 classes: 'govuk-label',
+                labelHidden: true,
                 label: (l: AnyRecord): string => l.supportingMaterialFile.label,
                 hint: (l: AnyRecord): string => this.getHint(l),
               },
-              upload: {
-                label: (l: AnyRecord): string => l.files.uploadButton,
-                classes: 'govuk-button--secondary',
-                id: 'upload',
-                type: 'button',
-                name: 'upload',
-                value: 'true',
-                divider: false,
-              },
+              upload: uploadButton,
             },
           },
           {
@@ -105,6 +98,11 @@ export default class RespondToNotificationController {
       return res.redirect(ErrorPages.NOT_FOUND + languageParam);
     }
 
+    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    userCase.selectedRequestOrOrder = selectedNotification;
+    userCase.responseText = formData.responseText;
+    userCase.hasSupportingMaterial = formData.hasSupportingMaterial;
+
     if (req.body?.upload) {
       const fileErrorRedirect = handleFileUpload(req, FormFieldNames.RESPOND_TO_NOTIFICATION.SUPPORTING_MATERIAL_FILE);
       if (await fileErrorRedirect) {
@@ -113,16 +111,11 @@ export default class RespondToNotificationController {
     }
 
     req.session.errors = [];
-    const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const formError = getFormError(req, formData);
     if (formError) {
       req.session.errors.push(formError);
       return res.redirect(PageUrls.RESPOND_TO_NOTIFICATION.replace(':itemId', req.params.itemId) + languageParam);
     }
-
-    userCase.selectedRequestOrOrder = selectedNotification;
-    userCase.responseText = formData.responseText;
-    userCase.hasSupportingMaterial = formData.hasSupportingMaterial;
 
     return res.redirect(PageUrls.RESPOND_TO_NOTIFICATION_COPY_TO_ORDER_PARTY + languageParam);
   };
@@ -138,7 +131,9 @@ export default class RespondToNotificationController {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 
-    assignFormData(req.session.userCase, this.form.getFormFields());
+    assignFormData(userCase, this.form.getFormFields());
+    this.uploadedFileName = userCase.supportingMaterialFile?.document_filename;
+
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.RESPOND_TO_NOTIFICATION,
