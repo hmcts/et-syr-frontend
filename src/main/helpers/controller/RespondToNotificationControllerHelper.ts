@@ -1,53 +1,15 @@
-import { DocumentUploadResponse } from '../../definitions/api/documentApiResponse';
 import { AppRequest } from '../../definitions/appRequest';
 import { CaseWithId, YesOrNo } from '../../definitions/case';
 import { ValidationErrors } from '../../definitions/constants';
 import { FormError } from '../../definitions/form';
-import FileUtils from '../../utils/FileUtils';
 import ObjectUtils from '../../utils/ObjectUtils';
 import { isContentCharsOrLess, isFieldFilledIn, isOptionSelected } from '../../validators/validator';
-import { fromApiFormatDocument } from '../ApiFormatter';
 
-export const handleFileUpload = async (req: AppRequest, fieldName: string): Promise<boolean> => {
-  req.session.errors = [];
-
-  if (req.body?.upload && ObjectUtils.isEmpty(req?.file)) {
-    req.session.errors = [
-      {
-        propertyName: fieldName,
-        errorType: ValidationErrors.INVALID_FILE_NOT_SELECTED,
-      },
-    ];
-    return true;
-  }
-
-  if (ObjectUtils.isNotEmpty(req?.file)) {
-    req.session.errors = [];
-    if (req.fileTooLarge) {
-      req.session.errors = [
-        {
-          propertyName: fieldName,
-          errorType: ValidationErrors.INVALID_FILE_SIZE,
-        },
-      ];
-      return true;
-    }
-
-    if (!FileUtils.checkFile(req, fieldName)) {
-      return true;
-    }
-
-    const uploadedDocumentResponse: DocumentUploadResponse = await FileUtils.uploadFile(req);
-    if (!uploadedDocumentResponse) {
-      return true;
-    }
-
-    req.session.userCase.supportingMaterialFile = fromApiFormatDocument(uploadedDocumentResponse);
-    req.file = undefined;
-  }
-  return false;
-};
-
+/**
+ * Handle form validation. Return FormError when error found.
+ * @param req request
+ * @param formData form data
+ */
 export const getFormError = (req: AppRequest, formData: Partial<CaseWithId>): FormError => {
   const { userCase } = req.session;
   const { responseText, hasSupportingMaterial } = formData;
