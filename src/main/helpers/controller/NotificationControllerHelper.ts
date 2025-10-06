@@ -1,10 +1,13 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
-import { SendNotificationTypeItem } from '../../definitions/complexTypes/sendNotificationTypeItem';
+import {
+  SendNotificationType,
+  SendNotificationTypeItem,
+} from '../../definitions/complexTypes/sendNotificationTypeItem';
 import { PageUrls, TranslationKeys } from '../../definitions/constants';
-import { linkStatusColorMap } from '../../definitions/links';
+import { LinkStatus, linkStatusColorMap } from '../../definitions/links';
 import { NotificationList } from '../../definitions/notificationList';
 import { AnyRecord } from '../../definitions/util-types';
-import { getNotificationState, getVisibleSendNotifications } from '../NotificationHelper';
+import { isNotificationVisible } from '../NotificationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
@@ -21,7 +24,8 @@ export const getNotificationCollection = (req: AppRequest): NotificationList[] =
 
   const notificationList: NotificationList[] = [];
 
-  const notifications: SendNotificationTypeItem[] = getVisibleSendNotifications(sendNotificationCollection);
+  const notifications: SendNotificationTypeItem[] =
+    sendNotificationCollection?.filter(it => isNotificationVisible(it.value)) || [];
   notifications?.forEach(item => notificationList.push(buildSendNotification(item, translations, languageParam, user)));
 
   return notificationList;
@@ -41,4 +45,12 @@ const buildSendNotification = (
     displayStatus: translations[notificationState],
     statusColor: linkStatusColorMap.get(notificationState),
   };
+};
+
+const getNotificationState = (notification: SendNotificationType, user: UserDetails): LinkStatus => {
+  const existingState = notification?.respondentState?.find(state => state.value.userIdamId === user.id);
+  if (existingState?.value?.notificationState) {
+    return existingState.value.notificationState as LinkStatus;
+  }
+  return LinkStatus.NOT_VIEWED;
 };

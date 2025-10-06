@@ -7,7 +7,6 @@ import {
   SendNotificationTypeItem,
 } from '../definitions/complexTypes/sendNotificationTypeItem';
 import { Applicant, PartiesNotify, PartiesRespond } from '../definitions/constants';
-import { LinkStatus } from '../definitions/links';
 import { TypeItem } from '../definitions/util-types';
 
 /**
@@ -67,30 +66,6 @@ const hasTribunalResponseShared = (responseList: TypeItem<RespondNotificationTyp
 
 const hasOtherPartyResponseShared = (responseList: TypeItem<PseResponseType>[]): boolean => {
   return responseList?.some(r => r.value.copyToOtherParty === YesOrNo.YES) ?? false;
-};
-
-/**
- * Get visible sendNotification Collection for the user
- * @param notifications SendNotificationTypeItem
- */
-export const getVisibleSendNotifications = (notifications: SendNotificationTypeItem[]): SendNotificationTypeItem[] => {
-  return notifications?.filter(it => isNotificationVisible(it.value)) || [];
-};
-
-/**
- * Get notification state for the user
- * @param notification
- * @param user
- */
-export const getNotificationState = (notification: SendNotificationType, user: UserDetails): LinkStatus => {
-  const existingState = notification?.respondentState?.find(state => state.value.userIdamId === user.id);
-  if (existingState?.value?.notificationState) {
-    return existingState.value.notificationState as LinkStatus;
-  }
-  if (isPartiesRespondRequired(notification.sendNotificationSelectParties)) {
-    return LinkStatus.NOT_STARTED_YET;
-  }
-  return LinkStatus.READY_TO_VIEW;
 };
 
 /**
