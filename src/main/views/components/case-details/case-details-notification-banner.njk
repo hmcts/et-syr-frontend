@@ -95,10 +95,7 @@
 {% if selectedRespondent.representativeRemoved and selectedRespondent.representativeRemoved === 'Yes'  %}
   {% set htmlForRespondentNotRepresentedBanner %}
     <p class="govuk-body">
-      {{ notificationBanner.respondentNotRepresented.p1 }}
-    </p>
-    <p class="govuk-body">
-      {{ notificationBanner.respondentNotRepresented.p2 }}
+      <b>{{ notificationBanner.respondentNotRepresented.p1 }}</b>
     </p>
   {% endset %}
   {{ govukNotificationBanner({
