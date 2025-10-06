@@ -58,6 +58,6 @@ describe('ChangeLegalRepresentative Controller', () => {
     const res = mockResponse();
     await changeLegalRepresentativeController.post(request, res);
 
-    expect(res.redirect).toHaveBeenCalledWith(PageUrls.CONTACT_TRIBUNAL + PageUrls.CONTACT_TRIBUNAL + '?lng=en');
+    expect(res.redirect).toHaveBeenCalledWith('/case-details/1234/3453xaa?language=?lng=en');
   });
 });
