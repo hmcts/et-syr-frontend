@@ -263,12 +263,12 @@ export class CaseApi {
       return await this.axios.put(JavaApiUrls.CHANGE_RESPONDENT_NOTIFICATION_STATUS, {
         case_id: caseItem.id,
         case_type_id: caseItem.caseTypeId,
-        application_id: selectedNotification.id,
+        notification_id: selectedNotification.id,
         user_idam_id: req.session.user.id,
         new_status: newStatus,
       });
     } catch (error) {
-      throw new Error('Error changing tse application status: ' + axiosErrorDetails(error));
+      throw new Error('Error changing notification status: ' + axiosErrorDetails(error));
     }
   };
 }

@@ -29,7 +29,7 @@ export const getTribunalNotificationBanner = (req: AppRequest): PseNotification 
 };
 
 const getNotificationDetails = (item: SendNotificationTypeItem, languageParam: string): NotificationDetails => {
-  const isNeedsResponse = isPartiesRespondRequired(item.value.sendNotificationSelectParties);
+  const isNeedsResponse = isPartiesRespondRequired(item.value);
   return {
     isResponseRequired: isNeedsResponse,
     redirectUrl: isNeedsResponse

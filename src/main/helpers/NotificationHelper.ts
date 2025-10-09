@@ -6,37 +6,20 @@ import {
   SendNotificationType,
   SendNotificationTypeItem,
 } from '../definitions/complexTypes/sendNotificationTypeItem';
-import { Applicant, PartiesNotify, PartiesRespond } from '../definitions/constants';
+import { PartiesNotify, PartiesRespond } from '../definitions/constants';
+import { LinkStatus } from '../definitions/links';
 import { TypeItem } from '../definitions/util-types';
 
 /**
  * Check if response is required from respondent
  * compare with sendNotificationSelectParties in SendNotificationType
- * @param parties sendNotificationSelectParties
+ * @param item sendNotificationSelectParties
  */
-export const isPartiesRespondRequired = (parties: string): boolean => {
-  return parties === PartiesRespond.BOTH_PARTIES || parties === PartiesRespond.RESPONDENT;
-};
-
-/**
- * Check if respondent is notified by the tribunal
- * for claimant / respondent response, compare with sendNotificationNotify in SendNotificationType
- * for tribunal response, compare with respondNotificationPartyToNotify in RespondNotificationType
- * @param parties sendNotificationNotify / respondNotificationPartyToNotify
- */
-const isPartiesNotifyRequired = (parties: string): boolean => {
-  return parties === PartiesNotify.BOTH_PARTIES || parties === PartiesNotify.RESPONDENT_ONLY;
-};
-
-/**
- * Check if user has already responded
- * @param respondCollection response collection
- * @param user user details
- */
-export const hasUserResponded = (respondCollection: TypeItem<PseResponseType>[], user: UserDetails): boolean => {
-  return respondCollection
-    ? respondCollection.some(r => r?.value?.from === Applicant.RESPONDENT && r.value?.fromIdamId === user.id)
-    : false;
+export const isPartiesRespondRequired = (item: SendNotificationType): boolean => {
+  return (
+    item.sendNotificationSelectParties === PartiesRespond.BOTH_PARTIES ||
+    item.sendNotificationSelectParties === PartiesRespond.RESPONDENT
+  );
 };
 
 /**
@@ -54,14 +37,27 @@ export const hasUserViewed = (notification: SendNotificationType, user: UserDeta
  */
 export const isNotificationVisible = (item: SendNotificationType): boolean => {
   return (
-    isPartiesNotifyRequired(item.sendNotificationNotify) ||
+    isSendNotificationNotify(item) ||
     hasTribunalResponseShared(item.respondNotificationTypeCollection) ||
     hasOtherPartyResponseShared(item.respondCollection)
   );
 };
 
+const isSendNotificationNotify = (item: SendNotificationType): boolean => {
+  return (
+    item.sendNotificationNotify === PartiesNotify.BOTH_PARTIES ||
+    item.sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY
+  );
+};
+
 const hasTribunalResponseShared = (responseList: TypeItem<RespondNotificationType>[]): boolean => {
-  return responseList?.some(r => isPartiesNotifyRequired(r.value.respondNotificationPartyToNotify)) ?? false;
+  return (
+    responseList?.some(
+      r =>
+        r.value.respondNotificationPartyToNotify === PartiesNotify.BOTH_PARTIES ||
+        r.value.respondNotificationPartyToNotify === PartiesNotify.RESPONDENT_ONLY
+    ) ?? false
+  );
 };
 
 const hasOtherPartyResponseShared = (responseList: TypeItem<PseResponseType>[]): boolean => {
@@ -71,11 +67,24 @@ const hasOtherPartyResponseShared = (responseList: TypeItem<PseResponseType>[]):
 /**
  * Return selected application
  * @param items
- * @param orderId
+ * @param notificationId
  */
 export const findSelectedSendNotification = (
   items: SendNotificationTypeItem[],
-  orderId: string
+  notificationId: string
 ): SendNotificationTypeItem => {
-  return items?.find(it => it.id === orderId);
+  return items?.find(it => it.id === notificationId);
+};
+
+/**
+ * Get existing notification state for the current user
+ * @param notification
+ * @param user
+ */
+export const getExistingNotificationState = (notification: SendNotificationType, user: UserDetails): LinkStatus => {
+  const existingState = notification?.respondentState?.find(state => state.value.userIdamId === user.id);
+  if (existingState?.value?.notificationState) {
+    return existingState.value.notificationState as LinkStatus;
+  }
+  return LinkStatus.NOT_VIEWED;
 };

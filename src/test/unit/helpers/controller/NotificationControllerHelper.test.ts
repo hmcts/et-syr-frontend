@@ -1,6 +1,6 @@
 import { PartiesNotify } from '../../../../main/definitions/constants';
 import { LinkStatus } from '../../../../main/definitions/links';
-import { getNotificationCollection } from '../../../../main/helpers/controller/NotificationControllerHelper';
+import { getNotificationTable } from '../../../../main/helpers/controller/NotificationControllerHelper';
 import caseDetailsStatusJson from '../../../../main/resources/locales/en/translation/case-details-status.json';
 import { mockRequest, mockRequestWithTranslation } from '../../mocks/mockRequest';
 
@@ -17,7 +17,7 @@ describe('NotificationControllerHelper', () => {
     });
 
     it('should return an empty array if no notifications', () => {
-      const result = getNotificationCollection(req);
+      const result = getNotificationTable(req);
       expect(result).toEqual([]);
     });
 
@@ -40,7 +40,7 @@ describe('NotificationControllerHelper', () => {
           },
         },
       ];
-      const result = getNotificationCollection(req);
+      const result = getNotificationTable(req);
       expect(result).toHaveLength(1);
       expect(result[0].linkText).toBe('Title 2');
       expect(result[0].displayStatus).toBe('Not viewed yet');
@@ -66,7 +66,7 @@ describe('NotificationControllerHelper', () => {
           },
         },
       ];
-      const result = getNotificationCollection(req);
+      const result = getNotificationTable(req);
       expect(result).toHaveLength(1);
       expect(result[0].date).toBe('2025-09-16');
       expect(result[0].redirectUrl).toBe('/notification-details/3?lng=en');

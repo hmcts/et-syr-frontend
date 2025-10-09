@@ -7,7 +7,6 @@ export const mockSendNotificationCollection: SendNotificationTypeItem[] = [
     value: {
       date: '2 October 2025',
       number: '9',
-      notificationState: 'notStartedYet',
       respondCollection: [
         {
           id: 'e413ab5a-f427-4a6c-a22b-1ee7b736d128',

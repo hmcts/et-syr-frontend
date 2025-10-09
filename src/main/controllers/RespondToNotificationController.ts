@@ -99,7 +99,7 @@ export default class RespondToNotificationController {
     }
 
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    userCase.selectedRequestOrOrder = selectedNotification;
+    userCase.selectedNotification = selectedNotification;
     userCase.responseText = formData.responseText;
     userCase.hasSupportingMaterial = formData.hasSupportingMaterial;
 
@@ -122,6 +122,8 @@ export default class RespondToNotificationController {
 
   public get = (req: AppRequest, res: Response): void => {
     const { userCase } = req.session;
+
+    // Find the selected notification
     const selectedNotification: SendNotificationTypeItem = findSelectedSendNotification(
       userCase.sendNotificationCollection,
       req.params.itemId

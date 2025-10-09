@@ -6,7 +6,7 @@ import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definiti
 import { LinkStatus } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import { getLinkFromDocument } from '../DocumentHelpers';
-import { hasUserResponded, isPartiesRespondRequired } from '../NotificationHelper';
+import { getExistingNotificationState, isPartiesRespondRequired } from '../NotificationHelper';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
 /**
@@ -19,15 +19,14 @@ export const getNotificationStatusAfterViewed = (item: SendNotificationType, use
     return;
   }
 
-  if (hasUserResponded(item.respondCollection, user)) {
-    return;
+  const existingState = getExistingNotificationState(item, user);
+  if (!existingState) {
+    return isPartiesRespondRequired(item) ? LinkStatus.NOT_STARTED_YET : LinkStatus.VIEWED;
   }
 
-  if (isPartiesRespondRequired(item.sendNotificationSelectParties)) {
-    return LinkStatus.NOT_STARTED_YET;
+  if (existingState === LinkStatus.NOT_VIEWED) {
+    return LinkStatus.VIEWED;
   }
-
-  return LinkStatus.VIEWED;
 };
 
 /**

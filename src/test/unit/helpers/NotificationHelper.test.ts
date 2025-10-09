@@ -1,9 +1,8 @@
 import { UserDetails } from '../../../main/definitions/appRequest';
 import { SendNotificationType } from '../../../main/definitions/complexTypes/sendNotificationTypeItem';
-import { Applicant, PartiesNotify, PartiesRespond } from '../../../main/definitions/constants';
+import { PartiesNotify, PartiesRespond } from '../../../main/definitions/constants';
 import {
   findSelectedSendNotification,
-  hasUserResponded,
   hasUserViewed,
   isNotificationVisible,
   isPartiesRespondRequired,
@@ -12,31 +11,24 @@ import {
 describe('NotificationHelper', () => {
   describe('isPartiesRespondRequired', () => {
     it('should return true if parties is BOTH_PARTIES', () => {
-      expect(isPartiesRespondRequired(PartiesRespond.BOTH_PARTIES)).toBe(true);
+      const item: SendNotificationType = {
+        sendNotificationSelectParties: PartiesRespond.BOTH_PARTIES,
+      } as SendNotificationType;
+      expect(isPartiesRespondRequired(item)).toBe(true);
     });
-    it('should return true if parties is RESPONDENT', () => {
-      expect(isPartiesRespondRequired(PartiesRespond.RESPONDENT)).toBe(true);
-    });
-    it('should return false if parties is CLAIMANT', () => {
-      expect(isPartiesRespondRequired(PartiesRespond.CLAIMANT)).toBe(false);
-    });
-  });
 
-  describe('hasUserResponded', () => {
-    const user: UserDetails = { id: 'user-1' } as UserDetails;
-    it('should return true if user has responded as RESPONDENT', () => {
-      const respondCollection = [
-        { id: '1', value: { from: Applicant.RESPONDENT, fromIdamId: 'user-1' } },
-        { id: '2', value: { from: Applicant.CLAIMANT, fromIdamId: 'user-2' } },
-      ];
-      expect(hasUserResponded(respondCollection, user)).toBe(true);
+    it('should return true if parties is RESPONDENT', () => {
+      const item: SendNotificationType = {
+        sendNotificationSelectParties: PartiesRespond.RESPONDENT,
+      } as SendNotificationType;
+      expect(isPartiesRespondRequired(item)).toBe(true);
     });
-    it('should return false if user has not responded', () => {
-      const respondCollection = [{ id: '2', value: { from: Applicant.CLAIMANT, fromIdamId: 'user-2' } }];
-      expect(hasUserResponded(respondCollection, user)).toBe(false);
-    });
-    it('should return false if respondCollection is undefined', () => {
-      expect(hasUserResponded(undefined, user)).toBe(false);
+
+    it('should return false if parties is CLAIMANT', () => {
+      const item: SendNotificationType = {
+        sendNotificationSelectParties: PartiesRespond.CLAIMANT,
+      } as SendNotificationType;
+      expect(isPartiesRespondRequired(item)).toBe(false);
     });
   });
 

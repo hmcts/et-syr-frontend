@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { TranslationKeys } from '../definitions/constants';
-import { getNotificationCollection } from '../helpers/controller/NotificationControllerHelper';
+import { getNotificationTable } from '../helpers/controller/NotificationControllerHelper';
 
 export default class NotificationController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
@@ -11,7 +11,7 @@ export default class NotificationController {
       ...req.t(TranslationKeys.NOTIFICATIONS, { returnObjects: true }),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
-      notificationList: getNotificationCollection(req),
+      notificationList: getNotificationTable(req),
     });
   };
 }

@@ -78,7 +78,6 @@ describe('NotificationDetailsControllerHelper', () => {
     const baseItem: SendNotificationType = {
       date: '2 October 2025',
       number: '1',
-      notificationState: 'notViewedYet',
       sendNotificationTitle: 'Noti-Test-1',
       sendNotificationLetter: YesOrNo.NO,
       sendNotificationNotify: 'Both parties',

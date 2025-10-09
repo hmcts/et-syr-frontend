@@ -62,7 +62,6 @@ export interface SendNotificationType {
   sendNotificationWhoMadeJudgement?: string;
 
   //Indicates the notification status
-  notificationState?: string;
   respondentState?: TypeItem<PseStatusType>[];
 
   // Responses
