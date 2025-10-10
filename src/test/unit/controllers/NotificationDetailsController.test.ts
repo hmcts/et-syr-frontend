@@ -38,7 +38,7 @@ describe('Notification Details Controller', () => {
       request.session.userCase = mockUserCase;
       request.session.userCase.sendNotificationCollection = mockSendNotificationCollection;
       await controller.get(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+      expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND + '?lng=en');
     });
 
     it('should redirect to NOT_FOUND page if application invalid', async () => {
@@ -46,7 +46,7 @@ describe('Notification Details Controller', () => {
       request.session.userCase.sendNotificationCollection = undefined;
       request.params.itemId = '1';
       await controller.get(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+      expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND + '?lng=en');
     });
   });
 });

@@ -2,13 +2,15 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
-import { ErrorPages, TranslationKeys, TseErrors } from '../definitions/constants';
+import { ErrorPages, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
 import { LinkStatus } from '../definitions/links';
 import { findSelectedSendNotification } from '../helpers/NotificationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import {
+  getNonAdminResponses,
   getNotificationContent,
   getNotificationStatusAfterViewed,
+  isRespondButton,
 } from '../helpers/controller/NotificationDetailsControllerHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
@@ -47,6 +49,9 @@ export default class NotificationDetailsController {
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
       notificationContent: getNotificationContent(selectedNotification.value, req),
+      nonAdminResponses: getNonAdminResponses(selectedNotification.value, req),
+      isRespondButton: isRespondButton(selectedNotification.value, user),
+      respondUrl: PageUrls.RESPOND_TO_NOTIFICATION.replace(':itemId', selectedNotification.id) + languageParam,
     });
   };
 }

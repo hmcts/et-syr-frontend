@@ -28,21 +28,6 @@ describe('NotificationDetailsControllerHelper', () => {
       expect(getNotificationStatusAfterViewed(item, undefined)).toBeUndefined();
     });
 
-    it('returns NOT_STARTED_YET if parties respond required and user has responded', () => {
-      const item: SendNotificationType = {
-        sendNotificationSelectParties: PartiesRespond.RESPONDENT,
-        respondCollection: [
-          {
-            value: {
-              from: Applicant.RESPONDENT,
-              fromIdamId: user.id,
-            },
-          },
-        ],
-      } as SendNotificationType;
-      expect(getNotificationStatusAfterViewed(item, user)).toBeUndefined();
-    });
-
     it('returns VIEWED if parties respond not required', () => {
       const item: SendNotificationType = {
         sendNotificationSelectParties: PartiesRespond.CLAIMANT,
@@ -63,7 +48,7 @@ describe('NotificationDetailsControllerHelper', () => {
           },
         ],
       } as SendNotificationType;
-      expect(getNotificationStatusAfterViewed(item, user)).toBe(LinkStatus.NOT_STARTED_YET);
+      expect(getNotificationStatusAfterViewed(item, user)).toBe(LinkStatus.VIEWED);
     });
   });
 

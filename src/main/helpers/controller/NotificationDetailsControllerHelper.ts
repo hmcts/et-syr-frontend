@@ -1,11 +1,12 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
 import { YesOrNo } from '../../definitions/case';
-import { SendNotificationType } from '../../definitions/complexTypes/sendNotificationTypeItem';
+import { PseResponseType, SendNotificationType } from '../../definitions/complexTypes/sendNotificationTypeItem';
 import { TranslationKeys } from '../../definitions/constants';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
 import { LinkStatus } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
-import { getLinkFromDocument } from '../DocumentHelpers';
+import ObjectUtils from '../../utils/ObjectUtils';
+import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../DocumentHelpers';
 import { getExistingNotificationState, isPartiesRespondRequired } from '../NotificationHelper';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
@@ -94,4 +95,69 @@ export const getNotificationContent = (item: SendNotificationType, req: AppReque
 
 const formatNotificationSubjects = (keys: string[] = [], translations: AnyRecord): string => {
   return keys.map(key => translations[key] || key).join(', ');
+};
+
+/**
+ * Get all responses in respondCollection
+ * @param not notification
+ * @param req request
+ */
+export const getNonAdminResponses = (not: SendNotificationType, req: AppRequest): SummaryListRow[][] => {
+  if (!not || ObjectUtils.isEmpty(not.respondCollection)) {
+    return [];
+  }
+
+  const { user } = req.session;
+  const translations: AnyRecord = {
+    ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
+    ...req.t(TranslationKeys.NOTIFICATION_SUBJECTS, { returnObjects: true }),
+    ...req.t(TranslationKeys.NOTIFICATION_DETAILS, { returnObjects: true }),
+  };
+  const rows: SummaryListRow[][] = [];
+
+  not.respondCollection
+    .filter(r => r.value.copyToOtherParty === YesOrNo.YES || r.value.fromIdamId === user.id)
+    .forEach(r => {
+      rows.push(addNonAdminResponse(r.value, translations, req));
+    });
+
+  return rows;
+};
+
+const addNonAdminResponse = (response: PseResponseType, translations: AnyRecord, req: AppRequest): SummaryListRow[] => {
+  const rows: SummaryListRow[] = [];
+
+  rows.push(
+    addSummaryRow(translations.responder, translations[response.from]),
+    addSummaryRow(translations.responseDate, datesStringToDateInLocale(response.date, req.url))
+  );
+
+  if (response.response) {
+    rows.push(addSummaryRow(translations.response, response.response));
+  }
+
+  if (response.supportingMaterial) {
+    const docType = getDocumentFromDocumentTypeItems(response.supportingMaterial);
+    const link = getLinkFromDocument(docType.uploadedDocument);
+    rows.push(addSummaryHtmlRow(translations.supportingMaterial, link));
+  }
+
+  if (response.copyToOtherParty) {
+    rows.push(addSummaryRow(translations.copyCorrespondence, translations[response.copyToOtherParty]));
+  }
+
+  return rows;
+};
+
+/**
+ * Check if any response is required from claimant
+ * @param notification selected SendNotificationType
+ * @param user user details
+ */
+export const isRespondButton = (notification: SendNotificationType, user: UserDetails): boolean => {
+  const existingState = getExistingNotificationState(notification, user);
+  if (existingState === LinkStatus.NOT_STARTED_YET) {
+    return true;
+  }
+  return false;
 };
