@@ -78,9 +78,9 @@ export const TranslationKeys = {
   APPLICATION_DETAILS: 'application-details',
   RESPOND_TO_APPLICATION: 'respond-to-application',
   RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: 'respond-to-application-supporting-material',
+  RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: 'respond-to-application-copy-to-other-party',
   RESPOND_TO_APPLICATION_CYA: 'respond-to-application-check-your-answers',
   RESPOND_TO_APPLICATION_COMPLETE: 'respond-to-application-complete',
-  RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: 'respond-to-application-copy-to-other-party',
   // Notification
   NOTIFICATIONS: 'notifications',
   NOTIFICATION_DETAILS: 'notification-details',
@@ -156,7 +156,7 @@ export const PageUrls = {
   // Contact the tribunal about your case
   CONTACT_TRIBUNAL: '/contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: '/contact-tribunal/:selectedOption',
-  COPY_TO_OTHER_PARTY: '/copy-to-other-party',
+  CONTACT_TRIBUNAL_COPY_TO_OTHER_PARTY: '/contact-tribunal-copy-to-other-party',
   CONTACT_TRIBUNAL_CYA: '/contact-tribunal-check-your-answers',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
   // Your request and applications
@@ -195,6 +195,7 @@ export const InterceptPaths = {
   // Contact Tribunal
   CONTACT_TRIBUNAL_SUBMIT: '/submitContactTribunal',
   RESPOND_TO_APPLICATION_SUBMIT: '/submitRespondToApplication',
+  RESPOND_TO_NOTIFICATION_SUBMIT: '/submitRespondToNotification',
 } as const;
 
 export const RedirectKeys = {

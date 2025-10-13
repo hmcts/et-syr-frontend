@@ -96,5 +96,8 @@ export const getNextPage = (app: Application, req: AppRequest): string => {
   if (req.body?.upload || req.body?.remove) {
     return getThisPage(app, req);
   }
-  return (isTypeAOrB(app) ? PageUrls.COPY_TO_OTHER_PARTY : PageUrls.CONTACT_TRIBUNAL_CYA) + getLanguageParam(req.url);
+  return (
+    (isTypeAOrB(app) ? PageUrls.CONTACT_TRIBUNAL_COPY_TO_OTHER_PARTY : PageUrls.CONTACT_TRIBUNAL_CYA) +
+    getLanguageParam(req.url)
+  );
 };

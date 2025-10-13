@@ -117,21 +117,21 @@ describe('Contact Tribunal Selected Controller', () => {
       request = mockRequest({ body: { contactApplicationText: 'A'.repeat(2500) } });
       request.params.selectedOption = application.CHANGE_PERSONAL_DETAILS.url;
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith('/copy-to-other-party?lng=en');
+      expect(response.redirect).toHaveBeenCalledWith('/contact-tribunal-copy-to-other-party?lng=en');
     });
 
     it('should redirect to COPY_TO_OTHER_PARTY when application type is A', async () => {
       request = mockRequest({ body: { contactApplicationText: 'Test' } });
       request.params.selectedOption = application.POSTPONE_HEARING.url;
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith('/copy-to-other-party?lng=en');
+      expect(response.redirect).toHaveBeenCalledWith('/contact-tribunal-copy-to-other-party?lng=en');
     });
 
     it('should redirect to COPY_TO_OTHER_PARTY when application type is B', async () => {
       request = mockRequest({ body: { contactApplicationText: 'Test' } });
       request.params.selectedOption = application.CHANGE_PERSONAL_DETAILS.url;
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith('/copy-to-other-party?lng=en');
+      expect(response.redirect).toHaveBeenCalledWith('/contact-tribunal-copy-to-other-party?lng=en');
     });
 
     it('should redirect to CONTACT_TRIBUNAL_CYA when application type is C', async () => {

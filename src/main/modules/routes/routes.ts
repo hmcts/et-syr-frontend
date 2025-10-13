@@ -36,11 +36,11 @@ import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPens
 import ClaimantsApplicationsController from '../../controllers/ClaimantsApplicationsController';
 import ContactTribunalCYAController from '../../controllers/ContactTribunalCYAController';
 import ContactTribunalController from '../../controllers/ContactTribunalController';
+import ContactTribunalCopyToOtherPartyController from '../../controllers/ContactTribunalCopyToOtherPartyController';
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
 import ContactTribunalSubmitCompleteController from '../../controllers/ContactTribunalSubmitCompleteController';
 import ContactTribunalSubmitController from '../../controllers/ContactTribunalSubmitController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
-import CopyToOtherPartyController from '../../controllers/CopyToOtherPartyController';
 import DocumentsController from '../../controllers/DocumentsController';
 import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
@@ -61,6 +61,7 @@ import RespondToApplicationController from '../../controllers/RespondToApplicati
 import RespondToApplicationCopyToOtherPartyController from '../../controllers/RespondToApplicationCopyToOtherPartyController';
 import RespondToApplicationSubmitController from '../../controllers/RespondToApplicationSubmitController';
 import RespondToApplicationSupportingMaterialController from '../../controllers/RespondToApplicationSupportingMaterialController';
+import RespondToNotificationCYAController from '../../controllers/RespondToNotificationCYAController';
 import RespondToNotificationController from '../../controllers/RespondToNotificationController';
 import RespondToNotificationCopyToOtherPartyController from '../../controllers/RespondToNotificationCopyToOtherPartyController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
@@ -266,8 +267,8 @@ export class Routes {
       handleUploads.single(FormFieldNames.CONTACT_TRIBUNAL_SELECTED.CONTACT_APPLICATION_FILE_NAME),
       new ContactTribunalSelectedController().post
     );
-    app.get(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().get);
-    app.post(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().post);
+    app.get(PageUrls.CONTACT_TRIBUNAL_COPY_TO_OTHER_PARTY, new ContactTribunalCopyToOtherPartyController().get);
+    app.post(PageUrls.CONTACT_TRIBUNAL_COPY_TO_OTHER_PARTY, new ContactTribunalCopyToOtherPartyController().post);
     app.get(PageUrls.CONTACT_TRIBUNAL_CYA, new ContactTribunalCYAController().get);
     app.get(InterceptPaths.CONTACT_TRIBUNAL_SUBMIT, new ContactTribunalSubmitController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
@@ -317,6 +318,7 @@ export class Routes {
       PageUrls.RESPOND_TO_NOTIFICATION_COPY_TO_ORDER_PARTY,
       new RespondToNotificationCopyToOtherPartyController().post
     );
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_CYA, new RespondToNotificationCYAController().get);
     // others
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);

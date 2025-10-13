@@ -12,7 +12,7 @@ import { getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import UrlUtils from '../utils/UrlUtils';
 
-export default class CopyToOtherPartyController {
+export default class ContactTribunalCopyToOtherPartyController {
   private readonly form: Form;
   private readonly formContent: FormContent = {
     fields: {
@@ -29,7 +29,7 @@ export default class CopyToOtherPartyController {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     req.session.errors = this.form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
-      return res.redirect(PageUrls.COPY_TO_OTHER_PARTY + getLanguageParam(req.url));
+      return res.redirect(PageUrls.CONTACT_TRIBUNAL_COPY_TO_OTHER_PARTY + getLanguageParam(req.url));
     }
 
     req.session.userCase.copyToOtherPartyYesOrNo = formData.copyToOtherPartyYesOrNo;
