@@ -32,6 +32,15 @@ export const hasUserViewed = (notification: SendNotificationType, user: UserDeta
 };
 
 /**
+ * Check if user has already viewed the notification
+ * @param notification SendNotificationType
+ * @param user user details
+ */
+export const hasUserRespond = (notification: SendNotificationType, user: UserDetails): boolean => {
+  return notification ? notification.respondCollection?.some(state => state.value.fromIdamId === user.id) : false;
+};
+
+/**
  * Check if sendNotification is visible to the user
  * @param item SendNotificationType
  */

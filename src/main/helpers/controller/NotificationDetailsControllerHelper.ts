@@ -7,35 +7,33 @@ import { LinkStatus } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import ObjectUtils from '../../utils/ObjectUtils';
 import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../DocumentHelpers';
-import { getExistingNotificationState, isPartiesRespondRequired } from '../NotificationHelper';
+import { getExistingNotificationState, hasUserRespond, isPartiesRespondRequired } from '../NotificationHelper';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
 /**
  * Get new notification status after user viewed in Notification Details page
- * @param item
- * @param user
+ * @param notification selected SendNotificationType
+ * @param user user details
  */
-export const getNotificationStatusAfterViewed = (item: SendNotificationType, user: UserDetails): LinkStatus => {
-  if (!item || !user) {
+export const getNotificationStatusAfterViewed = (notification: SendNotificationType, user: UserDetails): LinkStatus => {
+  if (!notification || !user) {
     return;
   }
 
-  const existingState = getExistingNotificationState(item, user);
-  if (!existingState) {
-    return isPartiesRespondRequired(item) ? LinkStatus.NOT_STARTED_YET : LinkStatus.VIEWED;
-  }
-
+  const existingState = getExistingNotificationState(notification, user);
   if (existingState === LinkStatus.NOT_VIEWED) {
-    return LinkStatus.VIEWED;
+    return isPartiesRespondRequired(notification) && !hasUserRespond(notification, user)
+      ? LinkStatus.NOT_STARTED_YET
+      : LinkStatus.VIEWED;
   }
 };
 
 /**
  * Get notification content for the user
- * @param item
- * @param req
+ * @param notification selected SendNotificationType
+ * @param req request
  */
-export const getNotificationContent = (item: SendNotificationType, req: AppRequest): SummaryListRow[] => {
+export const getNotificationContent = (notification: SendNotificationType, req: AppRequest): SummaryListRow[] => {
   const { url } = req;
   const translations: AnyRecord = {
     ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
@@ -47,28 +45,28 @@ export const getNotificationContent = (item: SendNotificationType, req: AppReque
   rows.push(
     addSummaryRow(
       translations.notificationSubject,
-      formatNotificationSubjects(item.sendNotificationSubject, translations)
+      formatNotificationSubjects(notification.sendNotificationSubject, translations)
     ),
-    addSummaryRow(translations.dateSent, datesStringToDateInLocale(item.date, url)),
+    addSummaryRow(translations.dateSent, datesStringToDateInLocale(notification.date, url)),
     addSummaryRow(translations.sentBy, translations.tribunal)
   );
 
-  if (item.sendNotificationCaseManagement) {
+  if (notification.sendNotificationCaseManagement) {
     rows.push(
-      addSummaryRow(translations.orderOrRequest, translations[item.sendNotificationCaseManagement]),
-      addSummaryRow(translations.responseDue, translations[item.sendNotificationResponseTribunal])
+      addSummaryRow(translations.orderOrRequest, translations[notification.sendNotificationCaseManagement]),
+      addSummaryRow(translations.responseDue, translations[notification.sendNotificationResponseTribunal])
     );
-    if (item.sendNotificationResponseTribunal?.startsWith(YesOrNo.YES)) {
-      rows.push(addSummaryRow(translations.partyToRespond, translations[item.sendNotificationSelectParties]));
+    if (notification.sendNotificationResponseTribunal?.startsWith(YesOrNo.YES)) {
+      rows.push(addSummaryRow(translations.partyToRespond, translations[notification.sendNotificationSelectParties]));
     }
   }
 
-  if (item.sendNotificationAdditionalInfo) {
-    rows.push(addSummaryRow(translations.addInfo, item.sendNotificationAdditionalInfo));
+  if (notification.sendNotificationAdditionalInfo) {
+    rows.push(addSummaryRow(translations.addInfo, notification.sendNotificationAdditionalInfo));
   }
 
-  if (item.sendNotificationUploadDocument?.length) {
-    item.sendNotificationUploadDocument.forEach(doc => {
+  if (notification.sendNotificationUploadDocument?.length) {
+    notification.sendNotificationUploadDocument.forEach(doc => {
       rows.push(
         addSummaryRow(translations.description, doc.value.shortDescription),
         addSummaryHtmlRow(translations.document, getLinkFromDocument(doc.value.uploadedDocument))
@@ -76,19 +74,19 @@ export const getNotificationContent = (item: SendNotificationType, req: AppReque
     });
   }
 
-  if (item.sendNotificationWhoCaseOrder) {
+  if (notification.sendNotificationWhoCaseOrder) {
     rows.push(
-      addSummaryRow(translations.orderMadeBy, translations[item.sendNotificationWhoCaseOrder]),
-      addSummaryRow(translations.fullName, item.sendNotificationFullName)
+      addSummaryRow(translations.orderMadeBy, translations[notification.sendNotificationWhoCaseOrder]),
+      addSummaryRow(translations.fullName, notification.sendNotificationFullName)
     );
-  } else if (item.sendNotificationRequestMadeBy) {
+  } else if (notification.sendNotificationRequestMadeBy) {
     rows.push(
-      addSummaryRow(translations.requestMadeBy, translations[item.sendNotificationRequestMadeBy]),
-      addSummaryRow(translations.fullName, item.sendNotificationFullName)
+      addSummaryRow(translations.requestMadeBy, translations[notification.sendNotificationRequestMadeBy]),
+      addSummaryRow(translations.fullName, notification.sendNotificationFullName)
     );
   }
 
-  rows.push(addSummaryRow(translations.sentTo, translations[item.sendNotificationNotify]));
+  rows.push(addSummaryRow(translations.sentTo, translations[notification.sendNotificationNotify]));
 
   return rows;
 };
@@ -99,11 +97,11 @@ const formatNotificationSubjects = (keys: string[] = [], translations: AnyRecord
 
 /**
  * Get all responses in respondCollection
- * @param not notification
+ * @param notification selected SendNotificationType
  * @param req request
  */
-export const getNonAdminResponses = (not: SendNotificationType, req: AppRequest): SummaryListRow[][] => {
-  if (!not || ObjectUtils.isEmpty(not.respondCollection)) {
+export const getNonAdminResponses = (notification: SendNotificationType, req: AppRequest): SummaryListRow[][] => {
+  if (!notification || ObjectUtils.isEmpty(notification.respondCollection)) {
     return [];
   }
 
@@ -115,7 +113,7 @@ export const getNonAdminResponses = (not: SendNotificationType, req: AppRequest)
   };
   const rows: SummaryListRow[][] = [];
 
-  not.respondCollection
+  notification.respondCollection
     .filter(r => r.value.copyToOtherParty === YesOrNo.YES || r.value.fromIdamId === user.id)
     .forEach(r => {
       rows.push(addNonAdminResponse(r.value, translations, req));

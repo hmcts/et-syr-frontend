@@ -1,6 +1,6 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import { SendNotificationType } from '../../../../main/definitions/complexTypes/sendNotificationTypeItem';
-import { Applicant, PartiesRespond } from '../../../../main/definitions/constants';
+import { PartiesRespond } from '../../../../main/definitions/constants';
 import { LinkStatus } from '../../../../main/definitions/links';
 import {
   getNotificationContent,
@@ -14,16 +14,30 @@ import { mockUserDetails } from '../../mocks/mockUser';
 describe('NotificationDetailsControllerHelper', () => {
   describe('getNotificationStatusAfterViewed', () => {
     const user = mockUserDetails;
-    user.id = 'user1';
 
-    it('returns undefined if item is missing', () => {
+    it('returns undefined if notification is missing', () => {
       expect(getNotificationStatusAfterViewed(undefined, user)).toBeUndefined();
     });
 
     it('returns undefined if user is missing', () => {
       const item: SendNotificationType = {
         sendNotificationSelectParties: PartiesRespond.RESPONDENT,
-        respondCollection: [],
+      } as SendNotificationType;
+      expect(getNotificationStatusAfterViewed(item, undefined)).toBeUndefined();
+    });
+
+    it('returns undefined if user has existing state', () => {
+      const item: SendNotificationType = {
+        sendNotificationSelectParties: PartiesRespond.RESPONDENT,
+        respondentState: [
+          {
+            id: '1',
+            value: {
+              userIdamId: user.id,
+              notificationState: LinkStatus.SUBMITTED,
+            },
+          },
+        ],
       } as SendNotificationType;
       expect(getNotificationStatusAfterViewed(item, undefined)).toBeUndefined();
     });
@@ -31,19 +45,25 @@ describe('NotificationDetailsControllerHelper', () => {
     it('returns VIEWED if parties respond not required', () => {
       const item: SendNotificationType = {
         sendNotificationSelectParties: PartiesRespond.CLAIMANT,
-        respondCollection: [],
       } as SendNotificationType;
       expect(getNotificationStatusAfterViewed(item, user)).toBe(LinkStatus.VIEWED);
     });
 
-    it('returns VIEWED if parties respond required but user has not responded', () => {
+    it('returns NOT_STARTED_YET if parties respond required but user has not viewed', () => {
+      const item: SendNotificationType = {
+        sendNotificationSelectParties: PartiesRespond.RESPONDENT,
+      } as SendNotificationType;
+      expect(getNotificationStatusAfterViewed(item, user)).toBe(LinkStatus.NOT_STARTED_YET);
+    });
+
+    it('returns VIEWED if parties respond required and user has responded', () => {
       const item: SendNotificationType = {
         sendNotificationSelectParties: PartiesRespond.RESPONDENT,
         respondCollection: [
           {
+            id: '1',
             value: {
-              from: Applicant.RESPONDENT,
-              fromIdamId: 'other-user',
+              fromIdamId: user.id,
             },
           },
         ],
