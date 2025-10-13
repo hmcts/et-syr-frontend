@@ -126,9 +126,8 @@ export default class ContactTribunalSelectedController {
     }
 
     const nextPage =
-      (isTypeAOrB(selectedApplication)
-        ? PageUrls.CONTACT_TRIBUNAL_COPY_TO_OTHER_PARTY
-        : PageUrls.CONTACT_TRIBUNAL_CYA) + getLanguageParam(req.url);
+      (isTypeAOrB(selectedApplication) ? PageUrls.COPY_TO_OTHER_PARTY : PageUrls.CONTACT_TRIBUNAL_CYA) +
+      getLanguageParam(req.url);
     res.redirect(nextPage);
   };
 

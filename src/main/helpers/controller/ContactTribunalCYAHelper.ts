@@ -62,7 +62,7 @@ export const getCyaContent = (req: AppRequest): SummaryListRow[] => {
       addSummaryRowWithAction(
         translations.copyToOtherPartyYesOrNo,
         userCase.copyToOtherPartyYesOrNo === YesOrNo.YES ? translations.yes : translations.no,
-        PageUrls.CONTACT_TRIBUNAL_COPY_TO_OTHER_PARTY + languageParam,
+        PageUrls.COPY_TO_OTHER_PARTY + languageParam,
         translations.change,
         ''
       )
@@ -73,7 +73,7 @@ export const getCyaContent = (req: AppRequest): SummaryListRow[] => {
         addSummaryRowWithAction(
           translations.copyToOtherPartyText,
           userCase.copyToOtherPartyText,
-          PageUrls.CONTACT_TRIBUNAL_COPY_TO_OTHER_PARTY + languageParam,
+          PageUrls.COPY_TO_OTHER_PARTY + languageParam,
           translations.change,
           ''
         )

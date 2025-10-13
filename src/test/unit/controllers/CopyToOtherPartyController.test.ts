@@ -1,4 +1,4 @@
-import ContactTribunalCopyToOtherPartyController from '../../../main/controllers/ContactTribunalCopyToOtherPartyController';
+import CopyToOtherPartyController from '../../../main/controllers/CopyToOtherPartyController';
 import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import applicationTypeJson from '../../../main/resources/locales/en/translation/application-type.json';
@@ -7,12 +7,12 @@ import { mockResponse } from '../mocks/mockResponse';
 import mockUserCase from '../mocks/mockUserCase';
 
 describe('Copy to Other Party Controller', () => {
-  let controller: ContactTribunalCopyToOtherPartyController;
+  let controller: CopyToOtherPartyController;
   let request: ReturnType<typeof mockRequestWithTranslation>;
   let response: ReturnType<typeof mockResponse>;
 
   beforeEach(() => {
-    controller = new ContactTribunalCopyToOtherPartyController();
+    controller = new CopyToOtherPartyController();
     request = mockRequestWithTranslation({}, { ...applicationTypeJson });
     response = mockResponse();
   });
@@ -50,9 +50,7 @@ describe('Copy to Other Party Controller', () => {
     it('should render the same page when copyToOtherPartyYesOrNo empty', async () => {
       request = mockRequest({ body: {} });
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.CONTACT_TRIBUNAL_COPY_TO_OTHER_PARTY + languages.ENGLISH_URL_PARAMETER
-      );
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.COPY_TO_OTHER_PARTY + languages.ENGLISH_URL_PARAMETER);
       expect(request.session.errors).toEqual([{ propertyName: 'copyToOtherPartyYesOrNo', errorType: 'required' }]);
     });
 
@@ -63,9 +61,7 @@ describe('Copy to Other Party Controller', () => {
         },
       });
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.CONTACT_TRIBUNAL_COPY_TO_OTHER_PARTY + languages.ENGLISH_URL_PARAMETER
-      );
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.COPY_TO_OTHER_PARTY + languages.ENGLISH_URL_PARAMETER);
       expect(request.session.errors).toEqual([{ propertyName: 'copyToOtherPartyText', errorType: 'required' }]);
     });
 
@@ -77,9 +73,7 @@ describe('Copy to Other Party Controller', () => {
         },
       });
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(
-        PageUrls.CONTACT_TRIBUNAL_COPY_TO_OTHER_PARTY + languages.ENGLISH_URL_PARAMETER
-      );
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.COPY_TO_OTHER_PARTY + languages.ENGLISH_URL_PARAMETER);
       expect(request.session.errors).toEqual([{ propertyName: 'copyToOtherPartyText', errorType: 'tooLong' }]);
     });
   });

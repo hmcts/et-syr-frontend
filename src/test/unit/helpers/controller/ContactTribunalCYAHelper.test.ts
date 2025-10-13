@@ -94,7 +94,7 @@ describe('Contact Tribunal CYA Helper', () => {
           actions: {
             items: [
               {
-                href: '/contact-tribunal-copy-to-other-party?lng=en',
+                href: '/copy-to-other-party?lng=en',
                 text: 'Change',
                 visuallyHiddenText:
                   'Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?',
@@ -113,7 +113,7 @@ describe('Contact Tribunal CYA Helper', () => {
           actions: {
             items: [
               {
-                href: '/contact-tribunal-copy-to-other-party?lng=en',
+                href: '/copy-to-other-party?lng=en',
                 text: 'Change',
                 visuallyHiddenText: 'Details of why you do not want to inform the other party',
               },
