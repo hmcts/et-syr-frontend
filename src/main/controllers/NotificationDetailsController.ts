@@ -43,6 +43,7 @@ export default class NotificationDetailsController {
       res.redirect(ErrorPages.NOT_FOUND + languageParam);
     }
 
+    // Render the page
     res.render(TranslationKeys.NOTIFICATION_DETAILS, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
       ...req.t(TranslationKeys.NOTIFICATION_DETAILS, { returnObjects: true }),

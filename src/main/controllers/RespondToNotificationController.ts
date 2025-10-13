@@ -103,10 +103,11 @@ export default class RespondToNotificationController {
     userCase.responseText = formData.responseText;
     userCase.hasSupportingMaterial = formData.hasSupportingMaterial;
 
+    const thisPage = PageUrls.RESPOND_TO_NOTIFICATION.replace(':itemId', req.params.itemId) + languageParam;
     if (req.body?.upload) {
       const fileErrorRedirect = handleFileUpload(req, FormFieldNames.RESPOND_TO_NOTIFICATION.SUPPORTING_MATERIAL_FILE);
       if (await fileErrorRedirect) {
-        return res.redirect(PageUrls.RESPOND_TO_NOTIFICATION.replace(':itemId', req.params.itemId) + languageParam);
+        return res.redirect(thisPage);
       }
     }
 
@@ -114,7 +115,11 @@ export default class RespondToNotificationController {
     const formError = getFormError(req, formData);
     if (formError) {
       req.session.errors.push(formError);
-      return res.redirect(PageUrls.RESPOND_TO_NOTIFICATION.replace(':itemId', req.params.itemId) + languageParam);
+      return res.redirect(thisPage);
+    }
+
+    if (req.body?.upload) {
+      return res.redirect(thisPage);
     }
 
     return res.redirect(PageUrls.RESPOND_TO_NOTIFICATION_COPY_TO_ORDER_PARTY + languageParam);

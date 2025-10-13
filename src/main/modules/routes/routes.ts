@@ -62,6 +62,7 @@ import RespondToApplicationCopyToOtherPartyController from '../../controllers/Re
 import RespondToApplicationSubmitController from '../../controllers/RespondToApplicationSubmitController';
 import RespondToApplicationSupportingMaterialController from '../../controllers/RespondToApplicationSupportingMaterialController';
 import RespondToNotificationController from '../../controllers/RespondToNotificationController';
+import RespondToNotificationCopyToOtherPartyController from '../../controllers/RespondToNotificationCopyToOtherPartyController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
@@ -87,7 +88,7 @@ import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationCo
 import YourRequestAndApplicationsController from '../../controllers/YourRequestAndApplicationsController';
 import YourResponseFormController from '../../controllers/YourResponseFormController';
 import { AppRequest } from '../../definitions/appRequest';
-import { FILE_SIZE_LIMIT, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
+import { FILE_SIZE_LIMIT, FormFieldNames, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
 
 const handleUploads = multer({
   limits: {
@@ -122,8 +123,6 @@ export class Routes {
     // Singleton controllers:
     const respondentContestClaimReasonController = new RespondentContestClaimReasonController();
     const employersContractClaimDetailsController = new EmployersContractClaimDetailsController();
-    const contactTribunalSelectedController = new ContactTribunalSelectedController();
-    const respondToApplicationSupportingMaterialController = new RespondToApplicationSupportingMaterialController();
     app.get(InterceptPaths.CHANGE_DETAILS, new ChangeDetailsController().get);
     // Page URLs
     app.get(PageUrls.HOME, new HomeController().get);
@@ -260,12 +259,12 @@ export class Routes {
     // Contact the tribunal about your case
     app.get(PageUrls.HOLDING_PAGE, new HoldingPageController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL, new ContactTribunalController().get);
-    app.get(PageUrls.CONTACT_TRIBUNAL_SELECTED, contactTribunalSelectedController.get);
+    app.get(PageUrls.CONTACT_TRIBUNAL_SELECTED, new ContactTribunalSelectedController().get);
     app.post(
       PageUrls.CONTACT_TRIBUNAL_SELECTED,
       limiter,
-      handleUploads.single('contactApplicationFile'),
-      contactTribunalSelectedController.post
+      handleUploads.single(FormFieldNames.CONTACT_TRIBUNAL_SELECTED.CONTACT_APPLICATION_FILE_NAME),
+      new ContactTribunalSelectedController().post
     );
     app.get(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().get);
     app.post(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().post);
@@ -279,12 +278,15 @@ export class Routes {
     app.get(PageUrls.APPLICATION_DETAILS, new ApplicationDetailsController().get);
     app.get(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().get);
     app.post(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().post);
-    app.get(PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL, respondToApplicationSupportingMaterialController.get);
+    app.get(
+      PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
+      new RespondToApplicationSupportingMaterialController().get
+    );
     app.post(
       PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
       limiter,
-      handleUploads.single('supportingMaterialFile'),
-      respondToApplicationSupportingMaterialController.post
+      handleUploads.single(FormFieldNames.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL.SUPPORTING_MATERIAL_FILE),
+      new RespondToApplicationSupportingMaterialController().post
     );
     app.get(
       PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY,
@@ -301,7 +303,20 @@ export class Routes {
     app.get(PageUrls.NOTIFICATIONS, new NotificationController().get);
     app.get(PageUrls.NOTIFICATION_DETAILS, new NotificationDetailsController().get);
     app.get(PageUrls.RESPOND_TO_NOTIFICATION, new RespondToNotificationController().get);
-    app.post(PageUrls.RESPOND_TO_NOTIFICATION, new RespondToNotificationController().post);
+    app.post(
+      PageUrls.RESPOND_TO_NOTIFICATION,
+      limiter,
+      handleUploads.single(FormFieldNames.RESPOND_TO_NOTIFICATION.SUPPORTING_MATERIAL_FILE),
+      new RespondToNotificationController().post
+    );
+    app.get(
+      PageUrls.RESPOND_TO_NOTIFICATION_COPY_TO_ORDER_PARTY,
+      new RespondToNotificationCopyToOtherPartyController().get
+    );
+    app.post(
+      PageUrls.RESPOND_TO_NOTIFICATION_COPY_TO_ORDER_PARTY,
+      new RespondToNotificationCopyToOtherPartyController().post
+    );
     // others
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);
