@@ -5,7 +5,7 @@ import FormData from 'form-data';
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
 import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { UploadedFile } from '../definitions/api/uploadedFile';
-import { AppRequest } from '../definitions/appRequest';
+import { AppRequest, UserDetails } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
@@ -254,21 +254,44 @@ export class CaseApi {
   };
 
   changeNotificationStatus = async (
-    req: AppRequest,
+    userCase: CaseWithId,
+    user: UserDetails,
     selectedNotification: SendNotificationTypeItem,
     newStatus: LinkStatus
   ): Promise<AxiosResponse<CaseApiDataResponse>> => {
     try {
-      const caseItem = req.session.userCase;
       return await this.axios.put(JavaApiUrls.CHANGE_RESPONDENT_NOTIFICATION_STATUS, {
-        case_id: caseItem.id,
-        case_type_id: caseItem.caseTypeId,
+        case_id: userCase.id,
+        case_type_id: userCase.caseTypeId,
         notification_id: selectedNotification.id,
-        user_idam_id: req.session.user.id,
+        user_idam_id: user.id,
         new_status: newStatus,
       });
     } catch (error) {
       throw new Error('Error changing notification status: ' + axiosErrorDetails(error));
+    }
+  };
+
+  submitResponseToNotification = async (
+    userCase: CaseWithId,
+    user: UserDetails
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      return await this.axios.put(JavaApiUrls.SUBMIT_RESPONSE_TO_NOTIFICATION, {
+        case_id: userCase.id,
+        case_type_id: userCase.caseTypeId,
+        notificationId: userCase.selectedNotification.id,
+        supportingMaterialFile: userCase.supportingMaterialFile,
+        response: {
+          response: userCase.responseText,
+          hasSupportingMaterial: userCase.hasSupportingMaterial,
+          copyToOtherParty: userCase.copyToOtherPartyYesOrNo,
+          copyNoGiveDetails: userCase.copyToOtherPartyText,
+          fromIdamId: user.id,
+        },
+      });
+    } catch (error) {
+      throw new Error('Error responding to notification: ' + axiosErrorDetails(error));
     }
   };
 }

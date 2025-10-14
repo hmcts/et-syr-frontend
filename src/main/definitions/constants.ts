@@ -174,6 +174,7 @@ export const PageUrls = {
   RESPOND_TO_NOTIFICATION: '/respond-to-notification/:itemId',
   RESPOND_TO_NOTIFICATION_COPY_TO_ORDER_PARTY: '/respond-to-notification-copy-to-other-party',
   RESPOND_TO_NOTIFICATION_CYA: '/respond-to-notification-check-your-answers',
+  RESPOND_TO_NOTIFICATION_COMPLETE: '/respond-to-notification-complete',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
 } as const;
@@ -285,6 +286,7 @@ export const JavaApiUrls = {
   SUBMIT_RESPONDENT_RESPONSE_TO_APP: 'respondentTSE/respond-to-claimant-application',
   CHANGE_RESPONDENT_APPLICATION_STATUS: 'respondentTSE/change-respondent-application-status',
   CHANGE_RESPONDENT_NOTIFICATION_STATUS: 'sendNotification/change-respondent-notification-status',
+  SUBMIT_RESPONSE_TO_NOTIFICATION: 'sendNotification/respond-to-notification',
 } as const;
 
 export const Roles = {
@@ -596,6 +598,7 @@ export const TseErrors = {
   ERROR_UPDATE_LINK_STATUS: 'An error occurred while updating LinkStatus',
   ERROR_SUBMIT_APPLICATION: 'An error occurred while submitting an application',
   ERROR_RESPOND_TO_APPLICATION: 'An error occurred while responding to an application',
+  ERROR_RESPOND_TO_NOTIFICATION: 'An error occurred while responding to an notification: ',
 } as const;
 
 export const ControllerNames = {

@@ -36,7 +36,7 @@ export default class NotificationDetailsController {
     try {
       const newStatus: LinkStatus = getNotificationStatusAfterViewed(selectedNotification.value, user);
       if (newStatus) {
-        await getCaseApi(user?.accessToken).changeNotificationStatus(req, selectedNotification, newStatus);
+        await getCaseApi(user?.accessToken).changeNotificationStatus(userCase, user, selectedNotification, newStatus);
       }
     } catch (error) {
       logger.error(TseErrors.ERROR_UPDATE_LINK_STATUS);
