@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { InterceptPaths, TranslationKeys } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getCyaContent } from '../helpers/controller/RespondToApplicationCYAHelper';
+import { getNotificationCyaContent } from '../helpers/controller/RespondToNotificationCYAHelper';
 import UrlUtils from '../utils/UrlUtils';
 
 export default class RespondToNotificationCYAController {
@@ -13,7 +13,7 @@ export default class RespondToNotificationCYAController {
       ...req.t(TranslationKeys.RESPOND_TO_APPLICATION_CYA, { returnObjects: true }),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
-      cyaContent: getCyaContent(req),
+      cyaContent: getNotificationCyaContent(req),
       submitLink: InterceptPaths.RESPOND_TO_NOTIFICATION_SUBMIT + getLanguageParam(req.url),
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
     });

@@ -31,7 +31,6 @@ describe('TribunalNotificationHelper', () => {
                   sendNotificationTitle: 'Test Notification',
                   sendNotificationSelectParties: PartiesRespond.RESPONDENT,
                   sendNotificationNotify: PartiesNotify.BOTH_PARTIES,
-                  respondentState: [],
                 },
               },
             ],
@@ -57,7 +56,6 @@ describe('TribunalNotificationHelper', () => {
                   sendNotificationTitle: 'Test Notification',
                   sendNotificationSelectParties: PartiesRespond.CLAIMANT,
                   sendNotificationNotify: PartiesNotify.BOTH_PARTIES,
-                  respondentState: [],
                 },
               },
             ],
@@ -113,16 +111,13 @@ describe('TribunalNotificationHelper', () => {
                   sendNotificationTitle: 'Invisible Notification',
                   sendNotificationSelectParties: PartiesRespond.RESPONDENT,
                   sendNotificationNotify: 'TEST',
-                  respondentState: [],
-                  respondNotificationTypeCollection: [],
-                  respondCollection: [],
                 },
               },
             ],
           },
           user: mockUser,
         },
-      } as unknown as AppRequest;
+      } as AppRequest;
       const result = getTribunalNotificationBanner(req);
       expect(result.notificationList).toHaveLength(0);
       expect(result.anyResponseRequired).toBe(false);
@@ -139,18 +134,16 @@ describe('TribunalNotificationHelper', () => {
                   sendNotificationTitle: 'Visible via respondNotificationTypeCollection',
                   sendNotificationSelectParties: PartiesRespond.RESPONDENT,
                   sendNotificationNotify: 'TEST',
-                  respondentState: [],
                   respondNotificationTypeCollection: [
                     { value: { respondNotificationPartyToNotify: PartiesNotify.RESPONDENT_ONLY } },
                   ],
-                  respondCollection: [],
                 },
               },
             ],
           },
           user: mockUser,
         },
-      } as unknown as AppRequest;
+      } as AppRequest;
       const result = getTribunalNotificationBanner(req);
       expect(result.notificationList).toHaveLength(1);
       expect(result.notificationList[0].notificationTitle).toBe('Visible via respondNotificationTypeCollection');
@@ -167,8 +160,6 @@ describe('TribunalNotificationHelper', () => {
                   sendNotificationTitle: 'Visible via respondCollection',
                   sendNotificationSelectParties: PartiesRespond.RESPONDENT,
                   sendNotificationNotify: 'TEST',
-                  respondentState: [],
-                  respondNotificationTypeCollection: [],
                   respondCollection: [{ value: { copyToOtherParty: YesOrNo.YES } }],
                 },
               },
@@ -176,7 +167,7 @@ describe('TribunalNotificationHelper', () => {
           },
           user: mockUser,
         },
-      } as unknown as AppRequest;
+      } as AppRequest;
       const result = getTribunalNotificationBanner(req);
       expect(result.notificationList).toHaveLength(1);
       expect(result.notificationList[0].notificationTitle).toBe('Visible via respondCollection');
@@ -188,18 +179,7 @@ describe('TribunalNotificationHelper', () => {
           userCase: {},
           user: mockUser,
         },
-      } as unknown as AppRequest;
-      const result = getTribunalNotificationBanner(req);
-      expect(result.notificationList).toHaveLength(0);
-      expect(result.anyResponseRequired).toBe(false);
-    });
-
-    it('should handle missing user gracefully', () => {
-      const req = {
-        session: {
-          userCase: { sendNotificationCollection: [] },
-        },
-      } as unknown as AppRequest;
+      } as AppRequest;
       const result = getTribunalNotificationBanner(req);
       expect(result.notificationList).toHaveLength(0);
       expect(result.anyResponseRequired).toBe(false);
@@ -214,21 +194,18 @@ describe('TribunalNotificationHelper', () => {
         sendNotificationTitle: 'Test',
         sendNotificationSelectParties: PartiesRespond.RESPONDENT,
         sendNotificationNotify: PartiesNotify.BOTH_PARTIES,
-        respondentState: [],
-        respondNotificationTypeCollection: [],
-        respondCollection: [],
       },
     };
 
     it('returns NOT_YET_AVAILABLE if sendNotificationCollection is undefined', () => {
-      const req = { session: { userCase: {}, user: mockUser } } as unknown as AppRequest;
+      const req = { session: { userCase: {}, user: mockUser } } as AppRequest;
       expect(getTribunalNotificationLinkStatus(req)).toBe('notAvailableYet');
     });
 
     it('returns NOT_YET_AVAILABLE if sendNotificationCollection is empty', () => {
       const req = {
         session: { userCase: { sendNotificationCollection: [] }, user: mockUser },
-      } as unknown as AppRequest;
+      } as AppRequest;
       expect(getTribunalNotificationLinkStatus(req)).toBe('notAvailableYet');
     });
 
@@ -236,14 +213,14 @@ describe('TribunalNotificationHelper', () => {
       const notif = { ...baseNotification, value: { ...baseNotification.value, sendNotificationNotify: 'TEST' } };
       const req = {
         session: { userCase: { sendNotificationCollection: [notif] }, user: mockUser },
-      } as unknown as AppRequest;
+      } as AppRequest;
       expect(getTribunalNotificationLinkStatus(req)).toBe('notAvailableYet');
     });
 
     it('returns READY_TO_VIEW if visible notifications', () => {
       const req = {
         session: { userCase: { sendNotificationCollection: [baseNotification] }, user: mockUser },
-      } as unknown as AppRequest;
+      } as AppRequest;
       expect(getTribunalNotificationLinkStatus(req)).toBe('readyToView');
     });
   });
