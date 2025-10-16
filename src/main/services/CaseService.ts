@@ -280,9 +280,9 @@ export class CaseApi {
       return await this.axios.put(JavaApiUrls.SUBMIT_RESPONSE_TO_NOTIFICATION, {
         case_id: userCase.id,
         case_type_id: userCase.caseTypeId,
-        notificationId: userCase.selectedNotification.id,
+        send_notification_id: userCase.selectedNotification.id,
         supportingMaterialFile: userCase.supportingMaterialFile,
-        response: {
+        pseResponseType: {
           response: userCase.responseText,
           hasSupportingMaterial: userCase.hasSupportingMaterial,
           copyToOtherParty: userCase.copyToOtherPartyYesOrNo,

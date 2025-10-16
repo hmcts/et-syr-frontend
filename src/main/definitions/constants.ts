@@ -286,7 +286,7 @@ export const JavaApiUrls = {
   SUBMIT_RESPONDENT_RESPONSE_TO_APP: 'respondentTSE/respond-to-claimant-application',
   CHANGE_RESPONDENT_APPLICATION_STATUS: 'respondentTSE/change-respondent-application-status',
   CHANGE_RESPONDENT_NOTIFICATION_STATUS: 'sendNotification/change-respondent-notification-status',
-  SUBMIT_RESPONSE_TO_NOTIFICATION: 'sendNotification/respond-to-notification',
+  SUBMIT_RESPONSE_TO_NOTIFICATION: 'sendNotification/add-respondent-respond-to-notification',
 } as const;
 
 export const Roles = {
