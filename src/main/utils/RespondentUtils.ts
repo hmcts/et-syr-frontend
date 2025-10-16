@@ -1,5 +1,5 @@
 import { AppRequest } from '../definitions/appRequest';
-import { RespondentET3Model } from '../definitions/case';
+import { Representative, RespondentET3Model } from '../definitions/case';
 
 import CollectionUtils from './CollectionUtils';
 import NumberUtils from './NumberUtils';
@@ -16,19 +16,33 @@ export class RespondentUtils {
   }
 
   /**
-   * Determines whether the currently selected respondent is represented.
+   * Finds the representative associated with the currently selected respondent in the user’s session.
    *
-   * This method checks the current request's session to identify if a representative
-   * is assigned to the selected respondent. It performs the following steps:
-   * 1. Verifies that there is at least one representative in the user case.
-   * 2. Retrieves the respondent selected in the request context.
-   * 3. Iterates over the list of representatives and checks if any of them
-   *    are associated with the respondent via matching `respondentId`.
+   * This method retrieves the `userCase` and the currently selected respondent index from the request session.
+   * It then checks if both respondents and representatives exist, and if a valid respondent is selected.
+   * If a representative is linked to the selected respondent (by matching `respondentId` with the respondent's `ccdId`),
+   * that representative is returned. Otherwise, the method returns `undefined`.
    *
-   * @param req - The current HTTP request object, containing the session and user case context.
-   * @returns `true` if the selected respondent has a matching representative; otherwise, `false`.
+   * @param req - The application request object containing session data, including `userCase` and `selectedRespondentIndex`.
+   * @returns The {@link Representative} associated with the selected respondent, or `undefined` if no match is found
+   * or if required data is missing.
+   *
+   * @remarks
+   * - Returns `undefined` if the session or user case is not properly initialized.
+   * - Relies on `CollectionUtils.isEmpty` and `NumberUtils.isEmpty` to validate data presence.
+   * - The association is based on `representative.respondentId === selectedRespondent.ccdId`.
+   *
+   * @example
+   * ```typescript
+   * const representative = CaseHelper.findSelectedRespondentRepresentative(req);
+   * if (representative) {
+   *   console.log(`Representative: ${representative.name}`);
+   * } else {
+   *   console.log('No representative found for the selected respondent.');
+   * }
+   * ```
    */
-  public static isSelectedRespondentRepresented(req: AppRequest): boolean {
+  public static findSelectedRespondentRepresentative(req: AppRequest): Representative {
     const userCase = req?.session?.userCase;
     const selectedIndex = req?.session?.selectedRespondentIndex;
     if (
@@ -37,12 +51,17 @@ export class RespondentUtils {
       CollectionUtils.isEmpty(userCase.representatives) ||
       NumberUtils.isEmpty(selectedIndex)
     ) {
-      return false;
+      return undefined;
     }
     const selectedRespondent = userCase.respondents[selectedIndex];
     if (!selectedRespondent?.ccdId) {
-      return false;
+      return undefined;
     }
-    return userCase.representatives.some(rep => rep?.respondentId === selectedRespondent.ccdId);
+    for (const representative of userCase.representatives) {
+      if (representative?.respondentId === selectedRespondent.ccdId) {
+        return representative;
+      }
+    }
+    return undefined;
   }
 }

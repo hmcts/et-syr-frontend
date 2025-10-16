@@ -1,4 +1,5 @@
 import { AppRequest } from '../../../main/definitions/appRequest';
+import { Representative } from '../../../main/definitions/case';
 import { RespondentUtils } from '../../../main/utils/RespondentUtils';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockRespondentET3Model } from '../mocks/mockRespondentET3Model';
@@ -65,8 +66,8 @@ describe('RespondentUtils tests', () => {
         },
       } as unknown as AppRequest;
 
-      const result = RespondentUtils.isSelectedRespondentRepresented(req);
-      expect(result).toBe(false);
+      const result = RespondentUtils.findSelectedRespondentRepresentative(req);
+      expect(result).toBe(undefined);
     });
 
     it('should return false when representatives are empty', () => {
@@ -80,8 +81,8 @@ describe('RespondentUtils tests', () => {
         },
       } as unknown as AppRequest;
 
-      const result = RespondentUtils.isSelectedRespondentRepresented(req);
-      expect(result).toBe(false);
+      const result = RespondentUtils.findSelectedRespondentRepresentative(req);
+      expect(result).toBe(undefined);
     });
 
     it('should return false when selectedRespondentIndex is empty', () => {
@@ -95,23 +96,24 @@ describe('RespondentUtils tests', () => {
         },
       } as unknown as AppRequest;
 
-      const result = RespondentUtils.isSelectedRespondentRepresented(req);
-      expect(result).toBe(false);
+      const result = RespondentUtils.findSelectedRespondentRepresentative(req);
+      expect(result).toBe(undefined);
     });
 
     it('should return true when a respondent matches a representative', () => {
+      const representative: Representative = { respondentId: '123' };
       const req = {
         session: {
           userCase: {
             respondents: [{ ccdId: '123' }],
-            representatives: [{ respondentId: '123' }],
+            representatives: [representative],
           },
           selectedRespondentIndex: 0,
         },
       } as unknown as AppRequest;
 
-      const result = RespondentUtils.isSelectedRespondentRepresented(req);
-      expect(result).toBe(true);
+      const result = RespondentUtils.findSelectedRespondentRepresentative(req);
+      expect(result).toBe(representative);
     });
 
     it('should return false when no respondents match representatives', () => {
@@ -125,8 +127,8 @@ describe('RespondentUtils tests', () => {
         },
       } as unknown as AppRequest;
 
-      const result = RespondentUtils.isSelectedRespondentRepresented(req);
-      expect(result).toBe(false);
+      const result = RespondentUtils.findSelectedRespondentRepresentative(req);
+      expect(result).toBe(undefined);
     });
   });
 });

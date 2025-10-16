@@ -39,6 +39,8 @@ export default class CaseDetailsController {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CASE_LIST)));
     }
 
+    const representative = RespondentUtils.findSelectedRespondentRepresentative(req);
+
     const et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses = await getET3CaseDetailsLinkNames(
       selectedRespondent.et3CaseDetailsLinksStatuses,
       req
@@ -73,7 +75,8 @@ export default class CaseDetailsController {
       appRequestNotifications: appNotifications.appRequestNotifications,
       appSubmitNotifications: appNotifications.appSubmitNotifications,
       languageParam: getLanguageParam(req.url),
-      respondentRepresented: RespondentUtils.isSelectedRespondentRepresented(req),
+      respondentRepresented: representative !== undefined,
+      respondentRepresentative: representative,
     });
   }
 }
