@@ -80,7 +80,9 @@ export const TranslationKeys = {
   RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: 'respond-to-application-supporting-material',
   RESPOND_TO_APPLICATION_CYA: 'respond-to-application-check-your-answers',
   RESPOND_TO_APPLICATION_COMPLETE: 'respond-to-application-complete',
-  RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: 'respond-to-application-copy-to-other-party',
+  // Notification
+  NOTIFICATIONS: 'notifications',
+  NOTIFICATION_DETAILS: 'notification-details',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
 } as const;
@@ -164,6 +166,9 @@ export const PageUrls = {
   RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: '/respond-to-application-copy-to-other-party',
   RESPOND_TO_APPLICATION_CYA: '/respond-to-application-check-your-answers',
   RESPOND_TO_APPLICATION_COMPLETE: '/respond-to-application-complete',
+  // Notification
+  NOTIFICATIONS: '/notifications',
+  NOTIFICATION_DETAILS: '/notification-details/:itemId',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
 } as const;
@@ -371,11 +376,6 @@ export const PartiesNotify = {
   BOTH_PARTIES: 'Both parties',
   CLAIMANT_ONLY: 'Claimant only',
   RESPONDENT_ONLY: 'Respondent only',
-} as const;
-
-export const ResponseRequired = {
-  YES: 'Yes - view document for details',
-  NO: 'No',
 } as const;
 
 export const Applicant = {
