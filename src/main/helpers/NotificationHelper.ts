@@ -66,8 +66,8 @@ const hasOtherPartyResponseShared = (responseList: TypeItem<PseResponseType>[]):
 
 /**
  * Get existing notification state for the current user
- * @param notification
- * @param user
+ * @param notification selected SendNotificationType
+ * @param user user details
  */
 export const getExistingNotificationState = (notification: SendNotificationType, user: UserDetails): LinkStatus => {
   const existingState = notification?.respondentState?.find(state => state.value.userIdamId === user.id);
