@@ -1,0 +1,39 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% block beforeContent %}
+  {{ super() }}
+  {% include "back-link.njk" %}
+{% endblock %}
+
+{% block content %}
+  {% block errorSummary %}
+    {% include "./form/main/error-summary.njk" %}
+  {% endblock %}
+
+  <div class="govuk-grid-row">
+    <h1 class="govuk-heading-xl">{{ title }}</h1>
+    <p class="govuk-body">{{ p1 }}</p>
+
+    {{ govukSummaryList({
+      rows: appContent
+    }) }}
+
+    <h2 class="govuk-heading-l">{{ h2 }}</h2>
+    <p class="govuk-body">{{ p2 }}</p>
+    <p class="govuk-body"><a href="{{ viewCorrespondenceLink }}" class="govuk-link" target="_blank">{{ linkView }} ({{ opensInNewTab }})</a></p>
+
+    {% if document %}
+    <p class="govuk-body">
+      {{ linkDoc }} <br/>
+      <a href="{{ viewCorrespondenceFileLink }}" class="govuk-link" target="_blank">{{ document.document_filename }} ({{ opensInNewTab }})</a>
+    </p>
+    {% endif %}
+
+    {% block form %}
+      {% include "form/form.njk"%}
+    {% endblock %}
+  </div>
+{% endblock %}

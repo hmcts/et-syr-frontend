@@ -114,24 +114,47 @@ describe('Contact Tribunal Selected Controller', () => {
     });
 
     it('should allow exactly 2500 characters for contactApplicationText', async () => {
-      request = mockRequest({ body: { contactApplicationText: 'A'.repeat(2500) } });
+      request = mockRequest({
+        body: { contactApplicationText: 'A'.repeat(2500) },
+        userCase: { et1OnlineSubmission: 'Yes' },
+      });
       request.params.selectedOption = application.CHANGE_PERSONAL_DETAILS.url;
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith('/copy-to-other-party?lng=en');
     });
 
     it('should redirect to COPY_TO_OTHER_PARTY when application type is A', async () => {
-      request = mockRequest({ body: { contactApplicationText: 'Test' } });
+      request = mockRequest({
+        body: { contactApplicationText: 'Test' },
+        userCase: { et1OnlineSubmission: 'Yes' },
+      });
       request.params.selectedOption = application.POSTPONE_HEARING.url;
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith('/copy-to-other-party?lng=en');
     });
 
     it('should redirect to COPY_TO_OTHER_PARTY when application type is B', async () => {
-      request = mockRequest({ body: { contactApplicationText: 'Test' } });
+      request = mockRequest({
+        body: { contactApplicationText: 'Test' },
+        userCase: { et1OnlineSubmission: 'Yes' },
+      });
       request.params.selectedOption = application.CHANGE_PERSONAL_DETAILS.url;
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith('/copy-to-other-party?lng=en');
+    });
+
+    it('should redirect to COPY_TO_OTHER_PARTY when application type is A and offline', async () => {
+      request = mockRequest({ body: { contactApplicationText: 'Test' } });
+      request.params.selectedOption = application.POSTPONE_HEARING.url;
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith('/copy-to-other-party-offline?lng=en');
+    });
+
+    it('should redirect to COPY_TO_OTHER_PARTY when application type is B and offline', async () => {
+      request = mockRequest({ body: { contactApplicationText: 'Test' } });
+      request.params.selectedOption = application.CHANGE_PERSONAL_DETAILS.url;
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith('/copy-to-other-party-offline?lng=en');
     });
 
     it('should redirect to CONTACT_TRIBUNAL_CYA when application type is C', async () => {

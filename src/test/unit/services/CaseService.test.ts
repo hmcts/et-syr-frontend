@@ -399,4 +399,58 @@ describe('Case Service Tests', () => {
       );
     });
   });
+
+  describe('Store respondent tse', () => {
+    const request = mockRequest({
+      session: { userCase: mockUserCase, user: mockUserDetails },
+    });
+
+    it('should submit respondent tse application successfully', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.put.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse);
+      const value = await api.storeRespondentTse(request);
+      expect(value.data).toEqual(mockCaseApiDataResponse);
+    });
+
+    it('should throw exception when there is a problem while storing respondent tse application', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.put.mockImplementation(() => {
+        throw mockAxiosError('TEST', ServiceErrors.ERROR_CASE_NOT_FOUND, 404);
+      });
+      await expect(() => api.storeRespondentTse(request)).rejects.toEqual(
+        new Error('Error storing respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
+
+    it('should throw exception when application type is not found', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      request.session.userCase.contactApplicationType = 'InvalidType';
+      await expect(() => api.storeRespondentTse(request)).rejects.toEqual(
+        new Error('Error storing respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
+
+    it('should throw exception when userCase is not found in session', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      const invalidRequest = mockRequest({
+        session: { user: mockUserDetails },
+      });
+      await expect(() => api.storeRespondentTse(invalidRequest)).rejects.toEqual(
+        new Error('Error storing respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
+
+    it('should throw exception when contactApplicationType is not found in userCase', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      request.session.userCase.contactApplicationType = undefined;
+      await expect(() => api.storeRespondentTse(request)).rejects.toEqual(
+        new Error('Error storing respondent tse application: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
+  });
 });
