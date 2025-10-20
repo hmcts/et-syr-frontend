@@ -35,12 +35,17 @@ import ClaimantPayDetailsEnterController from '../../controllers/ClaimantPayDeta
 import ClaimantPensionAndBenefitsController from '../../controllers/ClaimantPensionAndBenefitsController';
 import ClaimantsApplicationsController from '../../controllers/ClaimantsApplicationsController';
 import ContactTribunalCYAController from '../../controllers/ContactTribunalCYAController';
+import ContactTribunalCYAOfflineController from '../../controllers/ContactTribunalCYAOfflineController';
 import ContactTribunalController from '../../controllers/ContactTribunalController';
 import ContactTribunalSelectedController from '../../controllers/ContactTribunalSelectedController';
+import ContactTribunalStoreCompleteController from '../../controllers/ContactTribunalStoreCompleteController';
+import ContactTribunalStoreController from '../../controllers/ContactTribunalStoreController';
 import ContactTribunalSubmitCompleteController from '../../controllers/ContactTribunalSubmitCompleteController';
 import ContactTribunalSubmitController from '../../controllers/ContactTribunalSubmitController';
+import ContactTribunalSubmitStoredController from '../../controllers/ContactTribunalSubmitStoredController';
 import CookiePreferencesController from '../../controllers/CookiePreferencesController';
 import CopyToOtherPartyController from '../../controllers/CopyToOtherPartyController';
+import CopyToOtherPartyOfflineController from '../../controllers/CopyToOtherPartyOfflineController';
 import DocumentsController from '../../controllers/DocumentsController';
 import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
@@ -265,9 +270,16 @@ export class Routes {
     );
     app.get(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().get);
     app.post(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().post);
+    app.get(PageUrls.COPY_TO_OTHER_PARTY_OFFLINE, new CopyToOtherPartyOfflineController().get);
+    app.post(PageUrls.COPY_TO_OTHER_PARTY_OFFLINE, new CopyToOtherPartyOfflineController().post);
     app.get(PageUrls.CONTACT_TRIBUNAL_CYA, new ContactTribunalCYAController().get);
+    app.get(PageUrls.CONTACT_TRIBUNAL_CYA_OFFLINE, new ContactTribunalCYAOfflineController().get);
     app.get(InterceptPaths.CONTACT_TRIBUNAL_SUBMIT, new ContactTribunalSubmitController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
+    app.get(InterceptPaths.CONTACT_TRIBUNAL_STORE, new ContactTribunalStoreController().get);
+    app.get(PageUrls.CONTACT_TRIBUNAL_STORE_COMPLETE, new ContactTribunalStoreCompleteController().get);
+    app.get(PageUrls.STORED_APPLICATION_SUBMIT, new ContactTribunalSubmitStoredController().get);
+    app.post(PageUrls.STORED_APPLICATION_SUBMIT, new ContactTribunalSubmitStoredController().post);
     // Your request and applications
     app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
     app.get(PageUrls.CLAIMANTS_APPLICATIONS, new ClaimantsApplicationsController().get);
