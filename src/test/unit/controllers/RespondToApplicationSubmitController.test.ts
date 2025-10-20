@@ -28,16 +28,6 @@ describe('Respond To Application Submit Controller', () => {
         id: '135',
         created_date: '2022-08-19T09:19:25.79202',
         last_modified: '2022-08-19T09:19:25.817549',
-        case_data: {
-          tseApplicationStoredCollection: [
-            {
-              id: '246',
-              value: {
-                applicant: 'Claimant',
-              },
-            },
-          ],
-        },
       },
     } as AxiosResponse<CaseApiDataResponse>)
   );

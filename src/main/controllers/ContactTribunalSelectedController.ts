@@ -8,10 +8,14 @@ import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys, TseErrors } from
 import { application } from '../definitions/contact-tribunal-applications';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
-import { getApplicationByUrl, getApplicationDisplayByUrl, isTypeAOrB } from '../helpers/ApplicationHelper';
+import { getApplicationByUrl, getApplicationDisplayByUrl } from '../helpers/ApplicationHelper';
 import { getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { getFormError, handleFileUpload } from '../helpers/controller/ContactTribunalSelectedControllerHelper';
+import {
+  getFormError,
+  getNextPage,
+  handleFileUpload,
+} from '../helpers/controller/ContactTribunalSelectedControllerHelper';
 import { getLogger } from '../logger';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
@@ -125,10 +129,7 @@ export default class ContactTribunalSelectedController {
       return res.redirect(thisPage);
     }
 
-    const nextPage =
-      (isTypeAOrB(selectedApplication) ? PageUrls.COPY_TO_OTHER_PARTY : PageUrls.CONTACT_TRIBUNAL_CYA) +
-      getLanguageParam(req.url);
-    res.redirect(nextPage);
+    res.redirect(getNextPage(selectedApplication, req));
   };
 
   public get = (req: AppRequest, res: Response): void => {

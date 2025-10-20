@@ -19,6 +19,7 @@ import {
   getDecisionContent,
   isNeverResponseBefore,
 } from '../helpers/controller/ApplicationDetailsHelper';
+import { isClaimantSystemUser } from '../helpers/controller/ContactTribunalHelper';
 import { getFormDataError } from '../helpers/controller/RespondToApplicationHelper';
 import { getLogger } from '../logger';
 import UrlUtils from '../utils/UrlUtils';
@@ -96,10 +97,15 @@ export default class RespondToApplicationController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    const languageParam = getLanguageParam(req.url);
+    if (!isClaimantSystemUser(req.session.userCase)) {
+      return res.redirect(PageUrls.HOLDING_PAGE + languageParam);
+    }
+
     const selectedApplication: GenericTseApplicationTypeItem = findSelectedGenericTseApplication(req);
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.appId);
-      return res.redirect(ErrorPages.NOT_FOUND);
+      return res.redirect(ErrorPages.NOT_FOUND + languageParam);
     }
 
     if (
@@ -107,7 +113,7 @@ export default class RespondToApplicationController {
       !isResponseToTribunalRequired(selectedApplication.value, req.session.user)
     ) {
       logger.error(TseErrors.ERROR_NO_RESPOND_REQUIRED + req.params?.appId);
-      return res.redirect(ErrorPages.NOT_FOUND);
+      return res.redirect(ErrorPages.NOT_FOUND + languageParam);
     }
 
     assignFormData(req.session.userCase, this.form.getFormFields());

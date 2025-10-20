@@ -11,6 +11,7 @@ import {
   isResponseToTribunalRequired,
 } from '../helpers/GenericTseApplicationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getSelectedStoredApplication } from '../helpers/StoredApplicationHelper';
 import {
   getAllResponses,
   getApplicationContent,
@@ -20,19 +21,14 @@ import {
 import { isApplicationShare } from '../helpers/controller/ClaimantsApplicationsHelper';
 import { isYourApplication } from '../helpers/controller/YourRequestAndApplicationsHelper';
 import { getLogger } from '../logger';
-import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import { getCaseApi } from '../services/CaseService';
 
 const logger = getLogger('ApplicationDetailsController');
 
 export default class ApplicationDetailsController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
-    const isContactTribunalEnabled = await getFlagValue('et3-contact-tribunal', null);
-    if (!isContactTribunalEnabled) {
-      return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
-    }
-
-    const selectedApplication: GenericTseApplicationTypeItem = findSelectedGenericTseApplication(req);
+    const selectedApplication: GenericTseApplicationTypeItem =
+      findSelectedGenericTseApplication(req) ?? getSelectedStoredApplication(req);
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.appId);
       return res.redirect(ErrorPages.NOT_FOUND);
