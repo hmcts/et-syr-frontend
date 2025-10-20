@@ -50,6 +50,7 @@ import HoldingPageController from '../../controllers/HoldingPageController';
 import HomeController from '../../controllers/HomeController';
 import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
+import NotificationController from '../../controllers/NotificationController';
 import OtherRespondentApplicationsController from '../../controllers/OtherRespondentApplicationsController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
@@ -84,7 +85,7 @@ import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationCo
 import YourRequestAndApplicationsController from '../../controllers/YourRequestAndApplicationsController';
 import YourResponseFormController from '../../controllers/YourResponseFormController';
 import { AppRequest } from '../../definitions/appRequest';
-import { FILE_SIZE_LIMIT, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
+import { FILE_SIZE_LIMIT, FormFieldNames, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
 
 const handleUploads = multer({
   limits: {
@@ -119,8 +120,6 @@ export class Routes {
     // Singleton controllers:
     const respondentContestClaimReasonController = new RespondentContestClaimReasonController();
     const employersContractClaimDetailsController = new EmployersContractClaimDetailsController();
-    const contactTribunalSelectedController = new ContactTribunalSelectedController();
-    const respondToApplicationSupportingMaterialController = new RespondToApplicationSupportingMaterialController();
     app.get(InterceptPaths.CHANGE_DETAILS, new ChangeDetailsController().get);
     // Page URLs
     app.get(PageUrls.HOME, new HomeController().get);
@@ -257,12 +256,12 @@ export class Routes {
     // Contact the tribunal about your case
     app.get(PageUrls.HOLDING_PAGE, new HoldingPageController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL, new ContactTribunalController().get);
-    app.get(PageUrls.CONTACT_TRIBUNAL_SELECTED, contactTribunalSelectedController.get);
+    app.get(PageUrls.CONTACT_TRIBUNAL_SELECTED, new ContactTribunalSelectedController().get);
     app.post(
       PageUrls.CONTACT_TRIBUNAL_SELECTED,
       limiter,
-      handleUploads.single('contactApplicationFile'),
-      contactTribunalSelectedController.post
+      handleUploads.single(FormFieldNames.CONTACT_TRIBUNAL_SELECTED.CONTACT_APPLICATION_FILE_NAME),
+      new ContactTribunalSelectedController().post
     );
     app.get(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().get);
     app.post(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().post);
@@ -276,12 +275,15 @@ export class Routes {
     app.get(PageUrls.APPLICATION_DETAILS, new ApplicationDetailsController().get);
     app.get(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().get);
     app.post(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().post);
-    app.get(PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL, respondToApplicationSupportingMaterialController.get);
+    app.get(
+      PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
+      new RespondToApplicationSupportingMaterialController().get
+    );
     app.post(
       PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
       limiter,
-      handleUploads.single('supportingMaterialFile'),
-      respondToApplicationSupportingMaterialController.post
+      handleUploads.single(FormFieldNames.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL.SUPPORTING_MATERIAL_FILE),
+      new RespondToApplicationSupportingMaterialController().post
     );
     app.get(
       PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY,
@@ -294,6 +296,8 @@ export class Routes {
     app.get(PageUrls.RESPOND_TO_APPLICATION_CYA, new RespondToApplicationCYAController().get);
     app.get(InterceptPaths.RESPOND_TO_APPLICATION_SUBMIT, new RespondToApplicationSubmitController().get);
     app.get(PageUrls.RESPOND_TO_APPLICATION_COMPLETE, new RespondToApplicationCompleteController().get);
+    // Notification
+    app.get(PageUrls.NOTIFICATIONS, new NotificationController().get);
     // others
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);
