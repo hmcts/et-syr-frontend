@@ -169,6 +169,7 @@ export const PageUrls = {
   // Notification
   NOTIFICATIONS: '/notifications',
   NOTIFICATION_DETAILS: '/notification-details/:itemId',
+  RESPOND_TO_NOTIFICATION: '/respond-to-notification/:itemId',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
 } as const;
