@@ -78,6 +78,12 @@
       "line1": "You must send a copy of this correspondence and all supporting documents to the other party before you submit it to the tribunal.",
       "line2": "If the other party does respond to your application, they are expected to copy their response to you.",
       "link": "View correspondence"
+    },
+    "notification": {
+      "responseRequired": "The tribunal requires some information from you.",
+      "noResponseRequired": "The tribunal has sent you a notification",
+      "link": "View the notification",
+      "respond": "Respond to the tribunal"
     }
   },
   "multiples": {
