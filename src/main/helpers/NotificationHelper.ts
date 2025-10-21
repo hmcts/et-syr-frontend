@@ -32,6 +32,15 @@ export const hasUserViewed = (notification: SendNotificationType, user: UserDeta
 };
 
 /**
+ * Check if user has already viewed the notification
+ * @param notification SendNotificationType
+ * @param user user details
+ */
+export const hasUserRespond = (notification: SendNotificationType, user: UserDetails): boolean => {
+  return notification ? notification.respondCollection?.some(state => state.value.fromIdamId === user.id) : false;
+};
+
+/**
  * Check if sendNotification is visible to the user
  * @param item SendNotificationType
  */
@@ -62,6 +71,18 @@ const hasTribunalResponseShared = (responseList: TypeItem<RespondNotificationTyp
 
 const hasOtherPartyResponseShared = (responseList: TypeItem<PseResponseType>[]): boolean => {
   return responseList?.some(r => r.value.copyToOtherParty === YesOrNo.YES) ?? false;
+};
+
+/**
+ * Return selected application
+ * @param items
+ * @param notificationId
+ */
+export const findSelectedSendNotification = (
+  items: SendNotificationTypeItem[],
+  notificationId: string
+): SendNotificationTypeItem => {
+  return items?.find(it => it.id === notificationId);
 };
 
 /**

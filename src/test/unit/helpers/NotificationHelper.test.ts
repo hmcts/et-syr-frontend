@@ -5,6 +5,7 @@ import {
 } from '../../../main/definitions/complexTypes/sendNotificationTypeItem';
 import { PartiesNotify, PartiesRespond } from '../../../main/definitions/constants';
 import {
+  findSelectedSendNotification,
   getExistingNotificationState,
   getTribunalNotificationLinkStatus,
   hasUserViewed,
@@ -96,6 +97,26 @@ describe('NotificationHelper', () => {
     it('should return false if none of the above', () => {
       const item = {} as SendNotificationType;
       expect(isNotificationVisible(item)).toBe(false);
+    });
+  });
+
+  describe('findSelectedSendNotification', () => {
+    it('should return the item with matching id', () => {
+      const items = [
+        { id: '1', value: {} },
+        { id: '2', value: {} },
+      ];
+      expect(findSelectedSendNotification(items, '2')).toEqual({
+        id: '2',
+        value: {},
+      });
+    });
+    it('should return undefined if no item matches', () => {
+      const items = [{ id: '1', value: {} }];
+      expect(findSelectedSendNotification(items, '3')).toBeUndefined();
+    });
+    it('should return undefined if items is undefined', () => {
+      expect(findSelectedSendNotification(undefined, '1')).toBeUndefined();
     });
   });
 
