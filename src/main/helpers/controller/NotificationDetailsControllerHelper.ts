@@ -133,9 +133,6 @@ export const getNotificationResponses = (
       rows.push(addAdminResponse(r.value, translations, req));
     });
 
-  console.log(notification.respondNotificationTypeCollection.length.toString());
-  console.log(rows.length.toString());
-
   return rows;
 };
 
