@@ -1,14 +1,16 @@
+import { AppRequest } from '../../../../main/definitions/appRequest';
 import { YesOrNo } from '../../../../main/definitions/case';
 import { SendNotificationType } from '../../../../main/definitions/complexTypes/sendNotificationTypeItem';
-import { PartiesRespond } from '../../../../main/definitions/constants';
+import { PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
 import { LinkStatus } from '../../../../main/definitions/links';
 import {
   getNotificationContent,
+  getNotificationResponses,
   getNotificationStatusAfterViewed,
 } from '../../../../main/helpers/controller/NotificationDetailsControllerHelper';
 import commonJsonRaw from '../../../../main/resources/locales/en/translation/common.json';
 import notificationDetailsJson from '../../../../main/resources/locales/en/translation/notification-details.json';
-import { mockRequestWithTranslation } from '../../mocks/mockRequest';
+import { mockRequest, mockRequestWithTranslation } from '../../mocks/mockRequest';
 import { mockUserDetails } from '../../mocks/mockUser';
 
 describe('NotificationDetailsControllerHelper', () => {
@@ -187,6 +189,67 @@ describe('NotificationDetailsControllerHelper', () => {
       expect(result[3].value.text).toEqual('Test Short description');
       expect(result[4].key.text).toEqual('Document');
       expect(result[4].value.text).toEqual(undefined);
+    });
+  });
+
+  describe('getNotificationResponses', () => {
+    const mockUser = mockUserDetails;
+    const mockReq: AppRequest = mockRequest({
+      session: { user: mockUser },
+    });
+
+    it('returns empty array if notification is undefined', () => {
+      expect(getNotificationResponses(undefined, mockReq)).toEqual([]);
+    });
+
+    it('returns empty array if respondCollection and respondNotificationTypeCollection are missing', () => {
+      expect(getNotificationResponses({}, mockReq)).toEqual([]);
+    });
+
+    it('returns responses for matching respondCollection items', () => {
+      const notification: SendNotificationType = {
+        respondCollection: [
+          { id: '1', value: { copyToOtherParty: YesOrNo.YES, fromIdamId: mockUser.id } },
+          { id: '2', value: { copyToOtherParty: YesOrNo.NO, fromIdamId: 'other' } },
+        ],
+      };
+      const result = getNotificationResponses(notification, mockReq);
+      expect(result).toHaveLength(1);
+    });
+
+    it('returns responses for matching respondNotificationTypeCollection items', () => {
+      const notification: SendNotificationType = {
+        respondNotificationTypeCollection: [
+          { id: '1', value: { respondNotificationPartyToNotify: PartiesNotify.BOTH_PARTIES } },
+        ],
+      };
+      const result = getNotificationResponses(notification, mockReq);
+      expect(result).toHaveLength(1);
+    });
+
+    it('sorts responses by date', () => {
+      const notification: SendNotificationType = {
+        respondCollection: [
+          {
+            id: '1',
+            value: { date: '1 October 2025', copyToOtherParty: YesOrNo.YES, dateTime: '2025-10-02T12:00:00' },
+          },
+          { id: '2', value: { date: '4 October 2025', copyToOtherParty: YesOrNo.YES, fromIdamId: mockUser.id } },
+        ],
+        respondNotificationTypeCollection: [
+          {
+            id: '3',
+            value: {
+              respondNotificationDate: '3 October 2025',
+              respondNotificationPartyToNotify: 'Both parties',
+            },
+          },
+        ],
+      };
+      const result = getNotificationResponses(notification, mockReq);
+      expect(result[0].date).toEqual(new Date('2025-10-02T12:00:00.000'));
+      expect(result[1].date).toEqual(new Date('2025-10-03T00:00:00.000'));
+      expect(result[2].date).toEqual(new Date('2025-10-04T00:00:00.000'));
     });
   });
 });

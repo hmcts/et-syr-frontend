@@ -133,6 +133,8 @@ export const getNotificationResponses = (
       rows.push(addAdminResponse(r.value, translations, req));
     });
 
+  rows.sort((a, b) => a.date.getTime() - b.date.getTime());
+
   return rows;
 };
 
