@@ -6,9 +6,30 @@ import {
   SendNotificationType,
   SendNotificationTypeItem,
 } from '../definitions/complexTypes/sendNotificationTypeItem';
-import { PartiesNotify } from '../definitions/constants';
+import { PartiesNotify, PartiesRespond } from '../definitions/constants';
 import { LinkStatus } from '../definitions/links';
 import { TypeItem } from '../definitions/util-types';
+
+/**
+ * Check if response is required from respondent
+ * compare with sendNotificationSelectParties in SendNotificationType
+ * @param item sendNotificationSelectParties
+ */
+export const isPartiesRespondRequired = (item: SendNotificationType): boolean => {
+  return (
+    item.sendNotificationSelectParties === PartiesRespond.BOTH_PARTIES ||
+    item.sendNotificationSelectParties === PartiesRespond.RESPONDENT
+  );
+};
+
+/**
+ * Check if user has already viewed the notification
+ * @param notification SendNotificationType
+ * @param user user details
+ */
+export const hasUserViewed = (notification: SendNotificationType, user: UserDetails): boolean => {
+  return notification ? notification.respondentState?.some(state => state.value.userIdamId === user.id) : false;
+};
 
 /**
  * Check if sendNotification is visible to the user

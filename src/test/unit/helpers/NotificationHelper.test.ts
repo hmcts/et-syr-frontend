@@ -1,8 +1,60 @@
-import { SendNotificationType } from '../../../main/definitions/complexTypes/sendNotificationTypeItem';
-import { PartiesNotify } from '../../../main/definitions/constants';
-import { isNotificationVisible } from '../../../main/helpers/NotificationHelper';
+import { AppRequest, UserDetails } from '../../../main/definitions/appRequest';
+import {
+  SendNotificationType,
+  SendNotificationTypeItem,
+} from '../../../main/definitions/complexTypes/sendNotificationTypeItem';
+import { PartiesNotify, PartiesRespond } from '../../../main/definitions/constants';
+import {
+  getExistingNotificationState,
+  getTribunalNotificationLinkStatus,
+  hasUserViewed,
+  isNotificationVisible,
+  isPartiesRespondRequired,
+} from '../../../main/helpers/NotificationHelper';
 
 describe('NotificationHelper', () => {
+  describe('isPartiesRespondRequired', () => {
+    it('should return true if parties is BOTH_PARTIES', () => {
+      const item: SendNotificationType = {
+        sendNotificationSelectParties: PartiesRespond.BOTH_PARTIES,
+      } as SendNotificationType;
+      expect(isPartiesRespondRequired(item)).toBe(true);
+    });
+
+    it('should return true if parties is RESPONDENT', () => {
+      const item: SendNotificationType = {
+        sendNotificationSelectParties: PartiesRespond.RESPONDENT,
+      } as SendNotificationType;
+      expect(isPartiesRespondRequired(item)).toBe(true);
+    });
+
+    it('should return false if parties is CLAIMANT', () => {
+      const item: SendNotificationType = {
+        sendNotificationSelectParties: PartiesRespond.CLAIMANT,
+      } as SendNotificationType;
+      expect(isPartiesRespondRequired(item)).toBe(false);
+    });
+  });
+
+  describe('hasUserViewed', () => {
+    const user: UserDetails = { id: 'user-1' } as UserDetails;
+    it('should return true if user has viewed', () => {
+      const notification = {
+        respondentState: [{ value: { userIdamId: 'user-1' } }, { value: { userIdamId: 'user-2' } }],
+      } as SendNotificationType;
+      expect(hasUserViewed(notification, user)).toBe(true);
+    });
+    it('should return false if user has not viewed', () => {
+      const notification = {
+        respondentState: [{ value: { userIdamId: 'user-2' } }],
+      } as SendNotificationType;
+      expect(hasUserViewed(notification, user)).toBe(false);
+    });
+    it('should return false if notification is undefined', () => {
+      expect(hasUserViewed(undefined, user)).toBe(false);
+    });
+  });
+
   describe('isNotificationVisible', () => {
     it('should return true if sendNotificationNotify is BOTH_PARTIES', () => {
       const item = { sendNotificationNotify: PartiesNotify.BOTH_PARTIES } as SendNotificationType;
@@ -44,6 +96,81 @@ describe('NotificationHelper', () => {
     it('should return false if none of the above', () => {
       const item = {} as SendNotificationType;
       expect(isNotificationVisible(item)).toBe(false);
+    });
+  });
+
+  describe('getExistingNotificationState', () => {
+    const user: UserDetails = { id: 'user-1' } as UserDetails;
+    it('should return the notificationState if user has respondentState with notificationState', () => {
+      const notification = {
+        respondentState: [
+          { value: { userIdamId: 'user-1', notificationState: 'readyToView' } },
+          { value: { userIdamId: 'user-2', notificationState: 'notViewedYet' } },
+        ],
+      } as SendNotificationType;
+      expect(getExistingNotificationState(notification, user)).toBe('readyToView');
+    });
+
+    it('should return NOT_VIEWED if user has respondentState without notificationState', () => {
+      const notification = {
+        respondentState: [{ value: { userIdamId: 'user-1' } }],
+      } as SendNotificationType;
+      expect(getExistingNotificationState(notification, user)).toBe('notViewedYet');
+    });
+
+    it('should return NOT_VIEWED if user does not have respondentState', () => {
+      const notification = {
+        respondentState: [{ value: { userIdamId: 'user-2', notificationState: 'readyToView' } }],
+      } as SendNotificationType;
+      expect(getExistingNotificationState(notification, user)).toBe('notViewedYet');
+    });
+
+    it('should return NOT_VIEWED if notification is undefined', () => {
+      expect(getExistingNotificationState(undefined, user)).toBe('notViewedYet');
+    });
+
+    it('should return NOT_VIEWED if respondentState is undefined', () => {
+      const notification = {} as SendNotificationType;
+      expect(getExistingNotificationState(notification, user)).toBe('notViewedYet');
+    });
+  });
+
+  describe('getTribunalNotificationLinkStatus', () => {
+    const mockUser = { id: 'user-1' } as UserDetails;
+    const baseNotification: SendNotificationTypeItem = {
+      id: 'notif-1',
+      value: {
+        sendNotificationTitle: 'Test',
+        sendNotificationSelectParties: PartiesRespond.RESPONDENT,
+        sendNotificationNotify: PartiesNotify.BOTH_PARTIES,
+      },
+    };
+
+    it('returns NOT_YET_AVAILABLE if sendNotificationCollection is undefined', () => {
+      const req = { session: { userCase: {}, user: mockUser } } as AppRequest;
+      expect(getTribunalNotificationLinkStatus(req)).toBe('notAvailableYet');
+    });
+
+    it('returns NOT_YET_AVAILABLE if sendNotificationCollection is empty', () => {
+      const req = {
+        session: { userCase: { sendNotificationCollection: [] }, user: mockUser },
+      } as AppRequest;
+      expect(getTribunalNotificationLinkStatus(req)).toBe('notAvailableYet');
+    });
+
+    it('returns NOT_YET_AVAILABLE if all notifications are not visible', () => {
+      const notif = { ...baseNotification, value: { ...baseNotification.value, sendNotificationNotify: 'TEST' } };
+      const req = {
+        session: { userCase: { sendNotificationCollection: [notif] }, user: mockUser },
+      } as AppRequest;
+      expect(getTribunalNotificationLinkStatus(req)).toBe('notAvailableYet');
+    });
+
+    it('returns READY_TO_VIEW if visible notifications', () => {
+      const req = {
+        session: { userCase: { sendNotificationCollection: [baseNotification] }, user: mockUser },
+      } as AppRequest;
+      expect(getTribunalNotificationLinkStatus(req)).toBe('readyToView');
     });
   });
 });
