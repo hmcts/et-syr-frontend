@@ -50,7 +50,7 @@ export default class NotificationDetailsController {
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
       notificationContent: getNotificationContent(selectedNotification.value, req),
-      nonAdminResponses: getNonAdminResponses(selectedNotification.value, req),
+      responses: getNonAdminResponses(selectedNotification.value, req),
       isRespondButton: isRespondButton(selectedNotification.value, user),
       respondUrl: PageUrls.RESPOND_TO_NOTIFICATION.replace(':itemId', selectedNotification.id) + languageParam,
     });

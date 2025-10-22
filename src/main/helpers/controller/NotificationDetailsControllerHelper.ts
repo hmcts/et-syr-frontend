@@ -10,6 +10,12 @@ import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../Docume
 import { getExistingNotificationState, hasUserRespond, isPartiesRespondRequired } from '../NotificationHelper';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
+export interface NotificationResponse {
+  from: string;
+  date: Date;
+  rows: SummaryListRow[];
+}
+
 /**
  * Get new notification status after user viewed in Notification Details page
  * @param notification selected SendNotificationType
@@ -100,7 +106,7 @@ const formatNotificationSubjects = (keys: string[] = [], translations: AnyRecord
  * @param notification selected SendNotificationType
  * @param req request
  */
-export const getNonAdminResponses = (notification: SendNotificationType, req: AppRequest): SummaryListRow[][] => {
+export const getNonAdminResponses = (notification: SendNotificationType, req: AppRequest): NotificationResponse[] => {
   if (!notification || ObjectUtils.isEmpty(notification.respondCollection)) {
     return [];
   }
@@ -111,7 +117,7 @@ export const getNonAdminResponses = (notification: SendNotificationType, req: Ap
     ...req.t(TranslationKeys.NOTIFICATION_SUBJECTS, { returnObjects: true }),
     ...req.t(TranslationKeys.NOTIFICATION_DETAILS, { returnObjects: true }),
   };
-  const rows: SummaryListRow[][] = [];
+  const rows: NotificationResponse[] = [];
 
   notification.respondCollection
     .filter(r => r.value.copyToOtherParty === YesOrNo.YES || r.value.fromIdamId === user.id)
@@ -122,29 +128,37 @@ export const getNonAdminResponses = (notification: SendNotificationType, req: Ap
   return rows;
 };
 
-const addNonAdminResponse = (response: PseResponseType, translations: AnyRecord, req: AppRequest): SummaryListRow[] => {
-  const rows: SummaryListRow[] = [];
+const addNonAdminResponse = (
+  response: PseResponseType,
+  translations: AnyRecord,
+  req: AppRequest
+): NotificationResponse => {
+  const rowsToDisplay: SummaryListRow[] = [];
 
-  rows.push(
+  rowsToDisplay.push(
     addSummaryRow(translations.responder, translations[response.from]),
     addSummaryRow(translations.responseDate, datesStringToDateInLocale(response.date, req.url))
   );
 
   if (response.response) {
-    rows.push(addSummaryRow(translations.response, response.response));
+    rowsToDisplay.push(addSummaryRow(translations.response, response.response));
   }
 
   if (response.supportingMaterial) {
     const docType = getDocumentFromDocumentTypeItems(response.supportingMaterial);
     const link = getLinkFromDocument(docType.uploadedDocument);
-    rows.push(addSummaryHtmlRow(translations.supportingMaterial, link));
+    rowsToDisplay.push(addSummaryHtmlRow(translations.supportingMaterial, link));
   }
 
   if (response.copyToOtherParty) {
-    rows.push(addSummaryRow(translations.copyCorrespondence, translations[response.copyToOtherParty]));
+    rowsToDisplay.push(addSummaryRow(translations.copyCorrespondence, translations[response.copyToOtherParty]));
   }
 
-  return rows;
+  return {
+    from: response.from,
+    date: new Date(response.dateTime ?? response.date),
+    rows: rowsToDisplay,
+  };
 };
 
 /**
