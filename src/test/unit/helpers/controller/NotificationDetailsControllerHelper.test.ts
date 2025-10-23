@@ -1,7 +1,6 @@
-import { AppRequest } from '../../../../main/definitions/appRequest';
 import { YesOrNo } from '../../../../main/definitions/case';
 import { SendNotificationType } from '../../../../main/definitions/complexTypes/sendNotificationTypeItem';
-import { PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
+import { PartiesRespond } from '../../../../main/definitions/constants';
 import { LinkStatus } from '../../../../main/definitions/links';
 import {
   getNotificationContent,
@@ -10,10 +9,17 @@ import {
 } from '../../../../main/helpers/controller/NotificationDetailsControllerHelper';
 import commonJsonRaw from '../../../../main/resources/locales/en/translation/common.json';
 import notificationDetailsJson from '../../../../main/resources/locales/en/translation/notification-details.json';
-import { mockRequest, mockRequestWithTranslation } from '../../mocks/mockRequest';
+import { mockRequestWithTranslation } from '../../mocks/mockRequest';
+import { mockSendNotificationCollection } from '../../mocks/mockSendNotificationCollection';
 import { mockUserDetails } from '../../mocks/mockUser';
+import mockUserCase from '../../mocks/mockUserCase';
 
 describe('NotificationDetailsControllerHelper', () => {
+  const translations = {
+    ...notificationDetailsJson,
+    ...commonJsonRaw,
+  };
+
   describe('getNotificationStatusAfterViewed', () => {
     const user = mockUserDetails;
 
@@ -75,13 +81,7 @@ describe('NotificationDetailsControllerHelper', () => {
   });
 
   describe('getNotificationContent', () => {
-    const req = mockRequestWithTranslation(
-      {},
-      {
-        ...notificationDetailsJson,
-        ...commonJsonRaw,
-      }
-    );
+    const req = mockRequestWithTranslation({ session: { userCase: mockUserCase } }, translations);
     const baseItem: SendNotificationType = {
       date: '2 October 2025',
       number: '1',
@@ -194,9 +194,8 @@ describe('NotificationDetailsControllerHelper', () => {
 
   describe('getNotificationResponses', () => {
     const mockUser = mockUserDetails;
-    const mockReq: AppRequest = mockRequest({
-      session: { user: mockUser },
-    });
+    const mockReq = mockRequestWithTranslation({ session: { userCase: mockUserCase } }, translations);
+    mockReq.session.user = mockUser;
 
     it('returns empty array if notification is undefined', () => {
       expect(getNotificationResponses(undefined, mockReq)).toEqual([]);
@@ -208,23 +207,60 @@ describe('NotificationDetailsControllerHelper', () => {
 
     it('returns responses for matching respondCollection items', () => {
       const notification: SendNotificationType = {
-        respondCollection: [
-          { id: '1', value: { copyToOtherParty: YesOrNo.YES, fromIdamId: mockUser.id } },
-          { id: '2', value: { copyToOtherParty: YesOrNo.NO, fromIdamId: 'other' } },
-        ],
+        respondCollection: mockSendNotificationCollection[0].value.respondCollection,
       };
       const result = getNotificationResponses(notification, mockReq);
       expect(result).toHaveLength(1);
+      expect(result[0].rows).toHaveLength(5);
+      expect(result[0].rows[0].key.text).toEqual('Response from');
+      expect(result[0].rows[0].value.text).toEqual('Respondent');
+      expect(result[0].rows[1].key.text).toEqual('Response date');
+      expect(result[0].rows[1].value.text).toEqual('2 October 2025');
+      expect(result[0].rows[2].key.text).toEqual('What is your response to the tribunal?');
+      expect(result[0].rows[2].value.text).toEqual('Rep-Response-1');
+      expect(result[0].rows[3].key.text).toEqual('Supporting material');
+      expect(result[0].rows[3].value.html).toEqual(
+        '<a href="/getSupportingMaterial/bac9bb00-3602-4ac3-8848-118df0703f0f" target="_blank">Test.pdf</a><br>'
+      );
+      expect(result[0].rows[4].key.text).toEqual(
+        'Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?'
+      );
+      expect(result[0].rows[4].value.text).toEqual('Yes');
     });
 
     it('returns responses for matching respondNotificationTypeCollection items', () => {
       const notification: SendNotificationType = {
-        respondNotificationTypeCollection: [
-          { id: '1', value: { respondNotificationPartyToNotify: PartiesNotify.BOTH_PARTIES } },
-        ],
+        respondNotificationTypeCollection: mockSendNotificationCollection[0].value.respondNotificationTypeCollection,
       };
       const result = getNotificationResponses(notification, mockReq);
       expect(result).toHaveLength(1);
+      expect(result[0].rows).toHaveLength(12);
+      expect(result[0].rows[0].key.text).toEqual('Response');
+      expect(result[0].rows[0].value.text).toEqual('T-Response-1');
+      expect(result[0].rows[1].key.text).toEqual('Response date');
+      expect(result[0].rows[1].value.text).toEqual('2 October 2025');
+      expect(result[0].rows[2].key.text).toEqual('Sent by');
+      expect(result[0].rows[2].value.text).toEqual('Tribunal');
+      expect(result[0].rows[3].key.text).toEqual('Case management order or request?');
+      expect(result[0].rows[3].value.text).toEqual('Case management order');
+      expect(result[0].rows[4].key.text).toEqual('Response due');
+      expect(result[0].rows[4].value.text).toEqual('Yes');
+      expect(result[0].rows[5].key.text).toEqual('Party or parties to respond');
+      expect(result[0].rows[5].value.text).toEqual('Both parties');
+      expect(result[0].rows[6].key.text).toEqual('Additional information');
+      expect(result[0].rows[6].value.text).toEqual('Test Additional information A1');
+      expect(result[0].rows[7].key.text).toEqual('Description');
+      expect(result[0].rows[7].value.text).toEqual('Test Short description A1');
+      expect(result[0].rows[8].key.text).toEqual('Document');
+      expect(result[0].rows[8].value.html).toEqual(
+        '<a href="/getSupportingMaterial/2654b6b1-4877-49ea-9bd2-15a0727809c6" target="_blank">Test.pdf</a><br>'
+      );
+      expect(result[0].rows[9].key.text).toEqual('Request made by');
+      expect(result[0].rows[9].value.text).toEqual('Legal officer');
+      expect(result[0].rows[10].key.text).toEqual('Name');
+      expect(result[0].rows[10].value.text).toEqual('Test Name');
+      expect(result[0].rows[11].key.text).toEqual('Sent to');
+      expect(result[0].rows[11].value.text).toEqual('Both parties');
     });
 
     it('sorts responses by date', () => {
