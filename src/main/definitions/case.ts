@@ -354,7 +354,7 @@ export interface Case {
   // bundleDocuments contains both claimant and respondent uploaded bundles submission pdfs
   bundleDocuments?: DocumentTypeItem[];
   //Created for saving select order or request value;
-  selectedRequestOrOrder?: SendNotificationTypeItem;
+  selectedNotification?: SendNotificationTypeItem;
   hearingCollection?: HearingModel[];
   hearingDocumentsAreFor?: HearingModel['id'];
   whoseHearingDocumentsAreYouUploading?: WhoseHearingDocument;
