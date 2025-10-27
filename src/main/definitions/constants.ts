@@ -88,6 +88,7 @@ export const TranslationKeys = {
   NOTIFICATIONS: 'notifications',
   NOTIFICATION_DETAILS: 'notification-details',
   NOTIFICATION_SUBJECTS: 'notification-subjects',
+  RESPOND_TO_NOTIFICATION: 'respond-to-notification',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
 } as const;
@@ -179,6 +180,7 @@ export const PageUrls = {
   NOTIFICATIONS: '/notifications',
   NOTIFICATION_DETAILS: '/notification-details/:itemId',
   RESPOND_TO_NOTIFICATION: '/respond-to-notification/:itemId',
+  RESPOND_TO_NOTIFICATION_COPY_TO_ORDER_PARTY: '/respond-to-notification-copy-to-other-party',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
 } as const;
@@ -258,6 +260,8 @@ export const ValidationErrors = {
   CASE_ALREADY_ASSIGNED: 'caseAlreadyAssigned',
   CASE_ALREADY_ASSIGNED_TO_SAME_USER: 'caseAlreadyAssignedToSameUser',
   INVALID_CASE_DETAILS: 'invalidCaseDetails',
+  WITHOUT_UPLOAD_BUTTON: 'WithoutUploadButton',
+  REQUIRED_FILE: 'requiredFile',
 } as const;
 
 export const AuthUrls = {
@@ -536,6 +540,9 @@ export const FormFieldNames = {
     CONTACT_APPLICATION_FILE_NAME: 'contactApplicationFile',
   },
   RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: {
+    SUPPORTING_MATERIAL_FILE: 'supportingMaterialFile',
+  },
+  RESPOND_TO_NOTIFICATION: {
     SUPPORTING_MATERIAL_FILE: 'supportingMaterialFile',
   },
 } as const;

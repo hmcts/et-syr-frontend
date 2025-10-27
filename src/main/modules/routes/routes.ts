@@ -66,6 +66,7 @@ import RespondToApplicationController from '../../controllers/RespondToApplicati
 import RespondToApplicationCopyToOtherPartyController from '../../controllers/RespondToApplicationCopyToOtherPartyController';
 import RespondToApplicationSubmitController from '../../controllers/RespondToApplicationSubmitController';
 import RespondToApplicationSupportingMaterialController from '../../controllers/RespondToApplicationSupportingMaterialController';
+import RespondToNotificationController from '../../controllers/RespondToNotificationController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
@@ -312,6 +313,13 @@ export class Routes {
     // Notification
     app.get(PageUrls.NOTIFICATIONS, new NotificationController().get);
     app.get(PageUrls.NOTIFICATION_DETAILS, new NotificationDetailsController().get);
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION, new RespondToNotificationController().get);
+    app.post(
+      PageUrls.RESPOND_TO_NOTIFICATION,
+      limiter,
+      handleUploads.single(FormFieldNames.RESPOND_TO_NOTIFICATION.SUPPORTING_MATERIAL_FILE),
+      new RespondToNotificationController().post
+    );
     // others
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);
