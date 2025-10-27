@@ -23,12 +23,32 @@ export const isPartiesRespondRequired = (item: SendNotificationType): boolean =>
 };
 
 /**
+ * Check if tribunal response is shared with respondent
+ * @param item RespondNotificationType
+ */
+export const isRespondNotificationPartyToNotify = (item: RespondNotificationType): boolean => {
+  return (
+    item.respondNotificationPartyToNotify === PartiesNotify.BOTH_PARTIES ||
+    item.respondNotificationPartyToNotify === PartiesNotify.RESPONDENT_ONLY
+  );
+};
+
+/**
  * Check if user has already viewed the notification
  * @param notification SendNotificationType
  * @param user user details
  */
 export const hasUserViewed = (notification: SendNotificationType, user: UserDetails): boolean => {
   return notification ? notification.respondentState?.some(state => state.value.userIdamId === user.id) : false;
+};
+
+/**
+ * Check if user has already viewed the notification
+ * @param notification SendNotificationType
+ * @param user user details
+ */
+export const hasUserRespond = (notification: SendNotificationType, user: UserDetails): boolean => {
+  return notification ? notification.respondCollection?.some(state => state.value.fromIdamId === user.id) : false;
 };
 
 /**
@@ -51,17 +71,23 @@ const isSendNotificationNotify = (item: SendNotificationType): boolean => {
 };
 
 const hasTribunalResponseShared = (responseList: TypeItem<RespondNotificationType>[]): boolean => {
-  return (
-    responseList?.some(
-      r =>
-        r.value.respondNotificationPartyToNotify === PartiesNotify.BOTH_PARTIES ||
-        r.value.respondNotificationPartyToNotify === PartiesNotify.RESPONDENT_ONLY
-    ) ?? false
-  );
+  return responseList?.some(r => isRespondNotificationPartyToNotify(r.value)) ?? false;
 };
 
 const hasOtherPartyResponseShared = (responseList: TypeItem<PseResponseType>[]): boolean => {
   return responseList?.some(r => r.value.copyToOtherParty === YesOrNo.YES) ?? false;
+};
+
+/**
+ * Return selected application
+ * @param items
+ * @param notificationId
+ */
+export const findSelectedSendNotification = (
+  items: SendNotificationTypeItem[],
+  notificationId: string
+): SendNotificationTypeItem => {
+  return items?.find(it => it.id === notificationId);
 };
 
 /**

@@ -87,6 +87,7 @@ export const TranslationKeys = {
   // Notification
   NOTIFICATIONS: 'notifications',
   NOTIFICATION_DETAILS: 'notification-details',
+  NOTIFICATION_SUBJECTS: 'notification-subjects',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
 } as const;
@@ -287,6 +288,7 @@ export const JavaApiUrls = {
   STORE_RESPONDENT_APPLICATION: 'respondentTSE/store-respondent-application',
   SUBMIT_RESPONDENT_RESPONSE_TO_APP: 'respondentTSE/respond-to-claimant-application',
   CHANGE_RESPONDENT_APPLICATION_STATUS: 'respondentTSE/change-respondent-application-status',
+  CHANGE_RESPONDENT_NOTIFICATION_STATUS: 'sendNotification/change-respondent-notification-status',
 } as const;
 
 export const Roles = {
@@ -591,6 +593,7 @@ export const TseErrors = {
   ERROR_APPLICATION_NOT_FOUND: 'Application not found: ',
   ERROR_APPLICATION_NOT_SHARE: 'Application not shared: ',
   ERROR_NO_RESPOND_REQUIRED: 'Respond not allowed for this application: ',
+  ERROR_NOTIFICATION_NOT_FOUND: 'Notification not found: ',
   ERROR_UPDATE_LINK_STATUS: 'An error occurred while updating LinkStatus',
   ERROR_STORE_APPLICATION: 'An error occurred while storing an application',
   ERROR_SUBMIT_APPLICATION: 'An error occurred while submitting an application',

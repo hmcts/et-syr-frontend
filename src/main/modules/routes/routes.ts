@@ -56,6 +56,7 @@ import HomeController from '../../controllers/HomeController';
 import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
 import NotificationController from '../../controllers/NotificationController';
+import NotificationDetailsController from '../../controllers/NotificationDetailsController';
 import OtherRespondentApplicationsController from '../../controllers/OtherRespondentApplicationsController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
@@ -310,6 +311,7 @@ export class Routes {
     app.get(PageUrls.RESPOND_TO_APPLICATION_COMPLETE, new RespondToApplicationCompleteController().get);
     // Notification
     app.get(PageUrls.NOTIFICATIONS, new NotificationController().get);
+    app.get(PageUrls.NOTIFICATION_DETAILS, new NotificationDetailsController().get);
     // others
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);

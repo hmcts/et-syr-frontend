@@ -87,6 +87,7 @@ export interface RespondNotificationType {
   respondNotificationRequestMadeBy?: string;
   respondNotificationFullName?: string;
   respondNotificationPartyToNotify?: string;
+  dateTime?: string;
   state?: string;
   isClaimantResponseDue?: string;
 }
