@@ -11,13 +11,15 @@ import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { findSelectedSendNotification } from '../helpers/NotificationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
-import { isClaimantSystemUser } from '../helpers/controller/ContactTribunalHelper';
 import {
   getNotificationContent,
   getNotificationResponses,
 } from '../helpers/controller/NotificationDetailsControllerHelper';
 import { handleFileUpload } from '../helpers/controller/RespondToApplicationSupportingMaterialHelper';
-import { getFormError } from '../helpers/controller/RespondToNotificationControllerHelper';
+import {
+  getFormError,
+  getRespondNotificationCopyPage,
+} from '../helpers/controller/RespondToNotificationControllerHelper';
 import { getLogger } from '../logger';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
@@ -126,10 +128,7 @@ export default class RespondToNotificationController {
       return res.redirect(thisPage);
     }
 
-    const nextPage = isClaimantSystemUser(userCase)
-      ? PageUrls.RESPOND_TO_NOTIFICATION_COPY
-      : PageUrls.RESPOND_TO_NOTIFICATION_COPY_OFFLINE;
-    return res.redirect(nextPage + languageParam);
+    return res.redirect(getRespondNotificationCopyPage(userCase) + languageParam);
   };
 
   public get = (req: AppRequest, res: Response): void => {
