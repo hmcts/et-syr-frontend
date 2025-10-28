@@ -55,7 +55,7 @@ describe('Respond to Notification Controller', () => {
       await controller.post(request, response);
       expect(request.session.userCase.responseText).toEqual('Test response');
       expect(request.session.userCase.hasSupportingMaterial).toEqual(YesOrNo.NO);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPOND_TO_NOTIFICATION_COPY_TO_ORDER_PARTY + '?lng=en');
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPOND_TO_NOTIFICATION_COPY + '?lng=en');
     });
 
     it('should redirect to RESPOND_TO_NOTIFICATION if nothing is selected', async () => {

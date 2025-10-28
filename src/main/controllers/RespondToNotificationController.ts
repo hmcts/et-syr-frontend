@@ -11,6 +11,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { findSelectedSendNotification } from '../helpers/NotificationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
+import { isClaimantSystemUser } from '../helpers/controller/ContactTribunalHelper';
 import {
   getNotificationContent,
   getNotificationResponses,
@@ -125,7 +126,10 @@ export default class RespondToNotificationController {
       return res.redirect(thisPage);
     }
 
-    return res.redirect(PageUrls.RESPOND_TO_NOTIFICATION_COPY_TO_ORDER_PARTY + languageParam);
+    const nextPage = isClaimantSystemUser(userCase)
+      ? PageUrls.RESPOND_TO_NOTIFICATION_COPY
+      : PageUrls.RESPOND_TO_NOTIFICATION_COPY_OFFLINE;
+    return res.redirect(nextPage + languageParam);
   };
 
   public get = (req: AppRequest, res: Response): void => {

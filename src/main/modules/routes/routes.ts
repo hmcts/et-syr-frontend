@@ -67,6 +67,8 @@ import RespondToApplicationCopyToOtherPartyController from '../../controllers/Re
 import RespondToApplicationSubmitController from '../../controllers/RespondToApplicationSubmitController';
 import RespondToApplicationSupportingMaterialController from '../../controllers/RespondToApplicationSupportingMaterialController';
 import RespondToNotificationController from '../../controllers/RespondToNotificationController';
+import RespondToNotificationCopyController from '../../controllers/RespondToNotificationCopyController';
+import RespondToNotificationCopyOfflineController from '../../controllers/RespondToNotificationCopyOfflineController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
@@ -320,6 +322,10 @@ export class Routes {
       handleUploads.single(FormFieldNames.RESPOND_TO_NOTIFICATION.SUPPORTING_MATERIAL_FILE),
       new RespondToNotificationController().post
     );
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_COPY, new RespondToNotificationCopyController().get);
+    app.post(PageUrls.RESPOND_TO_NOTIFICATION_COPY, new RespondToNotificationCopyController().post);
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_COPY_OFFLINE, new RespondToNotificationCopyOfflineController().get);
+    app.post(PageUrls.RESPOND_TO_NOTIFICATION_COPY_OFFLINE, new RespondToNotificationCopyOfflineController().post);
     // others
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);
