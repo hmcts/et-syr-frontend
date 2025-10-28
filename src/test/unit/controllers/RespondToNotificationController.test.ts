@@ -42,14 +42,14 @@ describe('Respond to Notification Controller', () => {
   });
 
   describe('POST method', () => {
-    it('should redirect to COPY_TO_OTHER_PARTY page if hasSupportingMaterial is NO', async () => {
+    it('should redirect to RESPOND_TO_NOTIFICATION_COPY page if hasSupportingMaterial is NO', async () => {
       request = mockRequest({
         body: {
           responseText: 'Test response',
           hasSupportingMaterial: YesOrNo.NO,
         },
+        userCase: { et1OnlineSubmission: 'Yes', sendNotificationCollection: mockSendNotificationCollection },
       });
-      request.session.userCase.sendNotificationCollection = mockSendNotificationCollection;
       request.session.errors = [];
       request.params.itemId = 'd416f43f-10f4-402a-bdf1-ea9012a553d7';
       await controller.post(request, response);
@@ -58,9 +58,22 @@ describe('Respond to Notification Controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPOND_TO_NOTIFICATION_COPY + '?lng=en');
     });
 
+    it('should redirect to RESPOND_TO_NOTIFICATION_COPY_OFFLINE page if hasSupportingMaterial is NO', async () => {
+      request = mockRequest({
+        body: {
+          responseText: 'Test response',
+          hasSupportingMaterial: YesOrNo.NO,
+        },
+        userCase: { sendNotificationCollection: mockSendNotificationCollection },
+      });
+      request.session.errors = [];
+      request.params.itemId = 'd416f43f-10f4-402a-bdf1-ea9012a553d7';
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPOND_TO_NOTIFICATION_COPY_OFFLINE + '?lng=en');
+    });
+
     it('should redirect to RESPOND_TO_NOTIFICATION if nothing is selected', async () => {
-      request = mockRequest({ body: {} });
-      request.session.userCase.sendNotificationCollection = mockSendNotificationCollection;
+      request = mockRequest({ body: {}, userCase: { sendNotificationCollection: mockSendNotificationCollection } });
       request.session.errors = [];
       request.params.itemId = 'd416f43f-10f4-402a-bdf1-ea9012a553d7';
       await controller.post(request, response);
@@ -77,8 +90,8 @@ describe('Respond to Notification Controller', () => {
           responseText: '1'.repeat(2501),
           hasSupportingMaterial: YesOrNo.NO,
         },
+        userCase: { sendNotificationCollection: mockSendNotificationCollection },
       });
-      request.session.userCase.sendNotificationCollection = mockSendNotificationCollection;
       request.session.errors = [];
       request.params.itemId = 'd416f43f-10f4-402a-bdf1-ea9012a553d7';
       await controller.post(request, response);
