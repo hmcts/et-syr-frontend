@@ -16,7 +16,10 @@ import {
   getNotificationResponses,
 } from '../helpers/controller/NotificationDetailsControllerHelper';
 import { handleFileUpload } from '../helpers/controller/RespondToApplicationSupportingMaterialHelper';
-import { getFormError } from '../helpers/controller/RespondToNotificationControllerHelper';
+import {
+  getFormError,
+  getRespondNotificationCopyPage,
+} from '../helpers/controller/RespondToNotificationControllerHelper';
 import { getLogger } from '../logger';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
@@ -125,7 +128,7 @@ export default class RespondToNotificationController {
       return res.redirect(thisPage);
     }
 
-    return res.redirect(PageUrls.RESPOND_TO_NOTIFICATION_COPY_TO_ORDER_PARTY + languageParam);
+    return res.redirect(getRespondNotificationCopyPage(userCase) + languageParam);
   };
 
   public get = (req: AppRequest, res: Response): void => {

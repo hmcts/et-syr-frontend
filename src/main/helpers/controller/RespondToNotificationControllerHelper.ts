@@ -1,9 +1,11 @@
 import { AppRequest } from '../../definitions/appRequest';
 import { CaseWithId, YesOrNo } from '../../definitions/case';
-import { ValidationErrors } from '../../definitions/constants';
+import { PageUrls, ValidationErrors } from '../../definitions/constants';
 import { FormError } from '../../definitions/form';
 import ObjectUtils from '../../utils/ObjectUtils';
 import { isContentCharsOrLess, isFieldFilledIn, isOptionSelected } from '../../validators/validator';
+
+import { isClaimantSystemUser } from './ContactTribunalHelper';
 
 /**
  * Handle form validation. Return FormError when error found.
@@ -38,4 +40,14 @@ export const getFormError = (req: AppRequest, formData: Partial<CaseWithId>): Fo
   if (tooLong) {
     return { propertyName: 'responseText', errorType: ValidationErrors.TOO_LONG };
   }
+};
+
+/**
+ * return RESPOND_TO_NOTIFICATION_COPY or OFFLINE page
+ * @param userCase
+ */
+export const getRespondNotificationCopyPage = (userCase: CaseWithId): string => {
+  return isClaimantSystemUser(userCase)
+    ? PageUrls.RESPOND_TO_NOTIFICATION_COPY
+    : PageUrls.RESPOND_TO_NOTIFICATION_COPY_OFFLINE;
 };
