@@ -89,6 +89,8 @@ export const TranslationKeys = {
   NOTIFICATION_DETAILS: 'notification-details',
   NOTIFICATION_SUBJECTS: 'notification-subjects',
   RESPOND_TO_NOTIFICATION: 'respond-to-notification',
+  RESPOND_TO_NOTIFICATION_CYA: 'respond-to-notification-check-your-answers',
+  RESPOND_TO_NOTIFICATION_CYA_OFFLINE: 'respond-to-notification-check-your-answers-offline',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
 } as const;
@@ -205,6 +207,9 @@ export const InterceptPaths = {
   CONTACT_TRIBUNAL_SUBMIT: '/submitContactTribunal',
   CONTACT_TRIBUNAL_STORE: '/storeContactTribunal',
   RESPOND_TO_APPLICATION_SUBMIT: '/submitRespondToApplication',
+  // Tribunal Notification
+  RESPOND_TO_NOTIFICATION_SUBMIT: '/submitRespondToNotification',
+  RESPOND_TO_NOTIFICATION_STORE: '/storeRespondToNotification',
 } as const;
 
 export const RedirectKeys = {
