@@ -72,15 +72,15 @@ withPipeline(type, product, component) {
     // Add debug logging
     echo "Debug: About to set Gatling branch to: add-et-tests"
 
-  enableGatlingLoadTests([
-    repo: 'https://github.com/hmcts/performance-testing.git', //https://github.com/hmcts/et-performance.git
-    branch: 'add-et-tests', //*SHould be master //add-buildpipeline-code  //employmenttribunal-updates
-    simulation: 'et.simulations.EtCitizenSimulation', // ETCreateClaim
-    users: 5,
-    rampDuration: '60s',
-    testDuration: '300s',
-    timeout: 10
-  ])
+  // enableGatlingLoadTests([
+  //   repo: 'https://github.com/hmcts/performance-testing.git', //https://github.com/hmcts/et-performance.git
+  //   branch: 'add-et-tests', //*SHould be master //add-buildpipeline-code  //employmenttribunal-updates
+  //   simulation: 'et.simulations.EtCitizenSimulation', // ETCreateClaim
+  //   users: 5,
+  //   rampDuration: '60s',
+  //   testDuration: '300s',
+  //   timeout: 10
+  // ])
   //enableSlackNotifications('#et-builds')
 
    env.TEST_URL = params.ET_SYA_URL_TO_TEST
