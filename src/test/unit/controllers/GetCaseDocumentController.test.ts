@@ -149,4 +149,90 @@ describe('Get case document controller', () => {
     await getCaseDocumentController.get(request, response);
     expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
   });
+
+  it('Should find document in et3ResponseEmployerClaimDocument when not found in et3ResponseContestClaimDocument', async () => {
+    const employerClaimDocId = 'employer-claim-doc-123';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.respondents[0].et3ResponseContestClaimDocument = [];
+    request.session.userCase.respondents[0].et3ResponseEmployerClaimDocument = {
+      document_url: `http://dm-store:8080/documents/${employerClaimDocId}`,
+      document_filename: 'employer_claim.pdf',
+      document_binary_url: `http://dm-store:8080/documents/${employerClaimDocId}/binary`,
+      category_id: 'ET3_EMPLOYER_CLAIM',
+      upload_timestamp: '2022-10-03T10:00:00',
+    };
+    request.params.docId = employerClaimDocId;
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(response.status(200).send).toHaveBeenCalled();
+  });
+
+  it('Should forward to not found when et3ResponseEmployerClaimDocument docId does not match', async () => {
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.respondents[0].et3ResponseContestClaimDocument = [];
+    request.session.userCase.respondents[0].et3ResponseEmployerClaimDocument = {
+      document_url: 'http://dm-store:8080/documents/different-doc-id',
+      document_filename: 'employer_claim.pdf',
+      document_binary_url: 'http://dm-store:8080/documents/different-doc-id/binary',
+      category_id: 'ET3_EMPLOYER_CLAIM',
+      upload_timestamp: '2022-10-03T10:00:00',
+    };
+    request.params.docId = 'requested-doc-id-not-matching';
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(undefined));
+    await getCaseDocumentController.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
+  });
+
+  it('Should skip et3ResponseEmployerClaimDocument when it is empty', async () => {
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.respondents[0].et3ResponseContestClaimDocument = [];
+    request.session.userCase.respondents[0].et3ResponseEmployerClaimDocument = undefined;
+    request.params.docId = 'some-doc-id';
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(undefined));
+    await getCaseDocumentController.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
+  });
+
+  it('Should check et3ResponseEmployerClaimDocument only when et3ResponseContestClaimDocument is empty', async () => {
+    const contestClaimDocId = 'contest-claim-doc-456';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.respondents[0].et3ResponseContestClaimDocument = [
+      {
+        id: contestClaimDocId,
+        value: {
+          uploadedDocument: {
+            document_url: `http://dm-store:8080/documents/${contestClaimDocId}`,
+            document_filename: 'contest_claim.pdf',
+            document_binary_url: `http://dm-store:8080/documents/${contestClaimDocId}/binary`,
+            category_id: 'ET3_CONTEST_CLAIM',
+          },
+          typeOfDocument: 'ET3 Attachment',
+          shortDescription: 'Contest claim document',
+        },
+      },
+    ];
+    request.session.userCase.respondents[0].et3ResponseEmployerClaimDocument = {
+      document_url: 'http://dm-store:8080/documents/employer-claim-789',
+      document_filename: 'employer_claim.pdf',
+      document_binary_url: 'http://dm-store:8080/documents/employer-claim-789/binary',
+      category_id: 'ET3_EMPLOYER_CLAIM',
+      upload_timestamp: '2022-10-03T10:00:00',
+    };
+    request.params.docId = contestClaimDocId;
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(response.status(200).send).toHaveBeenCalled();
+  });
 });
