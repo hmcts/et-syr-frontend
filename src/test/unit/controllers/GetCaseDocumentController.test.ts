@@ -215,7 +215,6 @@ describe('Get case document controller', () => {
             document_url: `http://dm-store:8080/documents/${contestClaimDocId}`,
             document_filename: 'contest_claim.pdf',
             document_binary_url: `http://dm-store:8080/documents/${contestClaimDocId}/binary`,
-            category_id: 'ET3_CONTEST_CLAIM',
           },
           typeOfDocument: 'ET3 Attachment',
           shortDescription: 'Contest claim document',
