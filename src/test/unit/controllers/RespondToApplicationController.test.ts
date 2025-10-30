@@ -21,6 +21,7 @@ describe('Respond to Application Controller', () => {
 
   describe('GET method', () => {
     it('should render the page RESPOND_TO_APPLICATION', () => {
+      request.session.userCase.et1OnlineSubmission = 'Yes';
       request.session.userCase.genericTseApplicationCollection = [
         {
           id: '5d0118c9-bdd6-4d32-9131-6aa6f5ec718e',
@@ -44,24 +45,25 @@ describe('Respond to Application Controller', () => {
     });
 
     it('should redirect to NOT_FOUND page if missing appId', () => {
+      request.session.userCase.et1OnlineSubmission = 'Yes';
       request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
       request.params.appId = undefined;
       controller.get(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+      expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND + '?lng=en');
     });
 
     it('should redirect to NOT_FOUND page if application undefined', () => {
+      request.session.userCase.et1OnlineSubmission = 'Yes';
       request.session.userCase.genericTseApplicationCollection = undefined;
       request.params.appId = '5d0118c9-bdd6-4d32-9131-6aa6f5ec718e';
       controller.get(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+      expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND + '?lng=en');
     });
 
-    it('should redirect to NOT_FOUND page if userCase undefined', () => {
-      request.session.userCase.genericTseApplicationCollection = mockGenericTseCollection;
-      request.session.userCase = undefined;
-      controller.get(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+    it('should redirect to holding page if other party is offline', async () => {
+      await controller.get(request, response);
+      expect(response.redirect).toHaveBeenCalledWith('/holding-page?lng=en');
+      expect(response.render).not.toHaveBeenCalled();
     });
   });
 
