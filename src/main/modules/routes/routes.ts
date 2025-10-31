@@ -66,6 +66,8 @@ import RespondToApplicationController from '../../controllers/RespondToApplicati
 import RespondToApplicationCopyToOtherPartyController from '../../controllers/RespondToApplicationCopyToOtherPartyController';
 import RespondToApplicationSubmitController from '../../controllers/RespondToApplicationSubmitController';
 import RespondToApplicationSupportingMaterialController from '../../controllers/RespondToApplicationSupportingMaterialController';
+import RespondToNotificationCYAController from '../../controllers/RespondToNotificationCYAController';
+import RespondToNotificationCYAOfflineController from '../../controllers/RespondToNotificationCYAOfflineController';
 import RespondToNotificationController from '../../controllers/RespondToNotificationController';
 import RespondToNotificationCopyController from '../../controllers/RespondToNotificationCopyController';
 import RespondToNotificationCopyOfflineController from '../../controllers/RespondToNotificationCopyOfflineController';
@@ -326,6 +328,8 @@ export class Routes {
     app.post(PageUrls.RESPOND_TO_NOTIFICATION_COPY, new RespondToNotificationCopyController().post);
     app.get(PageUrls.RESPOND_TO_NOTIFICATION_COPY_OFFLINE, new RespondToNotificationCopyOfflineController().get);
     app.post(PageUrls.RESPOND_TO_NOTIFICATION_COPY_OFFLINE, new RespondToNotificationCopyOfflineController().post);
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_CYA, new RespondToNotificationCYAController().get);
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_CYA_OFFLINE, new RespondToNotificationCYAOfflineController().get);
     // others
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);
