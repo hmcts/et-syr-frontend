@@ -68,9 +68,11 @@ import RespondToApplicationSubmitController from '../../controllers/RespondToApp
 import RespondToApplicationSupportingMaterialController from '../../controllers/RespondToApplicationSupportingMaterialController';
 import RespondToNotificationCYAController from '../../controllers/RespondToNotificationCYAController';
 import RespondToNotificationCYAOfflineController from '../../controllers/RespondToNotificationCYAOfflineController';
+import RespondToNotificationCompleteController from '../../controllers/RespondToNotificationCompleteController';
 import RespondToNotificationController from '../../controllers/RespondToNotificationController';
 import RespondToNotificationCopyController from '../../controllers/RespondToNotificationCopyController';
 import RespondToNotificationCopyOfflineController from '../../controllers/RespondToNotificationCopyOfflineController';
+import RespondToNotificationSubmitController from '../../controllers/RespondToNotificationSubmitController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
@@ -330,6 +332,8 @@ export class Routes {
     app.post(PageUrls.RESPOND_TO_NOTIFICATION_COPY_OFFLINE, new RespondToNotificationCopyOfflineController().post);
     app.get(PageUrls.RESPOND_TO_NOTIFICATION_CYA, new RespondToNotificationCYAController().get);
     app.get(PageUrls.RESPOND_TO_NOTIFICATION_CYA_OFFLINE, new RespondToNotificationCYAOfflineController().get);
+    app.get(InterceptPaths.RESPOND_TO_NOTIFICATION_SUBMIT, new RespondToNotificationSubmitController().get);
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_COMPLETE, new RespondToNotificationCompleteController().get);
     // others
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);
