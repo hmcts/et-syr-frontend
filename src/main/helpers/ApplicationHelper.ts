@@ -1,3 +1,4 @@
+import { PageUrls } from '../definitions/constants';
 import { Application, ApplicationType, application } from '../definitions/contact-tribunal-applications';
 import { AnyRecord } from '../definitions/util-types';
 
@@ -74,4 +75,13 @@ export const getApplicationDisplayByClaimantCode = (appCode: string, translation
     key => application[key].claimant === appCode || application[key].claimantLegalRep === appCode
   );
   return appKey ? translations.claimantAppName[appKey] : '';
+};
+
+/**
+ * Get application details link
+ * @param appId application id
+ * @param languageParam language parameter
+ */
+export const getAppDetailsLink = (appId: string, languageParam: string): string => {
+  return PageUrls.APPLICATION_DETAILS.replace(':appId', appId) + languageParam;
 };

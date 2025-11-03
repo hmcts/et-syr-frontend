@@ -72,6 +72,12 @@
       "p3a": "If you have any objections or responses to their application you must send them to the tribunal as soon as possible and by",
       "p3b": "at the latest.",
       "linkText": "Respond to the application"
+    },
+    "storedPending": {
+      "header": "You have stored correspondence which you have not submitted to the tribunal",
+      "line1": "You must send a copy of this correspondence and all supporting documents to the other party before you submit it to the tribunal.",
+      "line2": "If the other party does respond to your application, they are expected to copy their response to you.",
+      "link": "View correspondence"
     }
   },
   "multiples": {

@@ -24,7 +24,9 @@
         {% for app in appList %}
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
-            {{ dateToLocale(app.submitDate) }}
+            {% if app.submitDate %}
+              {{ dateToLocale(app.submitDate) }}
+            {% endif %}
           </td>
           <td class="govuk-table__cell">
             <a href="{{ getContent(app.redirectUrl) }}" class="govuk-link"> {{ app.linkValue }} </a>
