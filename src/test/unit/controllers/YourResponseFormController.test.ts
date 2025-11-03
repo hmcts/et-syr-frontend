@@ -86,6 +86,7 @@ describe('YourResponseFormController tests', () => {
           et3ResponseSection3: 'mocked section 3 data',
           et3ResponseSection4: 'mocked section 4 data',
           et3ResponseSection5: 'mocked section 5 data',
+          et3ResponseSection6: 'mocked section 6 data',
           redirectUrl: expect.any(String),
           welshEnabled: true,
         })
@@ -103,6 +104,7 @@ describe('YourResponseFormController tests', () => {
           et3ResponseSection3: 'mocked section 3 data',
           et3ResponseSection4: 'mocked section 4 data',
           et3ResponseSection5: 'mocked section 5 data',
+          et3ResponseSection6: 'mocked section 6 data',
           redirectUrl: expect.any(String),
           welshEnabled: true,
           et3FormId: et3FormIdWelsh,
@@ -121,31 +123,10 @@ describe('YourResponseFormController tests', () => {
           et3ResponseSection3: 'mocked section 3 data',
           et3ResponseSection4: 'mocked section 4 data',
           et3ResponseSection5: 'mocked section 5 data',
-          redirectUrl: expect.any(String),
-          welshEnabled: true,
-          et3FormId: et3FormIdEnglish,
-          isSection6Visible: false,
-        })
-      );
-    });
-    it('should render the your response with section 6', async () => {
-      (getFlagValue as jest.Mock).mockResolvedValue(true);
-      (request.t as unknown as jest.Mock).mockReturnValueOnce({});
-      request.session.userCase.typeOfClaim = [CLAIM_TYPES.BREACH_OF_CONTRACT];
-      mockSections();
-      await controller.get(request, response);
-      expect(response.render).toHaveBeenCalledWith(
-        TranslationKeys.YOUR_RESPONSE_FORM,
-        expect.objectContaining({
-          et3ResponseSection1: 'mocked section 1 data',
-          et3ResponseSection2: 'mocked section 2 data',
-          et3ResponseSection3: 'mocked section 3 data',
-          et3ResponseSection4: 'mocked section 4 data',
-          et3ResponseSection5: 'mocked section 5 data',
           et3ResponseSection6: 'mocked section 6 data',
           redirectUrl: expect.any(String),
           welshEnabled: true,
-          isSection6Visible: true,
+          et3FormId: et3FormIdEnglish,
         })
       );
     });
