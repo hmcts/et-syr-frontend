@@ -84,7 +84,7 @@
     "respondentNotRepresented": {
       "p1": "You are no longer legally represented.",
       "p2": "You may continue to represent yourself or you may wish to appoint a new legal representative."
-    }
+    },
     "storedPending": {
       "header": "You have stored correspondence which you have not submitted to the tribunal",
       "line1": "You must send a copy of this correspondence and all supporting documents to the other party before you submit it to the tribunal.",
