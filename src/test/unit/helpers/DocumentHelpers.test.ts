@@ -53,7 +53,7 @@ describe('Documents Helper Test', () => {
   });
 
   it('should combine user case documents correctly', () => {
-    expect(combineUserCaseDocuments([mockUserCaseWithDocumentsComplete])).toStrictEqual([
+    expect(combineUserCaseDocuments([mockUserCaseWithDocumentsComplete], 0)).toStrictEqual([
       { description: 'Case Details - Mehmet Tahir Dede', id: '3aa7dfc1-378b-4fa8-9a17-89126fae5673', type: 'ET1' },
       { id: '1', description: 'desc1' },
       { id: '2', description: 'desc2' },
@@ -63,6 +63,59 @@ describe('Documents Helper Test', () => {
       { id: '6', description: 'desc6' },
       { id: '7', description: 'desc7' },
       { id: '8', description: 'desc8' },
+      {
+        id: 'a0c113ec-eede-472a-a59c-f2614b48177c',
+        description: 'Claim Summary File Detail',
+        originalDocumentName: 'document.pdf',
+      },
+    ]);
+  });
+
+  it('should combine user case documents with et3Form for selected respondent', () => {
+    const mockCaseWithEt3Form = {
+      ...mockUserCaseWithDocumentsComplete,
+      respondents: [
+        {
+          ...mockUserCaseWithDocumentsComplete.respondents[0],
+          et3Form: {
+            document_url: 'http://dm-store:8080/documents/et3-form-id-123',
+            document_filename: 'et3_form.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/et3-form-id-123/binary',
+            category_id: 'ET3',
+            upload_timestamp: '2022-10-03T10:00:00',
+          },
+          et3FormWelsh: {
+            document_url: 'http://dm-store:8080/documents/et3-welsh-form-id-456',
+            document_filename: 'et3_form_welsh.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/et3-welsh-form-id-456/binary',
+            category_id: 'ET3_WELSH',
+            upload_timestamp: '2022-10-03T10:00:00',
+          },
+        },
+        mockUserCaseWithDocumentsComplete.respondents[1],
+      ],
+    };
+
+    expect(combineUserCaseDocuments([mockCaseWithEt3Form], 0)).toStrictEqual([
+      { description: 'Case Details - Mehmet Tahir Dede', id: '3aa7dfc1-378b-4fa8-9a17-89126fae5673', type: 'ET1' },
+      { id: '1', description: 'desc1' },
+      { id: '2', description: 'desc2' },
+      { id: '3', description: 'desc3' },
+      { id: '4', description: 'desc4' },
+      { id: '5', description: 'desc5' },
+      { id: '6', description: 'desc6' },
+      { id: '7', description: 'desc7' },
+      { id: '8', description: 'desc8' },
+      {
+        id: 'et3-form-id-123',
+        description: 'ET3 Form',
+        originalDocumentName: 'et3_form.pdf',
+      },
+      {
+        id: 'et3-welsh-form-id-456',
+        description: 'ET3 Form Welsh',
+        originalDocumentName: 'et3_form_welsh.pdf',
+      },
       {
         id: 'a0c113ec-eede-472a-a59c-f2614b48177c',
         description: 'Claim Summary File Detail',
