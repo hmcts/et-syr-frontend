@@ -16,6 +16,7 @@ describe('Contact Tribunal CYA Helper', () => {
       const req = mockRequestWithTranslation({}, translations);
 
       const userCase = req.session.userCase;
+      userCase.et1OnlineSubmission = YesOrNo.YES;
       userCase.contactApplicationType = 'Strike out all or part of a claim';
       userCase.contactApplicationText = 'Test';
       userCase.contactApplicationFile = {

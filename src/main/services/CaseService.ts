@@ -11,6 +11,7 @@ import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/gener
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { application } from '../definitions/contact-tribunal-applications';
 import { LinkStatus } from '../definitions/links';
+import { RespondentTse } from '../definitions/respondentTse';
 import { toApiFormat } from '../helpers/ApiFormatter';
 import { getApplicationByCode } from '../helpers/ApplicationHelper';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
@@ -217,6 +218,43 @@ export class CaseApi {
           copyToOtherPartyYesOrNo: caseItem.copyToOtherPartyYesOrNo,
           copyToOtherPartyText: caseItem.copyToOtherPartyText,
         },
+      });
+    } catch (error) {
+      throw new Error('Error submitting respondent tse application: ' + axiosErrorDetails(error));
+    }
+  };
+
+  storeRespondentTse = async (req: AppRequest): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      const { user } = req.session;
+      const caseItem = req.session.userCase;
+      return await this.axios.put(JavaApiUrls.STORE_RESPONDENT_APPLICATION, {
+        case_id: caseItem.id,
+        case_type_id: caseItem.caseTypeId,
+        respondent_tse: {
+          respondentIdamId: user.id,
+          contactApplicationType: caseItem.contactApplicationType,
+          contactApplicationText: caseItem.contactApplicationText,
+          contactApplicationFile: caseItem.contactApplicationFile,
+          copyToOtherPartyYesOrNo: caseItem.copyToOtherPartyYesOrNo,
+        },
+      });
+    } catch (error) {
+      throw new Error('Error storing respondent tse application: ' + axiosErrorDetails(error));
+    }
+  };
+
+  submitStoredRespondentTse = async (
+    req: AppRequest,
+    respondentTse: RespondentTse
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      const caseItem = req.session.userCase;
+      return await this.axios.put(JavaApiUrls.SUBMIT_RESPONDENT_APPLICATION, {
+        case_id: caseItem.id,
+        case_type_id: caseItem.caseTypeId,
+        type_c: false,
+        respondent_tse: respondentTse,
       });
     } catch (error) {
       throw new Error('Error submitting respondent tse application: ' + axiosErrorDetails(error));

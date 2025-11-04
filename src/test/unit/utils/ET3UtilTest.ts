@@ -11,7 +11,6 @@ import {
   TranslationKeys,
   ValidationErrors,
 } from '../../../main/definitions/constants';
-import { TypesOfClaim } from '../../../main/definitions/definition';
 import { ET3HubLinkNames, ET3HubLinksStatuses, LinkStatus } from '../../../main/definitions/links';
 import { AnyRecord } from '../../../main/definitions/util-types';
 import caseListJsonRaw from '../../../main/resources/locales/en/translation/case-list.json';
@@ -226,82 +225,6 @@ describe('ET3lUtil tests', () => {
       respondent.et3HubLinksStatuses[ET3HubLinkNames.ConciliationAndEmployeeDetails] = LinkStatus.COMPLETED;
       respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployersContractClaim] = LinkStatus.COMPLETED;
       expect(ET3Util.getOverallStatus(userCase, respondent, translations)).toEqual('6 of 6 tasks completed');
-    });
-  });
-  describe('getOverallStatus when user case does not have type of claim breach of contract', () => {
-    request = mockRequestWithTranslation(
-      {
-        session: {
-          userCase: {
-            respondents: [
-              {
-                respondentName: 'John Doe',
-              },
-            ],
-          },
-        },
-      },
-      translationJsons
-    );
-    const translations: AnyRecord = {
-      ...request.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-    };
-    const respondent: RespondentET3Model = _.cloneDeep(mockRespondentET3Model);
-    const userCase: CaseWithId = _.cloneDeep(mockCaseWithIdWithRespondents);
-    userCase.typeOfClaim = [TypesOfClaim.DISCRIMINATION];
-    respondent.et3HubLinksStatuses = new ET3HubLinksStatuses();
-    test('Should 0 of 5 tasks completed when et3 hub link statuses does not have any completed task', () => {
-      expect(ET3Util.getOverallStatus(userCase, respondent, translations)).toEqual('0 of 5 tasks completed');
-    });
-    test('Should 1 of 5 tasks completed when et3 hub link statuses have 1 completed task', () => {
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
-      expect(ET3Util.getOverallStatus(userCase, respondent, translations)).toEqual('1 of 5 tasks completed');
-    });
-    test('Should 2 of 5 tasks completed when et3 hub link statuses have 2 completed task', () => {
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] = LinkStatus.COMPLETED;
-      expect(ET3Util.getOverallStatus(userCase, respondent, translations)).toEqual('2 of 5 tasks completed');
-    });
-    test('Should 3 of 5 tasks completed when et3 hub link statuses have 3 completed task', () => {
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.PayPensionBenefitDetails] = LinkStatus.COMPLETED;
-      expect(ET3Util.getOverallStatus(userCase, respondent, translations)).toEqual('3 of 5 tasks completed');
-    });
-    test('Should 4 of 5 tasks completed when et3 hub link statuses have 4 completed task', () => {
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.PayPensionBenefitDetails] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployerDetails] = LinkStatus.COMPLETED;
-      expect(ET3Util.getOverallStatus(userCase, respondent, translations)).toEqual('4 of 5 tasks completed');
-    });
-    test('Should 5 of 5 tasks completed when et3 hub link statuses have 5 completed task', () => {
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.PayPensionBenefitDetails] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployerDetails] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ConciliationAndEmployeeDetails] = LinkStatus.COMPLETED;
-      expect(ET3Util.getOverallStatus(userCase, respondent, translations)).toEqual('5 of 5 tasks completed');
-    });
-    test('Should 5 of 5 tasks completed when userCase is empty', () => {
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.PayPensionBenefitDetails] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployerDetails] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ConciliationAndEmployeeDetails] = LinkStatus.COMPLETED;
-      expect(ET3Util.getOverallStatus(undefined, respondent, translations)).toEqual('5 of 5 tasks completed');
-    });
-    test('Should 5 of 5 tasks completed when userCase type of claim is empty', () => {
-      const userCaseEmptyTypeOfClaim = _.cloneDeep(mockCaseWithIdWithRespondents);
-      userCaseEmptyTypeOfClaim.typeOfClaim = [];
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployerDetails] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.PayPensionBenefitDetails] = LinkStatus.COMPLETED;
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.ConciliationAndEmployeeDetails] = LinkStatus.COMPLETED;
-      expect(ET3Util.getOverallStatus(userCaseEmptyTypeOfClaim, respondent, translations)).toEqual(
-        '5 of 5 tasks completed'
-      );
     });
   });
   describe('getUserNameByRespondent tests', () => {

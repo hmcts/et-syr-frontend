@@ -10,7 +10,7 @@ import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helper
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import { getET3CaseDetailsLinkNames, getSections } from '../helpers/controller/CaseDetailsHelper';
-import { getAppNotifications } from '../helpers/notification/ApplicationNotificationHelper';
+import { getAppNotifications, getStoredBannerList } from '../helpers/notification/ApplicationNotificationHelper';
 import { currentET3StatusFn } from '../helpers/state-sequence';
 import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -74,6 +74,7 @@ export default class CaseDetailsController {
       respondentResponseDeadline: ET3DataModelUtil.getRespondentResponseDeadline(req),
       appRequestNotifications: appNotifications.appRequestNotifications,
       appSubmitNotifications: appNotifications.appSubmitNotifications,
+      storedNotifications: getStoredBannerList(req),
       languageParam: getLanguageParam(req.url),
       respondentRepresented: representative !== undefined,
       respondentRepresentative: representative,

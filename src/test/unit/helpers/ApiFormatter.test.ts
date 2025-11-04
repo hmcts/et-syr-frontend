@@ -342,7 +342,7 @@ describe('Format Case Data to Frontend Model', () => {
       telNumber: undefined,
       firstName: undefined,
       genericTseApplicationCollection: undefined,
-      tseApplicationStoredCollection: undefined,
+      tseRespondentStoredCollection: undefined,
       lastName: undefined,
       claimantPensionContribution: undefined,
       claimantPensionWeeklyContribution: undefined,
@@ -564,7 +564,6 @@ describe('Format Case Data to Frontend Model', () => {
       otherClaim: undefined,
       sendNotificationCollection: undefined,
       genericTseApplicationCollection: undefined,
-      tseApplicationStoredCollection: undefined,
       bundleDocuments: [],
       documentCollection: [
         {

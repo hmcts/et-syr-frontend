@@ -2,12 +2,10 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
-import { CLAIM_TYPES, PageUrls, TranslationKeys, languages } from '../definitions/constants';
-import { TypesOfClaim } from '../definitions/definition';
+import { PageUrls, TranslationKeys, languages } from '../definitions/constants';
 import {
   ET3HubLinkNames,
   SectionIndexToEt3HubLinkNamesWithEmployersContractClaim,
-  SectionIndexToEt3HubLinkNamesWithoutEmployersContractClaim,
   getResponseHubLinkStatusesByRespondentHubLinkStatuses,
   linkStatusColorMap,
 } from '../definitions/links';
@@ -40,13 +38,7 @@ export default class RespondentResponseTaskListController {
       );
     }
     const acasCertificate: ApiDocumentTypeItem = DocumentUtils.findAcasCertificateByRequest(req);
-    let sectionIndexToEt3HubLinkNames: ET3HubLinkNames[][] = SectionIndexToEt3HubLinkNamesWithoutEmployersContractClaim;
-    if (
-      req.session?.userCase?.typeOfClaim?.includes(CLAIM_TYPES.BREACH_OF_CONTRACT) ||
-      req.session?.userCase?.typeOfClaim?.includes(TypesOfClaim.BREACH_OF_CONTRACT)
-    ) {
-      sectionIndexToEt3HubLinkNames = SectionIndexToEt3HubLinkNamesWithEmployersContractClaim;
-    }
+    const sectionIndexToEt3HubLinkNames: ET3HubLinkNames[][] = SectionIndexToEt3HubLinkNamesWithEmployersContractClaim;
     const sections = Array.from(Array(sectionIndexToEt3HubLinkNames.length)).map((__ignored, index) => {
       return {
         title: (l: AnyRecord): string => l[`section${index + 1}`],

@@ -69,8 +69,12 @@ export const TranslationKeys = {
   CONTACT_TRIBUNAL: 'contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: 'contact-tribunal-selected',
   COPY_TO_OTHER_PARTY: 'copy-to-other-party',
+  COPY_TO_OTHER_PARTY_OFFLINE: 'copy-to-other-party-offline',
   CONTACT_TRIBUNAL_CYA: 'contact-tribunal-check-your-answers',
+  CONTACT_TRIBUNAL_CYA_OFFLINE: 'contact-tribunal-check-your-answers-offline',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: 'contact-tribunal-submit-complete',
+  CONTACT_TRIBUNAL_STORE_COMPLETE: 'contact-tribunal-store-complete',
+  STORED_APPLICATION_SUBMIT: 'stored-correspondence-submit',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
   CLAIMANTS_APPLICATIONS: 'claimants-applications',
@@ -155,8 +159,12 @@ export const PageUrls = {
   CONTACT_TRIBUNAL: '/contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: '/contact-tribunal/:selectedOption',
   COPY_TO_OTHER_PARTY: '/copy-to-other-party',
+  COPY_TO_OTHER_PARTY_OFFLINE: '/copy-to-other-party-offline',
   CONTACT_TRIBUNAL_CYA: '/contact-tribunal-check-your-answers',
+  CONTACT_TRIBUNAL_CYA_OFFLINE: '/contact-tribunal-check-your-answers-offline',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
+  CONTACT_TRIBUNAL_STORE_COMPLETE: '/contact-tribunal-store-complete/:appId',
+  STORED_APPLICATION_SUBMIT: '/stored-correspondence-submit/:appId',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
   CLAIMANTS_APPLICATIONS: '/claimants-applications',
@@ -189,6 +197,7 @@ export const InterceptPaths = {
   REMOVE_FILE: '/remove-uploaded-file',
   // Contact Tribunal
   CONTACT_TRIBUNAL_SUBMIT: '/submitContactTribunal',
+  CONTACT_TRIBUNAL_STORE: '/storeContactTribunal',
   RESPOND_TO_APPLICATION_SUBMIT: '/submitRespondToApplication',
 } as const;
 
@@ -275,6 +284,7 @@ export const JavaApiUrls = {
   MODIFY_ET3_DATA: '/et3/modifyEt3Data',
   FIND_CASE_BY_ETHOS_CASE_REFERENCE_PARAM_NAME: 'ethosCaseReference',
   SUBMIT_RESPONDENT_APPLICATION: 'respondentTSE/submit-respondent-application',
+  STORE_RESPONDENT_APPLICATION: 'respondentTSE/store-respondent-application',
   SUBMIT_RESPONDENT_RESPONSE_TO_APP: 'respondentTSE/respond-to-claimant-application',
   CHANGE_RESPONDENT_APPLICATION_STATUS: 'respondentTSE/change-respondent-application-status',
   REVOKE_RESPONDENT_REPRESENTATIVE: '/manageCaseRole/revokeRespondentSolicitorRole',
@@ -589,6 +599,7 @@ export const TseErrors = {
   ERROR_APPLICATION_NOT_SHARE: 'Application not shared: ',
   ERROR_NO_RESPOND_REQUIRED: 'Respond not allowed for this application: ',
   ERROR_UPDATE_LINK_STATUS: 'An error occurred while updating LinkStatus',
+  ERROR_STORE_APPLICATION: 'An error occurred while storing an application',
   ERROR_SUBMIT_APPLICATION: 'An error occurred while submitting an application',
   ERROR_RESPOND_TO_APPLICATION: 'An error occurred while responding to an application',
 } as const;
