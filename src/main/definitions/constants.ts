@@ -85,8 +85,11 @@ export const TranslationKeys = {
   RESPOND_TO_APPLICATION_CYA: 'respond-to-application-check-your-answers',
   RESPOND_TO_APPLICATION_COMPLETE: 'respond-to-application-complete',
   RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: 'respond-to-application-copy-to-other-party',
+  // NoC
+  APPOINT_LEGAL_REPRESENTATIVE: 'appoint-legal-representative',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
+  CHANGE_LEGAL_REPRESENTATIVE: 'change-legal-representative',
 } as const;
 
 export const PageUrls = {
@@ -172,8 +175,11 @@ export const PageUrls = {
   RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: '/respond-to-application-copy-to-other-party',
   RESPOND_TO_APPLICATION_CYA: '/respond-to-application-check-your-answers',
   RESPOND_TO_APPLICATION_COMPLETE: '/respond-to-application-complete',
+  // NoC
+  APPOINT_LEGAL_REPRESENTATIVE: '/appoint-legal-representative',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
+  CHANGE_LEGAL_REPRESENTATIVE: '/change-legal-representative',
 } as const;
 
 export const InterceptPaths = {
@@ -281,6 +287,7 @@ export const JavaApiUrls = {
   STORE_RESPONDENT_APPLICATION: 'respondentTSE/store-respondent-application',
   SUBMIT_RESPONDENT_RESPONSE_TO_APP: 'respondentTSE/respond-to-claimant-application',
   CHANGE_RESPONDENT_APPLICATION_STATUS: 'respondentTSE/change-respondent-application-status',
+  REVOKE_RESPONDENT_REPRESENTATIVE: '/manageCaseRole/revokeRespondentSolicitorRole',
 } as const;
 
 export const Roles = {
@@ -552,6 +559,7 @@ export const ServiceErrors = {
   ERROR_MODIFYING_SUBMITTED_CASE_REQUEST_TYPE_NOT_FOUND: 'Request type not found',
   ERROR_MODIFYING_SUBMITTED_CASE_RESPONDENT_NOT_FOUND: 'Respondent not found',
   ERROR_MODIFYING_SUBMITTED_CASE_CASE_NOT_FOUND: 'Case not found',
+  ERROR_REVOKING_USER_ROLE: 'Error revoking user role: ',
 } as const;
 
 export const CacheErrors = {
@@ -624,3 +632,8 @@ export const IsCmoOrRequest = {
   REQUEST: 'Request',
   NEITHER: 'Neither',
 };
+
+export const LEGAL_REPRESENTATIVE_CHANGE_OPTIONS = {
+  change: 'change',
+  remove: 'remove',
+} as const;

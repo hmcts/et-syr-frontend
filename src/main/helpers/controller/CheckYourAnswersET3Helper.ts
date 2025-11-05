@@ -20,7 +20,7 @@ import { AnyRecord } from '../../definitions/util-types';
 import AddressUtils from '../../utils/AddressUtils';
 import DocumentUtils from '../../utils/DocumentUtils';
 import NumberUtils from '../../utils/NumberUtils';
-import RespondentUtils from '../../utils/RespondentUtils';
+import { RespondentUtils } from '../../utils/RespondentUtils';
 import {
   oesYesOrNoMap,
   ydwYesOrNoMap,

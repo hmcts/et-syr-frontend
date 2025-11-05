@@ -16,6 +16,7 @@ import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ET3Util from '../utils/ET3Util';
+import { RespondentUtils } from '../utils/RespondentUtils';
 
 const DAYS_FOR_PROCESSING = 7;
 export default class CaseDetailsController {
@@ -37,6 +38,8 @@ export default class CaseDetailsController {
     if (CollectionUtils.isNotEmpty(req.session.errors)) {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CASE_LIST)));
     }
+
+    const representative = RespondentUtils.findSelectedRespondentRepresentative(req);
 
     const et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses = await getET3CaseDetailsLinkNames(
       selectedRespondent.et3CaseDetailsLinksStatuses,
@@ -60,7 +63,7 @@ export default class CaseDetailsController {
       sections,
       et1FormUrl: setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM),
       respondToClaimUrl: setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_LANDING),
-      selectedRespondent: req.session.userCase.respondents[req.session.selectedRespondentIndex],
+      selectedRespondent,
       et3Response: setUrlLanguage(req, PageUrls.YOUR_RESPONSE_FORM),
       hideContactUs: true,
       processingDueDate: getDueDate(formatDate(req.session.userCase.submittedDate), DAYS_FOR_PROCESSING),
@@ -73,6 +76,8 @@ export default class CaseDetailsController {
       appSubmitNotifications: appNotifications.appSubmitNotifications,
       storedNotifications: getStoredBannerList(req),
       languageParam: getLanguageParam(req.url),
+      respondentRepresented: representative !== undefined,
+      respondentRepresentative: representative,
     });
   }
 }
