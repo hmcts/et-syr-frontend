@@ -33,8 +33,8 @@ export default class NotificationDetailsController {
     }
 
     // Update the notification status as viewed
+    const newStatus: LinkStatus = getNotificationStatusAfterViewed(selectedNotification.value, user);
     try {
-      const newStatus: LinkStatus = getNotificationStatusAfterViewed(selectedNotification.value, user);
       if (newStatus) {
         await getCaseApi(user?.accessToken).changeNotificationStatus(userCase, user, selectedNotification, newStatus);
       }
@@ -51,7 +51,7 @@ export default class NotificationDetailsController {
       hideContactUs: true,
       notificationContent: getNotificationContent(selectedNotification.value, req),
       notificationResponses: getNotificationResponses(selectedNotification.value, req),
-      isRespondButton: isRespondButton(selectedNotification.value, user),
+      isRespondButton: isRespondButton(newStatus, selectedNotification.value, user),
       respondUrl: PageUrls.RESPOND_TO_NOTIFICATION.replace(':itemId', selectedNotification.id) + languageParam,
     });
   };

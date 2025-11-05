@@ -187,6 +187,7 @@ export const PageUrls = {
   RESPOND_TO_NOTIFICATION_CYA: '/respond-to-notification-check-your-answers',
   RESPOND_TO_NOTIFICATION_CYA_OFFLINE: '/respond-to-notification-check-your-answers-offline',
   RESPOND_TO_NOTIFICATION_COMPLETE: '/respond-to-notification-complete',
+  RESPOND_TO_NOTIFICATION_STORE_CONFIRMATION: '/respond-to-notification-store-confirmation/:itemId',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
 } as const;
@@ -303,6 +304,7 @@ export const JavaApiUrls = {
   CHANGE_RESPONDENT_APPLICATION_STATUS: 'respondentTSE/change-respondent-application-status',
   CHANGE_RESPONDENT_NOTIFICATION_STATUS: 'sendNotification/change-respondent-notification-status',
   SUBMIT_RESPONSE_TO_NOTIFICATION: 'sendNotification/add-respondent-respond-to-notification',
+  STORE_RESPONSE_TO_NOTIFICATION: 'sendNotification/store-respondent-respond-to-notification',
 } as const;
 
 export const Roles = {
