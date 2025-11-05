@@ -8,7 +8,7 @@ import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import DateUtils from '../utils/DateUtils';
 import DocumentUtils from '../utils/DocumentUtils';
 import ObjectUtils from '../utils/ObjectUtils';
-import RespondentUtils from '../utils/RespondentUtils';
+import { RespondentUtils } from '../utils/RespondentUtils';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
 

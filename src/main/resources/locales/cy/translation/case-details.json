@@ -33,6 +33,8 @@
   "submittedAlert": "Rydych wedi cyflwyno eich hawliad i’r tribiwnlys",
   "processClaim": "Byddwn yn anelu at brosesu eich hawliad erbyn",
   "busyPeriod": ". Gall gymryd mwy o amser na hyn ar adegau prysur.",
+  "appointLegalRepresentative": "Penodi cynrychiolydd cyfreithiol",
+  "changeLegalRepresentative": "Newid fy nghynrychiolydd cyfreithiol",
   "notificationBanner": {
     "viewResponse": {
       "header": "Mae’r tribiwnlys wedi cydnabod hawliad yn erbyn ",
@@ -72,6 +74,16 @@
       "p3a": "Os oes gennych unrhyw wrthwynebiadau neu ymatebion i’w cais, rhaid i chi eu hanfon i’r tribiwnlys cyn gynted â phosibl ac erbyn ",
       "p3b": "fan bellaf.",
       "linkText": "Ymateb i’r cais"
+    },
+    "respondentRepresented": {
+      "title": "Rydych chi bellach yn cael eich cynrychioli’n gyfreithiol gan",
+      "p1": "Byddwch yn cael eich diweddaru gyda gohebiaeth ynghylch yr achos ond ni fyddwch yn gallu gwneud y canlynol mwyach",
+      "l1": "Cyflwyno ceisiadau",
+      "l2": "Ymateb yn uniongyrchol i geisiadau a hysbysiadau"
+    },
+    "respondentNotRepresented": {
+      "p1": "Nid ydych bellach yn cael eich cynrychioli'n gyfreithiol.",
+      "p2": "Gallwch barhau i gynrychioli'ch hun neu efallai yr hoffech benodi cynrychiolydd cyfreithiol newydd."
     },
     "storedPending": {
       "header": "Rydych wedi storio gohebiaeth nad ydych wedi'i chyflwyno i'r tribiwnlys",

@@ -4,7 +4,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { DefaultValues, ErrorPages, LegacyUrls, PageUrls, languages } from '../definitions/constants';
 import { FormFields } from '../definitions/form';
 import ObjectUtils from '../utils/ObjectUtils';
-import RespondentUtils from '../utils/RespondentUtils';
+import { RespondentUtils } from '../utils/RespondentUtils';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
 

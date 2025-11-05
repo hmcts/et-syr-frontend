@@ -5,7 +5,7 @@ import { CaseWithId, RespondentET3Model } from '../../../../main/definitions/cas
 import { DocumentTypeItem } from '../../../../main/definitions/complexTypes/documentTypeItem';
 import { DefaultValues } from '../../../../main/definitions/constants';
 import RespondentContestClaimControllerHelper from '../../../../main/helpers/controller/RespondentContestClaimControllerHelper';
-import RespondentUtils from '../../../../main/utils/RespondentUtils';
+import { RespondentUtils } from '../../../../main/utils/RespondentUtils';
 import { mockValidCaseWithId } from '../../mocks/mockCaseWithId';
 import { mockValidCaseWithIdWithFullRespondentDetails } from '../../mocks/mockCaseWithIdWithFullRespondentDetails';
 import { mockedAcasForm, mockedET1FormEnglish, mockedET1FormWelsh } from '../../mocks/mockDocuments';

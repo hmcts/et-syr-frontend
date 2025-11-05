@@ -1,0 +1,17 @@
+{% extends "form/main/template.njk" %}
+
+{% block beforeContent %}
+  {{ super() }}
+  {% include "back-link.njk"%}
+{% endblock %}
+
+{% block content %}
+  {% block errorSummary %}
+    {% include "./form/main/error-summary.njk" %}
+  {% endblock %}
+  <div class="govuk-grid-row">
+      {% block form %}
+        {% include "form/form.njk"%}
+      {% endblock %}
+  </div>
+{% endblock %}
