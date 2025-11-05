@@ -91,8 +91,11 @@ export const TranslationKeys = {
   RESPOND_TO_NOTIFICATION: 'respond-to-notification',
   RESPOND_TO_NOTIFICATION_CYA: 'respond-to-notification-check-your-answers',
   RESPOND_TO_NOTIFICATION_CYA_OFFLINE: 'respond-to-notification-check-your-answers-offline',
+  // NoC
+  APPOINT_LEGAL_REPRESENTATIVE: 'appoint-legal-representative',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
+  CHANGE_LEGAL_REPRESENTATIVE: 'change-legal-representative',
 } as const;
 
 export const PageUrls = {
@@ -188,8 +191,11 @@ export const PageUrls = {
   RESPOND_TO_NOTIFICATION_CYA_OFFLINE: '/respond-to-notification-check-your-answers-offline',
   RESPOND_TO_NOTIFICATION_COMPLETE: '/respond-to-notification-complete',
   RESPOND_TO_NOTIFICATION_STORE_CONFIRMATION: '/respond-to-notification-store-confirmation/:itemId',
+  // NoC
+  APPOINT_LEGAL_REPRESENTATIVE: '/appoint-legal-representative',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
+  CHANGE_LEGAL_REPRESENTATIVE: '/change-legal-representative',
 } as const;
 
 export const InterceptPaths = {
@@ -305,6 +311,7 @@ export const JavaApiUrls = {
   CHANGE_RESPONDENT_NOTIFICATION_STATUS: 'sendNotification/change-respondent-notification-status',
   SUBMIT_RESPONSE_TO_NOTIFICATION: 'sendNotification/add-respondent-respond-to-notification',
   STORE_RESPONSE_TO_NOTIFICATION: 'sendNotification/store-respondent-respond-to-notification',
+  REVOKE_RESPONDENT_REPRESENTATIVE: '/manageCaseRole/revokeRespondentSolicitorRole',
 } as const;
 
 export const Roles = {
@@ -574,6 +581,7 @@ export const ServiceErrors = {
   ERROR_MODIFYING_SUBMITTED_CASE_REQUEST_TYPE_NOT_FOUND: 'Request type not found',
   ERROR_MODIFYING_SUBMITTED_CASE_RESPONDENT_NOT_FOUND: 'Respondent not found',
   ERROR_MODIFYING_SUBMITTED_CASE_CASE_NOT_FOUND: 'Case not found',
+  ERROR_REVOKING_USER_ROLE: 'Error revoking user role: ',
 } as const;
 
 export const CacheErrors = {
@@ -648,3 +656,8 @@ export const IsCmoOrRequest = {
   REQUEST: 'Request',
   NEITHER: 'Neither',
 };
+
+export const LEGAL_REPRESENTATIVE_CHANGE_OPTIONS = {
+  change: 'change',
+  remove: 'remove',
+} as const;

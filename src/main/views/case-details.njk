@@ -103,6 +103,19 @@
                 {{ findLegalAdvice }}
               </a>
             </p>
+            {% if respondentRepresented %}
+              <p class="govuk-body">
+                <a href="/change-legal-representative">
+                  {{ changeLegalRepresentative }}
+                </a>
+              </p>
+            {% else %}
+              <p class="govuk-body">
+                <a href="/appoint-legal-representative">
+                  {{ appointLegalRepresentative }}
+                </a>
+              </p>
+            {% endif %}
 
             {% set sideBarContent %}
             {% include "./components/sidebar/sidebar.njk" %}
