@@ -74,6 +74,8 @@ import RespondToNotificationCompleteController from '../../controllers/RespondTo
 import RespondToNotificationController from '../../controllers/RespondToNotificationController';
 import RespondToNotificationCopyController from '../../controllers/RespondToNotificationCopyController';
 import RespondToNotificationCopyOfflineController from '../../controllers/RespondToNotificationCopyOfflineController';
+import RespondToNotificationStoreConfirmController from '../../controllers/RespondToNotificationStoreConfirmController';
+import RespondToNotificationStoreController from '../../controllers/RespondToNotificationStoreController';
 import RespondToNotificationSubmitController from '../../controllers/RespondToNotificationSubmitController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
@@ -336,6 +338,8 @@ export class Routes {
     app.get(PageUrls.RESPOND_TO_NOTIFICATION_CYA_OFFLINE, new RespondToNotificationCYAOfflineController().get);
     app.get(InterceptPaths.RESPOND_TO_NOTIFICATION_SUBMIT, new RespondToNotificationSubmitController().get);
     app.get(PageUrls.RESPOND_TO_NOTIFICATION_COMPLETE, new RespondToNotificationCompleteController().get);
+    app.get(InterceptPaths.RESPOND_TO_NOTIFICATION_STORE, new RespondToNotificationStoreController().get);
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_STORE_CONFIRMATION, new RespondToNotificationStoreConfirmController().get);
     // others
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);

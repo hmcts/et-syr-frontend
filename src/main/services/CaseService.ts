@@ -343,6 +343,29 @@ export class CaseApi {
       throw new Error('Error responding to notification: ' + axiosErrorDetails(error));
     }
   };
+
+  storeResponseToNotification = async (
+    userCase: CaseWithId,
+    user: UserDetails
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      return await this.axios.put(JavaApiUrls.STORE_RESPONSE_TO_NOTIFICATION, {
+        case_id: userCase.id,
+        case_type_id: userCase.caseTypeId,
+        send_notification_id: userCase.selectedNotification.id,
+        supportingMaterialFile: userCase.supportingMaterialFile,
+        pseResponseType: {
+          response: userCase.responseText,
+          hasSupportingMaterial: userCase.hasSupportingMaterial,
+          copyToOtherParty: userCase.copyToOtherPartyYesOrNo,
+          copyNoGiveDetails: userCase.copyToOtherPartyText,
+          fromIdamId: user.id,
+        },
+      });
+    } catch (error) {
+      throw new Error('Error storing response to notification: ' + axiosErrorDetails(error));
+    }
+  };
 }
 
 export const getCaseApi = (token: string): CaseApi => {

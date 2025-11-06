@@ -221,10 +221,15 @@ const addAdminResponse = (
 
 /**
  * Check if any response is required from claimant
+ * @param newStatus new link status after viewed
  * @param notification selected SendNotificationType
  * @param user user details
  */
-export const isRespondButton = (notification: SendNotificationType, user: UserDetails): boolean => {
-  const existingState = getExistingNotificationState(notification, user);
+export const isRespondButton = (
+  newStatus: LinkStatus,
+  notification: SendNotificationType,
+  user: UserDetails
+): boolean => {
+  const existingState = newStatus || getExistingNotificationState(notification, user);
   return existingState === LinkStatus.NOT_STARTED_YET;
 };
