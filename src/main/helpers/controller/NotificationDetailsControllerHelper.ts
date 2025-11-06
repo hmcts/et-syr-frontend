@@ -233,3 +233,17 @@ export const isRespondButton = (
   const existingState = newStatus || getExistingNotificationState(notification, user);
   return existingState === LinkStatus.NOT_STARTED_YET;
 };
+
+/**
+ * Get single response display details
+ * @param response
+ * @param req
+ */
+export const getSinglePseResponseDisplay = (response: PseResponseType, req: AppRequest): SummaryListRow[] => {
+  const translations: AnyRecord = {
+    ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
+    ...req.t(TranslationKeys.NOTIFICATION_SUBJECTS, { returnObjects: true }),
+    ...req.t(TranslationKeys.NOTIFICATION_DETAILS, { returnObjects: true }),
+  };
+  return addNonAdminResponse(response, translations, req).rows;
+};

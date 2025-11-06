@@ -6,7 +6,7 @@ import {
   SendNotificationType,
   SendNotificationTypeItem,
 } from '../definitions/complexTypes/sendNotificationTypeItem';
-import { PartiesNotify, PartiesRespond } from '../definitions/constants';
+import { PageUrls, PartiesNotify, PartiesRespond } from '../definitions/constants';
 import { LinkStatus } from '../definitions/links';
 import { TypeItem } from '../definitions/util-types';
 
@@ -79,7 +79,7 @@ const hasOtherPartyResponseShared = (responseList: TypeItem<PseResponseType>[]):
 };
 
 /**
- * Return selected application
+ * Return selected notification
  * @param items
  * @param notificationId
  */
@@ -88,6 +88,18 @@ export const findSelectedSendNotification = (
   notificationId: string
 ): SendNotificationTypeItem => {
   return items?.find(it => it.id === notificationId);
+};
+
+/**
+ * Return selected notification response
+ * @param responses
+ * @param responseId
+ */
+export const findSelectedPseResponse = (
+  responses: TypeItem<PseResponseType>[],
+  responseId: string
+): TypeItem<PseResponseType> => {
+  return responses?.find(it => it.id === responseId);
 };
 
 /**
@@ -119,4 +131,12 @@ const getLinkStatus = (items: SendNotificationTypeItem[]): LinkStatus => {
     return LinkStatus.NOT_YET_AVAILABLE;
   }
   return LinkStatus.READY_TO_VIEW;
+};
+
+/**
+ * Get notification details url
+ * @param item SendNotificationTypeItem
+ */
+export const getNotificationDetailsUrl = (item: SendNotificationTypeItem): string => {
+  return PageUrls.NOTIFICATION_DETAILS.replace(':itemId', item.id);
 };

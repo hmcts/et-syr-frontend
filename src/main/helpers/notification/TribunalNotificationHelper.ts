@@ -2,7 +2,12 @@ import { AppRequest } from '../../definitions/appRequest';
 import { SendNotificationTypeItem } from '../../definitions/complexTypes/sendNotificationTypeItem';
 import { PageUrls } from '../../definitions/constants';
 import { NotificationDetails, PseNotification } from '../../definitions/notification/pseNotification';
-import { hasUserViewed, isNotificationVisible, isPartiesRespondRequired } from '../NotificationHelper';
+import {
+  getNotificationDetailsUrl,
+  hasUserViewed,
+  isNotificationVisible,
+  isPartiesRespondRequired,
+} from '../NotificationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
@@ -33,7 +38,7 @@ const getNotificationDetails = (item: SendNotificationTypeItem, languageParam: s
     isResponseRequired: isNeedsResponse,
     redirectUrl: isNeedsResponse
       ? PageUrls.RESPOND_TO_NOTIFICATION.replace(':itemId', item.id) + languageParam
-      : PageUrls.NOTIFICATION_DETAILS.replace(':itemId', item.id) + languageParam,
+      : getNotificationDetailsUrl(item) + languageParam,
     notificationTitle: item.value.sendNotificationTitle,
   };
 };

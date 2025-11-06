@@ -2,8 +2,8 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
-import { ErrorPages, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
-import { findSelectedSendNotification } from '../helpers/NotificationHelper';
+import { ErrorPages, TranslationKeys, TseErrors } from '../definitions/constants';
+import { findSelectedSendNotification, getNotificationDetailsUrl } from '../helpers/NotificationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import UrlUtils from '../utils/UrlUtils';
@@ -29,7 +29,7 @@ export default class RespondToNotificationStoreConfirmController {
     res.render(TranslationKeys.CONTACT_TRIBUNAL_STORE_COMPLETE, {
       ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
       ...req.t(TranslationKeys.CONTACT_TRIBUNAL_STORE_COMPLETE, { returnObjects: true }),
-      viewCorrespondenceLink: PageUrls.NOTIFICATION_DETAILS.replace(':itemId', selectedNotification.id) + languageParam,
+      viewCorrespondenceLink: getNotificationDetailsUrl(selectedNotification) + languageParam,
       redirectUrl: UrlUtils.getCaseDetailsUrlByRequest(req),
     });
   };

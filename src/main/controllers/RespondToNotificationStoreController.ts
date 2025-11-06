@@ -2,7 +2,6 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { ErrorPages, PageUrls, TseErrors } from '../definitions/constants';
-import { LinkStatus } from '../definitions/links';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { clearTempFields } from '../helpers/controller/RespondToNotificationSubmitHelper';
 import { getLogger } from '../logger';
@@ -18,14 +17,6 @@ export default class RespondToNotificationStoreController {
     try {
       // store application
       await getCaseApi(user?.accessToken).storeResponseToNotification(userCase, user);
-
-      // Update notification respondent state
-      await getCaseApi(user.accessToken).changeNotificationStatus(
-        userCase,
-        user,
-        userCase.selectedNotification,
-        LinkStatus.STORED
-      );
 
       // clear temporary fields
       const notificationId = userCase.selectedNotification.id;

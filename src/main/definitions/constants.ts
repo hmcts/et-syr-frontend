@@ -84,7 +84,7 @@ export const TranslationKeys = {
   RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: 'respond-to-application-supporting-material',
   RESPOND_TO_APPLICATION_CYA: 'respond-to-application-check-your-answers',
   RESPOND_TO_APPLICATION_COMPLETE: 'respond-to-application-complete',
-  // Notification
+  // Tribunal Notification
   NOTIFICATIONS: 'notifications',
   NOTIFICATION_DETAILS: 'notification-details',
   NOTIFICATION_SUBJECTS: 'notification-subjects',
@@ -181,7 +181,7 @@ export const PageUrls = {
   RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: '/respond-to-application-copy-to-other-party',
   RESPOND_TO_APPLICATION_CYA: '/respond-to-application-check-your-answers',
   RESPOND_TO_APPLICATION_COMPLETE: '/respond-to-application-complete',
-  // Notification
+  // Tribunal Notification
   NOTIFICATIONS: '/notifications',
   NOTIFICATION_DETAILS: '/notification-details/:itemId',
   RESPOND_TO_NOTIFICATION: '/respond-to-notification/:itemId',
@@ -191,6 +191,7 @@ export const PageUrls = {
   RESPOND_TO_NOTIFICATION_CYA_OFFLINE: '/respond-to-notification-check-your-answers-offline',
   RESPOND_TO_NOTIFICATION_COMPLETE: '/respond-to-notification-complete',
   RESPOND_TO_NOTIFICATION_STORE_CONFIRMATION: '/respond-to-notification-store-confirmation/:itemId',
+  RESPOND_TO_NOTIFICATION_TO_SUBMIT: '/respond-to-notification-to-submit/:itemId/:responseId',
   // NoC
   APPOINT_LEGAL_REPRESENTATIVE: '/appoint-legal-representative',
   // others
