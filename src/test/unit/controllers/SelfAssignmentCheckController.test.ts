@@ -110,7 +110,7 @@ describe('Self assignment check controller', () => {
       const mockApiResponse = {
         data: {
           status: 'ALREADY_ASSIGNED' as const,
-          caseDetails: [] as any[],
+          caseDetails: [] as never[],
           message: 'User was already assigned to this case',
         },
       };
