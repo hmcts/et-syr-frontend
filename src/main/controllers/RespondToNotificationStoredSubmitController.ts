@@ -58,7 +58,7 @@ export default class RespondToNotificationStoredSubmitController {
       req.params.responseId
     );
     if (!selectedResponse) {
-      logger.error(TseErrors.ERROR_NOTIFICATION_NOT_FOUND + req.params.responseId);
+      logger.error(TseErrors.ERROR_NOTIFICATION_RESPONSE_NOT_FOUND + req.params.responseId);
       return res.redirect(ErrorPages.NOT_FOUND + languageParam);
     }
 
@@ -67,7 +67,7 @@ export default class RespondToNotificationStoredSubmitController {
     req.session.errors = this.form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
       return res.redirect(
-        PageUrls.RESPOND_TO_NOTIFICATION_TO_SUBMIT.replace(':itemId', selectedNotification.id).replace(
+        PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT.replace(':itemId', selectedNotification.id).replace(
           ':responseId',
           selectedResponse.id
         ) + languageParam
@@ -108,17 +108,21 @@ export default class RespondToNotificationStoredSubmitController {
       req.params.responseId
     );
     if (!selectedResponse) {
-      logger.error(TseErrors.ERROR_NOTIFICATION_NOT_FOUND + req.params.responseId);
+      logger.error(TseErrors.ERROR_NOTIFICATION_RESPONSE_NOT_FOUND + req.params.responseId);
       return res.redirect(ErrorPages.NOT_FOUND + languageParam);
     }
 
     // render page
+    const headerTranslations: AnyRecord = {
+      ...req.t(TranslationKeys.RESPOND_TO_NOTIFICATION, { returnObjects: true }),
+    };
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
-      TranslationKeys.STORED_APPLICATION_SUBMIT,
+      TranslationKeys.STORED_CORRESPONDENCE_SUBMIT,
     ]);
-    res.render(TranslationKeys.STORED_APPLICATION_SUBMIT, {
+    res.render(TranslationKeys.STORED_CORRESPONDENCE_SUBMIT, {
       ...content,
+      title: headerTranslations.title,
       appContent: getSinglePseResponseDisplay(selectedNotification.value, req),
       viewCorrespondenceLink: getNotificationDetailsUrl(selectedNotification) + languageParam,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),

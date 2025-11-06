@@ -56,7 +56,9 @@ export default class ContactTribunalSubmitStoredController {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     req.session.errors = this.form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
-      return res.redirect(PageUrls.STORED_APPLICATION_SUBMIT.replace(':appId', selectedApplication.id) + languageParam);
+      return res.redirect(
+        PageUrls.STORED_CORRESPONDENCE_SUBMIT.replace(':appId', selectedApplication.id) + languageParam
+      );
     }
 
     // submit stored application
@@ -97,9 +99,9 @@ export default class ContactTribunalSubmitStoredController {
     // render page
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
-      TranslationKeys.STORED_APPLICATION_SUBMIT,
+      TranslationKeys.STORED_CORRESPONDENCE_SUBMIT,
     ]);
-    res.render(TranslationKeys.STORED_APPLICATION_SUBMIT, {
+    res.render(TranslationKeys.STORED_CORRESPONDENCE_SUBMIT, {
       ...content,
       title: getApplicationDisplay(selectedApplication.value, {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),

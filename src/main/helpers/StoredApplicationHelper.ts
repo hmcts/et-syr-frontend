@@ -50,7 +50,7 @@ export const mapStoredRespondentTse = (user: UserDetails, app: GenericTseApplica
  * @param languageParam language parameter
  */
 export const getSubmitStoredAppLink = (appId: string, languageParam: string): string => {
-  return PageUrls.STORED_APPLICATION_SUBMIT.replace(':appId', appId) + languageParam;
+  return PageUrls.STORED_CORRESPONDENCE_SUBMIT.replace(':appId', appId) + languageParam;
 };
 
 /**
