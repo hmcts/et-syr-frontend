@@ -70,7 +70,7 @@ describe('CheckYourAnswersContestClaimController', () => {
 
       updateET3ResponseWithET3FormMock.mockImplementation(
         createMockedUpdateET3ResponseWithET3FormFunction(
-          PageUrls.RESPONDENT_RESPONSE_TASK_LIST,
+          PageUrls.EMPLOYERS_CONTRACT_CLAIM,
           request,
           response,
           [],
@@ -80,14 +80,14 @@ describe('CheckYourAnswersContestClaimController', () => {
       await controller.post(request, response);
 
       expect(request.session.userCase).toEqual(mockCaseWithIdWithRespondents); // Validate the userCase is set
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_RESPONSE_TASK_LIST); // Ensure the correct redirect occurs
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.EMPLOYERS_CONTRACT_CLAIM); // Ensure the correct redirect occurs
       expect(updateET3ResponseWithET3FormMock).toHaveBeenCalledWith(
         request,
         response,
         expect.anything(),
         expect.anything(),
         LinkStatus.COMPLETED,
-        PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+        PageUrls.EMPLOYERS_CONTRACT_CLAIM
       );
     });
 
@@ -96,7 +96,7 @@ describe('CheckYourAnswersContestClaimController', () => {
 
       updateET3ResponseWithET3FormMock.mockImplementation(
         createMockedUpdateET3ResponseWithET3FormFunction(
-          PageUrls.RESPONDENT_RESPONSE_TASK_LIST,
+          PageUrls.EMPLOYERS_CONTRACT_CLAIM,
           request,
           response,
           [],
@@ -107,14 +107,14 @@ describe('CheckYourAnswersContestClaimController', () => {
       await controller.post(request, response);
 
       expect(request.session.userCase).toEqual(mockCaseWithIdWithRespondents);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_RESPONSE_TASK_LIST);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.EMPLOYERS_CONTRACT_CLAIM);
       expect(updateET3ResponseWithET3FormMock).toHaveBeenCalledWith(
         request,
         response,
         expect.anything(),
         expect.anything(),
         LinkStatus.IN_PROGRESS_CYA,
-        PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+        PageUrls.EMPLOYERS_CONTRACT_CLAIM
       );
     });
     it('should redirect to employers contract claim on valid submission and user case has breach of contract as type of claim', async () => {

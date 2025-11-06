@@ -33,6 +33,8 @@
   "submittedAlert": "You have submitted your claim to the tribunal",
   "processClaim": "We aim to process your claim by",
   "busyPeriod": ". In busy periods it may take longer.",
+  "appointLegalRepresentative": "Appoint a legal representative",
+  "changeLegalRepresentative": "Change my legal representative",
   "notificationBanner": {
     "viewResponse": {
       "header": "The tribunal has acknowledged a claim against ",
@@ -72,6 +74,16 @@
       "p3a": "If you have any objections or responses to their application you must send them to the tribunal as soon as possible and by",
       "p3b": "at the latest.",
       "linkText": "Respond to the application"
+    },
+    "respondentRepresented": {
+      "title": "You are now being legally represented by",
+      "p1": "You will be kept updated with case communication but will no longer be able to",
+      "l1": "Submit applications",
+      "l2": "Directly respond to applications or notifications"
+    },
+    "respondentNotRepresented": {
+      "p1": "You are no longer legally represented.",
+      "p2": "You may continue to represent yourself or you may wish to appoint a new legal representative."
     },
     "storedPending": {
       "header": "You have stored correspondence which you have not submitted to the tribunal",

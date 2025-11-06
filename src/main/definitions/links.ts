@@ -117,13 +117,6 @@ export const SectionIndexToEt3HubLinkNamesWithEmployersContractClaim: ET3HubLink
   [ET3HubLinkNames.CheckYorAnswers],
 ];
 
-export const SectionIndexToEt3HubLinkNamesWithoutEmployersContractClaim: ET3HubLinkNames[][] = [
-  [ET3HubLinkNames.ContactDetails, ET3HubLinkNames.EmployerDetails],
-  [ET3HubLinkNames.ConciliationAndEmployeeDetails, ET3HubLinkNames.PayPensionBenefitDetails],
-  [ET3HubLinkNames.ContestClaim],
-  [ET3HubLinkNames.CheckYorAnswers],
-];
-
 //*************************************************************************//
 //********************* END OF ET3 HUB LINKS CONSTANTS ********************//
 //*************************************************************************//

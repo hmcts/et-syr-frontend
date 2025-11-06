@@ -4,7 +4,7 @@ import { DefaultValues } from '../../definitions/constants';
 import CollectionUtils from '../../utils/CollectionUtils';
 import DocumentUtils from '../../utils/DocumentUtils';
 import ObjectUtils from '../../utils/ObjectUtils';
-import RespondentUtils from '../../utils/RespondentUtils';
+import { RespondentUtils } from '../../utils/RespondentUtils';
 
 export default class RespondentContestClaimControllerHelper {
   public static resetRespondentContestClaimDetails(req: AppRequest): void {
