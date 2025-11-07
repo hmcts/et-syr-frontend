@@ -312,6 +312,7 @@ export const JavaApiUrls = {
   CHANGE_RESPONDENT_NOTIFICATION_STATUS: 'sendNotification/change-respondent-notification-status',
   SUBMIT_RESPONSE_TO_NOTIFICATION: 'sendNotification/add-respondent-respond-to-notification',
   STORE_RESPONSE_TO_NOTIFICATION: 'sendNotification/store-respondent-respond-to-notification',
+  SUBMIT_STORE_RESPONSE_TO_NOTIFICATION: 'sendNotification/submit-respondent-respond-to-notification',
   REVOKE_RESPONDENT_REPRESENTATIVE: '/manageCaseRole/revokeRespondentSolicitorRole',
 } as const;
 

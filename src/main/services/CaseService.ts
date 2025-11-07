@@ -375,7 +375,7 @@ export class CaseApi {
     selectedResponse: TypeItem<PseResponseType>
   ): Promise<AxiosResponse<CaseApiDataResponse>> => {
     try {
-      return await this.axios.put(JavaApiUrls.SUBMIT_RESPONSE_TO_NOTIFICATION, {
+      return await this.axios.put(JavaApiUrls.SUBMIT_STORE_RESPONSE_TO_NOTIFICATION, {
         case_id: userCase.id,
         case_type_id: userCase.caseTypeId,
         from_idam_id: user.id,
