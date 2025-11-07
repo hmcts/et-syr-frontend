@@ -124,7 +124,7 @@ export default class RespondToNotificationStoredSubmitController {
     res.render(TranslationKeys.STORED_CORRESPONDENCE_SUBMIT, {
       ...content,
       title: headerTranslations.title,
-      appContent: getSinglePseResponseDisplay(selectedNotification.value, req),
+      appContent: getSinglePseResponseDisplay(selectedResponse.value, req),
       viewCorrespondenceLink: getNotificationDetailsUrl(selectedNotification) + languageParam,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
     });
