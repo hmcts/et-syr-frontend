@@ -42,19 +42,19 @@ const buildNotificationList = (
   const notificationState = getExistingNotificationState(notification.value, user);
   return {
     date: notification.value.date,
-    redirectUrl: getRedirectUrl(notification, user, languageParam),
+    redirectUrl: getRedirectUrl(notification, user) + languageParam,
     linkText: notification.value.sendNotificationTitle,
     displayStatus: translations[notificationState],
     statusColor: linkStatusColorMap.get(notificationState),
   };
 };
 
-const getRedirectUrl = (notification: SendNotificationTypeItem, user: UserDetails, languageParam: string): string => {
-  const anyStoredResponse = notification?.value.respondentRespondStoredCollection?.find(
-    it => it.value.fromIdamId === user.id
+const getRedirectUrl = (notification: SendNotificationTypeItem, user: UserDetails): string => {
+  const anyStoredResponse = notification?.value?.respondentRespondStoredCollection?.find(
+    r => r.value.fromIdamId === user.id
   );
   if (anyStoredResponse) {
-    return getNotificationStoredSubmitUrl(notification, anyStoredResponse) + languageParam;
+    return getNotificationStoredSubmitUrl(notification, anyStoredResponse);
   }
-  return getNotificationDetailsUrl(notification) + languageParam;
+  return getNotificationDetailsUrl(notification);
 };

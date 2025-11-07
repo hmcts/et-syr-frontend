@@ -41,7 +41,7 @@ const getStoredNotificationRespond = (
   const storeNotifications: TseStoreNotification[] = [];
 
   const itemsFiltered = items?.filter(item =>
-    item.value?.respondentRespondStoredCollection?.some(response => response.value?.fromIdamId === user.id)
+    item.value?.respondentRespondStoredCollection?.some(response => response.value.fromIdamId === user.id)
   );
 
   for (const item of itemsFiltered || []) {
