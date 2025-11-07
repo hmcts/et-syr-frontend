@@ -10,7 +10,6 @@ import {
   getExistingNotificationState,
   getNotificationDetailsUrl,
   getTribunalNotificationLinkStatus,
-  hasUserViewed,
   isNotificationVisible,
   isPartiesRespondRequired,
 } from '../../../main/helpers/NotificationHelper';
@@ -36,25 +35,6 @@ describe('NotificationHelper', () => {
         sendNotificationSelectParties: PartiesRespond.CLAIMANT,
       } as SendNotificationType;
       expect(isPartiesRespondRequired(item)).toBe(false);
-    });
-  });
-
-  describe('hasUserViewed', () => {
-    const user: UserDetails = { id: 'user-1' } as UserDetails;
-    it('should return true if user has viewed', () => {
-      const notification = {
-        respondentState: [{ value: { userIdamId: 'user-1' } }, { value: { userIdamId: 'user-2' } }],
-      } as SendNotificationType;
-      expect(hasUserViewed(notification, user)).toBe(true);
-    });
-    it('should return false if user has not viewed', () => {
-      const notification = {
-        respondentState: [{ value: { userIdamId: 'user-2' } }],
-      } as SendNotificationType;
-      expect(hasUserViewed(notification, user)).toBe(false);
-    });
-    it('should return false if notification is undefined', () => {
-      expect(hasUserViewed(undefined, user)).toBe(false);
     });
   });
 

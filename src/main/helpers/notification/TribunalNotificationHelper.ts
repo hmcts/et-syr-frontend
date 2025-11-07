@@ -1,13 +1,11 @@
-import { AppRequest } from '../../definitions/appRequest';
-import { SendNotificationTypeItem } from '../../definitions/complexTypes/sendNotificationTypeItem';
+import { AppRequest, UserDetails } from '../../definitions/appRequest';
+import {
+  SendNotificationType,
+  SendNotificationTypeItem,
+} from '../../definitions/complexTypes/sendNotificationTypeItem';
 import { PageUrls } from '../../definitions/constants';
 import { NotificationDetails, PseNotification } from '../../definitions/notification/pseNotification';
-import {
-  getNotificationDetailsUrl,
-  hasUserViewed,
-  isNotificationVisible,
-  isPartiesRespondRequired,
-} from '../NotificationHelper';
+import { getNotificationDetailsUrl, isNotificationVisible, isPartiesRespondRequired } from '../NotificationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
@@ -30,6 +28,10 @@ export const getTribunalNotificationBanner = (req: AppRequest): PseNotification 
   const isNeedsRequired = notificationDetails.some(detail => detail.isResponseRequired);
 
   return { anyResponseRequired: isNeedsRequired, notificationList: notificationDetails };
+};
+
+const hasUserViewed = (notification: SendNotificationType, user: UserDetails): boolean => {
+  return notification ? notification.respondentState?.some(state => state.value.userIdamId === user.id) : false;
 };
 
 const getNotificationDetails = (item: SendNotificationTypeItem, languageParam: string): NotificationDetails => {
