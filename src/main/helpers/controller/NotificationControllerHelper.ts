@@ -4,7 +4,12 @@ import { TranslationKeys } from '../../definitions/constants';
 import { linkStatusColorMap } from '../../definitions/links';
 import { NotificationList } from '../../definitions/notificationList';
 import { AnyRecord } from '../../definitions/util-types';
-import { getExistingNotificationState, getNotificationDetailsUrl, isNotificationVisible } from '../NotificationHelper';
+import {
+  getExistingNotificationState,
+  getNotificationDetailsUrl,
+  getNotificationStoredSubmitUrl,
+  isNotificationVisible,
+} from '../NotificationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
@@ -37,9 +42,19 @@ const buildNotificationList = (
   const notificationState = getExistingNotificationState(notification.value, user);
   return {
     date: notification.value.date,
-    redirectUrl: getNotificationDetailsUrl(notification) + languageParam,
+    redirectUrl: getRedirectUrl(notification, user, languageParam),
     linkText: notification.value.sendNotificationTitle,
     displayStatus: translations[notificationState],
     statusColor: linkStatusColorMap.get(notificationState),
   };
+};
+
+const getRedirectUrl = (notification: SendNotificationTypeItem, user: UserDetails, languageParam: string): string => {
+  const anyStoredResponse = notification?.value.respondentRespondStoredCollection?.find(
+    it => it.value.fromIdamId === user.id
+  );
+  if (anyStoredResponse) {
+    return getNotificationStoredSubmitUrl(notification, anyStoredResponse) + languageParam;
+  }
+  return getNotificationDetailsUrl(notification) + languageParam;
 };

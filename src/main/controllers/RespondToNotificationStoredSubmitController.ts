@@ -13,6 +13,7 @@ import {
   findSelectedSendNotification,
   findSelectedStoredPseResponse,
   getNotificationDetailsUrl,
+  getNotificationStoredSubmitUrl,
 } from '../helpers/NotificationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getSinglePseResponseDisplay } from '../helpers/controller/NotificationDetailsControllerHelper';
@@ -67,12 +68,7 @@ export default class RespondToNotificationStoredSubmitController {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     req.session.errors = this.form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
-      return res.redirect(
-        PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT.replace(':itemId', selectedNotification.id).replace(
-          ':responseId',
-          selectedResponse.id
-        ) + languageParam
-      );
+      return res.redirect(getNotificationStoredSubmitUrl(selectedNotification, selectedResponse) + languageParam);
     }
 
     // submit stored response

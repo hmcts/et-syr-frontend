@@ -119,8 +119,20 @@ const getLinkStatus = (items: SendNotificationTypeItem[]): LinkStatus => {
 
 /**
  * Get notification details url
- * @param item SendNotificationTypeItem
+ * @param item selected notification
  */
 export const getNotificationDetailsUrl = (item: SendNotificationTypeItem): string => {
   return PageUrls.NOTIFICATION_DETAILS.replace(':itemId', item.id);
+};
+
+/**
+ * Get notification details url
+ * @param item selected notification
+ * @param response selected response
+ */
+export const getNotificationStoredSubmitUrl = (
+  item: SendNotificationTypeItem,
+  response: TypeItem<PseResponseType>
+): string => {
+  return PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT.replace(':itemId', item.id).replace(':responseId', response.id);
 };

@@ -1,15 +1,18 @@
 import { AppRequest, UserDetails } from '../../../main/definitions/appRequest';
 import {
+  PseResponseType,
   RespondNotificationType,
   SendNotificationType,
   SendNotificationTypeItem,
 } from '../../../main/definitions/complexTypes/sendNotificationTypeItem';
 import { PartiesNotify, PartiesRespond } from '../../../main/definitions/constants';
+import { TypeItem } from '../../../main/definitions/util-types';
 import {
   findSelectedSendNotification,
   findSelectedStoredPseResponse,
   getExistingNotificationState,
   getNotificationDetailsUrl,
+  getNotificationStoredSubmitUrl,
   getTribunalNotificationLinkStatus,
   isNotificationVisible,
   isPartiesRespondRequired,
@@ -257,6 +260,15 @@ describe('NotificationHelper', () => {
       const item = { id: 'notif-123', value: {} } as SendNotificationTypeItem;
       const url = getNotificationDetailsUrl(item);
       expect(url).toBe('/notification-details/notif-123');
+    });
+  });
+
+  describe('getNotificationStoredSubmitUrl', () => {
+    it('should return the correct URL with item id', () => {
+      const item: SendNotificationTypeItem = { id: 'notif-123', value: {} };
+      const response: TypeItem<PseResponseType> = { id: 'resp-456', value: {} };
+      const url = getNotificationStoredSubmitUrl(item, response);
+      expect(url).toBe('/respond-to-notification-stored-submit/notif-123/resp-456');
     });
   });
 });

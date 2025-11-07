@@ -3,6 +3,7 @@ import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/ge
 import { SendNotificationTypeItem } from '../../definitions/complexTypes/sendNotificationTypeItem';
 import { PageUrls } from '../../definitions/constants';
 import { TseStoreNotification } from '../../definitions/notification/tseStoreNotification';
+import { getNotificationStoredSubmitUrl } from '../NotificationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 import { getYourStoredApplicationList } from '../StoredApplicationHelper';
 
@@ -49,9 +50,7 @@ const getStoredNotificationRespond = (
         .filter(response => response.value?.fromIdamId === user.id)
         .forEach(r =>
           storeNotifications.push({
-            viewUrl:
-              PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT.replace(':itemId', item.id).replace(':responseId', r.id) +
-              languageParam,
+            viewUrl: getNotificationStoredSubmitUrl(item, r) + languageParam,
           })
         );
     }
