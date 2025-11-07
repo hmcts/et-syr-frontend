@@ -1,5 +1,6 @@
 import { AppRequest, UserDetails } from '../../../main/definitions/appRequest';
 import {
+  RespondNotificationType,
   SendNotificationType,
   SendNotificationTypeItem,
 } from '../../../main/definitions/complexTypes/sendNotificationTypeItem';
@@ -12,6 +13,7 @@ import {
   getTribunalNotificationLinkStatus,
   isNotificationVisible,
   isPartiesRespondRequired,
+  isRespondNotificationPartyToNotify,
 } from '../../../main/helpers/NotificationHelper';
 
 describe('NotificationHelper', () => {
@@ -35,6 +37,29 @@ describe('NotificationHelper', () => {
         sendNotificationSelectParties: PartiesRespond.CLAIMANT,
       } as SendNotificationType;
       expect(isPartiesRespondRequired(item)).toBe(false);
+    });
+  });
+
+  describe('isRespondNotificationPartyToNotify', () => {
+    it('should return true if parties is BOTH_PARTIES', () => {
+      const item: RespondNotificationType = {
+        respondNotificationPartyToNotify: PartiesNotify.BOTH_PARTIES,
+      };
+      expect(isRespondNotificationPartyToNotify(item)).toBe(true);
+    });
+
+    it('should return true if parties is RESPONDENT', () => {
+      const item: RespondNotificationType = {
+        respondNotificationPartyToNotify: PartiesNotify.RESPONDENT_ONLY,
+      };
+      expect(isRespondNotificationPartyToNotify(item)).toBe(true);
+    });
+
+    it('should return false if parties is CLAIMANT', () => {
+      const item: RespondNotificationType = {
+        respondNotificationPartyToNotify: PartiesNotify.CLAIMANT_ONLY,
+      };
+      expect(isRespondNotificationPartyToNotify(item)).toBe(false);
     });
   });
 
