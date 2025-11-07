@@ -10,7 +10,8 @@ import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helper
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import { getET3CaseDetailsLinkNames, getSections } from '../helpers/controller/CaseDetailsHelper';
-import { getAppNotifications, getStoredBannerList } from '../helpers/notification/ApplicationNotificationHelper';
+import { getAppNotifications } from '../helpers/notification/ApplicationNotificationHelper';
+import { getStoredBannerList } from '../helpers/notification/StoredNotificationHelper';
 import { getTribunalNotificationBanner } from '../helpers/notification/TribunalNotificationHelper';
 import { currentET3StatusFn } from '../helpers/state-sequence';
 import { getCaseApi } from '../services/CaseService';

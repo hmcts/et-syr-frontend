@@ -2,7 +2,6 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { ErrorPages, PageUrls, TseErrors } from '../definitions/constants';
-import { LinkStatus } from '../definitions/links';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { clearTempFields } from '../helpers/controller/RespondToNotificationSubmitHelper';
 import { getLogger } from '../logger';
@@ -18,14 +17,6 @@ export default class RespondToNotificationSubmitController {
     try {
       // Submit response to notification
       await getCaseApi(user.accessToken).submitResponseToNotification(userCase, user);
-
-      // Update notification respondent state
-      await getCaseApi(user.accessToken).changeNotificationStatus(
-        userCase,
-        user,
-        userCase.selectedNotification,
-        LinkStatus.SUBMITTED
-      );
 
       // Clear temporary fields
       clearTempFields(userCase);

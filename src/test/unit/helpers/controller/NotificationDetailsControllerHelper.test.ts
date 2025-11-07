@@ -6,6 +6,7 @@ import {
   getNotificationContent,
   getNotificationResponses,
   getNotificationStatusAfterViewed,
+  getSinglePseResponseDisplay,
 } from '../../../../main/helpers/controller/NotificationDetailsControllerHelper';
 import commonJsonRaw from '../../../../main/resources/locales/en/translation/common.json';
 import notificationDetailsJson from '../../../../main/resources/locales/en/translation/notification-details.json';
@@ -286,6 +287,31 @@ describe('NotificationDetailsControllerHelper', () => {
       expect(result[0].date).toEqual(new Date('2025-10-02T12:00:00.000'));
       expect(result[1].date).toEqual(new Date('2025-10-03T00:00:00.000'));
       expect(result[2].date).toEqual(new Date('2025-10-04T00:00:00.000'));
+    });
+  });
+
+  describe('getSinglePseResponseDisplay', () => {
+    it('returns basic summary rows', () => {
+      const req = mockRequestWithTranslation({ session: { userCase: mockUserCase } }, translations);
+      const result = getSinglePseResponseDisplay(
+        mockSendNotificationCollection[0].value.respondentRespondStoredCollection[0].value,
+        req
+      );
+      expect(result).toHaveLength(5);
+      expect(result[0].key.text).toEqual('Response from');
+      expect(result[0].value.text).toEqual('Respondent');
+      expect(result[1].key.text).toEqual('Response date');
+      expect(result[1].value.text).toEqual('3 October 2025');
+      expect(result[2].key.text).toEqual('What is your response to the tribunal?');
+      expect(result[2].value.text).toEqual('Rep-Response-Stored-1');
+      expect(result[3].key.text).toEqual('Supporting material');
+      expect(result[3].value.html).toEqual(
+        '<a href="/getSupportingMaterial/7ccbb009-0f45-4441-a3cb-8f6b9c60a7e0" target="_blank">Test.pdf</a><br>'
+      );
+      expect(result[4].key.text).toEqual(
+        'Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?'
+      );
+      expect(result[4].value.text).toEqual('Yes');
     });
   });
 });

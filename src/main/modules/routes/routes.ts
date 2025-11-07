@@ -76,6 +76,7 @@ import RespondToNotificationCopyController from '../../controllers/RespondToNoti
 import RespondToNotificationCopyOfflineController from '../../controllers/RespondToNotificationCopyOfflineController';
 import RespondToNotificationStoreConfirmController from '../../controllers/RespondToNotificationStoreConfirmController';
 import RespondToNotificationStoreController from '../../controllers/RespondToNotificationStoreController';
+import RespondToNotificationStoredSubmitController from '../../controllers/RespondToNotificationStoredSubmitController';
 import RespondToNotificationSubmitController from '../../controllers/RespondToNotificationSubmitController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
@@ -290,8 +291,8 @@ export class Routes {
     app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
     app.get(InterceptPaths.CONTACT_TRIBUNAL_STORE, new ContactTribunalStoreController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL_STORE_COMPLETE, new ContactTribunalStoreCompleteController().get);
-    app.get(PageUrls.STORED_APPLICATION_SUBMIT, new ContactTribunalSubmitStoredController().get);
-    app.post(PageUrls.STORED_APPLICATION_SUBMIT, new ContactTribunalSubmitStoredController().post);
+    app.get(PageUrls.STORED_CORRESPONDENCE_SUBMIT, new ContactTribunalSubmitStoredController().get);
+    app.post(PageUrls.STORED_CORRESPONDENCE_SUBMIT, new ContactTribunalSubmitStoredController().post);
     // Your request and applications
     app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
     app.get(PageUrls.CLAIMANTS_APPLICATIONS, new ClaimantsApplicationsController().get);
@@ -340,6 +341,8 @@ export class Routes {
     app.get(PageUrls.RESPOND_TO_NOTIFICATION_COMPLETE, new RespondToNotificationCompleteController().get);
     app.get(InterceptPaths.RESPOND_TO_NOTIFICATION_STORE, new RespondToNotificationStoreController().get);
     app.get(PageUrls.RESPOND_TO_NOTIFICATION_STORE_CONFIRMATION, new RespondToNotificationStoreConfirmController().get);
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT, new RespondToNotificationStoredSubmitController().get);
+    app.post(PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT, new RespondToNotificationStoredSubmitController().post);
     // others
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);

@@ -1,10 +1,15 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
 import { SendNotificationTypeItem } from '../../definitions/complexTypes/sendNotificationTypeItem';
-import { PageUrls, TranslationKeys } from '../../definitions/constants';
+import { TranslationKeys } from '../../definitions/constants';
 import { linkStatusColorMap } from '../../definitions/links';
 import { NotificationList } from '../../definitions/notificationList';
 import { AnyRecord } from '../../definitions/util-types';
-import { getExistingNotificationState, isNotificationVisible } from '../NotificationHelper';
+import {
+  getExistingNotificationState,
+  getNotificationDetailsUrl,
+  getNotificationStoredSubmitUrl,
+  isNotificationVisible,
+} from '../NotificationHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
 /**
@@ -37,9 +42,19 @@ const buildNotificationList = (
   const notificationState = getExistingNotificationState(notification.value, user);
   return {
     date: notification.value.date,
-    redirectUrl: PageUrls.NOTIFICATION_DETAILS.replace(':itemId', notification.id) + languageParam,
+    redirectUrl: getRedirectUrl(notification, user) + languageParam,
     linkText: notification.value.sendNotificationTitle,
     displayStatus: translations[notificationState],
     statusColor: linkStatusColorMap.get(notificationState),
   };
+};
+
+const getRedirectUrl = (notification: SendNotificationTypeItem, user: UserDetails): string => {
+  const anyStoredResponse = notification?.value?.respondentRespondStoredCollection?.find(
+    r => r.value.fromIdamId === user.id
+  );
+  if (anyStoredResponse) {
+    return getNotificationStoredSubmitUrl(notification, anyStoredResponse);
+  }
+  return getNotificationDetailsUrl(notification);
 };

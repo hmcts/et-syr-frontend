@@ -32,6 +32,32 @@ export const mockSendNotificationCollection: SendNotificationTypeItem[] = [
           },
         },
       ],
+      respondentRespondStoredCollection: [
+        {
+          id: '1309897b-5d71-4987-b4fc-04ae917a9cf5',
+          value: {
+            date: '3 October 2025',
+            from: 'Respondent',
+            fromIdamId: '3d5a8f9e-8d7f-4c71-9e4a-4c2d9233a97f',
+            response: 'Rep-Response-Stored-1',
+            copyToOtherParty: 'Yes',
+            supportingMaterial: [
+              {
+                id: 'dab79758-3177-4aaf-a052-0b24c958a0db',
+                value: {
+                  shortDescription: 'Test Short description R',
+                  uploadedDocument: {
+                    document_url: 'http://dummy/documents/7ccbb009-0f45-4441-a3cb-8f6b9c60a7e0',
+                    document_filename: 'Test.pdf',
+                    document_binary_url: 'http://dummy/documents/7ccbb009-0f45-4441-a3cb-8f6b9c60a7e0/binary',
+                  },
+                },
+              },
+            ],
+            hasSupportingMaterial: 'Yes',
+          },
+        },
+      ],
       sendNotificationTitle: 'Noti-Test-1',
       sendNotificationLetter: YesOrNo.YES,
       sendNotificationNotify: 'Both parties',
