@@ -35,27 +35,22 @@ describe('Respond to Notification Stored to Submit Controller', () => {
     req = mockRequestWithTranslation({}, { ...applicationTypeJson });
     req.session.user = mockUserDetails;
     req.session.userCase.sendNotificationCollection = mockSendNotificationCollection;
+    req.session.user.id = '3d5a8f9e-8d7f-4c71-9e4a-4c2d9233a97f';
+    req.params.itemId = 'd416f43f-10f4-402a-bdf1-ea9012a553d7';
+    req.params.responseId = '1309897b-5d71-4987-b4fc-04ae917a9cf5';
     res = mockResponse();
   });
 
   describe('POST method', () => {
-    it('should redirect to CONTACT_TRIBUNAL_SUBMIT_COMPLETE', async () => {
+    it('should redirect to RESPOND_TO_NOTIFICATION_COMPLETE', async () => {
       req.body = { confirmCopied: YesOrNo.YES };
-      req.params.itemId = 'd416f43f-10f4-402a-bdf1-ea9012a553d7';
-      req.params.responseId = '1309897b-5d71-4987-b4fc-04ae917a9cf5';
-
       await controller.post(req, res);
-
       expect(res.redirect).toHaveBeenCalledWith('/respond-to-notification-complete?lng=en');
     });
 
     it('should return error when confirmCopied empty', async () => {
       req.body = {};
-      req.params.itemId = 'd416f43f-10f4-402a-bdf1-ea9012a553d7';
-      req.params.responseId = '1309897b-5d71-4987-b4fc-04ae917a9cf5';
-
       await controller.post(req, res);
-
       expect(res.redirect).toHaveBeenCalledWith(
         '/respond-to-notification-stored-submit/d416f43f-10f4-402a-bdf1-ea9012a553d7/1309897b-5d71-4987-b4fc-04ae917a9cf5?lng=en'
       );
@@ -64,11 +59,7 @@ describe('Respond to Notification Stored to Submit Controller', () => {
 
   describe('GET method', () => {
     it('should render application details if application exists', async () => {
-      req.params.itemId = 'd416f43f-10f4-402a-bdf1-ea9012a553d7';
-      req.params.responseId = '1309897b-5d71-4987-b4fc-04ae917a9cf5';
-
       controller.get(req, res as Response);
-
       expect(res.render).toHaveBeenCalledWith(
         TranslationKeys.STORED_CORRESPONDENCE_SUBMIT,
         expect.objectContaining({
@@ -79,18 +70,13 @@ describe('Respond to Notification Stored to Submit Controller', () => {
 
     it('should redirect to NOT_FOUND if itemId invalid', async () => {
       req.params.itemId = 'test';
-
       controller.get(req, res as Response);
-
       expect(res.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND + languages.ENGLISH_URL_PARAMETER);
     });
 
     it('should redirect to NOT_FOUND if responseId invalid', async () => {
-      req.params.itemId = 'd416f43f-10f4-402a-bdf1-ea9012a553d7';
       req.params.responseId = 'test';
-
       controller.get(req, res as Response);
-
       expect(res.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND + languages.ENGLISH_URL_PARAMETER);
     });
   });

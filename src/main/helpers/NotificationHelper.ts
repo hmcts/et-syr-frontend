@@ -92,14 +92,16 @@ export const findSelectedSendNotification = (
 
 /**
  * Return selected notification response
- * @param responses
- * @param responseId
+ * @param item selected notification
+ * @param responseId selected response id
+ * @param user current user details
  */
-export const findSelectedPseResponse = (
-  responses: TypeItem<PseResponseType>[],
-  responseId: string
+export const findSelectedStoredPseResponse = (
+  item: SendNotificationType,
+  responseId: string,
+  user: UserDetails
 ): TypeItem<PseResponseType> => {
-  return responses?.find(it => it.id === responseId);
+  return item?.respondentRespondStoredCollection?.find(it => it.id === responseId && it.value.fromIdamId === user.id);
 };
 
 /**

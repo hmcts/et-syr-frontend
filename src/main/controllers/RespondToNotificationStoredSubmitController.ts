@@ -10,8 +10,8 @@ import { ConfirmCopiedFormFields } from '../definitions/form/stored-confirm-copi
 import { AnyRecord, TypeItem } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import {
-  findSelectedPseResponse,
   findSelectedSendNotification,
+  findSelectedStoredPseResponse,
   getNotificationDetailsUrl,
 } from '../helpers/NotificationHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
@@ -53,9 +53,10 @@ export default class RespondToNotificationStoredSubmitController {
     }
 
     // get selected notification response
-    const selectedResponse: TypeItem<PseResponseType> = findSelectedPseResponse(
-      selectedNotification.value.respondentRespondStoredCollection,
-      req.params.responseId
+    const selectedResponse: TypeItem<PseResponseType> = findSelectedStoredPseResponse(
+      selectedNotification.value,
+      req.params.responseId,
+      user
     );
     if (!selectedResponse) {
       logger.error(TseErrors.ERROR_NOTIFICATION_RESPONSE_NOT_FOUND + req.params.responseId);
@@ -92,20 +93,24 @@ export default class RespondToNotificationStoredSubmitController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
-    const { userCase } = req.session;
+    const { userCase, user } = req.session;
     const languageParam = getLanguageParam(req.url);
 
     // get selected notification
-    const selectedNotification = findSelectedSendNotification(userCase.sendNotificationCollection, req.params.itemId);
+    const selectedNotification: SendNotificationTypeItem = findSelectedSendNotification(
+      userCase.sendNotificationCollection,
+      req.params.itemId
+    );
     if (!selectedNotification) {
       logger.error(TseErrors.ERROR_NOTIFICATION_NOT_FOUND + req.params.itemId);
       return res.redirect(ErrorPages.NOT_FOUND + languageParam);
     }
 
     // get selected notification response
-    const selectedResponse = findSelectedPseResponse(
-      selectedNotification.value.respondentRespondStoredCollection,
-      req.params.responseId
+    const selectedResponse: TypeItem<PseResponseType> = findSelectedStoredPseResponse(
+      selectedNotification.value,
+      req.params.responseId,
+      user
     );
     if (!selectedResponse) {
       logger.error(TseErrors.ERROR_NOTIFICATION_RESPONSE_NOT_FOUND + req.params.responseId);

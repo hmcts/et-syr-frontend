@@ -4,14 +4,13 @@ import {
   GenericTseApplicationType,
   GenericTseApplicationTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, PageUrls, TranslationKeys } from '../../definitions/constants';
+import { Applicant, TranslationKeys } from '../../definitions/constants';
 import { ApplicationType } from '../../definitions/contact-tribunal-applications';
 import {
   TseNotification,
   TseRequestNotification,
   TseSubmitNotification,
 } from '../../definitions/notification/tseNotification';
-import { TseStoreNotification } from '../../definitions/notification/tseStoreNotification';
 import { AnyRecord } from '../../definitions/util-types';
 import { getAppDetailsLink } from '../ApplicationHelper';
 import {
@@ -22,7 +21,6 @@ import {
   isResponseToTribunalRequired,
 } from '../GenericTseApplicationHelper';
 import { getLanguageParam } from '../RouterHelpers';
-import { getYourStoredApplicationList } from '../StoredApplicationHelper';
 import { isNeverResponseBefore } from '../controller/ApplicationDetailsHelper';
 import { isApplicationShare } from '../controller/ClaimantsApplicationsHelper';
 import { isYourApplication } from '../controller/YourRequestAndApplicationsHelper';
@@ -105,28 +103,4 @@ const getFromName = (app: GenericTseApplicationType, respondents: RespondentET3M
     return respondents.find(r => r.idamId === app.applicantIdamId)?.respondentName || '';
   }
   return '';
-};
-
-/**
- * Get notification banner for stored applications
- * @param req request
- */
-export const getStoredBannerList = (req: AppRequest): TseStoreNotification[] => {
-  const notifications: TseStoreNotification[] = [];
-  const languageParam = getLanguageParam(req.url);
-
-  const yourStoredApps: GenericTseApplicationTypeItem[] = getYourStoredApplicationList(req);
-  notifications.push(...getStoredApplication(yourStoredApps, languageParam));
-
-  return notifications;
-};
-
-const getStoredApplication = (apps: GenericTseApplicationTypeItem[], languageParam: string): TseStoreNotification[] => {
-  const notifications: TseStoreNotification[] = [];
-  for (const app of apps || []) {
-    notifications.push({
-      viewUrl: PageUrls.STORED_CORRESPONDENCE_SUBMIT.replace(':appId', app.id) + languageParam,
-    });
-  }
-  return notifications;
 };

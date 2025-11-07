@@ -38,6 +38,7 @@ export const mockSendNotificationCollection: SendNotificationTypeItem[] = [
           value: {
             date: '3 October 2025',
             from: 'Respondent',
+            fromIdamId: '3d5a8f9e-8d7f-4c71-9e4a-4c2d9233a97f',
             response: 'Rep-Response-Stored-1',
             copyToOtherParty: 'Yes',
             supportingMaterial: [
