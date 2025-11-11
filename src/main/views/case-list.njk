@@ -30,7 +30,7 @@
                 <td class="govuk-table__cell"> {{ et3NotCompletedRow[4].text }} </td>
                 <td class="govuk-table__cell"> {{ et3NotCompletedRow[5].text }} </td>
                 <td class="govuk-table__cell"> {{ et3NotCompletedRow[6].text }} </td>
-                <td class="govuk-table__cell"> <a href="{{ et3NotCompletedRow[7].caseDetailsLink }}/{{ et3NotCompletedRow[7].caseId }}/{{ et3NotCompletedRow[7].respondentCcdId }}{{ languageParam }}" aria-label="view {{ et3NotCompletedRow[1].text }}: {{ et3NotCompletedRow[7].caseId }}"> {{ continue }} </a></td>
+                <td class="govuk-table__cell"> <a href="{{ et3NotCompletedRow[7].caseDetailsLink }}/{{ et3NotCompletedRow[7].caseId }}/{{ et3NotCompletedRow[7].respondentCcdId }}{{ languageParam }}" data-navigation-link aria-label="view {{ et3NotCompletedRow[1].text }}: {{ et3NotCompletedRow[7].caseId }}"> {{ continue }} </a></td>
               </tr>
             {% endfor %}
           </tbody>
@@ -61,7 +61,7 @@
                 <td class="govuk-table__cell"> {{ et3CompletedRow[3].text }} </td>
                 <td class="govuk-table__cell"> {{ et3CompletedRow[4].text }} </td>
                 <td class="govuk-table__cell"> {{ et3CompletedRow[6].text }} </td>
-                <td class="govuk-table__cell"> <a href="{{ et3CompletedRow[7].caseDetailsLink }}/{{ et3CompletedRow[7].caseId }}/{{ et3CompletedRow[7].respondentCcdId }}{{ languageParam }}" aria-label="view {{ et3CompletedRow[1].text }}: {{ et3CompletedRow[7].caseId }}"> {{ continue }} </a></td>
+                <td class="govuk-table__cell"> <a href="{{ et3CompletedRow[7].caseDetailsLink }}/{{ et3CompletedRow[7].caseId }}/{{ et3CompletedRow[7].respondentCcdId }}{{ languageParam }}" data-navigation-link aria-label="view {{ et3CompletedRow[1].text }}: {{ et3CompletedRow[7].caseId }}"> {{ continue }} </a></td>
               </tr>
             {% endfor %}
           </tbody>
