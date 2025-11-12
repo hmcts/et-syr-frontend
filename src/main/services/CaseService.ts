@@ -2,7 +2,7 @@ import axiosService, { AxiosInstance, AxiosResponse } from 'axios';
 import config from 'config';
 import FormData from 'form-data';
 
-import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
+import { CaseApiDataResponse, CaseAssignmentResponse } from '../definitions/api/caseApiResponse';
 import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { UploadedFile } from '../definitions/api/uploadedFile';
 import { AppRequest } from '../definitions/appRequest';
@@ -69,9 +69,9 @@ export class CaseApi {
     }
   };
 
-  assignCaseUserRole = async (request: AppRequest): Promise<AxiosResponse<string>> => {
+  assignCaseUserRole = async (request: AppRequest): Promise<AxiosResponse<CaseAssignmentResponse>> => {
     try {
-      return await this.axios.post(JavaApiUrls.ASSIGN_CASE_USER_ROLES, {
+      return await this.axios.post<CaseAssignmentResponse>(JavaApiUrls.ASSIGN_CASE_USER_ROLES, {
         case_users: [
           {
             case_id: request.session.userCase.id,
