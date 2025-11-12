@@ -5,9 +5,10 @@ import FormData from 'form-data';
 import { CaseApiDataResponse } from '../definitions/api/caseApiResponse';
 import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { UploadedFile } from '../definitions/api/uploadedFile';
-import { AppRequest } from '../definitions/appRequest';
+import { AppRequest, UserDetails } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
+import { SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { application } from '../definitions/contact-tribunal-applications';
 import { LinkStatus } from '../definitions/links';
@@ -298,6 +299,71 @@ export class CaseApi {
       });
     } catch (error) {
       throw new Error('Error changing tse application status: ' + axiosErrorDetails(error));
+    }
+  };
+
+  changeNotificationStatus = async (
+    userCase: CaseWithId,
+    user: UserDetails,
+    selectedNotification: SendNotificationTypeItem,
+    newStatus: LinkStatus
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      return await this.axios.put(JavaApiUrls.CHANGE_RESPONDENT_NOTIFICATION_STATUS, {
+        case_id: userCase.id,
+        case_type_id: userCase.caseTypeId,
+        notification_id: selectedNotification.id,
+        user_idam_id: user.id,
+        new_status: newStatus,
+      });
+    } catch (error) {
+      throw new Error('Error changing notification status: ' + axiosErrorDetails(error));
+    }
+  };
+
+  submitResponseToNotification = async (
+    userCase: CaseWithId,
+    user: UserDetails
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      return await this.axios.put(JavaApiUrls.SUBMIT_RESPONSE_TO_NOTIFICATION, {
+        case_id: userCase.id,
+        case_type_id: userCase.caseTypeId,
+        send_notification_id: userCase.selectedNotification.id,
+        supportingMaterialFile: userCase.supportingMaterialFile,
+        pseResponseType: {
+          response: userCase.responseText,
+          hasSupportingMaterial: userCase.hasSupportingMaterial,
+          copyToOtherParty: userCase.copyToOtherPartyYesOrNo,
+          copyNoGiveDetails: userCase.copyToOtherPartyText,
+          fromIdamId: user.id,
+        },
+      });
+    } catch (error) {
+      throw new Error('Error responding to notification: ' + axiosErrorDetails(error));
+    }
+  };
+
+  storeResponseToNotification = async (
+    userCase: CaseWithId,
+    user: UserDetails
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      return await this.axios.put(JavaApiUrls.STORE_RESPONSE_TO_NOTIFICATION, {
+        case_id: userCase.id,
+        case_type_id: userCase.caseTypeId,
+        send_notification_id: userCase.selectedNotification.id,
+        supportingMaterialFile: userCase.supportingMaterialFile,
+        pseResponseType: {
+          response: userCase.responseText,
+          hasSupportingMaterial: userCase.hasSupportingMaterial,
+          copyToOtherParty: userCase.copyToOtherPartyYesOrNo,
+          copyNoGiveDetails: userCase.copyToOtherPartyText,
+          fromIdamId: user.id,
+        },
+      });
+    } catch (error) {
+      throw new Error('Error storing response to notification: ' + axiosErrorDetails(error));
     }
   };
 }

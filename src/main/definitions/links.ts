@@ -10,7 +10,7 @@ export enum ET3CaseDetailsLinkNames {
   ClaimantApplications = 'claimantApplications',
   OtherRespondentApplications = 'otherRespondentApplications',
   ContactTribunal = 'contactTribunal',
-  TribunalOrders = 'tribunalOrders',
+  TribunalNotification = 'tribunalOrders',
   TribunalJudgements = 'tribunalJudgements',
   Documents = 'documents',
 }
@@ -38,7 +38,7 @@ export class ET3CaseDetailsLinksStatuses {
         this[name] = LinkStatus.NOT_YET_AVAILABLE;
       } else if (name === ET3CaseDetailsLinkNames.ContactTribunal) {
         this[name] = LinkStatus.OPTIONAL;
-      } else if (name === ET3CaseDetailsLinkNames.TribunalOrders) {
+      } else if (name === ET3CaseDetailsLinkNames.TribunalNotification) {
         this[name] = LinkStatus.NOT_YET_AVAILABLE;
       } else if (name === ET3CaseDetailsLinkNames.TribunalJudgements) {
         this[name] = LinkStatus.NOT_YET_AVAILABLE;
@@ -62,7 +62,7 @@ export const SectionIndexToEt3CaseDetailsLinkNames: ET3CaseDetailsLinkNames[][] 
     ET3CaseDetailsLinkNames.OtherRespondentApplications,
     ET3CaseDetailsLinkNames.ContactTribunal,
   ],
-  [ET3CaseDetailsLinkNames.TribunalOrders],
+  [ET3CaseDetailsLinkNames.TribunalNotification],
   [ET3CaseDetailsLinkNames.TribunalJudgements],
   [ET3CaseDetailsLinkNames.Documents],
 ];
