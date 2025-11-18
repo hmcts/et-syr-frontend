@@ -1,16 +1,22 @@
 import { AppRequest, UserDetails } from '../../../main/definitions/appRequest';
 import {
+  PseResponseType,
+  RespondNotificationType,
   SendNotificationType,
   SendNotificationTypeItem,
 } from '../../../main/definitions/complexTypes/sendNotificationTypeItem';
 import { PartiesNotify, PartiesRespond } from '../../../main/definitions/constants';
+import { TypeItem } from '../../../main/definitions/util-types';
 import {
   findSelectedSendNotification,
+  findSelectedStoredPseResponse,
   getExistingNotificationState,
+  getNotificationDetailsUrl,
+  getNotificationStoredSubmitUrl,
   getTribunalNotificationLinkStatus,
-  hasUserViewed,
   isNotificationVisible,
   isPartiesRespondRequired,
+  isRespondNotificationPartyToNotify,
 } from '../../../main/helpers/NotificationHelper';
 
 describe('NotificationHelper', () => {
@@ -37,22 +43,26 @@ describe('NotificationHelper', () => {
     });
   });
 
-  describe('hasUserViewed', () => {
-    const user: UserDetails = { id: 'user-1' } as UserDetails;
-    it('should return true if user has viewed', () => {
-      const notification = {
-        respondentState: [{ value: { userIdamId: 'user-1' } }, { value: { userIdamId: 'user-2' } }],
-      } as SendNotificationType;
-      expect(hasUserViewed(notification, user)).toBe(true);
+  describe('isRespondNotificationPartyToNotify', () => {
+    it('should return true if parties is BOTH_PARTIES', () => {
+      const item: RespondNotificationType = {
+        respondNotificationPartyToNotify: PartiesNotify.BOTH_PARTIES,
+      };
+      expect(isRespondNotificationPartyToNotify(item)).toBe(true);
     });
-    it('should return false if user has not viewed', () => {
-      const notification = {
-        respondentState: [{ value: { userIdamId: 'user-2' } }],
-      } as SendNotificationType;
-      expect(hasUserViewed(notification, user)).toBe(false);
+
+    it('should return true if parties is RESPONDENT', () => {
+      const item: RespondNotificationType = {
+        respondNotificationPartyToNotify: PartiesNotify.RESPONDENT_ONLY,
+      };
+      expect(isRespondNotificationPartyToNotify(item)).toBe(true);
     });
-    it('should return false if notification is undefined', () => {
-      expect(hasUserViewed(undefined, user)).toBe(false);
+
+    it('should return false if parties is CLAIMANT', () => {
+      const item: RespondNotificationType = {
+        respondNotificationPartyToNotify: PartiesNotify.CLAIMANT_ONLY,
+      };
+      expect(isRespondNotificationPartyToNotify(item)).toBe(false);
     });
   });
 
@@ -117,6 +127,56 @@ describe('NotificationHelper', () => {
     });
     it('should return undefined if items is undefined', () => {
       expect(findSelectedSendNotification(undefined, '1')).toBeUndefined();
+    });
+  });
+
+  describe('findSelectedStoredPseResponse', () => {
+    const user = { id: 'user-1' } as UserDetails;
+
+    it('returns the response with matching id and user id', () => {
+      const item = {
+        respondentRespondStoredCollection: [
+          { id: 'resp-1', value: { fromIdamId: 'user-1', response: 'abc' } },
+          { id: 'resp-2', value: { fromIdamId: 'user-2', response: 'def' } },
+        ],
+      } as SendNotificationType;
+      const result = findSelectedStoredPseResponse(item, 'resp-1', user);
+      expect(result).toEqual({ id: 'resp-1', value: { fromIdamId: 'user-1', response: 'abc' } });
+    });
+
+    it('returns undefined if id matches but user id does not', () => {
+      const item = {
+        respondentRespondStoredCollection: [{ id: 'resp-1', value: { fromIdamId: 'user-2', response: 'abc' } }],
+      } as SendNotificationType;
+      const result = findSelectedStoredPseResponse(item, 'resp-1', user);
+      expect(result).toBeUndefined();
+    });
+
+    it('returns undefined if id does not match', () => {
+      const item = {
+        respondentRespondStoredCollection: [{ id: 'resp-2', value: { fromIdamId: 'user-1', response: 'abc' } }],
+      } as SendNotificationType;
+      const result = findSelectedStoredPseResponse(item, 'resp-1', user);
+      expect(result).toBeUndefined();
+    });
+
+    it('returns undefined if respondentRespondStoredCollection is empty', () => {
+      const item = {
+        respondentRespondStoredCollection: [],
+      } as SendNotificationType;
+      const result = findSelectedStoredPseResponse(item, 'resp-1', user);
+      expect(result).toBeUndefined();
+    });
+
+    it('returns undefined if respondentRespondStoredCollection is undefined', () => {
+      const item = {} as SendNotificationType;
+      const result = findSelectedStoredPseResponse(item, 'resp-1', user);
+      expect(result).toBeUndefined();
+    });
+
+    it('returns undefined if item is undefined', () => {
+      const result = findSelectedStoredPseResponse(undefined, 'resp-1', user);
+      expect(result).toBeUndefined();
     });
   });
 
@@ -192,6 +252,23 @@ describe('NotificationHelper', () => {
         session: { userCase: { sendNotificationCollection: [baseNotification] }, user: mockUser },
       } as AppRequest;
       expect(getTribunalNotificationLinkStatus(req)).toBe('readyToView');
+    });
+  });
+
+  describe('getNotificationDetailsUrl', () => {
+    it('should return the correct URL with item id', () => {
+      const item = { id: 'notif-123', value: {} } as SendNotificationTypeItem;
+      const url = getNotificationDetailsUrl(item);
+      expect(url).toBe('/notification-details/notif-123');
+    });
+  });
+
+  describe('getNotificationStoredSubmitUrl', () => {
+    it('should return the correct URL with item id', () => {
+      const item: SendNotificationTypeItem = { id: 'notif-123', value: {} };
+      const response: TypeItem<PseResponseType> = { id: 'resp-456', value: {} };
+      const url = getNotificationStoredSubmitUrl(item, response);
+      expect(url).toBe('/respond-to-notification-stored-submit/notif-123/resp-456');
     });
   });
 });

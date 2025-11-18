@@ -6,7 +6,7 @@ import {
   SendNotificationType,
   SendNotificationTypeItem,
 } from '../definitions/complexTypes/sendNotificationTypeItem';
-import { PartiesNotify, PartiesRespond } from '../definitions/constants';
+import { PageUrls, PartiesNotify, PartiesRespond } from '../definitions/constants';
 import { LinkStatus } from '../definitions/links';
 import { TypeItem } from '../definitions/util-types';
 
@@ -31,24 +31,6 @@ export const isRespondNotificationPartyToNotify = (item: RespondNotificationType
     item.respondNotificationPartyToNotify === PartiesNotify.BOTH_PARTIES ||
     item.respondNotificationPartyToNotify === PartiesNotify.RESPONDENT_ONLY
   );
-};
-
-/**
- * Check if user has already viewed the notification
- * @param notification SendNotificationType
- * @param user user details
- */
-export const hasUserViewed = (notification: SendNotificationType, user: UserDetails): boolean => {
-  return notification ? notification.respondentState?.some(state => state.value.userIdamId === user.id) : false;
-};
-
-/**
- * Check if user has already viewed the notification
- * @param notification SendNotificationType
- * @param user user details
- */
-export const hasUserRespond = (notification: SendNotificationType, user: UserDetails): boolean => {
-  return notification ? notification.respondCollection?.some(state => state.value.fromIdamId === user.id) : false;
 };
 
 /**
@@ -79,7 +61,7 @@ const hasOtherPartyResponseShared = (responseList: TypeItem<PseResponseType>[]):
 };
 
 /**
- * Return selected application
+ * Return selected notification
  * @param items
  * @param notificationId
  */
@@ -88,6 +70,20 @@ export const findSelectedSendNotification = (
   notificationId: string
 ): SendNotificationTypeItem => {
   return items?.find(it => it.id === notificationId);
+};
+
+/**
+ * Return selected notification response
+ * @param item selected notification
+ * @param responseId selected response id
+ * @param user current user details
+ */
+export const findSelectedStoredPseResponse = (
+  item: SendNotificationType,
+  responseId: string,
+  user: UserDetails
+): TypeItem<PseResponseType> => {
+  return item?.respondentRespondStoredCollection?.find(it => it.id === responseId && it.value.fromIdamId === user.id);
 };
 
 /**
@@ -119,4 +115,24 @@ const getLinkStatus = (items: SendNotificationTypeItem[]): LinkStatus => {
     return LinkStatus.NOT_YET_AVAILABLE;
   }
   return LinkStatus.READY_TO_VIEW;
+};
+
+/**
+ * Get notification details url
+ * @param item selected notification
+ */
+export const getNotificationDetailsUrl = (item: SendNotificationTypeItem): string => {
+  return PageUrls.NOTIFICATION_DETAILS.replace(':itemId', item.id);
+};
+
+/**
+ * Get notification details url
+ * @param item selected notification
+ * @param response selected response
+ */
+export const getNotificationStoredSubmitUrl = (
+  item: SendNotificationTypeItem,
+  response: TypeItem<PseResponseType>
+): string => {
+  return PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT.replace(':itemId', item.id).replace(':responseId', response.id);
 };

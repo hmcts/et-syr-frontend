@@ -12,7 +12,6 @@ import { AnyRecord } from '../../definitions/util-types';
 import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../DocumentHelpers';
 import {
   getExistingNotificationState,
-  hasUserRespond,
   isPartiesRespondRequired,
   isRespondNotificationPartyToNotify,
 } from '../NotificationHelper';
@@ -39,6 +38,10 @@ export const getNotificationStatusAfterViewed = (notification: SendNotificationT
       ? LinkStatus.NOT_STARTED_YET
       : LinkStatus.VIEWED;
   }
+};
+
+const hasUserRespond = (notification: SendNotificationType, user: UserDetails): boolean => {
+  return notification ? notification.respondCollection?.some(state => state.value.fromIdamId === user.id) : false;
 };
 
 /**
@@ -134,6 +137,12 @@ export const getNotificationResponses = (
     });
 
   rows.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+  (notification?.respondentRespondStoredCollection ?? [])
+    .filter(r => r.value.fromIdamId === user.id)
+    .forEach(r => {
+      rows.push(addNonAdminResponse(r.value, translations, req));
+    });
 
   return rows;
 };
@@ -232,4 +241,18 @@ export const isRespondButton = (
 ): boolean => {
   const existingState = newStatus || getExistingNotificationState(notification, user);
   return existingState === LinkStatus.NOT_STARTED_YET;
+};
+
+/**
+ * Get single response display details
+ * @param response
+ * @param req
+ */
+export const getSinglePseResponseDisplay = (response: PseResponseType, req: AppRequest): SummaryListRow[] => {
+  const translations: AnyRecord = {
+    ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
+    ...req.t(TranslationKeys.NOTIFICATION_SUBJECTS, { returnObjects: true }),
+    ...req.t(TranslationKeys.NOTIFICATION_DETAILS, { returnObjects: true }),
+  };
+  return addNonAdminResponse(response, translations, req).rows;
 };

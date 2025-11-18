@@ -63,8 +63,9 @@ export interface SendNotificationType {
 
   //Indicates the notification status
   respondentState?: TypeItem<PseStatusType>[];
-
+  // Responses
   respondCollection?: TypeItem<PseResponseType>[];
+  respondentRespondStoredCollection?: TypeItem<PseResponseType>[];
   respondNotificationTypeCollection?: TypeItem<RespondNotificationType>[];
   sendNotificationSubjectString?: string;
 }

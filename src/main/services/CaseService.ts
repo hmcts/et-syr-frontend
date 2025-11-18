@@ -8,11 +8,12 @@ import { UploadedFile } from '../definitions/api/uploadedFile';
 import { AppRequest, UserDetails } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
-import { SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
+import { PseResponseType, SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { application } from '../definitions/contact-tribunal-applications';
 import { LinkStatus } from '../definitions/links';
 import { RespondentTse } from '../definitions/respondentTse';
+import { TypeItem } from '../definitions/util-types';
 import { toApiFormat } from '../helpers/ApiFormatter';
 import { getApplicationByCode } from '../helpers/ApplicationHelper';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
@@ -364,6 +365,25 @@ export class CaseApi {
       });
     } catch (error) {
       throw new Error('Error storing response to notification: ' + axiosErrorDetails(error));
+    }
+  };
+
+  submitStoredResponseToNotification = async (
+    userCase: CaseWithId,
+    user: UserDetails,
+    selectedNotification: SendNotificationTypeItem,
+    selectedResponse: TypeItem<PseResponseType>
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      return await this.axios.put(JavaApiUrls.SUBMIT_STORE_RESPONSE_TO_NOTIFICATION, {
+        case_id: userCase.id,
+        case_type_id: userCase.caseTypeId,
+        from_idam_id: user.id,
+        notification_id: selectedNotification.id,
+        stored_response_id: selectedResponse.id,
+      });
+    } catch (error) {
+      throw new Error('Error submitting stored responding to notification: ' + axiosErrorDetails(error));
     }
   };
 }

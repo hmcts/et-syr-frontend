@@ -74,7 +74,7 @@ export const TranslationKeys = {
   CONTACT_TRIBUNAL_CYA_OFFLINE: 'contact-tribunal-check-your-answers-offline',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: 'contact-tribunal-submit-complete',
   CONTACT_TRIBUNAL_STORE_COMPLETE: 'contact-tribunal-store-complete',
-  STORED_APPLICATION_SUBMIT: 'stored-correspondence-submit',
+  STORED_CORRESPONDENCE_SUBMIT: 'stored-correspondence-submit',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
   CLAIMANTS_APPLICATIONS: 'claimants-applications',
@@ -84,7 +84,7 @@ export const TranslationKeys = {
   RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: 'respond-to-application-supporting-material',
   RESPOND_TO_APPLICATION_CYA: 'respond-to-application-check-your-answers',
   RESPOND_TO_APPLICATION_COMPLETE: 'respond-to-application-complete',
-  // Notification
+  // Tribunal Notification
   NOTIFICATIONS: 'notifications',
   NOTIFICATION_DETAILS: 'notification-details',
   NOTIFICATION_SUBJECTS: 'notification-subjects',
@@ -170,7 +170,7 @@ export const PageUrls = {
   CONTACT_TRIBUNAL_CYA_OFFLINE: '/contact-tribunal-check-your-answers-offline',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
   CONTACT_TRIBUNAL_STORE_COMPLETE: '/contact-tribunal-store-complete/:appId',
-  STORED_APPLICATION_SUBMIT: '/stored-correspondence-submit/:appId',
+  STORED_CORRESPONDENCE_SUBMIT: '/stored-correspondence-submit/:appId',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
   CLAIMANTS_APPLICATIONS: '/claimants-applications',
@@ -181,7 +181,7 @@ export const PageUrls = {
   RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: '/respond-to-application-copy-to-other-party',
   RESPOND_TO_APPLICATION_CYA: '/respond-to-application-check-your-answers',
   RESPOND_TO_APPLICATION_COMPLETE: '/respond-to-application-complete',
-  // Notification
+  // Tribunal Notification
   NOTIFICATIONS: '/notifications',
   NOTIFICATION_DETAILS: '/notification-details/:itemId',
   RESPOND_TO_NOTIFICATION: '/respond-to-notification/:itemId',
@@ -191,6 +191,7 @@ export const PageUrls = {
   RESPOND_TO_NOTIFICATION_CYA_OFFLINE: '/respond-to-notification-check-your-answers-offline',
   RESPOND_TO_NOTIFICATION_COMPLETE: '/respond-to-notification-complete',
   RESPOND_TO_NOTIFICATION_STORE_CONFIRMATION: '/respond-to-notification-store-confirmation/:itemId',
+  RESPOND_TO_NOTIFICATION_STORED_SUBMIT: '/respond-to-notification-stored-submit/:itemId/:responseId',
   // NoC
   APPOINT_LEGAL_REPRESENTATIVE: '/appoint-legal-representative',
   // others
@@ -311,6 +312,7 @@ export const JavaApiUrls = {
   CHANGE_RESPONDENT_NOTIFICATION_STATUS: 'sendNotification/change-respondent-notification-status',
   SUBMIT_RESPONSE_TO_NOTIFICATION: 'sendNotification/add-respondent-respond-to-notification',
   STORE_RESPONSE_TO_NOTIFICATION: 'sendNotification/store-respondent-respond-to-notification',
+  SUBMIT_STORE_RESPONSE_TO_NOTIFICATION: 'sendNotification/submit-respondent-respond-to-notification',
   REVOKE_RESPONDENT_REPRESENTATIVE: '/manageCaseRole/revokeRespondentSolicitorRole',
 } as const;
 
@@ -621,6 +623,7 @@ export const TseErrors = {
   ERROR_APPLICATION_NOT_SHARE: 'Application not shared: ',
   ERROR_NO_RESPOND_REQUIRED: 'Respond not allowed for this application: ',
   ERROR_NOTIFICATION_NOT_FOUND: 'Notification not found: ',
+  ERROR_NOTIFICATION_RESPONSE_NOT_FOUND: 'Notification response not found: ',
   ERROR_UPDATE_LINK_STATUS: 'An error occurred while updating LinkStatus',
   ERROR_STORE_APPLICATION: 'An error occurred while storing an application',
   ERROR_SUBMIT_APPLICATION: 'An error occurred while submitting an application',
