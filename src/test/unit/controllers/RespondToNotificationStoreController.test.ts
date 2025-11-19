@@ -11,24 +11,26 @@ import { mockSendNotificationCollection } from '../mocks/mockSendNotificationCol
 import { mockUserDetails } from '../mocks/mockUser';
 import mockUserCase from '../mocks/mockUserCase';
 
-jest.mock('config');
-const controller = new RespondToNotificationStoreController();
-
-jest.mock('axios');
-const mockCaseApi = {
-  axios: AxiosInstance,
-  storeResponseToNotification: jest.fn(),
-};
-const caseApi: CaseApi = mockCaseApi as unknown as CaseApi;
-jest.spyOn(CaseService, 'getCaseApi').mockReturnValue(caseApi);
-
-caseApi.storeResponseToNotification = jest
-  .fn()
-  .mockResolvedValue(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse));
-
-caseApi.changeNotificationStatus = jest.fn().mockResolvedValue(Promise.resolve(mockUserCase));
-
 describe('Respond to Notification Store Controller', () => {
+  jest.mock('config');
+  const controller = new RespondToNotificationStoreController();
+
+  jest.mock('axios');
+  const mockCaseApi = {
+    axios: AxiosInstance,
+    storeResponseToNotification: jest.fn(),
+  };
+  const caseApi: CaseApi = mockCaseApi as unknown as CaseApi;
+  jest.spyOn(CaseService, 'getCaseApi').mockReturnValue(caseApi);
+
+  caseApi.storeResponseToNotification = jest
+    .fn()
+    .mockResolvedValue(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse));
+
+  caseApi.getUserCase = jest
+    .fn()
+    .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse));
+
   it('should redirect to RESPOND_TO_NOTIFICATION_STORE_CONFIRMATION with language param', async () => {
     const res = mockResponse();
     const req = mockRequest({ userCase: mockUserCase });

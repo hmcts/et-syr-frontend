@@ -5,6 +5,7 @@ import { linkStatusColorMap } from '../../definitions/links';
 import { NotificationList } from '../../definitions/notificationList';
 import { AnyRecord } from '../../definitions/util-types';
 import {
+  getAnyStoredResponse,
   getExistingNotificationState,
   getNotificationDetailsUrl,
   getNotificationStoredSubmitUrl,
@@ -50,9 +51,7 @@ const buildNotificationList = (
 };
 
 const getRedirectUrl = (notification: SendNotificationTypeItem, user: UserDetails): string => {
-  const anyStoredResponse = notification?.value?.respondentRespondStoredCollection?.find(
-    r => r.value.fromIdamId === user.id
-  );
+  const anyStoredResponse = getAnyStoredResponse(notification?.value, user);
   if (anyStoredResponse) {
     return getNotificationStoredSubmitUrl(notification, anyStoredResponse);
   }

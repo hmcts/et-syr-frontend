@@ -7,6 +7,7 @@ import {
   getNotificationResponses,
   getNotificationStatusAfterViewed,
   getSinglePseResponseDisplay,
+  isRespondButton,
 } from '../../../../main/helpers/controller/NotificationDetailsControllerHelper';
 import commonJsonRaw from '../../../../main/resources/locales/en/translation/common.json';
 import notificationDetailsJson from '../../../../main/resources/locales/en/translation/notification-details.json';
@@ -287,6 +288,64 @@ describe('NotificationDetailsControllerHelper', () => {
       expect(result[0].date).toEqual(new Date('2025-10-02T12:00:00.000'));
       expect(result[1].date).toEqual(new Date('2025-10-03T00:00:00.000'));
       expect(result[2].date).toEqual(new Date('2025-10-04T00:00:00.000'));
+    });
+  });
+
+  describe('isRespondButton', () => {
+    const user = mockUserDetails;
+
+    it('returns false if user has already responded', () => {
+      const notification: SendNotificationType = {
+        respondCollection: [
+          {
+            id: '1',
+            value: { date: '4 October 2025', copyToOtherParty: YesOrNo.YES, fromIdamId: mockUserDetails.id },
+          },
+        ],
+        respondNotificationTypeCollection: [
+          {
+            id: '3',
+            value: {
+              respondNotificationDate: '3 October 2025',
+              respondNotificationPartyToNotify: 'Both parties',
+            },
+          },
+        ],
+      };
+      const result = isRespondButton(undefined, notification, user);
+      expect(result).toBe(false);
+    });
+
+    it('returns true if user has not responded and state is NOT_STARTED_YET', () => {
+      const notificationNoResponse: SendNotificationType = {
+        respondNotificationTypeCollection: [
+          {
+            id: '3',
+            value: {
+              respondNotificationDate: '3 October 2025',
+              respondNotificationPartyToNotify: 'Both parties',
+            },
+          },
+        ],
+      };
+      const result = isRespondButton(LinkStatus.NOT_STARTED_YET, notificationNoResponse, user);
+      expect(result).toBe(true);
+    });
+
+    it('returns false if user has not responded and state is not NOT_STARTED_YET', () => {
+      const notificationNoResponse: SendNotificationType = {
+        respondNotificationTypeCollection: [
+          {
+            id: '3',
+            value: {
+              respondNotificationDate: '3 October 2025',
+              respondNotificationPartyToNotify: 'Both parties',
+            },
+          },
+        ],
+      };
+      const result = isRespondButton(LinkStatus.NOT_VIEWED, notificationNoResponse, user);
+      expect(result).toBe(false);
     });
   });
 
