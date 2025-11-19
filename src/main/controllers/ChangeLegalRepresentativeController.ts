@@ -7,7 +7,12 @@ import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { removeRespondentRepresentative } from '../helpers/CaseRoleHelper';
 import { getPageContent } from '../helpers/FormHelper';
-import { conditionalRedirect, getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
+import {
+  conditionalRedirect,
+  getLanguageParam,
+  returnValidNotAllowedEndPointsForwardingUrl,
+  returnValidUrl,
+} from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import { isFieldFilledIn } from '../validators/validator';
 
@@ -53,14 +58,20 @@ export default class ChangeLegalRepresentativeController {
       return res.redirect(returnValidUrl(req.url));
     }
     try {
-      const redirectUrl = conditionalRedirect(
+      const isChangeSelection = conditionalRedirect(
         req,
         this.form.getFormFields(),
         LEGAL_REPRESENTATIVE_CHANGE_OPTIONS.change
-      )
-        ? PageUrls.APPOINT_LEGAL_REPRESENTATIVE + getLanguageParam(req.url)
-        : await removeRespondentRepresentative(req);
-      res.redirect(redirectUrl);
+      );
+
+      if (isChangeSelection) {
+        const redirectUrl = PageUrls.APPOINT_LEGAL_REPRESENTATIVE + getLanguageParam(req.url);
+        return res.redirect(returnValidUrl(redirectUrl));
+      }
+
+      const caseDetailsUrl = await removeRespondentRepresentative(req);
+      const safeUrl = returnValidNotAllowedEndPointsForwardingUrl(caseDetailsUrl, req);
+      return res.redirect(safeUrl);
     } catch (error) {
       logger.info(error);
       req.session.errors.push({ propertyName: 'legalRep', errorType: 'backEndError' });
