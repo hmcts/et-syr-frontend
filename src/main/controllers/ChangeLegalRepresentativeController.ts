@@ -7,7 +7,7 @@ import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { removeRespondentRepresentative } from '../helpers/CaseRoleHelper';
 import { getPageContent } from '../helpers/FormHelper';
-import { conditionalRedirect, getLanguageParam } from '../helpers/RouterHelpers';
+import { conditionalRedirect, getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import { isFieldFilledIn } from '../validators/validator';
 
@@ -50,7 +50,7 @@ export default class ChangeLegalRepresentativeController {
     const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
     req.session.errors = this.form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
-      return res.redirect(req.url);
+      return res.redirect(returnValidUrl(req.url));
     }
     try {
       const redirectUrl = conditionalRedirect(
@@ -64,7 +64,7 @@ export default class ChangeLegalRepresentativeController {
     } catch (error) {
       logger.info(error);
       req.session.errors.push({ propertyName: 'legalRep', errorType: 'backEndError' });
-      res.redirect(req.url);
+      return res.redirect(returnValidUrl(req.url));
     }
   };
 
