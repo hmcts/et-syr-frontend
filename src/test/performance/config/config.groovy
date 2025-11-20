@@ -1,5 +1,5 @@
 	// ====== Service specific config ======
-	this.dynatraceMetricType = 'sya-nodejs'
+	this.dynatraceMetricType = 'syr-nodejs'
 	this.dynatraceMetricTag = 'namespace:et'
 
 	//Preview Config
