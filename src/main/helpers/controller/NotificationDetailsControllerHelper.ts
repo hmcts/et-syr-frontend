@@ -11,6 +11,7 @@ import { LinkStatus } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import { getDocumentFromDocumentTypeItems, getLinkFromDocument } from '../DocumentHelpers';
 import {
+  getAnyStoredResponse,
   getExistingNotificationState,
   isPartiesRespondRequired,
   isRespondNotificationPartyToNotify,
@@ -239,6 +240,9 @@ export const isRespondButton = (
   notification: SendNotificationType,
   user: UserDetails
 ): boolean => {
+  if (getAnyStoredResponse(notification, user)) {
+    return false;
+  }
   const existingState = newStatus || getExistingNotificationState(notification, user);
   return existingState === LinkStatus.NOT_STARTED_YET;
 };

@@ -136,3 +136,15 @@ export const getNotificationStoredSubmitUrl = (
 ): string => {
   return PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT.replace(':itemId', item.id).replace(':responseId', response.id);
 };
+
+/**
+ * Get stored response for the current user
+ * @param notification current notification
+ * @param user current user details
+ */
+export const getAnyStoredResponse = (
+  notification: SendNotificationType,
+  user: UserDetails
+): TypeItem<PseResponseType> => {
+  return notification?.respondentRespondStoredCollection?.find(r => r.value.fromIdamId === user.id);
+};

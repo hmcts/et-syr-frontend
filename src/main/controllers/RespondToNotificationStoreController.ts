@@ -2,6 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { ErrorPages, PageUrls, TseErrors } from '../definitions/constants';
+import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { clearTempFields } from '../helpers/controller/RespondToNotificationSubmitHelper';
 import { getLogger } from '../logger';
@@ -21,6 +22,12 @@ export default class RespondToNotificationStoreController {
       // clear temporary fields
       const notificationId = userCase.selectedNotification.id;
       clearTempFields(userCase);
+
+      // refresh userCase from api
+      req.session.userCase = formatApiCaseDataToCaseWithId(
+        (await getCaseApi(user?.accessToken).getUserCase(userCase.id)).data,
+        req
+      );
 
       // redirect next page
       return res.redirect(

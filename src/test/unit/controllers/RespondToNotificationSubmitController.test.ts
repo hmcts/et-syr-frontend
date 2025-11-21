@@ -5,16 +5,17 @@ import { CaseApiDataResponse } from '../../../main/definitions/api/caseApiRespon
 import { ErrorPages, PageUrls } from '../../../main/definitions/constants';
 import { CaseApi, getCaseApi } from '../../../main/services/CaseService';
 import * as CaseService from '../../../main/services/CaseService';
+import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import { mockSendNotificationCollection } from '../mocks/mockSendNotificationCollection';
 import { mockUserDetails } from '../mocks/mockUser';
 import mockUserCase from '../mocks/mockUserCase';
 
-jest.mock('config');
-const controller = new RespondToNotificationSubmitController();
-
 describe('Respond To Notification Submit Controller', () => {
+  jest.mock('config');
+  const controller = new RespondToNotificationSubmitController();
+
   jest.mock('axios');
   const mockCaseApi = {
     axios: AxiosInstance,
@@ -33,7 +34,9 @@ describe('Respond To Notification Submit Controller', () => {
     } as AxiosResponse<CaseApiDataResponse>)
   );
 
-  caseApi.changeNotificationStatus = jest.fn().mockResolvedValue(Promise.resolve(mockUserCase));
+  caseApi.getUserCase = jest
+    .fn()
+    .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse));
 
   beforeEach(() => {});
 
