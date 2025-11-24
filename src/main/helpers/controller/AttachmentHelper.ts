@@ -1,21 +1,24 @@
-import { AppRequest } from '../../definitions/appRequest';
+import { AppRequest, UserDetails } from '../../definitions/appRequest';
 import {
   GenericTseApplicationTypeItem,
   TseAdminDecisionItem,
   TseRespondTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { SendNotificationTypeItem } from '../../definitions/complexTypes/sendNotificationTypeItem';
+import {
+  SendNotificationType,
+  SendNotificationTypeItem,
+} from '../../definitions/complexTypes/sendNotificationTypeItem';
 import { Applicant } from '../../definitions/constants';
 import { getDocId } from '../ApiFormatter';
 
 export const isDocIdValid = (docId: string, req: AppRequest): boolean => {
-  const userCase = req.session.userCase;
+  const { userCase, user } = req.session;
   return (
     docId === getDocId(userCase.contactApplicationFile?.document_url) ||
     docId === getDocId(userCase.supportingMaterialFile?.document_url) ||
     isDocOnApplicationPage(docId, userCase.genericTseApplicationCollection) ||
     isDocOnApplicationPage(docId, userCase.tseRespondentStoredCollection) ||
-    isDocOnNotificationPage(docId, userCase.sendNotificationCollection)
+    isDocOnNotificationPage(docId, userCase.sendNotificationCollection, user)
   );
 };
 
@@ -48,32 +51,46 @@ const isValidResponseDocId = (docId: string, responds: TseRespondTypeItem[]): bo
   });
 };
 
-const isDocOnNotificationPage = (docId: string, notifications: SendNotificationTypeItem[]): boolean => {
+const isDocOnNotificationPage = (
+  docId: string,
+  notifications: SendNotificationTypeItem[],
+  user: UserDetails
+): boolean => {
   if (!notifications?.length) {
     return false;
   }
   return notifications.some(
     notification =>
-      isRequestDocId(notification, docId) ||
-      isRequestTribunalResponseDocId(notification, docId) ||
-      isRequestResponseDocId(notification, docId)
+      isNotificationDocId(notification.value, docId) ||
+      isNotificationTribunalResponseDocId(notification.value, docId) ||
+      isNotificationResponseDocId(notification.value, docId) ||
+      isNotificationStoredResponseDocId(notification.value, docId, user)
   );
 };
 
-const isRequestDocId = (notification: SendNotificationTypeItem, docId: string): boolean => {
-  const docs = notification?.value?.sendNotificationUploadDocument ?? [];
+const isNotificationDocId = (notification: SendNotificationType, docId: string): boolean => {
+  const docs = notification?.sendNotificationUploadDocument ?? [];
   return docs.some(doc => getDocId(doc.value?.uploadedDocument?.document_url) === docId);
 };
 
-const isRequestTribunalResponseDocId = (notification: SendNotificationTypeItem, docId: string): boolean => {
+const isNotificationTribunalResponseDocId = (notification: SendNotificationType, docId: string): boolean => {
   const docs =
-    notification?.value?.respondNotificationTypeCollection?.flatMap(
-      nt => nt.value?.respondNotificationUploadDocument ?? []
-    ) ?? [];
+    notification?.respondNotificationTypeCollection?.flatMap(nt => nt.value?.respondNotificationUploadDocument ?? []) ??
+    [];
   return docs.some(doc => doc.value.uploadedDocument && getDocId(doc.value.uploadedDocument.document_url) === docId);
 };
 
-const isRequestResponseDocId = (notification: SendNotificationTypeItem, docId: string): boolean => {
-  const docs = notification?.value?.respondCollection?.flatMap(rc => rc.value?.supportingMaterial ?? []) ?? [];
+const isNotificationResponseDocId = (notification: SendNotificationType, docId: string): boolean => {
+  const docs = notification?.respondCollection?.flatMap(rc => rc.value?.supportingMaterial ?? []) ?? [];
+  return docs.some(doc => doc.value.uploadedDocument && getDocId(doc.value.uploadedDocument.document_url) === docId);
+};
+
+const isNotificationStoredResponseDocId = (
+  notification: SendNotificationType,
+  docId: string,
+  user: UserDetails
+): boolean => {
+  const userResponses = notification?.respondentRespondStoredCollection?.filter(it => it.value.fromIdamId === user.id);
+  const docs = userResponses?.flatMap(rc => rc.value?.supportingMaterial ?? []) ?? [];
   return docs.some(doc => doc.value.uploadedDocument && getDocId(doc.value.uploadedDocument.document_url) === docId);
 };
