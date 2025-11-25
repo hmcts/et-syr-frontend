@@ -49,6 +49,7 @@ export default class NotificationDetailsController {
       ...req.t(TranslationKeys.NOTIFICATION_DETAILS, { returnObjects: true }),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
       hideContactUs: true,
+      header: selectedNotification?.value?.sendNotificationTitle,
       notificationContent: getNotificationContent(selectedNotification.value, req),
       notificationResponses: getNotificationResponses(selectedNotification.value, req),
       isRespondButton: isRespondButton(newStatus, selectedNotification.value, user),
