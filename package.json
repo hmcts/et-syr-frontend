@@ -23,7 +23,7 @@
     "test:view": "jest -c jest.views.config.js",
     "test:pact": "jest -c jest.pact.config.js --detectOpenHandles --runInBand",
     "test:coverage": "jest --coverage",
-    "test:mutation": "stryker run",
+    "test:mutation": "yarn stryker run --configFile stryker.config.json",
     "test:routes": "jest -c jest.routes.config.js",
     "test:translations": "jest ./src/test/unit/translations.spec.ts",
     "test:a11y": "echo 'a11y tests are ran through GitHub actions as a mandatory step in order to save time on the main pipeline and unable to mock at the moment. Story RET-2038 created for same'",
