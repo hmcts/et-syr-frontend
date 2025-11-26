@@ -15,7 +15,6 @@
     "src/main/utils/**/*.ts",
     "src/main/components/**/*.ts",
     "src/main/auth/**/*.ts",
-    "src/main/definitions/**/*.ts",
     "src/main/address/**/*.ts",
     "!src/main/assets/**",
     "!**/__mocks__/**",
