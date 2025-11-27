@@ -2,6 +2,7 @@ import { AppRequest } from '../../../../main/definitions/appRequest';
 import { Applicant } from '../../../../main/definitions/constants';
 import { isDocIdValid } from '../../../../main/helpers/controller/AttachmentHelper';
 import { mockRequest } from '../../mocks/mockRequest';
+import { mockUserDetails } from '../../mocks/mockUser';
 
 describe('Attachment Helper', () => {
   describe('isDocIdValid', () => {
@@ -13,9 +14,11 @@ describe('Attachment Helper', () => {
     const docId6 = 'notificationDoc303';
     const docId7 = 'tribunalResponseDoc404';
     const docId8 = 'responseDoc505';
+    const docId9 = 'notificationStoredDoc9';
 
     const req: AppRequest = mockRequest({
       session: {
+        user: mockUserDetails,
         userCase: {
           contactApplicationFile: {
             document_url: `http://doc/${docId1}`,
@@ -124,6 +127,25 @@ describe('Attachment Helper', () => {
                     },
                   },
                 ],
+                respondentRespondStoredCollection: [
+                  {
+                    id: '9',
+                    value: {
+                      fromIdamId: mockUserDetails.id,
+                      supportingMaterial: [
+                        {
+                          value: {
+                            uploadedDocument: {
+                              document_url: `http://doc/${docId9}`,
+                              document_filename: 'file',
+                              document_binary_url: 'binurl',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
               },
             },
           ],
@@ -161,6 +183,10 @@ describe('Attachment Helper', () => {
 
     it('should validate docId from respondCollection supportingMaterial in notification', () => {
       expect(isDocIdValid(docId8, req)).toBe(true);
+    });
+
+    it('should validate docId from respondentRespondStoredCollection supportingMaterial in notification', () => {
+      expect(isDocIdValid(docId9, req)).toBe(true);
     });
 
     it('should return false for invalid docId', () => {
