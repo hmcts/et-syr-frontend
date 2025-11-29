@@ -1,0 +1,11 @@
+{
+  "title": "Check your answers",
+  "h1": "Respond to the tribunal",
+  "responseText": "What's your response to the tribunal?",
+  "supportingMaterial": "Supporting material",
+  "copyToOtherPartyYesOrNo": "Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?",
+  "copyToOtherPartyText": "Reason for not informing other party",
+  "submitButton": "Submit",
+  "storeNotes": "You cannot make further changes to this correspondence after you store it",
+  "storeButton": "Store notification"
+}
