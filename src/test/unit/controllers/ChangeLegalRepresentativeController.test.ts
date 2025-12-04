@@ -3,7 +3,12 @@ import AxiosInstance, { AxiosResponse } from 'axios';
 import ChangeLegalRepresentativeController from '../../../main/controllers/ChangeLegalRepresentativeController';
 import { CaseApiDataResponse } from '../../../main/definitions/api/caseApiResponse';
 import { AppRequest } from '../../../main/definitions/appRequest';
-import { LEGAL_REPRESENTATIVE_CHANGE_OPTIONS, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import {
+  LEGAL_REPRESENTATIVE_CHANGE_OPTIONS,
+  PageUrls,
+  TranslationKeys,
+  languages,
+} from '../../../main/definitions/constants';
 import * as CaseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
@@ -50,7 +55,7 @@ describe('ChangeLegalRepresentative Controller', () => {
   it('should render the citizen hub page when remove radio button is selected', async () => {
     const body = { legalRep: LEGAL_REPRESENTATIVE_CHANGE_OPTIONS.remove };
 
-    const userCase = mockCaseWithIdWithRespondents;
+    const userCase = { ...mockCaseWithIdWithRespondents, id: '1234' };
     const request = <AppRequest>mockRequest({ userCase });
     request.body = body;
     request.session.selectedRespondentIndex = 0;
@@ -58,6 +63,10 @@ describe('ChangeLegalRepresentative Controller', () => {
     const res = mockResponse();
     await changeLegalRepresentativeController.post(request, res);
 
-    expect(res.redirect).toHaveBeenCalledWith('/case-details/1234/3453xaa?language=?lng=en');
+    const expectedUrl =
+      `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${userCase.id}/` +
+      `${userCase.respondents[0].ccdId}${languages.ENGLISH_URL_PARAMETER}`;
+
+    expect(res.redirect).toHaveBeenCalledWith(expectedUrl);
   });
 });
