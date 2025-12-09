@@ -2,17 +2,22 @@
   "title": "Your response has been submitted",
   "titleText": "Your response has been submitted",
   "heading1": "What happens next",
-  "p1": "You should receive email confirmation from the tribunal office processing your response within 5 working days. You may need to check your junk mail folder.",
+  "p1": "You should receive email confirmation from the tribunal office processing your response within 10 - 15 working days. This may extend during periods of high volumes.",
   "heading2": "Submission details",
   "caseNumber": "Case number",
   "responseSubmitted": "Response submitted",
   "downloadResponse": "Download your response",
   "attachments": "Attachments included",
-  "heading3": "For questions about this case",
+  "heading3": "For questions about the employment tribunal process",
   "linkText": "Contact the tribunal about the case (opens in new tab)",
-  "heading4": "For questions about the employment tribunal process",
   "p3": "Call one of our Employment Tribunal customer contact centres. They cannot give you legal advice.",
   "button": "Close and return to case overview",
   "et3FormNotFound": "ET3 form not found",
-  "noAttachments": "No documents to attach"
+  "noAttachments": "No documents to attach",
+  "survey": {
+    "titleText": "Give us your feedback",
+    "text": "to help improve this service for you and others.",
+    "linkText": "Complete this short survey",
+    "url": "https://www.smartsurvey.co.uk/s/SurveyExit/?lang=en&service=Employment&party=resp"
+  }
 }
