@@ -87,6 +87,7 @@ export const TranslationKeys = {
   RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: 'respond-to-application-copy-to-other-party',
   // NoC
   APPOINT_LEGAL_REPRESENTATIVE: 'appoint-legal-representative',
+  MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE: 'making-response-as-legal-representative',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
   CHANGE_LEGAL_REPRESENTATIVE: 'change-legal-representative',
@@ -177,6 +178,7 @@ export const PageUrls = {
   RESPOND_TO_APPLICATION_COMPLETE: '/respond-to-application-complete',
   // NoC
   APPOINT_LEGAL_REPRESENTATIVE: '/appoint-legal-representative',
+  MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE: '/making-response-as-legal-representative',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
   CHANGE_LEGAL_REPRESENTATIVE: '/change-legal-representative',

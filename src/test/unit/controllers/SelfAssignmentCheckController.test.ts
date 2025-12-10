@@ -152,5 +152,22 @@ describe('Self assignment check controller', () => {
       expect(req.session.errors).toHaveLength(1);
       expect(req.session.errors[0].errorType).toEqual(ValidationErrors.API);
     });
+
+    it('should redirect to making-response-as-legal-representative when user is a professional user', async () => {
+      const freshReq = mockRequest({ body: { selfAssignmentCheck: YES } });
+      freshReq.session.userCase = mockValidCaseWithId;
+      freshReq.session.user = mockUserDetails;
+      const freshRes = mockResponse();
+      getCaseApiMock.mockReturnValue(api);
+      const mockApiResponse = {
+        data: {
+          status: 'PROFESSIONAL_USER' as const,
+          message: 'User is a professional user and should use MyHMCTS to submit their response',
+        },
+      };
+      api.assignCaseUserRole = jest.fn().mockResolvedValueOnce(Promise.resolve(mockApiResponse));
+      await new SelfAssignmentCheckController().post(freshReq, freshRes);
+      expect(freshRes.redirect).toHaveBeenCalledWith(PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE);
+    });
   });
 });

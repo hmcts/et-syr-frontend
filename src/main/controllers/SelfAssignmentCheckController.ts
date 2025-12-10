@@ -86,13 +86,18 @@ export default class SelfAssignmentCheckController {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
     }
 
-    if (!caseAssignmentResponse || !caseAssignmentResponse.data) {
+    if (!caseAssignmentResponse?.data) {
       ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.API,
         FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
       );
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
+    }
+
+    // Check if user is a professional user (legal representative)
+    if (caseAssignmentResponse.data.status === 'PROFESSIONAL_USER') {
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE)));
     }
 
     if (caseAssignmentResponse.data.status === 'ALREADY_ASSIGNED') {

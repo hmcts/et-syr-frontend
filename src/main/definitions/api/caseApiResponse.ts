@@ -174,6 +174,6 @@ export interface RepresentativeApiModel {
 
 export interface CaseAssignmentResponse {
   caseDetails?: CaseApiDataResponse[];
-  status: 'ASSIGNED' | 'ALREADY_ASSIGNED';
+  status: 'ASSIGNED' | 'ALREADY_ASSIGNED' | 'PROFESSIONAL_USER';
   message?: string;
 }
