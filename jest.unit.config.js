@@ -11,6 +11,7 @@ module.exports = {
     '<rootDir>/src/test/unit/test-helpers',
     '<rootDir>/src/test/unit/views',
   ],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   transform: {
     '^.+\\.(ts|tsx)$': '@swc/jest',
   },
