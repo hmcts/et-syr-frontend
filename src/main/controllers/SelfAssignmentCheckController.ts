@@ -8,10 +8,13 @@ import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
+import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import ErrorUtils from '../utils/ErrorUtils';
 import StringUtils from '../utils/StringUtils';
 import { atLeastOneFieldIsChecked } from '../validators/validator';
+
+const logger = getLogger('SelfAssignmentCheckController');
 
 export default class SelfAssignmentCheckController {
   private readonly form: Form;
@@ -62,6 +65,7 @@ export default class SelfAssignmentCheckController {
           .toString()
           .includes(ServiceErrors.ERROR_ASSIGNING_USER_ROLE_USER_ALREADY_HAS_ROLE_EXCEPTION_CHECK_VALUE)
       ) {
+        logger.error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + 'caseId: ' + req.session?.userCase?.id + ', ' + error);
         ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
           req,
           ValidationErrors.CASE_ALREADY_ASSIGNED_TO_SAME_USER,
@@ -71,12 +75,14 @@ export default class SelfAssignmentCheckController {
         StringUtils.isNotBlank(error?.message) &&
         error.message.toString().includes(ServiceErrors.ERROR_ASSIGNING_USER_ROLE_ALREADY_ASSIGNED_CHECK_VALUE)
       ) {
+        logger.error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + 'caseId: ' + req.session?.userCase?.id + ', ' + error);
         ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
           req,
           ValidationErrors.CASE_ALREADY_ASSIGNED,
           FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
         );
       } else {
+        logger.error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + 'caseId: ' + req.session?.userCase?.id + ', ' + error);
         ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
           req,
           ValidationErrors.API,
@@ -87,6 +93,7 @@ export default class SelfAssignmentCheckController {
     }
 
     if (!caseAssignmentResponse?.data) {
+      logger.error('Case assignment response data is null or undefined. caseId: ' + req.session?.userCase?.id);
       ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.API,
