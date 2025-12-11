@@ -99,42 +99,6 @@ describe('Self assignment check controller', () => {
       expect(res.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_CHECK);
     });
 
-    it('should redirect to case list when user is already assigned (new behavior with flag enabled)', async () => {
-      (getFlagValue as jest.Mock).mockResolvedValue(true);
-      const freshReq = mockRequest({ body: { selfAssignmentCheck: YES } });
-      freshReq.session.userCase = { ...mockValidCaseWithId, id: '1234567890123456' };
-      freshReq.session.user = mockUserDetails;
-      const freshRes = mockResponse();
-      getCaseApiMock.mockReturnValue(api);
-      const mockApiResponse = {
-        data: {
-          status: 'ALREADY_ASSIGNED',
-          caseDetails: [
-            {
-              id: '1234567890123456',
-              case_data: {
-                respondentCollection: [
-                  {
-                    id: 'resp123',
-                    value: {
-                      idamId: mockUserDetails.id,
-                      respondentName: 'Test Respondent',
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-          message: 'User was already assigned to this case',
-        },
-      };
-      api.assignCaseUserRole = jest.fn().mockResolvedValueOnce(Promise.resolve(mockApiResponse));
-      await new SelfAssignmentCheckController().post(freshReq, freshRes);
-      expect(freshRes.redirect).toHaveBeenCalledWith(
-        PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER + '/1234567890123456/resp123?lng=en'
-      );
-    });
-
     it('should redirect to case list when user is already assigned but case details unavailable', async () => {
       (getFlagValue as jest.Mock).mockResolvedValue(true);
       const freshReq = mockRequest({ body: { selfAssignmentCheck: YES } });

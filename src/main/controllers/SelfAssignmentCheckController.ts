@@ -124,24 +124,6 @@ export default class SelfAssignmentCheckController {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE)));
     }
 
-    if (caseAssignmentResponse.data.status === 'ALREADY_ASSIGNED') {
-      const caseDetails = caseAssignmentResponse.data.caseDetails?.[0]?.case_data?.respondentCollection;
-      const userCaseId = req.session?.userCase?.id;
-      const userId = req.session?.user?.id;
-
-      if (caseDetails && userCaseId) {
-        const selectedRespondent = caseDetails.find(respondent => respondent.value?.idamId === userId);
-        if (selectedRespondent?.id) {
-          return res.redirect(
-            `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${userCaseId}/${
-              selectedRespondent.id
-            }${getLanguageParam(req.url)}`
-          );
-        }
-      }
-      return res.redirect(`${PageUrls.CASE_LIST}${getLanguageParam(req.url)}`);
-    }
-
     return res.redirect(`${PageUrls.CASE_LIST}${getLanguageParam(req.url)}`);
   };
 
