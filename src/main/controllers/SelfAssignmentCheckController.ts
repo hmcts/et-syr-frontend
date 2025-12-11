@@ -9,6 +9,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
+import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import { getCaseApi } from '../services/CaseService';
 import ErrorUtils from '../utils/ErrorUtils';
 import StringUtils from '../utils/StringUtils';
@@ -55,6 +56,8 @@ export default class SelfAssignmentCheckController {
       req.session.errors = errors;
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
     }
+    const selfAssignmentEnabled = await getFlagValue('et3-self-assignment', null);
+
     let caseAssignmentResponse;
     try {
       caseAssignmentResponse = await getCaseApi(req.session.user?.accessToken)?.assignCaseUserRole(req);
@@ -92,6 +95,20 @@ export default class SelfAssignmentCheckController {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
     }
 
+    // Old behavior - when flag is disabled
+    if (!selfAssignmentEnabled) {
+      if (!caseAssignmentResponse) {
+        ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
+          req,
+          ValidationErrors.API,
+          FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+        );
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
+      }
+      return res.redirect(PageUrls.CASE_LIST);
+    }
+
+    // New behavior - when flag is enabled
     if (!caseAssignmentResponse?.data) {
       logger.error('Case assignment response data is null or undefined. caseId: ' + req.session?.userCase?.id);
       ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
