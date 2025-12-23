@@ -35,9 +35,23 @@ describe('NotificationHelper', () => {
       expect(isPartiesRespondRequired(item)).toBe(true);
     });
 
+    it('should return true if parties is RESPONDENT_ONLY', () => {
+      const item: SendNotificationType = {
+        sendNotificationSelectParties: PartiesNotify.RESPONDENT_ONLY,
+      } as SendNotificationType;
+      expect(isPartiesRespondRequired(item)).toBe(true);
+    });
+
     it('should return false if parties is CLAIMANT', () => {
       const item: SendNotificationType = {
         sendNotificationSelectParties: PartiesRespond.CLAIMANT,
+      } as SendNotificationType;
+      expect(isPartiesRespondRequired(item)).toBe(false);
+    });
+
+    it('should return false if parties is CLAIMANT_ONLY', () => {
+      const item: SendNotificationType = {
+        sendNotificationSelectParties: PartiesNotify.CLAIMANT_ONLY,
       } as SendNotificationType;
       expect(isPartiesRespondRequired(item)).toBe(false);
     });
