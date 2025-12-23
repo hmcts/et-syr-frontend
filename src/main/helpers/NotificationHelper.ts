@@ -18,7 +18,8 @@ import { TypeItem } from '../definitions/util-types';
 export const isPartiesRespondRequired = (item: SendNotificationType): boolean => {
   return (
     item.sendNotificationSelectParties === PartiesRespond.BOTH_PARTIES ||
-    item.sendNotificationSelectParties === PartiesRespond.RESPONDENT
+    item.sendNotificationSelectParties === PartiesRespond.RESPONDENT ||
+    item.sendNotificationSelectParties === PartiesNotify.RESPONDENT_ONLY
   );
 };
 
