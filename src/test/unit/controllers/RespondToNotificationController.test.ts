@@ -19,24 +19,24 @@ describe('Respond to Notification Controller', () => {
   });
 
   describe('GET method', () => {
-    it('should render the page RESPOND_TO_NOTIFICATION', () => {
+    it('should render the page RESPOND_TO_NOTIFICATION', async () => {
       request.session.userCase.sendNotificationCollection = mockSendNotificationCollection;
       request.params.itemId = 'd416f43f-10f4-402a-bdf1-ea9012a553d7';
-      controller.get(request, response);
+      await controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.RESPOND_TO_NOTIFICATION, expect.anything());
     });
 
-    it('should redirect to NOT_FOUND page if missing itemId', () => {
+    it('should redirect to NOT_FOUND page if missing itemId', async () => {
       request.session.userCase.sendNotificationCollection = mockSendNotificationCollection;
       request.params.itemId = undefined;
-      controller.get(request, response);
+      await controller.get(request, response);
       expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
     });
 
-    it('should redirect to NOT_FOUND page if notification undefined', () => {
+    it('should redirect to NOT_FOUND page if notification undefined', async () => {
       request.session.userCase.sendNotificationCollection = undefined;
       request.params.itemId = '5d0118c9-bdd6-4d32-9131-6aa6f5ec718e';
-      controller.get(request, response);
+      await controller.get(request, response);
       expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
     });
   });
