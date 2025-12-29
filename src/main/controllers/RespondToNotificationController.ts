@@ -7,6 +7,7 @@ import { CaseWithId, YesOrNo } from '../definitions/case';
 import { SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
 import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { findSelectedSendNotification } from '../helpers/NotificationHelper';
@@ -14,6 +15,7 @@ import { getLanguageParam } from '../helpers/RouterHelpers';
 import {
   getNotificationContent,
   getNotificationResponses,
+  getNotificationStatusAfterViewed,
 } from '../helpers/controller/NotificationDetailsControllerHelper';
 import { handleFileUpload } from '../helpers/controller/RespondToApplicationSupportingMaterialHelper';
 import {
@@ -21,6 +23,7 @@ import {
   getRespondNotificationCopyPage,
 } from '../helpers/controller/RespondToNotificationControllerHelper';
 import { getLogger } from '../logger';
+import { getCaseApi } from '../services/CaseService';
 import StringUtils from '../utils/StringUtils';
 import UrlUtils from '../utils/UrlUtils';
 import { isFieldFilledIn, isOptionSelected } from '../validators/validator';
@@ -131,8 +134,8 @@ export default class RespondToNotificationController {
     return res.redirect(getRespondNotificationCopyPage(userCase) + languageParam);
   };
 
-  public get = (req: AppRequest, res: Response): void => {
-    const { userCase } = req.session;
+  public get = async (req: AppRequest, res: Response): Promise<void> => {
+    const { userCase, user } = req.session;
 
     // Find the selected notification
     const selectedNotification: SendNotificationTypeItem = findSelectedSendNotification(
@@ -142,6 +145,17 @@ export default class RespondToNotificationController {
     if (!selectedNotification) {
       logger.error(TseErrors.ERROR_NOTIFICATION_NOT_FOUND + req.params.itemId);
       return res.redirect(ErrorPages.NOT_FOUND);
+    }
+
+    // Update the notification status as viewed
+    const newStatus: LinkStatus = getNotificationStatusAfterViewed(selectedNotification.value, user);
+    if (newStatus) {
+      try {
+        await getCaseApi(user?.accessToken).changeNotificationStatus(userCase, user, selectedNotification, newStatus);
+      } catch (error) {
+        logger.error(TseErrors.ERROR_UPDATE_LINK_STATUS);
+        res.redirect(ErrorPages.NOT_FOUND + getLanguageParam(req.url));
+      }
     }
 
     assignFormData(userCase, this.form.getFormFields());
