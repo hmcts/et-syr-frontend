@@ -35,9 +35,27 @@ export default class RespondToNotificationController {
   private uploadedFileName = '';
 
   private getHint = (label: AnyRecord): string => {
+    const intro =
+      '<p class="govuk-body">' +
+      label.supportingMaterialFile.hint +
+      '</p>' +
+      '<ul class="govuk-list govuk-list--bullet">' +
+      '<li>' +
+      label.supportingMaterialFile.li1 +
+      '</li>' +
+      '<li>' +
+      label.supportingMaterialFile.li2 +
+      '</li>' +
+      '<li>' +
+      label.supportingMaterialFile.li3 +
+      '</li>' +
+      '</ul>';
     return StringUtils.isNotBlank(this.uploadedFileName)
-      ? (label.supportingMaterialFile.hintExisting as string).replace('{{filename}}', this.uploadedFileName)
-      : label.supportingMaterialFile.hint;
+      ? intro +
+          '<p class="govuk-body">' +
+          (label.supportingMaterialFile.hintExisting as string).replace('{{filename}}', this.uploadedFileName) +
+          '</p>'
+      : intro;
   };
 
   private readonly formContent: FormContent = {
