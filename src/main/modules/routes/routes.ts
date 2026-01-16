@@ -56,6 +56,7 @@ import HearingPreferencesController from '../../controllers/HearingPreferencesCo
 import HoldingPageController from '../../controllers/HoldingPageController';
 import HomeController from '../../controllers/HomeController';
 import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
+import MakingResponseAsLegalRepController from '../../controllers/MakingResponseAsLegalRepController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
 import NotificationController from '../../controllers/NotificationController';
 import NotificationDetailsController from '../../controllers/NotificationDetailsController';
@@ -354,6 +355,7 @@ export class Routes {
     app.get(PageUrls.DOCUMENTS, new DocumentsController().get);
     app.get(PageUrls.REMOVE_FILE, new RemoveFileController().get);
     app.get(PageUrls.APPOINT_LEGAL_REPRESENTATIVE, new AppointLegalRepController().get);
+    app.get(PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE, new MakingResponseAsLegalRepController().get);
     app.get(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().get);
     app.post(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().post);
     app.get(

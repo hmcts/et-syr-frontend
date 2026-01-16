@@ -8,10 +8,14 @@ import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
+import { getLogger } from '../logger';
+import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import { getCaseApi } from '../services/CaseService';
 import ErrorUtils from '../utils/ErrorUtils';
 import StringUtils from '../utils/StringUtils';
 import { atLeastOneFieldIsChecked } from '../validators/validator';
+
+const logger = getLogger('SelfAssignmentCheckController');
 
 export default class SelfAssignmentCheckController {
   private readonly form: Form;
@@ -52,6 +56,8 @@ export default class SelfAssignmentCheckController {
       req.session.errors = errors;
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
     }
+    const selfAssignmentEnabled = await getFlagValue('et3-self-assignment', null);
+
     let caseAssignmentResponse;
     try {
       caseAssignmentResponse = await getCaseApi(req.session.user?.accessToken)?.assignCaseUserRole(req);
@@ -62,6 +68,7 @@ export default class SelfAssignmentCheckController {
           .toString()
           .includes(ServiceErrors.ERROR_ASSIGNING_USER_ROLE_USER_ALREADY_HAS_ROLE_EXCEPTION_CHECK_VALUE)
       ) {
+        logger.error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + 'caseId: ' + req.session?.userCase?.id + ', ' + error);
         ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
           req,
           ValidationErrors.CASE_ALREADY_ASSIGNED_TO_SAME_USER,
@@ -71,12 +78,14 @@ export default class SelfAssignmentCheckController {
         StringUtils.isNotBlank(error?.message) &&
         error.message.toString().includes(ServiceErrors.ERROR_ASSIGNING_USER_ROLE_ALREADY_ASSIGNED_CHECK_VALUE)
       ) {
+        logger.error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + 'caseId: ' + req.session?.userCase?.id + ', ' + error);
         ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
           req,
           ValidationErrors.CASE_ALREADY_ASSIGNED,
           FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
         );
       } else {
+        logger.error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + 'caseId: ' + req.session?.userCase?.id + ', ' + error);
         ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
           req,
           ValidationErrors.API,
@@ -85,7 +94,23 @@ export default class SelfAssignmentCheckController {
       }
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
     }
-    if (!caseAssignmentResponse) {
+
+    // Old behavior - when flag is disabled
+    if (!selfAssignmentEnabled) {
+      if (!caseAssignmentResponse) {
+        ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
+          req,
+          ValidationErrors.API,
+          FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+        );
+        return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
+      }
+      return res.redirect(PageUrls.CASE_LIST);
+    }
+
+    // New behavior - when flag is enabled
+    if (!caseAssignmentResponse?.data) {
+      logger.error('Case assignment response data is null or undefined. caseId: ' + req.session?.userCase?.id);
       ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.API,
@@ -93,7 +118,13 @@ export default class SelfAssignmentCheckController {
       );
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_CHECK)));
     }
-    return res.redirect(PageUrls.CASE_LIST);
+
+    // Check if user is a professional user (legal representative)
+    if (caseAssignmentResponse.data.status === 'PROFESSIONAL_USER') {
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE)));
+    }
+
+    return res.redirect(`${PageUrls.CASE_LIST}${getLanguageParam(req.url)}`);
   };
 
   public get = (req: AppRequest, res: Response): void => {

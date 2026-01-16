@@ -73,7 +73,7 @@ export default class ChangeLegalRepresentativeController {
       const safeUrl = returnValidNotAllowedEndPointsForwardingUrl(caseDetailsUrl, req);
       return res.redirect(safeUrl);
     } catch (error) {
-      logger.info(error);
+      logger.error('Error changing/removing legal representative. caseId: ' + req.session?.userCase?.id + ', ' + error);
       req.session.errors.push({ propertyName: 'legalRep', errorType: 'backEndError' });
       return res.redirect(returnValidUrl(req.url));
     }

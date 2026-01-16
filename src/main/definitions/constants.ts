@@ -93,6 +93,7 @@ export const TranslationKeys = {
   RESPOND_TO_NOTIFICATION_CYA_OFFLINE: 'respond-to-notification-check-your-answers-offline',
   // NoC
   APPOINT_LEGAL_REPRESENTATIVE: 'appoint-legal-representative',
+  MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE: 'making-response-as-legal-representative',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
   CHANGE_LEGAL_REPRESENTATIVE: 'change-legal-representative',
@@ -194,6 +195,7 @@ export const PageUrls = {
   RESPOND_TO_NOTIFICATION_STORED_SUBMIT: '/respond-to-notification-stored-submit/:itemId/:responseId',
   // NoC
   APPOINT_LEGAL_REPRESENTATIVE: '/appoint-legal-representative',
+  MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE: '/making-response-as-legal-representative',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
   CHANGE_LEGAL_REPRESENTATIVE: '/change-legal-representative',
