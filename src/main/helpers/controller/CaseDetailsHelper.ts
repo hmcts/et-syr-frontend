@@ -12,6 +12,7 @@ import {
 import { AnyRecord } from '../../definitions/util-types';
 import { getCaseApi } from '../../services/CaseService';
 import { getApplicationStateIfNotExist } from '../ApplicationStateHelper';
+import { getTribunalNotificationLinkStatus } from '../NotificationHelper';
 import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../ResponseHubHelper';
 import { getLanguageParam } from '../RouterHelpers';
 import { getYourStoredApplicationList } from '../StoredApplicationHelper';
@@ -38,6 +39,7 @@ export const getET3CaseDetailsLinkNames = async (
   statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getClaimantAppsLinkStatus(req);
   statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = getOtherRespondentAppsLinkStatus(req);
+  statuses[ET3CaseDetailsLinkNames.TribunalNotification] = getTribunalNotificationLinkStatus(req);
   return statuses;
 };
 

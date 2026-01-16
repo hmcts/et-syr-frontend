@@ -5,13 +5,15 @@ import FormData from 'form-data';
 import { CaseApiDataResponse, CaseAssignmentResponse } from '../definitions/api/caseApiResponse';
 import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { UploadedFile } from '../definitions/api/uploadedFile';
-import { AppRequest } from '../definitions/appRequest';
+import { AppRequest, UserDetails } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
+import { PseResponseType, SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
 import { application } from '../definitions/contact-tribunal-applications';
 import { LinkStatus } from '../definitions/links';
 import { RespondentTse } from '../definitions/respondentTse';
+import { TypeItem } from '../definitions/util-types';
 import { toApiFormat } from '../helpers/ApiFormatter';
 import { getApplicationByCode } from '../helpers/ApplicationHelper';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
@@ -298,6 +300,90 @@ export class CaseApi {
       });
     } catch (error) {
       throw new Error('Error changing tse application status: ' + axiosErrorDetails(error));
+    }
+  };
+
+  changeNotificationStatus = async (
+    userCase: CaseWithId,
+    user: UserDetails,
+    selectedNotification: SendNotificationTypeItem,
+    newStatus: LinkStatus
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      return await this.axios.put(JavaApiUrls.CHANGE_RESPONDENT_NOTIFICATION_STATUS, {
+        case_id: userCase.id,
+        case_type_id: userCase.caseTypeId,
+        notification_id: selectedNotification.id,
+        user_idam_id: user.id,
+        new_status: newStatus,
+      });
+    } catch (error) {
+      throw new Error('Error changing notification status: ' + axiosErrorDetails(error));
+    }
+  };
+
+  submitResponseToNotification = async (
+    userCase: CaseWithId,
+    user: UserDetails
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      return await this.axios.put(JavaApiUrls.SUBMIT_RESPONSE_TO_NOTIFICATION, {
+        case_id: userCase.id,
+        case_type_id: userCase.caseTypeId,
+        send_notification_id: userCase.selectedNotification.id,
+        supportingMaterialFile: userCase.supportingMaterialFile,
+        pseResponseType: {
+          response: userCase.responseText,
+          hasSupportingMaterial: userCase.hasSupportingMaterial,
+          copyToOtherParty: userCase.copyToOtherPartyYesOrNo,
+          copyNoGiveDetails: userCase.copyToOtherPartyText,
+          fromIdamId: user.id,
+        },
+      });
+    } catch (error) {
+      throw new Error('Error responding to notification: ' + axiosErrorDetails(error));
+    }
+  };
+
+  storeResponseToNotification = async (
+    userCase: CaseWithId,
+    user: UserDetails
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      return await this.axios.put(JavaApiUrls.STORE_RESPONSE_TO_NOTIFICATION, {
+        case_id: userCase.id,
+        case_type_id: userCase.caseTypeId,
+        send_notification_id: userCase.selectedNotification.id,
+        supportingMaterialFile: userCase.supportingMaterialFile,
+        pseResponseType: {
+          response: userCase.responseText,
+          hasSupportingMaterial: userCase.hasSupportingMaterial,
+          copyToOtherParty: userCase.copyToOtherPartyYesOrNo,
+          copyNoGiveDetails: userCase.copyToOtherPartyText,
+          fromIdamId: user.id,
+        },
+      });
+    } catch (error) {
+      throw new Error('Error storing response to notification: ' + axiosErrorDetails(error));
+    }
+  };
+
+  submitStoredResponseToNotification = async (
+    userCase: CaseWithId,
+    user: UserDetails,
+    selectedNotification: SendNotificationTypeItem,
+    selectedResponse: TypeItem<PseResponseType>
+  ): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      return await this.axios.put(JavaApiUrls.SUBMIT_STORE_RESPONSE_TO_NOTIFICATION, {
+        case_id: userCase.id,
+        case_type_id: userCase.caseTypeId,
+        from_idam_id: user.id,
+        notification_id: selectedNotification.id,
+        stored_response_id: selectedResponse.id,
+      });
+    } catch (error) {
+      throw new Error('Error submitting stored responding to notification: ' + axiosErrorDetails(error));
     }
   };
 }
