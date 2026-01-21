@@ -4,9 +4,8 @@ import {
   GenericTseApplicationType,
   TseAdminDecision,
   TseRespondType,
-  TseRespondTypeItem,
 } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { Applicant, IsCmoOrRequest, PartiesNotify, TranslationKeys } from '../../definitions/constants';
+import { Applicant, IsCmoOrRequest, TranslationKeys } from '../../definitions/constants';
 import { SummaryListRow, addSummaryHtmlRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import CollectionUtils from '../../utils/CollectionUtils';
@@ -74,13 +73,11 @@ export const getAllResponses = (app: GenericTseApplicationType, req: AppRequest)
     ...req.t(TranslationKeys.APPLICATION_DETAILS, { returnObjects: true }),
   };
 
-  const lastAdminShareIndex = getLastAdminShareIndex(app.respondCollection);
-  app.respondCollection.forEach((r, index) => {
-    if (
-      (r.value.from === Applicant.RESPONDENT || r.value.from === Applicant.CLAIMANT) &&
-      isOtherPartyResponseShare(r.value, index, req.session.user, lastAdminShareIndex)
-    ) {
-      allResponses.push(addNonAdminResponse(r.value, translations, req));
+  app.respondCollection.forEach(r => {
+    if (r.value.from === Applicant.RESPONDENT || r.value.from === Applicant.CLAIMANT) {
+      if (isNonAdminResponseShare(r.value, req.session.user)) {
+        allResponses.push(addNonAdminResponse(r.value, translations, req));
+      }
     } else if (r.value.from === Applicant.ADMIN && isAdminResponseShareToRespondent(r.value)) {
       allResponses.push(addAdminResponse(r.value, translations, req));
     }
@@ -89,30 +86,11 @@ export const getAllResponses = (app: GenericTseApplicationType, req: AppRequest)
   return allResponses;
 };
 
-const getLastAdminShareIndex = (respondCollection: TseRespondTypeItem[]): number => {
-  const indexes = respondCollection.map((response, index) =>
-    response.value.from === Applicant.ADMIN &&
-    (response.value?.selectPartyNotify === PartiesNotify.BOTH_PARTIES ||
-      response.value?.selectPartyNotify === PartiesNotify.RESPONDENT_ONLY)
-      ? index
-      : -1
-  );
-  return Math.max(...indexes);
-};
-
-const isOtherPartyResponseShare = (
-  response: TseRespondType,
-  responseIndex: number,
-  user: UserDetails,
-  lastAdminShareIndex: number
-): boolean => {
+const isNonAdminResponseShare = (response: TseRespondType, user: UserDetails): boolean => {
   if (response.fromIdamId && response.fromIdamId === user.id) {
     return true;
   }
-  if (response.copyToOtherParty === YesOrNo.YES) {
-    return true;
-  }
-  return responseIndex < lastAdminShareIndex;
+  return response.copyToOtherParty === YesOrNo.YES;
 };
 
 const addNonAdminResponse = (response: TseRespondType, translations: AnyRecord, req: AppRequest): SummaryListRow[] => {
