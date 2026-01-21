@@ -77,7 +77,7 @@ describe('StoredApplicationSubmitController', () => {
       await controller.post(req, res);
 
       expect(res.redirect).toHaveBeenCalledWith(
-        PageUrls.STORED_APPLICATION_SUBMIT.replace(':appId', '3f2b8b62-7b36-4f29-a3c3-89e2c1a4b6f7') +
+        PageUrls.STORED_CORRESPONDENCE_SUBMIT.replace(':appId', '3f2b8b62-7b36-4f29-a3c3-89e2c1a4b6f7') +
           languages.ENGLISH_URL_PARAMETER
       );
     });
@@ -91,7 +91,7 @@ describe('StoredApplicationSubmitController', () => {
       await controller.get(req, res as Response);
 
       expect(res.render).toHaveBeenCalledWith(
-        TranslationKeys.STORED_APPLICATION_SUBMIT,
+        TranslationKeys.STORED_CORRESPONDENCE_SUBMIT,
         expect.objectContaining({
           title: 'Amend my response',
           viewCorrespondenceLink: '/application-details/3f2b8b62-7b36-4f29-a3c3-89e2c1a4b6f7?lng=en',

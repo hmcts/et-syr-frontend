@@ -1,0 +1,47 @@
+{
+  "title": "Ymateb i'r tribiwnlys",
+  "h1": "Eich ymateb",
+  "responseText": {
+    "label": "Beth yw eich ymateb i’r tribiwnlys",
+    "hint": "Defnyddiwch y blwch hwn i ddarparu unrhyw ddeunydd ategol. Gallwch lwytho ffeil hefyd os ydych yn dymuno gwneud hynny."
+  },
+  "hasSupportingMaterial": {
+    "label": "Ddeunydd ategol",
+    "hint": "A oes gennych unrhyw ddeunydd ategol yr hoffech ei ddarparu?"
+  },
+  "supportingMaterialFile": {
+    "label": "Darparu deunydd ategol",
+    "hint": "Ystyriwch y canlynol wrth ddarparu deunyddiau:",
+    "li1": "Gallwch lwytho llythyrau, lluniau neu ddogfennau i gefnogi eich ymateb",
+    "li2": "Os ydych yn tynnu llun o lythyr, rhowch ef ar arwyneb gwastad a dal y camera yn union uwch ei ben",
+    "li3": "Os ydych yn llwytho dogfennau ysgrifenedig gyda newidiadau wedi’u marcio, gwnewch yn siŵr bod y nodwedd hon ymlaen ar eich cyfrifiadur",
+    "hintFile": "Uwchlwytho ffeil",
+    "hintExisting": "Rydych chi wedi uwchlwytho'n flaenorol: {{filename}}"
+  },
+  "files": {
+    "title": "Uwchlwytho ffeil (dewisol)",
+    "uploadButton": "Uwchlwytho ffeil",
+    "removeButton": "Dileu ffeil",
+    "uploaded": "Ffeiliau sydd wedi’u huwchlwytho"
+  },
+  "errors": {
+    "responseText": {
+      "required": "Defnyddiwch y blwch testun neu’r cyfleuster llwytho ffeil i roi manylion",
+      "requiredFile": "Provide details of your response &/or upload a file",
+      "tooLong": "Rhaid i’r disgrifiad fod yn 2500 llythyren neu lai"
+    },
+    "hasSupportingMaterial": {
+      "required": "Dywedwch wrthym os ydych eisiau llwytho deunydd ategol hefyd"
+    },
+    "supportingMaterialFile": {
+      "invalidFileName": "Mae enw’r ffeil a ddarparwyd yn annilys. Ni all enw’r ffeil fod yn fwy na 150 o nodau ac ni all gynnwys unrhyw un o’r nodau canlynol: \\/:*?\"|<>",
+      "invalidFileFormat": "Nid yw’r math o ffeil(iau) rydych chi'n ceisio ei huwchlwytho yn cael ei chefnogi gan ein system. Trosglwyddwch hwn i un o'r mathau o ffeiliau a gefnogir a restrir isod.",
+      "invalidFileSize": "Mae’r ffeil rydych chi’n ceisio ei huwchlwytho yn uwch na’r terfyn maint uchaf o 80MB, ceisiwch leihau maint y ffeil.",
+      "fileNameNotFound": "Nid oes gan y ffeil rydych chi’n ceisio ei huwchlwytho enw.",
+      "fileBufferEmpty": "Mae’r ffeil rydych chi’n ceisio ei huwchlwytho yn wag.",
+      "fileNameNotSelected": "Dewiswch ffeil.",
+      "fileAlreadyExists": "Mae’r ffeil rydych chi’n ceisio ei huwchlwytho eisoes yn bodoli. Tynnwch yr un sy’n bodoli eisoes yn gyntaf.",
+      "WithoutUploadButton": "Nid oes ffeil wedi’i huwchlwytho - cliciwch ar ‘Uwchlwytho ffeil’ "
+    }
+  }
+}

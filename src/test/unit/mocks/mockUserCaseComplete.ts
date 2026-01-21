@@ -41,7 +41,6 @@ export const selectedRequestOrOrder: SendNotificationTypeItem = {
     sendNotificationWhoCaseOrder: 'Legal officer',
     sendNotificationFullName: 'Judge Dredd',
     sendNotificationNotify: 'Both',
-    notificationState: 'notViewedYet',
   },
 };
 

@@ -1,18 +1,11 @@
-import { YesOrNo } from '../../definitions/case';
-import { TypeItem } from '../../definitions/util-types';
+import { YesOrNo } from '../case';
+import { TypeItem } from '../util-types';
 
 import { DocumentTypeItem } from './documentTypeItem';
 
 export interface SendNotificationTypeItem {
   id?: string;
   value?: SendNotificationType;
-  redirectUrl?: string;
-  respondUrl?: string;
-  statusColor?: string;
-  displayStatus?: string;
-  linkText?: string;
-  needsResponse?: boolean;
-  showAlert?: boolean;
 }
 
 export interface SendNotificationType {
@@ -69,11 +62,18 @@ export interface SendNotificationType {
   sendNotificationWhoMadeJudgement?: string;
 
   //Indicates the notification status
-  notificationState?: string;
+  respondentState?: TypeItem<PseStatusType>[];
+  // Responses
   respondCollection?: TypeItem<PseResponseType>[];
-  respondStoredCollection?: TypeItem<PseResponseType>[];
+  respondentRespondStoredCollection?: TypeItem<PseResponseType>[];
   respondNotificationTypeCollection?: TypeItem<RespondNotificationType>[];
   sendNotificationSubjectString?: string;
+}
+
+export interface PseStatusType {
+  userIdamId: string;
+  notificationState: string;
+  dateTime?: string;
 }
 
 export interface RespondNotificationType {
@@ -88,13 +88,9 @@ export interface RespondNotificationType {
   respondNotificationRequestMadeBy?: string;
   respondNotificationFullName?: string;
   respondNotificationPartyToNotify?: string;
+  dateTime?: string;
   state?: string;
   isClaimantResponseDue?: string;
-}
-
-export interface RespondNotificationTypeItem {
-  id: string;
-  value: RespondNotificationType;
 }
 
 export interface SendNotificationSelectHearingItem {
@@ -104,17 +100,14 @@ export interface SendNotificationSelectHearingItem {
 }
 
 export interface PseResponseType {
-  from?: string;
-  copyToOtherParty?: string;
-  supportingMaterial?: DocumentTypeItem[];
   date?: string;
+  from?: string;
+  fromIdamId?: string;
   response?: string;
   hasSupportingMaterial?: string;
+  supportingMaterial?: DocumentTypeItem[];
+  copyToOtherParty?: string;
   copyNoGiveDetails?: string;
   responseState?: string;
-}
-
-export interface PseResponseTypeItem {
-  id: string;
-  value: PseResponseType;
+  dateTime?: string;
 }

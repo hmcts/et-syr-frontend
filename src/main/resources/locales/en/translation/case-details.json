@@ -14,7 +14,7 @@
   "section3": "Your response",
   "section4": "Your hearings",
   "section5": "Applications to the tribunal",
-  "section6": "Orders and requests from the tribunal",
+  "section6": "Notifications from the tribunal",
   "section7": "Judgments from the tribunal",
   "section8": "Case documents",
   "personalDetails": "View and edit your personal details",
@@ -26,7 +26,7 @@
   "claimantApplications": "Claimant's applications",
   "otherRespondentApplications": "Other respondent applications",
   "contactTribunal": "Contact the tribunal about your case",
-  "tribunalOrders": "All orders and requests issued by the tribunal",
+  "tribunalOrders": "All notifications from the tribunal",
   "tribunalJudgements": "View all judgments",
   "documents": "All documents",
   "important": "Important",
@@ -90,6 +90,12 @@
       "line1": "You must send a copy of this correspondence and all supporting documents to the other party before you submit it to the tribunal.",
       "line2": "If the other party does respond to your application, they are expected to copy their response to you.",
       "link": "View correspondence"
+    },
+    "notification": {
+      "responseRequired": "The tribunal requires some information from you.",
+      "noResponseRequired": "The tribunal has sent you a notification",
+      "link": "View the notification",
+      "respond": "Respond to the tribunal"
     }
   },
   "multiples": {

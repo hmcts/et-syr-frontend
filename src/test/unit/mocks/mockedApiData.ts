@@ -20,7 +20,7 @@ import {
   ClaimTypePay,
   TellUsWhatYouWant,
 } from '../../../main/definitions/definition';
-import { HubLinkStatus, HubLinksStatuses } from '../../../main/definitions/hub';
+import { HubLinksStatuses } from '../../../main/definitions/hub';
 import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from '../../../main/definitions/links';
 
 export const mockedApiData: CaseApiDataResponse = {
@@ -235,7 +235,6 @@ export const mockedApiData: CaseApiDataResponse = {
           sendNotificationWhoCaseOrder: 'Legal officer',
           sendNotificationFullName: 'Judge Dredd',
           sendNotificationNotify: 'Both',
-          notificationState: HubLinkStatus.NOT_VIEWED,
         },
       },
     ],
