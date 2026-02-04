@@ -3,26 +3,14 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, PayFrequency } from '../definitions/case';
-import { DefaultValues, FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
-import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { endSubSectionReturnNextPage, isClearSelection, returnValidUrl } from '../helpers/RouterHelpers';
-import { getLogger } from '../logger';
-import { getCaseApi } from '../services/CaseService';
-import CollectionUtils from '../utils/CollectionUtils';
-import ET3Util from '../utils/ET3Util';
-import ErrorUtils from '../utils/ErrorUtils';
-import NumberUtils from '../utils/NumberUtils';
-import ObjectUtils from '../utils/ObjectUtils';
-import StringUtils from '../utils/StringUtils';
-import { isValidCurrency } from '../validators/validator';
-
-const logger = getLogger('ClaimantPayDetailsEnterController');
+import { endSubSectionReturnNextPage } from '../helpers/RouterHelpers';
+import { isValidCurrency } from '../validators/currency-validator';
 
 export default class ClaimantPayDetailsEnterController {
   private readonly form: Form;
@@ -80,69 +68,34 @@ export default class ClaimantPayDetailsEnterController {
     this.form = new Form(<FormFields>this.formContent.fields);
   }
 
-  public post = async (req: AppRequest, res: Response): Promise<void> => {
-    req.session.errors = [];
+  public post = (req: AppRequest, res: Response): void => {
+    const { userCase } = req.session;
+
     const formData: Partial<CaseWithId> = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    const et3ResponsePayBeforeTax: number = NumberUtils.convertStringToNumber(formData.et3ResponsePayBeforeTax);
-    const et3ResponsePayTakeHome: number = NumberUtils.convertStringToNumber(formData.et3ResponsePayTakehome);
-    if (NumberUtils.isNotEmpty(et3ResponsePayBeforeTax)) {
-      req.session.userCase.et3ResponsePayBeforeTax = String((et3ResponsePayBeforeTax * 100).toFixed(0));
-    } else {
-      req.session.userCase.et3ResponsePayBeforeTax = DefaultValues.STRING_EMPTY;
+    userCase.et3ResponsePayFrequency = formData.et3ResponsePayFrequency;
+
+    req.session.errors = [];
+    const validatorErrors = this.form.getValidatorErrors(formData);
+    if (validatorErrors.length > 0) {
+      const hasBeforeTaxError = validatorErrors.some(err => err.propertyName === 'et3ResponsePayBeforeTax');
+      if (!hasBeforeTaxError) {
+        userCase.et3ResponsePayBeforeTax = formData.et3ResponsePayBeforeTax;
+      }
+      const hasTakehomeError = validatorErrors.some(err => err.propertyName === 'et3ResponsePayTakehome');
+      if (!hasTakehomeError) {
+        userCase.et3ResponsePayTakehome = formData.et3ResponsePayTakehome;
+      }
+      req.session.errors.push(...validatorErrors);
+      return res.redirect(setUrlLanguage(req, PageUrls.CLAIMANT_PAY_DETAILS_ENTER));
     }
-    if (NumberUtils.isNotEmpty(et3ResponsePayTakeHome)) {
-      req.session.userCase.et3ResponsePayTakehome = String((et3ResponsePayTakeHome * 100).toFixed(0));
-    } else {
-      req.session.userCase.et3ResponsePayTakehome = DefaultValues.STRING_EMPTY;
-    }
-    if (StringUtils.isNotBlank(formData.et3ResponsePayFrequency)) {
-      req.session.userCase.et3ResponsePayFrequency = formData.et3ResponsePayFrequency;
-    }
-    const userCase: CaseWithId = await ET3Util.updateET3Data(
-      req,
-      ET3HubLinkNames.PayPensionBenefitDetails,
-      LinkStatus.IN_PROGRESS
-    );
-    if (CollectionUtils.isEmpty(req.session.errors) && ObjectUtils.isNotEmpty(userCase)) {
-      return res.redirect(returnValidUrl(endSubSectionReturnNextPage(req, PageUrls.CLAIMANT_NOTICE_PERIOD)));
-    }
-    if (ObjectUtils.isEmpty(userCase)) {
-      ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
-        req,
-        ValidationErrors.FILE_UPLOAD_BACKEND_ERROR,
-        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-      );
-    }
-    req.session.userCase = userCase;
-    return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CLAIMANT_PAY_DETAILS_ENTER)));
+
+    userCase.et3ResponsePayBeforeTax = formData.et3ResponsePayBeforeTax;
+    userCase.et3ResponsePayTakehome = formData.et3ResponsePayTakehome;
+
+    return res.redirect(endSubSectionReturnNextPage(req, PageUrls.CLAIMANT_NOTICE_PERIOD));
   };
 
-  public get = async (req: AppRequest, res: Response): Promise<void> => {
-    let userCase = undefined;
-    try {
-      userCase = formatApiCaseDataToCaseWithId(
-        (await getCaseApi(req.session.user?.accessToken).getUserCase(req?.session?.userCase?.id)).data,
-        req
-      );
-    } catch (error) {
-      logger.error('Unable to retrieve user info from get user api. Error is: ' + error.message);
-    }
-    if (ObjectUtils.isNotEmpty(userCase)) {
-      req.session.userCase = userCase;
-    }
-    if (isClearSelection(req)) {
-      req.session.userCase.et3ResponsePayFrequency = undefined;
-    }
-    if (NumberUtils.isNumericValue(req?.session?.userCase?.et3ResponsePayBeforeTax)) {
-      req.session.userCase.et3ResponsePayBeforeTax = String(
-        NumberUtils.convertStringToNumber(req.session.userCase.et3ResponsePayBeforeTax) / 100
-      );
-    }
-    if (NumberUtils.isNumericValue(req?.session?.userCase?.et3ResponsePayTakehome)) {
-      req.session.userCase.et3ResponsePayTakehome = String(
-        NumberUtils.convertStringToNumber(req.session.userCase.et3ResponsePayTakehome) / 100
-      );
-    }
+  public get = (req: AppRequest, res: Response): void => {
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.CLAIMANT_PAY_DETAILS_ENTER,

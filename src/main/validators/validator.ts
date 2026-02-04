@@ -88,24 +88,6 @@ export const isValidAvgWeeklyHours: Validator = value => {
   }
 };
 
-export const isValidCurrency: Validator = value => {
-  if (!value) {
-    return;
-  }
-  const validatedValues: [digitCount: number, correctFormat: boolean] = currencyValidation(value);
-  if (validatedValues[0] <= 12 && validatedValues[1]) {
-    return;
-  }
-  return ValidationErrors.INVALID_CURRENCY;
-};
-
-const currencyValidation = (value: string | string[]): [digitCount: number, correctFormat: boolean] => {
-  value = (value as string).trim();
-  const digitCount = value.replace(/\D/g, '').length;
-  const correctFormat = /^\d{1,3}((,\d{3}){0,3}|(\d{3}){0,3})(\.\d{2})?$/.test(value);
-  return [digitCount, correctFormat];
-};
-
 export const hasInvalidFileName = (fileName: string): string => {
   if (!fileName) {
     return;
