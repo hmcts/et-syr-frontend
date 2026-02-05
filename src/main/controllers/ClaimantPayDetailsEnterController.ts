@@ -3,22 +3,25 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, PayFrequency } from '../definitions/case';
-import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants';
+import { ErrorPages, LoggerConstants, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { endSubSectionReturnNextPage, isClearSelection } from '../helpers/RouterHelpers';
+import { endSubSectionReturnNextPage, isClearSelection, returnNextPage } from '../helpers/RouterHelpers';
 import {
   convertToDatabaseValue,
   convertToInputValue,
   getDisplayValue,
 } from '../helpers/controller/ClaimantPayDetailsEnterHelper';
+import { getLogger } from '../logger';
 import ET3Util from '../utils/ET3Util';
 import ObjectUtils from '../utils/ObjectUtils';
 import { isValidCurrency } from '../validators/currency-validator';
+
+const logger = getLogger('ClaimantPayDetailsEnterController');
 
 export default class ClaimantPayDetailsEnterController {
   private readonly form: Form;
@@ -101,7 +104,8 @@ export default class ClaimantPayDetailsEnterController {
       ET3HubLinkNames.PayPensionBenefitDetails,
       LinkStatus.IN_PROGRESS
     );
-    if (ObjectUtils.isEmpty(userCase)) {
+    if (ObjectUtils.isEmpty(userCase) || req.session.errors?.length > 0) {
+      logger.error(LoggerConstants.ERROR_API);
       return res.redirect(ErrorPages.NOT_FOUND);
     }
     req.session.userCase = userCase;
@@ -113,7 +117,8 @@ export default class ClaimantPayDetailsEnterController {
     req.session.userCase.et3ResponsePayTakeHomeInput = convertToInputValue(req.session.userCase.et3ResponsePayTakehome);
 
     // Redirect to the next page
-    return res.redirect(endSubSectionReturnNextPage(req, PageUrls.CLAIMANT_NOTICE_PERIOD));
+    const nextPage = endSubSectionReturnNextPage(req, PageUrls.CLAIMANT_NOTICE_PERIOD);
+    returnNextPage(req, res, nextPage);
   };
 
   public get = (req: AppRequest, res: Response): void => {
