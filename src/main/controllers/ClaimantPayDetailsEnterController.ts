@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, PayFrequency } from '../definitions/case';
-import { DefaultValues, FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import { ErrorPages, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios';
@@ -11,9 +11,12 @@ import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { endSubSectionReturnNextPage, isClearSelection } from '../helpers/RouterHelpers';
+import {
+  convertToDatabaseValue,
+  convertToInputValue,
+  getDisplayValue,
+} from '../helpers/controller/ClaimantPayDetailsEnterHelper';
 import ET3Util from '../utils/ET3Util';
-import ErrorUtils from '../utils/ErrorUtils';
-import NumberUtils from '../utils/NumberUtils';
 import ObjectUtils from '../utils/ObjectUtils';
 import { isValidCurrency } from '../validators/currency-validator';
 
@@ -47,20 +50,20 @@ export default class ClaimantPayDetailsEnterController {
       et3ResponsePayBeforeTaxInput: {
         type: 'currency',
         classes: 'govuk-input--width-10',
-        label: (l: AnyRecord): string => l.et3ResponsePayBeforeTax.label,
-        hint: (l: AnyRecord): string => l.et3ResponsePayBeforeTax.hintLabel,
+        label: (l: AnyRecord): string => l.et3ResponsePayBeforeTaxInput.label,
+        hint: (l: AnyRecord): string => l.et3ResponsePayBeforeTaxInput.hintLabel,
         attributes: {
-          maxLength: 16,
+          maxLength: 13,
         },
         validator: isValidCurrency,
       },
       et3ResponsePayTakeHomeInput: {
         type: 'currency',
         classes: 'govuk-input--width-10',
-        label: (l: AnyRecord): string => l.et3ResponsePayTakehome.label,
-        hint: (l: AnyRecord): string => l.et3ResponsePayTakehome.hintLabel,
+        label: (l: AnyRecord): string => l.et3ResponsePayTakeHomeInput.label,
+        hint: (l: AnyRecord): string => l.et3ResponsePayTakeHomeInput.hintLabel,
         attributes: {
-          maxLength: 16,
+          maxLength: 13,
         },
         validator: isValidCurrency,
       },
@@ -74,9 +77,8 @@ export default class ClaimantPayDetailsEnterController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const formData: Partial<CaseWithId> = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-
     // Store the raw user input values
+    const formData: Partial<CaseWithId> = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     req.session.userCase.et3ResponsePayFrequency = formData.et3ResponsePayFrequency;
     req.session.userCase.et3ResponsePayBeforeTaxInput = formData.et3ResponsePayBeforeTaxInput;
     req.session.userCase.et3ResponsePayTakeHomeInput = formData.et3ResponsePayTakeHomeInput;
@@ -100,11 +102,7 @@ export default class ClaimantPayDetailsEnterController {
       LinkStatus.IN_PROGRESS
     );
     if (ObjectUtils.isEmpty(userCase)) {
-      ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
-        req,
-        ValidationErrors.FILE_UPLOAD_BACKEND_ERROR,
-        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-      );
+      return res.redirect(ErrorPages.NOT_FOUND);
     }
     req.session.userCase = userCase;
 
@@ -148,25 +146,3 @@ export default class ClaimantPayDetailsEnterController {
     });
   };
 }
-
-const convertToDatabaseValue = (inputValue: string): string => {
-  const numberValue: number = NumberUtils.convertCurrencyStringToNumber(inputValue);
-  if (NumberUtils.isNotEmpty(numberValue)) {
-    return String((numberValue * 100).toFixed(0));
-  }
-  return DefaultValues.STRING_EMPTY;
-};
-
-const convertToInputValue = (databaseValue: string): string => {
-  if (NumberUtils.isNumericValue(databaseValue)) {
-    return String(NumberUtils.convertStringToNumber(databaseValue) / 100);
-  }
-  return DefaultValues.STRING_EMPTY;
-};
-
-const getDisplayValue = (databaseValue: string, existingValue: string): string => {
-  if (existingValue) {
-    return existingValue;
-  }
-  return convertToInputValue(databaseValue);
-};

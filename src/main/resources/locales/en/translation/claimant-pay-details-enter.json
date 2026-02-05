@@ -5,11 +5,11 @@
     "label": "How often was the claimant paid? (optional)",
     "hintLabel": "Use the same time period (weekly, monthly or annual) that the claimant used on the ET1 form."
   },
-  "et3ResponsePayBeforeTax": {
+  "et3ResponsePayBeforeTaxInput": {
     "label": "Enter the claimant’s pay BEFORE tax (optional)",
     "hintLabel": "Include overtime, commission and bonuses."
   },
-  "et3ResponsePayTakehome": {
+  "et3ResponsePayTakeHomeInput": {
     "label": "Enter the claimant’s normal take-home pay (optional)",
     "hintLabel": "Take-home pay is the pay after tax and insurance deductions.<br><br>Include overtime, commission and bonuses."
   },

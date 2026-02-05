@@ -5,11 +5,11 @@
     "label": "Pa mor aml oedd yr hawlydd yn cael ei dalu?",
     "hintLabel": "Defnyddiwch yr un cyfnod amser (wythnosol, misol neu flynyddol) a ddefnyddiodd yr hawlydd ar ffurflen ET1."
   },
-  "et3ResponsePayBeforeTax": {
+  "et3ResponsePayBeforeTaxInput": {
     "label": "Rhowch gyflog yr hawlydd CYN treth (dewisol)",
     "hintLabel": "Dylech gynnwys goramser, comisiwn a bonysau."
   },
-  "et3ResponsePayTakehome": {
+  "et3ResponsePayTakeHomeInput": {
     "label": "Nodwch gyflog terfynol arferol yr hawlydd (dewisol)",
     "hintLabel": "Cyflog terfynol arferol yw’r cyflog ar ôl didyniadau treth ac yswiriant. <br><br>Mae’n cynnwys goramser, comisiwn a bonysau."
   },
