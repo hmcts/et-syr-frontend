@@ -14,11 +14,13 @@
     "hintLabel": "Take-home pay is the pay after tax and insurance deductions.<br><br>Include overtime, commission and bonuses."
   },
   "errors": {
-    "et3ResponsePayBeforeTax": {
-      "invalidCurrency": "Pay before tax must be entered as a number and a minimum of double figures. For example 10"
+    "et3ResponsePayBeforeTaxInput": {
+      "invalidCurrency": "Enter pay before tax in the correct format, for example £600 or £193.54",
+      "tooHighCurrency": "Pay before tax must be £9,999,999.99 or less"
     },
-    "et3ResponsePayTakehome": {
-      "invalidCurrency": "Pay after tax must be entered as a number and a minimum of double figures. For example 10"
+    "et3ResponsePayTakeHomeInput": {
+      "invalidCurrency": "Enter pay after tax in the correct format, for example £600 or £193.54",
+      "tooHighCurrency": "Pay after tax must be £9,999,999.99 or less"
     },
     "hiddenErrorField": {
       "sessionUserCase": "User case not found in session",
