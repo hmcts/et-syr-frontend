@@ -26,23 +26,23 @@ describe('Claimant pay details enter details Controller', () => {
   });
 
   describe('GET method', () => {
-    it('should render the page', async () => {
+    it('should render the page', () => {
       const getCaseApiMock = jest.spyOn(caseService, 'getCaseApi');
       const api = new CaseApi(axios);
       getCaseApiMock.mockReturnValue(api);
       api.getUserCase = jest
         .fn()
         .mockReturnValue(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse));
-      await controller.get(request, response);
+      controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.CLAIMANT_PAY_DETAILS_ENTER, expect.anything());
     });
 
-    it('should render the page when clear selection', async () => {
+    it('should render the page when clear selection', () => {
       request.session.userCase.et3ResponsePayFrequency = PayFrequency.WEEKLY;
       request.query = {
         redirect: 'clearSelection',
       };
-      await controller.get(request, response);
+      controller.get(request, response);
       expect(request.session.userCase.et3ResponsePayFrequency).toStrictEqual(undefined);
     });
   });
@@ -66,6 +66,17 @@ describe('Claimant pay details enter details Controller', () => {
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_NOTICE_PERIOD);
+    });
+
+    it('should redirect to error page when et3ResponsePayBeforeTax is invalid', async () => {
+      request = mockRequest({
+        body: {
+          et3ResponsePayBeforeTaxInput: 'Test',
+        },
+      });
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_PAY_DETAILS_ENTER);
     });
   });
 });
