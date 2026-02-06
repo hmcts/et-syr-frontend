@@ -108,6 +108,9 @@ export default class ClaimantPayDetailsEnterController {
       logger.error(LoggerConstants.ERROR_API);
       return res.redirect(ErrorPages.NOT_FOUND);
     }
+    if (req.body?.saveForLater) {
+      return res.redirect(setUrlLanguage(req, PageUrls.RESPONSE_SAVED));
+    }
     req.session.userCase = userCase;
 
     // Convert stored values back to input values for display
