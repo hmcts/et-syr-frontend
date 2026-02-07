@@ -154,7 +154,7 @@ describe('Application Details Helper', () => {
       expect(result[2][4].value.text).toEqual('Yes');
     });
 
-    it('should return all responses before Admin share', () => {
+    it('should return responses with copyToOtherParty=No only if from current user', () => {
       const app: GenericTseApplicationType = {
         respondCollection: [
           {
@@ -214,35 +214,27 @@ describe('Application Details Helper', () => {
           },
         ],
       };
+
       const result = getAllResponses(app, req);
-      expect(result).toHaveLength(5);
+
+      expect(result).toHaveLength(3);
 
       expect(result[0]).toHaveLength(3);
       expect(result[0][0].value.text).toEqual('Respondent');
       expect(result[0][1].value.text).toEqual('11 February 2025');
       expect(result[0][2].value.text).toEqual('No');
 
-      expect(result[1]).toHaveLength(3);
-      expect(result[1][0].value.text).toEqual('Respondent');
-      expect(result[1][1].value.text).toEqual('12 February 2025');
-      expect(result[1][2].value.text).toEqual('No');
+      expect(result[1]).toHaveLength(5);
+      expect(result[1][0].value.text).toEqual('14 February 2025');
+      expect(result[1][1].value.text).toEqual('Tribunal');
+      expect(result[1][2].value.text).toEqual('Case management order');
+      expect(result[1][3].value.text).toEqual('No');
+      expect(result[1][4].value.text).toEqual('Both parties');
 
       expect(result[2]).toHaveLength(3);
-      expect(result[2][0].value.text).toEqual('Claimant');
-      expect(result[2][1].value.text).toEqual('13 February 2025');
+      expect(result[2][0].value.text).toEqual('Respondent');
+      expect(result[2][1].value.text).toEqual('15 February 2025');
       expect(result[2][2].value.text).toEqual('No');
-
-      expect(result[3]).toHaveLength(5);
-      expect(result[3][0].value.text).toEqual('14 February 2025');
-      expect(result[3][1].value.text).toEqual('Tribunal');
-      expect(result[3][2].value.text).toEqual('Case management order');
-      expect(result[3][3].value.text).toEqual('No');
-      expect(result[3][4].value.text).toEqual('Both parties');
-
-      expect(result[4]).toHaveLength(3);
-      expect(result[4][0].value.text).toEqual('Respondent');
-      expect(result[4][1].value.text).toEqual('15 February 2025');
-      expect(result[4][2].value.text).toEqual('No');
     });
 
     it('should return empty array if application undefined', () => {
