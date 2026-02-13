@@ -187,6 +187,20 @@ describe('ET3lUtil tests', () => {
     test('Should 0 of 6 tasks completed when et3 hub link statuses does not have any completed task', () => {
       expect(ET3Util.getOverallStatus(userCase, respondent, translations)).toEqual('0 of 6 tasks completed');
     });
+    test('Should 0 of 6 tasks completed when et3HubLinksStatuses is null', () => {
+      const respondentWithNullStatuses = _.cloneDeep(mockRespondentET3Model);
+      respondentWithNullStatuses.et3HubLinksStatuses = null;
+      expect(ET3Util.getOverallStatus(userCase, respondentWithNullStatuses, translations)).toEqual(
+        '0 of 6 tasks completed'
+      );
+    });
+    test('Should 0 of 6 tasks completed when et3HubLinksStatuses is undefined', () => {
+      const respondentWithUndefinedStatuses = _.cloneDeep(mockRespondentET3Model);
+      respondentWithUndefinedStatuses.et3HubLinksStatuses = undefined;
+      expect(ET3Util.getOverallStatus(userCase, respondentWithUndefinedStatuses, translations)).toEqual(
+        '0 of 6 tasks completed'
+      );
+    });
     test('Should 1 of 6 tasks completed when et3 hub link statuses have 1 completed task', () => {
       respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
       expect(ET3Util.getOverallStatus(userCase, respondent, translations)).toEqual('1 of 6 tasks completed');
