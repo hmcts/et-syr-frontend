@@ -170,6 +170,20 @@ export const linkStatusColorMap = new Map<LinkStatus, string>([
   [LinkStatus.CANNOT_START_YET, LinkColors.GREY],
 ]);
 
+export const getResponseCaseDetailsLinkStatusesByRespondentCaseDetailsLinkStatuses = (
+  respondentCaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses
+): ET3CaseDetailsLinksStatuses => {
+  if (!respondentCaseDetailsLinksStatuses) {
+    respondentCaseDetailsLinksStatuses = new ET3CaseDetailsLinksStatuses();
+  }
+  for (const caseDetailsLinkKey of Object.values(ET3CaseDetailsLinkNames)) {
+    if (!respondentCaseDetailsLinksStatuses[caseDetailsLinkKey]) {
+      respondentCaseDetailsLinksStatuses[caseDetailsLinkKey] = new ET3CaseDetailsLinksStatuses()[caseDetailsLinkKey];
+    }
+  }
+  return respondentCaseDetailsLinksStatuses;
+};
+
 export const getResponseHubLinkStatusesByRespondentHubLinkStatuses = (
   respondentHubLinksStatuses: ET3HubLinksStatuses
 ): ET3HubLinksStatuses => {
