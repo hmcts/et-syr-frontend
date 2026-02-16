@@ -3,7 +3,7 @@ import AxiosInstance from 'axios';
 import { AppRequest } from '../../../../main/definitions/appRequest';
 import { YesOrNo } from '../../../../main/definitions/case';
 import { Applicant, PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
-import { ET3CaseDetailsLinkNames, LinkStatus } from '../../../../main/definitions/links';
+import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../../../../main/definitions/links';
 import { isResponseToTribunalRequired } from '../../../../main/helpers/GenericTseApplicationHelper';
 import { getET3CaseDetailsLinkNames } from '../../../../main/helpers/controller/CaseDetailsHelper';
 import { CaseApi } from '../../../../main/services/CaseService';
@@ -37,6 +37,30 @@ describe('Case Details Helper', () => {
       const result = await getET3CaseDetailsLinkNames(statuses, req);
       expect(result[ET3CaseDetailsLinkNames.ClaimantApplications]).toBe(LinkStatus.NOT_YET_AVAILABLE);
       expect(result[ET3CaseDetailsLinkNames.OtherRespondentApplications]).toBe(LinkStatus.NOT_YET_AVAILABLE);
+    });
+
+    it('returns initialized statuses when statuses is null', async () => {
+      req.session.userCase.genericTseApplicationCollection = [];
+      const statuses: ET3CaseDetailsLinksStatuses = null;
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      expect(result[ET3CaseDetailsLinkNames.PersonalDetails]).toBe(LinkStatus.NOT_YET_AVAILABLE);
+      expect(result[ET3CaseDetailsLinkNames.ET1ClaimForm]).toBe(LinkStatus.NOT_VIEWED);
+      expect(result[ET3CaseDetailsLinkNames.ClaimantContactDetails]).toBe(LinkStatus.READY_TO_VIEW);
+      expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.NOT_STARTED_YET);
+      expect(result[ET3CaseDetailsLinkNames.ContactTribunal]).toBe(LinkStatus.OPTIONAL);
+      expect(result[ET3CaseDetailsLinkNames.Documents]).toBe(LinkStatus.OPTIONAL);
+    });
+
+    it('returns initialized statuses when statuses is undefined', async () => {
+      req.session.userCase.genericTseApplicationCollection = [];
+      const statuses: ET3CaseDetailsLinksStatuses = undefined;
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      expect(result[ET3CaseDetailsLinkNames.PersonalDetails]).toBe(LinkStatus.NOT_YET_AVAILABLE);
+      expect(result[ET3CaseDetailsLinkNames.ET1ClaimForm]).toBe(LinkStatus.NOT_VIEWED);
+      expect(result[ET3CaseDetailsLinkNames.ClaimantContactDetails]).toBe(LinkStatus.READY_TO_VIEW);
+      expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.NOT_STARTED_YET);
+      expect(result[ET3CaseDetailsLinkNames.ContactTribunal]).toBe(LinkStatus.OPTIONAL);
+      expect(result[ET3CaseDetailsLinkNames.Documents]).toBe(LinkStatus.OPTIONAL);
     });
 
     it('returns NOT_YET_AVAILABLE when application collection is undefined', async () => {
