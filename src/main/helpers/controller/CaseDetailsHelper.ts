@@ -7,6 +7,7 @@ import {
   ET3CaseDetailsLinksStatuses,
   LinkStatus,
   SectionIndexToEt3CaseDetailsLinkNames,
+  getResponseCaseDetailsLinkStatusesByRespondentCaseDetailsLinkStatuses,
   linkStatusColorMap,
 } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
@@ -34,6 +35,8 @@ export const getET3CaseDetailsLinkNames = async (
   statuses: ET3CaseDetailsLinksStatuses,
   req: AppRequest
 ): Promise<ET3CaseDetailsLinksStatuses> => {
+  // Initialize statuses with defaults if null/undefined, following the pattern from RespondentUtil.java
+  statuses = getResponseCaseDetailsLinkStatusesByRespondentCaseDetailsLinkStatuses(statuses);
   await updateApplicationsStatusIfNotExist(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantContactDetails] = LinkStatus.READY_TO_VIEW;
   statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(req);
