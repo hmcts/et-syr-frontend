@@ -3,24 +3,23 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, PayFrequency } from '../definitions/case';
-import { DefaultValues, FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import { ErrorPages, LoggerConstants, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
-import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { endSubSectionReturnNextPage, isClearSelection, returnValidUrl } from '../helpers/RouterHelpers';
+import { endSubSectionReturnNextPage, isClearSelection, returnNextPage } from '../helpers/RouterHelpers';
+import {
+  convertToDatabaseValue,
+  convertToInputValue,
+  getDisplayValue,
+} from '../helpers/controller/ClaimantPayDetailsEnterHelper';
 import { getLogger } from '../logger';
-import { getCaseApi } from '../services/CaseService';
-import CollectionUtils from '../utils/CollectionUtils';
 import ET3Util from '../utils/ET3Util';
-import ErrorUtils from '../utils/ErrorUtils';
-import NumberUtils from '../utils/NumberUtils';
 import ObjectUtils from '../utils/ObjectUtils';
-import StringUtils from '../utils/StringUtils';
-import { isValidCurrency } from '../validators/validator';
+import { isValidCurrency } from '../validators/currency-validator';
 
 const logger = getLogger('ClaimantPayDetailsEnterController');
 
@@ -51,23 +50,23 @@ export default class ClaimantPayDetailsEnterController {
         type: 'clearSelection',
         targetUrl: PageUrls.CLAIMANT_PAY_DETAILS_ENTER,
       },
-      et3ResponsePayBeforeTax: {
+      et3ResponsePayBeforeTaxInput: {
         type: 'currency',
         classes: 'govuk-input--width-10',
-        label: (l: AnyRecord): string => l.et3ResponsePayBeforeTax.label,
-        hint: (l: AnyRecord): string => l.et3ResponsePayBeforeTax.hintLabel,
+        label: (l: AnyRecord): string => l.et3ResponsePayBeforeTaxInput.label,
+        hint: (l: AnyRecord): string => l.et3ResponsePayBeforeTaxInput.hintLabel,
         attributes: {
-          maxLength: 16,
+          maxLength: 13,
         },
         validator: isValidCurrency,
       },
-      et3ResponsePayTakehome: {
+      et3ResponsePayTakeHomeInput: {
         type: 'currency',
         classes: 'govuk-input--width-10',
-        label: (l: AnyRecord): string => l.et3ResponsePayTakehome.label,
-        hint: (l: AnyRecord): string => l.et3ResponsePayTakehome.hintLabel,
+        label: (l: AnyRecord): string => l.et3ResponsePayTakeHomeInput.label,
+        hint: (l: AnyRecord): string => l.et3ResponsePayTakeHomeInput.hintLabel,
         attributes: {
-          maxLength: 16,
+          maxLength: 13,
         },
         validator: isValidCurrency,
       },
@@ -81,68 +80,69 @@ export default class ClaimantPayDetailsEnterController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    req.session.errors = [];
+    // Store the raw user input values
     const formData: Partial<CaseWithId> = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    const et3ResponsePayBeforeTax: number = NumberUtils.convertStringToNumber(formData.et3ResponsePayBeforeTax);
-    const et3ResponsePayTakeHome: number = NumberUtils.convertStringToNumber(formData.et3ResponsePayTakehome);
-    if (NumberUtils.isNotEmpty(et3ResponsePayBeforeTax)) {
-      req.session.userCase.et3ResponsePayBeforeTax = String((et3ResponsePayBeforeTax * 100).toFixed(0));
-    } else {
-      req.session.userCase.et3ResponsePayBeforeTax = DefaultValues.STRING_EMPTY;
+    req.session.userCase.et3ResponsePayFrequency = formData.et3ResponsePayFrequency;
+    req.session.userCase.et3ResponsePayBeforeTaxInput = formData.et3ResponsePayBeforeTaxInput;
+    req.session.userCase.et3ResponsePayTakeHomeInput = formData.et3ResponsePayTakeHomeInput;
+
+    // Validate the form data and redirect back to the form with errors
+    req.session.errors = [];
+    const validatorErrors = this.form.getValidatorErrors(formData);
+    if (validatorErrors.length > 0) {
+      req.session.errors.push(...validatorErrors);
+      return res.redirect(setUrlLanguage(req, PageUrls.CLAIMANT_PAY_DETAILS_ENTER));
     }
-    if (NumberUtils.isNotEmpty(et3ResponsePayTakeHome)) {
-      req.session.userCase.et3ResponsePayTakehome = String((et3ResponsePayTakeHome * 100).toFixed(0));
-    } else {
-      req.session.userCase.et3ResponsePayTakehome = DefaultValues.STRING_EMPTY;
-    }
-    if (StringUtils.isNotBlank(formData.et3ResponsePayFrequency)) {
-      req.session.userCase.et3ResponsePayFrequency = formData.et3ResponsePayFrequency;
-    }
+
+    // Convert input values to database values for storage
+    req.session.userCase.et3ResponsePayBeforeTax = convertToDatabaseValue(formData.et3ResponsePayBeforeTaxInput);
+    req.session.userCase.et3ResponsePayTakehome = convertToDatabaseValue(formData.et3ResponsePayTakeHomeInput);
+
+    // Save the data with API and update the session
     const userCase: CaseWithId = await ET3Util.updateET3Data(
       req,
       ET3HubLinkNames.PayPensionBenefitDetails,
       LinkStatus.IN_PROGRESS
     );
-    if (CollectionUtils.isEmpty(req.session.errors) && ObjectUtils.isNotEmpty(userCase)) {
-      return res.redirect(returnValidUrl(endSubSectionReturnNextPage(req, PageUrls.CLAIMANT_NOTICE_PERIOD)));
+    if (ObjectUtils.isEmpty(userCase) || req.session.errors?.length > 0) {
+      logger.error(LoggerConstants.ERROR_API);
+      return res.redirect(ErrorPages.NOT_FOUND);
     }
-    if (ObjectUtils.isEmpty(userCase)) {
-      ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
-        req,
-        ValidationErrors.FILE_UPLOAD_BACKEND_ERROR,
-        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-      );
+    if (req.body?.saveForLater) {
+      return res.redirect(setUrlLanguage(req, PageUrls.RESPONSE_SAVED));
     }
     req.session.userCase = userCase;
-    return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CLAIMANT_PAY_DETAILS_ENTER)));
+
+    // Convert stored values back to input values for display
+    req.session.userCase.et3ResponsePayBeforeTaxInput = convertToInputValue(
+      req.session.userCase.et3ResponsePayBeforeTax
+    );
+    req.session.userCase.et3ResponsePayTakeHomeInput = convertToInputValue(req.session.userCase.et3ResponsePayTakehome);
+
+    // Redirect to the next page
+    const nextPage = endSubSectionReturnNextPage(req, PageUrls.CLAIMANT_NOTICE_PERIOD);
+    returnNextPage(req, res, nextPage);
   };
 
-  public get = async (req: AppRequest, res: Response): Promise<void> => {
-    let userCase = undefined;
-    try {
-      userCase = formatApiCaseDataToCaseWithId(
-        (await getCaseApi(req.session.user?.accessToken).getUserCase(req?.session?.userCase?.id)).data,
-        req
-      );
-    } catch (error) {
-      logger.error('Unable to retrieve user info from get user api. Error is: ' + error.message);
-    }
-    if (ObjectUtils.isNotEmpty(userCase)) {
-      req.session.userCase = userCase;
-    }
+  public get = (req: AppRequest, res: Response): void => {
+    const { userCase } = req.session;
+
+    // Clear selection if the user clicks on clear selection link
     if (isClearSelection(req)) {
-      req.session.userCase.et3ResponsePayFrequency = undefined;
+      userCase.et3ResponsePayFrequency = undefined;
     }
-    if (NumberUtils.isNumericValue(req?.session?.userCase?.et3ResponsePayBeforeTax)) {
-      req.session.userCase.et3ResponsePayBeforeTax = String(
-        NumberUtils.convertStringToNumber(req.session.userCase.et3ResponsePayBeforeTax) / 100
-      );
-    }
-    if (NumberUtils.isNumericValue(req?.session?.userCase?.et3ResponsePayTakehome)) {
-      req.session.userCase.et3ResponsePayTakehome = String(
-        NumberUtils.convertStringToNumber(req.session.userCase.et3ResponsePayTakehome) / 100
-      );
-    }
+
+    // Convert stored values back to input values for display
+    userCase.et3ResponsePayBeforeTaxInput = getDisplayValue(
+      userCase.et3ResponsePayBeforeTax,
+      userCase.et3ResponsePayBeforeTaxInput
+    );
+    userCase.et3ResponsePayTakeHomeInput = getDisplayValue(
+      userCase.et3ResponsePayTakehome,
+      userCase.et3ResponsePayTakeHomeInput
+    );
+
+    // Get the content for the page and render it
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
       TranslationKeys.CLAIMANT_PAY_DETAILS_ENTER,
