@@ -5,20 +5,22 @@
     "label": "Pa mor aml oedd yr hawlydd yn cael ei dalu?",
     "hintLabel": "Defnyddiwch yr un cyfnod amser (wythnosol, misol neu flynyddol) a ddefnyddiodd yr hawlydd ar ffurflen ET1."
   },
-  "et3ResponsePayBeforeTax": {
+  "et3ResponsePayBeforeTaxInput": {
     "label": "Rhowch gyflog yr hawlydd CYN treth (dewisol)",
     "hintLabel": "Dylech gynnwys goramser, comisiwn a bonysau."
   },
-  "et3ResponsePayTakehome": {
+  "et3ResponsePayTakeHomeInput": {
     "label": "Nodwch gyflog terfynol arferol yr hawlydd (dewisol)",
     "hintLabel": "Cyflog terfynol arferol yw’r cyflog ar ôl didyniadau treth ac yswiriant. <br><br>Mae’n cynnwys goramser, comisiwn a bonysau."
   },
   "errors": {
-    "et3ResponsePayBeforeTax": {
-      "invalidCurrency": "Rhaid i dâl cyn treth fod yn rhif ac yn ffigyrau dwbl o leiaf. Er enghraifft 10"
+    "et3ResponsePayBeforeTaxInput": {
+      "invalidCurrency": "Rhowch cyflog cyn treth yn y fformat cywir, er enghraifft £600 neu £193.54",
+      "tooHighCurrency": "Rhaid i cyflog cyn treth fod yn £9,999,999.99 neu lai"
     },
-    "et3ResponsePayTakehome": {
-      "invalidCurrency": "Rhaid i dâl ar ôl treth fod yn rhif ac yn ffigyrau dwbl o leiaf. Er enghraifft 10"
+    "et3ResponsePayTakeHomeInput": {
+      "invalidCurrency": "Rhowch cyflog ar ôl treth yn y fformat cywir, er enghraifft £600 neu £193.54",
+      "tooHighCurrency": "Rhaid i cyflog ar ôl treth fod yn £9,999,999.99 neu lai"
     },
     "hiddenErrorField": {
       "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",

@@ -84,7 +84,9 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponseRespondentSupportDocument?: UploadedDocumentType;
   et3ResponsePayFrequency?: PayFrequency;
   et3ResponsePayBeforeTax?: string;
+  et3ResponsePayBeforeTaxInput?: string;
   et3ResponsePayTakehome?: string;
+  et3ResponsePayTakeHomeInput?: string;
   et3Form?: UploadedDocumentType;
   et3FormWelsh?: UploadedDocumentType;
   respondentEmail?: string;

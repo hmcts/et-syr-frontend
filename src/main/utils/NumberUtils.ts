@@ -43,4 +43,14 @@ export default class NumberUtils {
     }
     return Number(stringValue);
   }
+
+  /**
+   * Converts currency string value to number. If string value is not a numeric value returns undefined.
+   * @param stringValue value that will be converted to number type
+   * @return numeric correspondence of the given string value
+   */
+  public static convertCurrencyStringToNumber(stringValue: string): number {
+    const str = stringValue?.replace(/[£,]/g, '');
+    return NumberUtils.convertStringToNumber(str);
+  }
 }
