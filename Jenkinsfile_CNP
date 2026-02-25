@@ -11,15 +11,13 @@ parameters([
         ])
 ])
 
-//@Library("Infrastructure")
-@Library("Infrastructure@performance-stages-tidy") _   //add-perftest-vars, test-performance-repo
-
+@Library("Infrastructure")
 import uk.gov.hmcts.contino.AppPipelineDsl
 
 def type = "nodejs"
 def product = "et"
 def component = "syr"
-def branchesToSync = ['demo', 'ithc'] //'perftest'
+def branchesToSync = ['demo', 'ithc']
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
