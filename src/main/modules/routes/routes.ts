@@ -9,12 +9,14 @@ import multer, { FileFilterCallback } from 'multer';
 import AcasEarlyConciliationCertificateController from '../../controllers/AcasEarlyConciliationCertificateController';
 import ApplicationDetailsController from '../../controllers/ApplicationDetailsController';
 import ApplicationSubmittedController from '../../controllers/ApplicationSubmittedController';
+import AppointLegalRepController from '../../controllers/AppointLegalRepController';
 import AttachmentController from '../../controllers/AttachmentController';
 import CaseDetailsController from '../../controllers/CaseDetailsController';
 import CaseListCheckController from '../../controllers/CaseListCheckController';
 import CaseListController from '../../controllers/CaseListController';
 import CaseNumberCheckController from '../../controllers/CaseNumberCheckController';
 import ChangeDetailsController from '../../controllers/ChangeDetailsController';
+import ChangeLegalRepresentativeController from '../../controllers/ChangeLegalRepresentativeController';
 import CheckYourAnswersContactDetailsController from '../../controllers/CheckYourAnswersContactDetailsController';
 import CheckYourAnswersContestClaimController from '../../controllers/CheckYourAnswersContestClaimController';
 import CheckYourAnswersET3Controller from '../../controllers/CheckYourAnswersET3Controller';
@@ -54,7 +56,10 @@ import HearingPreferencesController from '../../controllers/HearingPreferencesCo
 import HoldingPageController from '../../controllers/HoldingPageController';
 import HomeController from '../../controllers/HomeController';
 import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
+import MakingResponseAsLegalRepController from '../../controllers/MakingResponseAsLegalRepController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
+import NotificationController from '../../controllers/NotificationController';
+import NotificationDetailsController from '../../controllers/NotificationDetailsController';
 import OtherRespondentApplicationsController from '../../controllers/OtherRespondentApplicationsController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
@@ -64,6 +69,16 @@ import RespondToApplicationController from '../../controllers/RespondToApplicati
 import RespondToApplicationCopyToOtherPartyController from '../../controllers/RespondToApplicationCopyToOtherPartyController';
 import RespondToApplicationSubmitController from '../../controllers/RespondToApplicationSubmitController';
 import RespondToApplicationSupportingMaterialController from '../../controllers/RespondToApplicationSupportingMaterialController';
+import RespondToNotificationCYAController from '../../controllers/RespondToNotificationCYAController';
+import RespondToNotificationCYAOfflineController from '../../controllers/RespondToNotificationCYAOfflineController';
+import RespondToNotificationCompleteController from '../../controllers/RespondToNotificationCompleteController';
+import RespondToNotificationController from '../../controllers/RespondToNotificationController';
+import RespondToNotificationCopyController from '../../controllers/RespondToNotificationCopyController';
+import RespondToNotificationCopyOfflineController from '../../controllers/RespondToNotificationCopyOfflineController';
+import RespondToNotificationStoreConfirmController from '../../controllers/RespondToNotificationStoreConfirmController';
+import RespondToNotificationStoreController from '../../controllers/RespondToNotificationStoreController';
+import RespondToNotificationStoredSubmitController from '../../controllers/RespondToNotificationStoredSubmitController';
+import RespondToNotificationSubmitController from '../../controllers/RespondToNotificationSubmitController';
 import RespondentAddressController from '../../controllers/RespondentAddressController';
 import RespondentContactPhoneNumberController from '../../controllers/RespondentContactPhoneNumberController';
 import RespondentContactPreferencesController from '../../controllers/RespondentContactPreferencesController';
@@ -89,7 +104,7 @@ import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationCo
 import YourRequestAndApplicationsController from '../../controllers/YourRequestAndApplicationsController';
 import YourResponseFormController from '../../controllers/YourResponseFormController';
 import { AppRequest } from '../../definitions/appRequest';
-import { FILE_SIZE_LIMIT, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
+import { FILE_SIZE_LIMIT, FormFieldNames, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
 
 const handleUploads = multer({
   limits: {
@@ -124,8 +139,6 @@ export class Routes {
     // Singleton controllers:
     const respondentContestClaimReasonController = new RespondentContestClaimReasonController();
     const employersContractClaimDetailsController = new EmployersContractClaimDetailsController();
-    const contactTribunalSelectedController = new ContactTribunalSelectedController();
-    const respondToApplicationSupportingMaterialController = new RespondToApplicationSupportingMaterialController();
     app.get(InterceptPaths.CHANGE_DETAILS, new ChangeDetailsController().get);
     // Page URLs
     app.get(PageUrls.HOME, new HomeController().get);
@@ -262,12 +275,12 @@ export class Routes {
     // Contact the tribunal about your case
     app.get(PageUrls.HOLDING_PAGE, new HoldingPageController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL, new ContactTribunalController().get);
-    app.get(PageUrls.CONTACT_TRIBUNAL_SELECTED, contactTribunalSelectedController.get);
+    app.get(PageUrls.CONTACT_TRIBUNAL_SELECTED, new ContactTribunalSelectedController().get);
     app.post(
       PageUrls.CONTACT_TRIBUNAL_SELECTED,
       limiter,
-      handleUploads.single('contactApplicationFile'),
-      contactTribunalSelectedController.post
+      handleUploads.single(FormFieldNames.CONTACT_TRIBUNAL_SELECTED.CONTACT_APPLICATION_FILE_NAME),
+      new ContactTribunalSelectedController().post
     );
     app.get(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().get);
     app.post(PageUrls.COPY_TO_OTHER_PARTY, new CopyToOtherPartyController().post);
@@ -279,8 +292,8 @@ export class Routes {
     app.get(PageUrls.CONTACT_TRIBUNAL_SUBMIT_COMPLETE, new ContactTribunalSubmitCompleteController().get);
     app.get(InterceptPaths.CONTACT_TRIBUNAL_STORE, new ContactTribunalStoreController().get);
     app.get(PageUrls.CONTACT_TRIBUNAL_STORE_COMPLETE, new ContactTribunalStoreCompleteController().get);
-    app.get(PageUrls.STORED_APPLICATION_SUBMIT, new ContactTribunalSubmitStoredController().get);
-    app.post(PageUrls.STORED_APPLICATION_SUBMIT, new ContactTribunalSubmitStoredController().post);
+    app.get(PageUrls.STORED_CORRESPONDENCE_SUBMIT, new ContactTribunalSubmitStoredController().get);
+    app.post(PageUrls.STORED_CORRESPONDENCE_SUBMIT, new ContactTribunalSubmitStoredController().post);
     // Your request and applications
     app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
     app.get(PageUrls.CLAIMANTS_APPLICATIONS, new ClaimantsApplicationsController().get);
@@ -288,12 +301,15 @@ export class Routes {
     app.get(PageUrls.APPLICATION_DETAILS, new ApplicationDetailsController().get);
     app.get(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().get);
     app.post(PageUrls.RESPOND_TO_APPLICATION, new RespondToApplicationController().post);
-    app.get(PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL, respondToApplicationSupportingMaterialController.get);
+    app.get(
+      PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
+      new RespondToApplicationSupportingMaterialController().get
+    );
     app.post(
       PageUrls.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL,
       limiter,
-      handleUploads.single('supportingMaterialFile'),
-      respondToApplicationSupportingMaterialController.post
+      handleUploads.single(FormFieldNames.RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL.SUPPORTING_MATERIAL_FILE),
+      new RespondToApplicationSupportingMaterialController().post
     );
     app.get(
       PageUrls.RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY,
@@ -306,6 +322,28 @@ export class Routes {
     app.get(PageUrls.RESPOND_TO_APPLICATION_CYA, new RespondToApplicationCYAController().get);
     app.get(InterceptPaths.RESPOND_TO_APPLICATION_SUBMIT, new RespondToApplicationSubmitController().get);
     app.get(PageUrls.RESPOND_TO_APPLICATION_COMPLETE, new RespondToApplicationCompleteController().get);
+    // Notification
+    app.get(PageUrls.NOTIFICATIONS, new NotificationController().get);
+    app.get(PageUrls.NOTIFICATION_DETAILS, new NotificationDetailsController().get);
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION, new RespondToNotificationController().get);
+    app.post(
+      PageUrls.RESPOND_TO_NOTIFICATION,
+      limiter,
+      handleUploads.single(FormFieldNames.RESPOND_TO_NOTIFICATION.SUPPORTING_MATERIAL_FILE),
+      new RespondToNotificationController().post
+    );
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_COPY, new RespondToNotificationCopyController().get);
+    app.post(PageUrls.RESPOND_TO_NOTIFICATION_COPY, new RespondToNotificationCopyController().post);
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_COPY_OFFLINE, new RespondToNotificationCopyOfflineController().get);
+    app.post(PageUrls.RESPOND_TO_NOTIFICATION_COPY_OFFLINE, new RespondToNotificationCopyOfflineController().post);
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_CYA, new RespondToNotificationCYAController().get);
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_CYA_OFFLINE, new RespondToNotificationCYAOfflineController().get);
+    app.get(InterceptPaths.RESPOND_TO_NOTIFICATION_SUBMIT, new RespondToNotificationSubmitController().get);
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_COMPLETE, new RespondToNotificationCompleteController().get);
+    app.get(InterceptPaths.RESPOND_TO_NOTIFICATION_STORE, new RespondToNotificationStoreController().get);
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_STORE_CONFIRMATION, new RespondToNotificationStoreConfirmController().get);
+    app.get(PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT, new RespondToNotificationStoredSubmitController().get);
+    app.post(PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT, new RespondToNotificationStoredSubmitController().post);
     // others
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);
@@ -316,6 +354,10 @@ export class Routes {
     app.get(PageUrls.CASE_NUMBER_CHECK, new CaseNumberCheckController().get);
     app.get(PageUrls.DOCUMENTS, new DocumentsController().get);
     app.get(PageUrls.REMOVE_FILE, new RemoveFileController().get);
+    app.get(PageUrls.APPOINT_LEGAL_REPRESENTATIVE, new AppointLegalRepController().get);
+    app.get(PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE, new MakingResponseAsLegalRepController().get);
+    app.get(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().get);
+    app.post(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().post);
     app.get(
       Urls.INFO,
       infoRequestHandler({

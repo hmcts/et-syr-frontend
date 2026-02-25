@@ -415,6 +415,7 @@ describe('Format Case Data to Frontend Model', () => {
       hearingCollection: undefined,
       documentCollection: undefined,
       representatives: undefined,
+      respondentRepresented: undefined,
       bundleDocuments: [],
       caseSource: undefined,
       multipleFlag: undefined,

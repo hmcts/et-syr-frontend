@@ -2,10 +2,11 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, YesOrNo } from '../definitions/case';
+import { CaseWithId } from '../definitions/case';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { ErrorPages, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { ConfirmCopiedFormFields } from '../definitions/form/stored-confirm-copied';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { getAppDetailsLink } from '../helpers/ApplicationHelper';
@@ -22,7 +23,6 @@ import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import ET3Util from '../utils/ET3Util';
 import UrlUtils from '../utils/UrlUtils';
-import { atLeastOneFieldIsChecked } from '../validators/validator';
 
 const logger = getLogger('ContactTribunalSubmitStoredController');
 
@@ -31,22 +31,7 @@ export default class ContactTribunalSubmitStoredController {
 
   private readonly formContent: FormContent = {
     fields: {
-      confirmCopied: {
-        id: 'confirmCopied',
-        label: (l: AnyRecord): string => l.haveYouCopied,
-        labelHidden: false,
-        labelSize: 'm',
-        type: 'checkboxes',
-        hint: (l: AnyRecord): string => l.iConfirmThatIHaveCopied,
-        validator: atLeastOneFieldIsChecked,
-        values: [
-          {
-            name: 'confirmCopied',
-            label: (l: AnyRecord): string => l.yesIConfirm,
-            value: YesOrNo.YES,
-          },
-        ],
-      },
+      confirmCopied: ConfirmCopiedFormFields,
     },
     submit: {
       text: (l: AnyRecord): string => l.submitBtn,
@@ -71,7 +56,9 @@ export default class ContactTribunalSubmitStoredController {
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     req.session.errors = this.form.getValidatorErrors(formData);
     if (req.session.errors.length > 0) {
-      return res.redirect(PageUrls.STORED_APPLICATION_SUBMIT.replace(':appId', selectedApplication.id) + languageParam);
+      return res.redirect(
+        PageUrls.STORED_CORRESPONDENCE_SUBMIT.replace(':appId', selectedApplication.id) + languageParam
+      );
     }
 
     // submit stored application
@@ -112,9 +99,9 @@ export default class ContactTribunalSubmitStoredController {
     // render page
     const content = getPageContent(req, this.formContent, [
       TranslationKeys.COMMON,
-      TranslationKeys.STORED_APPLICATION_SUBMIT,
+      TranslationKeys.STORED_CORRESPONDENCE_SUBMIT,
     ]);
-    res.render(TranslationKeys.STORED_APPLICATION_SUBMIT, {
+    res.render(TranslationKeys.STORED_CORRESPONDENCE_SUBMIT, {
       ...content,
       title: getApplicationDisplay(selectedApplication.value, {
         ...req.t(TranslationKeys.APPLICATION_TYPE, { returnObjects: true }),

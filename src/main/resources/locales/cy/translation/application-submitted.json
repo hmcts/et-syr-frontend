@@ -2,17 +2,22 @@
   "title": "Mae eich ymateb wedi cael ei gyflwyno",
   "titleText": "Mae eich ymateb wedi cael ei gyflwyno",
   "heading1": "Beth fydd yn digwydd nesaf",
-  "p1": "Dylech gael cadarnhad drwy e-bost gan swyddfa’r tribiwnlys sy’n prosesu eich ymateb o fewn 5 diwrnod gwaith. Efallai y bydd angen i chi wirio’ch ffolder junk.",
+  "p1": "Dylech dderbyn cadarnhad e-bost gan y swyddfa tribiwnlys sy’n prosesu eich ymateb o fewn 10 – 15 diwrnod gwaith.  Gall hyn ymestyn yn ystod cyfnodau prysur.",
   "heading2": "Manylion y cais",
   "caseNumber": "Rhif yr achos",
   "responseSubmitted": "Ymateb wedi'i gyflwyno",
   "downloadResponse": "Lawrlwytho eich ymateb",
   "attachments": "Atodiadau wedi’u cynnwys",
-  "heading3": "Cwestiynau am yr achos hwn",
+  "heading3": "Ar gyfer cwestiynau am broses y tribiwnlys cyflogaeth",
   "linkText": "Cysylltwch â'r tribiwnlys am yr achos (yn agor mewn tab newydd)",
-  "heading4": "Ar gyfer cwestiynau am broses y tribiwnlys cyflogaeth",
   "p3": "Ffoniwch un o ganolfannau cyswllt cwsmeriaid y Tribiwnlys Cyflogaeth. Ni allant roi cyngor cyfreithiol i chi.",
   "button": "Cau a dychwelyd i drosolwg o’r achos",
   "et3FormNotFound": "Ni ddaethpwyd o hyd i’r ffurflen ET3",
-  "noAttachments": "Dim dogfennau i'w hatodi"
+  "noAttachments": "Dim dogfennau i'w hatodi",
+  "survey": {
+    "titleText": "Rhowch eich adborth i ni",
+    "text": "byr hwn i helpu i wella'r gwasanaeth hwn i chi ac eraill.",
+    "linkText": "Llenwch yr arolwg",
+    "url": "https://www.smartsurvey.co.uk/s/SurveyExit/?lang=cy&service=Employment&party=resp"
+  }
 }

@@ -10,7 +10,7 @@ export enum ET3CaseDetailsLinkNames {
   ClaimantApplications = 'claimantApplications',
   OtherRespondentApplications = 'otherRespondentApplications',
   ContactTribunal = 'contactTribunal',
-  TribunalOrders = 'tribunalOrders',
+  TribunalNotification = 'tribunalOrders',
   TribunalJudgements = 'tribunalJudgements',
   Documents = 'documents',
 }
@@ -38,7 +38,7 @@ export class ET3CaseDetailsLinksStatuses {
         this[name] = LinkStatus.NOT_YET_AVAILABLE;
       } else if (name === ET3CaseDetailsLinkNames.ContactTribunal) {
         this[name] = LinkStatus.OPTIONAL;
-      } else if (name === ET3CaseDetailsLinkNames.TribunalOrders) {
+      } else if (name === ET3CaseDetailsLinkNames.TribunalNotification) {
         this[name] = LinkStatus.NOT_YET_AVAILABLE;
       } else if (name === ET3CaseDetailsLinkNames.TribunalJudgements) {
         this[name] = LinkStatus.NOT_YET_AVAILABLE;
@@ -62,7 +62,7 @@ export const SectionIndexToEt3CaseDetailsLinkNames: ET3CaseDetailsLinkNames[][] 
     ET3CaseDetailsLinkNames.OtherRespondentApplications,
     ET3CaseDetailsLinkNames.ContactTribunal,
   ],
-  [ET3CaseDetailsLinkNames.TribunalOrders],
+  [ET3CaseDetailsLinkNames.TribunalNotification],
   [ET3CaseDetailsLinkNames.TribunalJudgements],
   [ET3CaseDetailsLinkNames.Documents],
 ];
@@ -114,13 +114,6 @@ export const SectionIndexToEt3HubLinkNamesWithEmployersContractClaim: ET3HubLink
   [ET3HubLinkNames.ContactDetails, ET3HubLinkNames.EmployerDetails],
   [ET3HubLinkNames.ConciliationAndEmployeeDetails, ET3HubLinkNames.PayPensionBenefitDetails],
   [ET3HubLinkNames.ContestClaim, ET3HubLinkNames.EmployersContractClaim],
-  [ET3HubLinkNames.CheckYorAnswers],
-];
-
-export const SectionIndexToEt3HubLinkNamesWithoutEmployersContractClaim: ET3HubLinkNames[][] = [
-  [ET3HubLinkNames.ContactDetails, ET3HubLinkNames.EmployerDetails],
-  [ET3HubLinkNames.ConciliationAndEmployeeDetails, ET3HubLinkNames.PayPensionBenefitDetails],
-  [ET3HubLinkNames.ContestClaim],
   [ET3HubLinkNames.CheckYorAnswers],
 ];
 
@@ -176,6 +169,20 @@ export const linkStatusColorMap = new Map<LinkStatus, string>([
   [LinkStatus.READY_TO_VIEW, LinkColors.BLUE],
   [LinkStatus.CANNOT_START_YET, LinkColors.GREY],
 ]);
+
+export const getResponseCaseDetailsLinkStatusesByRespondentCaseDetailsLinkStatuses = (
+  respondentCaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses
+): ET3CaseDetailsLinksStatuses => {
+  if (!respondentCaseDetailsLinksStatuses) {
+    respondentCaseDetailsLinksStatuses = new ET3CaseDetailsLinksStatuses();
+  }
+  for (const caseDetailsLinkKey of Object.values(ET3CaseDetailsLinkNames)) {
+    if (!respondentCaseDetailsLinksStatuses[caseDetailsLinkKey]) {
+      respondentCaseDetailsLinksStatuses[caseDetailsLinkKey] = new ET3CaseDetailsLinksStatuses()[caseDetailsLinkKey];
+    }
+  }
+  return respondentCaseDetailsLinksStatuses;
+};
 
 export const getResponseHubLinkStatusesByRespondentHubLinkStatuses = (
   respondentHubLinksStatuses: ET3HubLinksStatuses

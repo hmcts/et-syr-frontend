@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import * as path from 'path';
 
 // eslint-disable-next-line import/no-unresolved
@@ -44,7 +45,11 @@ new I18Next().enableFor(app);
 new Session().enableFor(app);
 new HealthCheck().enableFor(app);
 app.enable('trust proxy');
-app.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
+
+const faviconPath = path.join(__dirname, 'public/assets/images/favicon.ico');
+if (fs.existsSync(faviconPath)) {
+  app.use(favicon(faviconPath));
+}
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

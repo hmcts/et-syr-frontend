@@ -14,7 +14,7 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { returnValidUrl } from '../helpers/RouterHelpers';
 import CollectionUtils from '../utils/CollectionUtils';
 import ET3Util from '../utils/ET3Util';
-import RespondentUtils from '../utils/RespondentUtils';
+import { RespondentUtils } from '../utils/RespondentUtils';
 import { isContentCharsOrLessAndNotEmpty, isOptionSelected } from '../validators/validator';
 
 export default class RespondentNameController {

@@ -117,6 +117,7 @@ describe('ApplicationSubmittedController', () => {
         et3FormId: documentId,
         et3FormName: documentName,
         contactTribunalUrl: '/contact-tribunal?lng=en',
+        hideContactUs: true,
       });
     });
 
@@ -156,6 +157,7 @@ describe('ApplicationSubmittedController', () => {
         et3FormId: documentId,
         et3FormName: documentNameWelsh,
         contactTribunalUrl: '/contact-tribunal?lng=cy',
+        hideContactUs: true,
       });
     });
 
@@ -170,6 +172,7 @@ describe('ApplicationSubmittedController', () => {
         TranslationKeys.APPLICATION_SUBMITTED,
         expect.objectContaining({
           welshEnabled: false,
+          hideContactUs: true,
           attachedDocuments:
             attachedDocuments +
             '<a href="getCaseDocument/' +
@@ -177,6 +180,81 @@ describe('ApplicationSubmittedController', () => {
             '" target="_blank">' +
             employerClaimDocumentName +
             '</a><br>',
+        })
+      );
+    });
+
+    it('should include contact phone numbers and survey information from translations', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      (getLanguageParam as jest.Mock).mockReturnValue('?lng=en');
+
+      const mockCommonTranslations = {
+        mainTelephone: 'Telephone: 0300 323 0196',
+        welshTelephone: 'Telephone: 0300 303 5176 (Welsh language)',
+        scotlandTelephone: 'Telephone: 0300 790 6234 (Scotland)',
+        contactCharges: 'Find out about call charges (opens in new tab)',
+      };
+
+      const mockSubmittedTranslations = {
+        p3: 'Call one of our Employment Tribunal customer contact centres. They cannot give you legal advice.',
+        survey: {
+          titleText: 'Give us your feedback',
+          text: 'to help improve this service for you and others.',
+          linkText: 'Complete this short survey',
+          url: 'https://www.smartsurvey.co.uk/s/SurveyExit/?lang=en&service=Employment&party=resp',
+        },
+      };
+
+      (req.t as unknown as jest.Mock).mockImplementation((key: string) => {
+        if (key === TranslationKeys.COMMON) {
+          return mockCommonTranslations;
+        }
+        if (key === TranslationKeys.APPLICATION_SUBMITTED) {
+          return mockSubmittedTranslations;
+        }
+        return {};
+      });
+
+      await controller.get(req, res);
+
+      expect(res.render).toHaveBeenCalledWith(
+        TranslationKeys.APPLICATION_SUBMITTED,
+        expect.objectContaining({
+          mainTelephone: 'Telephone: 0300 323 0196',
+          welshTelephone: 'Telephone: 0300 303 5176 (Welsh language)',
+          scotlandTelephone: 'Telephone: 0300 790 6234 (Scotland)',
+          contactCharges: 'Find out about call charges (opens in new tab)',
+          p3: 'Call one of our Employment Tribunal customer contact centres. They cannot give you legal advice.',
+          survey: {
+            titleText: 'Give us your feedback',
+            text: 'to help improve this service for you and others.',
+            linkText: 'Complete this short survey',
+            url: 'https://www.smartsurvey.co.uk/s/SurveyExit/?lang=en&service=Employment&party=resp',
+          },
+        })
+      );
+    });
+
+    it('should include hideContactUs flag to suppress template contact section', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      (getLanguageParam as jest.Mock).mockReturnValue('?lng=en');
+
+      (req.t as unknown as jest.Mock).mockImplementation((key: string) => {
+        if (key === TranslationKeys.COMMON) {
+          return {};
+        }
+        if (key === TranslationKeys.APPLICATION_SUBMITTED) {
+          return {};
+        }
+        return {};
+      });
+
+      await controller.get(req, res);
+
+      expect(res.render).toHaveBeenCalledWith(
+        TranslationKeys.APPLICATION_SUBMITTED,
+        expect.objectContaining({
+          hideContactUs: true,
         })
       );
     });

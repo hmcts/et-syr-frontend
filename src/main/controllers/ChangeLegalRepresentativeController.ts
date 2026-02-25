@@ -1,0 +1,94 @@
+import { Response } from 'express';
+
+import { Form } from '../components/form';
+import { AppRequest } from '../definitions/appRequest';
+import { LEGAL_REPRESENTATIVE_CHANGE_OPTIONS, PageUrls, TranslationKeys } from '../definitions/constants';
+import { FormContent, FormFields } from '../definitions/form';
+import { AnyRecord } from '../definitions/util-types';
+import { removeRespondentRepresentative } from '../helpers/CaseRoleHelper';
+import { getPageContent } from '../helpers/FormHelper';
+import {
+  conditionalRedirect,
+  getLanguageParam,
+  returnValidNotAllowedEndPointsForwardingUrl,
+  returnValidUrl,
+} from '../helpers/RouterHelpers';
+import { getLogger } from '../logger';
+import { isFieldFilledIn } from '../validators/validator';
+
+const logger = getLogger('RespondentApplicationDetailsController');
+
+export default class ChangeLegalRepresentativeController {
+  private readonly form: Form;
+  private readonly changeLegalRepresentativeContent: FormContent = {
+    fields: {
+      legalRep: {
+        id: 'legalRep',
+        type: 'radios',
+        label: (l: AnyRecord): string => l.h1,
+        labelHidden: false,
+        labelSize: 'xl',
+        classes: 'govuk-radios--inline',
+        values: [
+          {
+            label: (l: AnyRecord): string => l.legalRepresentativeChange,
+            value: LEGAL_REPRESENTATIVE_CHANGE_OPTIONS.change,
+          },
+          {
+            label: (l: AnyRecord): string => l.legalRepresentativeRemove,
+            value: LEGAL_REPRESENTATIVE_CHANGE_OPTIONS.remove,
+          },
+        ],
+        validator: isFieldFilledIn,
+      },
+    },
+    submit: {
+      text: (l: AnyRecord): string => l.submitBtn,
+    },
+  };
+
+  constructor() {
+    this.form = new Form(<FormFields>this.changeLegalRepresentativeContent.fields);
+  }
+
+  public post = async (req: AppRequest, res: Response): Promise<void> => {
+    const formData = this.form.getParsedBody(req.body, this.form.getFormFields());
+    req.session.errors = this.form.getValidatorErrors(formData);
+    if (req.session.errors.length > 0) {
+      return res.redirect(returnValidUrl(req.url));
+    }
+    try {
+      const isChangeSelection = conditionalRedirect(
+        req,
+        this.form.getFormFields(),
+        LEGAL_REPRESENTATIVE_CHANGE_OPTIONS.change
+      );
+
+      if (isChangeSelection) {
+        const redirectUrl = PageUrls.APPOINT_LEGAL_REPRESENTATIVE + getLanguageParam(req.url);
+        return res.redirect(returnValidUrl(redirectUrl));
+      }
+
+      const caseDetailsUrl = await removeRespondentRepresentative(req);
+      const safeUrl = returnValidNotAllowedEndPointsForwardingUrl(caseDetailsUrl, req);
+      return res.redirect(safeUrl);
+    } catch (error) {
+      logger.error('Error changing/removing legal representative. caseId: ' + req.session?.userCase?.id + ', ' + error);
+      req.session.errors.push({ propertyName: 'legalRep', errorType: 'backEndError' });
+      return res.redirect(returnValidUrl(req.url));
+    }
+  };
+
+  public get = async (req: AppRequest, res: Response): Promise<void> => {
+    const content = getPageContent(req, this.changeLegalRepresentativeContent, [
+      TranslationKeys.COMMON,
+      TranslationKeys.SIDEBAR_CONTACT_US,
+      TranslationKeys.CHANGE_LEGAL_REPRESENTATIVE,
+    ]);
+    res.render(TranslationKeys.CHANGE_LEGAL_REPRESENTATIVE, {
+      ...content,
+      PageUrls,
+      languageParam: getLanguageParam(req.url),
+    });
+  };
+}

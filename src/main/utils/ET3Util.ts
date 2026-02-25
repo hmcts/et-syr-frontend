@@ -12,8 +12,13 @@ import {
   PageUrls,
   ValidationErrors,
 } from '../definitions/constants';
-import { ApplicationTableRecord, TypesOfClaim } from '../definitions/definition';
-import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../definitions/links';
+import { ApplicationTableRecord } from '../definitions/definition';
+import {
+  ET3CaseDetailsLinkNames,
+  ET3HubLinkNames,
+  LinkStatus,
+  getResponseHubLinkStatusesByRespondentHubLinkStatuses,
+} from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { translateOverallStatus } from '../helpers/ApplicationTableRecordTranslationHelper';
@@ -28,7 +33,7 @@ import CollectionUtils from './CollectionUtils';
 import DateUtils from './DateUtils';
 import ErrorUtils from './ErrorUtils';
 import ObjectUtils from './ObjectUtils';
-import RespondentUtils from './RespondentUtils';
+import { RespondentUtils } from './RespondentUtils';
 import StringUtils from './StringUtils';
 
 const logger = getLogger('ET3Util');
@@ -280,40 +285,36 @@ export default class ET3Util {
     respondent: RespondentET3Model,
     translations: AnyRecord
   ): string {
-    let totalSections: number = 5;
-    if (
-      CollectionUtils.isNotEmpty(userCase?.typeOfClaim) &&
-      (userCase.typeOfClaim.includes(CLAIM_TYPES.BREACH_OF_CONTRACT) ||
-        userCase.typeOfClaim.includes(TypesOfClaim.BREACH_OF_CONTRACT))
-    ) {
-      totalSections = 6;
-    }
+    const totalSections: number = 6;
     let sectionCount: number = 0;
 
-    if (respondent.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] === LinkStatus.COMPLETED) {
+    // Initialize et3HubLinksStatuses with defaults if null/undefined, following the pattern from RespondentUtil.java
+    const et3HubLinksStatuses = getResponseHubLinkStatusesByRespondentHubLinkStatuses(respondent.et3HubLinksStatuses);
+
+    if (et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] === LinkStatus.COMPLETED) {
       sectionCount++;
     }
 
-    if (respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployerDetails] === LinkStatus.COMPLETED) {
+    if (et3HubLinksStatuses[ET3HubLinkNames.EmployerDetails] === LinkStatus.COMPLETED) {
       sectionCount++;
     }
 
-    if (respondent.et3HubLinksStatuses[ET3HubLinkNames.ConciliationAndEmployeeDetails] === LinkStatus.COMPLETED) {
+    if (et3HubLinksStatuses[ET3HubLinkNames.ConciliationAndEmployeeDetails] === LinkStatus.COMPLETED) {
       sectionCount++;
     }
 
-    if (respondent.et3HubLinksStatuses[ET3HubLinkNames.PayPensionBenefitDetails] === LinkStatus.COMPLETED) {
+    if (et3HubLinksStatuses[ET3HubLinkNames.PayPensionBenefitDetails] === LinkStatus.COMPLETED) {
       sectionCount++;
     }
 
-    if (respondent.et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] === LinkStatus.COMPLETED) {
+    if (et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] === LinkStatus.COMPLETED) {
       sectionCount++;
     }
 
     if (
       CollectionUtils.isNotEmpty(userCase?.typeOfClaim) &&
       userCase.typeOfClaim.includes(CLAIM_TYPES.BREACH_OF_CONTRACT) &&
-      respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployersContractClaim] === LinkStatus.COMPLETED
+      et3HubLinksStatuses[ET3HubLinkNames.EmployersContractClaim] === LinkStatus.COMPLETED
     ) {
       sectionCount++;
     }

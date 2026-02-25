@@ -74,13 +74,42 @@
     <div class="govuk-body">
       <p><a href="{{ contactTribunalUrl }}" class="govuk-link" rel="noreferrer noopener" target="_blank"> {{ linkText }}</a></p>
     </div>
+      <p class="govuk-body">
+        {{ p3}}
+      </p>
 
-    <div class="govuk-button-group">
+      <ul class="govuk-list">
+        <li>
+          {{mainTelephone}}
+        </li>
+        <li>
+          {{welshTelephone}}
+        </li>
+        <li>
+          {{scotlandTelephone}}
+        </li>
+      </ul>
+      <p class="govuk-body">
+        <a href="https://www.gov.uk/call-charges" class="govuk-link" target="_blank">{{ contactCharges }}</a>
+      </p>
+
+      <div class="govuk-button-group">
       {{ govukButton({
         text: button,
         href: redirectUrl
       }) }}
     </div>
+  </div>
+</div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds govuk-border black-border govuk-!-padding-bottom-2">
+    <h2 class="govuk-heading-m">
+      {{ survey.titleText }}
+    </h2>
+    <p class="govuk-body">
+      <a href="{{ survey.url }}" class="govuk-link">{{ survey.linkText }}</a> {{ survey.text }}
+    </p>
   </div>
 </div>
 {% endblock %}

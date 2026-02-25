@@ -1,0 +1,19 @@
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+{% if respondentRepresented %}
+  {% set htmlForRespondentRepresentedBanner %}
+    <h3 class="govuk-notification-banner__heading">
+    {{ notificationBanner.respondentRepresented.title }} {{respondentRepresentative.nameOfOrganisation}}. </h3>
+    <p class="govuk-body">
+        {{ notificationBanner.respondentRepresented.p1 }}
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>{{ notificationBanner.respondentRepresented.l1 }}</li>
+        <li>{{ notificationBanner.respondentRepresented.l2 }}</li>
+    </ul>
+  {% endset %}
+  {{ govukNotificationBanner({
+    html: htmlForRespondentRepresentedBanner,
+    titleText: important
+  }) }}
+{% endif %}

@@ -25,7 +25,7 @@ const logger = getLogger('ContactTribunalSelectedController');
 export default class ContactTribunalSelectedController {
   private readonly form: Form;
   private uploadedFileName = '';
-  private getHint = (label: AnyRecord): string => {
+  private readonly getHint = (label: AnyRecord): string => {
     if (StringUtils.isNotBlank(this.uploadedFileName)) {
       return (label.contactApplicationFile.hintExisting as string).replace('{{filename}}', this.uploadedFileName);
     } else {
@@ -134,6 +134,11 @@ export default class ContactTribunalSelectedController {
 
   public get = (req: AppRequest, res: Response): void => {
     this.uploadedFileName = req?.session?.userCase?.contactApplicationFile?.document_filename;
+
+    // TODO: Uncomment when respondent representative will be able to removed is implemented
+    // if (req.session.userCase?.respondentRepresented) {
+    // return res.redirect(PageUrls.HOLDING_PAGE + getLanguageParam(req.url));
+    // }
     const selectedApplication = getApplicationByUrl(req.params?.selectedOption);
     if (!selectedApplication) {
       logger.error(TseErrors.ERROR_APPLICATION_NOT_FOUND + req.params?.selectedOption);

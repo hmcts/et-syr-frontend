@@ -32,7 +32,7 @@ export default class GetCaseDocumentController {
       return res.redirect(PageUrls.NOT_FOUND);
     }
     const docId = req.params.docId;
-    const allDocumentSets = combineUserCaseDocuments([req?.session?.userCase]);
+    const allDocumentSets = combineUserCaseDocuments([req?.session?.userCase], req.session.selectedRespondentIndex);
     const documentDetails = allDocumentSets.find(doc => doc && doc.id === docId);
     let contentType;
     let uploadedDocumentId = documentDetails?.id;
@@ -53,7 +53,7 @@ export default class GetCaseDocumentController {
           selectedRespondent = req.session.userCase.respondents[req.session.selectedRespondentIndex];
         }
         if (ObjectUtils.isNotEmpty(selectedRespondent)) {
-          documentTypeItem = selectedRespondent?.et3ResponseContestClaimDocument.find(
+          documentTypeItem = (selectedRespondent?.et3ResponseContestClaimDocument || []).find(
             doc => doc.id === req.params.docId
           );
           if (ObjectUtils.isEmpty(documentTypeItem)) {

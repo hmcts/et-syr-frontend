@@ -7,11 +7,13 @@ import {
   ET3CaseDetailsLinksStatuses,
   LinkStatus,
   SectionIndexToEt3CaseDetailsLinkNames,
+  getResponseCaseDetailsLinkStatusesByRespondentCaseDetailsLinkStatuses,
   linkStatusColorMap,
 } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import { getCaseApi } from '../../services/CaseService';
 import { getApplicationStateIfNotExist } from '../ApplicationStateHelper';
+import { getTribunalNotificationLinkStatus } from '../NotificationHelper';
 import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../ResponseHubHelper';
 import { getLanguageParam } from '../RouterHelpers';
 import { getYourStoredApplicationList } from '../StoredApplicationHelper';
@@ -33,11 +35,14 @@ export const getET3CaseDetailsLinkNames = async (
   statuses: ET3CaseDetailsLinksStatuses,
   req: AppRequest
 ): Promise<ET3CaseDetailsLinksStatuses> => {
+  // Initialize statuses with defaults if null/undefined, following the pattern from RespondentUtil.java
+  statuses = getResponseCaseDetailsLinkStatusesByRespondentCaseDetailsLinkStatuses(statuses);
   await updateApplicationsStatusIfNotExist(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantContactDetails] = LinkStatus.READY_TO_VIEW;
   statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getClaimantAppsLinkStatus(req);
   statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = getOtherRespondentAppsLinkStatus(req);
+  statuses[ET3CaseDetailsLinkNames.TribunalNotification] = getTribunalNotificationLinkStatus(req);
   return statuses;
 };
 

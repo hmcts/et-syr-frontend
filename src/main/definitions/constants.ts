@@ -74,7 +74,7 @@ export const TranslationKeys = {
   CONTACT_TRIBUNAL_CYA_OFFLINE: 'contact-tribunal-check-your-answers-offline',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: 'contact-tribunal-submit-complete',
   CONTACT_TRIBUNAL_STORE_COMPLETE: 'contact-tribunal-store-complete',
-  STORED_APPLICATION_SUBMIT: 'stored-correspondence-submit',
+  STORED_CORRESPONDENCE_SUBMIT: 'stored-correspondence-submit',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
   CLAIMANTS_APPLICATIONS: 'claimants-applications',
@@ -84,9 +84,19 @@ export const TranslationKeys = {
   RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: 'respond-to-application-supporting-material',
   RESPOND_TO_APPLICATION_CYA: 'respond-to-application-check-your-answers',
   RESPOND_TO_APPLICATION_COMPLETE: 'respond-to-application-complete',
-  RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: 'respond-to-application-copy-to-other-party',
+  // Tribunal Notification
+  NOTIFICATIONS: 'notifications',
+  NOTIFICATION_DETAILS: 'notification-details',
+  NOTIFICATION_SUBJECTS: 'notification-subjects',
+  RESPOND_TO_NOTIFICATION: 'respond-to-notification',
+  RESPOND_TO_NOTIFICATION_CYA: 'respond-to-notification-check-your-answers',
+  RESPOND_TO_NOTIFICATION_CYA_OFFLINE: 'respond-to-notification-check-your-answers-offline',
+  // NoC
+  APPOINT_LEGAL_REPRESENTATIVE: 'appoint-legal-representative',
+  MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE: 'making-response-as-legal-representative',
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
+  CHANGE_LEGAL_REPRESENTATIVE: 'change-legal-representative',
 } as const;
 
 export const PageUrls = {
@@ -161,7 +171,7 @@ export const PageUrls = {
   CONTACT_TRIBUNAL_CYA_OFFLINE: '/contact-tribunal-check-your-answers-offline',
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
   CONTACT_TRIBUNAL_STORE_COMPLETE: '/contact-tribunal-store-complete/:appId',
-  STORED_APPLICATION_SUBMIT: '/stored-correspondence-submit/:appId',
+  STORED_CORRESPONDENCE_SUBMIT: '/stored-correspondence-submit/:appId',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
   CLAIMANTS_APPLICATIONS: '/claimants-applications',
@@ -172,8 +182,23 @@ export const PageUrls = {
   RESPOND_TO_APPLICATION_COPY_TO_ORDER_PARTY: '/respond-to-application-copy-to-other-party',
   RESPOND_TO_APPLICATION_CYA: '/respond-to-application-check-your-answers',
   RESPOND_TO_APPLICATION_COMPLETE: '/respond-to-application-complete',
+  // Tribunal Notification
+  NOTIFICATIONS: '/notifications',
+  NOTIFICATION_DETAILS: '/notification-details/:itemId',
+  RESPOND_TO_NOTIFICATION: '/respond-to-notification/:itemId',
+  RESPOND_TO_NOTIFICATION_COPY: '/respond-to-notification-copy-to-other-party',
+  RESPOND_TO_NOTIFICATION_COPY_OFFLINE: '/respond-to-notification-copy-to-other-party-offline',
+  RESPOND_TO_NOTIFICATION_CYA: '/respond-to-notification-check-your-answers',
+  RESPOND_TO_NOTIFICATION_CYA_OFFLINE: '/respond-to-notification-check-your-answers-offline',
+  RESPOND_TO_NOTIFICATION_COMPLETE: '/respond-to-notification-complete',
+  RESPOND_TO_NOTIFICATION_STORE_CONFIRMATION: '/respond-to-notification-store-confirmation/:itemId',
+  RESPOND_TO_NOTIFICATION_STORED_SUBMIT: '/respond-to-notification-stored-submit/:itemId/:responseId',
+  // NoC
+  APPOINT_LEGAL_REPRESENTATIVE: '/appoint-legal-representative',
+  MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE: '/making-response-as-legal-representative',
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
+  CHANGE_LEGAL_REPRESENTATIVE: '/change-legal-representative',
 } as const;
 
 export const InterceptPaths = {
@@ -193,6 +218,9 @@ export const InterceptPaths = {
   CONTACT_TRIBUNAL_SUBMIT: '/submitContactTribunal',
   CONTACT_TRIBUNAL_STORE: '/storeContactTribunal',
   RESPOND_TO_APPLICATION_SUBMIT: '/submitRespondToApplication',
+  // Tribunal Notification
+  RESPOND_TO_NOTIFICATION_SUBMIT: '/submitRespondToNotification',
+  RESPOND_TO_NOTIFICATION_STORE: '/storeRespondToNotification',
 } as const;
 
 export const RedirectKeys = {
@@ -240,6 +268,7 @@ export const ValidationErrors = {
   SESSION_RESPONDENT: 'sessionRespondent',
   SESSION_NOT_FOUND: 'sessionNotFound',
   TOO_LONG: 'tooLong',
+  TOO_HIGH_CURRENCY: 'tooHighCurrency',
   USER_ID_NOT_FOUND: 'userId',
   RESPONDENT_NOT_FOUND_BY_RESPONDENT_INDEX: 'respondentNotFoundByRespondentIndex',
   RESPONDENT_INDEX_NOT_FOUND: 'respondentIndexNotFound',
@@ -251,6 +280,8 @@ export const ValidationErrors = {
   CASE_ALREADY_ASSIGNED: 'caseAlreadyAssigned',
   CASE_ALREADY_ASSIGNED_TO_SAME_USER: 'caseAlreadyAssignedToSameUser',
   INVALID_CASE_DETAILS: 'invalidCaseDetails',
+  WITHOUT_UPLOAD_BUTTON: 'WithoutUploadButton',
+  REQUIRED_FILE: 'requiredFile',
 } as const;
 
 export const AuthUrls = {
@@ -281,6 +312,11 @@ export const JavaApiUrls = {
   STORE_RESPONDENT_APPLICATION: 'respondentTSE/store-respondent-application',
   SUBMIT_RESPONDENT_RESPONSE_TO_APP: 'respondentTSE/respond-to-claimant-application',
   CHANGE_RESPONDENT_APPLICATION_STATUS: 'respondentTSE/change-respondent-application-status',
+  CHANGE_RESPONDENT_NOTIFICATION_STATUS: 'sendNotification/change-respondent-notification-status',
+  SUBMIT_RESPONSE_TO_NOTIFICATION: 'sendNotification/add-respondent-respond-to-notification',
+  STORE_RESPONSE_TO_NOTIFICATION: 'sendNotification/store-respondent-respond-to-notification',
+  SUBMIT_STORE_RESPONSE_TO_NOTIFICATION: 'sendNotification/submit-respondent-respond-to-notification',
+  REVOKE_RESPONDENT_REPRESENTATIVE: '/manageCaseRole/revokeRespondentSolicitorRole',
 } as const;
 
 export const Roles = {
@@ -381,11 +417,6 @@ export const PartiesNotify = {
   BOTH_PARTIES: 'Both parties',
   CLAIMANT_ONLY: 'Claimant only',
   RESPONDENT_ONLY: 'Respondent only',
-} as const;
-
-export const ResponseRequired = {
-  YES: 'Yes - view document for details',
-  NO: 'No',
 } as const;
 
 export const Applicant = {
@@ -535,6 +566,9 @@ export const FormFieldNames = {
   RESPOND_TO_APPLICATION_SUPPORTING_MATERIAL: {
     SUPPORTING_MATERIAL_FILE: 'supportingMaterialFile',
   },
+  RESPOND_TO_NOTIFICATION: {
+    SUPPORTING_MATERIAL_FILE: 'supportingMaterialFile',
+  },
 } as const;
 
 export const ServiceErrors = {
@@ -552,6 +586,7 @@ export const ServiceErrors = {
   ERROR_MODIFYING_SUBMITTED_CASE_REQUEST_TYPE_NOT_FOUND: 'Request type not found',
   ERROR_MODIFYING_SUBMITTED_CASE_RESPONDENT_NOT_FOUND: 'Respondent not found',
   ERROR_MODIFYING_SUBMITTED_CASE_CASE_NOT_FOUND: 'Case not found',
+  ERROR_REVOKING_USER_ROLE: 'Error revoking user role: ',
 } as const;
 
 export const CacheErrors = {
@@ -590,10 +625,13 @@ export const TseErrors = {
   ERROR_APPLICATION_NOT_FOUND: 'Application not found: ',
   ERROR_APPLICATION_NOT_SHARE: 'Application not shared: ',
   ERROR_NO_RESPOND_REQUIRED: 'Respond not allowed for this application: ',
+  ERROR_NOTIFICATION_NOT_FOUND: 'Notification not found: ',
+  ERROR_NOTIFICATION_RESPONSE_NOT_FOUND: 'Notification response not found: ',
   ERROR_UPDATE_LINK_STATUS: 'An error occurred while updating LinkStatus',
   ERROR_STORE_APPLICATION: 'An error occurred while storing an application',
   ERROR_SUBMIT_APPLICATION: 'An error occurred while submitting an application',
   ERROR_RESPOND_TO_APPLICATION: 'An error occurred while responding to an application',
+  ERROR_RESPOND_TO_NOTIFICATION: 'An error occurred while responding to an notification: ',
 } as const;
 
 export const ControllerNames = {
@@ -624,3 +662,8 @@ export const IsCmoOrRequest = {
   REQUEST: 'Request',
   NEITHER: 'Neither',
 };
+
+export const LEGAL_REPRESENTATIVE_CHANGE_OPTIONS = {
+  change: 'change',
+  remove: 'remove',
+} as const;

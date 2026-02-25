@@ -40,8 +40,9 @@ export const findDocumentMimeTypeByExtension = (extension: string): string | und
   return mimetype[1] ? mimetype[1][1] : undefined;
 };
 
-export const combineUserCaseDocuments = (userCases: CaseWithId[]): DocumentDetail[] => {
+export const combineUserCaseDocuments = (userCases: CaseWithId[], selectedRespondent: number): DocumentDetail[] => {
   const combinedDocuments: DocumentDetail[] = [];
+
   userCases?.forEach(userCase => {
     combinedDocuments.push(userCase.et1SubmittedForm);
     pushDocumentsToCombinedDocuments(combinedDocuments, userCase.responseEt3FormDocumentDetail);
@@ -49,6 +50,7 @@ export const combineUserCaseDocuments = (userCases: CaseWithId[]): DocumentDetai
     pushDocumentsToCombinedDocuments(combinedDocuments, userCase.rejectionOfClaimDocumentDetail);
     pushDocumentsToCombinedDocuments(combinedDocuments, userCase.responseAcknowledgementDocumentDetail);
     pushDocumentsToCombinedDocuments(combinedDocuments, userCase.responseRejectionDocumentDetail);
+    pushEt3FormsToCombinedDocuments(combinedDocuments, userCase, selectedRespondent);
     if (userCase.claimSummaryFile?.document_url) {
       const document_url = userCase.claimSummaryFile.document_url;
       const documentId = document_url?.substring(document_url?.lastIndexOf('/') + 1);
@@ -65,6 +67,33 @@ export const combineUserCaseDocuments = (userCases: CaseWithId[]): DocumentDetai
 
 function pushDocumentsToCombinedDocuments(combinedDocuments: DocumentDetail[], documentDetailsList: DocumentDetail[]) {
   documentDetailsList?.forEach(documentDetail => combinedDocuments.push(documentDetail));
+}
+
+function pushEt3FormsToCombinedDocuments(
+  combinedDocuments: DocumentDetail[],
+  userCase: CaseWithId,
+  selectedRespondent: number
+) {
+  if (userCase.respondents?.[selectedRespondent]?.et3Form) {
+    const et3FormUrl = userCase.respondents[selectedRespondent].et3Form.document_url;
+    const documentId = et3FormUrl?.substring(et3FormUrl?.lastIndexOf('/') + 1);
+    const et3FormDetail: DocumentDetail = {
+      description: 'ET3 Form',
+      id: documentId,
+      originalDocumentName: userCase.respondents[selectedRespondent].et3Form.document_filename,
+    };
+    combinedDocuments.push(et3FormDetail);
+  }
+  if (userCase.respondents?.[selectedRespondent]?.et3FormWelsh) {
+    const et3FormWelshUrl = userCase.respondents[selectedRespondent].et3FormWelsh.document_url;
+    const documentId = et3FormWelshUrl?.substring(et3FormWelshUrl?.lastIndexOf('/') + 1);
+    const et3FormWelshDetail: DocumentDetail = {
+      description: 'ET3 Form Welsh',
+      id: documentId,
+      originalDocumentName: userCase.respondents[selectedRespondent].et3FormWelsh.document_filename,
+    };
+    combinedDocuments.push(et3FormWelshDetail);
+  }
 }
 
 export const findContentTypeByDocument = (document: AxiosResponse): string => {

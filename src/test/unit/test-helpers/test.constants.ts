@@ -7,17 +7,10 @@ export const expectedRespondentHubTestTaskList = {
   ],
 };
 
-export const expectedRespondentHubTestLinkTextsWithBreachOfContract = [
+export const expectedRespondentHubTestLinkTexts = [
   ['Contact details', 'Hearing format and employer details'],
   ['Early conciliation and employee details', 'Pay, pension and benefits details'],
   ['Contest the claim', "Employer's Contract Claim"],
-  ['Check your answers'],
-];
-
-export const expectedRespondentHubTestLinkTextsWithoutBreachOfContract = [
-  ['Contact details', 'Hearing format and employer details'],
-  ['Early conciliation and employee details', 'Pay, pension and benefits details'],
-  ['Contest the claim'],
   ['Check your answers'],
 ];
 

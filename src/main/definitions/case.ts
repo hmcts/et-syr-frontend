@@ -84,7 +84,9 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponseRespondentSupportDocument?: UploadedDocumentType;
   et3ResponsePayFrequency?: PayFrequency;
   et3ResponsePayBeforeTax?: string;
+  et3ResponsePayBeforeTaxInput?: string;
   et3ResponsePayTakehome?: string;
+  et3ResponsePayTakeHomeInput?: string;
   et3Form?: UploadedDocumentType;
   et3FormWelsh?: UploadedDocumentType;
   respondentEmail?: string;
@@ -205,6 +207,7 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3HubLinksStatuses?: ET3HubLinksStatuses;
   et3IsRespondentAddressCorrect?: YesOrNo;
   et3Status?: string;
+  representativeRemoved?: YesOrNo;
 }
 
 export interface RespondentApiModel {
@@ -354,7 +357,7 @@ export interface Case {
   // bundleDocuments contains both claimant and respondent uploaded bundles submission pdfs
   bundleDocuments?: DocumentTypeItem[];
   //Created for saving select order or request value;
-  selectedRequestOrOrder?: SendNotificationTypeItem;
+  selectedNotification?: SendNotificationTypeItem;
   hearingCollection?: HearingModel[];
   hearingDocumentsAreFor?: HearingModel['id'];
   whoseHearingDocumentsAreYouUploading?: WhoseHearingDocument;
@@ -383,6 +386,7 @@ export interface Case {
   claimantDetails?: YesOrNo;
   respondentResponse?: YesOrNo;
   preAcceptCase?: PreAcceptCase;
+  respondentRepresented?: Representative;
 }
 
 export const enum StillWorking {
@@ -532,6 +536,8 @@ export interface UploadedDocumentType {
 export interface Representative {
   hasMyHMCTSAccount?: YesOrNo;
   respondentId?: string;
+  nameOfOrganisation?: string;
+  respRepName?: string;
 }
 
 export const enum TypeOfOrganisation {
