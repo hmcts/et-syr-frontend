@@ -88,7 +88,7 @@
     "mocha": "^11.2.0",
     "mocha-multi": "1.1.7",
     "mochawesome": "^7.1.4",
-    "multer": "^2.0.2",
+    "multer": "^2.1.1",
     "nunjucks": "^3.2.4",
     "playwright": "^1.56.1",
     "postcode": "^5.1.0",
@@ -182,11 +182,12 @@
     "js-yaml": "^4.1.1",
     "tmp": "^0.2.4",
     "diff": "^8.0.3",
-    "tar": "^7.5.7",
-    "axios": "^1.13.5",
+    "tar": "^7.5.11",
     "qs": "^6.14.2",
-    "bn.js": "^4.12.3",
-    "minimatch": "^10.2.1"
+    "minimatch": "^10.2.1",
+    "underscore": "^1.13.8",
+    "serialize-javascript": "^7.0.4",
+    "immutable": "^5.1.5"
   },
   "packageManager": "yarn@4.12.0"
 }
