@@ -2,7 +2,14 @@ import axios from 'axios';
 
 import SelfAssignmentCheckController from '../../../main/controllers/SelfAssignmentCheckController';
 import { AppRequest } from '../../../main/definitions/appRequest';
-import { DefaultValues, PageUrls, ServiceErrors, ValidationErrors, YES } from '../../../main/definitions/constants';
+import {
+  CaseAssignmentResponse,
+  DefaultValues,
+  PageUrls,
+  ServiceErrors,
+  ValidationErrors,
+  YES,
+} from '../../../main/definitions/constants';
 import { getFlagValue } from '../../../main/modules/featureFlag/launchDarkly';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
@@ -108,6 +115,64 @@ describe('Self assignment check controller', () => {
 
       await new SelfAssignmentCheckController().post(req, res);
       expect(res.redirect).toHaveBeenCalledWith(PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE);
+    });
+
+    it('should set CASE_ALREADY_ASSIGNED error when API throws specific error message', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      getCaseApiMock.mockReturnValue(api);
+
+      // Force the catch block to identify the "Already Assigned" string
+      const error = new Error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE_ALREADY_ASSIGNED_CHECK_VALUE);
+      api.assignCaseUserRole = jest.fn().mockRejectedValue(error);
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(req.session.errors[0].errorType).toEqual(ValidationErrors.CASE_ALREADY_ASSIGNED);
+      expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining(PageUrls.SELF_ASSIGNMENT_CHECK));
+    });
+
+    it('should set API error and redirect when flag is disabled and response is null', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(false); // Old behavior
+      getCaseApiMock.mockReturnValue(api);
+      api.assignCaseUserRole = jest.fn().mockResolvedValue(null); // No response
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(req.session.errors[0].errorType).toEqual(ValidationErrors.API);
+      expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining(PageUrls.SELF_ASSIGNMENT_CHECK));
+    });
+
+    it('should log error and redirect when flag is enabled but data property is missing', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true); // New behavior
+      getCaseApiMock.mockReturnValue(api);
+      api.assignCaseUserRole = jest.fn().mockResolvedValue({}); // Response exists, but .data is missing
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(req.session.errors[0].errorType).toEqual(ValidationErrors.API);
+      expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining(PageUrls.SELF_ASSIGNMENT_CHECK));
+    });
+
+    it('should redirect to case details with empty respondent ID if user not found in respondents list', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      getCaseApiMock.mockReturnValue(api);
+
+      const mockResponseAlready = {
+        data: {
+          status: CaseAssignmentResponse.ALREADY_ASSIGNED,
+          message: CaseAssignmentResponse.USER_ALREADY_ASSIGNED_TO_THE_CASE,
+        },
+      };
+      api.assignCaseUserRole = jest.fn().mockResolvedValue(mockResponseAlready);
+
+      // Setup session where the current user ID DOES NOT match any respondent
+      req.session.user.id = 'wrong-id';
+      req.session.userCase.respondents = [{ idamId: 'other-user', ccdId: '456' }];
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      // Should redirect with empty string for respondent ID: .../caseId/
+      expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining(`${mockValidCaseWithId.id}/?lng=en`));
     });
   });
 });
