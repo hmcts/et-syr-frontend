@@ -1,63 +1,64 @@
-import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { AxiosError, AxiosHeaders } from 'axios';
 
 import { axiosErrorDetails } from '../../../main/services/AxiosErrorAdapter';
 
+const createAxiosError = (
+  message: string,
+  responseData?: unknown,
+  status?: number
+): AxiosError<{ error: string; message: string }> => {
+  const error = new AxiosError(message) as AxiosError<{ error: string; message: string }>;
+  if (responseData !== undefined) {
+    error.response = {
+      data: responseData as { error: string; message: string },
+      status: status ?? 500,
+      statusText: 'Internal Server Error',
+      headers: {},
+      config: { headers: new AxiosHeaders() },
+    };
+  }
+  return error;
+};
+
 describe('axiosErrorDetails', () => {
-  // We define a helper to create the "base" so we don't have to repeat boilerplate
-  const createMockError = (responseData?: any): AxiosError<any> => {
-    return {
-      name: 'AxiosError',
-      message: 'Request failed with status code 500',
-      isAxiosError: true,
-      config: {} as InternalAxiosRequestConfig,
-      response: responseData
-        ? ({
-            data: responseData,
-            status: 500,
-            statusText: 'Internal Server Error',
-            headers: {},
-            config: {} as InternalAxiosRequestConfig,
-          } as AxiosResponse)
-        : undefined,
-      toJSON: () => ({}),
-    } as AxiosError<any>;
-  };
-
-  it('should return only the error message when there is no response data', () => {
-    const error = createMockError();
-    const result = axiosErrorDetails(error);
-    expect(result).toBe('Request failed with status code 500');
+  it('should return just the error message when there is no response data', () => {
+    const error = createAxiosError('Network Error');
+    expect(axiosErrorDetails(error)).toBe('Network Error');
   });
 
-  it('should append the string data when response data is a string', () => {
-    const error = createMockError('Internal Server Error');
-    const result = axiosErrorDetails(error);
-    expect(result).toBe('Request failed with status code 500, Internal Server Error');
+  it('should append string response data to the message', () => {
+    const error = createAxiosError('Request failed', 'Service Unavailable');
+    expect(axiosErrorDetails(error)).toBe('Request failed, Service Unavailable');
   });
 
-  it('should append data.message when it exists in the response object', () => {
-    const error = createMockError({
-      message: 'Custom error message',
-      error: 'Some technical error',
-    });
-    const result = axiosErrorDetails(error);
-    expect(result).toBe('Request failed with status code 500, Custom error message');
+  it('should append data.message when present', () => {
+    const error = createAxiosError('Request failed', { message: 'Detailed error info', error: '' });
+    expect(axiosErrorDetails(error)).toBe('Request failed, Detailed error info');
   });
 
-  it('should append data.error when data.message is missing', () => {
-    const error = createMockError({
-      error: 'Unauthorized Access',
-    });
-    const result = axiosErrorDetails(error);
-    expect(result).toBe('Request failed with status code 500, Unauthorized Access');
+  it('should append data.error when data.message is absent', () => {
+    const error = createAxiosError('Request failed', { error: 'Not Found', message: '' });
+    expect(axiosErrorDetails(error)).toBe('Request failed, Not Found');
   });
 
-  it('should stringify the data object if it does not contain message or error properties', () => {
-    const error = createMockError({
-      code: 404,
-      type: 'NOT_FOUND',
-    });
+  it('should JSON-stringify data when it has neither message nor error', () => {
+    const error = createAxiosError('Request failed', { code: 42, detail: 'unknown' });
+    expect(axiosErrorDetails(error)).toBe('Request failed, {"code":42,"detail":"unknown"}');
+  });
+
+  it('should not append context brackets when all context values are undefined', () => {
+    const error = createAxiosError('Request failed', 'Bad Request');
     const result = axiosErrorDetails(error);
-    expect(result).toBe('Request failed with status code 500, {"code":404,"type":"NOT_FOUND"}');
+    expect(result).toBe('Request failed, Bad Request');
+  });
+
+  it('should not append context when context is not provided', () => {
+    const error = createAxiosError('Request failed', 'Bad Request');
+    expect(axiosErrorDetails(error)).toBe('Request failed, Bad Request');
+  });
+
+  it('should handle null response data without appending anything', () => {
+    const error = createAxiosError('Request failed', null);
+    expect(axiosErrorDetails(error)).toBe('Request failed');
   });
 });
