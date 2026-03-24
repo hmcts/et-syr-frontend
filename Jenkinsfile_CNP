@@ -12,13 +12,12 @@ parameters([
 ])
 
 @Library("Infrastructure")
-
 import uk.gov.hmcts.contino.AppPipelineDsl
 
 def type = "nodejs"
 def product = "et"
 def component = "syr"
-def branchesToSync = ['demo', 'perftest', 'ithc']
+def branchesToSync = ['demo', 'ithc','perftest']
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
@@ -67,6 +66,15 @@ withPipeline(type, product, component) {
   loadVaultSecrets(secrets)
   disableLegacyDeployment()
   syncBranchesWithMaster(branchesToSync)
+
+// Enable Performance Test Stages
+  enablePerformanceTestStages(timeout: 10, perfTestEnvironments: ['preview','aat','perftest'])
+  enableGatlingLoadTests([
+    repo: 'https://github.com/hmcts/performance-testing.git',
+    branch: 'add-et-tests',
+    simulation: 'et.simulations.EtSyrCitizenBuildSimulation',
+    timeout: 10
+  ])
   enableSlackNotifications('#et-builds')
 
    env.TEST_URL = params.ET_SYA_URL_TO_TEST
