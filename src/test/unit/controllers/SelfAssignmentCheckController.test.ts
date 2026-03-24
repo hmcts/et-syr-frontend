@@ -13,6 +13,7 @@ import {
 import { getFlagValue } from '../../../main/modules/featureFlag/launchDarkly';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
+import ErrorUtils from '../../../main/utils/ErrorUtils';
 import { mockValidCaseWithId } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -41,6 +42,35 @@ describe('Self assignment check controller', () => {
   it('should render the Self Assignment Data Check page', () => {
     new SelfAssignmentCheckController().get(req, res);
     expect(res.render).toHaveBeenCalledWith('self-assignment-check', expect.anything());
+  });
+
+  it('should expose form content callbacks and undefined session values in render context', () => {
+    req.session.userCase = undefined;
+    req.session.user = undefined;
+    req.session.errors = undefined;
+    req.session.respondentNameFromForm = 'Respondent Name';
+
+    new SelfAssignmentCheckController().get(req, res);
+
+    const renderContext = res.render.mock.calls[0][1];
+    expect(renderContext.userCase).toBeUndefined();
+    expect(renderContext.user).toBeUndefined();
+    expect(renderContext.formRespondentName).toBe('Respondent Name');
+    expect(renderContext.form.fields.selfAssignmentCheck.label({ h1: 'Heading' })).toBe('Heading');
+    expect(renderContext.form.fields.selfAssignmentCheck.hint({ hint: 'Hint text' })).toBe('Hint text');
+    expect(
+      renderContext.form.fields.selfAssignmentCheck.values[0].label({
+        confirmation: { checkbox: 'I confirm' },
+      })
+    ).toBe('I confirm');
+    expect(renderContext.form.submit.text({ submit: 'Continue' })).toBe('Continue');
+  });
+
+  it('should throw when get is called without a session', () => {
+    req.url = '';
+    (req as Partial<AppRequest>).session = undefined;
+
+    expect(() => new SelfAssignmentCheckController().get(req, res)).toThrow();
   });
 
   describe('post()', () => {
@@ -76,6 +106,22 @@ describe('Self assignment check controller', () => {
 
       await new SelfAssignmentCheckController().post(req, res);
       expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_LIST);
+    });
+
+    it('should assign case when flag is disabled and request session is missing', async () => {
+      req.url = '';
+      (req as Partial<AppRequest>).session = undefined;
+      (getFlagValue as jest.Mock).mockResolvedValue(false);
+      getCaseApiMock.mockReturnValue(api);
+      const setManualErrorSpy = jest
+        .spyOn(ErrorUtils, 'setManualErrorToRequestSessionWithRemovingExistingErrors')
+        .mockImplementation();
+      api.assignCaseUserRole = jest.fn().mockResolvedValue({ data: { status: 'ASSIGNED' } });
+
+      await new SelfAssignmentCheckController().post(req, res);
+      setManualErrorSpy.mockRestore();
+
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_CHECK);
     });
 
     it('should redirect to case details page when user is already assigned to the case', async () => {
@@ -131,6 +177,22 @@ describe('Self assignment check controller', () => {
       expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining(PageUrls.SELF_ASSIGNMENT_CHECK));
     });
 
+    it('should set CASE_ALREADY_ASSIGNED error when API throws already assigned error and userCase is missing', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      getCaseApiMock.mockReturnValue(api);
+      req.session.userCase = undefined;
+      req.session.errors = [];
+
+      api.assignCaseUserRole = jest
+        .fn()
+        .mockRejectedValue(new Error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE_ALREADY_ASSIGNED_CHECK_VALUE));
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(req.session.errors[0].errorType).toEqual(ValidationErrors.CASE_ALREADY_ASSIGNED);
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_CHECK);
+    });
+
     it('should set API error and redirect when flag is disabled and response is null', async () => {
       (getFlagValue as jest.Mock).mockResolvedValue(false); // Old behavior
       getCaseApiMock.mockReturnValue(api);
@@ -142,6 +204,33 @@ describe('Self assignment check controller', () => {
       expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining(PageUrls.SELF_ASSIGNMENT_CHECK));
     });
 
+    it('should set API error when API throws an object without a message', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      getCaseApiMock.mockReturnValue(api);
+      req.session.userCase = undefined;
+      req.session.errors = [];
+
+      api.assignCaseUserRole = jest.fn().mockRejectedValue({});
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(req.session.errors[0].errorType).toEqual(ValidationErrors.API);
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_CHECK);
+    });
+
+    it('should set API error when API throws undefined', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      getCaseApiMock.mockReturnValue(api);
+      req.session.errors = [];
+
+      api.assignCaseUserRole = jest.fn().mockRejectedValue(undefined);
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(req.session.errors[0].errorType).toEqual(ValidationErrors.API);
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_CHECK);
+    });
+
     it('should log error and redirect when flag is enabled but data property is missing', async () => {
       (getFlagValue as jest.Mock).mockResolvedValue(true); // New behavior
       getCaseApiMock.mockReturnValue(api);
@@ -151,6 +240,86 @@ describe('Self assignment check controller', () => {
 
       expect(req.session.errors[0].errorType).toEqual(ValidationErrors.API);
       expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining(PageUrls.SELF_ASSIGNMENT_CHECK));
+    });
+
+    it('should set API error when flag is enabled and case api is unavailable', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      getCaseApiMock.mockReturnValue(undefined);
+      req.session.user = undefined;
+      req.session.userCase = undefined;
+      req.session.errors = [];
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(req.session.errors[0].errorType).toEqual(ValidationErrors.API);
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.SELF_ASSIGNMENT_CHECK);
+    });
+
+    it('should redirect to case list when flag is enabled and response data has no status', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      getCaseApiMock.mockReturnValue(api);
+      api.assignCaseUserRole = jest.fn().mockResolvedValue({ data: {} });
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_LIST + '?lng=en');
+    });
+
+    it('should redirect to case list when response data becomes undefined before already assigned status check', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      getCaseApiMock.mockReturnValue(api);
+      let getterCount = 0;
+      const flakyResponse = {};
+      Object.defineProperty(flakyResponse, 'data', {
+        get: () => {
+          getterCount++;
+          if (getterCount <= 2) {
+            return { status: 'ASSIGNED' };
+          }
+          return undefined;
+        },
+      });
+      api.assignCaseUserRole = jest.fn().mockResolvedValue(flakyResponse);
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_LIST + '?lng=en');
+    });
+
+    it('should redirect to case list when already assigned status has no message', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      getCaseApiMock.mockReturnValue(api);
+      api.assignCaseUserRole = jest.fn().mockResolvedValue({
+        data: { status: CaseAssignmentResponse.ALREADY_ASSIGNED },
+      });
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_LIST + '?lng=en');
+    });
+
+    it('should redirect to case list when response data becomes undefined before already assigned message check', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      getCaseApiMock.mockReturnValue(api);
+      let getterCount = 0;
+      const flakyResponse = {};
+      Object.defineProperty(flakyResponse, 'data', {
+        get: () => {
+          getterCount++;
+          if (getterCount === 1) {
+            return { status: 'ASSIGNED' };
+          }
+          if (getterCount === 2 || getterCount === 3) {
+            return { status: CaseAssignmentResponse.ALREADY_ASSIGNED };
+          }
+          return undefined;
+        },
+      });
+      api.assignCaseUserRole = jest.fn().mockResolvedValue(flakyResponse);
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_LIST + '?lng=en');
     });
 
     it('should redirect to case details with empty respondent ID if user not found in respondents list', async () => {
@@ -173,6 +342,97 @@ describe('Self assignment check controller', () => {
 
       // Should redirect with empty string for respondent ID: .../caseId/
       expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining(`${mockValidCaseWithId.id}/?lng=en`));
+    });
+
+    it('should redirect to case details with missing case and user details when already assigned response is returned', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      getCaseApiMock.mockReturnValue(api);
+      req.session.user = undefined;
+      req.session.userCase = undefined;
+
+      api.assignCaseUserRole = jest.fn().mockResolvedValue({
+        data: {
+          status: CaseAssignmentResponse.ALREADY_ASSIGNED,
+          message: CaseAssignmentResponse.USER_ALREADY_ASSIGNED_TO_THE_CASE,
+        },
+      });
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(res.redirect).toHaveBeenCalledWith(`${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/undefined/?lng=en`);
+    });
+
+    it('should redirect to case details with empty respondent ID when respondents and user are missing', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      getCaseApiMock.mockReturnValue(api);
+      req.session.user = undefined;
+      req.session.userCase = { ...mockValidCaseWithId, respondents: undefined };
+
+      api.assignCaseUserRole = jest.fn().mockResolvedValue({
+        data: {
+          status: CaseAssignmentResponse.ALREADY_ASSIGNED,
+          message: CaseAssignmentResponse.USER_ALREADY_ASSIGNED_TO_THE_CASE,
+        },
+      });
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${mockValidCaseWithId.id}/?lng=en`
+      );
+    });
+
+    it('should redirect to case details with empty respondent ID when respondents exist but user is missing', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      getCaseApiMock.mockReturnValue(api);
+      req.session.user = undefined;
+      req.session.userCase.respondents = [{ idamId: 'other-user', ccdId: '456' }];
+
+      api.assignCaseUserRole = jest.fn().mockResolvedValue({
+        data: {
+          status: CaseAssignmentResponse.ALREADY_ASSIGNED,
+          message: CaseAssignmentResponse.USER_ALREADY_ASSIGNED_TO_THE_CASE,
+        },
+      });
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${mockValidCaseWithId.id}/?lng=en`
+      );
+    });
+
+    it('should redirect to case details with empty respondent ID when session becomes unavailable during respondent lookup', async () => {
+      (getFlagValue as jest.Mock).mockResolvedValue(true);
+      getCaseApiMock.mockReturnValue(api);
+      const sessionValue = {
+        user: { ...mockUserDetails },
+        userCase: {
+          ...mockValidCaseWithId,
+          respondents: [{ idamId: mockUserDetails.id, ccdId: '456' }],
+        },
+      };
+      let sessionReads = 0;
+      Object.defineProperty(req, 'session', {
+        configurable: true,
+        get: () => {
+          sessionReads++;
+          return sessionReads >= 3 ? undefined : sessionValue;
+        },
+      });
+
+      api.assignCaseUserRole = jest.fn().mockResolvedValue({
+        data: {
+          status: CaseAssignmentResponse.ALREADY_ASSIGNED,
+          message: CaseAssignmentResponse.USER_ALREADY_ASSIGNED_TO_THE_CASE,
+        },
+      });
+
+      await new SelfAssignmentCheckController().post(req, res);
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${mockValidCaseWithId.id}/?lng=en`
+      );
     });
   });
 });
