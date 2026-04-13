@@ -1,12 +1,18 @@
 {% extends "govuk/template.njk" %}
 {% from "govuk/components/header/macro.njk" import govukHeader %}
-{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../components/timeout-modal.njk" import timeoutModal with context %}
 
 {% block head %}
   {% include "../../webpack/css.njk" %}
+  <link rel="icon" sizes="48x48" href="/assets/rebrand/images/favicon.ico">
+  <link rel="icon" sizes="any" href="/assets/rebrand/images/favicon.svg" type="image/svg+xml">
+  <link rel="mask-icon" href="/assets/rebrand/images/govuk-icon-mask.svg" color="#1d70b8">
+  <link rel="apple-touch-icon" href="/assets/rebrand/images/govuk-icon-180.png">
+  <link rel="manifest" href="/assets/rebrand/manifest.json">
+  <meta property="og:image" content="/assets/rebrand/images/govuk-opengraph-image.png">
+  <meta name="theme-color" content="#1d70b8">
   <script>
     window.dataLayer = window.dataLayer || [];
   </script>
@@ -37,41 +43,38 @@
   <!-- End of hidden session object for user already logged in check-->
 {% endblock %}
 
-  {% set logInOrOut = {
-    href: "/logout",
-    text: signOut,
-    active: false
-  } if isLoggedIn %}
+{% set logInOrOut = {
+  href: "/logout",
+  text: signOut,
+  active: false
+}
+if isLoggedIn %}
 
-  {% block headerStart %}
-    {% include "./cookie-banner.njk" %}
-  {% endblock %}
+{% block header %}
+  {% include "./cookie-banner.njk" %}
+  {{ govukHeader({
+    containerClasses: "govuk-width-container",
+    homepageUrl: "/",
+    productName: serviceName,
+    navigationClasses: 'govuk-header__navigation--end',
+    navigation: [logInOrOut],
+    rebrand: true
+  }) }}
+{% endblock %}
 
-  {% block govukHeader %}
-    {{ govukHeader({
-      containerClasses: "govuk-width-container",
-      homepageUrl: "/",
-      productName: serviceName
-    }) }}
-  {% endblock %}
-
-  {% block govukServiceNavigation %}
-    {{ govukServiceNavigation({
-      navigationClasses: 'govuk-header__navigation--end',
-      navigation: [logInOrOut] if logInOrOut else []
-    }) }}
-  {% endblock %}
-
-  {% block pageTitle %}
-    {{ title }} - {{ serviceName }} - {{ govUk }}
-  {% endblock %}
+{% block pageTitle %}
+  {{ title }}
+  -
+  {{ serviceName }}
+  -
+  {{ govUk }}
+{% endblock %}
 
 {% block beforeContent %}
 
   {% set smartSurveyPageInfo = currentUrl | replace("/", "") %}
 
-  {# Use ~ for concatenation #}
-  {% set phaseBarHtml = '<a class="govuk-link" rel="noreferrer noopener" href="' ~ phaseBanner.smartSurveyFeedbackUrl ~ smartSurveyPageInfo ~ '" target="_blank">' ~ phaseBanner.feedback ~ "</a> " ~ phaseBanner.additionalText %}
+  {% set phaseBarHtml = '<a class="govuk-link" rel="noreferrer noopener" href="' + phaseBanner.smartSurveyFeedbackUrl + smartSurveyPageInfo + '" target="_blank">' + phaseBanner.feedback + "</a> " + phaseBanner.additionalText %}
 
 
   {% if welshEnabled == null or welshEnabled === 'undefined' or welshEnabled === true %}
@@ -100,20 +103,21 @@
 
   {{ timeoutModal() }}
 
-    {{ govukPhaseBanner({
+  {{ govukPhaseBanner({
       tag: {
-        text: beta
+          text: beta
       },
-      html: phaseBarHtml
-    }) }}
-  {% endblock %}
+      html: phaseBarHtml,
+      rebrand: true
+  }) }}
+{% endblock %}
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
   {% include "../../webpack/js.njk" %}
 {% endblock %}
 
-{% block footerStart %}
+{% block footer %}
   {% if "/" !== currentUrl and "/?lng=en" != currentUrl and "/?lng=cy" != currentUrl and hideContactUs === undefined %}
     <div class="govuk-width-container">
       <details class="govuk-details" data-module="govuk-details">
@@ -134,8 +138,6 @@
       </details>
     </div>
   {% endif %}
-{% endblock %}
 
-{% block govukFooter %}
   {% include "./footer.njk" %}
 {% endblock %}

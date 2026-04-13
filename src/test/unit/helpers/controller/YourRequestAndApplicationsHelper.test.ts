@@ -127,7 +127,7 @@ describe('Your Request and Applications Helper', () => {
       expect(updatedApps[1].redirectUrl).toBe('/application-details/04a5064e-0766-4833-b740-d02520c604f2?lng=en');
       expect(updatedApps[1].linkValue).toBe('Amend my claim');
       expect(updatedApps[1].displayStatus).toBe('Viewed');
-      expect(updatedApps[1].statusColor).toBe('--teal');
+      expect(updatedApps[1].statusColor).toBe('--turquoise');
       expect(updatedApps[1].lastUpdatedDate).toEqual(new Date('2025-02-06'));
 
       expect(updatedApps[2].submitDate).toBe('3 February 2025');
