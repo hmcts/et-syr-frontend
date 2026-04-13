@@ -226,10 +226,15 @@ $lightgrey-panel: #d3d3d3;
   .govuk-header__logo {
     width: fit-content;
   }
+
+  .govuk-header__content {
+    float: right;
+    width: fit-content;
+  }
 }
 
-.govuk-service-navigation__item {
+.govuk-header__navigation-item {
   &:last-child {
-    margin-left: auto;
+    float: right;
   }
 }
