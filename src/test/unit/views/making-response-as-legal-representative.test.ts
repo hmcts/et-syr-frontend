@@ -19,7 +19,7 @@ const PAGE_URL = '/making-response-as-legal-representative';
 const titleClass = 'govuk-heading-xl';
 const pClass = 'govuk-body';
 const expectedTitle = makingResponseAsLegalRepJson.title;
-const signOutLinkSelector = 'li.govuk-header__navigation-item a.govuk-header__link';
+const signOutLinkSelector = 'li.govuk-service-navigation__item a.govuk-service-navigation__link';
 
 let htmlRes: Document;
 describe('Making a response as a legal representative page', () => {
