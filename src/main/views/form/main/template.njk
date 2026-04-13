@@ -37,11 +37,24 @@
   <!-- End of hidden session object for user already logged in check-->
 {% endblock %}
 
+  {% set languageParam = "?lng=" + i18n.language %}
+
+  {% set caseListNav = {
+    href: "/case-list" ~ languageParam ~ "&src=nav-link",
+    text: returnToAllResponses,
+    active: false
+  } if isLoggedIn and hasUserCases and "/case-list" not in currentUrl %}
+
   {% set logInOrOut = {
     href: "/logout",
     text: signOut,
     active: false
   } if isLoggedIn %}
+
+  {% set headerNavigation = [logInOrOut] %}
+  {% if caseListNav %}
+    {% set headerNavigation = [caseListNav, logInOrOut] %}
+  {% endif %}
 
   {% block headerStart %}
     {% include "./cookie-banner.njk" %}
@@ -58,7 +71,7 @@
   {% block govukServiceNavigation %}
     {{ govukServiceNavigation({
       navigationClasses: 'govuk-header__navigation--end',
-      navigation: [logInOrOut] if logInOrOut else []
+      navigation: headerNavigation
     }) }}
   {% endblock %}
 

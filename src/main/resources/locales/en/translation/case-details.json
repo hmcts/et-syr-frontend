@@ -35,6 +35,7 @@
   "busyPeriod": ". In busy periods it may take longer.",
   "appointLegalRepresentative": "Appoint a legal representative",
   "changeLegalRepresentative": "Change my legal representative",
+  "viewAllResponses": "View my ET3 responses",
   "notificationBanner": {
     "viewResponse": {
       "header": "The tribunal has acknowledged a claim against ",

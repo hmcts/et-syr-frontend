@@ -6,12 +6,18 @@ import { CaseState, ET3Status } from '../definitions/definition';
 import { FormContent } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLogger } from '../logger';
 import { getUserApplications, getUserCasesByLastModified } from '../services/CaseSelectionService';
 import ET3Util from '../utils/ET3Util';
 import StringUtils from '../utils/StringUtils';
 
+const logger = getLogger('CaseListController');
+
 export default class CaseListController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
+    if (req.query?.src === 'nav-link' || req.query?.src === 'side-bar-link') {
+      logger.info('Case list (SYR) page accessed via ' + req.query.src);
+    }
     await new Promise(f => setTimeout(f, 1000));
     const translations: AnyRecord = {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
