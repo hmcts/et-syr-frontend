@@ -152,7 +152,6 @@ export class Nunjucks {
       nunEnv.addGlobal('dateStringToLocale', (dateToTransform: string) =>
         datesStringToDateInLocale(dateToTransform, req.url)
       );
-      nunEnv.addGlobal('govukRebrand', true);
       next();
     });
   }
