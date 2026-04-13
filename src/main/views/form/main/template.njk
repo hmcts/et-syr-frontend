@@ -58,7 +58,7 @@
   {% block govukServiceNavigation %}
     {{ govukServiceNavigation({
       navigationClasses: 'govuk-header__navigation--end',
-      navigation: [logInOrOut]
+      navigation: [logInOrOut] if logInOrOut else []
     }) }}
   {% endblock %}
 
