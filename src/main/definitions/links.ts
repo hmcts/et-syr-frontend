@@ -122,7 +122,7 @@ export const SectionIndexToEt3HubLinkNamesWithEmployersContractClaim: ET3HubLink
 //*************************************************************************//
 
 export const LinkColors = {
-  TURQUOISE: '--turquoise',
+  TEAL: '--teal',
   GREEN: '--green',
   BLUE: '--blue',
   RED: '--red',
@@ -155,13 +155,13 @@ export const enum LinkStatus {
 
 export const linkStatusColorMap = new Map<LinkStatus, string>([
   [LinkStatus.COMPLETED, LinkColors.GREEN],
-  [LinkStatus.SUBMITTED, LinkColors.TURQUOISE],
+  [LinkStatus.SUBMITTED, LinkColors.TEAL],
   [LinkStatus.OPTIONAL, LinkColors.BLUE],
-  [LinkStatus.VIEWED, LinkColors.TURQUOISE],
+  [LinkStatus.VIEWED, LinkColors.TEAL],
   [LinkStatus.NOT_VIEWED, LinkColors.RED],
   [LinkStatus.NOT_YET_AVAILABLE, LinkColors.GREY],
   [LinkStatus.WAITING_FOR_TRIBUNAL, LinkColors.GREY],
-  [LinkStatus.SUBMITTED_AND_VIEWED, LinkColors.TURQUOISE],
+  [LinkStatus.SUBMITTED_AND_VIEWED, LinkColors.TEAL],
   [LinkStatus.IN_PROGRESS, LinkColors.YELLOW],
   [LinkStatus.STORED, LinkColors.YELLOW],
   [LinkStatus.NOT_STARTED_YET, LinkColors.RED],
