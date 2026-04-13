@@ -47,6 +47,7 @@ export default class CaseListController {
         }
       }
     }
+    req.session.hasUserCases = userCases.length > 0;
     req.session.userCase = undefined;
     req.session.errors = [];
     res.render(TranslationKeys.CASE_LIST, {
