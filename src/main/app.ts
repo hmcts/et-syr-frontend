@@ -59,11 +59,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
-  res.locals.hasUserCases = !!(req as AppRequest).session?.hasUserCases;
-  next();
-});
-
 new CSRFToken().enableFor(app);
 new Oidc().enableFor(app);
 new Routes().enableFor(app);

@@ -64,7 +64,6 @@ export interface AppSession extends Session {
   submittedCase?: CaseWithId;
   user: UserDetails;
   userCase: CaseWithId;
-  hasUserCases?: boolean;
   isSelfAssignment?: boolean;
 }
 

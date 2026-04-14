@@ -39,12 +39,6 @@
 
   {% set languageParam = "?lng=" + i18n.language %}
 
-  {% set caseListNav = {
-    href: "/case-list" ~ languageParam ~ "&src=nav-link",
-    text: returnToAllResponses,
-    active: false
-  } if isLoggedIn and hasUserCases and "/case-list" not in currentUrl %}
-
   {% set logInOrOut = {
     href: "/logout",
     text: signOut,
@@ -52,9 +46,6 @@
   } if isLoggedIn %}
 
   {% set headerNavigation = [logInOrOut] %}
-  {% if caseListNav %}
-    {% set headerNavigation = [caseListNav, logInOrOut] %}
-  {% endif %}
 
   {% block headerStart %}
     {% include "./cookie-banner.njk" %}
