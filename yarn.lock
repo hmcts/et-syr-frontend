@@ -8282,7 +8282,7 @@ __metadata:
     express-rate-limit: "npm:^7.0.0"
     express-session: "npm:^1.18.2"
     git-rev-sync: "npm:3.0.2"
-    govuk-frontend: "npm:^5.11.0"
+    govuk-frontend: "npm:^6.0.0"
     helmet: "npm:^8.0.0"
     html-webpack-plugin: "npm:^5.5.1"
     husky: "npm:^9.0.0"
@@ -8861,7 +8861,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.15.11":
+"follow-redirects@npm:>=1.16.0":
   version: 1.16.0
   resolution: "follow-redirects@npm:1.16.0"
   peerDependenciesMeta:
@@ -9364,10 +9364,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:^5.11.0":
-  version: 5.11.0
-  resolution: "govuk-frontend@npm:5.11.0"
-  checksum: 10/4d978e64847f2e05e6e6e9c530c3113a5591daeb46a9c77a3e6be2bcd4afcf62ddc85094a2f358a49d7cf8eb3dfe1a1793b42e701f96d366515d9053653cac8e
+"govuk-frontend@npm:^6.0.0":
+  version: 6.1.0
+  resolution: "govuk-frontend@npm:6.1.0"
+  checksum: 10/dfd478bd47c7726f633cb43ce755e3ed0a513fc783ab7ad53eece931531eefa7471aa00f7548505a4fe523c56bb0ba35092629a3c1eb3a03ad232b1af15cc811
   languageName: node
   linkType: hard
 
