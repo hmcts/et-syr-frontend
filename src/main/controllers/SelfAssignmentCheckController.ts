@@ -3,7 +3,14 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId, YesOrNo } from '../definitions/case';
-import { FormFieldNames, PageUrls, ServiceErrors, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import {
+  CaseAssignmentResponse,
+  FormFieldNames,
+  PageUrls,
+  ServiceErrors,
+  TranslationKeys,
+  ValidationErrors,
+} from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
@@ -59,33 +66,22 @@ export default class SelfAssignmentCheckController {
     const selfAssignmentEnabled = await getFlagValue('et3-self-assignment', null);
 
     let caseAssignmentResponse;
+    const userCase = req.session?.userCase;
     try {
       caseAssignmentResponse = await getCaseApi(req.session.user?.accessToken)?.assignCaseUserRole(req);
     } catch (error) {
       if (
         StringUtils.isNotBlank(error?.message) &&
-        error.message
-          .toString()
-          .includes(ServiceErrors.ERROR_ASSIGNING_USER_ROLE_USER_ALREADY_HAS_ROLE_EXCEPTION_CHECK_VALUE)
-      ) {
-        logger.error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + 'caseId: ' + req.session?.userCase?.id + ', ' + error);
-        ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
-          req,
-          ValidationErrors.CASE_ALREADY_ASSIGNED_TO_SAME_USER,
-          FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
-        );
-      } else if (
-        StringUtils.isNotBlank(error?.message) &&
         error.message.toString().includes(ServiceErrors.ERROR_ASSIGNING_USER_ROLE_ALREADY_ASSIGNED_CHECK_VALUE)
       ) {
-        logger.error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + 'caseId: ' + req.session?.userCase?.id + ', ' + error);
+        logger.error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + 'caseId: ' + userCase?.id + ', ' + error);
         ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
           req,
           ValidationErrors.CASE_ALREADY_ASSIGNED,
           FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
         );
       } else {
-        logger.error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + 'caseId: ' + req.session?.userCase?.id + ', ' + error);
+        logger.error(ServiceErrors.ERROR_ASSIGNING_USER_ROLE + 'caseId: ' + userCase?.id + ', ' + error);
         ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
           req,
           ValidationErrors.API,
@@ -110,7 +106,7 @@ export default class SelfAssignmentCheckController {
 
     // New behavior - when flag is enabled
     if (!caseAssignmentResponse?.data) {
-      logger.error('Case assignment response data is null or undefined. caseId: ' + req.session?.userCase?.id);
+      logger.error('Case assignment response data is null or undefined. caseId: ' + userCase?.id);
       ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
         req,
         ValidationErrors.API,
@@ -124,6 +120,19 @@ export default class SelfAssignmentCheckController {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE)));
     }
 
+    if (
+      caseAssignmentResponse.data?.status === CaseAssignmentResponse.ALREADY_ASSIGNED &&
+      caseAssignmentResponse.data?.message?.includes(CaseAssignmentResponse.USER_ALREADY_ASSIGNED_TO_THE_CASE)
+    ) {
+      logger.info(`User already assigned to case: ${userCase?.id}`);
+
+      const currentRespondent = userCase?.respondents?.find(respondent => respondent.idamId === req.session?.user?.id);
+
+      const respondent = currentRespondent?.ccdId || '';
+      return res.redirect(
+        `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${userCase?.id}/${respondent}${getLanguageParam(req.url)}`
+      );
+    }
     return res.redirect(`${PageUrls.CASE_LIST}${getLanguageParam(req.url)}`);
   };
 
