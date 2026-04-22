@@ -15,7 +15,7 @@ export const mockAxiosError = (type: string, message: string, status: number): A
     toJSON: () => ({}),
     config,
     response: {
-      data: { type, message },
+      data: undefined,
       status,
       statusText: 'Conflict',
       headers,

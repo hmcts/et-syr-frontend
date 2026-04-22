@@ -589,6 +589,11 @@ export const ServiceErrors = {
   ERROR_REVOKING_USER_ROLE: 'Error revoking user role: ',
 } as const;
 
+export const CaseAssignmentResponse = {
+  ALREADY_ASSIGNED: 'ALREADY_ASSIGNED',
+  USER_ALREADY_ASSIGNED_TO_THE_CASE: 'User was already assigned to this case',
+} as const;
+
 export const CacheErrors = {
   ERROR_HOST_NOT_FOUND_FOR_PRE_LOGIN_URL: 'Host not found for pre login url',
   ERROR_PORT_NOT_FOUND_FOR_PRE_LOGIN_URL: 'Port not found for pre login url',

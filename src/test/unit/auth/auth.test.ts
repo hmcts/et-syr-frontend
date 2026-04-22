@@ -29,10 +29,15 @@ const AuthorisationTestConstants = {
 
 const loginUrl =
   process.env.IDAM_WEB_URL ?? config.get(AuthorisationTestConstants.AUTHORISATION_URL_CONFIGURATION_NAME);
+const hmctsAccessLoginUrl = process.env.IDAM_WEB_URL_HMCTS_ACCESS ?? config.get('services.idam.hmctsAccessURL');
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 describe('AuthorisationTest', () => {
   describe('getRedirectUrl', () => {
+    afterEach(() => {
+      delete process.env.HMCTS_ACCESS;
+    });
+
     test('should create a valid URL to redirect to the login screen', () => {
       expect(
         getRedirectUrl(
@@ -43,6 +48,20 @@ describe('AuthorisationTest', () => {
         )
       ).toBe(
         `${loginUrl}?client_id=et-syr&response_type=code&redirect_uri=http://localhost/oauth2/callback&state=${AuthorisationTestConstants.GUID}&ui_locales=${languages.ENGLISH}`
+      );
+    });
+
+    test('should use HMCTS Access authorize URL when HMCTS_ACCESS is true', () => {
+      process.env.HMCTS_ACCESS = 'true';
+      expect(
+        getRedirectUrl(
+          AuthorisationTestConstants.URL_LOCALHOST,
+          AuthUrls.CALLBACK,
+          AuthorisationTestConstants.GUID,
+          languages.ENGLISH
+        )
+      ).toBe(
+        `${hmctsAccessLoginUrl}?client_id=et-syr&response_type=code&redirect_uri=http://localhost/oauth2/callback&state=${AuthorisationTestConstants.GUID}&ui_locales=${languages.ENGLISH}`
       );
     });
   });
