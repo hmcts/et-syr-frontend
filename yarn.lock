@@ -8287,7 +8287,7 @@ __metadata:
     html-webpack-plugin: "npm:^5.5.1"
     husky: "npm:^9.0.0"
     i18next: "npm:^24.0.0"
-    i18next-http-middleware: "npm:^3.3.0"
+    i18next-http-middleware: "npm:^3.9.3"
     jest: "npm:^29.6.2"
     jest-environment-jsdom: "npm:^29.5.0"
     jest-pact: "npm:0.11.3"
@@ -9793,10 +9793,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next-http-middleware@npm:^3.3.0":
-  version: 3.7.2
-  resolution: "i18next-http-middleware@npm:3.7.2"
-  checksum: 10/7e828b41c28b4076f600f887f131538588150709a662393e2c9e23c6d154eb45e62a2516f3cbc4f715a2748d34e69c2f66da3dc6289417e77484c3adace2a137
+"i18next-http-middleware@npm:^3.9.3":
+  version: 3.9.3
+  resolution: "i18next-http-middleware@npm:3.9.3"
+  checksum: 10/88f4cd162681fde44fcc5f73bebe5080b99ae8ce75e468f06247217d2549b05826d002d4b174d6bb926991086bf5b20fd0b14bfc8512dec76ab530d0b9ccf620
   languageName: node
   linkType: hard
 
