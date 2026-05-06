@@ -1,7 +1,6 @@
 import axios from 'axios';
 import config from 'config';
 import { Response } from 'express';
-import { v4 as uuidv4 } from 'uuid';
 
 import { AppRequest } from '../definitions/appRequest';
 import { Applicant, ErrorPages } from '../definitions/constants';
@@ -47,7 +46,7 @@ export const invokePCQ = async (req: AppRequest, res: Response): Promise<void> =
       const returnurl = getHost(res) + ErrorPages.NOT_FOUND;
 
       //Generate pcq id
-      const claimantPcqId: string = uuidv4();
+      const claimantPcqId: string = crypto.randomUUID();
 
       const params: PCQRequest = {
         serviceId: 'ET',

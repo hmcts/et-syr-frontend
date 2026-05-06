@@ -97,7 +97,7 @@ function pushEt3FormsToCombinedDocuments(
 }
 
 export const findContentTypeByDocument = (document: AxiosResponse): string => {
-  let contentType = document.headers['content-type'];
+  let contentType = document.headers['content-type'] as string;
   if (!contentType) {
     let fileName: string = document?.headers?.originalfilename;
     if (!fileName) {
