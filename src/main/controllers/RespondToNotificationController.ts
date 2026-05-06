@@ -11,7 +11,7 @@ import { LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { findSelectedSendNotification } from '../helpers/NotificationHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLanguageParam, returnValidUrlWithPathParam } from '../helpers/RouterHelpers';
 import {
   getNotificationContent,
   getNotificationResponses,
@@ -130,7 +130,12 @@ export default class RespondToNotificationController {
     userCase.responseText = formData.responseText;
     userCase.hasSupportingMaterial = formData.hasSupportingMaterial;
 
-    const thisPage = PageUrls.RESPOND_TO_NOTIFICATION.replace(':itemId', req.params.itemId) + languageParam;
+    const thisPage = returnValidUrlWithPathParam(
+      PageUrls.RESPOND_TO_NOTIFICATION,
+      'itemId',
+      req.params.itemId,
+      languageParam
+    );
     if (req.body?.upload) {
       const fileErrorRedirect = handleFileUpload(req, FormFieldNames.RESPOND_TO_NOTIFICATION.SUPPORTING_MATERIAL_FILE);
       if (await fileErrorRedirect) {

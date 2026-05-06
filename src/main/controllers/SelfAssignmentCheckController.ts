@@ -14,7 +14,7 @@ import {
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
+import { getLanguageParam, returnSafeCaseDetailsUrl, returnValidUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import { getCaseApi } from '../services/CaseService';
@@ -129,9 +129,7 @@ export default class SelfAssignmentCheckController {
       const currentRespondent = userCase?.respondents?.find(respondent => respondent.idamId === req.session?.user?.id);
 
       const respondent = currentRespondent?.ccdId || '';
-      return res.redirect(
-        `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${userCase?.id}/${respondent}${getLanguageParam(req.url)}`
-      );
+      return res.redirect(returnSafeCaseDetailsUrl(String(userCase?.id), respondent, req));
     }
     return res.redirect(`${PageUrls.CASE_LIST}${getLanguageParam(req.url)}`);
   };
