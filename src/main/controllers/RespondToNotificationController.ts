@@ -11,7 +11,7 @@ import { LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { findSelectedSendNotification } from '../helpers/NotificationHelper';
-import { getLanguageParam, returnValidUrlWithPathParam } from '../helpers/RouterHelpers';
+import { getLanguageParam, returnValidUrl, returnValidUrlWithPathParam } from '../helpers/RouterHelpers';
 import {
   getNotificationContent,
   getNotificationResponses,
@@ -139,7 +139,7 @@ export default class RespondToNotificationController {
     if (req.body?.upload) {
       const fileErrorRedirect = handleFileUpload(req, FormFieldNames.RESPOND_TO_NOTIFICATION.SUPPORTING_MATERIAL_FILE);
       if (await fileErrorRedirect) {
-        return res.redirect(thisPage);
+        return res.redirect(returnValidUrl(thisPage));
       }
     }
 
@@ -147,11 +147,11 @@ export default class RespondToNotificationController {
     const formError = getFormError(req, formData);
     if (formError) {
       req.session.errors.push(formError);
-      return res.redirect(thisPage);
+      return res.redirect(returnValidUrl(thisPage));
     }
 
     if (req.body?.upload) {
-      return res.redirect(thisPage);
+      return res.redirect(returnValidUrl(thisPage));
     }
 
     return res.redirect(getRespondNotificationCopyPage(userCase) + languageParam);

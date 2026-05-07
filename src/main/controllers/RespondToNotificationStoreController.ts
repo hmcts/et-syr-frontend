@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { ErrorPages, PageUrls, TseErrors } from '../definitions/constants';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
-import { getLanguageParam, returnValidUrlWithPathParam } from '../helpers/RouterHelpers';
+import { getLanguageParam, returnValidUrl, returnValidUrlWithPathParam } from '../helpers/RouterHelpers';
 import { clearTempFields } from '../helpers/controller/RespondToNotificationSubmitHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
@@ -31,11 +31,13 @@ export default class RespondToNotificationStoreController {
 
       // redirect next page
       return res.redirect(
-        returnValidUrlWithPathParam(
-          PageUrls.RESPOND_TO_NOTIFICATION_STORE_CONFIRMATION,
-          'itemId',
-          notificationId,
-          languageParam
+        returnValidUrl(
+          returnValidUrlWithPathParam(
+            PageUrls.RESPOND_TO_NOTIFICATION_STORE_CONFIRMATION,
+            'itemId',
+            notificationId,
+            languageParam
+          )
         )
       );
     } catch (error) {
