@@ -168,7 +168,7 @@ export class CaseApi {
   getCaseDocument = async (docId: string): Promise<AxiosResponse> => {
     try {
       return await this.axios.get(`${JavaApiUrls.DOCUMENT_DOWNLOAD}${docId}`, {
-        responseType: 'arraybuffer',
+        responseType: 'stream',
       });
     } catch (error) {
       throw new Error('Error fetching document: ' + axiosErrorDetails(error));
