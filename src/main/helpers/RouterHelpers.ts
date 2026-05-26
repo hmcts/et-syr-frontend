@@ -70,18 +70,6 @@ export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): strin
       }
       return validUrl;
     }
-    // Pattern match for parametric URLs (e.g. /respond-to-notification/:itemId)
-    if (validUrl.includes(':')) {
-      const urlPattern = new RegExp('^' + validUrl.replace(/:[^/]+/g, '[^/?&#]+') + '$');
-      if (urlPattern.test(baseUrl)) {
-        // Only re-add safe language parameters to the concrete URL
-        const parameters = UrlUtils.getRequestParamsFromUrl(redirectUrl);
-        const safeLangParam = parameters.find(
-          param => param === languages.WELSH_URL_POSTFIX || param === languages.ENGLISH_URL_POSTFIX
-        );
-        return safeLangParam ? `${baseUrl}?${safeLangParam}` : baseUrl;
-      }
-    }
   }
   // Return a safe fallback if no validUrl is found
   return ErrorPages.NOT_FOUND;

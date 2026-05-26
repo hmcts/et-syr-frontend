@@ -129,7 +129,7 @@ export default class SelfAssignmentCheckController {
       const currentRespondent = userCase?.respondents?.find(respondent => respondent.idamId === req.session?.user?.id);
 
       const respondent = currentRespondent?.ccdId || '';
-      return res.redirect(returnValidUrl(returnSafeCaseDetailsUrl(String(userCase?.id), respondent, req)));
+      return res.redirect(returnSafeCaseDetailsUrl(String(userCase?.id), respondent, req));
     }
     return res.redirect(`${PageUrls.CASE_LIST}${getLanguageParam(req.url)}`);
   };
