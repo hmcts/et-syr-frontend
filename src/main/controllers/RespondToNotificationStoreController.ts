@@ -1,9 +1,9 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { ErrorPages, PageUrls, TseErrors } from '../definitions/constants';
+import { ErrorPages, PageUrls, TseErrors, languages } from '../definitions/constants';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
-import { getLanguageParam, returnValidUrlWithPathParam } from '../helpers/RouterHelpers';
+import { returnValidUrlWithPathParam } from '../helpers/RouterHelpers';
 import { clearTempFields } from '../helpers/controller/RespondToNotificationSubmitHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
@@ -13,7 +13,9 @@ const logger = getLogger('RespondToNotificationStoreController');
 export default class RespondToNotificationStoreController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const { user, userCase } = req.session;
-    const languageParam = getLanguageParam(req.url);
+    const languageParam = req.url?.includes(languages.WELSH_URL_POSTFIX)
+      ? languages.WELSH_URL_PARAMETER
+      : languages.ENGLISH_URL_PARAMETER;
 
     try {
       // store application

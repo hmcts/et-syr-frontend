@@ -5,7 +5,7 @@ import { AppRequest } from '../definitions/appRequest';
 import { uploadButton } from '../definitions/buttons';
 import { CaseWithId, YesOrNo } from '../definitions/case';
 import { SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
-import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
+import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys, TseErrors, languages } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
@@ -114,7 +114,9 @@ export default class RespondToNotificationController {
     }
 
     const { userCase } = req.session;
-    const languageParam = getLanguageParam(req.url);
+    const languageParam = req.url?.includes(languages.WELSH_URL_POSTFIX)
+      ? languages.WELSH_URL_PARAMETER
+      : languages.ENGLISH_URL_PARAMETER;
 
     const selectedNotification: SendNotificationTypeItem = findSelectedSendNotification(
       userCase.sendNotificationCollection,
@@ -133,7 +135,7 @@ export default class RespondToNotificationController {
     const thisPage = returnValidUrlWithPathParam(
       PageUrls.RESPOND_TO_NOTIFICATION,
       'itemId',
-      req.params.itemId,
+      selectedNotification.id,
       languageParam
     );
     if (req.body?.upload) {

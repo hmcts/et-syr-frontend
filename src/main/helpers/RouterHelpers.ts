@@ -164,7 +164,9 @@ export const returnSafeCaseDetailsUrl = (caseId: string, ccdId: string, request:
   ) {
     return ErrorPages.NOT_FOUND;
   }
-  return `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${caseId}/${ccdId}${getLanguageParam(request.url)}`;
+  const langParam =
+    request?.session?.lang === languages.WELSH ? languages.WELSH_URL_PARAMETER : languages.ENGLISH_URL_PARAMETER;
+  return `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${caseId}/${ccdId}${langParam}`;
 };
 
 export const isClearSelection = (req: AppRequest): boolean => {
