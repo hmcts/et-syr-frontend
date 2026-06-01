@@ -47,7 +47,7 @@ describe('AuthorisationTest', () => {
           languages.ENGLISH
         )
       ).toBe(
-        `${loginUrl}?client_id=et-syr&response_type=code&redirect_uri=http://localhost/oauth2/callback&state=${AuthorisationTestConstants.GUID}&ui_locales=${languages.ENGLISH}`
+        `${loginUrl}?client_id=et-syr&response_type=code&redirect_uri=http://localhost/oauth2/callback&state=${AuthorisationTestConstants.GUID}&ui_locales=${languages.ENGLISH}&scope=openid%20profile%20roles`
       );
     });
 
@@ -61,7 +61,7 @@ describe('AuthorisationTest', () => {
           languages.ENGLISH
         )
       ).toBe(
-        `${hmctsAccessLoginUrl}?client_id=et-syr&response_type=code&redirect_uri=http://localhost/oauth2/callback&state=${AuthorisationTestConstants.GUID}&ui_locales=${languages.ENGLISH}`
+        `${hmctsAccessLoginUrl}?client_id=et-syr&response_type=code&redirect_uri=http://localhost/oauth2/callback&state=${AuthorisationTestConstants.GUID}&ui_locales=${languages.ENGLISH}&scope=openid%20profile%20roles`
       );
     });
   });
