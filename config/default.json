@@ -24,6 +24,7 @@
       "clientID": "et-syr",
       "authorizationURL": "https://idam-web-public.aat.platform.hmcts.net/login",
       "hmctsAccessURL": "https://idam-web-public.aat.platform.hmcts.net/o/authorize",
+      "endSessionURL": "https://idam-web-public.aat.platform.hmcts.net/o/endSession",
       "hmctsAccess": false,
       "clientSecret": "TO BE PICKED UP FROM ENV",
       "tokenURL": "https://idam-api.aat.platform.hmcts.net/o/token",
