@@ -27,7 +27,7 @@ export class Oidc {
   public enableFor(app: Application): void {
     const port = app.locals.developmentMode ? `:${config.get('port')}` : '';
     const serviceUrl = (res: Response): string => `${HTTPS_PROTOCOL}${res.locals.host}${port}`;
-    const idamSignOutUrl: string = config.get('services.idam.endSessionURL');
+    const idamSignOutUrl: string = process.env.IDAM_END_SESSION_URL ?? config.get('services.idam.endSessionURL');
 
     app.get(
       PageUrls.CASE_DETAILS_WITH_CASE_ID_RESPONDENT_CCD_ID_PARAMETERS,
