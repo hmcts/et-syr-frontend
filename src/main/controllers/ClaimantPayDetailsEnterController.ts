@@ -10,7 +10,12 @@ import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { endSubSectionReturnNextPage, isClearSelection, returnNextPage } from '../helpers/RouterHelpers';
+import {
+  endSubSectionReturnNextPage,
+  isClearSelection,
+  returnNextPage,
+  returnValidUrl,
+} from '../helpers/RouterHelpers';
 import {
   convertToDatabaseValue,
   convertToInputValue,
@@ -91,7 +96,7 @@ export default class ClaimantPayDetailsEnterController {
     const validatorErrors = this.form.getValidatorErrors(formData);
     if (validatorErrors.length > 0) {
       req.session.errors.push(...validatorErrors);
-      return res.redirect(setUrlLanguage(req, PageUrls.CLAIMANT_PAY_DETAILS_ENTER));
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CLAIMANT_PAY_DETAILS_ENTER)));
     }
 
     // Convert input values to database values for storage
@@ -109,7 +114,7 @@ export default class ClaimantPayDetailsEnterController {
       return res.redirect(ErrorPages.NOT_FOUND);
     }
     if (req.body?.saveForLater) {
-      return res.redirect(setUrlLanguage(req, PageUrls.RESPONSE_SAVED));
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONSE_SAVED)));
     }
     req.session.userCase = userCase;
 

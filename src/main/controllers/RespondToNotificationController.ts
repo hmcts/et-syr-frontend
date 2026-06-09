@@ -5,13 +5,13 @@ import { AppRequest } from '../definitions/appRequest';
 import { uploadButton } from '../definitions/buttons';
 import { CaseWithId, YesOrNo } from '../definitions/case';
 import { SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
-import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys, TseErrors } from '../definitions/constants';
+import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys, TseErrors, languages } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { findSelectedSendNotification } from '../helpers/NotificationHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLanguageParam, returnValidUrlWithPathParam } from '../helpers/RouterHelpers';
 import {
   getNotificationContent,
   getNotificationResponses,
@@ -114,7 +114,9 @@ export default class RespondToNotificationController {
     }
 
     const { userCase } = req.session;
-    const languageParam = getLanguageParam(req.url);
+    const languageParam = req.url?.includes(languages.WELSH_URL_POSTFIX)
+      ? languages.WELSH_URL_PARAMETER
+      : languages.ENGLISH_URL_PARAMETER;
 
     const selectedNotification: SendNotificationTypeItem = findSelectedSendNotification(
       userCase.sendNotificationCollection,
@@ -130,7 +132,12 @@ export default class RespondToNotificationController {
     userCase.responseText = formData.responseText;
     userCase.hasSupportingMaterial = formData.hasSupportingMaterial;
 
-    const thisPage = PageUrls.RESPOND_TO_NOTIFICATION.replace(':itemId', req.params.itemId) + languageParam;
+    const thisPage = returnValidUrlWithPathParam(
+      PageUrls.RESPOND_TO_NOTIFICATION,
+      'itemId',
+      selectedNotification.id,
+      languageParam
+    );
     if (req.body?.upload) {
       const fileErrorRedirect = handleFileUpload(req, FormFieldNames.RESPOND_TO_NOTIFICATION.SUPPORTING_MATERIAL_FILE);
       if (await fileErrorRedirect) {
