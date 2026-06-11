@@ -19,7 +19,7 @@ export default class HearingPreferencesController {
         id: 'hearingPreferences',
         label: l => l.legend,
         labelHidden: false,
-        labelSize: 'l',
+        labelSize: 'm',
         type: 'checkboxes',
         hint: l => l.selectAllHint,
         values: [
