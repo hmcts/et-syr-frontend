@@ -198,7 +198,6 @@
     "follow-redirects": ">=1.16.0",
     "uuid": "^14.0.0",
     "ip-address": "^10.1.1",
-    "ws": "^8.21.0",
     "js-cookie": "^3.0.7"
   },
   "packageManager": "yarn@4.12.0"
