@@ -194,8 +194,6 @@
     "minimatch": "^10.2.1",
     "underscore": "^1.13.8",
     "serialize-javascript": "^7.0.5",
-    "immutable": "^5.1.5",
-    "follow-redirects": ">=1.16.0",
     "uuid": "^14.0.0",
     "ip-address": "^10.1.1",
     "js-cookie": "^3.0.7"
