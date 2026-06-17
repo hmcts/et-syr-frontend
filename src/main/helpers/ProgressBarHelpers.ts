@@ -2,6 +2,9 @@ import { RespondentET3Model } from '../definitions/case';
 import { ET3Status } from '../definitions/definition';
 import { AnyRecord } from '../definitions/util-types';
 
+/**
+ * hmctsProgressBar items interface
+ */
 export interface ProgressBarItem {
   label: {
     text?: string;
@@ -10,8 +13,10 @@ export interface ProgressBarItem {
   active?: boolean;
 }
 
+/**
+ * order of ET3 status
+ */
 const ET3_STATUS_ORDER: ET3Status[] = [
-  ET3Status.NOT_STARTED,
   ET3Status.IN_PROGRESS,
   ET3Status.ET3_COMPLETED,
   ET3Status.RESPONSE_ACCEPTED,
@@ -19,23 +24,48 @@ const ET3_STATUS_ORDER: ET3Status[] = [
   ET3Status.DECISION_ADDED,
 ];
 
+/**
+ * build items for displaying progress bar status
+ * @param respondent selected respondent
+ * @param translations translation mapping
+ */
+export const getProgressBarItems = (respondent: RespondentET3Model, translations: AnyRecord): ProgressBarItem[] => {
+  const activeState: ET3Status = toKnownStatus(respondent?.et3Status);
+  return [
+    addProgressBarItem(translations.claimAccepted, true, isBefore(activeState, ET3Status.RESPONSE_ACCEPTED)),
+    addProgressBarItem(
+      translations.responseAccepted,
+      isAtOrAfter(activeState, ET3Status.RESPONSE_ACCEPTED),
+      isCurrent(activeState, ET3Status.RESPONSE_ACCEPTED)
+    ),
+    addProgressBarItem(
+      translations.hearingDetails,
+      isAtOrAfter(activeState, ET3Status.HEARINGS_LISTED),
+      isCurrent(activeState, ET3Status.HEARINGS_LISTED)
+    ),
+    addProgressBarItem(
+      translations.caseDecision,
+      isAtOrAfter(activeState, ET3Status.DECISION_ADDED),
+      isCurrent(activeState, ET3Status.DECISION_ADDED)
+    ),
+  ];
+};
+
 const toKnownStatus = (state?: string): ET3Status => {
-  return ET3_STATUS_ORDER.includes(state as ET3Status) ? (state as ET3Status) : ET3Status.IN_PROGRESS;
+  const et3Status = state as ET3Status;
+  return ET3_STATUS_ORDER.includes(et3Status) ? et3Status : ET3Status.IN_PROGRESS;
 };
 
-const statusIndex = (state: ET3Status): number => ET3_STATUS_ORDER.indexOf(state as ET3Status);
+const statusIndex = (state: ET3Status): number => ET3_STATUS_ORDER.indexOf(state);
 
-const isBefore = (activeState: ET3Status, targetState: ET3Status): boolean => {
-  return statusIndex(activeState) < statusIndex(targetState);
-};
+const isBefore = (activeState: ET3Status, targetState: ET3Status): boolean =>
+  statusIndex(activeState) < statusIndex(targetState);
 
-const isAtOrAfter = (activeState: ET3Status, targetState: ET3Status): boolean => {
-  return statusIndex(activeState) >= statusIndex(targetState);
-};
+const isAtOrAfter = (activeState: ET3Status, targetState: ET3Status): boolean =>
+  statusIndex(activeState) >= statusIndex(targetState);
 
-const isCurrent = (activeState: ET3Status, targetState: ET3Status): boolean => {
-  return statusIndex(activeState) === statusIndex(targetState);
-};
+const isCurrent = (activeState: ET3Status, targetState: ET3Status): boolean =>
+  statusIndex(activeState) === statusIndex(targetState);
 
 const addProgressBarItem = (labelText: string, isComplete: boolean, isActive: boolean): ProgressBarItem => {
   return {
@@ -45,44 +75,4 @@ const addProgressBarItem = (labelText: string, isComplete: boolean, isActive: bo
     complete: isComplete,
     active: isActive,
   };
-};
-
-export const getProgressBarItems = (respondent: RespondentET3Model, translations: AnyRecord): ProgressBarItem[] => {
-  const progressBarItem: ProgressBarItem[] = [];
-
-  const activeState: ET3Status = toKnownStatus(respondent?.et3Status);
-
-  progressBarItem.push(
-    addProgressBarItem(
-      translations.claimAccepted,
-      isAtOrAfter(activeState, ET3Status.NOT_STARTED),
-      isBefore(activeState, ET3Status.RESPONSE_ACCEPTED)
-    )
-  );
-
-  progressBarItem.push(
-    addProgressBarItem(
-      translations.responseAccepted,
-      isAtOrAfter(activeState, ET3Status.RESPONSE_ACCEPTED),
-      isCurrent(activeState, ET3Status.RESPONSE_ACCEPTED)
-    )
-  );
-
-  progressBarItem.push(
-    addProgressBarItem(
-      translations.hearingDetails,
-      isAtOrAfter(activeState, ET3Status.HEARINGS_LISTED),
-      isCurrent(activeState, ET3Status.HEARINGS_LISTED)
-    )
-  );
-
-  progressBarItem.push(
-    addProgressBarItem(
-      translations.caseDecision,
-      isAtOrAfter(activeState, ET3Status.DECISION_ADDED),
-      isCurrent(activeState, ET3Status.DECISION_ADDED)
-    )
-  );
-
-  return progressBarItem;
 };

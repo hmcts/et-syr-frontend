@@ -24,7 +24,6 @@ export const enum CaseState {
 }
 
 export const enum ET3Status {
-  NOT_STARTED = 'notStarted',
   IN_PROGRESS = 'inProgress',
   ET3_COMPLETED = 'completed',
   RESPONSE_ACCEPTED = 'responseAccepted',
