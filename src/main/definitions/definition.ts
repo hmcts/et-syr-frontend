@@ -25,10 +25,6 @@ export const enum CaseState {
 
 export const enum ET3Status {
   IN_PROGRESS = 'inProgress',
-  ET3_COMPLETED = 'completed',
-  RESPONSE_ACCEPTED = 'responseAccepted',
-  HEARINGS_LISTED = 'hearingsListed',
-  DECISION_ADDED = 'decisionAdded',
 }
 
 export const enum ClaimTypeDiscrimination {
