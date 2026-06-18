@@ -413,6 +413,7 @@ describe('Format Case Data to Frontend Model', () => {
       otherClaim: undefined,
       sendNotificationCollection: undefined,
       hearingCollection: undefined,
+      judgementCollection: undefined,
       documentCollection: undefined,
       representatives: undefined,
       respondentRepresented: undefined,

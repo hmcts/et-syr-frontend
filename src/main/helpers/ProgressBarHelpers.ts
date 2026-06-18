@@ -1,10 +1,6 @@
-import { RespondentET3Model } from '../definitions/case';
-import { ET3Status } from '../definitions/definition';
+import { CaseWithId, RespondentET3Model } from '../definitions/case';
 import { AnyRecord } from '../definitions/util-types';
 
-/**
- * hmctsProgressBar items interface
- */
 export interface ProgressBarItem {
   label: {
     text?: string;
@@ -13,59 +9,51 @@ export interface ProgressBarItem {
   active?: boolean;
 }
 
-/**
- * order of ET3 status
- */
-const ET3_STATUS_ORDER: ET3Status[] = [
-  ET3Status.IN_PROGRESS,
-  ET3Status.ET3_COMPLETED,
-  ET3Status.RESPONSE_ACCEPTED,
-  ET3Status.HEARINGS_LISTED,
-  ET3Status.DECISION_ADDED,
-];
+const enum ActiveState {
+  CLAIM_ACCEPTED = 'claimAccepted',
+  RESPONSE_ACCEPTED = 'responseAccepted',
+  HEARING_DETAILS = 'hearingDetails',
+  CASE_DECISION = 'caseDecision',
+}
+
+const enum Et3ResponseStatus {
+  ET3_RESPONSE_STATUS_ACCEPTED = 'Accepted',
+}
 
 /**
  * build items for displaying progress bar status
  * @param respondent selected respondent
+ * @param userCase current user case
  * @param translations translation mapping
  */
-export const getProgressBarItems = (respondent: RespondentET3Model, translations: AnyRecord): ProgressBarItem[] => {
-  const activeState: ET3Status = toKnownStatus(respondent?.et3Status);
+export const getProgressBarItems = (
+  respondent: RespondentET3Model,
+  userCase: CaseWithId,
+  translations: AnyRecord
+): ProgressBarItem[] => {
+  const isRespondAccepted: boolean = respondent?.responseStatus === Et3ResponseStatus.ET3_RESPONSE_STATUS_ACCEPTED;
+  const hasHearing: boolean = userCase.hearingCollection?.length > 0;
+  const isDecisionAdded: boolean = userCase.judgementCollection?.length > 0;
+  const activePoint = getActivePoint(isRespondAccepted, hasHearing, isDecisionAdded);
   return [
-    addProgressBarItem(translations.claimAccepted, true, isBefore(activeState, ET3Status.RESPONSE_ACCEPTED)),
-    addProgressBarItem(
-      translations.responseAccepted,
-      isAtOrAfter(activeState, ET3Status.RESPONSE_ACCEPTED),
-      isCurrent(activeState, ET3Status.RESPONSE_ACCEPTED)
-    ),
-    addProgressBarItem(
-      translations.hearingDetails,
-      isAtOrAfter(activeState, ET3Status.HEARINGS_LISTED),
-      isCurrent(activeState, ET3Status.HEARINGS_LISTED)
-    ),
-    addProgressBarItem(
-      translations.caseDecision,
-      isAtOrAfter(activeState, ET3Status.DECISION_ADDED),
-      isCurrent(activeState, ET3Status.DECISION_ADDED)
-    ),
+    addProgressBarItem(translations.claimAccepted, true, activePoint === ActiveState.CLAIM_ACCEPTED),
+    addProgressBarItem(translations.responseAccepted, isRespondAccepted, activePoint === ActiveState.RESPONSE_ACCEPTED),
+    addProgressBarItem(translations.hearingDetails, hasHearing, activePoint === ActiveState.HEARING_DETAILS),
+    addProgressBarItem(translations.caseDecision, isDecisionAdded, activePoint === ActiveState.CASE_DECISION),
   ];
 };
 
-const toKnownStatus = (state?: string): ET3Status => {
-  const et3Status = state as ET3Status;
-  return ET3_STATUS_ORDER.includes(et3Status) ? et3Status : ET3Status.IN_PROGRESS;
+const getActivePoint = (isRespondAccepted: boolean, hasHearing: boolean, isDecisionAdded: boolean): ActiveState => {
+  if (isDecisionAdded) {
+    return ActiveState.CASE_DECISION;
+  } else if (hasHearing) {
+    return ActiveState.HEARING_DETAILS;
+  } else if (isRespondAccepted) {
+    return ActiveState.RESPONSE_ACCEPTED;
+  } else {
+    return ActiveState.CLAIM_ACCEPTED;
+  }
 };
-
-const statusIndex = (state: ET3Status): number => ET3_STATUS_ORDER.indexOf(state);
-
-const isBefore = (activeState: ET3Status, targetState: ET3Status): boolean =>
-  statusIndex(activeState) < statusIndex(targetState);
-
-const isAtOrAfter = (activeState: ET3Status, targetState: ET3Status): boolean =>
-  statusIndex(activeState) >= statusIndex(targetState);
-
-const isCurrent = (activeState: ET3Status, targetState: ET3Status): boolean =>
-  statusIndex(activeState) === statusIndex(targetState);
 
 const addProgressBarItem = (labelText: string, isComplete: boolean, isActive: boolean): ProgressBarItem => {
   return {

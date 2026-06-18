@@ -172,6 +172,7 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
     tseRespondentStoredCollection: fromApiCaseData?.case_data?.tseRespondentStoredCollection,
     sendNotificationCollection: fromApiCaseData.case_data?.sendNotificationCollection,
     hearingCollection: fromApiCaseData?.case_data?.hearingCollection,
+    judgementCollection: fromApiCaseData?.case_data?.judgementCollection,
     documentCollection: fromApiCaseData.case_data?.documentCollection,
     representatives: mapRepresentatives(fromApiCaseData.case_data?.repCollection),
     respondentRepresented: mapRespondentToRep(fromApiCaseData.case_data, req?.session?.user?.id),

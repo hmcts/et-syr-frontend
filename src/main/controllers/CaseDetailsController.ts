@@ -61,7 +61,7 @@ export default class CaseDetailsController {
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,
       userCase: req.session.userCase,
-      progressBarItems: getProgressBarItems(selectedRespondent, {
+      progressBarItems: getProgressBarItems(selectedRespondent, req.session.userCase, {
         ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER, { returnObjects: true }),
       }),
       sections,

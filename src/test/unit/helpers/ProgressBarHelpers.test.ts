@@ -1,7 +1,8 @@
-import { RespondentET3Model } from '../../../main/definitions/case';
-import { ET3Status } from '../../../main/definitions/definition';
+import { CaseWithId, RespondentET3Model } from '../../../main/definitions/case';
 import { ProgressBarItem, getProgressBarItems } from '../../../main/helpers/ProgressBarHelpers';
+import { mockHearingCollection } from '../mocks/mockHearing';
 import { mockRespondentET3Model } from '../mocks/mockRespondentET3Model';
+import mockUserCase from '../mocks/mockUserCase';
 
 describe('Progress bar state sequence tests', () => {
   const translations = {
@@ -11,8 +12,8 @@ describe('Progress bar state sequence tests', () => {
     caseDecision: 'Case decision',
   };
 
-  it('Should return Progress Bar when et3Status = inProgress', () => {
-    const actual = getProgressBarItems(mockRespondentET3Model, translations);
+  it('Should return Progress Bar = claimAccepted', () => {
+    const actual = getProgressBarItems(mockRespondentET3Model, mockUserCase, translations);
     const expected: ProgressBarItem[] = [
       {
         label: { text: 'Claim accepted' },
@@ -38,12 +39,12 @@ describe('Progress bar state sequence tests', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('Should return Progress Bar when et3Status = responseAccepted', () => {
+  it('Should return Progress Bar = responseAccepted', () => {
     const mockedRespondent: RespondentET3Model = {
       ...mockRespondentET3Model,
-      et3Status: ET3Status.RESPONSE_ACCEPTED,
+      responseStatus: 'Accepted',
     };
-    const actual = getProgressBarItems(mockedRespondent, translations);
+    const actual = getProgressBarItems(mockedRespondent, mockUserCase, translations);
     const expected: ProgressBarItem[] = [
       {
         label: { text: 'Claim accepted' },
@@ -69,12 +70,12 @@ describe('Progress bar state sequence tests', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('Should return Progress Bar when et3Status = hearingsListed', () => {
-    const mockedRespondent: RespondentET3Model = {
-      ...mockRespondentET3Model,
-      et3Status: ET3Status.HEARINGS_LISTED,
+  it('Should return Progress Bar = hearingsListed', () => {
+    const mockUserCaseData: CaseWithId = {
+      ...mockUserCase,
+      hearingCollection: mockHearingCollection,
     };
-    const actual = getProgressBarItems(mockedRespondent, translations);
+    const actual = getProgressBarItems(mockRespondentET3Model, mockUserCaseData, translations);
     const expected: ProgressBarItem[] = [
       {
         label: { text: 'Claim accepted' },
@@ -83,7 +84,7 @@ describe('Progress bar state sequence tests', () => {
       },
       {
         label: { text: 'Response accepted' },
-        complete: true,
+        complete: false,
         active: false,
       },
       {
@@ -100,48 +101,17 @@ describe('Progress bar state sequence tests', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('Should return Progress Bar when et3Status = decisionAdded', () => {
-    const mockedRespondent: RespondentET3Model = {
-      ...mockRespondentET3Model,
-      et3Status: ET3Status.DECISION_ADDED,
+  it('Should return Progress Bar = decisionAdded', () => {
+    const mockUserCaseData: CaseWithId = {
+      ...mockUserCase,
+      judgementCollection: [{ id: '1' }],
     };
-    const actual = getProgressBarItems(mockedRespondent, translations);
+    const actual = getProgressBarItems(mockRespondentET3Model, mockUserCaseData, translations);
     const expected: ProgressBarItem[] = [
       {
         label: { text: 'Claim accepted' },
         complete: true,
         active: false,
-      },
-      {
-        label: { text: 'Response accepted' },
-        complete: true,
-        active: false,
-      },
-      {
-        label: { text: 'View details of your hearings' },
-        complete: true,
-        active: false,
-      },
-      {
-        label: { text: 'Case decision' },
-        complete: true,
-        active: true,
-      },
-    ];
-    expect(actual).toEqual(expected);
-  });
-
-  it('Should return Progress Bar when et3Status = undefined', () => {
-    const mockedRespondent: RespondentET3Model = {
-      ...mockRespondentET3Model,
-      et3Status: undefined,
-    };
-    const actual = getProgressBarItems(mockedRespondent, translations);
-    const expected: ProgressBarItem[] = [
-      {
-        label: { text: 'Claim accepted' },
-        complete: true,
-        active: true,
       },
       {
         label: { text: 'Response accepted' },
@@ -155,39 +125,8 @@ describe('Progress bar state sequence tests', () => {
       },
       {
         label: { text: 'Case decision' },
-        complete: false,
-        active: false,
-      },
-    ];
-    expect(actual).toEqual(expected);
-  });
-
-  it('Should return Progress Bar when et3Status = bad value', () => {
-    const mockedRespondent: RespondentET3Model = {
-      ...mockRespondentET3Model,
-      et3Status: 'Test',
-    };
-    const actual = getProgressBarItems(mockedRespondent, translations);
-    const expected: ProgressBarItem[] = [
-      {
-        label: { text: 'Claim accepted' },
         complete: true,
         active: true,
-      },
-      {
-        label: { text: 'Response accepted' },
-        complete: false,
-        active: false,
-      },
-      {
-        label: { text: 'View details of your hearings' },
-        complete: false,
-        active: false,
-      },
-      {
-        label: { text: 'Case decision' },
-        complete: false,
-        active: false,
       },
     ];
     expect(actual).toEqual(expected);
