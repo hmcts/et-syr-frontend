@@ -4148,12 +4148,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/multer@npm:^1.4.7":
-  version: 1.4.13
-  resolution: "@types/multer@npm:1.4.13"
+"@types/multer@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "@types/multer@npm:2.1.0"
   dependencies:
     "@types/express": "npm:*"
-  checksum: 10/f650a9f431007f05a5c51d6359140bea5f77d1299668d45a0791ddbf7789f1c220a3e038039c5e0de6608e273d5ee8001e9649c606d7e0e847e8774ccc5d1d68
+  checksum: 10/405298b6b0b6f4007c87b7bcd69074a96fba8d5a0efcc149788af9bdb45fb9d0ab367ddebec4840eaaa45d05ba682b2a8c3a71101e9e51d6cfaa624034339c1a
   languageName: node
   linkType: hard
 
@@ -8295,7 +8295,7 @@ __metadata:
     "@types/git-rev-sync": "npm:2.0.2"
     "@types/jest": "npm:^29.5.1"
     "@types/lodash": "npm:^4.14.194"
-    "@types/multer": "npm:^1.4.7"
+    "@types/multer": "npm:^2.0.0"
     "@types/node": "npm:^22.0.0"
     "@types/nunjucks": "npm:^3.2.2"
     "@types/redis-mock": "npm:^0.17.1"
