@@ -21,8 +21,10 @@ export default class RespondentSitesController {
         classes: 'govuk-radios',
         id: 'respondentSites',
         type: 'radios',
+        label: (l: AnyRecord): string => l.h1,
+        labelSize: 'l',
+        isPageHeading: true,
         hint: (l: AnyRecord): string => l.hint,
-        labelHidden: true,
         values: [
           {
             name: 'respondentSites',
