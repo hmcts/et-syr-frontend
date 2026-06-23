@@ -57,6 +57,7 @@ import HoldingPageController from '../../controllers/HoldingPageController';
 import HomeController from '../../controllers/HomeController';
 import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
 import MakingResponseAsLegalRepController from '../../controllers/MakingResponseAsLegalRepController';
+import ManifestController from '../../controllers/ManifestController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
 import NotificationController from '../../controllers/NotificationController';
 import NotificationDetailsController from '../../controllers/NotificationDetailsController';
@@ -145,6 +146,7 @@ export class Routes {
     app.get(PageUrls.CHECKLIST, new ChecklistController().get);
     app.get(PageUrls.CASE_LIST_CHECK, new CaseListCheckController().get);
     app.get(PageUrls.YOUR_RESPONSE_FORM, new YourResponseFormController().get);
+    app.get(PageUrls.MANIFEST_URL, new ManifestController().get);
     app.get(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().get);
     app.post(PageUrls.SELF_ASSIGNMENT_FORM, new SelfAssignmentFormController().post);
     app.get(PageUrls.SELF_ASSIGNMENT_CHECK, new SelfAssignmentCheckController().get);
