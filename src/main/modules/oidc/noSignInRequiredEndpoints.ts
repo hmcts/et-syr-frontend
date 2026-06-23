@@ -6,6 +6,7 @@ export const noSignInRequiredEndpoints: string[] = [
   PageUrls.CASE_NUMBER_CHECK,
   PageUrls.RETURN_TO_EXISTING_RESPONSE,
   PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE,
+  PageUrls.MANIFEST_URL,
 ];
 
 export const validateNoSignInEndpoints = (url: string): boolean => {
