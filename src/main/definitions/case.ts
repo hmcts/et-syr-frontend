@@ -1,4 +1,4 @@
-import { HearingModel, PreAcceptCase } from './api/caseApiResponse';
+import { HearingModel, JudgementModel, PreAcceptCase } from './api/caseApiResponse';
 import { DocumentTypeItem } from './complexTypes/documentTypeItem';
 import { Et1Address } from './complexTypes/et1Address';
 import { GenericTseApplicationTypeItem } from './complexTypes/genericTseApplicationTypeItem';
@@ -364,6 +364,7 @@ export interface Case {
   whatAreTheseDocuments?: WhatAreTheHearingDocuments;
   hearingDocument?: Document;
   formattedSelectedHearing?: string;
+  judgementCollection?: JudgementModel[];
 
   /* Used to save the Rule 90 state to render the "Completed" page under various conditions, after submitting the CYA,
   all temporary fields such as copyToOtherPartyYesOrNo, contactApplicationText, etc. are cleared.*/
