@@ -49,7 +49,7 @@ describe('Transferred Case Controller tests', () => {
       ],
     } as never;
     request.query = { ccdId: 'ccd-1' };
-    request.t = jest.fn().mockImplementation((key: string, options?: { returnObjects?: boolean }) => {
+    (request.t as unknown as jest.Mock).mockImplementation((key: string, options?: { returnObjects?: boolean }) => {
       if (options?.returnObjects) {
         if (key === TranslationKeys.TRANSFERRED_CASE) {
           return {
@@ -88,7 +88,7 @@ describe('Transferred Case Controller tests', () => {
     const response = mockResponse();
     const request = mockRequest({});
     request.query = { caseId: '1234' };
-    request.t = jest.fn().mockImplementation((key: string, options?: { returnObjects?: boolean }) => {
+    (request.t as unknown as jest.Mock).mockImplementation((key: string, options?: { returnObjects?: boolean }) => {
       if (options?.returnObjects) {
         if (key === TranslationKeys.TRANSFERRED_CASE) {
           return {
