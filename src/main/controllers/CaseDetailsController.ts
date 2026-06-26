@@ -15,10 +15,8 @@ import { getET3CaseDetailsLinkNames, getSections } from '../helpers/controller/C
 import { getAppNotifications } from '../helpers/notification/ApplicationNotificationHelper';
 import { getStoredBannerList } from '../helpers/notification/StoredNotificationHelper';
 import { getTribunalNotificationBanner } from '../helpers/notification/TribunalNotificationHelper';
-import { currentET3StatusFn } from '../helpers/state-sequence';
 import { getLogger } from '../logger';
 import { getCaseApi, isTransferredToEcmCaseError } from '../services/CaseService';
-
 import CollectionUtils from '../utils/CollectionUtils';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ET3Util from '../utils/ET3Util';
