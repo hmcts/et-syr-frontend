@@ -3,7 +3,7 @@ import axios from 'axios';
 import { CaseTypeId } from '../../../main/definitions/case';
 import { DefaultValues, ET3ModificationTypes, ServiceErrors } from '../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
-import { CaseApi, getCaseApi } from '../../../main/services/CaseService';
+import { CaseApi, getCaseApi, isTransferredToEcmCaseError } from '../../../main/services/CaseService';
 import { mockAxiosError } from '../mocks/mockAxios';
 import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import { mockCaseApiDataResponse } from '../mocks/mockCaseApiDataResponse';
@@ -133,6 +133,41 @@ describe('Case Service Tests', () => {
       await expect(() => api.getUserCases()).rejects.toEqual(
         new Error(ServiceErrors.ERROR_GETTING_USER_CASES + ServiceErrors.ERROR_CASE_NOT_FOUND)
       );
+    });
+  });
+
+  describe('Get case transfer info', () => {
+    it('should get case transfer info for defendant role', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      const transferInfo = {
+        transferred: true,
+        transferType: 'ECM',
+        originalCaseId: '1234',
+        transferComplete: true,
+      };
+      mockedAxios.get.mockResolvedValue({ data: transferInfo });
+      const value = await api.getCaseTransferInfo('1234');
+      expect(mockedAxios.get).toHaveBeenCalledWith('cases/1234/transfer-info?case_user_role=DEFENDANT');
+      expect(value.data).toEqual(transferInfo);
+    });
+
+    it('should throw exception when there is a problem while getting case transfer info', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.get.mockImplementation(() => {
+        throw mockAxiosError('TEST', ServiceErrors.ERROR_CASE_NOT_FOUND, 404);
+      });
+      await expect(() => api.getCaseTransferInfo('1234')).rejects.toEqual(
+        new Error('Error getting case transfer info: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
+  });
+
+  describe('isTransferredToEcmCaseError', () => {
+    it('should detect transferred to ECM errors', () => {
+      expect(isTransferredToEcmCaseError(new Error('status code 410, CASE_TRANSFERRED_TO_ECM'))).toBe(true);
+      expect(isTransferredToEcmCaseError(new Error('some other error'))).toBe(false);
     });
   });
 

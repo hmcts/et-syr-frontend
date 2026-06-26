@@ -3,6 +3,7 @@ import config from 'config';
 import FormData from 'form-data';
 
 import { CaseApiDataResponse, CaseAssignmentResponse } from '../definitions/api/caseApiResponse';
+import { CaseTransferInfoResponse } from '../definitions/api/caseTransferInfoResponse';
 import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { UploadedFile } from '../definitions/api/uploadedFile';
 import { AppRequest, UserDetails } from '../definitions/appRequest';
@@ -115,6 +116,20 @@ export class CaseApi {
       );
     } catch (error) {
       throw new Error('Error getting user cases: ' + axiosErrorDetails(error));
+    }
+  };
+
+  getCaseTransferInfo = async (caseId: string): Promise<AxiosResponse<CaseTransferInfoResponse>> => {
+    try {
+      return await this.axios.get<CaseTransferInfoResponse>(
+        `cases/${caseId}/transfer-info` +
+          DefaultValues.STRING_QUESTION_MARK +
+          JavaApiUrls.ROLE_PARAM_NAME +
+          DefaultValues.STRING_EQUALS +
+          Roles.DEFENDANT_ROLE_WITHOUT_BRACKETS
+      );
+    } catch (error) {
+      throw new Error('Error getting case transfer info: ' + axiosErrorDetails(error));
     }
   };
 
@@ -398,5 +413,15 @@ export const getCaseApi = (token: string): CaseApi => {
         'Content-Type': 'application/json',
       },
     })
+  );
+};
+
+export const isTransferredToEcmCaseError = (error: unknown): boolean => {
+  const message = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
+  return (
+    message.includes('case_transferred_to_ecm') ||
+    message.includes('transferred to ecm') ||
+    (message.includes('transferred') && message.includes('legacy')) ||
+    message.includes('status code 410')
   );
 };
