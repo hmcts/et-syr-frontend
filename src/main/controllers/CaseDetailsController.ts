@@ -9,6 +9,7 @@ import { TseNotification } from '../definitions/notification/tseNotification';
 import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
 import { handleTransferredCaseRedirect } from '../helpers/CaseTransferHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { getProgressBarItems } from '../helpers/ProgressBarHelpers';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import { getET3CaseDetailsLinkNames, getSections } from '../helpers/controller/CaseDetailsHelper';
 import { getAppNotifications } from '../helpers/notification/ApplicationNotificationHelper';
@@ -17,6 +18,7 @@ import { getTribunalNotificationBanner } from '../helpers/notification/TribunalN
 import { currentET3StatusFn } from '../helpers/state-sequence';
 import { getLogger } from '../logger';
 import { getCaseApi, isTransferredToEcmCaseError } from '../services/CaseService';
+
 import CollectionUtils from '../utils/CollectionUtils';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ET3Util from '../utils/ET3Util';
@@ -76,7 +78,9 @@ export default class CaseDetailsController {
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,
       userCase: req.session.userCase,
-      currentState: currentET3StatusFn(selectedRespondent),
+      progressBarItems: getProgressBarItems(selectedRespondent, req.session.userCase, {
+        ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER, { returnObjects: true }),
+      }),
       sections,
       et1FormUrl: setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM),
       respondToClaimUrl: setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_LANDING),
