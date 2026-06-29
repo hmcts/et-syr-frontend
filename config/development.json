@@ -25,6 +25,10 @@
     },
     "launchDarkly": {
       "key": "TO BE PICKED FROM ENV"
+    },
+    "cui": {
+      "endpoint": "https://localhost:3100",
+      "hmctsServiceId": "ABA5"
     }
   },
   "session": {
