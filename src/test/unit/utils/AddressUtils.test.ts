@@ -122,5 +122,22 @@ describe('AddressUtils tests', () => {
         AddressUtils.findResponseRespondentAddressByEt3IsRespondentAddressCorrectField(userCase, selectedRespondent)
       ).toStrictEqual(expectedResponseRespondentAddress);
     });
+    test('should return responseRespondentAddress before respondentAddress when responseRespondentAddress has a value', () => {
+      const userCase: CaseWithId = _.cloneDeep(mockValidCaseWithId);
+      userCase.et3IsRespondentAddressCorrect = YesOrNo.YES;
+      const selectedRespondent: RespondentET3Model = _.cloneDeep(mockRespondentET3ModelWithRespondentAddress);
+      selectedRespondent.responseRespondentAddress = {
+        Country: 'England',
+        PostCode: 'SL6 2DE',
+        PostTown: 'Maidenhead',
+        County: 'Berkshire',
+        AddressLine1: '48, Tithe Barn Drive',
+        AddressLine2: '49, Tithe Barn Drive',
+        AddressLine3: '50, Tithe Barn Drive',
+      };
+      expect(
+        AddressUtils.findResponseRespondentAddressByEt3IsRespondentAddressCorrectField(userCase, selectedRespondent)
+      ).toStrictEqual(expectedResponseRespondentAddress);
+    });
   });
 });

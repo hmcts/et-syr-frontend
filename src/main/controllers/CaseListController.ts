@@ -1,6 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
+import { YesOrNo } from '../definitions/case';
 import { DefaultValues, PageUrls, TranslationKeys } from '../definitions/constants';
 import { CaseState, ET3Status } from '../definitions/definition';
 import { FormContent } from '../definitions/form';
@@ -32,7 +33,10 @@ export default class CaseListController {
           if (req.session.user.id === respondent.idamId) {
             const respondentName = ET3Util.getUserNameByRespondent(respondent);
             application.completionStatus = ET3Util.getOverallStatus(application.userCase, respondent, translations);
-            if (StringUtils.isBlank(respondent.et3Status) || respondent.et3Status === ET3Status.IN_PROGRESS) {
+            if (
+              respondent.responseReceived !== YesOrNo.YES &&
+              (StringUtils.isBlank(respondent.et3Status) || respondent.et3Status === ET3Status.IN_PROGRESS)
+            ) {
               et3NotCompleted.push(ET3Util.getUserApplicationsListItem(req, application, respondentName, respondent));
             } else {
               et3Completed.push(ET3Util.getUserApplicationsListItem(req, application, respondentName, respondent));

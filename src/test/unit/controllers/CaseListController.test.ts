@@ -2,6 +2,7 @@ import axios from 'axios';
 import _ from 'lodash';
 
 import CaseListController from '../../../main/controllers/CaseListController';
+import { YesOrNo } from '../../../main/definitions/case';
 import { ServiceErrors, TranslationKeys } from '../../../main/definitions/constants';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
@@ -74,6 +75,24 @@ describe('Case list controller', () => {
     await caseListController.get(request, response);
 
     expect(response.render).toHaveBeenCalledWith(TranslationKeys.CASE_LIST, expect.anything());
+  });
+  it('should place case in et3Completed when responseReceived is Yes regardless of et3Status', async () => {
+    const expectedValue = _.cloneDeep(
+      MockAxiosResponses.mockAxiosResponseWithCaseApiDataAcceptedValidRespondentIdResponseList
+    );
+    expectedValue.data[0].case_data.respondentCollection[0].value.idamId = '1234';
+    expectedValue.data[0].case_data.respondentCollection[0].value.et3Status = undefined;
+    expectedValue.data[0].case_data.respondentCollection[0].value.responseReceived = YesOrNo.YES;
+    getCaseApiMock.mockReturnValue(api);
+    api.getUserCases = jest.fn().mockResolvedValueOnce(Promise.resolve(expectedValue));
+    await caseListController.get(request, response);
+    expect(response.render).toHaveBeenCalledWith(
+      TranslationKeys.CASE_LIST,
+      expect.objectContaining({
+        et3Completed: expect.arrayContaining([expect.anything()]),
+        et3NotCompleted: expect.arrayContaining([]),
+      })
+    );
   });
   it('should throw error when not able to get user cases', async () => {
     getCaseApiMock.mockReturnValue(api);
