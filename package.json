@@ -111,7 +111,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.12.1",
-    "@babel/core": "^7.21.4",
+    "@babel/core": "^8.0.0",
     "@babel/eslint-parser": "^7.21.3",
     "@babel/preset-env": "^7.21.4",
     "@codeceptjs/allure-legacy": "^1.0.2",
