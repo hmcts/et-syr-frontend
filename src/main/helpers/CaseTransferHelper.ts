@@ -6,7 +6,7 @@ import { RespondentET3Model } from '../definitions/case';
 import { DefaultValues, PageUrls } from '../definitions/constants';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
-import { getCaseApi, isCaseNotFoundError, isTransferredToEcmCaseError } from '../services/CaseService';
+import { getCaseApi } from '../services/CaseService';
 import ET3Util from '../utils/ET3Util';
 import StringUtils from '../utils/StringUtils';
 
@@ -39,6 +39,12 @@ const findRespondent = (
   }
 
   return respondents[0];
+};
+
+export const clearCaseTransferInfoIfStale = (req: AppRequest, caseId: string): void => {
+  if (req.session.caseTransferInfo && String(req.session.caseTransferInfo.originalCaseId) !== String(caseId)) {
+    req.session.caseTransferInfo = undefined;
+  }
 };
 
 export const enrichTransferInfoWithCaseParties = (
@@ -91,19 +97,6 @@ export const buildTransferredCasePageHeading = (
   return translations.title;
 };
 
-export const createFallbackTransferInfo = (req: AppRequest, caseId: string, ccdId?: string): CaseTransferInfoResponse =>
-  enrichTransferInfoWithCaseParties(
-    req,
-    {
-      transferred: true,
-      transferType: 'ECM',
-      originalCaseId: caseId,
-      transferComplete: false,
-    },
-    caseId,
-    ccdId
-  );
-
 export const buildTransferredCaseRedirectUrl = (req: AppRequest, caseId: string, ccdId?: string): string => {
   let url = `${PageUrls.TRANSFERRED_CASE}${getLanguageParam(req.url)}&caseId=${caseId}`;
   if (StringUtils.isNotBlank(ccdId)) {
@@ -120,6 +113,7 @@ export const saveSessionAndRedirectToTransferredCase = async (
   ccdId?: string
 ): Promise<boolean> => {
   applyCaseTransferInfoToSession(req, transferInfo, caseId, ccdId);
+  const redirectUrl = buildTransferredCaseRedirectUrl(req, caseId, ccdId);
 
   try {
     await new Promise<void>((resolve, reject) => {
@@ -138,58 +132,43 @@ export const saveSessionAndRedirectToTransferredCase = async (
     });
   } catch (saveError) {
     const saveErrorMessage = saveError instanceof Error ? saveError.message : String(saveError);
-    logger.error(`Failed to save session before transferred case redirect for case ID ${caseId}: ${saveErrorMessage}`);
-    return false;
+    logger.error(
+      `Failed to save session before transferred case redirect for case ID ${caseId}: ${saveErrorMessage}. Redirecting anyway.`
+    );
   }
 
-  res.redirect(buildTransferredCaseRedirectUrl(req, caseId, ccdId));
+  res.redirect(redirectUrl);
   return true;
-};
-
-export const shouldFallbackToTransferredCase = (originalError?: unknown): boolean => {
-  return isTransferredToEcmCaseError(originalError) || isCaseNotFoundError(originalError);
 };
 
 export const handleTransferredCaseRedirect = async (
   req: AppRequest,
   res: Response,
   caseId: string,
-  ccdId?: string,
-  originalError?: unknown
+  ccdId?: string
 ): Promise<boolean> => {
   try {
-    const caseApi = getCaseApi(req.session.user?.accessToken);
-    const transferInfo = await caseApi.getCaseTransferInfo(caseId);
-    const transferInfoData = transferInfo.data;
+    const transferInfoData = (await getCaseApi(req.session.user?.accessToken).getCaseTransferInfo(caseId)).data;
 
     if (transferInfoData?.transferred) {
       logger.info(`Case ID ${caseId} has been transferred. Redirecting to transferred case page.`);
       return saveSessionAndRedirectToTransferredCase(req, res, caseId, transferInfoData, ccdId);
     }
+
+    logger.info(`Case ID ${caseId} is not transferred according to transfer-info response.`);
   } catch (transferError) {
     const transferErrorMessage = transferError instanceof Error ? transferError.message : String(transferError);
-
-    if (shouldFallbackToTransferredCase(originalError)) {
-      logger.info(
-        `Case ID ${caseId} appears transferred; transfer-info unavailable (${transferErrorMessage}). Using fallback redirect.`
-      );
-      return saveSessionAndRedirectToTransferredCase(
-        req,
-        res,
-        caseId,
-        createFallbackTransferInfo(req, caseId, ccdId),
-        ccdId
-      );
-    }
-
     logger.warn(`Case ID ${caseId} transfer check failed: ${transferErrorMessage}`);
   }
+
   return false;
 };
 
-export const getNoAccessBody = (
-  transferInfo: CaseTransferInfoResponse,
-  translations: Record<string, string>
-): string => {
-  return transferInfo.transferType === 'ECM' ? translations.noAccessBodyEcm : translations.noAccessBodyCrossCountry;
+export const handleCaseAccessFailure = async (
+  req: AppRequest,
+  res: Response,
+  caseId: string,
+  ccdId?: string
+): Promise<boolean> => {
+  return handleTransferredCaseRedirect(req, res, caseId, ccdId);
 };

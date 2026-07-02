@@ -2,11 +2,7 @@ import axios from 'axios';
 
 import CaseDetailsController from '../../../main/controllers/CaseDetailsController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import {
-  createFallbackTransferInfo,
-  handleTransferredCaseRedirect,
-  saveSessionAndRedirectToTransferredCase,
-} from '../../../main/helpers/CaseTransferHelper';
+import { handleCaseAccessFailure } from '../../../main/helpers/CaseTransferHelper';
 import * as caseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
 import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
@@ -16,24 +12,12 @@ import { mockUserDetails } from '../mocks/mockUser';
 
 jest.mock('axios');
 jest.mock('../../../main/helpers/CaseTransferHelper', () => ({
-  handleTransferredCaseRedirect: jest.fn(),
-  buildTransferredCaseRedirectUrl: jest.fn(),
-  createFallbackTransferInfo: jest.fn(),
-  saveSessionAndRedirectToTransferredCase: jest.fn(),
-  getNoAccessBody: jest.fn(),
+  handleCaseAccessFailure: jest.fn(),
 }));
 
-const handleTransferredCaseRedirectMock = handleTransferredCaseRedirect as jest.MockedFunction<
-  typeof handleTransferredCaseRedirect
->;
-const saveSessionAndRedirectToTransferredCaseMock = saveSessionAndRedirectToTransferredCase as jest.MockedFunction<
-  typeof saveSessionAndRedirectToTransferredCase
->;
-const createFallbackTransferInfoMock = createFallbackTransferInfo as jest.MockedFunction<
-  typeof createFallbackTransferInfo
->;
+const handleCaseAccessFailureMock = handleCaseAccessFailure as jest.MockedFunction<typeof handleCaseAccessFailure>;
 
-describe('Case list controller', () => {
+describe('CaseDetailsController', () => {
   const t = {
     common: {},
   };
@@ -44,14 +28,7 @@ describe('Case list controller', () => {
   const request = mockRequest({ t });
 
   beforeEach(() => {
-    handleTransferredCaseRedirectMock.mockResolvedValue(false);
-    saveSessionAndRedirectToTransferredCaseMock.mockResolvedValue(false);
-    createFallbackTransferInfoMock.mockReturnValue({
-      transferred: true,
-      transferType: 'ECM',
-      originalCaseId: '1234',
-      transferComplete: false,
-    });
+    handleCaseAccessFailureMock.mockResolvedValue(false);
     jest.clearAllMocks();
   });
 
@@ -75,45 +52,31 @@ describe('Case list controller', () => {
   it('should redirect to transferred case page when transfer info is available', async () => {
     getCaseApiMock.mockReturnValue(api);
     api.getUserCase = jest.fn().mockRejectedValueOnce(new Error('Error getting user case: status code 500'));
-    handleTransferredCaseRedirectMock.mockResolvedValueOnce(true);
+    handleCaseAccessFailureMock.mockResolvedValueOnce(true);
     request.session.user = mockUserDetails;
     request.params = { caseSubmissionReference: '1234', ccdId: 'ccd-1' };
 
     await caseDetailsController.get(request, response);
 
-    expect(handleTransferredCaseRedirectMock).toHaveBeenCalledWith(
-      request,
-      response,
-      '1234',
-      'ccd-1',
-      expect.any(Error)
-    );
+    expect(handleCaseAccessFailureMock).toHaveBeenCalledWith(request, response, '1234', 'ccd-1');
     expect(response.render).not.toHaveBeenCalled();
   });
 
-  it('should redirect to transferred case page when case is transferred to ECM', async () => {
+  it('should redirect to not found when case access fails and case is not transferred', async () => {
     getCaseApiMock.mockReturnValue(api);
     api.getUserCase = jest
       .fn()
       .mockRejectedValueOnce(
         new Error('Error getting user case: Request failed with status code 410, CASE_TRANSFERRED_TO_ECM')
       );
-    handleTransferredCaseRedirectMock.mockResolvedValueOnce(false);
-    saveSessionAndRedirectToTransferredCaseMock.mockResolvedValueOnce(true);
+    handleCaseAccessFailureMock.mockResolvedValueOnce(false);
     request.session.user = mockUserDetails;
     request.url = '/case-details/1234/ccd-1?lng=en';
     request.params = { caseSubmissionReference: '1234', ccdId: 'ccd-1' };
 
     await caseDetailsController.get(request, response);
 
-    expect(createFallbackTransferInfoMock).toHaveBeenCalledWith(request, '1234', 'ccd-1');
-    expect(saveSessionAndRedirectToTransferredCaseMock).toHaveBeenCalledWith(
-      request,
-      response,
-      '1234',
-      expect.objectContaining({ transferred: true }),
-      'ccd-1'
-    );
-    expect(response.redirect).not.toHaveBeenCalledWith(PageUrls.TRANSFERRED_CASE + '?lng=en');
+    expect(handleCaseAccessFailureMock).toHaveBeenCalledWith(request, response, '1234', 'ccd-1');
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND + '?lng=en');
   });
 });
