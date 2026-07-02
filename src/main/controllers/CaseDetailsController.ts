@@ -7,7 +7,11 @@ import { ET3Status } from '../definitions/definition';
 import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../definitions/links';
 import { TseNotification } from '../definitions/notification/tseNotification';
 import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
-import { handleTransferredCaseRedirect } from '../helpers/CaseTransferHelper';
+import {
+  createFallbackTransferInfo,
+  handleTransferredCaseRedirect,
+  saveSessionAndRedirectToTransferredCase,
+} from '../helpers/CaseTransferHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getProgressBarItems } from '../helpers/ProgressBarHelpers';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
@@ -16,7 +20,7 @@ import { getAppNotifications } from '../helpers/notification/ApplicationNotifica
 import { getStoredBannerList } from '../helpers/notification/StoredNotificationHelper';
 import { getTribunalNotificationBanner } from '../helpers/notification/TribunalNotificationHelper';
 import { getLogger } from '../logger';
-import { getCaseApi, isTransferredToEcmCaseError } from '../services/CaseService';
+import { getCaseApi, isCaseNotFoundError, isTransferredToEcmCaseError } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ET3Util from '../utils/ET3Util';
@@ -33,11 +37,20 @@ export default class CaseDetailsController {
       );
     } catch (error) {
       logger.error(error instanceof Error ? error.message : String(error));
-      if (await handleTransferredCaseRedirect(req, res, req.params.caseSubmissionReference, req.params.ccdId)) {
+      if (await handleTransferredCaseRedirect(req, res, req.params.caseSubmissionReference, req.params.ccdId, error)) {
         return;
       }
-      if (isTransferredToEcmCaseError(error)) {
-        return res.redirect(PageUrls.TRANSFERRED_CASE + getLanguageParam(req.url));
+      if (isTransferredToEcmCaseError(error) || isCaseNotFoundError(error)) {
+        const redirected = await saveSessionAndRedirectToTransferredCase(
+          req,
+          res,
+          req.params.caseSubmissionReference,
+          createFallbackTransferInfo(req, req.params.caseSubmissionReference, req.params.ccdId),
+          req.params.ccdId
+        );
+        if (redirected) {
+          return;
+        }
       }
       return res.redirect('/not-found');
     }

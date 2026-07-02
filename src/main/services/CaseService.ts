@@ -425,3 +425,8 @@ export const isTransferredToEcmCaseError = (error: unknown): boolean => {
     message.includes('status code 410')
   );
 };
+
+export const isCaseNotFoundError = (error: unknown): boolean => {
+  const message = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
+  return message.includes('status code 404') || message.includes('casenotfoundexception');
+};

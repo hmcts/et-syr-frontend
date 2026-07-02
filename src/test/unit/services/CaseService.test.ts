@@ -3,7 +3,12 @@ import axios from 'axios';
 import { CaseTypeId } from '../../../main/definitions/case';
 import { DefaultValues, ET3ModificationTypes, ServiceErrors } from '../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
-import { CaseApi, getCaseApi, isTransferredToEcmCaseError } from '../../../main/services/CaseService';
+import {
+  CaseApi,
+  getCaseApi,
+  isCaseNotFoundError,
+  isTransferredToEcmCaseError,
+} from '../../../main/services/CaseService';
 import { mockAxiosError } from '../mocks/mockAxios';
 import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import { mockCaseApiDataResponse } from '../mocks/mockCaseApiDataResponse';
@@ -168,6 +173,13 @@ describe('Case Service Tests', () => {
     it('should detect transferred to ECM errors', () => {
       expect(isTransferredToEcmCaseError(new Error('status code 410, CASE_TRANSFERRED_TO_ECM'))).toBe(true);
       expect(isTransferredToEcmCaseError(new Error('some other error'))).toBe(false);
+    });
+  });
+
+  describe('isCaseNotFoundError', () => {
+    it('should detect case not found errors', () => {
+      expect(isCaseNotFoundError(new Error('status code 404, CaseNotFoundException'))).toBe(true);
+      expect(isCaseNotFoundError(new Error('some other error'))).toBe(false);
     });
   });
 
