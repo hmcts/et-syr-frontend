@@ -149,8 +149,7 @@ export class Nunjucks {
       res.locals.currentUrl = req.url;
       res.locals.currentHost = req?.headers?.host?.toLowerCase();
       res.locals.dateToLocale = (dateToTransform: Date) => dateInLocale(dateToTransform, req.url);
-      res.locals.dateStringToLocale = (dateToTransform: string) =>
-        datesStringToDateInLocale(dateToTransform, req.url);
+      res.locals.dateStringToLocale = (dateToTransform: string) => datesStringToDateInLocale(dateToTransform, req.url);
       next();
     });
   }

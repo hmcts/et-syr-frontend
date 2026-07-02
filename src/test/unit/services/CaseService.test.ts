@@ -136,6 +136,34 @@ describe('Case Service Tests', () => {
     });
   });
 
+  describe('Get case transfer info', () => {
+    it('should get case transfer info for defendant role', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      const transferInfo = {
+        transferred: true,
+        transferType: 'ECM',
+        originalCaseId: '1234',
+        transferComplete: true,
+      };
+      mockedAxios.get.mockResolvedValue({ data: transferInfo });
+      const value = await api.getCaseTransferInfo('1234');
+      expect(mockedAxios.get).toHaveBeenCalledWith('cases/1234/transfer-info?case_user_role=DEFENDANT');
+      expect(value.data).toEqual(transferInfo);
+    });
+
+    it('should throw exception when there is a problem while getting case transfer info', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.get.mockImplementation(() => {
+        throw mockAxiosError('TEST', ServiceErrors.ERROR_CASE_NOT_FOUND, 404);
+      });
+      await expect(() => api.getCaseTransferInfo('1234')).rejects.toEqual(
+        new Error('Error getting case transfer info: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
+  });
+
   describe('Modify ET3 Data', () => {
     it('should modify et3 data', async () => {
       const request = mockRequest({});
