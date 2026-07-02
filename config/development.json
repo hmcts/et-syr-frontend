@@ -15,7 +15,7 @@
       "token": "TO BE PICKED FROM ENV"
     },
     "etSyaApi": {
-      "host": "http://localhost:4550/"
+      "host": "http://localhost:8081/"
     },
     "pcq": {
       "url": "https://pcq.aat.platform.hmcts.net/service-endpoint",
