@@ -3,7 +3,13 @@ import axios from 'axios';
 import { CaseTypeId } from '../../../main/definitions/case';
 import { DefaultValues, ET3ModificationTypes, ServiceErrors } from '../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
-import { CaseApi, getCaseApi } from '../../../main/services/CaseService';
+import {
+  CaseApi,
+  getCaseApi,
+  isCaseNotFoundError,
+  isTransferredCaseAccessError,
+  isTransferredCaseError,
+} from '../../../main/services/CaseService';
 import { mockAxiosError } from '../mocks/mockAxios';
 import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import { mockCaseApiDataResponse } from '../mocks/mockCaseApiDataResponse';
@@ -161,6 +167,49 @@ describe('Case Service Tests', () => {
       await expect(() => api.getCaseTransferInfo('1234')).rejects.toEqual(
         new Error('Error getting case transfer info: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
       );
+    });
+  });
+
+  describe('isTransferredCaseError', () => {
+    it('should return true for CASE_TRANSFERRED_TO_ECM responses', () => {
+      expect(isTransferredCaseError(new Error('CASE_TRANSFERRED_TO_ECM'))).toBe(true);
+    });
+
+    it('should return true for 410 responses', () => {
+      expect(isTransferredCaseError(new Error('Request failed with status code 410'))).toBe(true);
+    });
+
+    it('should return false for 404 responses', () => {
+      expect(isTransferredCaseError(new Error('Error getting user case: status code 404'))).toBe(false);
+    });
+  });
+
+  describe('isCaseNotFoundError', () => {
+    it('should return true for 404 responses', () => {
+      expect(isCaseNotFoundError(new Error('Error getting user case: status code 404'))).toBe(true);
+    });
+
+    it('should return true for CaseNotFoundException responses', () => {
+      expect(isCaseNotFoundError(new Error('CaseNotFoundException: No case found'))).toBe(true);
+    });
+
+    it('should return false for 500 responses', () => {
+      expect(isCaseNotFoundError(new Error('Error getting user case: status code 500'))).toBe(false);
+    });
+  });
+
+  describe('isTransferredCaseAccessError', () => {
+    it('should return true for transferred and not-found errors', () => {
+      expect(
+        isTransferredCaseAccessError(new Error('Error getting user case: Request failed with status code 410'))
+      ).toBe(true);
+      expect(
+        isTransferredCaseAccessError(new Error('Error getting user case: status code 404, CaseNotFoundException'))
+      ).toBe(true);
+    });
+
+    it('should return false for unrelated errors', () => {
+      expect(isTransferredCaseAccessError(new Error('Error getting user case: status code 500'))).toBe(false);
     });
   });
 

@@ -1,17 +1,45 @@
 import { Response } from 'express';
 
-import { CaseTransferInfoResponse } from '../definitions/api/caseTransferInfoResponse';
+import { CaseTransferInfoResponse, CaseTransferType } from '../definitions/api/caseTransferInfoResponse';
 import { AppRequest } from '../definitions/appRequest';
 import { RespondentET3Model } from '../definitions/case';
 import { DefaultValues, PageUrls } from '../definitions/constants';
+import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
-import { getCaseApi } from '../services/CaseService';
+import { getCaseApi, isTransferredCaseAccessError } from '../services/CaseService';
 import ET3Util from '../utils/ET3Util';
 import StringUtils from '../utils/StringUtils';
 
 const logger = getLogger('CaseTransferHelper');
 const SESSION_SAVE_TIMEOUT_MS = 10000;
+
+export const getSafeApiErrorSummary = (error: unknown): string => {
+  const message = error instanceof Error ? error.message : String(error);
+  const statusCodeMatch = message.match(/status code (\d{3})/i);
+
+  if (statusCodeMatch) {
+    return `HTTP ${statusCodeMatch[1]}`;
+  }
+
+  if (message.includes('CaseNotFoundException')) {
+    return 'CaseNotFoundException';
+  }
+
+  if (message.toUpperCase().includes('CASE_TRANSFERRED')) {
+    return 'CASE_TRANSFERRED';
+  }
+
+  if (message.includes('Session save timed out')) {
+    return 'session save timed out';
+  }
+
+  if (message.toLowerCase().includes('session save')) {
+    return 'session save error';
+  }
+
+  return 'unexpected error';
+};
 
 const getMatchingUserCase = (req: AppRequest, caseId: string) => {
   const userCase = req.session.userCase;
@@ -38,13 +66,45 @@ const findRespondent = (
     return respondents.find(respondent => respondent.idamId === userId);
   }
 
-  return respondents[0];
+  return undefined;
 };
 
 export const clearCaseTransferInfoIfStale = (req: AppRequest, caseId: string): void => {
   if (req.session.caseTransferInfo && String(req.session.caseTransferInfo.originalCaseId) !== String(caseId)) {
     req.session.caseTransferInfo = undefined;
   }
+};
+
+export const isTransferInfoForCase = (caseId: string, transferInfo?: CaseTransferInfoResponse): boolean => {
+  return !!transferInfo?.transferred && String(transferInfo.originalCaseId) === String(caseId);
+};
+
+export const getRequestedCaseId = (req: AppRequest): string | undefined => {
+  const caseId = req.query?.caseId;
+
+  if (Array.isArray(caseId)) {
+    return undefined;
+  }
+
+  if (typeof caseId === 'string' && caseId.trim()) {
+    return caseId;
+  }
+
+  return req.session.caseTransferInfo?.originalCaseId;
+};
+
+export const getRequestedCcdId = (req: AppRequest): string | undefined => {
+  const ccdId = req.query?.ccdId;
+
+  if (Array.isArray(ccdId)) {
+    return undefined;
+  }
+
+  if (typeof ccdId === 'string' && ccdId.trim()) {
+    return ccdId;
+  }
+
+  return undefined;
 };
 
 export const enrichTransferInfoWithCaseParties = (
@@ -65,12 +125,50 @@ export const enrichTransferInfoWithCaseParties = (
     ...transferInfo,
     claimantFirstName: transferInfo.claimantFirstName ?? existingTransferInfo?.claimantFirstName ?? userCase?.firstName,
     claimantLastName: transferInfo.claimantLastName ?? existingTransferInfo?.claimantLastName ?? userCase?.lastName,
-    respondentName:
-      transferInfo.respondentName ??
-      existingTransferInfo?.respondentName ??
-      respondentNameFromSession ??
-      userCase?.respondents?.[0]?.respondentName,
+    respondentName: transferInfo.respondentName ?? existingTransferInfo?.respondentName ?? respondentNameFromSession,
   };
+};
+
+export const getTransferredCaseNoAccessBody = (
+  translations: Record<string, string>,
+  transferType?: CaseTransferType
+): string => {
+  if (transferType === 'CROSS_COUNTRY') {
+    return translations.noAccessBodyCrossCountry;
+  }
+
+  if (transferType === 'ECM') {
+    return translations.noAccessBodyEcm;
+  }
+
+  if (transferType) {
+    logger.warn(`Unknown transfer type "${transferType}". Using ECM copy.`);
+  }
+
+  return translations.noAccessBodyEcm;
+};
+
+export type LoadUserCaseResult = 'loaded' | 'transferred' | 'failed';
+
+export const loadUserCaseFromApi = async (
+  req: AppRequest,
+  res: Response,
+  caseId: string,
+  ccdId?: string
+): Promise<LoadUserCaseResult> => {
+  try {
+    req.session.userCase = formatApiCaseDataToCaseWithId(
+      (await getCaseApi(req.session.user?.accessToken).getUserCase(caseId)).data,
+      req
+    );
+    return 'loaded';
+  } catch (error) {
+    logger.error(`Failed to load user case from API: ${getSafeApiErrorSummary(error)}`);
+    if (await handleTransferredCaseRedirect(req, res, caseId, ccdId, error)) {
+      return 'transferred';
+    }
+    return 'failed';
+  }
 };
 
 export const applyCaseTransferInfoToSession = (
@@ -112,8 +210,10 @@ export const saveSessionAndRedirectToTransferredCase = async (
   transferInfo: CaseTransferInfoResponse,
   ccdId?: string
 ): Promise<boolean> => {
-  applyCaseTransferInfoToSession(req, transferInfo, caseId, ccdId);
+  const enrichedTransferInfo = enrichTransferInfoWithCaseParties(req, transferInfo, caseId, ccdId);
   const redirectUrl = buildTransferredCaseRedirectUrl(req, caseId, ccdId);
+
+  req.session.caseTransferInfo = enrichedTransferInfo;
 
   try {
     await new Promise<void>((resolve, reject) => {
@@ -131,9 +231,11 @@ export const saveSessionAndRedirectToTransferredCase = async (
       });
     });
   } catch (saveError) {
-    const saveErrorMessage = saveError instanceof Error ? saveError.message : String(saveError);
+    req.session.caseTransferInfo = undefined;
     logger.error(
-      `Failed to save session before transferred case redirect for case ID ${caseId}: ${saveErrorMessage}. Redirecting anyway.`
+      `Failed to save session before transferred case redirect: ${getSafeApiErrorSummary(
+        saveError
+      )}. Redirecting with query params instead.`
     );
   }
 
@@ -145,30 +247,25 @@ export const handleTransferredCaseRedirect = async (
   req: AppRequest,
   res: Response,
   caseId: string,
-  ccdId?: string
+  ccdId?: string,
+  accessError?: unknown
 ): Promise<boolean> => {
+  if (accessError !== undefined && !isTransferredCaseAccessError(accessError)) {
+    return false;
+  }
+
   try {
     const transferInfoData = (await getCaseApi(req.session.user?.accessToken).getCaseTransferInfo(caseId)).data;
 
-    if (transferInfoData?.transferred) {
-      logger.info(`Case ID ${caseId} has been transferred. Redirecting to transferred case page.`);
+    if (isTransferInfoForCase(caseId, transferInfoData)) {
+      logger.info('Case has been transferred. Redirecting to transferred case page.');
       return saveSessionAndRedirectToTransferredCase(req, res, caseId, transferInfoData, ccdId);
     }
 
-    logger.info(`Case ID ${caseId} is not transferred according to transfer-info response.`);
+    logger.info('Case is not transferred or transfer info does not match requested case.');
   } catch (transferError) {
-    const transferErrorMessage = transferError instanceof Error ? transferError.message : String(transferError);
-    logger.warn(`Case ID ${caseId} transfer check failed: ${transferErrorMessage}`);
+    logger.warn(`Transfer check failed: ${getSafeApiErrorSummary(transferError)}`);
   }
 
   return false;
-};
-
-export const handleCaseAccessFailure = async (
-  req: AppRequest,
-  res: Response,
-  caseId: string,
-  ccdId?: string
-): Promise<boolean> => {
-  return handleTransferredCaseRedirect(req, res, caseId, ccdId);
 };

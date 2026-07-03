@@ -7,6 +7,11 @@ import {
   applyCaseTransferInfoToSession,
   buildTransferredCasePageHeading,
   clearCaseTransferInfoIfStale,
+  getRequestedCaseId,
+  getRequestedCcdId,
+  getSafeApiErrorSummary,
+  getTransferredCaseNoAccessBody,
+  isTransferInfoForCase,
 } from '../helpers/CaseTransferHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
@@ -14,15 +19,18 @@ import { getCaseApi } from '../services/CaseService';
 
 const logger = getLogger('TransferredCaseController');
 
-const hasMatchingTransferInfo = (caseId: string, transferInfo?: CaseTransferInfoResponse): boolean => {
-  return !!transferInfo?.transferred && String(transferInfo.originalCaseId) === String(caseId);
+const needsTransferInfoRefresh = (caseId: string, transferInfo?: CaseTransferInfoResponse): boolean => {
+  if (!isTransferInfoForCase(caseId, transferInfo)) {
+    return true;
+  }
+
+  return !transferInfo.transferComplete;
 };
 
 const renderTransferredCasePage = (req: AppRequest, res: Response, transferInfo: CaseTransferInfoResponse): void => {
   const translations = req.t(TranslationKeys.TRANSFERRED_CASE, { returnObjects: true }) as Record<string, string>;
   const showNewCaseNumber = transferInfo.transferComplete && !!transferInfo.newEthosCaseReference;
-  const noAccessBody =
-    transferInfo.transferType === 'ECM' ? translations.noAccessBodyEcm : translations.noAccessBodyCrossCountry;
+  const noAccessBody = getTransferredCaseNoAccessBody(translations, transferInfo.transferType);
 
   res.render(TranslationKeys.TRANSFERRED_CASE, {
     ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
@@ -39,8 +47,8 @@ const renderTransferredCasePage = (req: AppRequest, res: Response, transferInfo:
 
 export default class TransferredCaseController {
   public async get(req: AppRequest, res: Response): Promise<void> {
-    const caseId = (req.query?.caseId as string) || req.session.caseTransferInfo?.originalCaseId;
-    const ccdId = req.query?.ccdId as string | undefined;
+    const caseId = getRequestedCaseId(req);
+    const ccdId = getRequestedCcdId(req);
 
     if (!caseId) {
       return res.redirect(PageUrls.NOT_FOUND + getLanguageParam(req.url));
@@ -50,27 +58,26 @@ export default class TransferredCaseController {
 
     let transferInfo: CaseTransferInfoResponse | undefined = req.session.caseTransferInfo;
 
-    if (!hasMatchingTransferInfo(caseId, transferInfo)) {
+    if (needsTransferInfoRefresh(caseId, transferInfo)) {
       try {
         transferInfo = (await getCaseApi(req.session.user?.accessToken).getCaseTransferInfo(caseId)).data;
-        logger.info(`Fetched transfer info for case ID ${caseId}`);
+        logger.info('Fetched transfer info for transferred case page');
 
-        if (!transferInfo?.transferred) {
-          logger.info(`Case ID ${caseId} is not transferred`);
+        if (!isTransferInfoForCase(caseId, transferInfo)) {
+          logger.info('Transfer info is invalid or does not match requested case');
           return res.redirect(PageUrls.NOT_FOUND + getLanguageParam(req.url));
         }
 
         transferInfo = applyCaseTransferInfoToSession(req, transferInfo, caseId, ccdId);
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        logger.error(`Unable to load transfer info for case ID ${caseId}: ${errorMessage}`);
+        logger.error(`Unable to load transfer info: ${getSafeApiErrorSummary(error)}`);
         return res.redirect(PageUrls.NOT_FOUND + getLanguageParam(req.url));
       }
     } else if (transferInfo) {
       transferInfo = applyCaseTransferInfoToSession(req, transferInfo, caseId, ccdId);
     }
 
-    if (!transferInfo?.transferred) {
+    if (!isTransferInfoForCase(caseId, transferInfo)) {
       return res.redirect(PageUrls.NOT_FOUND + getLanguageParam(req.url));
     }
 

@@ -3,17 +3,26 @@ import axios from 'axios';
 import { CaseTransferInfoResponse } from '../../../main/definitions/api/caseTransferInfoResponse';
 import { PageUrls } from '../../../main/definitions/constants';
 import {
+  applyCaseTransferInfoToSession,
   buildTransferredCasePageHeading,
   buildTransferredCaseRedirectUrl,
   clearCaseTransferInfoIfStale,
-  handleCaseAccessFailure,
+  enrichTransferInfoWithCaseParties,
+  getRequestedCaseId,
+  getRequestedCcdId,
+  getSafeApiErrorSummary,
+  getTransferredCaseNoAccessBody,
   handleTransferredCaseRedirect,
+  isTransferInfoForCase,
+  loadUserCaseFromApi,
   saveSessionAndRedirectToTransferredCase,
 } from '../../../main/helpers/CaseTransferHelper';
 import { CaseApi } from '../../../main/services/CaseService';
 import * as CaseService from '../../../main/services/CaseService';
+import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+import { mockUserDetails } from '../mocks/mockUser';
 
 jest.mock('axios');
 const caseApi = new CaseApi(axios as jest.Mocked<typeof axios>);
@@ -24,7 +33,7 @@ mockClient.mockReturnValue(caseApi);
 const transferredCaseInfo: CaseTransferInfoResponse = {
   transferred: true,
   transferType: 'ECM',
-  originalCaseId: '20548',
+  originalCaseId: '1234',
   transferComplete: false,
 };
 
@@ -66,6 +75,254 @@ describe('CaseTransferHelper', () => {
         { transferred: true, transferType: 'ECM', transferComplete: false }
       )
     ).toBe('Case overview');
+  });
+
+  describe('getSafeApiErrorSummary', () => {
+    it('should return HTTP status code when present in the error message', () => {
+      expect(getSafeApiErrorSummary(new Error('Error getting user case: status code 404'))).toBe('HTTP 404');
+    });
+
+    it('should return known API error codes without the full message body', () => {
+      expect(getSafeApiErrorSummary(new Error('Request failed with status code 404, CaseNotFoundException'))).toBe(
+        'HTTP 404'
+      );
+      expect(getSafeApiErrorSummary(new Error('CASE_TRANSFERRED_TO_ECM'))).toBe('CASE_TRANSFERRED');
+    });
+
+    it('should return a generic summary for unknown errors', () => {
+      expect(getSafeApiErrorSummary(new Error('{"claimantFirstName":"Jane","ethosCaseReference":"600/2024"}'))).toBe(
+        'unexpected error'
+      );
+    });
+  });
+
+  describe('getRequestedCaseId', () => {
+    it('should return case id from query string', () => {
+      const request = mockRequest({});
+      request.query = { caseId: '1234' };
+
+      expect(getRequestedCaseId(request)).toBe('1234');
+    });
+
+    it('should return session case id when query is missing', () => {
+      const request = mockRequest({});
+      request.session.caseTransferInfo = {
+        transferred: true,
+        transferType: 'ECM',
+        originalCaseId: '5678',
+        transferComplete: true,
+      };
+
+      expect(getRequestedCaseId(request)).toBe('5678');
+    });
+
+    it('should return undefined when query case id is an array', () => {
+      const request = mockRequest({});
+      request.query = { caseId: ['1234', '5678'] };
+
+      expect(getRequestedCaseId(request)).toBeUndefined();
+    });
+
+    it('should return undefined when query case id is blank', () => {
+      const request = mockRequest({});
+      request.query = { caseId: '   ' };
+
+      expect(getRequestedCaseId(request)).toBeUndefined();
+    });
+  });
+
+  describe('getRequestedCcdId', () => {
+    it('should return ccd id from query string', () => {
+      const request = mockRequest({});
+      request.query = { ccdId: 'ccd-1' };
+
+      expect(getRequestedCcdId(request)).toBe('ccd-1');
+    });
+
+    it('should return undefined when query ccd id is an array', () => {
+      const request = mockRequest({});
+      request.query = { ccdId: ['ccd-1', 'ccd-2'] };
+
+      expect(getRequestedCcdId(request)).toBeUndefined();
+    });
+
+    it('should return undefined when query ccd id is blank', () => {
+      const request = mockRequest({});
+      request.query = { ccdId: '   ' };
+
+      expect(getRequestedCcdId(request)).toBeUndefined();
+    });
+  });
+
+  describe('isTransferInfoForCase', () => {
+    it('should return true when transfer info matches the requested case', () => {
+      expect(
+        isTransferInfoForCase('1234', {
+          transferred: true,
+          transferType: 'ECM',
+          originalCaseId: '1234',
+          transferComplete: true,
+        })
+      ).toBe(true);
+    });
+
+    it('should return false when original case id does not match', () => {
+      expect(
+        isTransferInfoForCase('1234', {
+          transferred: true,
+          transferType: 'ECM',
+          originalCaseId: '9999',
+          transferComplete: true,
+        })
+      ).toBe(false);
+    });
+
+    it('should return false when case is not transferred', () => {
+      expect(
+        isTransferInfoForCase('1234', {
+          transferred: false,
+          transferType: 'ECM',
+          originalCaseId: '1234',
+          transferComplete: false,
+        })
+      ).toBe(false);
+    });
+  });
+
+  describe('getTransferredCaseNoAccessBody', () => {
+    const translations = {
+      noAccessBodyEcm: 'ECM body',
+      noAccessBodyCrossCountry: 'Cross country body',
+    };
+
+    it('should return ECM copy for ECM transfer type', () => {
+      expect(getTransferredCaseNoAccessBody(translations, 'ECM')).toBe('ECM body');
+    });
+
+    it('should return cross country copy for CROSS_COUNTRY transfer type', () => {
+      expect(getTransferredCaseNoAccessBody(translations, 'CROSS_COUNTRY')).toBe('Cross country body');
+    });
+
+    it('should default to ECM copy when transfer type is missing', () => {
+      expect(getTransferredCaseNoAccessBody(translations)).toBe('ECM body');
+    });
+  });
+
+  describe('enrichTransferInfoWithCaseParties', () => {
+    it('should enrich transfer info with party names from the matching respondent', () => {
+      const request = mockRequest({
+        userCase: {
+          id: '1234',
+          firstName: 'Peter',
+          lastName: 'Rabbit',
+          respondents: [{ ccdId: 'ccd-1', respondentName: "McGregor's Farm" }],
+        },
+      });
+
+      const enriched = enrichTransferInfoWithCaseParties(
+        request,
+        { transferred: true, transferType: 'ECM', transferComplete: true },
+        '1234',
+        'ccd-1'
+      );
+
+      expect(enriched).toEqual(
+        expect.objectContaining({
+          claimantFirstName: 'Peter',
+          claimantLastName: 'Rabbit',
+          respondentName: "McGregor's Farm",
+        })
+      );
+    });
+
+    it('should not fall back to the first respondent when ccd id and user id do not match', () => {
+      const request = mockRequest({
+        userCase: {
+          id: '1234',
+          firstName: 'Peter',
+          lastName: 'Rabbit',
+          respondents: [
+            { ccdId: 'ccd-1', respondentName: "McGregor's Farm" },
+            { ccdId: 'ccd-2', respondentName: 'Wrong Farm' },
+          ],
+        },
+      });
+
+      const enriched = enrichTransferInfoWithCaseParties(
+        request,
+        { transferred: true, transferType: 'ECM', transferComplete: true },
+        '1234',
+        'ccd-unknown'
+      );
+
+      expect(enriched.respondentName).toBeUndefined();
+    });
+  });
+
+  describe('applyCaseTransferInfoToSession', () => {
+    it('should store enriched transfer info on the session', () => {
+      const request = mockRequest({
+        userCase: {
+          id: '1234',
+          firstName: 'Peter',
+          lastName: 'Rabbit',
+          respondents: [{ ccdId: 'ccd-1', respondentName: "McGregor's Farm" }],
+        },
+      });
+
+      const transferInfo = applyCaseTransferInfoToSession(
+        request,
+        { transferred: true, transferType: 'ECM', transferComplete: true },
+        '1234',
+        'ccd-1'
+      );
+
+      expect(request.session.caseTransferInfo).toEqual(transferInfo);
+      expect(transferInfo.respondentName).toBe("McGregor's Farm");
+    });
+  });
+
+  describe('loadUserCaseFromApi', () => {
+    it('should load user case when api call succeeds', async () => {
+      caseApi.getUserCase = jest.fn().mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse);
+      const request = mockRequest({});
+      request.session.user = mockUserDetails;
+      const response = mockResponse();
+
+      await expect(loadUserCaseFromApi(request, response, '1234', 'ccd-1')).resolves.toBe('loaded');
+    });
+
+    it('should return transferred when access failure redirects', async () => {
+      caseApi.getUserCase = jest
+        .fn()
+        .mockRejectedValue(new Error('Error getting user case: status code 410, CASE_TRANSFERRED_TO_ECM'));
+      caseApi.getCaseTransferInfo = jest.fn().mockResolvedValue({
+        data: {
+          transferred: true,
+          transferType: 'ECM',
+          originalCaseId: '1234',
+          transferComplete: false,
+        },
+      });
+      const request = mockRequest({});
+      request.session.user = mockUserDetails;
+      request.url = '/case-details/1234?lng=en';
+      const response = mockResponse();
+
+      await expect(loadUserCaseFromApi(request, response, '1234', 'ccd-1')).resolves.toBe('transferred');
+    });
+
+    it('should return failed when access failure does not redirect', async () => {
+      caseApi.getUserCase = jest
+        .fn()
+        .mockRejectedValue(new Error('Error getting user case: Request failed with status code 500'));
+      const request = mockRequest({});
+      request.session.user = mockUserDetails;
+      const response = mockResponse();
+
+      await expect(loadUserCaseFromApi(request, response, '1234')).resolves.toBe('failed');
+      expect(caseApi.getCaseTransferInfo).not.toHaveBeenCalled();
+    });
   });
 
   describe('clearCaseTransferInfoIfStale', () => {
@@ -139,32 +396,19 @@ describe('CaseTransferHelper', () => {
       const request = mockRequest({});
       const response = mockResponse();
 
-      const redirected = await handleTransferredCaseRedirect(request, response, '1234');
+      const redirected = await handleTransferredCaseRedirect(
+        request,
+        response,
+        '1234',
+        undefined,
+        new Error('Error getting user case: Request failed with status code 404, CaseNotFoundException')
+      );
 
       expect(redirected).toBe(false);
       expect(response.redirect).not.toHaveBeenCalled();
     });
 
-    it('should not redirect when transfer-info says case is not transferred', async () => {
-      caseApi.getCaseTransferInfo = jest.fn().mockResolvedValue({
-        data: {
-          transferred: false,
-          transferType: 'ECM',
-          transferComplete: false,
-        },
-      });
-      const request = mockRequest({});
-      const response = mockResponse();
-
-      const redirected = await handleTransferredCaseRedirect(request, response, '1234');
-
-      expect(redirected).toBe(false);
-      expect(response.redirect).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('handleCaseAccessFailure', () => {
-    it('should redirect only when transfer-info confirms the case is transferred', async () => {
+    it('should redirect when getUserCase failed with a 404 and transfer-info confirms transfer', async () => {
       caseApi.getCaseTransferInfo = jest.fn().mockResolvedValue({
         data: {
           transferred: true,
@@ -174,13 +418,69 @@ describe('CaseTransferHelper', () => {
         },
       });
       const request = mockRequest({});
-      request.url = '/case-details/1234?lng=en';
+      request.url = '/case-details/1234/ccd-1?lng=en';
       const response = mockResponse();
 
-      const redirected = await handleCaseAccessFailure(request, response, '1234', 'ccd-1');
+      const redirected = await handleTransferredCaseRedirect(
+        request,
+        response,
+        '1234',
+        'ccd-1',
+        new Error('Error getting user case: Request failed with status code 404, CaseNotFoundException')
+      );
 
       expect(redirected).toBe(true);
       expect(response.redirect).toHaveBeenCalledWith(`${PageUrls.TRANSFERRED_CASE}?lng=en&caseId=1234&ccdId=ccd-1`);
+    });
+
+    it('should redirect when getUserCase failed with a 410 transferred case error', async () => {
+      caseApi.getCaseTransferInfo = jest.fn().mockResolvedValue({
+        data: {
+          transferred: true,
+          transferType: 'ECM',
+          originalCaseId: '1234',
+          transferComplete: false,
+        },
+      });
+      const request = mockRequest({});
+      request.url = '/case-details/1234/ccd-1?lng=en';
+      const response = mockResponse();
+
+      const redirected = await handleTransferredCaseRedirect(
+        request,
+        response,
+        '1234',
+        'ccd-1',
+        new Error('Error getting user case: Request failed with status code 410, CASE_TRANSFERRED_TO_ECM')
+      );
+
+      expect(redirected).toBe(true);
+      expect(response.redirect).toHaveBeenCalledWith(`${PageUrls.TRANSFERRED_CASE}?lng=en&caseId=1234&ccdId=ccd-1`);
+    });
+
+    it('should not redirect when getUserCase fails with a non-access error', async () => {
+      caseApi.getCaseTransferInfo = jest.fn().mockResolvedValue({
+        data: {
+          transferred: true,
+          transferType: 'ECM',
+          originalCaseId: '1234',
+          transferComplete: false,
+        },
+      });
+      const request = mockRequest({});
+      const response = mockResponse();
+
+      const redirected = await handleTransferredCaseRedirect(
+        request,
+        response,
+        '1234',
+        undefined,
+        new Error('Error getting user case: Request failed with status code 500')
+      );
+
+      expect(redirected).toBe(false);
+      expect(caseApi.getCaseTransferInfo).not.toHaveBeenCalled();
+      expect(response.redirect).not.toHaveBeenCalled();
     });
 
     it('should not redirect when transfer-info says case is not transferred', async () => {
@@ -192,10 +492,33 @@ describe('CaseTransferHelper', () => {
         },
       });
       const request = mockRequest({});
-      request.url = '/case-details/1234?lng=en';
       const response = mockResponse();
 
-      const redirected = await handleCaseAccessFailure(request, response, '1234');
+      const redirected = await handleTransferredCaseRedirect(
+        request,
+        response,
+        '1234',
+        undefined,
+        new Error('Error getting user case: Request failed with status code 404, CaseNotFoundException')
+      );
+
+      expect(redirected).toBe(false);
+      expect(response.redirect).not.toHaveBeenCalled();
+    });
+
+    it('should not redirect when transfer-info originalCaseId does not match requested case', async () => {
+      caseApi.getCaseTransferInfo = jest.fn().mockResolvedValue({
+        data: {
+          transferred: true,
+          transferType: 'ECM',
+          originalCaseId: '99999',
+          transferComplete: false,
+        },
+      });
+      const request = mockRequest({});
+      const response = mockResponse();
+
+      const redirected = await handleTransferredCaseRedirect(request, response, '1234');
 
       expect(redirected).toBe(false);
       expect(response.redirect).not.toHaveBeenCalled();
@@ -203,6 +526,22 @@ describe('CaseTransferHelper', () => {
   });
 
   describe('saveSessionAndRedirectToTransferredCase', () => {
+    it('should persist transfer info when session save succeeds', async () => {
+      const request = mockRequest({});
+      request.url = '/case-details/1234?lng=en';
+      request.session.save = jest.fn((done?: (err?: Error) => void) => {
+        done?.();
+        return request.session;
+      });
+      const response = mockResponse();
+
+      const redirected = await saveSessionAndRedirectToTransferredCase(request, response, '1234', transferredCaseInfo);
+
+      expect(redirected).toBe(true);
+      expect(request.session.caseTransferInfo).toEqual(expect.objectContaining({ originalCaseId: '1234' }));
+      expect(response.redirect).toHaveBeenCalledWith(`${PageUrls.TRANSFERRED_CASE}?lng=en&caseId=1234`);
+    });
+
     it('should still redirect when session save fails', async () => {
       const request = mockRequest({});
       request.url = '/case-details/1234?lng=en';
@@ -215,6 +554,7 @@ describe('CaseTransferHelper', () => {
       const redirected = await saveSessionAndRedirectToTransferredCase(request, response, '1234', transferredCaseInfo);
 
       expect(redirected).toBe(true);
+      expect(request.session.caseTransferInfo).toBeUndefined();
       expect(response.redirect).toHaveBeenCalledWith(`${PageUrls.TRANSFERRED_CASE}?lng=en&caseId=1234`);
     });
 
@@ -229,6 +569,7 @@ describe('CaseTransferHelper', () => {
       jest.advanceTimersByTime(10000);
 
       await expect(redirectPromise).resolves.toBe(true);
+      expect(request.session.caseTransferInfo).toBeUndefined();
       expect(response.redirect).toHaveBeenCalledWith(`${PageUrls.TRANSFERRED_CASE}?lng=en&caseId=1234`);
       jest.useRealTimers();
     });

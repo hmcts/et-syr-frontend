@@ -1,48 +1,42 @@
-import axios from 'axios';
-
 import CaseDetailsController from '../../../main/controllers/CaseDetailsController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import { handleCaseAccessFailure } from '../../../main/helpers/CaseTransferHelper';
-import * as caseService from '../../../main/services/CaseService';
-import { CaseApi } from '../../../main/services/CaseService';
-import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
+import { loadUserCaseFromApi } from '../../../main/helpers/CaseTransferHelper';
+import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import { mockUserDetails } from '../mocks/mockUser';
 
 jest.mock('axios');
 jest.mock('../../../main/helpers/CaseTransferHelper', () => ({
-  handleCaseAccessFailure: jest.fn(),
+  loadUserCaseFromApi: jest.fn(),
 }));
 
-const handleCaseAccessFailureMock = handleCaseAccessFailure as jest.MockedFunction<typeof handleCaseAccessFailure>;
+const loadUserCaseFromApiMock = loadUserCaseFromApi as jest.MockedFunction<typeof loadUserCaseFromApi>;
 
 describe('CaseDetailsController', () => {
   const t = {
     common: {},
   };
-  const getCaseApiMock = jest.spyOn(caseService, 'getCaseApi');
-  const api = new CaseApi(axios);
   const caseDetailsController = new CaseDetailsController();
   const response = mockResponse();
   const request = mockRequest({ t });
 
   beforeEach(() => {
-    handleCaseAccessFailureMock.mockResolvedValue(false);
+    loadUserCaseFromApiMock.mockResolvedValue('loaded');
     jest.clearAllMocks();
   });
 
   it('should render respondent replies page', async () => {
-    getCaseApiMock.mockReturnValue(api);
-    api.getUserCase = jest
-      .fn()
-      .mockResolvedValueOnce(Promise.resolve(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse));
+    loadUserCaseFromApiMock.mockImplementationOnce(async req => {
+      req.session.userCase = mockCaseWithIdWithRespondents;
+      return 'loaded';
+    });
     request.session.user = mockUserDetails;
-    request.session.user.id = 'dda9d1c3-1a11-3c3a-819e-74174fbec26b';
     request.session.selectedRespondentIndex = 0;
-    request.params = { ccdId: 'test' };
+    request.params = { caseSubmissionReference: '1234', ccdId: '3453xaa' };
     await caseDetailsController.get(request, response);
 
+    expect(loadUserCaseFromApiMock).toHaveBeenCalledWith(request, response, '1234', '3453xaa');
     expect(response.render).toHaveBeenCalledWith(
       TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER,
       expect.anything()
@@ -50,33 +44,25 @@ describe('CaseDetailsController', () => {
   });
 
   it('should redirect to transferred case page when transfer info is available', async () => {
-    getCaseApiMock.mockReturnValue(api);
-    api.getUserCase = jest.fn().mockRejectedValueOnce(new Error('Error getting user case: status code 500'));
-    handleCaseAccessFailureMock.mockResolvedValueOnce(true);
+    loadUserCaseFromApiMock.mockResolvedValueOnce('transferred');
     request.session.user = mockUserDetails;
     request.params = { caseSubmissionReference: '1234', ccdId: 'ccd-1' };
 
     await caseDetailsController.get(request, response);
 
-    expect(handleCaseAccessFailureMock).toHaveBeenCalledWith(request, response, '1234', 'ccd-1');
+    expect(loadUserCaseFromApiMock).toHaveBeenCalledWith(request, response, '1234', 'ccd-1');
     expect(response.render).not.toHaveBeenCalled();
   });
 
   it('should redirect to not found when case access fails and case is not transferred', async () => {
-    getCaseApiMock.mockReturnValue(api);
-    api.getUserCase = jest
-      .fn()
-      .mockRejectedValueOnce(
-        new Error('Error getting user case: Request failed with status code 410, CASE_TRANSFERRED_TO_ECM')
-      );
-    handleCaseAccessFailureMock.mockResolvedValueOnce(false);
+    loadUserCaseFromApiMock.mockResolvedValueOnce('failed');
     request.session.user = mockUserDetails;
     request.url = '/case-details/1234/ccd-1?lng=en';
     request.params = { caseSubmissionReference: '1234', ccdId: 'ccd-1' };
 
     await caseDetailsController.get(request, response);
 
-    expect(handleCaseAccessFailureMock).toHaveBeenCalledWith(request, response, '1234', 'ccd-1');
+    expect(loadUserCaseFromApiMock).toHaveBeenCalledWith(request, response, '1234', 'ccd-1');
     expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND + '?lng=en');
   });
 });

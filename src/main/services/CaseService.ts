@@ -415,3 +415,22 @@ export const getCaseApi = (token: string): CaseApi => {
     })
   );
 };
+
+export const isCaseNotFoundError = (error: unknown): boolean => {
+  const message = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
+  return message.includes('status code 404') || message.includes('casenotfoundexception');
+};
+
+export const isTransferredCaseError = (error: unknown): boolean => {
+  const message = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
+  return (
+    message.includes('case_transferred') ||
+    message.includes('transferred to ecm') ||
+    (message.includes('transferred') && message.includes('legacy')) ||
+    message.includes('status code 410')
+  );
+};
+
+export const isTransferredCaseAccessError = (error: unknown): boolean => {
+  return isCaseNotFoundError(error) || isTransferredCaseError(error);
+};
