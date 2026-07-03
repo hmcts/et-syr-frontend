@@ -45,12 +45,31 @@ export default class Et3LoginPage extends BasePage {
   async replyToNewClaim(submissionRef: string, caseNumber: string): Promise<void> {
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Before you continue');
 
-    await this.clickContinue();
-    await this.webActions.verifyElementContainsText(this.page.locator('#main-content'), 'ET3 Responses');
-    await this.webActions.clickElementByCss(this.elements.respondToNewClaim);
-    await this.caseNumberPage(caseNumber);
-    await this.caseDetailsPage(submissionRef);
+    await this.continueFromChecklistToSelfAssignment(caseNumber, submissionRef);
     await this.checkAndSubmitPage(caseNumber);
+  }
+
+  private async continueFromChecklistToSelfAssignment(caseNumber: string, submissionRef: string): Promise<void> {
+    await this.clickContinue();
+    const heading = this.page.locator('h1');
+    await heading.waitFor({ state: 'visible' });
+
+    const pageHeading = (await heading.textContent())?.trim() ?? '';
+
+    if (pageHeading.includes('ET3 Responses')) {
+      await this.webActions.clickElementByCss(this.elements.respondToNewClaim);
+      await this.caseNumberPage(caseNumber);
+    } else if (!pageHeading.includes('Case Details')) {
+      await this.webActions.verifyElementContainsText(heading, 'Case Details');
+    }
+
+    await this.caseDetailsPage(submissionRef);
+  }
+
+  private async goToCaseList(): Promise<void> {
+    const baseUrl = params.TestUrlRespondentUi.replace(/\/$/, '');
+    await this.page.goto(`${baseUrl}/case-list?lng=en`);
+    await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'ET3 Responses');
   }
 
   async caseNumberPage(caseNumber: string): Promise<void> {
@@ -77,9 +96,8 @@ export default class Et3LoginPage extends BasePage {
     await this.webActions.checkElementById('#confirmation');
     await this.submitButton();
 
-    //validate claim is displayed in awaiting response
-    await this.page.reload();
-    await this.webActions.verifyElementContainsText(this.page.locator('#main-content'), 'ET3 Responses');
+    // Self-assignment may redirect to case details; open the case list to verify assignment.
+    await this.goToCaseList();
     await this.webActions.verifyElementToBeVisible(this.page.locator(this.elements.respondToNewClaim));
     await this.webActions.clickElementByLabel('view ' + caseNumber.toString() + ':');
   }
