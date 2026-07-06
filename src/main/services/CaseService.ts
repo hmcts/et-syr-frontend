@@ -74,6 +74,10 @@ export class CaseApi {
 
   assignCaseUserRole = async (request: AppRequest): Promise<AxiosResponse<CaseAssignmentResponse>> => {
     try {
+      const respondentName = request.session.userCase?.respondentName?.trim()
+        ? request.session.userCase.respondentName
+        : request.session.respondentNameFromForm;
+
       return await this.axios.post<CaseAssignmentResponse>(JavaApiUrls.ASSIGN_CASE_USER_ROLES, {
         case_users: [
           {
@@ -81,7 +85,7 @@ export class CaseApi {
             user_id: request.session.user.id,
             case_role: Roles.DEFENDANT_ROLE_WITH_BRACKETS,
             case_type_id: request.session.userCase.caseTypeId,
-            respondent_name: request.session.respondentNameFromForm,
+            respondent_name: respondentName,
           },
         ],
       });

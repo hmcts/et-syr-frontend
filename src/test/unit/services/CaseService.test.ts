@@ -85,6 +85,37 @@ describe('Case Service Tests', () => {
       const value = await api.assignCaseUserRole(request);
       expect(value).toEqual(expectedResponse);
     });
+    it('should use canonical respondent name from userCase when assigning role', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.post.mockResolvedValue(expectedResponse);
+      const request = mockRequest({
+        session: {
+          userCase: {
+            ...mockUserCase,
+            id: '1234567890123456',
+            caseTypeId: 'ET_EnglandWales',
+            respondentName: 'Mrs Test Auto',
+          },
+          user: mockUserDetails,
+          respondentNameFromForm: 'mrS test AUto',
+        },
+      });
+
+      await api.assignCaseUserRole(request);
+
+      expect(mockedAxios.post).toHaveBeenCalledWith('/manageCaseRole/modifyCaseUserRoles?modificationType=Assignment', {
+        case_users: [
+          {
+            case_id: '1234567890123456',
+            user_id: mockUserDetails.id,
+            case_role: '[DEFENDANT]',
+            case_type_id: 'ET_EnglandWales',
+            respondent_name: 'Mrs Test Auto',
+          },
+        ],
+      });
+    });
     it('should throw exception when there is a problem while updating user role', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
