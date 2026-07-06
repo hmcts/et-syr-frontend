@@ -106,20 +106,33 @@ export default class Et3LoginPage extends BasePage {
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Check and submit');
 
     await this.checkSelfAssignmentConfirmation();
-
-    await this.page.getByRole('button', { name: 'Submit' }).click();
-    await this.page.waitForLoadState('domcontentloaded');
-
-    try {
-      await this.page.waitForURL(/\/(case-list|case-details)(\/|$|\?)/, {
-        timeout: 30000,
-        waitUntil: 'domcontentloaded',
-      });
-    } catch {
-      await this.assertSelfAssignmentSucceeded();
-    }
+    await this.submitSelfAssignmentWithRetry();
 
     await this.waitForCaseInAwaitingResponse(caseNumber);
+  }
+
+  private async submitSelfAssignmentWithRetry(): Promise<void> {
+    const maxAttempts = 2;
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      await this.page.getByRole('button', { name: 'Submit' }).click();
+      await this.page.waitForLoadState('domcontentloaded');
+
+      try {
+        await this.page.waitForURL(/\/(case-list|case-details)(\/|$|\?)/, {
+          timeout: 30000,
+          waitUntil: 'domcontentloaded',
+        });
+        return;
+      } catch {
+        if (attempt === maxAttempts || !this.page.url().includes('self-assignment-check')) {
+          await this.assertSelfAssignmentSucceeded();
+        }
+
+        await this.page.waitForTimeout(5000);
+        await this.checkSelfAssignmentConfirmation();
+      }
+    }
   }
 
   private async checkSelfAssignmentConfirmation(): Promise<void> {

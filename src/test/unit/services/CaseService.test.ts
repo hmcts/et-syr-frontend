@@ -116,6 +116,38 @@ describe('Case Service Tests', () => {
         ],
       });
     });
+    it('should resolve respondent name from respondents array when userCase respondentName is missing', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.post.mockResolvedValue(expectedResponse);
+      const request = mockRequest({
+        session: {
+          userCase: {
+            ...mockUserCase,
+            id: '1234567890123456',
+            caseTypeId: 'ET_EnglandWales',
+            respondentName: undefined,
+            respondents: [{ respondentName: 'Mrs Test Auto', ccdId: '1' }],
+          },
+          user: mockUserDetails,
+          respondentNameFromForm: 'mrS test AUto',
+        },
+      });
+
+      await api.assignCaseUserRole(request);
+
+      expect(mockedAxios.post).toHaveBeenCalledWith('/manageCaseRole/modifyCaseUserRoles?modificationType=Assignment', {
+        case_users: [
+          {
+            case_id: '1234567890123456',
+            user_id: mockUserDetails.id,
+            case_role: '[DEFENDANT]',
+            case_type_id: 'ET_EnglandWales',
+            respondent_name: 'Mrs Test Auto',
+          },
+        ],
+      });
+    });
     it('should throw exception when there is a problem while updating user role', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);

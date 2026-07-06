@@ -22,6 +22,27 @@ import ErrorUtils from '../utils/ErrorUtils';
 
 import { axiosErrorDetails } from './AxiosErrorAdapter';
 
+export const resolveRespondentNameForAssignment = (request: AppRequest): string | undefined => {
+  const formName = request.session.respondentNameFromForm?.trim();
+  const userCase = request.session.userCase;
+
+  if (userCase?.respondentName?.trim()) {
+    return userCase.respondentName.trim();
+  }
+
+  const respondents = userCase?.respondents ?? [];
+  if (formName) {
+    const matchedRespondent = respondents.find(
+      respondent => respondent.respondentName?.trim().toLowerCase() === formName.toLowerCase()
+    );
+    if (matchedRespondent?.respondentName?.trim()) {
+      return matchedRespondent.respondentName.trim();
+    }
+  }
+
+  return respondents[0]?.respondentName?.trim() ?? formName;
+};
+
 export class CaseApi {
   constructor(private readonly axios: AxiosInstance) {}
 
@@ -74,9 +95,7 @@ export class CaseApi {
 
   assignCaseUserRole = async (request: AppRequest): Promise<AxiosResponse<CaseAssignmentResponse>> => {
     try {
-      const respondentName = request.session.userCase?.respondentName?.trim()
-        ? request.session.userCase.respondentName
-        : request.session.respondentNameFromForm;
+      const respondentName = resolveRespondentNameForAssignment(request);
 
       return await this.axios.post<CaseAssignmentResponse>(JavaApiUrls.ASSIGN_CASE_USER_ROLES, {
         case_users: [
