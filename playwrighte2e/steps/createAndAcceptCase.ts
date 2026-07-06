@@ -34,7 +34,7 @@ export default class createAndAcceptCase extends BaseStep {
     ]);
 
     // Allow accepted case data to propagate before respondent self-assignment
-    await this.wait(15);
+    await this.page.waitForTimeout(15000);
 
     return { subRef, caseNumber };
   }
