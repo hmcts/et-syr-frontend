@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 import { params } from '../utils/config';
 
@@ -25,13 +25,14 @@ export default class Et3LoginPage extends BasePage {
     claimantLastName: '#claimantLastName',
     caseRefNumber: this.page.locator('#ethosCaseReference'),
   };
-  async processRespondentLogin(username: string, password: string, caseNumber: string): Promise<void> {
+  async processRespondentLogin(username: string, password: string, caseNumber: string | string[]): Promise<void> {
+    const ethosCaseReference = this.normalizeCaseNumber(caseNumber);
     await this.page.goto(params.TestUrlRespondentUi);
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Introduction');
     await this.webActions.clickElementByCss('[href="/case-number-check"]');
     await this.wait(10);
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Case Number');
-    await this.webActions.fillField(this.elements.caseNumber, caseNumber.toString());
+    await this.webActions.fillField(this.elements.caseNumber, ethosCaseReference);
     await this.clickContinue();
     await this.loginRespondentUi(username, password);
   }
@@ -42,14 +43,29 @@ export default class Et3LoginPage extends BasePage {
     await this.elements.submit.click();
   }
 
-  async replyToNewClaim(submissionRef: string, caseNumber: string): Promise<void> {
+  async replyToNewClaim(submissionRef: string, caseNumber: string | string[]): Promise<void> {
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Before you continue');
 
     await this.continueFromChecklistToSelfAssignment(caseNumber, submissionRef);
     await this.checkAndSubmitPage(caseNumber);
   }
 
-  private async continueFromChecklistToSelfAssignment(caseNumber: string, submissionRef: string): Promise<void> {
+  private normalizeCaseNumber(caseNumber: string | string[]): string {
+    const rawValue = Array.isArray(caseNumber) ? caseNumber.join(' ') : caseNumber.toString();
+    const caseNumberMatch = rawValue.match(/\d{1,7}\/\d{4}/);
+
+    return caseNumberMatch?.[0] ?? rawValue.trim();
+  }
+
+  private getViewCaseLink(ethosCaseReference: string) {
+    return this.page.locator(`a[aria-label^="view ${ethosCaseReference}:"]`);
+  }
+
+  private async continueFromChecklistToSelfAssignment(
+    caseNumber: string | string[],
+    submissionRef: string
+  ): Promise<void> {
+    const ethosCaseReference = this.normalizeCaseNumber(caseNumber);
     await this.clickContinue();
     const heading = this.page.locator('h1');
     await heading.waitFor({ state: 'visible' });
@@ -58,18 +74,12 @@ export default class Et3LoginPage extends BasePage {
 
     if (pageHeading.includes('ET3 Responses')) {
       await this.webActions.clickElementByCss(this.elements.respondToNewClaim);
-      await this.caseNumberPage(caseNumber);
+      await this.caseNumberPage(ethosCaseReference);
     } else if (!pageHeading.includes('Case Details')) {
       await this.webActions.verifyElementContainsText(heading, 'Case Details');
     }
 
     await this.caseDetailsPage(submissionRef);
-  }
-
-  private async goToCaseList(): Promise<void> {
-    const baseUrl = params.TestUrlRespondentUi.replace(/\/$/, '');
-    await this.page.goto(`${baseUrl}/case-list?lng=en`);
-    await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'ET3 Responses');
   }
 
   async caseNumberPage(caseNumber: string): Promise<void> {
@@ -91,14 +101,33 @@ export default class Et3LoginPage extends BasePage {
     await this.clickContinue();
   }
 
-  async checkAndSubmitPage(caseNumber: string): Promise<void> {
+  async checkAndSubmitPage(caseNumber: string | string[]): Promise<void> {
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Check and submit');
     await this.webActions.checkElementById('#confirmation');
     await this.submitButton();
 
-    // Self-assignment may redirect to case details; open the case list to verify assignment.
-    await this.goToCaseList();
-    await this.webActions.verifyElementToBeVisible(this.page.locator(this.elements.respondToNewClaim));
-    await this.webActions.clickElementByLabel('view ' + caseNumber.toString() + ':');
+    await this.waitForCaseInAwaitingResponse(caseNumber);
+  }
+
+  private async waitForCaseInAwaitingResponse(caseNumber: string | string[]): Promise<void> {
+    const ethosCaseReference = this.normalizeCaseNumber(caseNumber);
+    const viewCaseLink = this.getViewCaseLink(ethosCaseReference);
+    const baseUrl = params.TestUrlRespondentUi.replace(/\/$/, '');
+    const maxAttempts = 24;
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      await this.page.goto(`${baseUrl}/case-list?lng=en`);
+      await this.page.locator('h1').filter({ hasText: 'ET3 Responses' }).waitFor({ state: 'visible' });
+
+      if ((await viewCaseLink.count()) > 0) {
+        await viewCaseLink.first().click();
+        return;
+      }
+
+      await this.page.waitForTimeout(5000);
+    }
+
+    await expect(viewCaseLink.first()).toBeVisible({ timeout: 10000 });
+    await viewCaseLink.first().click();
   }
 }
