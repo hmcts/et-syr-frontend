@@ -104,30 +104,60 @@ export default class Et3LoginPage extends BasePage {
   async checkAndSubmitPage(caseNumber: string | string[]): Promise<void> {
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Check and submit');
     await this.webActions.checkElementById('#confirmation');
-    await this.submitButton();
+
+    await Promise.all([
+      this.page.waitForURL(/\/(case-list|case-details)(\/|$|\?)/, { timeout: 90000 }),
+      this.submitButton(),
+    ]);
 
     await this.waitForCaseInAwaitingResponse(caseNumber);
   }
 
-  private async waitForCaseInAwaitingResponse(caseNumber: string | string[]): Promise<void> {
-    const ethosCaseReference = this.normalizeCaseNumber(caseNumber);
-    const viewCaseLink = this.getViewCaseLink(ethosCaseReference);
+  private async openCaseList(): Promise<void> {
     const baseUrl = params.TestUrlRespondentUi.replace(/\/$/, '');
-    const maxAttempts = 24;
+    const caseListUrl = `${baseUrl}/case-list?lng=en`;
 
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      await this.page.goto(`${baseUrl}/case-list?lng=en`);
-      await this.page.locator('h1').filter({ hasText: 'ET3 Responses' }).waitFor({ state: 'visible' });
-
-      if ((await viewCaseLink.count()) > 0) {
-        await viewCaseLink.first().click();
-        return;
-      }
-
-      await this.page.waitForTimeout(5000);
+    if (this.page.url().includes('/case-list')) {
+      await this.page.reload({ waitUntil: 'domcontentloaded' });
+      return;
     }
 
-    await expect(viewCaseLink.first()).toBeVisible({ timeout: 10000 });
-    await viewCaseLink.first().click();
+    try {
+      await this.page.goto(caseListUrl, { waitUntil: 'domcontentloaded' });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (message.includes('ERR_ABORTED') || message.includes('detached')) {
+        await this.page.waitForLoadState('domcontentloaded');
+        return;
+      }
+      throw error;
+    }
+  }
+
+  private async waitForCaseInAwaitingResponse(caseNumber: string | string[]): Promise<void> {
+    const ethosCaseReference = this.normalizeCaseNumber(caseNumber);
+
+    if (this.page.url().includes('/case-details')) {
+      return;
+    }
+
+    const viewCaseLink = this.getViewCaseLink(ethosCaseReference);
+    const rowViewLink = this.page.getByRole('row').filter({ hasText: ethosCaseReference }).getByRole('link').first();
+
+    await expect(async () => {
+      await this.openCaseList();
+      await expect(this.page.locator('h1')).toContainText('ET3 Responses', { timeout: 10000 });
+
+      const hasViewLink = (await viewCaseLink.count()) > 0;
+      const hasRowLink = (await rowViewLink.count()) > 0;
+      expect(hasViewLink || hasRowLink).toBeTruthy();
+    }).toPass({ timeout: 90000, intervals: [5000] });
+
+    if ((await viewCaseLink.count()) > 0) {
+      await viewCaseLink.first().click();
+      return;
+    }
+
+    await rowViewLink.click();
   }
 }
