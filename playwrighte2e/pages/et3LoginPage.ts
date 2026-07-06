@@ -104,17 +104,22 @@ export default class Et3LoginPage extends BasePage {
   async checkAndSubmitPage(caseNumber: string | string[]): Promise<void> {
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Check and submit');
 
-    const confirmationCheckbox = this.page.getByRole('checkbox', {
-      name: /I confirm all these details are accurate and match what is written on the case/i,
-    });
+    const confirmationCheckbox = this.page.locator('#selfAssignmentCheck-confirmation');
     await confirmationCheckbox.check();
+    await expect(confirmationCheckbox).toBeChecked();
 
-    await Promise.all([
-      this.page.waitForURL(/\/(case-list|case-details)(\/|$|\?)/, { timeout: 90000, waitUntil: 'domcontentloaded' }),
-      this.page.getByRole('button', { name: 'Submit' }).click(),
-    ]);
+    await this.page.getByRole('button', { name: 'Submit' }).click();
+    await this.page.waitForLoadState('domcontentloaded');
 
-    await this.assertSelfAssignmentSucceeded();
+    try {
+      await this.page.waitForURL(/\/(case-list|case-details)(\/|$|\?)/, {
+        timeout: 30000,
+        waitUntil: 'domcontentloaded',
+      });
+    } catch {
+      await this.assertSelfAssignmentSucceeded();
+    }
+
     await this.waitForCaseInAwaitingResponse(caseNumber);
   }
 
@@ -123,11 +128,19 @@ export default class Et3LoginPage extends BasePage {
       return;
     }
 
-    const errorSummary = await this.page.locator('.govuk-error-summary').textContent();
-    const errorMessage = await this.page.locator('.govuk-error-message').first().textContent();
-    const visibleError = (errorSummary ?? errorMessage ?? 'Self-assignment submit did not complete').trim();
+    const errorTexts = await this.page
+      .locator('.govuk-error-summary__list li, .govuk-error-summary__body, .govuk-error-message')
+      .allTextContents();
+    const visibleErrors = errorTexts
+      .map(text => text.trim())
+      .filter(Boolean)
+      .join('; ');
 
-    throw new Error(`Self-assignment failed on check and submit page: ${visibleError}`);
+    throw new Error(
+      `Self-assignment submit failed on ${this.page.url()}. ${
+        visibleErrors || 'No validation message shown — assignCaseUserRole API likely failed on preview.'
+      }`
+    );
   }
 
   private async openCaseList(): Promise<void> {
