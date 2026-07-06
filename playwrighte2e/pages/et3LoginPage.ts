@@ -103,14 +103,31 @@ export default class Et3LoginPage extends BasePage {
 
   async checkAndSubmitPage(caseNumber: string | string[]): Promise<void> {
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Check and submit');
-    await this.webActions.checkElementById('#confirmation');
+
+    const confirmationCheckbox = this.page.getByRole('checkbox', {
+      name: /I confirm all these details are accurate and match what is written on the case/i,
+    });
+    await confirmationCheckbox.check();
 
     await Promise.all([
-      this.page.waitForURL(/\/(case-list|case-details)(\/|$|\?)/, { timeout: 90000 }),
-      this.submitButton(),
+      this.page.waitForURL(/\/(case-list|case-details)(\/|$|\?)/, { timeout: 90000, waitUntil: 'domcontentloaded' }),
+      this.page.getByRole('button', { name: 'Submit' }).click(),
     ]);
 
+    await this.assertSelfAssignmentSucceeded();
     await this.waitForCaseInAwaitingResponse(caseNumber);
+  }
+
+  private async assertSelfAssignmentSucceeded(): Promise<void> {
+    if (!this.page.url().includes('self-assignment-check')) {
+      return;
+    }
+
+    const errorSummary = await this.page.locator('.govuk-error-summary').textContent();
+    const errorMessage = await this.page.locator('.govuk-error-message').first().textContent();
+    const visibleError = (errorSummary ?? errorMessage ?? 'Self-assignment submit did not complete').trim();
+
+    throw new Error(`Self-assignment failed on check and submit page: ${visibleError}`);
   }
 
   private async openCaseList(): Promise<void> {
