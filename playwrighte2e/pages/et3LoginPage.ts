@@ -102,11 +102,10 @@ export default class Et3LoginPage extends BasePage {
   }
 
   async checkAndSubmitPage(caseNumber: string | string[]): Promise<void> {
+    await expect(this.page).toHaveURL(/self-assignment-check/);
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Check and submit');
 
-    const confirmationCheckbox = this.page.locator('#selfAssignmentCheck-confirmation');
-    await confirmationCheckbox.check();
-    await expect(confirmationCheckbox).toBeChecked();
+    await this.checkSelfAssignmentConfirmation();
 
     await this.page.getByRole('button', { name: 'Submit' }).click();
     await this.page.waitForLoadState('domcontentloaded');
@@ -121,6 +120,30 @@ export default class Et3LoginPage extends BasePage {
     }
 
     await this.waitForCaseInAwaitingResponse(caseNumber);
+  }
+
+  private async checkSelfAssignmentConfirmation(): Promise<void> {
+    const checkboxByRole = this.page.getByRole('checkbox', {
+      name: /I confirm all these details are accurate/i,
+    });
+    const checkboxById = this.page.locator('#confirmation, #selfAssignmentCheck-confirmation');
+
+    if ((await checkboxByRole.count()) > 0) {
+      await checkboxByRole.check();
+      await expect(checkboxByRole).toBeChecked();
+      return;
+    }
+
+    if ((await checkboxById.count()) > 0) {
+      await checkboxById.first().check();
+      await expect(checkboxById.first()).toBeChecked();
+      return;
+    }
+
+    const heading = await this.page.locator('h1').textContent();
+    throw new Error(
+      `Confirmation checkbox not found on ${this.page.url()}. Page heading: ${heading?.trim() ?? 'unknown'}`
+    );
   }
 
   private async assertSelfAssignmentSucceeded(): Promise<void> {
