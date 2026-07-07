@@ -64,6 +64,16 @@ export const handleUpdateDraftCase = async (req: AppRequest, logger: Logger): Pr
   }
 };
 
+export const handleUpdateSubmittedCaseFlags = async (req: AppRequest, logger: Logger): Promise<void> => {
+  const response = await getCaseApi(req.session.user?.accessToken).updateDraftCase(req.session.userCase);
+  logger.info(`Updated submitted case flags id: ${req.session.userCase.id}`);
+  req.session.userCase = {
+    ...req.session.userCase,
+    ...formatApiCaseDataToCaseWithId(response.data),
+  };
+  req.session.save();
+};
+
 export const setUserCase = (req: AppRequest, formData: Partial<CaseWithId>, fieldsToReset: string[]): void => {
   if (!req.session.userCase) {
     req.session.userCase = {} as CaseWithId;

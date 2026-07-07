@@ -97,6 +97,10 @@ export const TranslationKeys = {
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
   CHANGE_LEGAL_REPRESENTATIVE: 'change-legal-representative',
+
+  YOUR_SUPPORT: 'your-support',
+  YOUR_SUPPORT_CONFIRMATION: 'your-support-confirmation',
+  YOUR_SUPPORT_SUBMITTED_CONFIRMATION: 'your-support-submitted-confirmation',
 } as const;
 
 export const PageUrls = {
@@ -200,6 +204,12 @@ export const PageUrls = {
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
   CHANGE_LEGAL_REPRESENTATIVE: '/change-legal-representative',
+
+  YOUR_SUPPORT: '/your-support',
+  YOUR_SUPPORT_REDIRECT: '/your-support-redirect',
+  YOUR_SUPPORT_CALLBACK: '/your-support/:id',
+  YOUR_SUPPORT_CONFIRMATION: '/your-support-confirmation',
+  YOUR_SUPPORT_SUBMITTED_CONFIRMATION: '/your-support-submitted-confirmation',
 } as const;
 
 export const InterceptPaths = {

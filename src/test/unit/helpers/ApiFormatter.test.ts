@@ -370,6 +370,7 @@ describe('Format Case Data to Frontend Model', () => {
       noticeEnds: undefined,
       hearingPreferences: undefined,
       hearingAssistance: undefined,
+      respondentExternalFlags: undefined,
       claimantContactPreference: undefined,
       claimantContactLanguagePreference: undefined,
       claimantHearingLanguagePreference: undefined,

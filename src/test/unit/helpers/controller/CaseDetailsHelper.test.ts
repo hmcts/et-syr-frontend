@@ -2,13 +2,13 @@ import AxiosInstance from 'axios';
 
 import { AppRequest } from '../../../../main/definitions/appRequest';
 import { YesOrNo } from '../../../../main/definitions/case';
-import { Applicant, PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
+import { Applicant, PageUrls, PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../../../../main/definitions/links';
 import { isResponseToTribunalRequired } from '../../../../main/helpers/GenericTseApplicationHelper';
-import { getET3CaseDetailsLinkNames } from '../../../../main/helpers/controller/CaseDetailsHelper';
+import { getET3CaseDetailsLinkNames, getSections } from '../../../../main/helpers/controller/CaseDetailsHelper';
 import { CaseApi } from '../../../../main/services/CaseService';
 import * as CaseService from '../../../../main/services/CaseService';
-import { mockRequest } from '../../mocks/mockRequest';
+import { mockRequest, mockRequestWithTranslation } from '../../mocks/mockRequest';
 import { mockUserDetails } from '../../mocks/mockUser';
 import mockUserCase from '../../mocks/mockUserCase';
 
@@ -44,6 +44,7 @@ describe('Case Details Helper', () => {
       const statuses: ET3CaseDetailsLinksStatuses = null;
       const result = await getET3CaseDetailsLinkNames(statuses, req);
       expect(result[ET3CaseDetailsLinkNames.PersonalDetails]).toBe(LinkStatus.NOT_YET_AVAILABLE);
+      expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.OPTIONAL);
       expect(result[ET3CaseDetailsLinkNames.ET1ClaimForm]).toBe(LinkStatus.NOT_VIEWED);
       expect(result[ET3CaseDetailsLinkNames.ClaimantContactDetails]).toBe(LinkStatus.READY_TO_VIEW);
       expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.NOT_STARTED_YET);
@@ -56,6 +57,7 @@ describe('Case Details Helper', () => {
       const statuses: ET3CaseDetailsLinksStatuses = undefined;
       const result = await getET3CaseDetailsLinkNames(statuses, req);
       expect(result[ET3CaseDetailsLinkNames.PersonalDetails]).toBe(LinkStatus.NOT_YET_AVAILABLE);
+      expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.OPTIONAL);
       expect(result[ET3CaseDetailsLinkNames.ET1ClaimForm]).toBe(LinkStatus.NOT_VIEWED);
       expect(result[ET3CaseDetailsLinkNames.ClaimantContactDetails]).toBe(LinkStatus.READY_TO_VIEW);
       expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.NOT_STARTED_YET);
@@ -169,6 +171,38 @@ describe('Case Details Helper', () => {
       const statuses = {};
       const result = await getET3CaseDetailsLinkNames(statuses, req);
       expect(result[ET3CaseDetailsLinkNames.OtherRespondentApplications]).toBe(LinkStatus.VIEWED);
+    });
+  });
+
+  describe('getSections', () => {
+    it('adds Your Support under personal details in the first section', () => {
+      const req = mockRequestWithTranslation(
+        {},
+        {
+          section1: 'About you',
+          personalDetails: 'View and edit your personal details',
+          yourSupport: 'Your Support',
+          notAvailableYet: 'Not available yet',
+          optional: 'Optional',
+        }
+      );
+      const selectedRespondent = { et3Status: '' };
+      const statuses = new ET3CaseDetailsLinksStatuses();
+
+      const sections = getSections(statuses, selectedRespondent, req);
+
+      expect(sections[0].links.map(link => link.linkTxt)).toEqual([
+        'View and edit your personal details',
+        'Your Support',
+      ]);
+      expect(sections[0].links[1]).toEqual(
+        expect.objectContaining({
+          linkTxt: 'Your Support',
+          shouldShow: true,
+          status: 'Optional',
+          url: PageUrls.YOUR_SUPPORT,
+        })
+      );
     });
   });
 });

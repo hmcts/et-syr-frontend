@@ -14,7 +14,7 @@ import {
 } from './definition';
 import { HubLinksStatuses } from './hub';
 import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from './links';
-import { UnknownRecord } from './util-types';
+import { TypeItem, UnknownRecord } from './util-types';
 
 export enum Checkbox {
   Checked = 'checked',
@@ -208,6 +208,8 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3IsRespondentAddressCorrect?: YesOrNo;
   et3Status?: string;
   representativeRemoved?: YesOrNo;
+
+  respondentExternalFlags?: CaseFlags;
 }
 
 export interface RespondentApiModel {
@@ -246,6 +248,7 @@ export interface Case {
   claimantContactPreference?: EmailOrPost;
   claimantContactLanguagePreference?: EnglishOrWelsh;
   claimantHearingLanguagePreference?: EnglishOrWelsh;
+  respondentExternalFlags?: CaseFlags;
   claimantRepresentedQuestion?: YesOrNo;
   caseSource?: string;
   representativeClaimantType?: RepresentedTypeC;
@@ -561,4 +564,32 @@ export interface RepresentedTypeC {
 export interface Organisation {
   organisationID?: string;
   organisationName?: string;
+}
+
+export interface CaseFlags {
+  partyName?: string;
+  roleOnCase?: string;
+  groupId?: string;
+  visibility?: 'Internal' | 'External' | string;
+  details?: TypeItem<FlagDetail>[];
+}
+
+export interface FlagDetail {
+  name?: string;
+  name_cy?: string;
+  subTypeValue?: string;
+  subTypeValue_cy?: string;
+  subTypeKey?: string;
+  otherDescription?: string;
+  otherDescription_cy?: string;
+  flagComment?: string;
+  flagComment_cy?: string;
+  dateTimeModified?: string;
+  dateTimeCreated?: string;
+  path?: TypeItem<string>[];
+  hearingRelevant?: string;
+  flagCode?: string;
+  status?: 'Active' | 'Inactive' | string;
+  requestReason?: string;
+  availableExternally?: string;
 }
