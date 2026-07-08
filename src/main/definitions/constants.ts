@@ -112,6 +112,7 @@ export const PageUrls = {
   SELF_ASSIGNMENT_CHECK: '/self-assignment-check',
   CASE_LIST: '/case-list',
   DOCUMENTS: '/documents',
+  MANIFEST_URL: '/assets/manifest.json',
   YOUR_RESPONSE_FORM: '/your-response-form',
   CASE_DETAILS_WITH_CASE_ID_RESPONDENT_CCD_ID_PARAMETERS: '/case-details/:caseSubmissionReference/:ccdId',
   CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER: '/case-details',

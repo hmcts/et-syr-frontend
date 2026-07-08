@@ -34,7 +34,6 @@ export default class ReasonableAdjustmentsController {
                 id: 'et3ResponseRespondentSupportDetails',
                 name: 'et3ResponseRespondentSupportDetails',
                 type: 'charactercount',
-                labelSize: 'normal',
                 label: (l: AnyRecord): string => l.yesDetail,
                 classes: 'govuk-text',
                 maxlength: 400,

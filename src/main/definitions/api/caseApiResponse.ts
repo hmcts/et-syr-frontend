@@ -67,6 +67,7 @@ export interface CaseData {
   tseRespondentStoredCollection?: GenericTseApplicationTypeItem[];
   sendNotificationCollection?: SendNotificationTypeItem[];
   hearingCollection?: HearingModel[];
+  judgementCollection?: JudgementModel[];
   repCollection?: RepresentativeApiModel[];
   bundlesClaimantCollection?: TypeItem<HearingBundleType>[];
   bundlesRespondentCollection?: TypeItem<HearingBundleType>[];
@@ -141,6 +142,10 @@ export interface HearingModel {
       };
     }[];
   };
+}
+
+export interface JudgementModel {
+  id: string;
 }
 
 export interface HearingVenueItem {
