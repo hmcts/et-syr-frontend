@@ -4,7 +4,6 @@ import { CaseTransferInfoResponse, CaseTransferType } from '../definitions/api/c
 import { AppRequest } from '../definitions/appRequest';
 import { RespondentET3Model } from '../definitions/case';
 import { DefaultValues, PageUrls } from '../definitions/constants';
-import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
 import { getCaseApi, isTransferredCaseAccessError } from '../services/CaseService';
@@ -146,29 +145,6 @@ export const getTransferredCaseNoAccessBody = (
   }
 
   return translations.noAccessBodyEcm;
-};
-
-export type LoadUserCaseResult = 'loaded' | 'transferred' | 'failed';
-
-export const loadUserCaseFromApi = async (
-  req: AppRequest,
-  res: Response,
-  caseId: string,
-  ccdId?: string
-): Promise<LoadUserCaseResult> => {
-  try {
-    req.session.userCase = formatApiCaseDataToCaseWithId(
-      (await getCaseApi(req.session.user?.accessToken).getUserCase(caseId)).data,
-      req
-    );
-    return 'loaded';
-  } catch (error) {
-    logger.error(`Failed to load user case from API: ${getSafeApiErrorSummary(error)}`);
-    if (await handleTransferredCaseRedirect(req, res, caseId, ccdId, error)) {
-      return 'transferred';
-    }
-    return 'failed';
-  }
 };
 
 export const applyCaseTransferInfoToSession = (

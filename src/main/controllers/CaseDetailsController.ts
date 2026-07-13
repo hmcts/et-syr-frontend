@@ -7,8 +7,8 @@ import { ET3Status } from '../definitions/definition';
 import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../definitions/links';
 import { TseNotification } from '../definitions/notification/tseNotification';
 import { formatDate, getDueDate } from '../helpers/ApiFormatter';
-import { loadUserCaseFromApi } from '../helpers/CaseTransferHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { LoadUserCaseResults, loadUserCaseFromApi } from '../helpers/LoadUserCaseHelper';
 import { getProgressBarItems } from '../helpers/ProgressBarHelpers';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import { getET3CaseDetailsLinkNames, getSections } from '../helpers/controller/CaseDetailsHelper';
@@ -25,11 +25,11 @@ export default class CaseDetailsController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const loadResult = await loadUserCaseFromApi(req, res, req.params.caseSubmissionReference, req.params.ccdId);
 
-    if (loadResult === 'transferred') {
+    if (loadResult === LoadUserCaseResults.TRANSFERRED) {
       return;
     }
 
-    if (loadResult === 'failed') {
+    if (loadResult === LoadUserCaseResults.FAILED) {
       return res.redirect(PageUrls.NOT_FOUND + getLanguageParam(req.url));
     }
 

@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
-import { loadUserCaseFromApi } from '../helpers/CaseTransferHelper';
+import { LoadUserCaseResults, loadUserCaseFromApi } from '../helpers/LoadUserCaseHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getNotificationTable } from '../helpers/controller/NotificationControllerHelper';
 import { RespondentUtils } from '../utils/RespondentUtils';
@@ -16,11 +16,11 @@ export default class NotificationController {
       RespondentUtils.findSelectedRespondentByRequest(req)?.ccdId
     );
 
-    if (loadResult === 'transferred') {
+    if (loadResult === LoadUserCaseResults.TRANSFERRED) {
       return;
     }
 
-    if (loadResult === 'failed') {
+    if (loadResult === LoadUserCaseResults.FAILED) {
       return res.redirect(PageUrls.NOT_FOUND + getLanguageParam(req.url));
     }
 

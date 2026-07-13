@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { ErrorPages, PageUrls, TseErrors, languages } from '../definitions/constants';
-import { loadUserCaseFromApi } from '../helpers/CaseTransferHelper';
+import { LoadUserCaseResults, loadUserCaseFromApi } from '../helpers/LoadUserCaseHelper';
 import { returnValidUrlWithPathParam } from '../helpers/RouterHelpers';
 import { clearTempFields } from '../helpers/controller/RespondToNotificationSubmitHelper';
 import { getLogger } from '../logger';
@@ -34,11 +34,11 @@ export default class RespondToNotificationStoreController {
         RespondentUtils.findSelectedRespondentByRequest(req)?.ccdId
       );
 
-      if (loadResult === 'transferred') {
+      if (loadResult === LoadUserCaseResults.TRANSFERRED) {
         return;
       }
 
-      if (loadResult === 'failed') {
+      if (loadResult === LoadUserCaseResults.FAILED) {
         return res.redirect(ErrorPages.NOT_FOUND + languageParam);
       }
 

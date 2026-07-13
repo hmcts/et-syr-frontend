@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { ErrorPages, PageUrls, TseErrors } from '../definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
-import { loadUserCaseFromApi } from '../helpers/CaseTransferHelper';
+import { LoadUserCaseResults, loadUserCaseFromApi } from '../helpers/LoadUserCaseHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getYourStoredApplicationList } from '../helpers/StoredApplicationHelper';
 import { clearTempFields } from '../helpers/controller/ContactTribunalSubmitHelper';
@@ -40,11 +40,11 @@ export default class ContactTribunalStoreController {
         RespondentUtils.findSelectedRespondentByRequest(req)?.ccdId
       );
 
-      if (loadResult === 'transferred') {
+      if (loadResult === LoadUserCaseResults.TRANSFERRED) {
         return;
       }
 
-      if (loadResult === 'failed') {
+      if (loadResult === LoadUserCaseResults.FAILED) {
         return res.redirect(ErrorPages.NOT_FOUND + languageParam);
       }
 

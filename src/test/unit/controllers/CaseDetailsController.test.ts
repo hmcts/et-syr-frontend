@@ -1,13 +1,14 @@
 import CaseDetailsController from '../../../main/controllers/CaseDetailsController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
-import { loadUserCaseFromApi } from '../../../main/helpers/CaseTransferHelper';
+import { LoadUserCaseResults, loadUserCaseFromApi } from '../../../main/helpers/LoadUserCaseHelper';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import { mockUserDetails } from '../mocks/mockUser';
 
 jest.mock('axios');
-jest.mock('../../../main/helpers/CaseTransferHelper', () => ({
+jest.mock('../../../main/helpers/LoadUserCaseHelper', () => ({
+  ...jest.requireActual('../../../main/helpers/LoadUserCaseHelper'),
   loadUserCaseFromApi: jest.fn(),
 }));
 
@@ -22,14 +23,14 @@ describe('CaseDetailsController', () => {
   const request = mockRequest({ t });
 
   beforeEach(() => {
-    loadUserCaseFromApiMock.mockResolvedValue('loaded');
+    loadUserCaseFromApiMock.mockResolvedValue(LoadUserCaseResults.LOADED);
     jest.clearAllMocks();
   });
 
   it('should render respondent replies page', async () => {
     loadUserCaseFromApiMock.mockImplementationOnce(async req => {
       req.session.userCase = mockCaseWithIdWithRespondents;
-      return 'loaded';
+      return LoadUserCaseResults.LOADED;
     });
     request.session.user = mockUserDetails;
     request.session.selectedRespondentIndex = 0;
@@ -44,7 +45,7 @@ describe('CaseDetailsController', () => {
   });
 
   it('should redirect to transferred case page when transfer info is available', async () => {
-    loadUserCaseFromApiMock.mockResolvedValueOnce('transferred');
+    loadUserCaseFromApiMock.mockResolvedValueOnce(LoadUserCaseResults.TRANSFERRED);
     request.session.user = mockUserDetails;
     request.params = { caseSubmissionReference: '1234', ccdId: 'ccd-1' };
 
@@ -55,7 +56,7 @@ describe('CaseDetailsController', () => {
   });
 
   it('should redirect to not found when case access fails and case is not transferred', async () => {
-    loadUserCaseFromApiMock.mockResolvedValueOnce('failed');
+    loadUserCaseFromApiMock.mockResolvedValueOnce(LoadUserCaseResults.FAILED);
     request.session.user = mockUserDetails;
     request.url = '/case-details/1234/ccd-1?lng=en';
     request.params = { caseSubmissionReference: '1234', ccdId: 'ccd-1' };
