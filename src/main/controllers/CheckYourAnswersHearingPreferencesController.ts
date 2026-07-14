@@ -28,7 +28,7 @@ export default class CheckYourAnswersHearingPreferencesController extends BaseCY
       this.form,
       ET3HubLinkNames.EmployerDetails,
       linkStatus,
-      PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+      PageUrls.YOUR_SUPPORT
     );
   };
 

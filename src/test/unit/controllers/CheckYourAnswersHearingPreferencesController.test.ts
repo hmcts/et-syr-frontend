@@ -49,12 +49,12 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
   });
 
   describe('POST method', () => {
-    it('should go to the respondent response task list on valid submission when Yes is selected', async () => {
+    it('should go to your support on valid submission when Yes is selected', async () => {
       (conditionalRedirect as jest.Mock).mockReturnValue(true);
 
       updateET3ResponseWithET3FormMock.mockImplementation(
         createMockedUpdateET3ResponseWithET3FormFunction(
-          PageUrls.RESPONDENT_RESPONSE_TASK_LIST,
+          PageUrls.YOUR_SUPPORT,
           request,
           response,
           [],
@@ -65,23 +65,23 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
       await controller.post(request, response);
 
       expect(request.session.userCase).toEqual(mockCaseWithIdWithRespondents);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_RESPONSE_TASK_LIST);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.YOUR_SUPPORT);
       expect(updateET3ResponseWithET3FormMock).toHaveBeenCalledWith(
         request,
         response,
         expect.anything(),
         expect.anything(),
         LinkStatus.COMPLETED,
-        PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+        PageUrls.YOUR_SUPPORT
       );
     });
 
-    it('should go to the respondent response task list on valid submission when No is selected', async () => {
+    it('should go to your support on valid submission when No is selected', async () => {
       (conditionalRedirect as jest.Mock).mockReturnValue(false);
 
       updateET3ResponseWithET3FormMock.mockImplementation(
         createMockedUpdateET3ResponseWithET3FormFunction(
-          PageUrls.RESPONDENT_RESPONSE_TASK_LIST,
+          PageUrls.YOUR_SUPPORT,
           request,
           response,
           [],
@@ -92,14 +92,14 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
       await controller.post(request, response);
 
       expect(request.session.userCase).toEqual(mockCaseWithIdWithRespondents);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_RESPONSE_TASK_LIST);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.YOUR_SUPPORT);
       expect(updateET3ResponseWithET3FormMock).toHaveBeenCalledWith(
         request,
         response,
         expect.anything(),
         expect.anything(),
         LinkStatus.IN_PROGRESS_CYA,
-        PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+        PageUrls.YOUR_SUPPORT
       );
     });
 

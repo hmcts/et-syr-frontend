@@ -324,7 +324,7 @@ export default class YourSupportController {
     const userCase = req.session?.userCase;
 
     if (userCase?.state === CaseState.AWAITING_SUBMISSION_TO_HMCTS) {
-      return setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
+      return setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_TASK_LIST);
     }
 
     const caseDetailsUrl = this.getCaseDetailsUrl(req);
@@ -360,7 +360,7 @@ export default class YourSupportController {
 
   private getCuiCompletionUrl(req: AppRequest): string {
     const confirmationUrl = this.isDraftCase(req)
-      ? PageUrls.YOUR_SUPPORT_CONFIRMATION
+      ? PageUrls.RESPONDENT_RESPONSE_TASK_LIST
       : PageUrls.YOUR_SUPPORT_SUBMITTED_CONFIRMATION;
 
     return setUrlLanguage(req, confirmationUrl);
