@@ -82,7 +82,7 @@ const getOtherRespondentAppsLinkStatus = (req: AppRequest): LinkStatus => {
   return getLinkStatus(apps, user, false);
 };
 
-const getYourSupportLinkStatus = (req: AppRequest): LinkStatus => {
+export const getYourSupportLinkStatus = (req: AppRequest): LinkStatus => {
   return req.session?.userCase?.respondentExternalFlags?.details?.length ? LinkStatus.SUBMITTED : LinkStatus.OPTIONAL;
 };
 

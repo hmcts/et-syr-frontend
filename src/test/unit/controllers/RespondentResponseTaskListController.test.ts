@@ -73,7 +73,9 @@ describe('Respondent response task list controller', () => {
         );
         // checking statuses
         expect(link.status).toBeInstanceOf(Function);
-        expect(link.status(request.t(DefaultValues.STRING_EMPTY))).toBe(expectedRespondentHubTestStatuses[index]);
+        expect(link.status(request.t(DefaultValues.STRING_EMPTY))).toBe(
+          expectedRespondentHubTestStatuses[index][linkIndex]
+        );
       });
     });
     expect(response.render).toHaveBeenCalledWith(
@@ -127,5 +129,40 @@ describe('Respondent response task list controller', () => {
     expect(request.t).toHaveBeenCalledWith(TranslationKeys.COMMON, { returnObjects: true });
     expect(request.t).toHaveBeenCalledWith(TranslationKeys.RESPONDENT_RESPONSE_TASK_LIST, { returnObjects: true });
     expect(request.t).toHaveBeenCalledWith(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true });
+  });
+
+  it('should show Your Support as submitted when respondent external flags exist', async () => {
+    mockWelshFlag.mockResolvedValue(true);
+    const controller = new RespondentResponseTaskListController();
+    const response = mockResponse();
+    const request = mockRequest({
+      session: {
+        userCase: {
+          ...mockUserCaseComplete,
+          respondentExternalFlags: {
+            details: [
+              {
+                id: 'flag-1',
+                value: {},
+              },
+            ],
+          },
+        },
+        user: mockUserDetails,
+      },
+    });
+    request.session.selectedRespondentIndex = 0;
+    (request.t as unknown as jest.Mock).mockReturnValue(mockRespondentHubTranslations);
+
+    await controller.get(request, response);
+
+    const renderMock = response.render as jest.Mock;
+    const sections: Section[] = renderMock.mock.calls[0][1].sections;
+    const yourSupportLink = sections[0].links.find(
+      link => link.linkTxt(mockRespondentHubTranslations) === 'Your Support'
+    );
+
+    expect(yourSupportLink.status(mockRespondentHubTranslations)).toBe('Submitted');
+    expect(yourSupportLink.url()).toBe(PageUrls.YOUR_SUPPORT);
   });
 });
