@@ -359,7 +359,7 @@ export default class YourSupportController {
 
   private getCuiCompletionUrl(req: AppRequest): string {
     const confirmationUrl = !this.isEt3ResponseSubmitted(req)
-      ? PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+      ? PageUrls.YOUR_SUPPORT_CONFIRMATION
       : PageUrls.YOUR_SUPPORT_SUBMITTED_CONFIRMATION;
 
     return setUrlLanguage(req, confirmationUrl);

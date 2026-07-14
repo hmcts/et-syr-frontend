@@ -67,7 +67,7 @@ describe('YourSupportController', () => {
     expect((res.render as jest.Mock).mock.calls[0][1].link).not.toContain(':ccdId');
   });
 
-  it('should redirect draft CUI callback to respondent response task list after saving flags', async () => {
+  it('should redirect draft CUI callback to your support confirmation after saving flags', async () => {
     const getJourneyDataMock = jest.fn().mockResolvedValue({
       action: CUIActions.SUBMIT,
       correlationId: '1234',
@@ -119,11 +119,11 @@ describe('YourSupportController', () => {
     expect(getJourneyDataMock).toHaveBeenCalledWith('journey-id', { serviceToken: 'service-token' });
     expect(handleUpdateDraftCase).toHaveBeenCalledWith(req, expect.anything());
     expect(res.redirect).toHaveBeenCalledWith(
-      `${PageUrls.RESPONDENT_RESPONSE_TASK_LIST}${languages.ENGLISH_URL_PARAMETER}`
+      `${PageUrls.YOUR_SUPPORT_CONFIRMATION}${languages.ENGLISH_URL_PARAMETER}`
     );
   });
 
-  it('should redirect pre-submitted ET3 CUI callback to respondent response task list', async () => {
+  it('should redirect pre-submitted ET3 CUI callback to your support confirmation', async () => {
     const getJourneyDataMock = jest.fn().mockResolvedValue({
       action: CUIActions.SUBMIT,
       correlationId: '1234',
@@ -184,7 +184,40 @@ describe('YourSupportController', () => {
     expect(getJourneyDataMock).toHaveBeenCalledWith('journey-id', { serviceToken: 'service-token' });
     expect(handleUpdateSubmittedCaseFlags).toHaveBeenCalledWith(req, expect.anything());
     expect(res.redirect).toHaveBeenCalledWith(
-      `${PageUrls.RESPONDENT_RESPONSE_TASK_LIST}${languages.ENGLISH_URL_PARAMETER}`
+      `${PageUrls.YOUR_SUPPORT_CONFIRMATION}${languages.ENGLISH_URL_PARAMETER}`
+    );
+  });
+
+  it('should render pre-submitted confirmation with a task list link', async () => {
+    const controller = new YourSupportController();
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+        state: CaseState.ACCEPTED,
+        responseReceived: YesOrNo.NO,
+        respondents: [
+          {
+            respondentName: 'Test Respondent',
+            ccdId: 'respondent-ccd-id',
+            responseReceived: YesOrNo.NO,
+          },
+        ],
+      },
+      session: {
+        selectedRespondentIndex: 0,
+      },
+    });
+    req.url = `${PageUrls.YOUR_SUPPORT_CONFIRMATION}${languages.ENGLISH_URL_PARAMETER}`;
+    (req.t as any) = jest.fn().mockReturnValue({});
+    const res = mockResponse();
+
+    await controller.confirmation(req, res);
+
+    expect(res.render).toHaveBeenCalledWith(
+      TranslationKeys.YOUR_SUPPORT_CONFIRMATION,
+      expect.objectContaining({
+        link: `${PageUrls.RESPONDENT_RESPONSE_TASK_LIST}${languages.ENGLISH_URL_PARAMETER}`,
+      })
     );
   });
 });
