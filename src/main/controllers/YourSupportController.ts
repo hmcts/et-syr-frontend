@@ -304,15 +304,9 @@ export default class YourSupportController {
   }
 
   private getFallbackUrl(req: AppRequest): string {
-    const userCase = req.session?.userCase;
-    if (userCase?.id && userCase?.ccdId) {
-      return setUrlLanguage(
-        req,
-        PageUrls.CASE_DETAILS_WITH_CASE_ID_RESPONDENT_CCD_ID_PARAMETERS.replace(':caseId', userCase.id).replace(
-          ':caseSubmissionReference',
-          userCase.ccdId
-        )
-      );
+    const caseDetailsUrl = this.getCaseDetailsUrl(req);
+    if (caseDetailsUrl) {
+      return setUrlLanguage(req, caseDetailsUrl);
     }
 
     return setUrlLanguage(req, PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER);
@@ -333,17 +327,35 @@ export default class YourSupportController {
       return setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
     }
 
-    if (userCase?.id && userCase?.ccdId) {
-      return setUrlLanguage(
-        req,
-        PageUrls.CASE_DETAILS_WITH_CASE_ID_RESPONDENT_CCD_ID_PARAMETERS.replace(':caseId', userCase.id).replace(
-          ':caseSubmissionReference',
-          userCase.ccdId
-        )
-      );
+    const caseDetailsUrl = this.getCaseDetailsUrl(req);
+    if (caseDetailsUrl) {
+      return setUrlLanguage(req, caseDetailsUrl);
     }
 
     return setUrlLanguage(req, PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER);
+  }
+
+  private getCaseDetailsUrl(req: AppRequest): string | undefined {
+    const userCase = req.session?.userCase;
+    const respondentCcdId = this.getSelectedRespondentCcdId(req);
+
+    if (!userCase?.id || !respondentCcdId) {
+      return undefined;
+    }
+
+    return PageUrls.CASE_DETAILS_WITH_CASE_ID_RESPONDENT_CCD_ID_PARAMETERS.replace(
+      ':caseSubmissionReference',
+      userCase.id
+    ).replace(':ccdId', respondentCcdId);
+  }
+
+  private getSelectedRespondentCcdId(req: AppRequest): string | undefined {
+    const selectedRespondentIndex = req.session?.selectedRespondentIndex;
+    if (selectedRespondentIndex === undefined || selectedRespondentIndex === null) {
+      return undefined;
+    }
+
+    return req.session?.userCase?.respondents?.[selectedRespondentIndex]?.ccdId;
   }
 
   private getCuiCompletionUrl(req: AppRequest): string {

@@ -2,11 +2,16 @@ import axios, { AxiosResponse } from 'axios';
 
 import { Form } from '../../../main/components/form';
 import { CaseApiDataResponse } from '../../../main/definitions/api/caseApiResponse';
-import { CaseWithId } from '../../../main/definitions/case';
+import { CaseFlags, CaseTypeId, CaseWithId } from '../../../main/definitions/case';
 import { DefaultValues, FieldsToReset, GenericTestConstants } from '../../../main/definitions/constants';
 import { CaseState } from '../../../main/definitions/definition';
 import { FormContent, FormFields } from '../../../main/definitions/form';
-import { handleUpdateDraftCase, resetFields, setUserCase } from '../../../main/helpers/CaseHelpers';
+import {
+  handleUpdateDraftCase,
+  handleUpdateSubmittedCaseFlags,
+  resetFields,
+  setUserCase,
+} from '../../../main/helpers/CaseHelpers';
 import * as CaseService from '../../../main/services/CaseService';
 import { CaseApi } from '../../../main/services/CaseService';
 import { isFieldFilledIn } from '../../../main/validators/validator';
@@ -45,6 +50,44 @@ describe('handle update draft case', () => {
     const req = mockRequest({ userCase: undefined, session: mockSession([], [], []) });
     handleUpdateDraftCase(req, mockLogger);
     expect(req.session.userCase).toBeDefined();
+  });
+});
+
+describe('handle update submitted case flags', () => {
+  it('should save submitted case flags without calling the draft update endpoint', async () => {
+    const respondentExternalFlags: CaseFlags = {
+      roleOnCase: 'Respondent',
+      details: [],
+    };
+    caseApi.updateDraftCase = jest.fn();
+    caseApi.updateSubmittedCaseFlags = jest.fn().mockResolvedValueOnce(
+      Promise.resolve({
+        data: {
+          id: '1234',
+          case_type_id: CaseTypeId.ENGLAND_WALES,
+          created_date: '2022-08-19T09:19:25.79202',
+          last_modified: '2022-08-19T09:19:25.817549',
+          state: CaseState.ACCEPTED,
+          case_data: {
+            respondentExternalFlags,
+          },
+        },
+      } as AxiosResponse<CaseApiDataResponse>)
+    );
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+        caseTypeId: CaseTypeId.ENGLAND_WALES,
+        state: CaseState.ACCEPTED,
+        respondentExternalFlags,
+      },
+    });
+
+    await handleUpdateSubmittedCaseFlags(req, mockLogger);
+
+    expect(caseApi.updateSubmittedCaseFlags).toHaveBeenCalledWith(expect.objectContaining({ respondentExternalFlags }));
+    expect(caseApi.updateDraftCase).not.toHaveBeenCalled();
+    expect(req.session.userCase.respondentExternalFlags).toEqual(respondentExternalFlags);
   });
 });
 

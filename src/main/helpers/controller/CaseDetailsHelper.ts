@@ -39,6 +39,7 @@ export const getET3CaseDetailsLinkNames = async (
   statuses = getResponseCaseDetailsLinkStatusesByRespondentCaseDetailsLinkStatuses(statuses);
   await updateApplicationsStatusIfNotExist(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantContactDetails] = LinkStatus.READY_TO_VIEW;
+  statuses[ET3CaseDetailsLinkNames.YourSupport] = getYourSupportLinkStatus(req);
   statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getClaimantAppsLinkStatus(req);
   statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = getOtherRespondentAppsLinkStatus(req);
@@ -79,6 +80,10 @@ const getOtherRespondentAppsLinkStatus = (req: AppRequest): LinkStatus => {
   const apps =
     userCase?.genericTseApplicationCollection?.filter(app => isOtherRespApplicationShare(app.value, user)) || [];
   return getLinkStatus(apps, user, false);
+};
+
+const getYourSupportLinkStatus = (req: AppRequest): LinkStatus => {
+  return req.session?.userCase?.respondentExternalFlags?.details?.length ? LinkStatus.SUBMITTED : LinkStatus.OPTIONAL;
 };
 
 const getLinkStatus = (apps: GenericTseApplicationTypeItem[], user: UserDetails, isYours: boolean): LinkStatus => {

@@ -28,7 +28,10 @@ describe('Case Details Helper', () => {
     beforeEach(() => {
       req = mockRequest({});
       req.session.user = mockUserDetails;
-      req.session.userCase = mockUserCase;
+      req.session.userCase = {
+        ...mockUserCase,
+        respondentExternalFlags: undefined,
+      };
     });
 
     it('returns NOT_YET_AVAILABLE when no applications exist', async () => {
@@ -63,6 +66,37 @@ describe('Case Details Helper', () => {
       expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.NOT_STARTED_YET);
       expect(result[ET3CaseDetailsLinkNames.ContactTribunal]).toBe(LinkStatus.OPTIONAL);
       expect(result[ET3CaseDetailsLinkNames.Documents]).toBe(LinkStatus.OPTIONAL);
+    });
+
+    it('returns SUBMITTED for Your Support when respondent external flags have details', async () => {
+      req.session.userCase.genericTseApplicationCollection = [];
+      req.session.userCase.respondentExternalFlags = {
+        details: [
+          {
+            id: 'flag-1',
+            value: {
+              name: 'Support request',
+            },
+          },
+        ],
+      };
+      const statuses = {};
+
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+
+      expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.SUBMITTED);
+    });
+
+    it('returns OPTIONAL for Your Support when respondent external flags have no details', async () => {
+      req.session.userCase.genericTseApplicationCollection = [];
+      req.session.userCase.respondentExternalFlags = {
+        details: [],
+      };
+      const statuses = {};
+
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+
+      expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.OPTIONAL);
     });
 
     it('returns NOT_YET_AVAILABLE when application collection is undefined', async () => {
