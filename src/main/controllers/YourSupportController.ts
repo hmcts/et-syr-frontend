@@ -11,6 +11,7 @@ import { handleUpdateDraftCase, handleUpdateSubmittedCaseFlags, setUserCase } fr
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageCode, returnValidUrl } from '../helpers/RouterHelpers';
+import { isEt3ResponseSubmitted as hasEt3ResponseSubmitted } from '../helpers/controller/CaseDetailsHelper';
 import { buildCuiFlagDetails, mergeRespondentExternalFlags } from '../helpers/controller/CuiFlagHelper';
 import { getLogger } from '../logger';
 
@@ -88,7 +89,7 @@ export default class YourSupportController {
       ...content,
       cancelLink,
       sessionErrors,
-      showNoSupport: this.isDraftCase(req),
+      showNoSupport: !this.isEt3ResponseSubmitted(req),
       supportNo: YesOrNo.NO,
       supportYes: YesOrNo.YES,
     });
@@ -321,9 +322,7 @@ export default class YourSupportController {
       return returnValidUrl(returnUrl);
     }
 
-    const userCase = req.session?.userCase;
-
-    if (userCase?.state === CaseState.AWAITING_SUBMISSION_TO_HMCTS) {
+    if (!this.isEt3ResponseSubmitted(req)) {
       return setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_TASK_LIST);
     }
 
@@ -359,11 +358,15 @@ export default class YourSupportController {
   }
 
   private getCuiCompletionUrl(req: AppRequest): string {
-    const confirmationUrl = this.isDraftCase(req)
+    const confirmationUrl = !this.isEt3ResponseSubmitted(req)
       ? PageUrls.RESPONDENT_RESPONSE_TASK_LIST
       : PageUrls.YOUR_SUPPORT_SUBMITTED_CONFIRMATION;
 
     return setUrlLanguage(req, confirmationUrl);
+  }
+
+  private isEt3ResponseSubmitted(req: AppRequest): boolean {
+    return hasEt3ResponseSubmitted(req);
   }
 
   private renderConfirmation(

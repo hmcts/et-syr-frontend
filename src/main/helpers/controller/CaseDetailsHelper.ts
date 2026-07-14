@@ -1,5 +1,5 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
-import { CaseWithId, RespondentET3Model } from '../../definitions/case';
+import { CaseWithId, RespondentET3Model, YesOrNo } from '../../definitions/case';
 import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { TranslationKeys } from '../../definitions/constants';
 import {
@@ -39,7 +39,7 @@ export const getET3CaseDetailsLinkNames = async (
   statuses = getResponseCaseDetailsLinkStatusesByRespondentCaseDetailsLinkStatuses(statuses);
   await updateApplicationsStatusIfNotExist(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantContactDetails] = LinkStatus.READY_TO_VIEW;
-  statuses[ET3CaseDetailsLinkNames.YourSupport] = getYourSupportLinkStatus(req);
+  statuses[ET3CaseDetailsLinkNames.YourSupport] = getYourSupportCaseDetailsLinkStatus(req);
   statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getClaimantAppsLinkStatus(req);
   statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = getOtherRespondentAppsLinkStatus(req);
@@ -84,6 +84,21 @@ const getOtherRespondentAppsLinkStatus = (req: AppRequest): LinkStatus => {
 
 export const getYourSupportLinkStatus = (req: AppRequest): LinkStatus => {
   return req.session?.userCase?.respondentExternalFlags?.details?.length ? LinkStatus.SUBMITTED : LinkStatus.OPTIONAL;
+};
+
+export const isEt3ResponseSubmitted = (req: AppRequest): boolean => {
+  const userCase = req.session?.userCase;
+  const selectedRespondentIndex = req.session?.selectedRespondentIndex;
+  const selectedRespondent =
+    selectedRespondentIndex === undefined || selectedRespondentIndex === null
+      ? undefined
+      : userCase?.respondents?.[selectedRespondentIndex];
+
+  return userCase?.responseReceived === YesOrNo.YES || selectedRespondent?.responseReceived === YesOrNo.YES;
+};
+
+const getYourSupportCaseDetailsLinkStatus = (req: AppRequest): LinkStatus => {
+  return isEt3ResponseSubmitted(req) ? getYourSupportLinkStatus(req) : LinkStatus.NOT_YET_AVAILABLE;
 };
 
 const getLinkStatus = (apps: GenericTseApplicationTypeItem[], user: UserDetails, isYours: boolean): LinkStatus => {

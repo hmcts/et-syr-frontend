@@ -47,7 +47,7 @@ describe('Case Details Helper', () => {
       const statuses: ET3CaseDetailsLinksStatuses = null;
       const result = await getET3CaseDetailsLinkNames(statuses, req);
       expect(result[ET3CaseDetailsLinkNames.PersonalDetails]).toBe(LinkStatus.NOT_YET_AVAILABLE);
-      expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.OPTIONAL);
+      expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.NOT_YET_AVAILABLE);
       expect(result[ET3CaseDetailsLinkNames.ET1ClaimForm]).toBe(LinkStatus.NOT_VIEWED);
       expect(result[ET3CaseDetailsLinkNames.ClaimantContactDetails]).toBe(LinkStatus.READY_TO_VIEW);
       expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.NOT_STARTED_YET);
@@ -60,7 +60,7 @@ describe('Case Details Helper', () => {
       const statuses: ET3CaseDetailsLinksStatuses = undefined;
       const result = await getET3CaseDetailsLinkNames(statuses, req);
       expect(result[ET3CaseDetailsLinkNames.PersonalDetails]).toBe(LinkStatus.NOT_YET_AVAILABLE);
-      expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.OPTIONAL);
+      expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.NOT_YET_AVAILABLE);
       expect(result[ET3CaseDetailsLinkNames.ET1ClaimForm]).toBe(LinkStatus.NOT_VIEWED);
       expect(result[ET3CaseDetailsLinkNames.ClaimantContactDetails]).toBe(LinkStatus.READY_TO_VIEW);
       expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.NOT_STARTED_YET);
@@ -70,6 +70,7 @@ describe('Case Details Helper', () => {
 
     it('returns SUBMITTED for Your Support when respondent external flags have details', async () => {
       req.session.userCase.genericTseApplicationCollection = [];
+      req.session.userCase.responseReceived = YesOrNo.YES;
       req.session.userCase.respondentExternalFlags = {
         details: [
           {
@@ -89,6 +90,7 @@ describe('Case Details Helper', () => {
 
     it('returns OPTIONAL for Your Support when respondent external flags have no details', async () => {
       req.session.userCase.genericTseApplicationCollection = [];
+      req.session.userCase.responseReceived = YesOrNo.YES;
       req.session.userCase.respondentExternalFlags = {
         details: [],
       };
@@ -97,6 +99,19 @@ describe('Case Details Helper', () => {
       const result = await getET3CaseDetailsLinkNames(statuses, req);
 
       expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.OPTIONAL);
+    });
+
+    it('returns NOT_YET_AVAILABLE for Your Support before the ET3 response is submitted', async () => {
+      req.session.userCase.genericTseApplicationCollection = [];
+      req.session.userCase.responseReceived = YesOrNo.NO;
+      req.session.userCase.respondentExternalFlags = {
+        details: [],
+      };
+      const statuses = {};
+
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+
+      expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.NOT_YET_AVAILABLE);
     });
 
     it('returns NOT_YET_AVAILABLE when application collection is undefined', async () => {
