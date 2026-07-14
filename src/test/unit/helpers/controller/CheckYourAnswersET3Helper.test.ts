@@ -5,7 +5,6 @@ import {
   TypeOfOrganisation,
   YesOrNo,
   YesOrNoOrNotApplicable,
-  YesOrNoOrNotSure,
 } from '../../../../main/definitions/case';
 import { PageUrls } from '../../../../main/definitions/constants';
 import {
@@ -56,7 +55,6 @@ describe('CheckYourAnswersET3Helper', () => {
   // Define URLs for sections 2
   const section2Urls = [
     PageUrls.HEARING_PREFERENCES,
-    PageUrls.REASONABLE_ADJUSTMENTS,
     PageUrls.RESPONDENT_EMPLOYEES,
     PageUrls.RESPONDENT_SITES,
     PageUrls.RESPONDENT_SITE_EMPLOYEES,
@@ -177,7 +175,6 @@ describe('CheckYourAnswersET3Helper', () => {
     }
 
     userCase.et3ResponseHearingRespondent = [HearingPreferenceET3.PHONE];
-    userCase.et3ResponseRespondentSupportNeeded = YesOrNoOrNotSure.NO;
     userCase.et3ResponseRespondentSupportDetails = '';
     userCase.et3ResponseEmploymentCount = '10';
     userCase.et3ResponseMultipleSites = YesOrNo.YES;
@@ -189,10 +186,8 @@ describe('CheckYourAnswersET3Helper', () => {
   });
 
   // Tests for section 2 with POST SELECTED
-  it('should return correct summary list rows for section 2 when all fields are populated POST selected', () => {
+  it('should not include legacy reasonable adjustments rows in section 2', () => {
     const expectedRows: SummaryListRow[] = [];
-
-    section2Urls.splice(2, 0, PageUrls.REASONABLE_ADJUSTMENTS);
 
     for (const pageUrl of section2Urls) {
       expectedRows.push(
@@ -206,7 +201,6 @@ describe('CheckYourAnswersET3Helper', () => {
     }
 
     userCase.et3ResponseHearingRespondent = [HearingPreferenceET3.PHONE];
-    userCase.et3ResponseRespondentSupportNeeded = YesOrNoOrNotSure.YES;
     userCase.et3ResponseRespondentSupportDetails = 'Support Needed';
     userCase.et3ResponseEmploymentCount = '10';
     userCase.et3ResponseMultipleSites = YesOrNo.YES;
@@ -215,6 +209,9 @@ describe('CheckYourAnswersET3Helper', () => {
     const result = getEt3Section2(userCase, translationsMock);
 
     expect(result).toEqual(expectedRows);
+    expect(result).not.toEqual(
+      expect.arrayContaining([expect.objectContaining({ key: { text: translationsMock.section2.disabilitySupport } })])
+    );
   });
 
   // Tests for section 3

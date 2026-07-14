@@ -7,7 +7,6 @@ import {
   TypeOfOrganisation,
   YesOrNo,
   YesOrNoOrNotApplicable,
-  YesOrNoOrNotSure,
 } from '../../definitions/case';
 import { Et1Address } from '../../definitions/complexTypes/et1Address';
 import { DefaultValues, PageUrls } from '../../definitions/constants';
@@ -192,32 +191,6 @@ export const getEt3Section2 = (
       hideChangeLink ? undefined : sectionCya
     )
   );
-
-  et3ResponseSection2.push(
-    addSummaryRowWithAction(
-      translations.section2.disabilitySupport,
-      {
-        [YesOrNoOrNotSure.YES]: translations.oesYesOrNo.yes,
-        [YesOrNoOrNotSure.NO]: translations.oesYesOrNo.no,
-        [YesOrNoOrNotSure.NOT_SURE]: translations.section2.disabilitySupportNotSure,
-      }[userCase.et3ResponseRespondentSupportNeeded] ?? translations.notProvided,
-      PageUrls.REASONABLE_ADJUSTMENTS,
-      hideChangeLink ? undefined : translations.change,
-      hideChangeLink ? undefined : sectionCya
-    )
-  );
-
-  if (YesOrNoOrNotSure.YES === userCase.et3ResponseRespondentSupportNeeded) {
-    et3ResponseSection2.push(
-      addSummaryRowWithAction(
-        translations.section2.supportRequest,
-        userCase.et3ResponseRespondentSupportDetails,
-        PageUrls.REASONABLE_ADJUSTMENTS,
-        hideChangeLink ? undefined : translations.change,
-        hideChangeLink ? undefined : sectionCya
-      )
-    );
-  }
 
   et3ResponseSection2.push(
     addSummaryRowWithAction(
