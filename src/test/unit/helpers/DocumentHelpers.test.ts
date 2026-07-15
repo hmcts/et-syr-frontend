@@ -1,9 +1,12 @@
+import { AxiosResponse } from 'axios';
+
 import { Document } from '../../../main/definitions/case';
 import { DefaultValues } from '../../../main/definitions/constants';
 import { DocumentDetail } from '../../../main/definitions/definition';
 import {
   combineDocuments,
   combineUserCaseDocuments,
+  findContentTypeByDocument,
   findContentTypeByDocumentDetail,
   findUploadedDocumentIdByDocumentUrl,
   formatDocumentDetailToApiDocumentTypeItem,
@@ -131,6 +134,23 @@ describe('Documents Helper Test', () => {
       [documentDetailWithoutMimeTypeAndOriginalDocumentName, undefined],
     ])('%o document type should be %s', (documentDetailItem: DocumentDetail, contentType: string) => {
       expect(findContentTypeByDocumentDetail(documentDetailItem)).toStrictEqual(contentType);
+    });
+  });
+
+  describe('FindContentTypeByDocument', () => {
+    it('should return content type from document headers', () => {
+      const document = { headers: { 'content-type': 'application/pdf' } };
+      expect(findContentTypeByDocument(document as AxiosResponse)).toStrictEqual('application/pdf');
+    });
+
+    it('should find content type from original filename header', () => {
+      const document = { headers: { originalfilename: 'test.doc' } };
+      expect(findContentTypeByDocument(document as AxiosResponse)).toStrictEqual('application/vnd.ms-word');
+    });
+
+    it('should find content type from content disposition header filename', () => {
+      const document = { headers: { 'content-disposition': 'attachment; filename="test.pdf"' } };
+      expect(findContentTypeByDocument(document as AxiosResponse)).toStrictEqual('application/pdf');
     });
   });
 
