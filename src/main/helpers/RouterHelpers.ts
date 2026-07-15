@@ -76,6 +76,32 @@ export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): strin
 };
 
 /**
+ * Validates and returns a URL built from a known PageUrl template with a single path parameter replaced.
+ * Prevents open redirects by ensuring the URL template is a known PageUrl value and the parameter value
+ * does not contain unsafe characters.
+ *
+ * @param {string} urlTemplate - A URL template from PageUrls (e.g., PageUrls.RESPOND_TO_NOTIFICATION)
+ * @param {string} paramName - The parameter name to replace (e.g., 'itemId')
+ * @param {string} paramValue - The value to substitute for the parameter
+ * @param {string} languageParam - Language query parameter to append (e.g., '?lng=en')
+ * @return {string}
+ */
+export const returnValidUrlWithPathParam = (
+  urlTemplate: string,
+  paramName: string,
+  paramValue: string,
+  languageParam: string
+): string => {
+  if (StringUtils.isBlank(paramValue) || !/^[\w-]+$/.test(paramValue)) {
+    return ErrorPages.NOT_FOUND;
+  }
+  if (!(Object.values(PageUrls) as string[]).includes(urlTemplate)) {
+    return ErrorPages.NOT_FOUND;
+  }
+  return urlTemplate.replace(':' + paramName, paramValue) + languageParam;
+};
+
+/**
  * Checks for a valid case details url stored within the system to avoid open redirects
  *
  * @param {string} redirectUrl
@@ -118,6 +144,29 @@ export const returnValidNotAllowedEndPointsForwardingUrl = (redirectUrl: string,
     allParams[1] +
     getLanguageParam(redirectUrl)
   );
+};
+
+/**
+ * Validates and returns a case details URL, guarding against open redirects by verifying
+ * the case ID matches the session and the respondent CCD ID exists in the session's respondents list.
+ *
+ * @param {string} caseId - The case ID to include in the URL
+ * @param {string} ccdId - The respondent CCD ID to include in the URL
+ * @param {AppRequest} request - The request containing session data for validation
+ * @return {string}
+ */
+export const returnSafeCaseDetailsUrl = (caseId: string, ccdId: string, request: AppRequest): string => {
+  if (
+    StringUtils.isBlank(caseId) ||
+    StringUtils.isBlank(ccdId) ||
+    String(request?.session?.userCase?.id) !== caseId ||
+    !request?.session?.userCase?.respondents?.some(r => r.ccdId === ccdId)
+  ) {
+    return ErrorPages.NOT_FOUND;
+  }
+  const langParam =
+    request?.session?.lang === languages.WELSH ? languages.WELSH_URL_PARAMETER : languages.ENGLISH_URL_PARAMETER;
+  return `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${caseId}/${ccdId}${langParam}`;
 };
 
 export const isClearSelection = (req: AppRequest): boolean => {

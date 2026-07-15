@@ -42,7 +42,6 @@ export default class RespondentNameController {
                 id: 'responseRespondentName',
                 name: 'responseRespondentName',
                 type: 'text',
-                labelSize: 'normal',
                 label: (l: AnyRecord): string => l.respondentNameTextLabel,
                 classes: 'govuk-text',
                 attributes: { maxLength: 60 },

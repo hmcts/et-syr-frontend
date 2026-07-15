@@ -16,7 +16,7 @@ const makingResponseAsLegalRepJsonRaw = fs.readFileSync(
 const makingResponseAsLegalRepJson = JSON.parse(makingResponseAsLegalRepJsonRaw);
 
 const PAGE_URL = '/making-response-as-legal-representative';
-const titleClass = 'govuk-heading-xl';
+const titleClass = 'govuk-heading-l';
 const pClass = 'govuk-body';
 const expectedTitle = makingResponseAsLegalRepJson.title;
 const signOutLinkSelector = 'li.govuk-service-navigation__item a.govuk-service-navigation__link';

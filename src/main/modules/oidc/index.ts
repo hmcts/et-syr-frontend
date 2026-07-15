@@ -27,6 +27,7 @@ export class Oidc {
   public enableFor(app: Application): void {
     const port = app.locals.developmentMode ? `:${config.get('port')}` : '';
     const serviceUrl = (res: Response): string => `${HTTPS_PROTOCOL}${res.locals.host}${port}`;
+    const idamSignOutUrl: string = process.env.IDAM_END_SESSION_URL ?? config.get('services.idam.endSessionURL');
 
     app.get(
       PageUrls.CASE_DETAILS_WITH_CASE_ID_RESPONDENT_CCD_ID_PARAMETERS,
@@ -71,11 +72,18 @@ export class Oidc {
     });
 
     app.get(AuthUrls.LOGOUT, (req: AppRequest, res: Response) => {
+      // serviceUrl(res) resolves to the homepage of the service and is used as the post_logout_redirect_uri for IDAM,
+      // so that after logout, user is redirected to the homepage
+      const params = new URLSearchParams({
+        id_token_hint: req.session.user?.accessToken,
+        post_logout_redirect_uri: serviceUrl(res),
+      });
+
       req.session.destroy(err => {
         if (err) {
           logger.error(SessionErrors.ERROR_DESTROYING_SESSION);
         }
-        return res.redirect(PageUrls.HOME);
+        res.redirect(idamSignOutUrl + '?' + params.toString());
       });
     });
 

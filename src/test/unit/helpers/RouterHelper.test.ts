@@ -11,8 +11,10 @@ import {
   isClearSelection,
   isClearSelectionWithoutRequestUserCaseCheck,
   returnNextPage,
+  returnSafeCaseDetailsUrl,
   returnValidNotAllowedEndPointsForwardingUrl,
   returnValidUrl,
+  returnValidUrlWithPathParam,
   startSubSection,
 } from '../../../main/helpers/RouterHelpers';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
@@ -276,6 +278,67 @@ describe('RouterHelper', () => {
       expect(isClearSelectionWithoutRequestUserCaseCheck(request)).toBe(true);
     });
   });
+  describe('returnValidUrlWithPathParam', () => {
+    it('should return NOT_FOUND when paramValue is blank', () => {
+      expect(returnValidUrlWithPathParam(PageUrls.RESPOND_TO_NOTIFICATION, 'itemId', '', '?lng=en')).toBe(
+        ErrorPages.NOT_FOUND
+      );
+    });
+
+    it('should return NOT_FOUND when paramValue contains unsafe characters', () => {
+      expect(returnValidUrlWithPathParam(PageUrls.RESPOND_TO_NOTIFICATION, 'itemId', '../evil', '?lng=en')).toBe(
+        ErrorPages.NOT_FOUND
+      );
+    });
+
+    it('should return NOT_FOUND when urlTemplate is not a known PageUrl', () => {
+      expect(returnValidUrlWithPathParam('/unknown-route/:itemId', 'itemId', 'abc123', '?lng=en')).toBe(
+        ErrorPages.NOT_FOUND
+      );
+    });
+
+    it('should return the substituted URL with language param for valid inputs', () => {
+      expect(returnValidUrlWithPathParam(PageUrls.RESPOND_TO_NOTIFICATION, 'itemId', 'abc-123', '?lng=cy')).toBe(
+        '/respond-to-notification/abc-123?lng=cy'
+      );
+    });
+  });
+
+  describe('returnSafeCaseDetailsUrl', () => {
+    let req: ReturnType<typeof mockRequest>;
+
+    beforeEach(() => {
+      req = mockRequest({});
+      req.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+    });
+
+    it('should return NOT_FOUND when caseId is blank', () => {
+      expect(returnSafeCaseDetailsUrl('', '3453xaa', req)).toBe(ErrorPages.NOT_FOUND);
+    });
+
+    it('should return NOT_FOUND when ccdId is blank', () => {
+      expect(returnSafeCaseDetailsUrl('1234', '', req)).toBe(ErrorPages.NOT_FOUND);
+    });
+
+    it('should return NOT_FOUND when caseId does not match the session case ID', () => {
+      expect(returnSafeCaseDetailsUrl('9999', '3453xaa', req)).toBe(ErrorPages.NOT_FOUND);
+    });
+
+    it('should return NOT_FOUND when ccdId is not found in session respondents', () => {
+      expect(returnSafeCaseDetailsUrl('1234', 'unknown-ccd-id', req)).toBe(ErrorPages.NOT_FOUND);
+    });
+
+    it('should return the case details URL with English language param', () => {
+      req.session.lang = languages.ENGLISH;
+      expect(returnSafeCaseDetailsUrl('1234', '3453xaa', req)).toBe('/case-details/1234/3453xaa?lng=en');
+    });
+
+    it('should return the case details URL with Welsh language param when session lang is Welsh', () => {
+      req.session.lang = languages.WELSH;
+      expect(returnSafeCaseDetailsUrl('1234', '3453xaa', req)).toBe('/case-details/1234/3453xaa?lng=cy');
+    });
+  });
+
   describe('returnValidNotAllowedEndPointsForwardingUrl', () => {
     it('should return not found page when redirect url is undefined', () => {
       const request: AppRequest = mockRequest({});

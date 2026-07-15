@@ -59,7 +59,7 @@
     "@types/express": "^5.0.0",
     "@types/express-session": "^1.18.2",
     "@types/lodash": "^4.14.194",
-    "@types/multer": "^1.4.7",
+    "@types/multer": "^2.0.0",
     "@types/node": "^22.0.0",
     "@types/nunjucks": "^3.2.2",
     "@types/require-directory": "^2.1.2",
@@ -94,10 +94,10 @@
     "ts-transformer-keys": "^0.4.4",
     "tsconfig-paths": "^4.2.0",
     "typescript": "5.0.4",
-    "uuid": "^11.1.1"
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
-    "@axe-core/playwright": "4.10.2",
+    "@axe-core/playwright": "4.12.1",
     "@babel/core": "^7.21.4",
     "@babel/eslint-parser": "^7.21.3",
     "@babel/preset-env": "^7.21.4",
@@ -171,6 +171,7 @@
   },
   "resolutions": {
     "@opentelemetry/instrumentation": "^0.200.0",
+    "@opentelemetry/core": "^2.8.0",
     "@tootallnate/once": ">=3.0.1",
     "pino-std-serializers": "^7.0.0",
     "tough-cookie": "^5.0.0",
@@ -178,7 +179,7 @@
     "cookie": "^1.0.0",
     "shelljs": "^0.9.0",
     "cross-spawn": "^7.0.5",
-    "brace-expansion": "^2.0.3",
+    "brace-expansion": "^5.0.5",
     "basic-ftp": ">=5.3.1",
     "axios": ">=1.16.0",
     "form-data": "^4.0.5",
@@ -187,7 +188,7 @@
     "lodash": "^4.18.1",
     "path-to-regexp": "0.1.13",
     "picomatch": ">=2.3.2",
-    "tmp": "^0.2.6",
+    "tmp": "^0.2.7",
     "diff": "^8.0.3",
     "tar": "^7.5.16",
     "qs": "^6.15.2",
@@ -198,7 +199,8 @@
     "follow-redirects": ">=1.16.0",
     "js-cookie": "^3.0.7",
     "ws": "^8.20.1",
-    "@opentelemetry/core": "^2.8.0"
+    "uuid": "^14.0.0",
+    "ip-address": "^10.1.1"
   },
   "packageManager": "yarn@4.12.0"
 }

@@ -13,6 +13,18 @@ describe('Attachment Controller', () => {
     (getCaseApiMock as jest.Mock).mockReturnValue({ getCaseDocument: getCaseDocumentMock });
   });
 
+  const setupValidRequest = () => {
+    const response = mockResponse();
+    const request = mockRequest({});
+    request.params.docId = '12345';
+    request.session.userCase.contactApplicationFile = {
+      document_url: 'http://site/12345',
+      document_binary_url: 'bdf',
+      document_filename: 'dfgdf',
+    };
+    return { request, response };
+  };
+
   it('should redirect to not-found page if document id not provided', () => {
     const controller = new AttachmentController();
     const response = mockResponse();
@@ -21,7 +33,7 @@ describe('Attachment Controller', () => {
     expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
   });
 
-  it('should redirect to not-found page if wrong document id  provided', () => {
+  it('should redirect to not-found page if wrong document id provided', () => {
     const controller = new AttachmentController();
     const response = mockResponse();
     const request = mockRequest({});
@@ -31,37 +43,54 @@ describe('Attachment Controller', () => {
   });
 
   it('should call getCaseDocument if document id provided is for contact application file', async () => {
-    const controller = new AttachmentController();
-    const response = mockResponse();
-    const userCase = {};
-    const request = mockRequest({ userCase });
-    request.params.docId = '12345';
-    request.session.userCase.contactApplicationFile = {
-      document_url: 'http.site/12345',
-      document_binary_url: 'bdf',
-      document_filename: 'dfgdf',
-    };
     getCaseDocumentMock.mockResolvedValue({ headers: {}, data: 'test-data' });
+    const controller = new AttachmentController();
+    const { request, response } = setupValidRequest();
     await controller.get(request, response);
     expect(getCaseApiMock).toHaveBeenCalled();
     expect(getCaseDocumentMock).toHaveBeenCalledWith('12345');
+    expect(response.status).toHaveBeenCalledWith(200);
+    expect(response.send).toHaveBeenCalledWith(Buffer.from('test-data', 'binary'));
   });
 
-  it('should set document content type when the document response includes one', async () => {
+  it('should redirect to not-found page when getCaseDocument throws an error', async () => {
+    getCaseDocumentMock.mockRejectedValue(new Error('Service unavailable'));
     const controller = new AttachmentController();
-    const response = mockResponse();
-    const userCase = {};
-    const request = mockRequest({ userCase });
-    request.params.docId = '12345';
-    request.session.userCase.contactApplicationFile = {
-      document_url: 'http.site/12345',
-      document_binary_url: 'bdf',
-      document_filename: 'dfgdf',
-    };
-    getCaseDocumentMock.mockResolvedValue({ headers: { 'content-type': 'application/pdf' }, data: 'test-data' });
+    const { request, response } = setupValidRequest();
+    await controller.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+  });
+
+  it('should set content-type header and send document binary when getCaseDocument resolves', async () => {
+    getCaseDocumentMock.mockResolvedValue({
+      data: 'binaryDocumentData',
+      headers: { 'content-type': 'application/pdf' },
+    });
+    const controller = new AttachmentController();
+    const { request, response } = setupValidRequest();
     await controller.get(request, response);
     expect(response.setHeader).toHaveBeenCalledWith('Content-Type', 'application/pdf');
     expect(response.status).toHaveBeenCalledWith(200);
-    expect(response.send).toHaveBeenCalledWith(Buffer.from('test-data', 'binary'));
+    expect(response.send).toHaveBeenCalledWith(Buffer.from('binaryDocumentData', 'binary'));
+  });
+
+  it('should redirect to not-found page when getCaseDocument resolves with no document', async () => {
+    getCaseDocumentMock.mockResolvedValue(undefined);
+    const controller = new AttachmentController();
+    const { request, response } = setupValidRequest();
+    await controller.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+  });
+
+  it('should call getCaseApi with undefined token when user is not in session', async () => {
+    getCaseDocumentMock.mockResolvedValue({
+      data: 'binaryDocumentData',
+      headers: { 'content-type': 'application/pdf' },
+    });
+    const controller = new AttachmentController();
+    const { request, response } = setupValidRequest();
+    request.session.user = undefined;
+    await controller.get(request, response);
+    expect(getCaseApiMock).toHaveBeenCalledWith(undefined);
   });
 });

@@ -5,6 +5,7 @@ import { AppRequest } from '../../../main/definitions/appRequest';
 import {
   CaseAssignmentResponse,
   DefaultValues,
+  ErrorPages,
   PageUrls,
   ServiceErrors,
   ValidationErrors,
@@ -322,7 +323,7 @@ describe('Self assignment check controller', () => {
       expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_LIST + '?lng=en');
     });
 
-    it('should redirect to case details with empty respondent ID if user not found in respondents list', async () => {
+    it('should redirect to not found if user is not found in respondents list', async () => {
       (getFlagValue as jest.Mock).mockResolvedValue(true);
       getCaseApiMock.mockReturnValue(api);
 
@@ -340,11 +341,11 @@ describe('Self assignment check controller', () => {
 
       await new SelfAssignmentCheckController().post(req, res);
 
-      // Should redirect with empty string for respondent ID: .../caseId/
-      expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining(`${mockValidCaseWithId.id}/?lng=en`));
+      // returnSafeCaseDetailsUrl returns NOT_FOUND when ccdId is blank (respondent not found)
+      expect(res.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
     });
 
-    it('should redirect to case details with missing case and user details when already assigned response is returned', async () => {
+    it('should redirect to not found if case and user details are missing when already assigned', async () => {
       (getFlagValue as jest.Mock).mockResolvedValue(true);
       getCaseApiMock.mockReturnValue(api);
       req.session.user = undefined;
@@ -359,10 +360,11 @@ describe('Self assignment check controller', () => {
 
       await new SelfAssignmentCheckController().post(req, res);
 
-      expect(res.redirect).toHaveBeenCalledWith(`${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/undefined/?lng=en`);
+      // returnSafeCaseDetailsUrl returns NOT_FOUND when caseId is undefined/blank
+      expect(res.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
     });
 
-    it('should redirect to case details with empty respondent ID when respondents and user are missing', async () => {
+    it('should redirect to not found if respondents and user are missing when already assigned', async () => {
       (getFlagValue as jest.Mock).mockResolvedValue(true);
       getCaseApiMock.mockReturnValue(api);
       req.session.user = undefined;
@@ -377,12 +379,11 @@ describe('Self assignment check controller', () => {
 
       await new SelfAssignmentCheckController().post(req, res);
 
-      expect(res.redirect).toHaveBeenCalledWith(
-        `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${mockValidCaseWithId.id}/?lng=en`
-      );
+      // returnSafeCaseDetailsUrl returns NOT_FOUND when the respondent ccdId cannot be found
+      expect(res.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
     });
 
-    it('should redirect to case details with empty respondent ID when respondents exist but user is missing', async () => {
+    it('should redirect to not found if respondents exist but user is missing when already assigned', async () => {
       (getFlagValue as jest.Mock).mockResolvedValue(true);
       getCaseApiMock.mockReturnValue(api);
       req.session.user = undefined;
@@ -397,12 +398,11 @@ describe('Self assignment check controller', () => {
 
       await new SelfAssignmentCheckController().post(req, res);
 
-      expect(res.redirect).toHaveBeenCalledWith(
-        `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${mockValidCaseWithId.id}/?lng=en`
-      );
+      // returnSafeCaseDetailsUrl returns NOT_FOUND when no matching respondent ccdId is found
+      expect(res.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
     });
 
-    it('should redirect to case details with empty respondent ID when session becomes unavailable during respondent lookup', async () => {
+    it('should redirect to not found if session becomes unavailable during respondent lookup', async () => {
       (getFlagValue as jest.Mock).mockResolvedValue(true);
       getCaseApiMock.mockReturnValue(api);
       const sessionValue = {
@@ -430,9 +430,8 @@ describe('Self assignment check controller', () => {
 
       await new SelfAssignmentCheckController().post(req, res);
 
-      expect(res.redirect).toHaveBeenCalledWith(
-        `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${mockValidCaseWithId.id}/?lng=en`
-      );
+      // returnSafeCaseDetailsUrl returns NOT_FOUND when session becomes unavailable during validation
+      expect(res.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
     });
   });
 });
