@@ -4,11 +4,12 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { FormFieldNames, LegacyUrls, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { getLegacySignUpUrl } from '../helpers/LegacyUrlHelper';
 import { getLanguageParam, isSelfAssignment, returnValidUrl } from '../helpers/RouterHelpers';
 import { getCaseApi } from '../services/CaseService';
 import ErrorUtils from '../utils/ErrorUtils';
@@ -63,7 +64,7 @@ export default class CaseNumberCheckController {
         req.session.caseNumberChecked = true;
         return res.redirect(PageUrls.CHECKLIST + languageParam);
       } else {
-        return res.redirect(LegacyUrls.SIGN_UP);
+        return res.redirect(getLegacySignUpUrl());
       }
     } catch (error) {
       ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
