@@ -97,11 +97,11 @@ function pushEt3FormsToCombinedDocuments(
 }
 
 export const findContentTypeByDocument = (document: AxiosResponse): string => {
-  let contentType = document.headers['content-type'];
+  let contentType = document.headers['content-type']?.toString();
   if (!contentType) {
-    let fileName: string = document?.headers?.originalfilename;
+    let fileName: string = document?.headers?.originalfilename?.toString();
     if (!fileName) {
-      const contentDisposition = document.headers['content-disposition'];
+      const contentDisposition = document.headers['content-disposition']?.toString();
       fileName = contentDisposition?.substring(
         contentDisposition?.indexOf('"') + 1,
         contentDisposition?.lastIndexOf('"')

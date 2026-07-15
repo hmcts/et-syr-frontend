@@ -1,7 +1,8 @@
 import * as crypto from 'crypto';
 
-import logger from '@pact-foundation/pact/src/common/logger';
 import config from 'config';
+
+import { getLogger } from '../logger';
 
 import { PCQRequest } from '.';
 
@@ -9,6 +10,7 @@ const algorithm = 'aes-256-gcm';
 const bufferSize = 16;
 const iv = Buffer.alloc(bufferSize, 0);
 const keyLen = 32;
+const logger = getLogger('createToken');
 
 export const createToken = (params: PCQRequest): string => {
   const tokenKey: crypto.BinaryLike = config.get('services.pcq.token');
