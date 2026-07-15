@@ -1,0 +1,11 @@
+{% if isGroupClaim %}
+
+  <div class="govuk-inset-text inset-text-blue">
+    <h3 class="govuk-notification-banner__heading"> {{ groupClaims.inset.header }} </h3>
+    <p class="govuk-body"> {{ groupClaims.inset.p1 }} </p>
+    <p class="govuk-body"> {{ groupClaims.inset.p2 }} </p>
+    <p class="govuk-body"> {{ groupClaims.inset.p3 }} </p>
+    <p class="govuk-body"> {{ groupClaims.inset.p4 }} <a class="govuk-link" href="{{ groupClaims.inset.p4Url  }}">{{groupClaims.inset.p4UrlText }}</a></p>
+  </div>
+
+{% endif %}

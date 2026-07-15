@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { RespondentET3Model, YesOrNo } from '../definitions/case';
+import { CaseType, RespondentET3Model, YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { ET3Status } from '../definitions/definition';
 import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../definitions/links';
@@ -83,6 +83,7 @@ export default class CaseDetailsController {
       languageParam: getLanguageParam(req.url),
       respondentRepresented: representative !== undefined,
       respondentRepresentative: representative,
+      isGroupClaim: req.session?.userCase?.caseType === CaseType.MULTIPLE,
     });
   }
 }
