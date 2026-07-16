@@ -4,12 +4,13 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { FormFieldNames, LegacyUrls, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
+import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
 import { assignFormData } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { getLegacySignUpUrl } from '../helpers/LegacyUrlHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import SelfAssignmentFormControllerHelper from '../helpers/controller/SelfAssignmentFormControllerHelper';
 import { getLogger } from '../logger';
@@ -93,7 +94,7 @@ export default class SelfAssignmentFormController {
         return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.SELF_ASSIGNMENT_FORM)));
       }
       if (isReformCase?.data.toString() === 'false') {
-        return res.redirect(returnValidUrl(LegacyUrls.SIGN_UP, Object.values(LegacyUrls)));
+        return res.redirect(getLegacySignUpUrl());
       }
       const caseData = (await getCaseApi(req.session.user?.accessToken)?.getCaseByApplicationRequest(req))?.data;
       if (caseData) {

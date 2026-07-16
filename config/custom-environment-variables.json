@@ -1,7 +1,10 @@
 {
-    "services": {
-        "s2s": {
-            "url": "S2S_URL"
-        }
+  "services": {
+    "et3Legacy": {
+      "url": "ET3_LEGACY_URL"
+    },
+    "s2s": {
+      "url": "S2S_URL"
     }
+  }
 }
