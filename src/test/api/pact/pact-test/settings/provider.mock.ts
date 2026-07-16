@@ -12,7 +12,6 @@ export class PactTestSetup {
   port: number;
 
   constructor(config: IPactTestSetupConfig) {
-    this.port = config.port;
     this.provider = new Pact({
       port: this.port,
       log: path.resolve(process.cwd(), 'src/test/api/pact/pacts/logs', 'mockserver-integration.log'),

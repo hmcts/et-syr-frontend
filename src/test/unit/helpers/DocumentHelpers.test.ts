@@ -1,12 +1,9 @@
-import { AxiosResponse } from 'axios';
-
 import { Document } from '../../../main/definitions/case';
 import { DefaultValues } from '../../../main/definitions/constants';
 import { DocumentDetail } from '../../../main/definitions/definition';
 import {
   combineDocuments,
   combineUserCaseDocuments,
-  findContentTypeByDocument,
   findContentTypeByDocumentDetail,
   findUploadedDocumentIdByDocumentUrl,
   formatDocumentDetailToApiDocumentTypeItem,
@@ -46,10 +43,6 @@ const documentDetailWithoutMimeTypeAndOriginalDocumentName = {
   description: 'desc',
   size: '123',
   createdOn: '01/12/2023',
-};
-
-const mockDocumentResponse = (headers: Record<string, string>): AxiosResponse => {
-  return { headers } as unknown as AxiosResponse;
 };
 
 describe('Documents Helper Test', () => {
@@ -138,23 +131,6 @@ describe('Documents Helper Test', () => {
       [documentDetailWithoutMimeTypeAndOriginalDocumentName, undefined],
     ])('%o document type should be %s', (documentDetailItem: DocumentDetail, contentType: string) => {
       expect(findContentTypeByDocumentDetail(documentDetailItem)).toStrictEqual(contentType);
-    });
-  });
-
-  describe('FindContentTypeByDocument', () => {
-    it('should return content type from document headers', () => {
-      const document = mockDocumentResponse({ 'content-type': 'application/pdf' });
-      expect(findContentTypeByDocument(document)).toStrictEqual('application/pdf');
-    });
-
-    it('should find content type from original filename header', () => {
-      const document = mockDocumentResponse({ originalfilename: 'test.doc' });
-      expect(findContentTypeByDocument(document)).toStrictEqual('application/vnd.ms-word');
-    });
-
-    it('should find content type from content disposition header filename', () => {
-      const document = mockDocumentResponse({ 'content-disposition': 'attachment; filename="test.pdf"' });
-      expect(findContentTypeByDocument(document)).toStrictEqual('application/pdf');
     });
   });
 

@@ -24,10 +24,7 @@ export default class AttachmentController {
 
     try {
       const document = await getCaseApi(req.session.user?.accessToken).getCaseDocument(docId);
-      const contentType = document?.headers['content-type'];
-      if (contentType) {
-        res.setHeader('Content-Type', contentType.toString());
-      }
+      res.setHeader('Content-Type', document?.headers['content-type'] as string);
       res.status(200).send(Buffer.from(document?.data, 'binary'));
     } catch (err) {
       logger.error(err.message);
