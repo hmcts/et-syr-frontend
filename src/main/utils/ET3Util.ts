@@ -379,13 +379,12 @@ export default class ET3Util {
     }
   }
 
-  public static getLatestEt3Status(respondent: RespondentET3Model, req: AppRequest): string {
+  public static getLatestEt3Status(respondent: RespondentET3Model): string {
     if (respondent.et3Status !== ET3Status.IN_PROGRESS) {
       return respondent.et3Status;
     }
 
-    const representative = RespondentUtils.findSelectedRespondentRepresentative(req);
-    if (representative !== undefined && (respondent.responseReceived === YES || respondent.et3Form !== undefined)) {
+    if (respondent.responseReceived === YES || respondent.et3Form !== undefined) {
       return ET3Status.COMPLETED;
     }
 
