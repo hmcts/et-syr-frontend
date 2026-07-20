@@ -11,8 +11,9 @@ import {
   LoggerConstants,
   PageUrls,
   ValidationErrors,
+  YES,
 } from '../definitions/constants';
-import { ApplicationTableRecord } from '../definitions/definition';
+import { ApplicationTableRecord, ET3Status } from '../definitions/definition';
 import {
   ET3CaseDetailsLinkNames,
   ET3HubLinkNames,
@@ -376,5 +377,18 @@ export default class ET3Util {
     if (ObjectUtils.isNotEmpty(userCase)) {
       request.session.userCase = userCase;
     }
+  }
+
+  public static getLatestEt3Status(respondent: RespondentET3Model, req: AppRequest): string {
+    if (respondent.et3Status !== ET3Status.IN_PROGRESS) {
+      return respondent.et3Status;
+    }
+
+    const representative = RespondentUtils.findSelectedRespondentRepresentative(req);
+    if (representative !== undefined && (respondent.responseReceived === YES || respondent.et3Form !== undefined)) {
+      return ET3Status.COMPLETED;
+    }
+
+    return respondent.et3Status;
   }
 }
