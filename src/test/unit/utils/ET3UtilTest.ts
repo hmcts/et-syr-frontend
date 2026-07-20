@@ -2,7 +2,7 @@ import axios from 'axios';
 import _ from 'lodash';
 
 import { AppRequest, UserDetails } from '../../../main/definitions/appRequest';
-import { CaseWithId, RespondentET3Model } from '../../../main/definitions/case';
+import { CaseWithId, RespondentET3Model, YesOrNo } from '../../../main/definitions/case';
 import {
   CLAIM_TYPES,
   DefaultValues,
@@ -11,6 +11,7 @@ import {
   TranslationKeys,
   ValidationErrors,
 } from '../../../main/definitions/constants';
+import { ET3Status } from '../../../main/definitions/definition';
 import { ET3HubLinkNames, ET3HubLinksStatuses, LinkStatus } from '../../../main/definitions/links';
 import { AnyRecord } from '../../../main/definitions/util-types';
 import caseListJsonRaw from '../../../main/resources/locales/en/translation/case-list.json';
@@ -434,6 +435,46 @@ describe('ET3lUtil tests', () => {
       });
       ET3Util.refreshRequestUserCase(req);
       expect(req.session.userCase.id).toStrictEqual(newUserCaseId);
+    });
+  });
+
+  describe('getLatestEt3Status', () => {
+    test('Should return existing status when status is not in progress', () => {
+      const respondent: RespondentET3Model = mockRespondentET3Model;
+      respondent.et3Status = ET3Status.COMPLETED;
+
+      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.COMPLETED);
+    });
+
+    test('Should return completed when status is in progress and response is received', () => {
+      const respondent: RespondentET3Model = mockRespondentET3Model;
+      respondent.et3Status = ET3Status.IN_PROGRESS;
+      respondent.responseReceived = YesOrNo.YES;
+
+      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.COMPLETED);
+    });
+
+    test('Should return completed when status is in progress and et3 form exists', () => {
+      const respondent: RespondentET3Model = mockRespondentET3Model;
+      respondent.et3Status = ET3Status.IN_PROGRESS;
+      respondent.et3Form = {
+        document_filename: 'uploadedDocumentFileNameForSelectedRespondent.pdf',
+        upload_timestamp: 'dummtUploadTimeStamp',
+        document_url: 'https://dummy.document.url',
+        document_binary_url: 'https://dummy.document.url/binary',
+        category_id: 'category_id',
+      };
+
+      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.COMPLETED);
+    });
+
+    test('Should return in progress when status is in progress and response not received with no et3 form', () => {
+      const respondent: RespondentET3Model = mockRespondentET3Model;
+      respondent.et3Status = ET3Status.IN_PROGRESS;
+      respondent.responseReceived = undefined;
+      respondent.et3Form = undefined;
+
+      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.IN_PROGRESS);
     });
   });
 });
