@@ -10,6 +10,7 @@ import {
   FormFieldNames,
   LoggerConstants,
   PageUrls,
+  TranslationKeys,
   ValidationErrors,
   YES,
 } from '../definitions/constants';
@@ -246,9 +247,18 @@ export default class ET3Util {
   public static getUserApplicationsListItem(
     req: AppRequest,
     application: ApplicationTableRecord,
-    respondentName: string,
     respondent: RespondentET3Model
   ): { text?: string; caseId?: string; caseDetailsLink?: string; respondentCcdId?: string }[] {
+    const respondentName = ET3Util.getUserNameByRespondent(respondent);
+
+    const translations: AnyRecord = {
+      ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
+    };
+    application.completionStatus =
+      respondent.et3Status === ET3Status.IN_PROGRESS
+        ? ET3Util.getOverallStatus(application.userCase, respondent, translations)
+        : undefined;
+
     return [
       {
         text: DateUtils.isDateStringValid(respondent.responseReceivedDate)
