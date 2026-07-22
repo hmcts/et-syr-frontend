@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest, UserDetails } from '../definitions/appRequest';
-import { CaseWithId, RespondentET3Model } from '../definitions/case';
+import { CaseWithId, RespondentET3Model, YesOrNo } from '../definitions/case';
 import {
   CLAIM_TYPES,
   DefaultValues,
@@ -12,7 +12,6 @@ import {
   PageUrls,
   TranslationKeys,
   ValidationErrors,
-  YES,
 } from '../definitions/constants';
 import { ApplicationTableRecord, ET3Status } from '../definitions/definition';
 import {
@@ -394,7 +393,7 @@ export default class ET3Util {
       return respondent.et3Status;
     }
 
-    if (respondent.responseReceived === YES || respondent.et3Form !== undefined) {
+    if (respondent.responseReceived === YesOrNo.YES || respondent.et3Form !== undefined) {
       return ET3Status.COMPLETED;
     }
 
