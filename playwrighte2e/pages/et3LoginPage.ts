@@ -40,6 +40,8 @@ export default class Et3LoginPage extends BasePage {
     caseRefNumber: this.page.locator('#ethosCaseReference'),
   };
   async processRespondentLogin(username: string, password: string, caseNumber: string): Promise<void> {
+    // Clear IDAM session so the caseworker login from beforeEach doesn't interfere
+    await this.page.context().clearCookies();
     await this.page.goto(params.TestUrlRespondentUi);
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Introduction');
     await this.webActions.clickElementByCss('[href="/case-number-check"]');
@@ -51,12 +53,14 @@ export default class Et3LoginPage extends BasePage {
   }
 
   private async headingText(): Promise<string> {
-    await this.page.waitForLoadState('load');
+    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.locator('h1').first().waitFor({ state: 'visible', timeout: 30000 });
     return (await this.page.locator('h1').first().innerText()).trim();
   }
 
   async loginRespondentUi(username: string, password: string): Promise<void> {
-    await this.page.waitForLoadState('load');
+    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.waitForURL(/.*/, { waitUntil: 'domcontentloaded' });
     const heading = await this.headingText();
 
     if (heading === 'Sign in or create an account') {
