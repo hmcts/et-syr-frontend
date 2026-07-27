@@ -184,7 +184,7 @@
     "axios": "^1.18.1",
     "form-data": "^4.0.4",
     "glob": "^13.0.1",
-    "js-yaml": "^5.2.1",
+    "js-yaml": "^5.2.2",
     "path-to-regexp": "0.1.13",
     "picomatch": ">=2.3.2",
     "tmp": "^0.2.7",
