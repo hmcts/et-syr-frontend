@@ -99,7 +99,7 @@ describe('Claimant employment dates Controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
     });
 
-    it('should clear employment information and copy claimant dates when no redirect condition is met', async () => {
+    it('should clear employment information and copy claimant dates when yes', async () => {
       const updateET3ResponseWithET3FormMock = jest
         .spyOn(ET3Util, 'updateET3ResponseWithET3Form')
         .mockResolvedValue(undefined);
@@ -110,8 +110,8 @@ describe('Claimant employment dates Controller', () => {
         userCase: {
           startDate: { year: '2020', month: '02', day: '10' },
           endDate: { year: '2024', month: '03', day: '11' },
-          et3ResponseEmploymentStartDate: { year: '2019', month: '01', day: '01' },
-          et3ResponseEmploymentEndDate: { year: '2019', month: '01', day: '02' },
+          et3ResponseEmploymentStartDate: { year: '2026', month: '01', day: '01' },
+          et3ResponseEmploymentEndDate: { year: '2026', month: '01', day: '02' },
           et3ResponseEmploymentInformation: 'Old information',
         },
       });
@@ -124,7 +124,7 @@ describe('Claimant employment dates Controller', () => {
       updateET3ResponseWithET3FormMock.mockRestore();
     });
 
-    it('should clear existing ET3 employment dates when claimant dates are not present', async () => {
+    it('should clear existing ET3 employment dates when yes', async () => {
       const updateET3ResponseWithET3FormMock = jest
         .spyOn(ET3Util, 'updateET3ResponseWithET3Form')
         .mockResolvedValue(undefined);
@@ -135,8 +135,8 @@ describe('Claimant employment dates Controller', () => {
         userCase: {
           startDate: undefined,
           endDate: undefined,
-          et3ResponseEmploymentStartDate: { year: '2019', month: '01', day: '01' },
-          et3ResponseEmploymentEndDate: { year: '2019', month: '01', day: '02' },
+          et3ResponseEmploymentStartDate: { year: '2026', month: '01', day: '01' },
+          et3ResponseEmploymentEndDate: { year: '2026', month: '01', day: '02' },
           et3ResponseEmploymentInformation: 'Old information',
         },
       });
@@ -146,6 +146,39 @@ describe('Claimant employment dates Controller', () => {
       expect(request.session.userCase.et3ResponseEmploymentStartDate).toBeUndefined();
       expect(request.session.userCase.et3ResponseEmploymentEndDate).toBeUndefined();
       expect(request.session.userCase.et3ResponseEmploymentInformation).toBeUndefined();
+      updateET3ResponseWithET3FormMock.mockRestore();
+    });
+
+    it('should keep existing ET3 employment dates when no', async () => {
+      const updateET3ResponseWithET3FormMock = jest
+        .spyOn(ET3Util, 'updateET3ResponseWithET3Form')
+        .mockResolvedValue(undefined);
+      request = mockRequest({
+        body: {
+          et3ResponseAreDatesCorrect: YesOrNoOrNotApplicable.NO,
+        },
+        userCase: {
+          startDate: undefined,
+          endDate: undefined,
+          et3ResponseEmploymentStartDate: { year: '2026', month: '01', day: '01' },
+          et3ResponseEmploymentEndDate: { year: '2026', month: '01', day: '02' },
+          et3ResponseEmploymentInformation: 'Old information',
+        },
+      });
+
+      await controller.post(request, response);
+
+      expect(request.session.userCase.et3ResponseEmploymentStartDate).toStrictEqual({
+        year: '2026',
+        month: '01',
+        day: '01',
+      });
+      expect(request.session.userCase.et3ResponseEmploymentEndDate).toStrictEqual({
+        year: '2026',
+        month: '01',
+        day: '02',
+      });
+      expect(request.session.userCase.et3ResponseEmploymentInformation).toStrictEqual('Old information');
       updateET3ResponseWithET3FormMock.mockRestore();
     });
 
