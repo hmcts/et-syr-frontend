@@ -1,12 +1,26 @@
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 
 import { params } from '../utils/config';
 
 import { BasePage } from './basePage';
 
 export default class Et3LoginPage extends BasePage {
+  private readonly usernameField: Locator;
+  private readonly passwordField: Locator;
+  private readonly signInOrContinueButton: Locator;
+
   constructor(page: Page) {
     super(page);
+    // Flexible locators covering both new and old IDAM UI
+    this.usernameField = page.locator(
+      '[data-testid="idam-username-input"], #username, input[name="username"], #email, input[type="email"]'
+    );
+    this.passwordField = page.locator(
+      '[data-testid="idam-password-input"], #password, input[name="password"], input[type="password"]'
+    );
+    this.signInOrContinueButton = page
+      .locator('[data-testid="idam-submit-button"], [name="save"], button[type="submit"], input[type="submit"]')
+      .filter({ hasText: /Sign in|Continue/i });
   }
 
   public static create(page: Page): Et3LoginPage {
@@ -26,6 +40,8 @@ export default class Et3LoginPage extends BasePage {
     caseRefNumber: this.page.locator('#ethosCaseReference'),
   };
   async processRespondentLogin(username: string, password: string, caseNumber: string): Promise<void> {
+    // Clear IDAM session so the caseworker login from beforeEach doesn't interfere
+    await this.page.context().clearCookies();
     await this.page.goto(params.TestUrlRespondentUi);
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Introduction');
     await this.webActions.clickElementByCss('[href="/case-number-check"]');
@@ -36,10 +52,48 @@ export default class Et3LoginPage extends BasePage {
     await this.loginRespondentUi(username, password);
   }
 
+  private async headingText(): Promise<string> {
+    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.locator('h1').first().waitFor({ state: 'visible', timeout: 30000 });
+    return (await this.page.locator('h1').first().innerText()).trim();
+  }
+
   async loginRespondentUi(username: string, password: string): Promise<void> {
-    await this.webActions.fillField('#username', username);
-    await this.webActions.fillField('#password', password);
-    await this.elements.submit.click();
+    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.waitForURL(/.*/, { waitUntil: 'domcontentloaded' });
+    const heading = await this.headingText();
+
+    if (heading === 'Sign in or create an account') {
+      if ((await this.usernameField.count()) > 0) {
+        // Old IDAM: email + password fields on the same page
+        await this.usernameField.fill(username);
+        await this.passwordField.fill(password);
+        await this.signInOrContinueButton.click();
+      } else {
+        // New IDAM: intermediate page — click "Sign in" to reach the email step
+        await this.page.getByRole('button', { name: 'Sign in' }).click();
+        await this.page.waitForLoadState('load');
+        await this.usernameField.fill(username);
+        await this.signInOrContinueButton.click();
+        await this.page.waitForLoadState('load');
+        await this.passwordField.fill(password);
+        await this.signInOrContinueButton.click();
+      }
+    } else if (heading === 'Sign in') {
+      // Old IDAM: single-page form
+      await this.usernameField.fill(username);
+      await this.passwordField.fill(password);
+      await this.signInOrContinueButton.click();
+    } else if (heading === 'Enter your email address') {
+      // New IDAM: already past the intermediate page
+      await this.usernameField.fill(username);
+      await this.signInOrContinueButton.click();
+      await this.page.waitForLoadState('load');
+      await this.passwordField.fill(password);
+      await this.signInOrContinueButton.click();
+    } else {
+      throw new Error(`Unexpected login page heading: '${heading}'`);
+    }
   }
 
   async replyToNewClaim(submissionRef: string, caseNumber: string): Promise<void> {
