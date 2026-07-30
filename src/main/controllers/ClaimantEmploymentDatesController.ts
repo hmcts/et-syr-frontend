@@ -61,6 +61,9 @@ export default class ClaimantEmploymentDatesController {
       req.session.userCase.et3ResponseEmploymentStartDate = undefined;
       req.session.userCase.et3ResponseEmploymentEndDate = undefined;
       req.session.userCase.et3ResponseEmploymentInformation = undefined;
+    }
+
+    if (conditionalRedirect(req, this.form.getFormFields(), YesOrNoOrNotApplicable.YES)) {
       const { startDate, endDate } = req.session.userCase ?? {};
       if (startDate) {
         req.session.userCase.et3ResponseEmploymentStartDate = startDate;

@@ -182,6 +182,31 @@ describe('Claimant employment dates Controller', () => {
       updateET3ResponseWithET3FormMock.mockRestore();
     });
 
+    it('should clear dates when not applicable', async () => {
+      const updateET3ResponseWithET3FormMock = jest
+        .spyOn(ET3Util, 'updateET3ResponseWithET3Form')
+        .mockResolvedValue(undefined);
+      request = mockRequest({
+        body: {
+          et3ResponseAreDatesCorrect: YesOrNoOrNotApplicable.NOT_APPLICABLE,
+        },
+        userCase: {
+          startDate: { year: '2020', month: '02', day: '10' },
+          endDate: { year: '2024', month: '03', day: '11' },
+          et3ResponseEmploymentStartDate: { year: '2026', month: '01', day: '01' },
+          et3ResponseEmploymentEndDate: { year: '2026', month: '01', day: '02' },
+          et3ResponseEmploymentInformation: 'Old information',
+        },
+      });
+
+      await controller.post(request, response);
+
+      expect(request.session.userCase.et3ResponseEmploymentInformation).toBeUndefined();
+      expect(request.session.userCase.et3ResponseEmploymentStartDate).toBeUndefined();
+      expect(request.session.userCase.et3ResponseEmploymentEndDate).toBeUndefined();
+      updateET3ResponseWithET3FormMock.mockRestore();
+    });
+
     it('should redirect to next page when nothing is selected', async () => {
       request = mockRequest({ body: {} });
       request.url = PageUrls.CLAIMANT_EMPLOYMENT_DATES;
