@@ -1,5 +1,4 @@
-
-import { Locator, Page } from '@playwright/test';
+import { Locator, Page, expect } from '@playwright/test';
 
 import { params } from '../utils/config';
 
@@ -41,10 +40,11 @@ export default class Et3LoginPage extends BasePage {
     caseRefNumber: this.page.locator('#ethosCaseReference'),
   };
 
-  async processRespondentLogin(username: string, password: string, caseNumber: string): Promise<void> {
+  async processRespondentLogin(username: string, password: string, caseNumber: string | string[]): Promise<void> {
     // Clear IDAM session so the caseworker login from beforeEach doesn't interfere
     await this.page.context().clearCookies();
 
+    const ethosCaseReference = this.normalizeCaseNumber(caseNumber);
     await this.page.goto(params.TestUrlRespondentUi);
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Introduction');
     await this.webActions.clickElementByCss('[href="/case-number-check"]');
