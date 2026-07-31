@@ -22,6 +22,8 @@ const transferredCaseTranslations = {
   header: 'Case overview - ',
   noAccessBodyEcm: 'ECM body',
   noAccessBodyCrossCountry: 'Cross country body',
+  whatHappensNextPointTwoWithNewCaseNumber: 'quoting your new case number',
+  whatHappensNextPointTwoWithOldCaseNumber: 'quoting your old case number',
 };
 
 const mockTransferredCaseTranslations = (request: AppRequest): void => {
@@ -74,6 +76,7 @@ describe('TransferredCaseController', () => {
         replacementCaseNumber: '18850001/2020',
         showNewCaseNumber: true,
         noAccessBody: 'ECM body',
+        whatHappensNextPointTwo: 'quoting your new case number',
       })
     );
   });
@@ -172,6 +175,8 @@ describe('TransferredCaseController', () => {
         showNewCaseNumber: false,
         transferComplete: false,
         noAccessBody: 'Cross country body',
+        caseNumber: '60000001/2022',
+        whatHappensNextPointTwo: 'quoting your old case number',
       })
     );
   });

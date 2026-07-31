@@ -12,6 +12,7 @@ import {
   getRequestedCcdId,
   getSafeApiErrorSummary,
   getTransferredCaseNoAccessBody,
+  getTransferredCaseWhatHappensNextPointTwo,
   handleTransferredCaseRedirect,
   isTransferInfoForCase,
   saveSessionAndRedirectToTransferredCase,
@@ -202,6 +203,21 @@ describe('CaseTransferHelper', () => {
 
     it('should default to ECM copy when transfer type is missing', () => {
       expect(getTransferredCaseNoAccessBody(translations)).toBe('ECM body');
+    });
+  });
+
+  describe('getTransferredCaseWhatHappensNextPointTwo', () => {
+    const translations = {
+      whatHappensNextPointTwoWithNewCaseNumber: 'quoting your new case number',
+      whatHappensNextPointTwoWithOldCaseNumber: 'quoting your old case number',
+    };
+
+    it('should return new case number copy when showNewCaseNumber is true', () => {
+      expect(getTransferredCaseWhatHappensNextPointTwo(translations, true)).toBe('quoting your new case number');
+    });
+
+    it('should return old case number copy when showNewCaseNumber is false', () => {
+      expect(getTransferredCaseWhatHappensNextPointTwo(translations, false)).toBe('quoting your old case number');
     });
   });
 
