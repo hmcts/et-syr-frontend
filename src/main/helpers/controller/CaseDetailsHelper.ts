@@ -63,10 +63,6 @@ const updateApplicationsStatusIfNotExist = async (req: AppRequest): Promise<void
 };
 
 const getRespondentResponseLinkStatus = (req: AppRequest, linkName: LinkStatus): LinkStatus => {
-  if (linkName !== LinkStatus.NOT_STARTED_YET) {
-    return linkName;
-  }
-
   const { userCase, selectedRespondentIndex } = req.session;
   if (selectedRespondentIndex !== undefined) {
     const selectedRespondent: RespondentET3Model = userCase.respondents[selectedRespondentIndex];
