@@ -6,6 +6,7 @@ import nunjucks from 'nunjucks';
 import { AppRequest } from '../../definitions/appRequest';
 import { FormError, FormField, FormFields, FormInput } from '../../definitions/form';
 import { AnyRecord } from '../../definitions/util-types';
+import { getLanguageToggleHref } from '../../helpers/LanguageHelper';
 import { dateInLocale, datesStringToDateInLocale } from '../../helpers/dateInLocale';
 
 import createFilters from './njkFilters';
@@ -25,6 +26,7 @@ export class Nunjucks {
       express: app,
     });
     createFilters(nunEnv);
+    nunEnv.addGlobal('getLanguageToggleHref', getLanguageToggleHref);
     nunEnv.addGlobal('getContent', function (prop: ((param: string) => string) | string): string {
       return typeof prop === 'function' ? prop(this.ctx) : prop;
     });

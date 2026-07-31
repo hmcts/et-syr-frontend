@@ -1,6 +1,7 @@
 import { DefaultValues, PageUrls, languages } from '../../../main/definitions/constants';
 import {
   addParameterToUrl,
+  getLanguageToggleHref,
   setChangeAnswersUrlLanguage,
   setCheckAnswersLanguage,
   setUrlLanguage,
@@ -8,6 +9,56 @@ import {
 import { mockRequest } from '../mocks/mockRequest';
 
 describe('Language Helper Functions', () => {
+  describe('getLanguageToggleHref', () => {
+    it.each([
+      {
+        currentUrl: '/transferred-case?lng=en&caseId=123&ccdId=456',
+        currentLanguage: languages.ENGLISH,
+        result: '/transferred-case?lng=cy&caseId=123&ccdId=456',
+      },
+      {
+        currentUrl: '/transferred-case?lng=cy&caseId=123&ccdId=456',
+        currentLanguage: languages.WELSH,
+        result: '/transferred-case?lng=en&caseId=123&ccdId=456',
+      },
+      {
+        currentUrl: '/transferred-case?caseId=123&lng=en',
+        currentLanguage: languages.ENGLISH,
+        result: '/transferred-case?caseId=123&lng=cy',
+      },
+      {
+        currentUrl: '/case-details/1/2?lng=en',
+        currentLanguage: languages.ENGLISH,
+        result: '/case-details/1/2?lng=cy',
+      },
+      {
+        currentUrl: '/home',
+        currentLanguage: languages.ENGLISH,
+        result: '/home?lng=cy',
+      },
+      {
+        currentUrl: '/home?foo=bar',
+        currentLanguage: languages.ENGLISH,
+        result: '/home?foo=bar&lng=cy',
+      },
+      {
+        currentUrl: '/home?foo=bar',
+        currentLanguage: languages.WELSH,
+        result: '/home?foo=bar&lng=en',
+      },
+      {
+        currentUrl: undefined as unknown as string,
+        currentLanguage: languages.ENGLISH,
+        result: '?lng=cy',
+      },
+    ])(
+      'should build a valid language toggle href for $currentUrl ($currentLanguage)',
+      ({ currentUrl, currentLanguage, result }) => {
+        expect(getLanguageToggleHref(currentUrl, currentLanguage)).toBe(result);
+      }
+    );
+  });
+
   describe('setUrlLanguage', () => {
     let req: ReturnType<typeof mockRequest>;
 
