@@ -6,11 +6,15 @@ import { Application } from 'express';
 import rateLimit from 'express-rate-limit';
 import multer, { FileFilterCallback } from 'multer';
 
+import AboutHearingDocumentsController from '../../controllers/AboutHearingDocumentsController';
 import AcasEarlyConciliationCertificateController from '../../controllers/AcasEarlyConciliationCertificateController';
+import AgreeingDocumentsController from '../../controllers/AgreeingDocumentsController';
 import ApplicationDetailsController from '../../controllers/ApplicationDetailsController';
 import ApplicationSubmittedController from '../../controllers/ApplicationSubmittedController';
 import AppointLegalRepController from '../../controllers/AppointLegalRepController';
 import AttachmentController from '../../controllers/AttachmentController';
+import BundlesCompletedController from '../../controllers/BundlesCompletedController';
+import BundlesDocsForHearingCYAController from '../../controllers/BundlesDocsForHearingCYAController';
 import CaseDetailsController from '../../controllers/CaseDetailsController';
 import CaseListCheckController from '../../controllers/CaseListCheckController';
 import CaseListController from '../../controllers/CaseListController';
@@ -52,6 +56,8 @@ import DocumentsController from '../../controllers/DocumentsController';
 import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
 import GetCaseDocumentController from '../../controllers/GetCaseDocumentController';
+import HearingDocumentFileController from '../../controllers/HearingDocumentFileController';
+import HearingDocumentUploadController from '../../controllers/HearingDocumentUploadController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HoldingPageController from '../../controllers/HoldingPageController';
 import HomeController from '../../controllers/HomeController';
@@ -62,6 +68,7 @@ import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignm
 import NotificationController from '../../controllers/NotificationController';
 import NotificationDetailsController from '../../controllers/NotificationDetailsController';
 import OtherRespondentApplicationsController from '../../controllers/OtherRespondentApplicationsController';
+import PrepareAndSubmitHearingDocumentsController from '../../controllers/PrepareAndSubmitHearingDocumentsController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
 import RespondToApplicationCYAController from '../../controllers/RespondToApplicationCYAController';
@@ -101,6 +108,7 @@ import ReturnToExistingResponseController from '../../controllers/ReturnToExisti
 import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheckController';
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
+import SubmitBundlesHearingDocsCYAController from '../../controllers/SubmitBundlesHearingDocsCYAController';
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
 import YourRequestAndApplicationsController from '../../controllers/YourRequestAndApplicationsController';
 import YourResponseFormController from '../../controllers/YourResponseFormController';
@@ -296,6 +304,22 @@ export class Routes {
     app.get(PageUrls.CONTACT_TRIBUNAL_STORE_COMPLETE, new ContactTribunalStoreCompleteController().get);
     app.get(PageUrls.STORED_CORRESPONDENCE_SUBMIT, new ContactTribunalSubmitStoredController().get);
     app.post(PageUrls.STORED_CORRESPONDENCE_SUBMIT, new ContactTribunalSubmitStoredController().post);
+    app.get(PageUrls.PREPARE_AND_SUBMIT_HEARING_DOCUMENTS, new PrepareAndSubmitHearingDocumentsController().get);
+    app.get(PageUrls.AGREEING_DOCUMENTS, new AgreeingDocumentsController().get);
+    app.post(PageUrls.AGREEING_DOCUMENTS, new AgreeingDocumentsController().post);
+    app.get(PageUrls.ABOUT_HEARING_DOCUMENTS, new AboutHearingDocumentsController().get);
+    app.post(PageUrls.ABOUT_HEARING_DOCUMENTS, new AboutHearingDocumentsController().post);
+    app.get(PageUrls.HEARING_DOCUMENT_UPLOAD, new HearingDocumentUploadController().get);
+    app.post(
+      PageUrls.HEARING_DOCUMENT_UPLOAD,
+      limiter,
+      handleUploads.single(FormFieldNames.HEARING_DOCUMENT_UPLOAD.HEARING_DOCUMENT),
+      new HearingDocumentUploadController().post
+    );
+    app.get(PageUrls.HEARING_DOCUMENT_REMOVE, new HearingDocumentFileController().get);
+    app.get(PageUrls.BUNDLES_DOCS_FOR_HEARING_CYA, new BundlesDocsForHearingCYAController().get);
+    app.get(InterceptPaths.SUBMIT_BUNDLES_HEARING_DOCS_CYA, new SubmitBundlesHearingDocsCYAController().get);
+    app.get(PageUrls.BUNDLES_COMPLETED, new BundlesCompletedController().get);
     // Your request and applications
     app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
     app.get(PageUrls.CLAIMANTS_APPLICATIONS, new ClaimantsApplicationsController().get);

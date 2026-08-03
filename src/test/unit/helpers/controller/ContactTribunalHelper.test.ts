@@ -15,8 +15,11 @@ describe('Contact Tribunal Helper', () => {
       const translations: AnyRecord = contactTribunalJson;
       const accordionItems = getApplicationsAccordionItems(url, translations);
       expect(accordionItems).toBeInstanceOf(Array);
-      expect(accordionItems).toHaveLength(12);
+      expect(accordionItems).toHaveLength(13);
       expect(accordionItems[0].heading.text).toBe('I want to change my personal details');
+      expect(accordionItems[12].heading.text).toBe('Submit documents for a hearing');
+      expect(accordionItems[12].content.html).toContain(PageUrls.PREPARE_AND_SUBMIT_HEARING_DOCUMENTS);
+      expect(accordionItems[12].content.html).not.toContain('/contact-tribunal/');
     });
   });
 

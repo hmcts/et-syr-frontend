@@ -1,0 +1,31 @@
+{
+  "title": "Cytuno ar ddogfennau",
+  "caption": "Paratoi dogfennau ar gyfer gwrandawiad",
+  "h1": "Cytuno ar ddogfennau",
+  "inset": "Efallai y byddwch wedi cael gwybod mewn gorchymyn gan y tribiwnlys i weithio gyda’r parti arall i gytuno ar y dogfennau y dibynnir arnynt yn y gwrandawiad.",
+  "bundlesRespondentAgreedDocWith": {
+    "label": "Ydych chi wedi cytuno ar y dogfennau hyn gyda’r parti arall?",
+    "yes": "Do",
+    "agreedBut": "Rydym wedi cytuno ond mae rhai dogfennau dan anghydfod",
+    "notAgreed": "Naddo, nid ydym wedi cytuno ac rwyf eisiau darparu fy nogfennau fy hun"
+  },
+  "bundlesRespondentAgreedDocWithBut": {
+    "label": "Dywedwch wrthym pa ddogfennau sydd dan anghydfod"
+  },
+  "bundlesRespondentAgreedDocWithNo": {
+    "label": "Dywedwch wrthym pam nad ydych wedi gallu cytuno â’r parti arall"
+  },
+  "errors": {
+    "bundlesRespondentAgreedDocWith": {
+      "required": "Dywedwch wrthym a ydych wedi cytuno ar y dogfennau hyn gyda’r parti arall"
+    },
+    "bundlesRespondentAgreedDocWithBut": {
+      "required": "Dywedwch wrthym pa ddogfennau sydd dan anghydfod",
+      "tooLong": "Rhaid i’r manylion am ba ddogfennau sydd dan anghydfod fod yn llai na 2500 o nodau"
+    },
+    "bundlesRespondentAgreedDocWithNo": {
+      "required": "Dywedwch wrthym pam nad ydych wedi gallu cytuno â’r parti arall",
+      "tooLong": "Rhaid i’r rheswm pam nad ydych wedi gallu cytuno â’r parti arall fod yn llai na 2500 o nodau"
+    }
+  }
+}
