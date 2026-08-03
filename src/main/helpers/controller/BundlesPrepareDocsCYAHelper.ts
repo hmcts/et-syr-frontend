@@ -1,5 +1,6 @@
 import { CaseWithId } from '../../definitions/case';
 import { PageUrls } from '../../definitions/constants';
+import { SummaryListRow } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
 import DocumentUtils from '../../utils/DocumentUtils';
 
@@ -11,7 +12,7 @@ export const getBundlesCyaContent = (
   whoseHearingDoc: string,
   whatAreHearingDocs: string,
   selectedHearing: string
-): { key: unknown; value?: unknown; actions?: unknown }[] => {
+): SummaryListRow[] => {
   const changeText = translations.change ?? 'Change';
   const hearingUploadUrl = userCase.hearingDocumentsAreFor
     ? PageUrls.HEARING_DOCUMENT_UPLOAD.replace(':hearingId', userCase.hearingDocumentsAreFor) + languageParam
