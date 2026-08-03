@@ -1,6 +1,10 @@
 {
   "title": "Manylion cyswllt yr hawlydd",
+  "titleMultiple": "[W] Claimants contact details",
   "claimant": "Hawlydd",
+  "leadClaimant": "[W] Lead claimant",
+  "additionalClaimant": "[W] Claimant",
+  "additionalClaimantDetails": "[W] Additional claimant details",
   "legalRepresentativesName": "Enw’r cynrychiolydd cyfreithiol",
   "legalRepsOrganisation": "Sefydliad y cynrychiolydd cyfreithiol",
   "name": "Enw",
@@ -8,5 +12,6 @@
   "email": "E-bost",
   "preferredMethod": "Dull cysylltu dewisol",
   "post": "Trwy’r post",
-  "notProvided": "Dim byd wedi ei ddarparu"
+  "notProvided": "Dim byd wedi ei ddarparu",
+"downloadContactDetails": "[W] Download additional claimants (PDF, opens in new tab)"
 }

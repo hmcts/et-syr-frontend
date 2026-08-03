@@ -10,11 +10,31 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-      <h1 class="govuk-heading-l">{{ title }}</h1>
-      <h2 class="govuk-heading-m">{{ claimant }}</h2>
+      <h1 class="govuk-heading-l">{{ titleMultiple if isGroupClaim else title }}</h1>
+      <h2 class="govuk-heading-m">{{ leadClaimant if isGroupClaim else claimant }}</h2>
       {{ govukSummaryList({
         rows: claimantContactDetails
       }) }}
+
+      {% if isGroupClaim %}
+        <h2 class="govuk-heading-m">{{ additionalClaimantDetails }}</h2>
+        {% if additionalClaimantsSummaryLists.length %}
+          {% for claimantItem in additionalClaimantsSummaryLists %}
+            <h3 class="govuk-heading-s">{{ claimantItem.name }}</h3>
+            {{ govukSummaryList({
+              rows: claimantItem.rows
+            }) }}
+          {% endfor %}
+        {% elif additionalClaimantsPdfUrl and i18n.language == "en" %}
+          <p class="govuk-body">
+            <a href="{{ additionalClaimantsPdfUrl }}" class="govuk-link" rel="noreferrer noopener" target="_blank">{{ downloadContactDetails }}</a>
+          </p>
+          {% elif additionalClaimantsPdfUrlWelsh and i18n.language == "cy" %}
+          <p class="govuk-body">
+            <a href="{{ additionalClaimantsPdfWelshUrl }}" class="govuk-link" rel="noreferrer noopener" target="_blank">{{ downloadContactDetails }}</a>
+          </p>
+        {% endif %}
+      {% endif %}
     </div>
 
     <div class="govuk-grid-column-one-third-from-desktop">

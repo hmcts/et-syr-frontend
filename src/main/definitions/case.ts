@@ -10,7 +10,7 @@ import {
   ClaimTypeDiscrimination,
   ClaimTypePay,
   DocumentDetail,
-  TellUsWhatYouWant,
+  TellUsWhatYouWant
 } from './definition';
 import { HubLinksStatuses } from './hub';
 import { ET3CaseDetailsLinksStatuses, ET3HubLinksStatuses } from './links';
@@ -381,6 +381,8 @@ export interface Case {
   // Multiples
   multipleFlag?: YesOrNo;
   leadClaimant?: YesOrNo;
+  multipleReference?: string;
+  parentMultipleCaseId?: string;
   caseStayed?: YesOrNo;
   //ET3 Response Form
   respondentDetails?: YesOrNo;
@@ -388,6 +390,8 @@ export interface Case {
   respondentResponse?: YesOrNo;
   preAcceptCase?: PreAcceptCase;
   respondentRepresented?: Representative;
+  // Additional claimants (group claim)
+  additionalClaimants?: AdditionalClaimant[];
 }
 
 export const enum StillWorking {
@@ -524,6 +528,25 @@ export interface Document {
   document_size?: number;
   document_mime_type?: string;
   createdOn?: string;
+}
+
+export interface AddressUK {
+  AddressLine1?: string;
+  AddressLine2?: string;
+  AddressLine3?: string;
+  PostTown?: string;
+  County?: string;
+  PostCode?: string;
+  Country?: string;
+}
+
+export interface AdditionalClaimant {
+  title?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  dob?: CaseDate;
+  address?: AddressUK;
 }
 
 export interface UploadedDocumentType {

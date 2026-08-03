@@ -1,7 +1,7 @@
 import {
   CaseApiDataResponse,
   DocumentApiModel,
-  HearingBundleType,
+  HearingBundleType
 } from '../../../main/definitions/api/caseApiResponse';
 import { DocumentUploadResponse } from '../../../main/definitions/api/documentApiResponse';
 import {
@@ -17,18 +17,19 @@ import {
   StillWorking,
   WeeksOrMonths,
   YesOrNo,
-  YesOrNoOrNotApplicable,
+  YesOrNoOrNotApplicable
 } from '../../../main/definitions/case';
 import { acceptanceDocTypes } from '../../../main/definitions/constants';
 import {
   CaseState,
   ClaimTypeDiscrimination,
   ClaimTypePay,
-  TellUsWhatYouWant,
+  TellUsWhatYouWant
 } from '../../../main/definitions/definition';
 import { TypeItem } from '../../../main/definitions/util-types';
 import {
   formatApiCaseDataToCaseWithId,
+  formatApiMultipleCaseDataToMultipleCaseData,
   formatDate,
   fromApiFormatDocument,
   getDocId,
@@ -40,7 +41,7 @@ import {
   parseDateFromString,
   returnPreferredTitle,
   setDocumentValues,
-  toApiFormat,
+  toApiFormat
 } from '../../../main/helpers/ApiFormatter';
 import { mockEt1DataModelUpdate } from '../mocks/mockEt1DataModel';
 import mockUserCaseComplete from '../mocks/mockUserCaseComplete';
@@ -421,8 +422,11 @@ describe('Format Case Data to Frontend Model', () => {
       caseSource: undefined,
       multipleFlag: undefined,
       leadClaimant: undefined,
+      multipleReference: undefined,
+      multipleSubmissionReference: undefined,
       caseStayed: undefined,
       preAcceptCase: undefined,
+      additionalClaimants: undefined,
     });
   });
 
@@ -813,5 +817,33 @@ describe('mapBundlesDocs', () => {
 
     const result = mapBundlesDocs(bundlesClaimantCollection, 'Claimant Hearing Document');
     expect(result).toEqual(undefined);
+  });
+});
+
+describe('formatApiMultipleCaseDataToMultipleCaseData', () => {
+  it('should map response into session multipleCase model', () => {
+    const result = formatApiMultipleCaseDataToMultipleCaseData({
+      id: '1646225213651590',
+      case_data: {
+        multipleName: 'Test Multiple',
+        multipleReference: '6000001/2026',
+        claimantContactDetailsDocument: {
+          document_url: 'http://doc/url',
+          document_filename: 'contacts.pdf',
+          document_binary_url: 'http://doc/binary',
+        },
+      },
+    });
+
+    expect(result).toEqual({
+      id: '1646225213651590',
+      multipleName: 'Test Multiple',
+      multipleReference: '6000001/2026',
+      claimantContactDetailsDocument: {
+        document_url: 'http://doc/url',
+        document_filename: 'contacts.pdf',
+        document_binary_url: 'http://doc/binary',
+      },
+    });
   });
 });

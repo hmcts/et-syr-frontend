@@ -1,4 +1,5 @@
 import { CaseType, CaseTypeId, Document, RepresentedTypeC, YesOrNo } from '../case';
+import { AdditionalClaimantType } from '../complexTypes/additionalClaimant';
 import { ClaimantCorrespondence } from '../complexTypes/claimantCorrespondence';
 import { ClaimantEmploymentDetails } from '../complexTypes/claimantEmploymentDetails';
 import { ClaimantHearingPreference } from '../complexTypes/claimantHearingPreference';
@@ -73,8 +74,15 @@ export interface CaseData {
   bundlesRespondentCollection?: TypeItem<HearingBundleType>[];
   multipleFlag?: YesOrNo;
   leadClaimant?: YesOrNo;
+  multipleReference?: string;
   batchCaseStayed?: YesOrNo;
   preAcceptCase?: PreAcceptCase;
+  additionalClaimants?: AdditionalClaimantApiModel[];
+}
+
+export interface AdditionalClaimantApiModel {
+  value?: AdditionalClaimantType;
+  id?: string;
 }
 
 export type PreAcceptCase = {

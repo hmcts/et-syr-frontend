@@ -4,9 +4,10 @@ import FormData from 'form-data';
 
 import { CaseApiDataResponse, CaseAssignmentResponse } from '../definitions/api/caseApiResponse';
 import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
+import { MultipleCaseApiResponse } from '../definitions/api/multipleCaseApiResponse';
 import { UploadedFile } from '../definitions/api/uploadedFile';
 import { AppRequest, UserDetails } from '../definitions/appRequest';
-import { CaseWithId } from '../definitions/case';
+import { AdditionalClaimant, CaseWithId } from '../definitions/case';
 import { GenericTseApplicationTypeItem } from '../definitions/complexTypes/genericTseApplicationTypeItem';
 import { PseResponseType, SendNotificationTypeItem } from '../definitions/complexTypes/sendNotificationTypeItem';
 import { DefaultValues, JavaApiUrls, Roles, ServiceErrors, SessionErrors } from '../definitions/constants';
@@ -16,8 +17,8 @@ import { RespondentTse } from '../definitions/respondentTse';
 import { TypeItem } from '../definitions/util-types';
 import { toApiFormat } from '../helpers/ApiFormatter';
 import { getApplicationByCode } from '../helpers/ApplicationHelper';
-import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ErrorUtils from '../utils/ErrorUtils';
+import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 
 import { axiosErrorDetails } from './AxiosErrorAdapter';
 
@@ -101,6 +102,28 @@ export class CaseApi {
       );
     } catch (error) {
       throw new Error('Error getting user case: ' + axiosErrorDetails(error));
+    }
+  };
+
+  getMultipleCase = async (id: string, caseTypeId: string): Promise<AxiosResponse<MultipleCaseApiResponse>> => {
+    try {
+      return await this.axios.post(JavaApiUrls.GET_MULTIPLE_CASE, { case_id: id, case_type_id: caseTypeId });
+    } catch (error) {
+      throw new Error('Error getting multiple case: ' + axiosErrorDetails(error));
+    }
+  };
+
+  getMultipleAdditionalClaimants = async (
+    caseTypeId: string,
+    multipleReference: string
+  ): Promise<AxiosResponse<AdditionalClaimant[]>> => {
+    try {
+      return await this.axios.post(JavaApiUrls.GET_MULTIPLE_ADDITIONAL_CLAIMANTS, {
+        case_type_id: caseTypeId,
+        multiple_reference: multipleReference,
+      });
+    } catch (error) {
+      throw new Error('Error getting multiple additional claimants: ' + axiosErrorDetails(error));
     }
   };
 

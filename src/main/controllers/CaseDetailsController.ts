@@ -6,7 +6,12 @@ import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { ET3Status } from '../definitions/definition';
 import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../definitions/links';
 import { TseNotification } from '../definitions/notification/tseNotification';
-import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
+import {
+  formatApiCaseDataToCaseWithId,
+  formatApiMultipleCaseDataToMultipleCaseData,
+  formatDate,
+  getDueDate
+} from '../helpers/ApiFormatter';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getProgressBarItems } from '../helpers/ProgressBarHelpers';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
@@ -28,6 +33,14 @@ export default class CaseDetailsController {
       req
     );
     req.session.selectedRespondentIndex = ET3Util.findSelectedRespondentIndex(req);
+
+    if (req.session.userCase?.multipleReference) {
+      const multipleApiResponse = await getCaseApi(req.session.user?.accessToken).getMultipleCase(
+        req.session.userCase.multipleReference,
+        req.session.userCase.caseTypeId
+      );
+      req.session.multipleCase = formatApiMultipleCaseDataToMultipleCaseData(multipleApiResponse.data);
+    }
 
     if (CollectionUtils.isNotEmpty(req.session.errors)) {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CASE_LIST)));
