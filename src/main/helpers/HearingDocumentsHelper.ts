@@ -2,6 +2,7 @@ import { HearingModel } from '../definitions/api/caseApiResponse';
 import { CaseWithId, Document } from '../definitions/case';
 import { PageUrls } from '../definitions/constants';
 import { FormError } from '../definitions/form';
+import { SummaryListRow } from '../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../definitions/util-types';
 import { hasInvalidFileName, isNotPdfFileType } from '../validators/validator';
 
@@ -64,7 +65,7 @@ export const getFilesRows = (
   userCase: CaseWithId | undefined,
   hearingId: string,
   translations: AnyRecord
-): { key: unknown; value?: unknown; actions?: unknown }[] => {
+): SummaryListRow[] => {
   if (userCase === undefined || userCase.hearingDocument === undefined) {
     return [
       {

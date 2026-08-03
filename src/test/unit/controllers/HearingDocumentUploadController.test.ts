@@ -2,6 +2,7 @@ import HearingDocumentUploadController from '../../../main/controllers/HearingDo
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import pageTranslations from '../../../main/resources/locales/en/translation/hearing-document-upload.json';
 import * as FileUtilsModule from '../../../main/utils/FileUtils';
+import { mockDocumentUploadResponse } from '../mocks/mockDocumentUploadResponse';
 import { mockFile, mockPdf } from '../mocks/mockFile';
 import { mockHearingCollection } from '../mocks/mockHearing';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
@@ -16,13 +17,8 @@ describe('Hearing Document Upload controller', () => {
 
   beforeEach(() => {
     jest.spyOn(FileUtilsModule.default, 'uploadFile').mockResolvedValue({
+      ...mockDocumentUploadResponse,
       originalDocumentName: 'test.pdf',
-      uri: 'test.com',
-      size: '100',
-      _links: {
-        self: { href: 'test.com' },
-        binary: { href: 'test.com/binary' },
-      },
     });
   });
 
