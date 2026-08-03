@@ -16,5 +16,10 @@
   "section3": "Rhowch eich ymateb i ni",
   "contestClaim": "Herio’r hawliad",
   "section4": "Gwirio a chyflwyno’ch ymateb",
-  "checkYorAnswers": "Gwirio eich atebion"
+  "checkYorAnswers": "Gwirio eich atebion",
+  "groupClaims": {
+    "p1": "[W] You only need to respond to the complaints or issues from the lead claimant in the ET1. Your response will apply to all claimants in the group claim.",
+    "p2": "[W] View the details of the other claimants to see if you think that they also have a valid claim based on the complaints or issues submitted by the lead claimant.",
+    "claimantDetails": "[W] View claimants contact details"
+  }
 }
