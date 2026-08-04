@@ -100,6 +100,8 @@ export default class ET3DataModelUtil {
       respondent_phone2: caseWithId.respondentPhone2,
       respondent_email: caseWithId.respondentEmail,
       respondent_contact_preference: caseWithId.respondentContactPreference,
+      respondent_hearing_panel_preference: caseWithId.respondentHearingPanelPreference,
+      respondent_hearing_panel_preference_reason: caseWithId.respondentHearingPanelPreferenceReason,
       responseStruckOut: caseWithId.responseStruckOut,
       responseStruckOutDate: caseWithId.responseStruckOutDate,
       responseStruckOutChairman: caseWithId.responseStruckOutChairman,
@@ -377,6 +379,9 @@ export default class ET3DataModelUtil {
     req.session.userCase.respondentPhone2 = selectedRespondent.respondentPhone2;
     req.session.userCase.respondentEmail = selectedRespondent.respondentEmail;
     req.session.userCase.respondentContactPreference = selectedRespondent.respondentContactPreference;
+    req.session.userCase.respondentHearingPanelPreference = selectedRespondent.respondentHearingPanelPreference;
+    req.session.userCase.respondentHearingPanelPreferenceReason =
+      selectedRespondent.respondentHearingPanelPreferenceReason;
     req.session.userCase.responseStruckOut = selectedRespondent.responseStruckOut;
     req.session.userCase.responseStruckOutDate = selectedRespondent.responseStruckOutDate;
     req.session.userCase.responseStruckOutChairman = selectedRespondent.responseStruckOutChairman;
@@ -458,6 +463,9 @@ export default class ET3DataModelUtil {
     req.session.userCase.et3ResponseLanguagePreference = selectedRespondent.et3ResponseLanguagePreference;
     req.session.userCase.et3ResponseHearingRepresentative = selectedRespondent.et3ResponseHearingRepresentative;
     req.session.userCase.et3ResponseHearingRespondent = selectedRespondent.et3ResponseHearingRespondent;
+    req.session.userCase.respondentHearingPanelPreference = selectedRespondent.respondentHearingPanelPreference;
+    req.session.userCase.respondentHearingPanelPreferenceReason =
+      selectedRespondent.respondentHearingPanelPreferenceReason;
     req.session.userCase.et3ResponseEmploymentCount = selectedRespondent.et3ResponseEmploymentCount;
     req.session.userCase.et3ResponseMultipleSites = selectedRespondent.et3ResponseMultipleSites;
     req.session.userCase.et3ResponseSiteEmploymentCount = selectedRespondent.et3ResponseSiteEmploymentCount;
