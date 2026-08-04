@@ -53,6 +53,7 @@ describe('Respondent response task list controller', () => {
         welshEnabled: true,
         languageParam: expect.any(String),
         redirectUrl: expect.any(String),
+        claimantDetailsUrl: expect.any(String),
       })
     );
     const renderMock = response.render as jest.Mock;
