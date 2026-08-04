@@ -118,9 +118,9 @@ describe('Claimant employment dates Controller', () => {
 
       await controller.post(request, response);
 
-      expect(request.session.userCase.et3ResponseEmploymentInformation).toBeUndefined();
       expect(request.session.userCase.et3ResponseEmploymentStartDate).toStrictEqual(request.session.userCase.startDate);
       expect(request.session.userCase.et3ResponseEmploymentEndDate).toStrictEqual(request.session.userCase.endDate);
+      expect(request.session.userCase.et3ResponseEmploymentInformation).toBeUndefined();
       updateET3ResponseWithET3FormMock.mockRestore();
     });
 
