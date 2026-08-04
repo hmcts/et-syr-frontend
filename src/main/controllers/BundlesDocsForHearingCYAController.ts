@@ -11,6 +11,13 @@ import {
 } from '../helpers/controller/BundlesPrepareDocsCYAHelper';
 import UrlUtils from '../utils/UrlUtils';
 
+const resolveCyaLabel = (labels: AnyRecord | undefined, key: string | undefined): string => {
+  if (!key) {
+    return '';
+  }
+  return (labels?.[key] as string) || key;
+};
+
 export default class BundlesDocsForHearingCYAController {
   public get = (req: AppRequest, res: Response): void => {
     const userCase = req.session?.userCase;
@@ -41,14 +48,8 @@ export default class BundlesDocsForHearingCYAController {
         translations,
         languageParam,
         downloadLink,
-        (userCase?.whoseHearingDocumentsAreYouUploading &&
-          translations.whoseHearingDocument?.[userCase.whoseHearingDocumentsAreYouUploading]) ||
-          userCase?.whoseHearingDocumentsAreYouUploading ||
-          '',
-        (userCase?.whatAreTheseDocuments &&
-          translations.whatAreTheHearingDocuments?.[userCase.whatAreTheseDocuments]) ||
-          userCase?.whatAreTheseDocuments ||
-          '',
+        resolveCyaLabel(translations.whoseHearingDocument, userCase?.whoseHearingDocumentsAreYouUploading),
+        resolveCyaLabel(translations.whatAreTheHearingDocuments, userCase?.whatAreTheseDocuments),
         formattedSelectedHearing ?? ''
       ),
     });

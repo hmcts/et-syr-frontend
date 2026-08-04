@@ -49,6 +49,20 @@ describe('BundlesPrepareDocsCYAHelper', () => {
       );
       expect(rows[4].value.html).toContain('Hearing Doc1.pdf');
     });
+
+    it('should fall back to about hearing documents when hearing id is missing', () => {
+      const rows = getBundlesCyaContent(
+        { ...mockUserCase, hearingDocumentsAreFor: undefined },
+        { q1: 'q1', q2: 'q2', q3: 'q3', q4: 'q4', q5: 'q5' },
+        '?lng=en',
+        '',
+        '',
+        '',
+        ''
+      );
+      expect(rows[4].actions.items[0].href).toBe(PageUrls.ABOUT_HEARING_DOCUMENTS + '?lng=en');
+      expect(rows[4].actions.items[0].text).toBe('Change');
+    });
   });
 
   describe('clearBundlesFields', () => {
@@ -87,6 +101,23 @@ describe('BundlesPrepareDocsCYAHelper', () => {
       });
       expect(link).toContain('Hearing Doc1.pdf');
       expect(link).toContain('/getSupportingMaterial/doc-1');
+    });
+
+    it('should return empty string when filename or url is missing', () => {
+      expect(
+        createDownloadLinkForHearingDoc({
+          document_url: 'http://dm/documents/doc-1',
+          document_filename: undefined,
+          document_binary_url: 'http://dm/documents/doc-1/binary',
+        })
+      ).toBe('');
+      expect(
+        createDownloadLinkForHearingDoc({
+          document_url: undefined,
+          document_filename: 'Hearing Doc1.pdf',
+          document_binary_url: 'http://dm/documents/doc-1/binary',
+        })
+      ).toBe('');
     });
   });
 });

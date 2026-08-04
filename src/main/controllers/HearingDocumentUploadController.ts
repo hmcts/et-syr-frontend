@@ -4,7 +4,7 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { continueButton } from '../definitions/buttons';
 import { ErrorPages, FormFieldNames, PageUrls, TranslationKeys } from '../definitions/constants';
-import { FormContent, FormFields } from '../definitions/form';
+import { FormContent, FormFields, FormInput, FormOptions } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { fromApiFormatDocument } from '../helpers/ApiFormatter';
 import { getPageContent } from '../helpers/FormHelper';
@@ -131,16 +131,16 @@ export default class HearingDocumentUploadController {
       TranslationKeys.HEARING_DOCUMENT_UPLOAD,
     ]);
 
-    (this.hearingDocumentUploadFormContent.fields as any).inset.subFields.upload.disabled =
-      userCase?.hearingDocument !== undefined;
-
-    (this.hearingDocumentUploadFormContent.fields as any).filesUploaded.rows = getFilesRows(
-      userCase,
-      req.params.hearingId,
-      {
-        ...req.t(TranslationKeys.HEARING_DOCUMENT_UPLOAD as never, { returnObjects: true } as never),
-      }
-    );
+    const fields = this.hearingDocumentUploadFormContent.fields as FormFields;
+    const insetField = fields.inset as FormOptions;
+    const uploadField = insetField.subFields?.upload as FormInput & { disabled?: boolean };
+    if (uploadField) {
+      uploadField.disabled = userCase?.hearingDocument !== undefined;
+    }
+    const filesUploadedField = fields.filesUploaded as FormOptions;
+    filesUploadedField.rows = getFilesRows(userCase, req.params.hearingId, {
+      ...req.t(TranslationKeys.HEARING_DOCUMENT_UPLOAD as never, { returnObjects: true } as never),
+    });
 
     const translations: AnyRecord = {
       ...req.t(TranslationKeys.HEARING_DOCUMENT_UPLOAD as never, { returnObjects: true } as never),

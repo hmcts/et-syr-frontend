@@ -126,4 +126,21 @@ describe('About Hearing Documents Controller', () => {
     await controller.get(request, response);
     expect(response.redirect).toHaveBeenCalled();
   });
+
+  it('should add a required error when selected hearing id is not in the collection', async () => {
+    const body = {
+      hearingDocumentsAreFor: 'not-a-real-hearing',
+      whoseHearingDocumentsAreYouUploading: WhoseHearingDocument.BOTH_PARTIES,
+      whatAreTheseDocuments: WhatAreTheHearingDocuments.SUPPLEMENTARY,
+    };
+    const response = mockResponse();
+    const request = mockRequest({ body });
+    request.session.userCase.hearingCollection = mockHearingCollectionFutureDates;
+    request.url = PageUrls.ABOUT_HEARING_DOCUMENTS + languages.ENGLISH_URL_PARAMETER;
+
+    await new AboutHearingDocumentsController().post(request, response);
+
+    expect(request.session.errors).toEqual([{ propertyName: 'hearingDocumentsAreFor', errorType: 'required' }]);
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.ABOUT_HEARING_DOCUMENTS + languages.ENGLISH_URL_PARAMETER);
+  });
 });

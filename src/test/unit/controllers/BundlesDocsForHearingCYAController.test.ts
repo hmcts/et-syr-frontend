@@ -34,4 +34,49 @@ describe('Bundles docs for hearing CYA controller', () => {
       })
     );
   });
+
+  it('should fall back to stored hearing label and raw values when translations are missing', () => {
+    const controller = new BundlesDocsForHearingCYAController();
+    const response = mockResponse();
+    const request = mockRequestWithTranslation({}, { ...commonJson, ...bundlesCyaJson });
+    request.session.userCase.hearingCollection = [];
+    request.session.userCase.hearingDocumentsAreFor = 'missing-hearing';
+    request.session.userCase.formattedSelectedHearing = 'Stored hearing label';
+    request.session.userCase.whoseHearingDocumentsAreYouUploading = 'CustomWhose' as WhoseHearingDocument;
+    request.session.userCase.whatAreTheseDocuments = 'CustomWhat' as WhatAreTheHearingDocuments;
+    request.url = '/documents-for-hearing' + languages.ENGLISH_URL_PARAMETER;
+
+    controller.get(request, response);
+
+    expect(response.render).toHaveBeenCalledWith(
+      TranslationKeys.BUNDLES_DOCS_FOR_HEARING_CYA,
+      expect.objectContaining({
+        cyaContent: expect.arrayContaining([
+          expect.objectContaining({ value: { text: 'Stored hearing label' } }),
+          expect.objectContaining({ value: { text: 'CustomWhose' } }),
+          expect.objectContaining({ value: { text: 'CustomWhat' } }),
+        ]),
+      })
+    );
+  });
+
+  it('should render empty fallback labels when hearing document answers are missing', () => {
+    const controller = new BundlesDocsForHearingCYAController();
+    const response = mockResponse();
+    const request = mockRequestWithTranslation({}, { ...commonJson, ...bundlesCyaJson });
+    request.session.userCase.hearingCollection = undefined;
+    request.session.userCase.whoseHearingDocumentsAreYouUploading = undefined;
+    request.session.userCase.whatAreTheseDocuments = undefined;
+    request.session.userCase.formattedSelectedHearing = undefined;
+    request.url = '/documents-for-hearing' + languages.ENGLISH_URL_PARAMETER;
+
+    controller.get(request, response);
+
+    expect(response.render).toHaveBeenCalledWith(
+      TranslationKeys.BUNDLES_DOCS_FOR_HEARING_CYA,
+      expect.objectContaining({
+        cyaContent: expect.any(Array),
+      })
+    );
+  });
 });

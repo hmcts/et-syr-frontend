@@ -1,6 +1,6 @@
 import SubmitBundlesHearingDocsCYAController from '../../../main/controllers/SubmitBundlesHearingDocsCYAController';
 import { AgreedDocuments } from '../../../main/definitions/case';
-import { PageUrls, languages } from '../../../main/definitions/constants';
+import { ErrorPages, PageUrls, languages } from '../../../main/definitions/constants';
 import * as CaseService from '../../../main/services/CaseService';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -12,6 +12,7 @@ describe('Submit bundles hearing docs CYA controller', () => {
     jest.spyOn(CaseService, 'getCaseApi').mockReturnValue({
       submitBundlesHearingDoc,
     } as unknown as ReturnType<typeof CaseService.getCaseApi>);
+    submitBundlesHearingDoc.mockResolvedValue({});
   });
 
   afterEach(() => {
@@ -37,6 +38,30 @@ describe('Submit bundles hearing docs CYA controller', () => {
     expect(request.session.userCase.hearingDocument).toBeUndefined();
     expect(request.session.userCase.bundlesRespondentAgreedDocWith).toBeUndefined();
     expect(response.redirect).toHaveBeenCalledWith(PageUrls.BUNDLES_COMPLETED + languages.ENGLISH_URL_PARAMETER);
+  });
+
+  it('should redirect to not found when submit fails', async () => {
+    submitBundlesHearingDoc.mockRejectedValue(new Error('submit failed'));
+    const controller = new SubmitBundlesHearingDocsCYAController();
+    const response = mockResponse();
+    const request = mockRequest({});
+    request.url = InterceptPathsSubmitUrl();
+
+    await controller.get(request, response);
+
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+  });
+
+  it('should redirect to not found when submit fails with a non-error value', async () => {
+    submitBundlesHearingDoc.mockRejectedValue('boom');
+    const controller = new SubmitBundlesHearingDocsCYAController();
+    const response = mockResponse();
+    const request = mockRequest({});
+    request.url = InterceptPathsSubmitUrl();
+
+    await controller.get(request, response);
+
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
   });
 });
 
