@@ -1,4 +1,5 @@
 import RespondentResponseTaskListController from '../../../main/controllers/RespondentResponseTaskListController';
+import { CaseType } from '../../../main/definitions/case';
 import { DefaultValues, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import { mockRequest } from '../mocks/mockRequest';
@@ -39,7 +40,9 @@ describe('Respondent response task list controller', () => {
     mockWelshFlag.mockResolvedValue(true);
     const controller = new RespondentResponseTaskListController();
     const response = mockResponse();
-    const request = mockRequest({ session: { userCase: mockUserCaseComplete, user: mockUserDetails } });
+    const request = mockRequest({
+      session: { userCase: { ...mockUserCaseComplete, caseType: CaseType.MULTIPLE }, user: mockUserDetails },
+    });
     request.session.selectedRespondentIndex = 0;
     // Mock the translation function to return valid section data
     (request.t as unknown as jest.Mock).mockReturnValue(mockRespondentHubTranslations);
@@ -54,6 +57,7 @@ describe('Respondent response task list controller', () => {
         languageParam: expect.any(String),
         redirectUrl: expect.any(String),
         claimantDetailsUrl: expect.any(String),
+        isGroupClaim: true,
       })
     );
     const renderMock = response.render as jest.Mock;
