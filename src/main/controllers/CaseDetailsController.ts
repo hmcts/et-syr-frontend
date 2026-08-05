@@ -83,7 +83,7 @@ export default class CaseDetailsController {
       languageParam: getLanguageParam(req.url),
       respondentRepresented: representative !== undefined,
       respondentRepresentative: representative,
-      isGroupClaim: req.session?.userCase?.caseType === CaseType.MULTIPLE,
+      isGroupClaim: req.session.userCase.caseType === CaseType.MULTIPLE,
     });
   }
 }

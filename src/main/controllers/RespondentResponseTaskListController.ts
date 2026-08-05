@@ -68,7 +68,7 @@ export default class RespondentResponseTaskListController {
       welshEnabled,
       et1FormId: et1Form?.id,
       acasCertificateId: acasCertificate?.id,
-      isGroupClaim: req.session.userCase?.caseType === CaseType.MULTIPLE,
+      isGroupClaim: req.session.userCase.caseType === CaseType.MULTIPLE,
       claimantDetailsUrl: setUrlLanguage(req, PageUrls.CLAIMANT_CONTACT_DETAILS),
     });
   }
