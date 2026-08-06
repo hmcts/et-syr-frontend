@@ -386,6 +386,35 @@ export class CaseApi {
       throw new Error('Error submitting stored responding to notification: ' + axiosErrorDetails(error));
     }
   };
+
+  submitBundlesHearingDoc = async (caseItem: CaseWithId): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    const hearingBundle = {
+      agreedDocWith: caseItem.bundlesRespondentAgreedDocWith,
+      agreedDocWithBut: caseItem.bundlesRespondentAgreedDocWithBut || '',
+      agreedDocWithNo: caseItem.bundlesRespondentAgreedDocWithNo || '',
+      hearing: caseItem.hearingDocumentsAreFor,
+      formattedSelectedHearing: caseItem.formattedSelectedHearing,
+      whatDocuments: caseItem.whatAreTheseDocuments,
+      whoseDocuments: caseItem.whoseHearingDocumentsAreYouUploading,
+      uploadFile: caseItem.hearingDocument,
+      uploadDateTime: new Intl.DateTimeFormat('en-GB', {
+        dateStyle: 'long',
+        timeStyle: 'short',
+      })
+        .format(new Date())
+        .replace(' at', ''),
+    };
+
+    try {
+      return await this.axios.put(JavaApiUrls.SUBMIT_BUNDLES, {
+        case_id: caseItem.id,
+        case_type_id: caseItem.caseTypeId,
+        respondent_bundles: hearingBundle,
+      });
+    } catch (error) {
+      throw new Error('Error submitting bundles: ' + axiosErrorDetails(error));
+    }
+  };
 }
 
 export const getCaseApi = (token: string): CaseApi => {

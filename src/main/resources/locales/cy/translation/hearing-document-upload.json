@@ -1,0 +1,30 @@
+{
+  "title": "Uwchlwytho eich ffeil o ddogfennau",
+  "h1": "Uwchlwytho eich ffeil o ddogfennau",
+  "headingCaption": "Paratoi dogfennau ar gyfer gwrandawiad",
+  "p1": "Ar ol ichi ddarllen y gorchmynion gan y tribiwnlys, gwnewch yn siwr:",
+  "bullet1": "mae gennych y set o ddogfennau mewn un ffeil PDF",
+  "bullet2": "os gofynnir am fynegai, bod yr eitemau mewn trefn yn ol dyddiad neu drefn y mae'r tribiwnlys wedi gofyn amdano",
+  "bullet3": "mae'r eitem mynegai yn cyfeirio at y dudalen gywir yn y ddogfen",
+  "bullet4": "rydych ond yn cynnwys dogfennau a deunydd perthnasol i'ch achos chi",
+  "bullet5": "mae'r ddogfen PDF yn dod o fewn unrhyw derfynau nifer y tudalennau a roddir gan y tribiwnlys",
+  "p2": "Os ydych chi'n cyfeirio at un adran o ddogfen fel contract cyflogaeth, dywedwch pa ran yn y mynegai.",
+  "p3Before": "Os oes angen i chi gyfeirio at ddogfennau achos blaenorol, ewch i ",
+  "p3Link": "ddogfennau eich achos (yn agor mewn tab newydd)",
+  "remove": "Dileu",
+  "noFilesUpload": "<p class=\"govuk-body\">Dim ffeiliau wedi'u huwchlwytho</p>",
+  "files": {
+    "title": "Uwchlwytho ffeil",
+    "button": "Uwchlwytho ffeil",
+    "uploaded": "Ffeiliau wedi'u huwchlwytho"
+  },
+  "errors": {
+    "hearingDocument": {
+      "required": "Rhaid ichi uwchlwytho ffeil PDF i barhau",
+      "invalidFileFormat": "Rhaid i'r ffeil a ddewiswyd fod ar ffurf PDF",
+      "invalidFileName": "Mae enw'r ffeil a ddarparwyd yn annilys. Ni all enw ffeil fod yn fwy na 150 o nodau na chynnwys unrhyw un o'r nodau canlynol: \\/:*?\"|<>",
+      "invalidFileSize": "Mae'r ffeil rydych chi'n ceisio ei huwchlwytho yn fwy na'r terfyn maint uchaf, ceisiwch leihau maint y ffeil.",
+      "backEndError": "Roedd yna gwall wrth uwchlwytho eich ffeil. Rhowch gynnig arall arni. Os bydd y gwall hwn yn parhau cysylltwch a'r tim cymorth."
+    }
+  }
+}

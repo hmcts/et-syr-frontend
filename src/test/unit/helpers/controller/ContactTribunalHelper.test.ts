@@ -4,6 +4,7 @@ import { HubLinkStatus, HubLinksStatuses } from '../../../../main/definitions/hu
 import { AnyRecord } from '../../../../main/definitions/util-types';
 import {
   getApplicationsAccordionItems,
+  getCopyToOtherPartyPageUrl,
   isClaimantSystemUser,
 } from '../../../../main/helpers/controller/ContactTribunalHelper';
 import contactTribunalJson from '../../../../main/resources/locales/en/translation/contact-tribunal.json';
@@ -15,8 +16,11 @@ describe('Contact Tribunal Helper', () => {
       const translations: AnyRecord = contactTribunalJson;
       const accordionItems = getApplicationsAccordionItems(url, translations);
       expect(accordionItems).toBeInstanceOf(Array);
-      expect(accordionItems).toHaveLength(12);
+      expect(accordionItems).toHaveLength(13);
       expect(accordionItems[0].heading.text).toBe('I want to change my personal details');
+      expect(accordionItems[12].heading.text).toBe('Submit documents for a hearing');
+      expect(accordionItems[12].content.html).toContain(PageUrls.PREPARE_AND_SUBMIT_HEARING_DOCUMENTS);
+      expect(accordionItems[12].content.html).not.toContain('/contact-tribunal/');
     });
   });
 
@@ -84,6 +88,21 @@ describe('Contact Tribunal Helper', () => {
       } as CaseWithId;
       const result = isClaimantSystemUser(userCase);
       expect(result).toBe(false);
+    });
+  });
+
+  describe('getCopyToOtherPartyPageUrl', () => {
+    it('should return online copy page when claimant is a system user', () => {
+      const userCase = {
+        id: 'case123',
+        et1OnlineSubmission: 'Yes',
+      } as CaseWithId;
+      expect(getCopyToOtherPartyPageUrl(userCase)).toBe(PageUrls.COPY_TO_OTHER_PARTY);
+    });
+
+    it('should return offline copy page when claimant is not a system user', () => {
+      const userCase = { id: 'case123' } as CaseWithId;
+      expect(getCopyToOtherPartyPageUrl(userCase)).toBe(PageUrls.COPY_TO_OTHER_PARTY_OFFLINE);
     });
   });
 });

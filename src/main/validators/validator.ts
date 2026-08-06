@@ -118,6 +118,16 @@ export const hasInvalidFileFormat = (value: Express.Multer.File, logger: Logger)
   return ValidationErrors.INVALID_FILE_FORMAT;
 };
 
+export const isNotPdfFileType = (value: Express.Multer.File): string => {
+  if (!value || !value.originalname) {
+    return;
+  }
+  if (value.originalname.toLowerCase().endsWith('.pdf')) {
+    return;
+  }
+  return ValidationErrors.INVALID_FILE_FORMAT;
+};
+
 export const isValidEthosCaseReference: Validator = value => {
   const valueAsString = value as string;
   if (StringUtils.isBlank(valueAsString)) {
