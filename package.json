@@ -179,7 +179,7 @@
     "cookie": "^1.0.0",
     "shelljs": "^0.9.0",
     "cross-spawn": "^7.0.5",
-    "brace-expansion": "^5.0.7",
+    "brace-expansion": "^5.0.9",
     "basic-ftp": ">=5.2.2",
     "axios": "^1.18.1",
     "form-data": "^4.0.4",
@@ -195,7 +195,7 @@
     "underscore": "^1.13.8",
     "serialize-javascript": "^7.0.5",
     "uuid": "^14.0.0",
-    "ip-address": "^10.1.1",
+    "ip-address": "^10.3.1",
     "body-parser": "^2.3.0"
   },
   "packageManager": "yarn@4.12.0"
