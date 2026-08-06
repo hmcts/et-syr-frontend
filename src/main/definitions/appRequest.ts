@@ -6,6 +6,7 @@ import { Session } from 'express-session';
 import { CaseWithId } from './case';
 import { ApiDocumentTypeItem } from './complexTypes/documentTypeItem';
 import { FormError } from './form';
+import { MultipleCaseData } from './multipleCaseData';
 import { AnyRecord } from './util-types';
 
 export interface AppRequest<T = Partial<AnyRecord>> extends Request {
@@ -61,6 +62,7 @@ export interface AppSession extends Session {
   subSectionUrl: string;
   selectedAcasCertificate?: ApiDocumentTypeItem;
   selectedRespondentIndex?: number;
+  multipleCase?: MultipleCaseData;
   submittedCase?: CaseWithId;
   user: UserDetails;
   userCase: CaseWithId;

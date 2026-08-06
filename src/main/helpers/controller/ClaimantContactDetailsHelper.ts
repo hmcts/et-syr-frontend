@@ -1,5 +1,5 @@
 import { AppRequest } from '../../definitions/appRequest';
-import { CaseWithId, EmailOrPost } from '../../definitions/case';
+import { AdditionalClaimant, CaseWithId, EmailOrPost } from '../../definitions/case';
 import { TranslationKeys, YES } from '../../definitions/constants';
 import { SummaryListRow, addSummaryRow } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
@@ -56,6 +56,43 @@ const getClaimantLegalRepInfo = (userCase: CaseWithId, translations: AnyRecord):
   }
 
   return details;
+};
+
+export const getAdditionalClaimantRows = (claimant: AdditionalClaimant, translations: AnyRecord): SummaryListRow[] => {
+  const details: SummaryListRow[] = [];
+  const nameParts = [claimant.title, claimant.firstName, claimant.lastName].filter(Boolean);
+  details.push(addSummaryRow(translations.name, nameParts.length ? nameParts.join(' ') : translations.notProvided));
+
+  const addressString = answersAddressFormatter(
+    claimant.address?.AddressLine1,
+    claimant.address?.AddressLine2,
+    claimant.address?.AddressLine3,
+    claimant.address?.PostTown,
+    claimant.address?.County,
+    claimant.address?.PostCode,
+    claimant.address?.Country
+  );
+  details.push(addSummaryRow(translations.address, addressString || translations.notProvided));
+  details.push(addSummaryRow(translations.email, claimant.email || translations.notProvided));
+
+  return details;
+};
+
+export const getAdditionalClaimantsSummaryLists = (
+  req: AppRequest,
+  claimants: AdditionalClaimant[]
+): { name: string; rows: SummaryListRow[] }[] => {
+  const claimantsToUse = claimants ?? req.session?.userCase?.additionalClaimants;
+  if (!claimantsToUse?.length) {
+    return [];
+  }
+  const translations: AnyRecord = {
+    ...req.t(TranslationKeys.CLAIMANT_CONTACT_DETAILS, { returnObjects: true }),
+  };
+  return claimantsToUse.map((claimant, index) => ({
+    name: `${translations.additionalClaimant} ${index + 2}`,
+    rows: getAdditionalClaimantRows(claimant, translations),
+  }));
 };
 
 const getClaimantInfo = (userCase: CaseWithId, translations: AnyRecord): SummaryListRow[] => {

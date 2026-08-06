@@ -1,6 +1,10 @@
 {
   "title": "Claimant contact details",
+  "titleMultiple": "Claimants contact details",
   "claimant": "Claimant",
+  "leadClaimant": "Lead claimant",
+  "additionalClaimant": "Claimant",
+  "additionalClaimantDetails": "Additional claimant details",
   "legalRepresentativesName": "Legal representative’s name",
   "legalRepsOrganisation": "Legal rep’s organisation",
   "name": "Name",
@@ -8,5 +12,6 @@
   "email": "Email",
   "preferredMethod": "Preferred method of contact",
   "post": "Post",
-  "notProvided": "Not provided"
+  "notProvided": "Not provided",
+"downloadContactDetails": "Download additional claimants (PDF, opens in new tab)"
 }

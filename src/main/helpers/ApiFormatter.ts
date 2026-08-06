@@ -1,15 +1,18 @@
 import { RespondentRequestBody, UpdateCaseBody } from '../definitions/api/caseApiBody';
 import {
+  AdditionalClaimantApiModel,
   CaseApiDataResponse,
   CaseData,
   DocumentApiModel,
   HearingBundleType,
   RepresentativeApiModel,
-  RespondentApiModel,
+  RespondentApiModel
 } from '../definitions/api/caseApiResponse';
 import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
+import { MultipleCaseApiResponse } from '../definitions/api/multipleCaseApiResponse';
 import { AppRequest } from '../definitions/appRequest';
 import {
+  AdditionalClaimant,
   CaseDate,
   CaseWithId,
   Document,
@@ -17,7 +20,7 @@ import {
   Representative,
   RespondentET3Model,
   YesOrNo,
-  ccdPreferredTitle,
+  ccdPreferredTitle
 } from '../definitions/case';
 import { DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
 import { GenericTseApplicationTypeItem, sortByDate } from '../definitions/complexTypes/genericTseApplicationTypeItem';
@@ -33,9 +36,10 @@ import {
   et3FormDocTypes,
   rejectionDocTypes,
   responseAcceptedDocTypes,
-  responseRejectedDocTypes,
+  responseRejectedDocTypes
 } from '../definitions/constants';
 import { DocumentDetail } from '../definitions/definition';
+import { MultipleCaseData } from '../definitions/multipleCaseData';
 import { TypeItem } from '../definitions/util-types';
 import DateUtils from '../utils/DateUtils';
 import NumberUtils from '../utils/NumberUtils';
@@ -190,14 +194,47 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
     ],
     multipleFlag: fromApiCaseData?.case_data?.multipleFlag,
     leadClaimant: fromApiCaseData?.case_data?.leadClaimant,
+    multipleReference: fromApiCaseData?.case_data?.multipleReference,
     caseStayed: fromApiCaseData?.case_data?.batchCaseStayed,
     preAcceptCase: fromApiCaseData?.case_data?.preAcceptCase,
+    additionalClaimants: mapAdditionalClaimants(fromApiCaseData.case_data?.additionalClaimants),
   };
   if (NumberUtils.isNotEmpty(req?.session?.selectedRespondentIndex)) {
     mapResponseApiDataToCaseWithId(fromApiCaseData, caseWithId, req);
   }
   return caseWithId;
 }
+
+export function formatApiMultipleCaseDataToMultipleCaseData(
+  fromApiMultipleCaseData: MultipleCaseApiResponse
+): MultipleCaseData {
+  return {
+    id: fromApiMultipleCaseData?.id,
+    multipleName: fromApiMultipleCaseData?.case_data?.multipleName,
+    multipleReference: fromApiMultipleCaseData?.case_data?.multipleReference,
+    claimantContactDetailsDocument: fromApiMultipleCaseData?.case_data?.claimantContactDetailsDocument,
+    claimantContactDetailsDocumentWelsh: fromApiMultipleCaseData?.case_data?.claimantContactDetailsDocumentWelsh,
+  };
+}
+
+export const mapAdditionalClaimants = (additionalClaimant: AdditionalClaimantApiModel[]): AdditionalClaimant[] => {
+  return additionalClaimant?.map(claimant => {
+    return {
+      title: claimant.value?.title,
+      firstName: claimant.value?.firstName,
+      lastName: claimant.value?.lastName,
+      email: claimant.value?.email,
+      dob: parseDateFromString(claimant.value?.dob),
+      address: {
+        AddressLine1: claimant.value.address?.AddressLine1,
+        AddressLine2: claimant.value.address?.AddressLine2,
+        PostTown: claimant.value.address?.PostTown,
+        Country: claimant.value.address?.Country,
+        PostCode: claimant.value.address?.PostCode,
+      },
+    };
+  });
+};
 
 function mapResponseApiDataToCaseWithId(
   fromApiCaseData: CaseApiDataResponse,

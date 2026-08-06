@@ -302,6 +302,8 @@ export const JavaApiUrls = {
   DOCUMENT_DETAILS: '/document/details/',
   GET_CASES: 'cases/user-cases',
   GET_CASE: 'cases/user-case',
+  GET_MULTIPLE_CASE: 'cases/multiple-case',
+  GET_MULTIPLE_ADDITIONAL_CLAIMANTS: 'cases/multiple-additional-claimants',
   GET_CASE_BY_IDS: '/getCaseData',
   INITIATE_CASE_DRAFT: 'cases/initiate-case',
   UPDATE_CASE_DRAFT: 'cases/update-case',

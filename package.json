@@ -107,7 +107,8 @@
     "ts-transformer-keys": "^0.4.4",
     "tsconfig-paths": "^4.2.0",
     "typescript": "5.0.4",
-    "uuid": "^14.0.0"
+    "uuid": "^14.0.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.12.1",
