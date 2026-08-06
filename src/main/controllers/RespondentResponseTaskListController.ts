@@ -1,6 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
+import { CaseType } from '../definitions/case';
 import { ApiDocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
 import { PageUrls, TranslationKeys, languages } from '../definitions/constants';
 import {
@@ -67,6 +68,8 @@ export default class RespondentResponseTaskListController {
       welshEnabled,
       et1FormId: et1Form?.id,
       acasCertificateId: acasCertificate?.id,
+      isGroupClaim: req.session.userCase.caseType === CaseType.MULTIPLE,
+      claimantDetailsUrl: setUrlLanguage(req, PageUrls.CLAIMANT_CONTACT_DETAILS),
     });
   }
 }
