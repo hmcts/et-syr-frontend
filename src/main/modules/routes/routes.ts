@@ -101,6 +101,7 @@ import ReturnToExistingResponseController from '../../controllers/ReturnToExisti
 import SelfAssignmentCheckController from '../../controllers/SelfAssignmentCheckController';
 import SelfAssignmentFormController from '../../controllers/SelfAssignmentFormController';
 import SessionTimeoutController from '../../controllers/SessionTimeoutController';
+import TransferredCaseController from '../../controllers/TransferredCaseController';
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
 import YourRequestAndApplicationsController from '../../controllers/YourRequestAndApplicationsController';
 import YourResponseFormController from '../../controllers/YourResponseFormController';
@@ -153,6 +154,7 @@ export class Routes {
     app.post(PageUrls.SELF_ASSIGNMENT_CHECK, new SelfAssignmentCheckController().post);
     app.get(PageUrls.CASE_LIST, new CaseListController().get);
     app.get(PageUrls.CASE_DETAILS_WITH_CASE_ID_RESPONDENT_CCD_ID_PARAMETERS, new CaseDetailsController().get);
+    app.get(PageUrls.TRANSFERRED_CASE, new TransferredCaseController().get);
     app.get(PageUrls.NEW_SELF_ASSIGNMENT_REQUEST, new NewSelfAssignmentRequestController().get);
     app.get(PageUrls.COOKIE_PREFERENCES, new CookiePreferencesController().get);
     app.get(PageUrls.APPLICATION_SUBMITTED, new ApplicationSubmittedController().get);
