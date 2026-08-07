@@ -3,13 +3,14 @@ import { Response } from 'express';
 import { AppRequest } from '../definitions/appRequest';
 import { ErrorPages, PageUrls, TseErrors } from '../definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
-import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
+import { LoadUserCaseResults, loadUserCaseFromApi } from '../helpers/LoadUserCaseHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getYourStoredApplicationList } from '../helpers/StoredApplicationHelper';
 import { clearTempFields } from '../helpers/controller/ContactTribunalSubmitHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import ET3Util from '../utils/ET3Util';
+import { RespondentUtils } from '../utils/RespondentUtils';
 
 const logger = getLogger('ContactTribunalStoreController');
 
@@ -32,10 +33,20 @@ export default class ContactTribunalStoreController {
       );
 
       // refresh userCase from api
-      req.session.userCase = formatApiCaseDataToCaseWithId(
-        (await getCaseApi(req.session.user?.accessToken).getUserCase(req.session.userCase.id)).data,
-        req
+      const loadResult = await loadUserCaseFromApi(
+        req,
+        res,
+        req.session.userCase.id,
+        RespondentUtils.findSelectedRespondentByRequest(req)?.ccdId
       );
+
+      if (loadResult === LoadUserCaseResults.TRANSFERRED) {
+        return;
+      }
+
+      if (loadResult === LoadUserCaseResults.FAILED) {
+        return res.redirect(ErrorPages.NOT_FOUND + languageParam);
+      }
 
       // get latest stored application id
       const storedApps = getYourStoredApplicationList(req);
