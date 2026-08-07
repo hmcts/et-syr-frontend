@@ -582,11 +582,16 @@ export default class ET3DataModelUtil {
     req.session.userCase.et3ResponseRespondentSupportDocumentUploadTimestamp =
       selectedRespondent.et3ResponseRespondentSupportDocumentUploadTimestamp;
 
-    req.session.userCase.et3FormBinaryUrl = selectedRespondent.et3FormBinaryUrl;
-    req.session.userCase.et3FormFileName = selectedRespondent.et3FormFileName;
-    req.session.userCase.et3FormUrl = selectedRespondent.et3FormUrl;
-    req.session.userCase.et3FormCategoryId = selectedRespondent.et3FormCategoryId;
-    req.session.userCase.et3FormUploadTimestamp = selectedRespondent.et3FormUploadTimestamp;
+    req.session.userCase.et3Form = selectedRespondent.et3Form;
+    req.session.userCase.et3FormBinaryUrl =
+      selectedRespondent.et3FormBinaryUrl ?? selectedRespondent.et3Form?.document_binary_url;
+    req.session.userCase.et3FormFileName =
+      selectedRespondent.et3FormFileName ?? selectedRespondent.et3Form?.document_filename;
+    req.session.userCase.et3FormUrl = selectedRespondent.et3FormUrl ?? selectedRespondent.et3Form?.document_url;
+    req.session.userCase.et3FormCategoryId =
+      selectedRespondent.et3FormCategoryId ?? selectedRespondent.et3Form?.category_id;
+    req.session.userCase.et3FormUploadTimestamp =
+      selectedRespondent.et3FormUploadTimestamp ?? selectedRespondent.et3Form?.upload_timestamp;
     req.session.userCase.idamId = selectedRespondent.idamId;
   }
 

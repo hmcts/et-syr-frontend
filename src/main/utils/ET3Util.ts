@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest, UserDetails } from '../definitions/appRequest';
-import { CaseWithId, RespondentET3Model } from '../definitions/case';
+import { CaseWithId, RespondentET3Model, YesOrNo } from '../definitions/case';
 import {
   CLAIM_TYPES,
   DefaultValues,
@@ -285,7 +285,15 @@ export default class ET3Util {
     respondent: RespondentET3Model,
     translations: AnyRecord
   ): string {
-    const totalSections: number = 6;
+    const hasBreachOfContract =
+      CollectionUtils.isNotEmpty(userCase?.typeOfClaim) &&
+      userCase.typeOfClaim.includes(CLAIM_TYPES.BREACH_OF_CONTRACT);
+    const totalSections: number = hasBreachOfContract ? 6 : 5;
+
+    if (respondent?.responseReceived === YesOrNo.YES) {
+      return translateOverallStatus({ sectionCount: totalSections, totalSections }, translations);
+    }
+
     let sectionCount: number = 0;
 
     // Initialize et3HubLinksStatuses with defaults if null/undefined, following the pattern from RespondentUtil.java
@@ -311,18 +319,11 @@ export default class ET3Util {
       sectionCount++;
     }
 
-    if (
-      CollectionUtils.isNotEmpty(userCase?.typeOfClaim) &&
-      userCase.typeOfClaim.includes(CLAIM_TYPES.BREACH_OF_CONTRACT) &&
-      et3HubLinksStatuses[ET3HubLinkNames.EmployersContractClaim] === LinkStatus.COMPLETED
-    ) {
+    if (hasBreachOfContract && et3HubLinksStatuses[ET3HubLinkNames.EmployersContractClaim] === LinkStatus.COMPLETED) {
       sectionCount++;
     }
-    const overallStatus: AnyRecord = {
-      sectionCount,
-      totalSections,
-    };
-    return translateOverallStatus(overallStatus, translations);
+
+    return translateOverallStatus({ sectionCount, totalSections }, translations);
   }
 
   /**

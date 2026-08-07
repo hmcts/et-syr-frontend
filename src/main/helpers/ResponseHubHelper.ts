@@ -1,4 +1,4 @@
-import { CaseWithId } from '../definitions/case';
+import { CaseWithId, YesOrNo } from '../definitions/case';
 import { PageUrls, languages } from '../definitions/constants';
 import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../definitions/links';
 
@@ -38,7 +38,7 @@ export const getET3CaseDetailsLinksUrlMap = (
     ET3CaseDetailsLinkNames.ClaimantContactDetails,
     PageUrls.CLAIMANT_CONTACT_DETAILS + baseUrls[languageParam]
   );
-  if (userCase && LinkStatus.COMPLETED === respondentEt3Status) {
+  if (userCase && (LinkStatus.COMPLETED === respondentEt3Status || userCase.responseReceived === YesOrNo.YES)) {
     caseDetailsLinksMap.set(
       ET3CaseDetailsLinkNames.RespondentResponse,
       PageUrls.YOUR_RESPONSE_FORM + baseUrls[languageParam]

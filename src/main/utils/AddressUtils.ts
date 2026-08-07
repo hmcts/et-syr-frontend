@@ -66,7 +66,7 @@ export default class AddressUtils {
         PostTown: userCase.responseRespondentAddressPostTown,
       };
     }
-    if (ObjectUtils.isEmpty(respondentAddress)) {
+    if (ObjectUtils.isEmpty(respondentAddress) && !ObjectUtils.isEmpty(selectedRespondent)) {
       respondentAddress = selectedRespondent.responseRespondentAddress;
       if (
         ObjectUtils.isEmpty(respondentAddress) &&
@@ -101,13 +101,14 @@ export default class AddressUtils {
     userCase: CaseWithId,
     selectedRespondent: RespondentET3Model
   ): Et1Address {
-    let responseRespondentAddress: Et1Address;
-    if (YesOrNo.NO === userCase.et3IsRespondentAddressCorrect) {
-      responseRespondentAddress = AddressUtils.findResponseRespondentAddress(userCase, selectedRespondent);
-    } else {
-      responseRespondentAddress = AddressUtils.findExistingRespondentAddress(selectedRespondent);
+    const existingResponseRespondentAddress = AddressUtils.findResponseRespondentAddress(userCase, selectedRespondent);
+    if (!ObjectUtils.isEmpty(existingResponseRespondentAddress)) {
+      return existingResponseRespondentAddress;
     }
-    return responseRespondentAddress;
+    if (YesOrNo.NO === userCase.et3IsRespondentAddressCorrect) {
+      return AddressUtils.findResponseRespondentAddress(userCase, selectedRespondent);
+    }
+    return AddressUtils.findExistingRespondentAddress(selectedRespondent);
   }
 
   /**

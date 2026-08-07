@@ -2,7 +2,7 @@ import axios from 'axios';
 import _ from 'lodash';
 
 import { AppRequest, UserDetails } from '../../../main/definitions/appRequest';
-import { CaseWithId, RespondentET3Model } from '../../../main/definitions/case';
+import { CaseWithId, RespondentET3Model, YesOrNo } from '../../../main/definitions/case';
 import {
   CLAIM_TYPES,
   DefaultValues,
@@ -239,6 +239,54 @@ describe('ET3lUtil tests', () => {
       respondent.et3HubLinksStatuses[ET3HubLinkNames.ConciliationAndEmployeeDetails] = LinkStatus.COMPLETED;
       respondent.et3HubLinksStatuses[ET3HubLinkNames.EmployersContractClaim] = LinkStatus.COMPLETED;
       expect(ET3Util.getOverallStatus(userCase, respondent, translations)).toEqual('6 of 6 tasks completed');
+    });
+    test('Should return 6 of 6 tasks completed when responseReceived is Yes and claim includes breach of contract', () => {
+      const respondentWithResponse = _.cloneDeep(mockRespondentET3Model);
+      respondentWithResponse.responseReceived = YesOrNo.YES;
+      expect(ET3Util.getOverallStatus(userCase, respondentWithResponse, translations)).toEqual(
+        '6 of 6 tasks completed'
+      );
+    });
+  });
+  describe('getOverallStatus when user case does not have breach of contract claim', () => {
+    request = mockRequestWithTranslation(
+      {
+        session: {
+          userCase: {
+            respondents: [
+              {
+                respondentName: 'John Doe',
+              },
+            ],
+          },
+        },
+      },
+      translationJsons
+    );
+    const translations: AnyRecord = {
+      ...request.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
+    };
+    const respondentNoBoc: RespondentET3Model = _.cloneDeep(mockRespondentET3Model);
+    const userCaseNoBoc: CaseWithId = _.cloneDeep(mockCaseWithIdWithRespondents);
+    userCaseNoBoc.typeOfClaim = [];
+    respondentNoBoc.et3HubLinksStatuses = new ET3HubLinksStatuses();
+    test('Should return 0 of 5 tasks completed when no tasks completed and no breach of contract', () => {
+      expect(ET3Util.getOverallStatus(userCaseNoBoc, respondentNoBoc, translations)).toEqual('0 of 5 tasks completed');
+    });
+    test('Should return 5 of 5 tasks completed when all 5 tasks completed and no breach of contract', () => {
+      respondentNoBoc.et3HubLinksStatuses[ET3HubLinkNames.ContactDetails] = LinkStatus.COMPLETED;
+      respondentNoBoc.et3HubLinksStatuses[ET3HubLinkNames.EmployerDetails] = LinkStatus.COMPLETED;
+      respondentNoBoc.et3HubLinksStatuses[ET3HubLinkNames.ConciliationAndEmployeeDetails] = LinkStatus.COMPLETED;
+      respondentNoBoc.et3HubLinksStatuses[ET3HubLinkNames.PayPensionBenefitDetails] = LinkStatus.COMPLETED;
+      respondentNoBoc.et3HubLinksStatuses[ET3HubLinkNames.ContestClaim] = LinkStatus.COMPLETED;
+      expect(ET3Util.getOverallStatus(userCaseNoBoc, respondentNoBoc, translations)).toEqual('5 of 5 tasks completed');
+    });
+    test('Should return 5 of 5 tasks completed when responseReceived is Yes and no breach of contract', () => {
+      const respondentWithResponse = _.cloneDeep(mockRespondentET3Model);
+      respondentWithResponse.responseReceived = YesOrNo.YES;
+      expect(ET3Util.getOverallStatus(userCaseNoBoc, respondentWithResponse, translations)).toEqual(
+        '5 of 5 tasks completed'
+      );
     });
   });
   describe('getUserNameByRespondent tests', () => {

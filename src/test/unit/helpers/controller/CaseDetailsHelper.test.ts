@@ -63,6 +63,24 @@ describe('Case Details Helper', () => {
       expect(result[ET3CaseDetailsLinkNames.Documents]).toBe(LinkStatus.OPTIONAL);
     });
 
+    it('sets RespondentResponse to COMPLETED when responseReceived is Yes', async () => {
+      req.session.userCase.genericTseApplicationCollection = [];
+      req.session.userCase.respondents = [{ responseReceived: YesOrNo.YES, ccdId: 'ccd1', idamId: 'user1' }];
+      req.session.selectedRespondentIndex = 0;
+      const statuses: ET3CaseDetailsLinksStatuses = null;
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.COMPLETED);
+    });
+
+    it('does not override RespondentResponse when responseReceived is not Yes', async () => {
+      req.session.userCase.genericTseApplicationCollection = [];
+      req.session.userCase.respondents = [{ responseReceived: YesOrNo.NO, ccdId: 'ccd1', idamId: 'user1' }];
+      req.session.selectedRespondentIndex = 0;
+      const statuses: ET3CaseDetailsLinksStatuses = null;
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.NOT_STARTED_YET);
+    });
+
     it('returns NOT_YET_AVAILABLE when application collection is undefined', async () => {
       req.session.userCase.genericTseApplicationCollection = undefined;
       const statuses = {};

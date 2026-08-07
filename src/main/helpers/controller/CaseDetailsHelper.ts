@@ -1,5 +1,5 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
-import { CaseWithId, RespondentET3Model } from '../../definitions/case';
+import { CaseWithId, RespondentET3Model, YesOrNo } from '../../definitions/case';
 import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { TranslationKeys } from '../../definitions/constants';
 import {
@@ -38,6 +38,10 @@ export const getET3CaseDetailsLinkNames = async (
   // Initialize statuses with defaults if null/undefined, following the pattern from RespondentUtil.java
   statuses = getResponseCaseDetailsLinkStatusesByRespondentCaseDetailsLinkStatuses(statuses);
   await updateApplicationsStatusIfNotExist(req);
+  const selectedRespondent = req.session.userCase.respondents?.[req.session.selectedRespondentIndex];
+  if (selectedRespondent?.responseReceived === YesOrNo.YES) {
+    statuses[ET3CaseDetailsLinkNames.RespondentResponse] = LinkStatus.COMPLETED;
+  }
   statuses[ET3CaseDetailsLinkNames.ClaimantContactDetails] = LinkStatus.READY_TO_VIEW;
   statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getClaimantAppsLinkStatus(req);

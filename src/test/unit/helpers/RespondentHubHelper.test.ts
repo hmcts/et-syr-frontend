@@ -99,4 +99,25 @@ describe('getET3CaseDetailsLinksUrlMap', () => {
       et3CaseDetailsLinksMapWelsh
     );
   });
+
+  it('returns YOUR_RESPONSE_FORM for RespondentResponse in English when responseReceived is Yes', () => {
+    const { YesOrNo } = require('../../../main/definitions/case');
+    const userCase = { responseReceived: YesOrNo.YES } as never;
+    const result = getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, undefined, userCase);
+    expect(result.get(ET3CaseDetailsLinkNames.RespondentResponse)).toBe(PageUrls.YOUR_RESPONSE_FORM);
+  });
+
+  it('returns YOUR_RESPONSE_FORM for RespondentResponse in Welsh when responseReceived is Yes', () => {
+    const { YesOrNo } = require('../../../main/definitions/case');
+    const userCase = { responseReceived: YesOrNo.YES } as never;
+    const result = getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, undefined, userCase);
+    expect(result.get(ET3CaseDetailsLinkNames.RespondentResponse)).toBe(
+      PageUrls.YOUR_RESPONSE_FORM + languages.WELSH_URL_PARAMETER
+    );
+  });
+
+  it('returns RESPONDENT_RESPONSE_LANDING for RespondentResponse when responseReceived is not Yes', () => {
+    const result = getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, undefined, { id: '1' } as never);
+    expect(result.get(ET3CaseDetailsLinkNames.RespondentResponse)).toBe(PageUrls.RESPONDENT_RESPONSE_LANDING);
+  });
 });
