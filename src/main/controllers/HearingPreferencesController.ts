@@ -51,7 +51,7 @@ export default class HearingPreferencesController {
       this.form,
       ET3HubLinkNames.EmployerDetails,
       LinkStatus.IN_PROGRESS,
-      PageUrls.REASONABLE_ADJUSTMENTS
+      PageUrls.HEARING_PANEL_PREFERENCE
     );
   };
 

@@ -254,6 +254,9 @@ function mapResponseApiDataToCaseWithId(
   caseWithId.respondentEmail = selectedRespondent.value?.respondent_email;
   caseWithId.responseStruckOut = selectedRespondent.value?.responseStruckOut;
   caseWithId.respondentContactPreference = selectedRespondent.value?.respondent_contact_preference;
+  caseWithId.respondentHearingPanelPreference = selectedRespondent.value?.respondent_hearing_panel_preference;
+  caseWithId.respondentHearingPanelPreferenceReason =
+    selectedRespondent.value?.respondent_hearing_panel_preference_reason;
   caseWithId.responseStruckOutDate = selectedRespondent.value?.responseStruckOutDate;
   caseWithId.responseStruckOutChairman = selectedRespondent.value?.responseStruckOutChairman;
   caseWithId.et3ResponseIsNoticeCorrect = selectedRespondent.value?.et3ResponseIsNoticeCorrect;
@@ -694,6 +697,8 @@ export const mapRespondent = (respondent: RespondentType): RespondentET3Model =>
     respondentPhone2: respondent?.respondent_phone2,
     respondentEmail: respondent?.respondent_email,
     respondentContactPreference: respondent?.respondent_contact_preference,
+    respondentHearingPanelPreference: respondent?.respondent_hearing_panel_preference,
+    respondentHearingPanelPreferenceReason: respondent?.respondent_hearing_panel_preference_reason,
     responseStruckOut: respondent?.responseStruckOut,
     responseStruckOutDate: respondent?.responseStruckOutDate,
     responseStruckOutChairman: respondent?.responseStruckOutChairman,
@@ -828,6 +833,8 @@ export const setRespondentApiFormat = (respondents: RespondentET3Model[]): Respo
         respondent_ACAS_question: respondent.acasCert,
         respondent_ACAS: respondent.acasCertNum,
         respondent_ACAS_no: respondent.noAcasReason,
+        respondent_hearing_panel_preference: respondent.respondentHearingPanelPreference,
+        respondent_hearing_panel_preference_reason: respondent.respondentHearingPanelPreferenceReason,
       },
       id: respondent.ccdId,
     };
