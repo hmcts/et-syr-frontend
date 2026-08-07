@@ -9,6 +9,7 @@ import { getLogger } from '../logger';
 import AddressUtils from './AddressUtils';
 import CollectionUtils from './CollectionUtils';
 import DateUtils from './DateUtils';
+import ET3Util from './ET3Util';
 import ErrorUtils from './ErrorUtils';
 import NumberUtils from './NumberUtils';
 import ObjectUtils from './ObjectUtils';
@@ -347,6 +348,9 @@ export default class ET3DataModelUtil {
       logger.error(LoggerConstants.ERROR_RESPONDENT_NOT_FOUND_BY_RESPONDENT_INDEX);
       return;
     }
+
+    selectedRespondent.et3Status = ET3Util.getLatestEt3Status(selectedRespondent);
+
     req.session.userCase.responseStatus = selectedRespondent.responseStatus;
     req.session.userCase.responseToClaim = selectedRespondent.responseToClaim;
     req.session.userCase.rejectionReason = selectedRespondent.rejectionReason;

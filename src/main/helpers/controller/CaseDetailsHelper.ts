@@ -1,5 +1,5 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
-import { CaseWithId, RespondentET3Model } from '../../definitions/case';
+import { CaseWithId, RespondentET3Model, YesOrNo } from '../../definitions/case';
 import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { TranslationKeys } from '../../definitions/constants';
 import {
@@ -39,6 +39,10 @@ export const getET3CaseDetailsLinkNames = async (
   statuses = getResponseCaseDetailsLinkStatusesByRespondentCaseDetailsLinkStatuses(statuses);
   await updateApplicationsStatusIfNotExist(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantContactDetails] = LinkStatus.READY_TO_VIEW;
+  statuses[ET3CaseDetailsLinkNames.RespondentResponse] = getRespondentResponseLinkStatus(
+    req,
+    statuses[ET3CaseDetailsLinkNames.RespondentResponse]
+  );
   statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getClaimantAppsLinkStatus(req);
   statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = getOtherRespondentAppsLinkStatus(req);
@@ -56,6 +60,18 @@ const updateApplicationsStatusIfNotExist = async (req: AppRequest): Promise<void
     const newState: LinkStatus = getApplicationStateIfNotExist(app.value, req.session.user);
     await getCaseApi(req.session.user?.accessToken).changeApplicationStatus(req, app, newState);
   }
+};
+
+const getRespondentResponseLinkStatus = (req: AppRequest, linkName: LinkStatus): LinkStatus => {
+  const { userCase, selectedRespondentIndex } = req.session;
+  if (selectedRespondentIndex !== undefined) {
+    const selectedRespondent: RespondentET3Model = userCase.respondents[selectedRespondentIndex];
+    if (selectedRespondent.responseReceived === YesOrNo.YES || selectedRespondent.et3Form !== undefined) {
+      return LinkStatus.COMPLETED;
+    }
+  }
+
+  return linkName;
 };
 
 const getYourRequestsAndApplications = (req: AppRequest): LinkStatus => {
