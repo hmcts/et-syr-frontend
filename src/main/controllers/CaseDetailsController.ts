@@ -11,7 +11,11 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { LoadUserCaseResults, loadUserCaseFromApi } from '../helpers/LoadUserCaseHelper';
 import { getProgressBarItems } from '../helpers/ProgressBarHelpers';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
-import { getET3CaseDetailsLinkNames, getSections } from '../helpers/controller/CaseDetailsHelper';
+import {
+  getET3CaseDetailsLinkNames,
+  getSections,
+  isRespondentRepresented,
+} from '../helpers/controller/CaseDetailsHelper';
 import { getAppNotifications } from '../helpers/notification/ApplicationNotificationHelper';
 import { getStoredBannerList } from '../helpers/notification/StoredNotificationHelper';
 import { getTribunalNotificationBanner } from '../helpers/notification/TribunalNotificationHelper';
@@ -53,7 +57,12 @@ export default class CaseDetailsController {
       selectedRespondent.et3CaseDetailsLinksStatuses,
       req
     );
-    const sections = getSections(et3CaseDetailsLinksStatuses, selectedRespondent, req);
+    const sections = getSections(
+      et3CaseDetailsLinksStatuses,
+      selectedRespondent,
+      req,
+      isRespondentRepresented(representative)
+    );
 
     const appNotifications: TseNotification = getAppNotifications(
       req.session.userCase.genericTseApplicationCollection,
@@ -87,7 +96,7 @@ export default class CaseDetailsController {
       storedNotifications: getStoredBannerList(req),
       pseNotifications: getTribunalNotificationBanner(req),
       languageParam: getLanguageParam(req.url),
-      respondentRepresented: representative !== undefined,
+      respondentRepresented: isRespondentRepresented(representative),
       respondentRepresentative: representative,
     });
   }

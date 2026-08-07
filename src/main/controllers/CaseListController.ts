@@ -18,11 +18,6 @@ export default class CaseListController {
     };
     const userCases = await getUserCasesByLastModified(req);
     const languageParam = getLanguageParam(req.url);
-    const newSelfAssignmentRequestUrl =
-      PageUrls.CASE_NUMBER_CHECK +
-      languageParam +
-      DefaultValues.STRING_AMPERSAND +
-      DefaultValues.SELF_ASSIGNMENT_URL_PARAMETER;
     const usersApplications = getUserApplications(userCases, translations, languageParam);
     const et3NotCompleted = [];
     const et3Completed = [];
@@ -30,12 +25,11 @@ export default class CaseListController {
       if (application.userCase?.state === CaseState.ACCEPTED) {
         for (const respondent of application.userCase.respondents) {
           if (req.session.user.id === respondent.idamId) {
-            const respondentName = ET3Util.getUserNameByRespondent(respondent);
-            application.completionStatus = ET3Util.getOverallStatus(application.userCase, respondent, translations);
+            respondent.et3Status = ET3Util.getLatestEt3Status(respondent);
             if (StringUtils.isBlank(respondent.et3Status) || respondent.et3Status === ET3Status.IN_PROGRESS) {
-              et3NotCompleted.push(ET3Util.getUserApplicationsListItem(req, application, respondentName, respondent));
+              et3NotCompleted.push(ET3Util.getUserApplicationsListItem(req, application, respondent));
             } else {
-              et3Completed.push(ET3Util.getUserApplicationsListItem(req, application, respondentName, respondent));
+              et3Completed.push(ET3Util.getUserApplicationsListItem(req, application, respondent));
             }
           }
         }
@@ -52,7 +46,11 @@ export default class CaseListController {
       user: req.session?.user,
       usersApplications,
       languageParam,
-      newSelfAssignmentRequestUrl,
+      newSelfAssignmentRequestUrl:
+        PageUrls.CASE_NUMBER_CHECK +
+        languageParam +
+        DefaultValues.STRING_AMPERSAND +
+        DefaultValues.SELF_ASSIGNMENT_URL_PARAMETER,
       et3NotCompleted,
       et3Completed,
     });

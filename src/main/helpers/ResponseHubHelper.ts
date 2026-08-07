@@ -26,10 +26,25 @@ export const getET3HubLinksUrlMap = (languageParam: string): Map<string, string>
   ]);
 };
 
+const getRespondentResponseLink = (
+  userCase: CaseWithId,
+  respondentEt3Status: string,
+  isRespondentRepresented: boolean
+): string => {
+  if (isRespondentRepresented) {
+    return PageUrls.NOT_IMPLEMENTED;
+  }
+  if (userCase && LinkStatus.COMPLETED === respondentEt3Status) {
+    return PageUrls.YOUR_RESPONSE_FORM;
+  }
+  return PageUrls.RESPONDENT_RESPONSE_LANDING;
+};
+
 export const getET3CaseDetailsLinksUrlMap = (
   languageParam: string,
   respondentEt3Status: string,
-  userCase: CaseWithId
+  userCase: CaseWithId,
+  isRespondentRepresented: boolean
 ): Map<string, string> => {
   const caseDetailsLinksMap = new Map<string, string>();
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.PersonalDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
@@ -38,17 +53,10 @@ export const getET3CaseDetailsLinksUrlMap = (
     ET3CaseDetailsLinkNames.ClaimantContactDetails,
     PageUrls.CLAIMANT_CONTACT_DETAILS + baseUrls[languageParam]
   );
-  if (userCase && LinkStatus.COMPLETED === respondentEt3Status) {
-    caseDetailsLinksMap.set(
-      ET3CaseDetailsLinkNames.RespondentResponse,
-      PageUrls.YOUR_RESPONSE_FORM + baseUrls[languageParam]
-    );
-  } else {
-    caseDetailsLinksMap.set(
-      ET3CaseDetailsLinkNames.RespondentResponse,
-      PageUrls.RESPONDENT_RESPONSE_LANDING + baseUrls[languageParam]
-    );
-  }
+  caseDetailsLinksMap.set(
+    ET3CaseDetailsLinkNames.RespondentResponse,
+    getRespondentResponseLink(userCase, respondentEt3Status, isRespondentRepresented) + baseUrls[languageParam]
+  );
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.HearingDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
   caseDetailsLinksMap.set(
     ET3CaseDetailsLinkNames.YourRequestsAndApplications,

@@ -2,7 +2,7 @@ import axios from 'axios';
 import _ from 'lodash';
 
 import { AppRequest, UserDetails } from '../../../main/definitions/appRequest';
-import { CaseWithId, RespondentET3Model } from '../../../main/definitions/case';
+import { CaseWithId, RespondentET3Model, YesOrNo } from '../../../main/definitions/case';
 import {
   CLAIM_TYPES,
   DefaultValues,
@@ -11,6 +11,7 @@ import {
   TranslationKeys,
   ValidationErrors,
 } from '../../../main/definitions/constants';
+import { ET3Status } from '../../../main/definitions/definition';
 import { ET3HubLinkNames, ET3HubLinksStatuses, LinkStatus } from '../../../main/definitions/links';
 import { AnyRecord } from '../../../main/definitions/util-types';
 import caseListJsonRaw from '../../../main/resources/locales/en/translation/case-list.json';
@@ -25,6 +26,7 @@ import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockRespondentET3Model } from '../mocks/mockRespondentET3Model';
 import { mockResponse } from '../mocks/mockResponse';
 import { mockUserDetails } from '../mocks/mockUser';
+import mockUserCase from '../mocks/mockUserCase';
 
 jest.mock('axios');
 
@@ -286,11 +288,23 @@ describe('ET3lUtil tests', () => {
       expect(ET3Util.getUserNameByRespondent(respondent)).toEqual('Respondent Last Name');
     });
   });
+
   describe('getUserApplicationsListItem', () => {
     test('Should return user applications list item for the given application, respondent name and respondent', () => {
-      expect(
-        ET3Util.getUserApplicationsListItem(mockRequest({}), mockApplications[0], 'test name', mockRespondentET3Model)
-      ).toEqual([
+      const mockReq = mockRequestWithTranslation(
+        { session: { userCase: mockUserCase } },
+        {
+          ...commonJsonRaw,
+        }
+      );
+
+      const mockRespondent = {
+        ...mockRespondentET3Model,
+        respondentName: 'test name',
+        et3Status: 'Completed',
+      };
+
+      expect(ET3Util.getUserApplicationsListItem(mockReq, mockApplications[0], mockRespondent)).toEqual([
         {
           text: '1 January 2024',
         },
@@ -318,6 +332,7 @@ describe('ET3lUtil tests', () => {
       ]);
     });
   });
+
   describe('setResponseRespondentEmail', () => {
     const TEST_RESPONSE_RESPONDENT_EMAIL = 'bobby@gmail.com';
     test('Should not set response respondent email when request is undefined', () => {
@@ -434,6 +449,52 @@ describe('ET3lUtil tests', () => {
       });
       ET3Util.refreshRequestUserCase(req);
       expect(req.session.userCase.id).toStrictEqual(newUserCaseId);
+    });
+  });
+
+  describe('getLatestEt3Status', () => {
+    test('Should return existing status when status is not in progress', () => {
+      const respondent = {
+        ...mockRespondentET3Model,
+        et3Status: 'testing',
+      };
+
+      expect(ET3Util.getLatestEt3Status(respondent)).toEqual('testing');
+    });
+
+    test('Should return completed when status is in progress and response is received', () => {
+      const respondent = {
+        ...mockRespondentET3Model,
+        et3Status: 'inProgress',
+        responseReceived: YesOrNo.YES,
+      };
+
+      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.COMPLETED);
+    });
+
+    test('Should return completed when status is in progress and et3 form exists', () => {
+      const respondent = {
+        ...mockRespondentET3Model,
+        et3Status: 'inProgress',
+        et3Form: {
+          document_filename: 'uploadedDocumentFileNameForSelectedRespondent.pdf',
+          upload_timestamp: 'dummtUploadTimeStamp',
+          document_url: 'https://dummy.document.url',
+          document_binary_url: 'https://dummy.document.url/binary',
+          category_id: 'category_id',
+        },
+      };
+
+      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.COMPLETED);
+    });
+
+    test('Should return in progress when status is in progress and response not received with no et3 form', () => {
+      const respondent = {
+        ...mockRespondentET3Model,
+        et3Status: 'inProgress',
+      };
+
+      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.IN_PROGRESS);
     });
   });
 });
