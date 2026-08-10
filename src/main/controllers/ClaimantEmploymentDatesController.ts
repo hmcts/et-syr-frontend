@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNo, YesOrNoOrNotApplicable } from '../definitions/case';
+import { YesOrNoOrNotApplicable } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
@@ -54,10 +54,16 @@ export default class ClaimantEmploymentDatesController {
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     let nextPage = setUrlLanguage(req, PageUrls.IS_CLAIMANT_EMPLOYMENT_WITH_RESPONDENT_CONTINUING);
-    if (conditionalRedirect(req, this.form.getFormFields(), YesOrNo.NO)) {
+    if (conditionalRedirect(req, this.form.getFormFields(), YesOrNoOrNotApplicable.NO)) {
       nextPage = setUrlLanguage(req, PageUrls.CLAIMANT_EMPLOYMENT_DATES_ENTER);
       startSubSection(req, nextPage);
     } else {
+      req.session.userCase.et3ResponseEmploymentStartDate = undefined;
+      req.session.userCase.et3ResponseEmploymentEndDate = undefined;
+      req.session.userCase.et3ResponseEmploymentInformation = undefined;
+    }
+
+    if (conditionalRedirect(req, this.form.getFormFields(), YesOrNoOrNotApplicable.YES)) {
       const { startDate, endDate } = req.session.userCase ?? {};
       if (startDate) {
         req.session.userCase.et3ResponseEmploymentStartDate = startDate;

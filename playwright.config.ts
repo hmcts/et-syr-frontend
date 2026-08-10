@@ -7,6 +7,8 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
+const smokeReportDir = 'smoke-output/reports';
+
 export default defineConfig({
   testDir: './playwrighte2e',
   testMatch: '*test.ts',
@@ -19,7 +21,13 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 6 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: process.env.CI
+    ? [
+        ['list'],
+        ['html', { outputFolder: smokeReportDir, open: 'never' }],
+        ['junit', { outputFile: 'smoke-output/junit-result.xml' }],
+      ]
+    : 'html',
   timeout: 4 * 60 * 1000,
   expect: {
     timeout: 50 * 1000,
