@@ -119,7 +119,7 @@ export const hasInvalidFileFormat = (value: Express.Multer.File, logger: Logger)
 };
 
 export const isNotPdfFileType = (value: Express.Multer.File): string => {
-  if (!value || !value.originalname) {
+  if (!value?.originalname) {
     return;
   }
   if (value.originalname.toLowerCase().endsWith('.pdf')) {

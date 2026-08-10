@@ -198,6 +198,21 @@ describe('Hearing Document Upload controller', () => {
       expect(req.session.errors).toEqual([{ propertyName: 'hearingDocument', errorType: 'backEndError' }]);
     });
 
+    it('should require a file when upload is selected with an empty file object', async () => {
+      const req = mockRequest({ body: { upload: 'true' }, file: {} });
+      req.session.userCase.hearingCollection = mockHearingCollection;
+      req.params.hearingId = '12345-abc-12345';
+      req.url = PageUrls.HEARING_DOCUMENT_UPLOAD + languages.ENGLISH_URL_PARAMETER;
+      const res = mockResponse();
+
+      await new HearingDocumentUploadController().post(req, res);
+
+      expect(req.session.errors).toEqual([{ propertyName: 'hearingDocument', errorType: 'required' }]);
+      expect(res.redirect).toHaveBeenCalledWith(
+        PageUrls.HEARING_DOCUMENT_UPLOAD.replace(':hearingId', '12345-abc-12345') + languages.ENGLISH_URL_PARAMETER
+      );
+    });
+
     it('should require an uploaded document when continuing with only a selected file', async () => {
       const newFile = { ...mockPdf, originalname: 'Hearing Doc1.pdf' };
       const req = mockRequest({ body: {}, file: newFile });

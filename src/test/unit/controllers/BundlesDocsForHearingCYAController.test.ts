@@ -79,4 +79,21 @@ describe('Bundles docs for hearing CYA controller', () => {
       })
     );
   });
+
+  it('should still render when user case is missing from the session', () => {
+    const controller = new BundlesDocsForHearingCYAController();
+    const response = mockResponse();
+    const request = mockRequestWithTranslation({}, { ...commonJson, ...bundlesCyaJson });
+    request.session.userCase = undefined;
+    request.url = '/documents-for-hearing' + languages.ENGLISH_URL_PARAMETER;
+
+    controller.get(request, response);
+
+    expect(response.render).toHaveBeenCalledWith(
+      TranslationKeys.BUNDLES_DOCS_FOR_HEARING_CYA,
+      expect.objectContaining({
+        cyaContent: expect.any(Array),
+      })
+    );
+  });
 });

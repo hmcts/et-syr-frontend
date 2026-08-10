@@ -26,12 +26,12 @@ describe('Hearing Document File controller', () => {
     );
   });
 
-  it('should redirect to not found when hearing id is invalid', () => {
+  it('should redirect to not found when hearing collection is missing', () => {
     const controller = new HearingDocumentFileController();
     const response = mockResponse();
     const request = mockRequest({});
-    request.session.userCase.hearingCollection = mockHearingCollection;
-    request.params.hearingId = 'missing-hearing';
+    request.session.userCase.hearingCollection = undefined;
+    request.params.hearingId = '12345-abc-12345';
     request.url = PageUrls.HEARING_DOCUMENT_REMOVE + languages.ENGLISH_URL_PARAMETER;
 
     controller.get(request, response);

@@ -5,7 +5,7 @@ import { AnyRecord } from '../../definitions/util-types';
 import DocumentUtils from '../../utils/DocumentUtils';
 
 export const getBundlesCyaContent = (
-  userCase: CaseWithId,
+  userCase: CaseWithId | undefined,
   translations: AnyRecord,
   languageParam: string,
   downloadLink: string,
@@ -14,7 +14,7 @@ export const getBundlesCyaContent = (
   selectedHearing: string
 ): SummaryListRow[] => {
   const changeText = translations.change ?? 'Change';
-  const hearingUploadUrl = userCase.hearingDocumentsAreFor
+  const hearingUploadUrl = userCase?.hearingDocumentsAreFor
     ? PageUrls.HEARING_DOCUMENT_UPLOAD.replace(':hearingId', userCase.hearingDocumentsAreFor) + languageParam
     : PageUrls.ABOUT_HEARING_DOCUMENTS + languageParam;
 
@@ -25,7 +25,7 @@ export const getBundlesCyaContent = (
         classes: 'govuk-!-font-weight-regular-m',
       },
       value: {
-        text: userCase.bundlesRespondentAgreedDocWith,
+        text: userCase?.bundlesRespondentAgreedDocWith,
       },
       actions: {
         items: [

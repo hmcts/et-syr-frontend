@@ -63,6 +63,21 @@ describe('BundlesPrepareDocsCYAHelper', () => {
       expect(rows[4].actions.items[0].href).toBe(PageUrls.ABOUT_HEARING_DOCUMENTS + '?lng=en');
       expect(rows[4].actions.items[0].text).toBe('Change');
     });
+
+    it('should safely build rows when user case is undefined', () => {
+      const rows = getBundlesCyaContent(
+        undefined,
+        { q1: 'q1', q2: 'q2', q3: 'q3', q4: 'q4', q5: 'q5' },
+        '',
+        '',
+        '',
+        '',
+        ''
+      );
+      expect(rows).toHaveLength(5);
+      expect(rows[0].value.text).toBeUndefined();
+      expect(rows[4].actions.items[0].href).toBe(PageUrls.ABOUT_HEARING_DOCUMENTS);
+    });
   });
 
   describe('clearBundlesFields', () => {
@@ -118,6 +133,16 @@ describe('BundlesPrepareDocsCYAHelper', () => {
           document_binary_url: 'http://dm/documents/doc-1/binary',
         })
       ).toBe('');
+    });
+
+    it('should fall back to the last path segment when document id cannot be parsed', () => {
+      const link = createDownloadLinkForHearingDoc({
+        document_url: 'doc-without-slash',
+        document_filename: 'Hearing Doc1.pdf',
+        document_binary_url: 'http://dm/documents/doc-1/binary',
+      });
+      expect(link).toContain('/getSupportingMaterial/doc-without-slash');
+      expect(link).toContain('Hearing Doc1.pdf');
     });
   });
 });

@@ -1,7 +1,8 @@
 import AgreeingDocumentsController from '../../../main/controllers/AgreeingDocumentsController';
 import { AgreedDocuments } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
-import { mockRequest } from '../mocks/mockRequest';
+import agreeingDocumentsJson from '../../../main/resources/locales/en/translation/agreeing-documents.json';
+import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
 describe('Agreeing documents controller', () => {
@@ -17,7 +18,8 @@ describe('Agreeing documents controller', () => {
 
   describe('GET method', () => {
     it('should render the agreeing documents page', () => {
-      controller.get(request, response);
+      const translatedRequest = mockRequestWithTranslation({}, agreeingDocumentsJson);
+      controller.get(translatedRequest, response);
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.AGREEING_DOCUMENTS, expect.anything());
     });
   });

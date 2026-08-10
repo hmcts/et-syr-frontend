@@ -30,8 +30,10 @@ export const createLabelForHearing = (hearing: HearingModel): string | undefined
     return undefined;
   }
 
-  const earliestDate = hearingsInFuture.reduce((a, b) =>
-    new Date(a.value.listedDate) > new Date(b.value.listedDate) ? b : a
+  const earliestDate = hearingsInFuture.reduce(
+    (earliest, current) =>
+      new Date(earliest.value.listedDate) > new Date(current.value.listedDate) ? current : earliest,
+    hearingsInFuture[0]
   );
   const venue = hearing.value?.Hearing_venue_Scotland || hearing.value?.Hearing_venue?.value?.label;
   return `${hearing.value.hearingNumber ?? ''} ${hearing.value.Hearing_type ?? ''} - ${venue ?? ''} - ${formatDate(
@@ -66,7 +68,7 @@ export const getFilesRows = (
   hearingId: string,
   translations: AnyRecord
 ): SummaryListRow[] => {
-  if (userCase === undefined || userCase.hearingDocument === undefined) {
+  if (userCase?.hearingDocument === undefined) {
     return [
       {
         key: {
