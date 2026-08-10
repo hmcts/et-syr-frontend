@@ -26,6 +26,14 @@ export const getET3HubLinksUrlMap = (languageParam: string): Map<string, string>
   ]);
 };
 
+const getRespondentResponseUrl = (respondentEt3Status: string, userCase: CaseWithId): string => {
+  if (userCase && LinkStatus.COMPLETED === respondentEt3Status) {
+    return PageUrls.YOUR_RESPONSE_FORM;
+  } else {
+    return PageUrls.RESPONDENT_RESPONSE_LANDING;
+  }
+};
+
 export const getET3CaseDetailsLinksUrlMap = (
   languageParam: string,
   respondentEt3Status: string,
@@ -38,17 +46,10 @@ export const getET3CaseDetailsLinksUrlMap = (
     ET3CaseDetailsLinkNames.ClaimantContactDetails,
     PageUrls.CLAIMANT_CONTACT_DETAILS + baseUrls[languageParam]
   );
-  if (userCase && LinkStatus.COMPLETED === respondentEt3Status) {
-    caseDetailsLinksMap.set(
-      ET3CaseDetailsLinkNames.RespondentResponse,
-      PageUrls.YOUR_RESPONSE_FORM + baseUrls[languageParam]
-    );
-  } else {
-    caseDetailsLinksMap.set(
-      ET3CaseDetailsLinkNames.RespondentResponse,
-      PageUrls.RESPONDENT_RESPONSE_LANDING + baseUrls[languageParam]
-    );
-  }
+  caseDetailsLinksMap.set(
+    ET3CaseDetailsLinkNames.RespondentResponse,
+    getRespondentResponseUrl(respondentEt3Status, userCase) + baseUrls[languageParam]
+  );
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.HearingDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
   caseDetailsLinksMap.set(
     ET3CaseDetailsLinkNames.YourRequestsAndApplications,
