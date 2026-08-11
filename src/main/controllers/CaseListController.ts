@@ -30,6 +30,7 @@ export default class CaseListController {
       if (application.userCase?.state === CaseState.ACCEPTED) {
         for (const respondent of application.userCase.respondents) {
           if (req.session.user.id === respondent.idamId) {
+            respondent.et3Status = ET3Util.getLatestEt3Status(respondent);
             application.completionStatus = ET3Util.getOverallStatus(application.userCase, respondent, translations);
             if (StringUtils.isBlank(respondent.et3Status) || respondent.et3Status === ET3Status.IN_PROGRESS) {
               et3NotCompleted.push(ET3Util.getUserApplicationsListItem(req, application, respondent));

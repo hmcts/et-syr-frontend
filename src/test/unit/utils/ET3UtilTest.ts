@@ -25,6 +25,7 @@ import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockRespondentET3Model } from '../mocks/mockRespondentET3Model';
 import { mockResponse } from '../mocks/mockResponse';
 import { mockUserDetails } from '../mocks/mockUser';
+import mockUserCase from '../mocks/mockUserCase';
 
 jest.mock('axios');
 
@@ -288,9 +289,19 @@ describe('ET3lUtil tests', () => {
   });
   describe('getUserApplicationsListItem', () => {
     test('Should return user applications list item for the given application, respondent name and respondent', () => {
-      expect(
-        ET3Util.getUserApplicationsListItem(mockRequest({}), mockApplications[0], 'test name', mockRespondentET3Model)
-      ).toEqual([
+      const mockReq = mockRequestWithTranslation(
+        { session: { userCase: mockUserCase } },
+        {
+          ...commonJsonRaw,
+        }
+      );
+
+      const mockRespondent = {
+        ...mockRespondentET3Model,
+        respondentName: 'test name',
+        et3Status: 'Completed',
+      };
+      expect(ET3Util.getUserApplicationsListItem(mockReq, mockApplications[0], mockRespondent)).toEqual([
         {
           text: '1 January 2024',
         },
