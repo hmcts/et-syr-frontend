@@ -199,7 +199,7 @@ describe('Hearing Document Upload controller', () => {
     });
 
     it('should require a file when upload is selected with an empty file object', async () => {
-      const req = mockRequest({ body: { upload: 'true' }, file: {} });
+      const req = mockRequest({ body: { upload: 'true' }, file: {} as Express.Multer.File });
       req.session.userCase.hearingCollection = mockHearingCollection;
       req.params.hearingId = '12345-abc-12345';
       req.url = PageUrls.HEARING_DOCUMENT_UPLOAD + languages.ENGLISH_URL_PARAMETER;
