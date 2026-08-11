@@ -245,9 +245,9 @@ export default class ET3Util {
   public static getUserApplicationsListItem(
     req: AppRequest,
     application: ApplicationTableRecord,
-    respondentName: string,
     respondent: RespondentET3Model
   ): { text?: string; caseId?: string; caseDetailsLink?: string; respondentCcdId?: string }[] {
+    const respondentName = ET3Util.getUserNameByRespondent(respondent);
     return [
       {
         text: DateUtils.isDateStringValid(respondent.responseReceivedDate)
