@@ -384,7 +384,7 @@ export default class ET3Util {
     }
 
     if (respondent.responseReceived === YesOrNo.YES || respondent.et3Form !== undefined) {
-      return ET3Status.SUBMITTED;
+      return ET3Status.COMPLETED;
     }
 
     return respondent.et3Status;

@@ -459,7 +459,7 @@ describe('ET3lUtil tests', () => {
       expect(ET3Util.getLatestEt3Status(respondent)).toEqual('testing');
     });
 
-    test('Should return Submitted when status is in progress and et3 form exists', () => {
+    test('Should return COMPLETED when status is in progress and et3 form exists', () => {
       const respondent = {
         ...mockRespondentET3Model,
         et3Status: 'inProgress',
@@ -472,17 +472,17 @@ describe('ET3lUtil tests', () => {
         },
       };
 
-      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.SUBMITTED);
+      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.COMPLETED);
     });
 
-    test('Should return completed when status is in progress and response is received', () => {
+    test('Should return COMPLETED when status is in progress and response is received', () => {
       const respondent = {
         ...mockRespondentET3Model,
         et3Status: 'inProgress',
         responseReceived: YesOrNo.YES,
       };
 
-      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.SUBMITTED);
+      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.COMPLETED);
     });
 
     test('Should return in progress when status is in progress and response not received with no et3 form', () => {
