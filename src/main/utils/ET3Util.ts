@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest, UserDetails } from '../definitions/appRequest';
-import { CaseWithId, RespondentET3Model } from '../definitions/case';
+import { CaseWithId, RespondentET3Model, YesOrNo } from '../definitions/case';
 import {
   CLAIM_TYPES,
   DefaultValues,
@@ -12,7 +12,7 @@ import {
   PageUrls,
   ValidationErrors,
 } from '../definitions/constants';
-import { ApplicationTableRecord } from '../definitions/definition';
+import { ApplicationTableRecord, ET3Status } from '../definitions/definition';
 import {
   ET3CaseDetailsLinkNames,
   ET3HubLinkNames,
@@ -245,9 +245,9 @@ export default class ET3Util {
   public static getUserApplicationsListItem(
     req: AppRequest,
     application: ApplicationTableRecord,
-    respondentName: string,
     respondent: RespondentET3Model
   ): { text?: string; caseId?: string; caseDetailsLink?: string; respondentCcdId?: string }[] {
+    const respondentName = ET3Util.getUserNameByRespondent(respondent);
     return [
       {
         text: DateUtils.isDateStringValid(respondent.responseReceivedDate)
@@ -376,5 +376,17 @@ export default class ET3Util {
     if (ObjectUtils.isNotEmpty(userCase)) {
       request.session.userCase = userCase;
     }
+  }
+
+  public static getLatestEt3Status(respondent: RespondentET3Model): string {
+    if (respondent.et3Status !== ET3Status.IN_PROGRESS) {
+      return respondent.et3Status;
+    }
+
+    if (respondent.responseReceived === YesOrNo.YES || respondent.et3Form !== undefined) {
+      return ET3Status.SUBMITTED;
+    }
+
+    return respondent.et3Status;
   }
 }
