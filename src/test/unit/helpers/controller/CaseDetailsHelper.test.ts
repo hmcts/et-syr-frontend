@@ -6,8 +6,8 @@ import { Applicant, PartiesNotify, PartiesRespond } from '../../../../main/defin
 import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../../../../main/definitions/links';
 import { isResponseToTribunalRequired } from '../../../../main/helpers/GenericTseApplicationHelper';
 import { getET3CaseDetailsLinkNames } from '../../../../main/helpers/controller/CaseDetailsHelper';
-import { CaseApi } from '../../../../main/services/CaseService';
 import * as CaseService from '../../../../main/services/CaseService';
+import { CaseApi } from '../../../../main/services/CaseService';
 import { mockRequest } from '../../mocks/mockRequest';
 import { mockUserDetails } from '../../mocks/mockUser';
 import mockUserCase from '../../mocks/mockUserCase';
@@ -169,6 +169,35 @@ describe('Case Details Helper', () => {
       const statuses = {};
       const result = await getET3CaseDetailsLinkNames(statuses, req);
       expect(result[ET3CaseDetailsLinkNames.OtherRespondentApplications]).toBe(LinkStatus.VIEWED);
+    });
+
+    it('returns SUBMITTED when responseReceived is Yes', async () => {
+      req.session.userCase.responseReceived = YesOrNo.YES;
+      const statuses: ET3CaseDetailsLinksStatuses = {};
+      statuses[ET3CaseDetailsLinkNames.RespondentResponse] = LinkStatus.IN_PROGRESS;
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.SUBMITTED);
+    });
+
+    it('returns SUBMITTED when ET3 form exist', async () => {
+      req.session.userCase.et3Form = {
+        category_id: 'category_id_english',
+        document_binary_url: 'document_binary_url_english',
+        document_filename: 'document_filename_english',
+        upload_timestamp: 'upload_timestamp_english',
+        document_url: 'http://localhost/et3_form_id_english',
+      };
+      const statuses: ET3CaseDetailsLinksStatuses = {};
+      statuses[ET3CaseDetailsLinkNames.RespondentResponse] = LinkStatus.NOT_STARTED_YET;
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.SUBMITTED);
+    });
+
+    it('returns existing status when ET3 form not exist', async () => {
+      const statuses: ET3CaseDetailsLinksStatuses = {};
+      statuses[ET3CaseDetailsLinkNames.RespondentResponse] = LinkStatus.CANNOT_START_YET;
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.CANNOT_START_YET);
     });
   });
 });
