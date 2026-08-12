@@ -482,7 +482,7 @@ describe('ET3lUtil tests', () => {
         responseReceived: YesOrNo.YES,
       };
 
-      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.ACCEPTED);
+      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.SUBMITTED);
     });
 
     test('Should return in progress when status is in progress and response not received with no et3 form', () => {
