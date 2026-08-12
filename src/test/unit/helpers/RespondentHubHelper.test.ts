@@ -1,4 +1,5 @@
 import { PageUrls, languages } from '../../../main/definitions/constants';
+import { ET3Status } from '../../../main/definitions/definition';
 import { ET3CaseDetailsLinkNames, ET3HubLinkNames } from '../../../main/definitions/links';
 import { getET3CaseDetailsLinksUrlMap, getET3HubLinksUrlMap } from '../../../main/helpers/ResponseHubHelper';
 
@@ -76,26 +77,27 @@ describe('getET3CaseDetailsLinksUrlMap', () => {
     [ET3CaseDetailsLinkNames.TribunalJudgements, PageUrls.NOT_IMPLEMENTED],
     [ET3CaseDetailsLinkNames.Documents, PageUrls.DOCUMENTS],
   ]);
+
   it('returns correct links when respondent is system user in English', () => {
-    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, undefined, undefined)).toEqual(
+    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, ET3Status.IN_PROGRESS)).toEqual(
       et3CaseDetailsLinksMapEnglish
     );
   });
 
   it('returns correct links when respondent is system user in Welsh', () => {
-    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, undefined, undefined)).toEqual(
+    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, ET3Status.IN_PROGRESS)).toEqual(
       et3CaseDetailsLinksMapWelsh
     );
   });
 
   it('returns correct links when respondent is non-system user in English', () => {
-    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, undefined, undefined)).toEqual(
+    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, ET3Status.IN_PROGRESS)).toEqual(
       et3CaseDetailsLinksMapEnglish
     );
   });
 
   it('returns correct links when respondent is non-system user in Welsh', () => {
-    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, undefined, undefined)).toEqual(
+    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, ET3Status.IN_PROGRESS)).toEqual(
       et3CaseDetailsLinksMapWelsh
     );
   });

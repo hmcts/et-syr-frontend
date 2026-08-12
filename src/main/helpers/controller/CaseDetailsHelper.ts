@@ -63,15 +63,10 @@ const updateApplicationsStatusIfNotExist = async (req: AppRequest): Promise<void
 };
 
 const getRespondentResponseLinkStatus = (req: AppRequest, linkName: LinkStatus): LinkStatus => {
-  if (linkName !== LinkStatus.NOT_STARTED_YET && linkName !== LinkStatus.IN_PROGRESS) {
-    return linkName;
-  }
-
   const { userCase } = req.session;
-  if (userCase.responseReceived === YesOrNo.YES || userCase.et3Form !== undefined) {
+  if (userCase.responseReceived === YesOrNo.YES) {
     return LinkStatus.SUBMITTED;
   }
-
   return linkName;
 };
 
@@ -178,11 +173,7 @@ export function getSections(
     ...req.t(TranslationKeys.CASE_DETAILS_STATUS as never, { returnObjects: true } as never),
     ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER as never, { returnObjects: true } as never),
   };
-  const eT3CaseDetailsLinksUrlMap = getET3CaseDetailsLinksUrlMap(
-    languageParam,
-    selectedRespondent.et3Status,
-    req.session.userCase
-  );
+  const eT3CaseDetailsLinksUrlMap = getET3CaseDetailsLinksUrlMap(languageParam, selectedRespondent.et3Status);
   return Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
     return getSection(translations, index, et3CaseDetailsLinksStatuses, eT3CaseDetailsLinksUrlMap);
   });

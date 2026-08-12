@@ -1,5 +1,5 @@
-import { CaseWithId } from '../definitions/case';
 import { PageUrls, languages } from '../definitions/constants';
+import { ET3Status } from '../definitions/definition';
 import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../definitions/links';
 
 export const shouldCaseDetailsLinkBeClickable = (status: LinkStatus): boolean => {
@@ -26,18 +26,19 @@ export const getET3HubLinksUrlMap = (languageParam: string): Map<string, string>
   ]);
 };
 
-const getRespondentResponseUrl = (respondentEt3Status: string, userCase: CaseWithId): string => {
-  if (userCase && LinkStatus.COMPLETED === respondentEt3Status) {
+const getRespondentResponseUrl = (respondentEt3Status: string): string => {
+  if (respondentEt3Status === ET3Status.IN_PROGRESS) {
+    return PageUrls.RESPONDENT_RESPONSE_LANDING;
+  } else if (respondentEt3Status === ET3Status.COMPLETED) {
     return PageUrls.YOUR_RESPONSE_FORM;
   } else {
-    return PageUrls.RESPONDENT_RESPONSE_LANDING;
+    return PageUrls.NOT_IMPLEMENTED;
   }
 };
 
 export const getET3CaseDetailsLinksUrlMap = (
   languageParam: string,
-  respondentEt3Status: string,
-  userCase: CaseWithId
+  respondentEt3Status: string
 ): Map<string, string> => {
   const caseDetailsLinksMap = new Map<string, string>();
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.PersonalDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
@@ -48,7 +49,7 @@ export const getET3CaseDetailsLinksUrlMap = (
   );
   caseDetailsLinksMap.set(
     ET3CaseDetailsLinkNames.RespondentResponse,
-    getRespondentResponseUrl(respondentEt3Status, userCase) + baseUrls[languageParam]
+    getRespondentResponseUrl(respondentEt3Status) + baseUrls[languageParam]
   );
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.HearingDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
   caseDetailsLinksMap.set(
