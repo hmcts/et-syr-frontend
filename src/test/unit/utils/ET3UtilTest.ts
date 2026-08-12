@@ -459,22 +459,6 @@ describe('ET3lUtil tests', () => {
       expect(ET3Util.getLatestEt3Status(respondent)).toEqual('testing');
     });
 
-    test('Should return COMPLETED when status is in progress and et3 form exists', () => {
-      const respondent = {
-        ...mockRespondentET3Model,
-        et3Status: 'inProgress',
-        et3Form: {
-          document_filename: 'uploadedDocumentFileNameForSelectedRespondent.pdf',
-          upload_timestamp: 'dummtUploadTimeStamp',
-          document_url: 'https://dummy.document.url',
-          document_binary_url: 'https://dummy.document.url/binary',
-          category_id: 'category_id',
-        },
-      };
-
-      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.COMPLETED);
-    });
-
     test('Should return COMPLETED when status is in progress and response is received', () => {
       const respondent = {
         ...mockRespondentET3Model,

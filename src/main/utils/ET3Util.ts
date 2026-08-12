@@ -383,7 +383,7 @@ export default class ET3Util {
       return respondent.et3Status;
     }
 
-    if (respondent.responseReceived === YesOrNo.YES || respondent.et3Form !== undefined) {
+    if (respondent.responseReceived === YesOrNo.YES) {
       return ET3Status.COMPLETED;
     }
 
