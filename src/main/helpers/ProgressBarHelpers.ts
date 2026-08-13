@@ -1,4 +1,4 @@
-import { CaseWithId, RespondentET3Model, YesOrNo } from '../definitions/case';
+import { CaseWithId, RespondentET3Model } from '../definitions/case';
 import { AnyRecord } from '../definitions/util-types';
 
 export interface ProgressBarItem {
@@ -31,9 +31,7 @@ export const getProgressBarItems = (
   userCase: CaseWithId,
   translations: AnyRecord
 ): ProgressBarItem[] => {
-  const isRespondAccepted: boolean =
-    respondent?.responseStatus === Et3ResponseStatus.ET3_RESPONSE_STATUS_ACCEPTED ||
-    respondent?.responseReceived === YesOrNo.YES;
+  const isRespondAccepted: boolean = respondent?.responseStatus === Et3ResponseStatus.ET3_RESPONSE_STATUS_ACCEPTED;
   const hasHearing: boolean = userCase.hearingCollection?.length > 0;
   const isDecisionAdded: boolean = userCase.judgementCollection?.length > 0;
   const activePoint = getActivePoint(isRespondAccepted, hasHearing, isDecisionAdded);
