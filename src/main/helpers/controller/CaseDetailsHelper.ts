@@ -169,7 +169,7 @@ export function getSections(
     ...req.t(TranslationKeys.CASE_DETAILS_STATUS as never, { returnObjects: true } as never),
     ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER as never, { returnObjects: true } as never),
   };
-  const eT3CaseDetailsLinksUrlMap = getET3CaseDetailsLinksUrlMap(languageParam, selectedRespondent.et3Status);
+  const eT3CaseDetailsLinksUrlMap = getET3CaseDetailsLinksUrlMap(languageParam, selectedRespondent);
   return Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
     return getSection(translations, index, et3CaseDetailsLinksStatuses, eT3CaseDetailsLinksUrlMap);
   });
