@@ -466,7 +466,14 @@ describe('ET3lUtil tests', () => {
       };
       expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.COMPLETED);
     });
-
+  test('Should return COMPLETED when response is received and status is undefined', () => {
+    const respondent = {
+      ...mockRespondentET3Model,
+      responseReceived: YesOrNo.YES,
+    };
+    delete respondent.et3Status;
+    expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.COMPLETED);
+  });
     test('Should return in progress when status is in progress and response not received with no et3 form', () => {
       const respondent = {
         ...mockRespondentET3Model,
