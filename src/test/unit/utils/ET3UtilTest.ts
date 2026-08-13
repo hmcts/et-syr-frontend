@@ -455,7 +455,6 @@ describe('ET3lUtil tests', () => {
         ...mockRespondentET3Model,
         et3Status: 'testing',
       };
-
       expect(ET3Util.getLatestEt3Status(respondent)).toEqual('testing');
     });
 
@@ -465,7 +464,6 @@ describe('ET3lUtil tests', () => {
         et3Status: 'inProgress',
         responseReceived: YesOrNo.YES,
       };
-
       expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.COMPLETED);
     });
 
@@ -474,8 +472,15 @@ describe('ET3lUtil tests', () => {
         ...mockRespondentET3Model,
         et3Status: 'inProgress',
       };
-
       expect(ET3Util.getLatestEt3Status(respondent)).toEqual(ET3Status.IN_PROGRESS);
+    });
+
+    test('Should return undefined when status is undefined', () => {
+      const respondent = {
+        ...mockRespondentET3Model,
+      };
+      delete respondent.et3Status;
+      expect(ET3Util.getLatestEt3Status(respondent)).toEqual(undefined);
     });
   });
 });
