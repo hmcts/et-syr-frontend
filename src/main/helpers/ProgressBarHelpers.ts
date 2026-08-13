@@ -33,7 +33,7 @@ export const getProgressBarItems = (
 ): ProgressBarItem[] => {
   const isRespondAccepted: boolean =
     respondent?.responseStatus === Et3ResponseStatus.ET3_RESPONSE_STATUS_ACCEPTED ||
-    respondent?.et3Status === YesOrNo.YES;
+    respondent?.responseReceived === YesOrNo.YES;
   const hasHearing: boolean = userCase.hearingCollection?.length > 0;
   const isDecisionAdded: boolean = userCase.judgementCollection?.length > 0;
   const activePoint = getActivePoint(isRespondAccepted, hasHearing, isDecisionAdded);
