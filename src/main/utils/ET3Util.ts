@@ -379,14 +379,6 @@ export default class ET3Util {
   }
 
   public static getLatestEt3Status(respondent: RespondentET3Model): string {
-    if (respondent.et3Status !== ET3Status.IN_PROGRESS) {
-      return respondent.et3Status;
-    }
-
-    if (respondent.responseReceived === YesOrNo.YES) {
-      return ET3Status.COMPLETED;
-    }
-
-    return respondent.et3Status;
+    return respondent.responseReceived === YesOrNo.YES ? ET3Status.COMPLETED : respondent.et3Status;
   }
 }
