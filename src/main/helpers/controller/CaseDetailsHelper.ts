@@ -1,5 +1,5 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
-import { RespondentET3Model, YesOrNo } from '../../definitions/case';
+import { CaseWithId, RespondentET3Model, YesOrNo } from '../../definitions/case';
 import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { TranslationKeys } from '../../definitions/constants';
 import {
@@ -40,7 +40,7 @@ export const getET3CaseDetailsLinkNames = async (
   await updateApplicationsStatusIfNotExist(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantContactDetails] = LinkStatus.READY_TO_VIEW;
   statuses[ET3CaseDetailsLinkNames.RespondentResponse] = getRespondentResponseLinkStatus(
-    req,
+    req.session.userCase,
     statuses[ET3CaseDetailsLinkNames.RespondentResponse]
   );
   statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(req);
@@ -62,12 +62,8 @@ const updateApplicationsStatusIfNotExist = async (req: AppRequest): Promise<void
   }
 };
 
-const getRespondentResponseLinkStatus = (req: AppRequest, linkName: LinkStatus): LinkStatus => {
-  const { userCase } = req.session;
-  if (userCase.responseReceived === YesOrNo.YES) {
-    return LinkStatus.SUBMITTED;
-  }
-  return linkName;
+const getRespondentResponseLinkStatus = (userCase: CaseWithId, linkName: LinkStatus): LinkStatus => {
+  return userCase?.responseReceived === YesOrNo.YES ? LinkStatus.SUBMITTED : linkName;
 };
 
 const getYourRequestsAndApplications = (req: AppRequest): LinkStatus => {
