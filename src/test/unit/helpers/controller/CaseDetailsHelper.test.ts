@@ -174,7 +174,6 @@ describe('Case Details Helper', () => {
 
     it('returns ACCEPTED when responseStatus is accepted', async () => {
       req.session.userCase.responseStatus = Et3ResponseStatus.ET3_RESPONSE_STATUS_ACCEPTED;
-      req.session.user = mockUserDetails;
       const statuses: ET3CaseDetailsLinksStatuses = {
         [ET3CaseDetailsLinkNames.RespondentResponse]: LinkStatus.IN_PROGRESS,
       };
@@ -184,7 +183,6 @@ describe('Case Details Helper', () => {
 
     it('returns SUBMITTED when responseReceived is Yes', async () => {
       req.session.userCase.responseReceived = YesOrNo.YES;
-      req.session.user = mockUserDetails;
       const statuses: ET3CaseDetailsLinksStatuses = {
         [ET3CaseDetailsLinkNames.RespondentResponse]: LinkStatus.IN_PROGRESS,
       };
@@ -194,7 +192,6 @@ describe('Case Details Helper', () => {
 
     it('returns existing status when ET3 form not exist', async () => {
       req.session.userCase.responseReceived = YesOrNo.NO;
-      req.session.user = mockUserDetails;
       const statuses: ET3CaseDetailsLinksStatuses = {
         [ET3CaseDetailsLinkNames.RespondentResponse]: LinkStatus.CANNOT_START_YET,
       };
