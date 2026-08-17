@@ -2,7 +2,7 @@ import AxiosInstance from 'axios';
 
 import { AppRequest } from '../../../../main/definitions/appRequest';
 import { YesOrNo } from '../../../../main/definitions/case';
-import { Applicant, PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
+import { Applicant, Et3ResponseStatus, PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../../../../main/definitions/links';
 import { isResponseToTribunalRequired } from '../../../../main/helpers/GenericTseApplicationHelper';
 import { getET3CaseDetailsLinkNames } from '../../../../main/helpers/controller/CaseDetailsHelper';
@@ -171,19 +171,48 @@ describe('Case Details Helper', () => {
       expect(result[ET3CaseDetailsLinkNames.OtherRespondentApplications]).toBe(LinkStatus.VIEWED);
     });
 
+    it('returns ACCEPTED when responseStatus is accepted', async () => {
+      const mockReq = mockRequest({
+        userCase: {
+          ...mockUserCase,
+          responseStatus: Et3ResponseStatus.ET3_RESPONSE_STATUS_ACCEPTED,
+        },
+      });
+      mockReq.session.user = mockUserDetails;
+      const statuses: ET3CaseDetailsLinksStatuses = {
+        [ET3CaseDetailsLinkNames.RespondentResponse]: LinkStatus.IN_PROGRESS,
+      };
+      const result = await getET3CaseDetailsLinkNames(statuses, mockReq);
+      expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.ACCEPTED);
+    });
+
     it('returns SUBMITTED when responseReceived is Yes', async () => {
-      req.session.userCase.responseReceived = YesOrNo.YES;
-      const statuses: ET3CaseDetailsLinksStatuses = {};
-      statuses[ET3CaseDetailsLinkNames.RespondentResponse] = LinkStatus.IN_PROGRESS;
-      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      const mockReq = mockRequest({
+        userCase: {
+          ...mockUserCase,
+          responseReceived: YesOrNo.YES,
+        },
+      });
+      mockReq.session.user = mockUserDetails;
+      const statuses: ET3CaseDetailsLinksStatuses = {
+        [ET3CaseDetailsLinkNames.RespondentResponse]: LinkStatus.IN_PROGRESS,
+      };
+      const result = await getET3CaseDetailsLinkNames(statuses, mockReq);
       expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.SUBMITTED);
     });
 
     it('returns existing status when ET3 form not exist', async () => {
-      req.session.userCase.responseReceived = YesOrNo.NO;
-      const statuses: ET3CaseDetailsLinksStatuses = {};
-      statuses[ET3CaseDetailsLinkNames.RespondentResponse] = LinkStatus.CANNOT_START_YET;
-      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      const mockReq = mockRequest({
+        userCase: {
+          ...mockUserCase,
+          responseReceived: YesOrNo.NO,
+        },
+      });
+      mockReq.session.user = mockUserDetails;
+      const statuses: ET3CaseDetailsLinksStatuses = {
+        [ET3CaseDetailsLinkNames.RespondentResponse]: LinkStatus.CANNOT_START_YET,
+      };
+      const result = await getET3CaseDetailsLinkNames(statuses, mockReq);
       expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.CANNOT_START_YET);
     });
   });
