@@ -1,3 +1,4 @@
+import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, languages } from '../../../main/definitions/constants';
 import { ET3Status } from '../../../main/definitions/definition';
 import { ET3CaseDetailsLinkNames, ET3HubLinkNames } from '../../../main/definitions/links';
@@ -80,42 +81,72 @@ describe('getET3CaseDetailsLinksUrlMap', () => {
   ]);
 
   it('returns correct links when respondent is system user in English', () => {
-    const respondent = {
-      ...mockRespondentET3Model,
-      et3Status: ET3Status.IN_PROGRESS,
-    };
-    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, respondent)).toEqual(
+    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, mockRespondentET3Model)).toEqual(
       et3CaseDetailsLinksMapEnglish
     );
   });
 
   it('returns correct links when respondent is system user in Welsh', () => {
-    const respondent = {
-      ...mockRespondentET3Model,
-      et3Status: ET3Status.IN_PROGRESS,
-    };
-    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, respondent)).toEqual(
+    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, mockRespondentET3Model)).toEqual(
       et3CaseDetailsLinksMapWelsh
     );
   });
 
   it('returns correct links when respondent is non-system user in English', () => {
-    const respondent = {
-      ...mockRespondentET3Model,
-      et3Status: ET3Status.IN_PROGRESS,
-    };
-    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, respondent)).toEqual(
+    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, mockRespondentET3Model)).toEqual(
       et3CaseDetailsLinksMapEnglish
     );
   });
 
   it('returns correct links when respondent is non-system user in Welsh', () => {
+    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, mockRespondentET3Model)).toEqual(
+      et3CaseDetailsLinksMapWelsh
+    );
+  });
+
+  it('returns correct links when et3Status is completed', () => {
+    const respondent = {
+      ...mockRespondentET3Model,
+      et3Status: ET3Status.COMPLETED,
+    };
+    const links = getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, respondent);
+    expect(links.get(ET3CaseDetailsLinkNames.RespondentResponse)).toEqual(PageUrls.YOUR_RESPONSE_FORM);
+  });
+
+  it('returns correct links when responseReceived is yes', () => {
+    const respondent = {
+      ...mockRespondentET3Model,
+      et3Status: ET3Status.IN_PROGRESS,
+      responseReceived: YesOrNo.YES,
+    };
+    const links = getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, respondent);
+    expect(links.get(ET3CaseDetailsLinkNames.RespondentResponse)).toEqual(PageUrls.YOUR_RESPONSE_FORM);
+  });
+
+  it('returns correct links when et3Status is inProgress', () => {
     const respondent = {
       ...mockRespondentET3Model,
       et3Status: ET3Status.IN_PROGRESS,
     };
-    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, respondent)).toEqual(
-      et3CaseDetailsLinksMapWelsh
-    );
+    const links = getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, respondent);
+    expect(links.get(ET3CaseDetailsLinkNames.RespondentResponse)).toEqual(PageUrls.RESPONDENT_RESPONSE_LANDING);
+  });
+
+  it('returns correct links when et3Status is undefined', () => {
+    const respondent = {
+      ...mockRespondentET3Model,
+    };
+    delete respondent.et3Status;
+    const links = getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, respondent);
+    expect(links.get(ET3CaseDetailsLinkNames.RespondentResponse)).toEqual(PageUrls.RESPONDENT_RESPONSE_LANDING);
+  });
+
+  it('returns correct links when et3Status is invalid', () => {
+    const respondent = {
+      ...mockRespondentET3Model,
+      et3Status: 'testing',
+    };
+    const links = getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, respondent);
+    expect(links.get(ET3CaseDetailsLinkNames.RespondentResponse)).toEqual(PageUrls.NOT_IMPLEMENTED);
   });
 });
