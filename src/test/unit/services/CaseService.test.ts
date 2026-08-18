@@ -559,7 +559,7 @@ describe('Case Service Tests', () => {
       });
       expect(value.data).toEqual(mockCaseApiDataResponse);
       expect(mockedAxios.put).toHaveBeenCalledWith(
-        'bundles/submit-bundles',
+        'bundles/submit-respondent-bundles',
         expect.objectContaining({
           case_id: mockUserCase.id,
           respondent_bundles: expect.objectContaining({

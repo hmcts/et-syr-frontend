@@ -444,7 +444,7 @@ export class CaseApi {
     };
 
     try {
-      return await this.axios.put(JavaApiUrls.SUBMIT_BUNDLES, {
+      return await this.axios.put(JavaApiUrls.SUBMIT_RESPONDENT_BUNDLES, {
         case_id: caseItem.id,
         case_type_id: caseItem.caseTypeId,
         respondent_bundles: hearingBundle,

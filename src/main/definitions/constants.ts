@@ -335,6 +335,7 @@ export const JavaApiUrls = {
   SUBMIT_STORE_RESPONSE_TO_NOTIFICATION: 'sendNotification/submit-respondent-respond-to-notification',
   REVOKE_RESPONDENT_REPRESENTATIVE: '/manageCaseRole/revokeRespondentSolicitorRole',
   SUBMIT_BUNDLES: 'bundles/submit-bundles',
+  SUBMIT_RESPONDENT_BUNDLES: 'bundles/submit-respondent-bundles',
 } as const;
 
 export const Roles = {
