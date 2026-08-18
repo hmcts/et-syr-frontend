@@ -1,24 +1,24 @@
 {
-  "title": "Ynglŷn â dogfennau eich gwrandawiad",
-  "h1": "Ynglŷn â dogfennau eich gwrandawiad",
-  "headingCaption": "Paratoi dogfennau ar gyfer gwrandawiad",
-  "Question1": "Dewiswch y gwrandawiad y mae'r dogfennau hyn ar ei gyfer",
-  "Question2": "Dogfennau gwrandawiad pwy ydych yn uwchlwytho?",
-  "Question2Radio1": "Dogfennau fy ngwrandawiad i yn unig",
-  "Question2Radio2": "Dogfennau gwrandawiad y ddau barti wedi'u cyfuno",
-  "Question3": "Beth yw'r dogfennau hyn?",
-  "Question3Radio1": "Pob dogfen gwrandawiad",
-  "Question3Radio2": "Dogfennau atodol neu ddogfennau eraill",
-  "Question3Radio3": "Datganiadau tyst yn unig",
+  "title": "[W]About your hearing documents",
+  "h1": "[W]About your hearing documents",
+  "headingCaption": "[W]Prepare documents for a hearing",
+  "Question1": "[W]Select the hearing these documents are for",
+  "Question2": "[W]Whose hearing documents are you uploading?",
+  "Question2Radio1": "[W]My hearing documents only",
+  "Question2Radio2": "[W]Both parties' hearing documents combined",
+  "Question3": "[W]What are these documents?",
+  "Question3Radio1": "[W]All hearing documents",
+  "Question3Radio2": "[W]Supplementary or other documents",
+  "Question3Radio3": "[W]Witness statements only",
   "errors": {
     "hearingDocumentsAreFor": {
-      "required": "Dewiswch pa wrandawiad y mae'r dogfennau hyn ar ei gyfer"
+      "required": "[W]Select which hearing these documents are for"
     },
     "whoseHearingDocumentsAreYouUploading": {
-      "required": "Dewiswch dogfennau gwrandawiad pwy rydych yn eu huwchlwytho"
+      "required": "[W]Select whose hearing documents you are uploading"
     },
     "whatAreTheseDocuments": {
-      "required": "Dewiswch beth yw'r dogfennau hyn"
+      "required": "[W]Select what these documents are"
     }
   }
 }

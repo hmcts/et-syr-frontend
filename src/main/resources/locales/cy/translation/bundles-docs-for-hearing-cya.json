@@ -1,22 +1,22 @@
 {
-  "title": "Gwiriwch eich atebion",
-  "titleCya": "Gwiriwch eich atebion",
-  "q1": "Ydych chi wedi cytuno ar y dogfennau hyn?",
-  "q2": "Dewiswch y gwrandawiad y mae'r ddogfen hon ar ei gyfer",
-  "q3": "Dogfennau gwrandawiad pwy ydych chi'n eu huwchlwytho?",
-  "q4": "Beth yw'r ddogfen hon?",
-  "q5": "Eich dogfennau",
+  "title": "[W]Check your answers",
+  "titleCya": "[W]Check your answers",
+  "q1": "[W]Have you agreed these documents?",
+  "q2": "[W]Select the hearing this document is for",
+  "q3": "[W]Whose hearing document are you uploading?",
+  "q4": "[W]What is this document?",
+  "q5": "[W]Your documents",
   "whoseHearingDocument": {
-    "My hearing documents only": "Dogfennau fy ngwrandawiad i yn unig",
-    "Both parties\u2019 hearing documents combined": "Dogfennau gwrandawiad y ddau barti wedi'u cyfuno"
+    "My hearing documents only": "[W]My hearing documents only",
+    "Both parties\u2019 hearing documents combined": "[W]Both parties' hearing documents combined"
   },
   "whatAreTheHearingDocuments": {
-    "All hearing documents": "Pob dogfen gwrandawiad",
-    "Supplementary or other documents": "Dogfennau atodol neu ddogfennau eraill",
-    "Witness statements only": "Datganiadau tyst yn unig"
+    "All hearing documents": "[W]All hearing documents",
+    "Supplementary or other documents": "[W]Supplementary or other documents",
+    "Witness statements only": "[W]Witness statements only"
   },
-  "important": "Pwysig:",
-  "paragraphAboutSubmittingDocsInAdvance": "Ni fyddwch yn gallu newid hwn unwaith y byddwch yn dewis 'Cyflwyno'. Os ydych angen cyflwyno dogfennau pellach yn ddiweddarach, rhaid i chi wneud hynny cyn dyddiad y gwrandawiad. Y tribiwnlys fydd yn penderfynu a ellir eu cynnwys yn agenda'r gwrandawiad. Anfonir y ddogfen hon at y partion eraill hefyd.",
-  "submitBtn": "Cyflwyno",
-  "cancelLinkText": "Canslo"
+  "important": "[W]Important:",
+  "paragraphAboutSubmittingDocsInAdvance": "[W]You will not be able to change this once you select 'Submit'. If you need to submit further documents later, you must do so in advance of the hearing date. It will be up to the tribunal whether they can be included in the hearing agenda. This document will also be sent to the other parties.",
+  "submitBtn": "[W]Submit",
+  "cancelLinkText": "[W]Cancel"
 }

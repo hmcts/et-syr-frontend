@@ -1,31 +1,31 @@
 {
-  "title": "Cytuno ar ddogfennau",
-  "caption": "Paratoi dogfennau ar gyfer gwrandawiad",
-  "h1": "Cytuno ar ddogfennau",
-  "inset": "Efallai y byddwch wedi cael gwybod mewn gorchymyn gan y tribiwnlys i weithio gyda’r parti arall i gytuno ar y dogfennau y dibynnir arnynt yn y gwrandawiad.",
+  "title": "[W]Agreeing documents",
+  "caption": "[W]Prepare documents for a hearing",
+  "h1": "[W]Agreeing documents",
+  "inset": "[W]You may have been told in an order from the tribunal to work with the other party to agree on the documents that will be relied upon at the hearing.",
   "bundlesRespondentAgreedDocWith": {
-    "label": "Ydych chi wedi cytuno ar y dogfennau hyn gyda’r parti arall?",
-    "yes": "Do",
-    "agreedBut": "Rydym wedi cytuno ond mae rhai dogfennau dan anghydfod",
-    "notAgreed": "Naddo, nid ydym wedi cytuno ac rwyf eisiau darparu fy nogfennau fy hun"
+    "label": "[W]Have you agreed these documents with the other party?",
+    "yes": "[W]Yes",
+    "agreedBut": "[W]We have agreed but there are some disputed documents",
+    "notAgreed": "[W]No, we have not agreed and I want to provide my own documents"
   },
   "bundlesRespondentAgreedDocWithBut": {
-    "label": "Dywedwch wrthym pa ddogfennau sydd dan anghydfod"
+    "label": "[W]Tell us which documents are disputed"
   },
   "bundlesRespondentAgreedDocWithNo": {
-    "label": "Dywedwch wrthym pam nad ydych wedi gallu cytuno â’r parti arall"
+    "label": "[W]Tell us why you've not been able to agree with the other party"
   },
   "errors": {
     "bundlesRespondentAgreedDocWith": {
-      "required": "Dywedwch wrthym a ydych wedi cytuno ar y dogfennau hyn gyda’r parti arall"
+      "required": "[W]Tell us if you have agreed these documents with the other party"
     },
     "bundlesRespondentAgreedDocWithBut": {
-      "required": "Dywedwch wrthym pa ddogfennau sydd dan anghydfod",
-      "tooLong": "Rhaid i’r manylion am ba ddogfennau sydd dan anghydfod fod yn llai na 2500 o nodau"
+      "required": "[W]Tell us which documents are disputed",
+      "tooLong": "[W]Tell us which documents are disputed must be entered as less than 2500 characters"
     },
     "bundlesRespondentAgreedDocWithNo": {
-      "required": "Dywedwch wrthym pam nad ydych wedi gallu cytuno â’r parti arall",
-      "tooLong": "Rhaid i’r rheswm pam nad ydych wedi gallu cytuno â’r parti arall fod yn llai na 2500 o nodau"
+      "required": "[W]Tell us why you've not been able to agree with the other party",
+      "tooLong": "[W]Tell us why you've not been able to agree with the other party must be entered as less than 2500 characters"
     }
   }
 }
