@@ -1,5 +1,6 @@
 import HearingPanelPreferenceController from '../../../main/controllers/HearingPanelPreferenceController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/hearing-panel-preference.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -20,13 +21,26 @@ describe('HearingPanelPreferenceController', () => {
     controller = new HearingPanelPreferenceController();
     request = mockRequest({});
     response = mockResponse();
+    jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(true);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   describe('GET method', () => {
-    it('should render the hearing panel preference page with the correct translations', () => {
+    it('should render the hearing panel preference page with the correct translations', async () => {
       request = mockRequestWithTranslation({}, translationJsons);
-      controller.get(request, response);
+      await controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.HEARING_PANEL_PREFERENCE, expect.anything());
+    });
+
+    it('should redirect to reasonable adjustments when the ERA feature is disabled', async () => {
+      jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(false);
+
+      await controller.get(request, response);
+
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
     });
   });
 
@@ -41,6 +55,20 @@ describe('HearingPanelPreferenceController', () => {
       request.url = PageUrls.REASONABLE_ADJUSTMENTS;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
+    });
+
+    it('should not save a hearing-panel preference when the ERA feature is disabled', async () => {
+      jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(false);
+      request = mockRequest({
+        body: {
+          respondentHearingPanelPreference: 'Judge',
+          respondentHearingPanelPreferenceReason: 'Legal issues',
+        },
+      });
+
+      await controller.post(request, response);
+
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
     });
   });
