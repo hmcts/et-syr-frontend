@@ -57,7 +57,7 @@ describe('YourSupportController', () => {
     });
     setRequestRuntime(req);
     req.session.errors = [{ propertyName: 'reasonableAdjustments', errorType: 'required' }];
-    (req.t as jest.Mock).mockReturnValue({ legend: 'Support legend' });
+    (req.t as unknown as jest.Mock).mockReturnValue({ legend: 'Support legend' });
     const res = mockResponse();
 
     await controller.get(req, res);
@@ -104,7 +104,9 @@ describe('YourSupportController', () => {
       },
       userCase: {
         id: '1234',
-        respondentRepresented: true,
+        respondentRepresented: {
+          nameOfOrganisation: 'Representative Org',
+        },
       },
       session: {
         user: {
@@ -275,10 +277,9 @@ describe('YourSupportController', () => {
         id: '1234',
       },
     });
-    req.params = {
-      ...req.params,
+    Object.assign(req.params, {
       id: ['journey-id'],
-    };
+    });
     setRequestRuntime(req);
     const res = mockResponse();
 
@@ -335,7 +336,7 @@ describe('YourSupportController', () => {
       },
     });
     req.url = `${TranslationKeys.YOUR_SUPPORT_SUBMITTED_CONFIRMATION}${languages.ENGLISH_URL_PARAMETER}`;
-    (req.t as jest.Mock).mockReturnValue({});
+    (req.t as unknown as jest.Mock).mockReturnValue({});
     const res = mockResponse();
 
     await controller.submittedConfirmation(req, res);
@@ -490,7 +491,7 @@ describe('YourSupportController', () => {
       },
     });
     req.url = `${PageUrls.YOUR_SUPPORT_CONFIRMATION}${languages.ENGLISH_URL_PARAMETER}`;
-    (req.t as jest.Mock).mockReturnValue({});
+    (req.t as unknown as jest.Mock).mockReturnValue({});
     const res = mockResponse();
 
     await controller.confirmation(req, res);

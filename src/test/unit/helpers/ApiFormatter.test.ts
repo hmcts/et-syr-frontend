@@ -642,6 +642,8 @@ describe('Format Case Data to Frontend Model', () => {
     };
     const caseItem: CaseWithId = {
       id: '1234',
+      createdDate: '19 August 2022',
+      lastModified: '19 August 2022',
       state: CaseState.ACCEPTED,
       respondentExternalFlags,
     };

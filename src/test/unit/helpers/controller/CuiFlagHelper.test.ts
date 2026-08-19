@@ -1,12 +1,15 @@
 import { CaseFlags } from '../../../../main/definitions/case';
 import { buildCuiFlagDetails, mergeRespondentExternalFlags } from '../../../../main/helpers/controller/CuiFlagHelper';
-import { mergeCUIFlagItems } from '../../../../main/services/CuiService';
+import { CUIFlagDetails, mergeCUIFlagItems } from '../../../../main/services/CuiService';
 
 jest.mock('../../../../main/services/CuiService', () => ({
   mergeCUIFlagItems: jest.fn((existingFlags = [], replacementFlags = []) => [...existingFlags, ...replacementFlags]),
 }));
 
 describe('CuiFlagHelper', () => {
+  const cuiYes = 'Yes' as CUIFlagDetails['details'][number]['value']['availableExternally'];
+  const cuiNo = 'No' as CUIFlagDetails['details'][number]['value']['hearingRelevant'];
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -34,13 +37,12 @@ describe('CuiFlagHelper', () => {
               { id: 'path-1', value: 'Parent' },
               { id: 'path-2', value: { name: 'Child' } as never },
               { id: 'path-3', name: 'Named path' } as never,
-              { value: {} as never },
+              { id: 'path-4', value: {} as never },
             ],
             flagCode: 'RA0001',
             subTypeValue: 'Step free access',
             otherDescription: 'Other support',
             flagComment: 'Initial comment',
-            flagUpdateComment: 'Updated comment',
             status: 'Active',
           },
         },
@@ -68,7 +70,6 @@ describe('CuiFlagHelper', () => {
             subTypeValue: 'Step free access',
             otherDescription: 'Other support',
             flagComment: 'Initial comment',
-            flagUpdateComment: 'Updated comment',
             status: 'Active',
           },
         },
@@ -80,6 +81,7 @@ describe('CuiFlagHelper', () => {
     const respondentExternalFlags: CaseFlags = {
       details: [
         {
+          id: 'flag-with-defaults',
           value: {
             path: 'not-a-path-array' as never,
           },
@@ -109,13 +111,21 @@ describe('CuiFlagHelper', () => {
         },
       ],
     };
-    const replacementFlags = {
+    const replacementFlags: CUIFlagDetails = {
       partyName: '',
       roleOnCase: '',
       details: [
         {
           id: 'replacement-flag',
-          value: { name: 'Replacement flag' },
+          value: {
+            name: 'Replacement flag',
+            name_cy: 'Replacement flag',
+            dateTimeCreated: '2026-08-18T10:00:00',
+            path: [],
+            hearingRelevant: cuiNo,
+            flagCode: 'RA0001',
+            availableExternally: cuiYes,
+          },
         },
       ],
     };
@@ -131,7 +141,15 @@ describe('CuiFlagHelper', () => {
         },
         {
           id: 'replacement-flag',
-          value: { name: 'Replacement flag' },
+          value: {
+            name: 'Replacement flag',
+            name_cy: 'Replacement flag',
+            dateTimeCreated: '2026-08-18T10:00:00',
+            path: [],
+            hearingRelevant: cuiNo,
+            flagCode: 'RA0001',
+            availableExternally: cuiYes,
+          },
         },
       ],
     });
