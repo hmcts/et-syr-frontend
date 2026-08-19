@@ -3,7 +3,13 @@ import axios from 'axios';
 import { CaseFlags, CaseTypeId } from '../../../main/definitions/case';
 import { DefaultValues, ET3ModificationTypes, JavaApiUrls, ServiceErrors } from '../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
-import { CaseApi, getCaseApi } from '../../../main/services/CaseService';
+import {
+  CaseApi,
+  getCaseApi,
+  isCaseNotFoundError,
+  isTransferredCaseAccessError,
+  isTransferredCaseError,
+} from '../../../main/services/CaseService';
 import { mockAxiosError } from '../mocks/mockAxios';
 import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import { mockCaseApiDataResponse } from '../mocks/mockCaseApiDataResponse';
@@ -122,6 +128,69 @@ describe('Case Service Tests', () => {
       const value = await api.assignCaseUserRole(request);
       expect(value).toEqual(expectedResponse);
     });
+    it('should use canonical respondent name from userCase when assigning role', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.post.mockResolvedValue(expectedResponse);
+      const request = mockRequest({
+        session: {
+          userCase: {
+            ...mockUserCase,
+            id: '1234567890123456',
+            caseTypeId: 'ET_EnglandWales',
+            respondentName: 'Mrs Test Auto',
+          },
+          user: mockUserDetails,
+          respondentNameFromForm: 'mrS test AUto',
+        },
+      });
+
+      await api.assignCaseUserRole(request);
+
+      expect(mockedAxios.post).toHaveBeenCalledWith('/manageCaseRole/modifyCaseUserRoles?modificationType=Assignment', {
+        case_users: [
+          {
+            case_id: '1234567890123456',
+            user_id: mockUserDetails.id,
+            case_role: '[DEFENDANT]',
+            case_type_id: 'ET_EnglandWales',
+            respondent_name: 'Mrs Test Auto',
+          },
+        ],
+      });
+    });
+    it('should resolve respondent name from respondents array when userCase respondentName is missing', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.post.mockResolvedValue(expectedResponse);
+      const request = mockRequest({
+        session: {
+          userCase: {
+            ...mockUserCase,
+            id: '1234567890123456',
+            caseTypeId: 'ET_EnglandWales',
+            respondentName: undefined,
+            respondents: [{ respondentName: 'Mrs Test Auto', ccdId: '1' }],
+          },
+          user: mockUserDetails,
+          respondentNameFromForm: 'mrS test AUto',
+        },
+      });
+
+      await api.assignCaseUserRole(request);
+
+      expect(mockedAxios.post).toHaveBeenCalledWith('/manageCaseRole/modifyCaseUserRoles?modificationType=Assignment', {
+        case_users: [
+          {
+            case_id: '1234567890123456',
+            user_id: mockUserDetails.id,
+            case_role: '[DEFENDANT]',
+            case_type_id: 'ET_EnglandWales',
+            respondent_name: 'Mrs Test Auto',
+          },
+        ],
+      });
+    });
     it('should throw exception when there is a problem while updating user role', async () => {
       const mockedAxios = axios as jest.Mocked<typeof axios>;
       const api = new CaseApi(mockedAxios);
@@ -176,6 +245,77 @@ describe('Case Service Tests', () => {
       await expect(() => api.getUserCases()).rejects.toEqual(
         new Error(ServiceErrors.ERROR_GETTING_USER_CASES + ServiceErrors.ERROR_CASE_NOT_FOUND)
       );
+    });
+  });
+
+  describe('Get case transfer info', () => {
+    it('should get case transfer info for defendant role', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      const transferInfo = {
+        transferred: true,
+        transferType: 'ECM',
+        originalCaseId: '1234',
+        transferComplete: true,
+      };
+      mockedAxios.get.mockResolvedValue({ data: transferInfo });
+      const value = await api.getCaseTransferInfo('1234');
+      expect(mockedAxios.get).toHaveBeenCalledWith('cases/1234/transfer-info?case_user_role=DEFENDANT');
+      expect(value.data).toEqual(transferInfo);
+    });
+
+    it('should throw exception when there is a problem while getting case transfer info', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.get.mockImplementation(() => {
+        throw mockAxiosError('TEST', ServiceErrors.ERROR_CASE_NOT_FOUND, 404);
+      });
+      await expect(() => api.getCaseTransferInfo('1234')).rejects.toEqual(
+        new Error('Error getting case transfer info: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
+  });
+
+  describe('isTransferredCaseError', () => {
+    it('should return true for CASE_TRANSFERRED_TO_ECM responses', () => {
+      expect(isTransferredCaseError(new Error('CASE_TRANSFERRED_TO_ECM'))).toBe(true);
+    });
+
+    it('should return true for 410 responses', () => {
+      expect(isTransferredCaseError(new Error('Request failed with status code 410'))).toBe(true);
+    });
+
+    it('should return false for 404 responses', () => {
+      expect(isTransferredCaseError(new Error('Error getting user case: status code 404'))).toBe(false);
+    });
+  });
+
+  describe('isCaseNotFoundError', () => {
+    it('should return true for 404 responses', () => {
+      expect(isCaseNotFoundError(new Error('Error getting user case: status code 404'))).toBe(true);
+    });
+
+    it('should return true for CaseNotFoundException responses', () => {
+      expect(isCaseNotFoundError(new Error('CaseNotFoundException: No case found'))).toBe(true);
+    });
+
+    it('should return false for 500 responses', () => {
+      expect(isCaseNotFoundError(new Error('Error getting user case: status code 500'))).toBe(false);
+    });
+  });
+
+  describe('isTransferredCaseAccessError', () => {
+    it('should return true for transferred and not-found errors', () => {
+      expect(
+        isTransferredCaseAccessError(new Error('Error getting user case: Request failed with status code 410'))
+      ).toBe(true);
+      expect(
+        isTransferredCaseAccessError(new Error('Error getting user case: status code 404, CaseNotFoundException'))
+      ).toBe(true);
+    });
+
+    it('should return false for unrelated errors', () => {
+      expect(isTransferredCaseAccessError(new Error('Error getting user case: status code 500'))).toBe(false);
     });
   });
 

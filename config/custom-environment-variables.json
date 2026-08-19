@@ -1,10 +1,13 @@
 {
   "services": {
-    "s2s": {
-      "url": "S2S_URL"
-    },
     "cui": {
       "endpoint": "CUI_URL"
+    }
+    "et3Legacy": {
+      "url": "ET3_LEGACY_URL"
+    },
+    "s2s": {
+      "url": "S2S_URL"
     }
   }
 }

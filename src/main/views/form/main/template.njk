@@ -79,26 +79,8 @@
 
 
   {% if welshEnabled == null or welshEnabled === 'undefined' or welshEnabled === true %}
-    {% set queryStringConcat = "" %}
-
-    {% if "lng=" in currentUrl %}
-      {% set currentUrl = currentUrl | replace("?lng=en", "") | replace("&lng=en", "") | replace("?lng=cy", "") | replace("&lng=cy", "") %}
-    {% endif %}
-
-    {% if "?" not in currentUrl %}
-      {% set queryStringConcat = "?" %}
-    {% else %}
-      {% set queryStringConcat = "&" %}
-    {% endif %}
-
-    {% set languageFlag = "" %}
-    {% if i18n.language == "en" %}
-      {% set languageFlag = queryStringConcat + "lng=cy" %}
-    {% else %}
-      {% set languageFlag = queryStringConcat + "lng=en" %}
-    {% endif %}
-
-    {% set phaseBarHtml = phaseBarHtml + (phaseBanner.languageToggle | replace("{currentUrl}", currentUrl) | replace("{languageFlag}", languageFlag)) %}
+    {% set languageToggleHref = getLanguageToggleHref(currentUrl, i18n.language) %}
+    {% set phaseBarHtml = phaseBarHtml + (phaseBanner.languageToggle | replace("{currentUrl}", languageToggleHref) | replace("{languageFlag}", "")) %}
   {% else %}
   {% endif %}
 

@@ -10,8 +10,9 @@ import express, { NextFunction, Request, Response } from 'express';
 import favicon from 'serve-favicon';
 
 import { AppRequest } from './definitions/appRequest';
-import { CaseApiErrors, ErrorPages, LegacyUrls, RedisErrors } from './definitions/constants';
+import { CaseApiErrors, ErrorPages, RedisErrors } from './definitions/constants';
 import setupDev from './development';
+import { getLegacySignUpUrl } from './helpers/LegacyUrlHelper';
 import { AppInsights } from './modules/appinsights';
 import CSRFToken from './modules/csrf';
 import { HealthCheck } from './modules/health';
@@ -40,6 +41,7 @@ new Helmet(config.get('security'), [
   process.env.ET1_BASE_URL ?? config.get('services.et1Legacy.url'),
   process.env.ET3_LEGACY_URL ? config.get('services.et1Legacy.url') : LegacyUrls.SIGN_UP,
   process.env.CUI_URL ?? config.get('services.cui.endpoint'),
+  getLegacySignUpUrl(),
 ]).enableFor(app);
 
 new I18Next().enableFor(app);

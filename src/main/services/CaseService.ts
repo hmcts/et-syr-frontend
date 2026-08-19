@@ -4,6 +4,7 @@ import FormData from 'form-data';
 
 import { UpdateSubmittedCaseFlagsBody } from '../definitions/api/caseApiBody';
 import { CaseApiDataResponse, CaseAssignmentResponse } from '../definitions/api/caseApiResponse';
+import { CaseTransferInfoResponse } from '../definitions/api/caseTransferInfoResponse';
 import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { UploadedFile } from '../definitions/api/uploadedFile';
 import { AppRequest, UserDetails } from '../definitions/appRequest';
@@ -21,6 +22,27 @@ import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ErrorUtils from '../utils/ErrorUtils';
 
 import { axiosErrorDetails } from './AxiosErrorAdapter';
+
+export const resolveRespondentNameForAssignment = (request: AppRequest): string | undefined => {
+  const formName = request.session.respondentNameFromForm?.trim();
+  const userCase = request.session.userCase;
+
+  if (userCase?.respondentName?.trim()) {
+    return userCase.respondentName.trim();
+  }
+
+  const respondents = userCase?.respondents ?? [];
+  if (formName) {
+    const matchedRespondent = respondents.find(
+      respondent => respondent.respondentName?.trim().toLowerCase() === formName.toLowerCase()
+    );
+    if (matchedRespondent?.respondentName?.trim()) {
+      return matchedRespondent.respondentName.trim();
+    }
+  }
+
+  return respondents[0]?.respondentName?.trim() ?? formName;
+};
 
 export class CaseApi {
   constructor(private readonly axios: AxiosInstance) {}
@@ -94,6 +116,8 @@ export class CaseApi {
 
   assignCaseUserRole = async (request: AppRequest): Promise<AxiosResponse<CaseAssignmentResponse>> => {
     try {
+      const respondentName = resolveRespondentNameForAssignment(request);
+
       return await this.axios.post<CaseAssignmentResponse>(JavaApiUrls.ASSIGN_CASE_USER_ROLES, {
         case_users: [
           {
@@ -101,7 +125,7 @@ export class CaseApi {
             user_id: request.session.user.id,
             case_role: Roles.DEFENDANT_ROLE_WITH_BRACKETS,
             case_type_id: request.session.userCase.caseTypeId,
-            respondent_name: request.session.respondentNameFromForm,
+            respondent_name: respondentName,
           },
         ],
       });
@@ -136,6 +160,20 @@ export class CaseApi {
       );
     } catch (error) {
       throw new Error('Error getting user cases: ' + axiosErrorDetails(error));
+    }
+  };
+
+  getCaseTransferInfo = async (caseId: string): Promise<AxiosResponse<CaseTransferInfoResponse>> => {
+    try {
+      return await this.axios.get<CaseTransferInfoResponse>(
+        `cases/${caseId}/transfer-info` +
+          DefaultValues.STRING_QUESTION_MARK +
+          JavaApiUrls.ROLE_PARAM_NAME +
+          DefaultValues.STRING_EQUALS +
+          Roles.DEFENDANT_ROLE_WITHOUT_BRACKETS
+      );
+    } catch (error) {
+      throw new Error('Error getting case transfer info: ' + axiosErrorDetails(error));
     }
   };
 
@@ -420,4 +458,23 @@ export const getCaseApi = (token: string): CaseApi => {
       },
     })
   );
+};
+
+export const isCaseNotFoundError = (error: unknown): boolean => {
+  const message = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
+  return message.includes('status code 404') || message.includes('casenotfoundexception');
+};
+
+export const isTransferredCaseError = (error: unknown): boolean => {
+  const message = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
+  return (
+    message.includes('case_transferred') ||
+    message.includes('transferred to ecm') ||
+    (message.includes('transferred') && message.includes('legacy')) ||
+    message.includes('status code 410')
+  );
+};
+
+export const isTransferredCaseAccessError = (error: unknown): boolean => {
+  return isCaseNotFoundError(error) || isTransferredCaseError(error);
 };
