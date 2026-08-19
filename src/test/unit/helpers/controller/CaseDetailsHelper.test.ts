@@ -5,7 +5,12 @@ import { YesOrNo } from '../../../../main/definitions/case';
 import { Applicant, PageUrls, PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../../../../main/definitions/links';
 import { isResponseToTribunalRequired } from '../../../../main/helpers/GenericTseApplicationHelper';
-import { getET3CaseDetailsLinkNames, getSections } from '../../../../main/helpers/controller/CaseDetailsHelper';
+import {
+  getET3CaseDetailsLinkNames,
+  getSections,
+  getYourSupportLinkStatus,
+  isEt3ResponseSubmitted,
+} from '../../../../main/helpers/controller/CaseDetailsHelper';
 import { CaseApi } from '../../../../main/services/CaseService';
 import * as CaseService from '../../../../main/services/CaseService';
 import { mockRequest, mockRequestWithTranslation } from '../../mocks/mockRequest';
@@ -252,6 +257,56 @@ describe('Case Details Helper', () => {
           url: PageUrls.YOUR_SUPPORT,
         })
       );
+    });
+  });
+
+  describe('your support status helpers', () => {
+    it('returns submitted when selected respondent has submitted an ET3 response', () => {
+      const req = mockRequest({
+        userCase: {
+          responseReceived: YesOrNo.NO,
+          respondents: [
+            {
+              ccdId: 'respondent-1',
+              responseReceived: YesOrNo.YES,
+            },
+          ],
+        },
+        session: {
+          selectedRespondentIndex: 0,
+        },
+      });
+
+      expect(isEt3ResponseSubmitted(req)).toBe(true);
+    });
+
+    it('returns false when no case or selected respondent has submitted an ET3 response', () => {
+      const req = mockRequest({
+        userCase: {
+          responseReceived: YesOrNo.NO,
+          respondents: [
+            {
+              ccdId: 'respondent-1',
+              responseReceived: YesOrNo.NO,
+            },
+          ],
+        },
+        session: {
+          selectedRespondentIndex: undefined,
+        },
+      });
+
+      expect(isEt3ResponseSubmitted(req)).toBe(false);
+    });
+
+    it('returns optional when respondent external flags are missing', () => {
+      const req = mockRequest({
+        userCase: {
+          respondentExternalFlags: undefined,
+        },
+      });
+
+      expect(getYourSupportLinkStatus(req)).toBe(LinkStatus.OPTIONAL);
     });
   });
 });

@@ -32,6 +32,288 @@ describe('YourSupportController', () => {
     jest.clearAllMocks();
   });
 
+  const setRequestRuntime = (req: ReturnType<typeof mockRequest>): void => {
+    req.url = `${PageUrls.YOUR_SUPPORT}${languages.ENGLISH_URL_PARAMETER}`;
+    Object.assign(req, { hostname: 'et-syr.example' });
+    req.app = { locals: { developmentMode: false } } as never;
+  };
+
+  it('should render your support page when the case can access the CUI journey', async () => {
+    const controller = new YourSupportController();
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+        responseReceived: YesOrNo.NO,
+        respondents: [
+          {
+            ccdId: 'respondent-ccd-id',
+            responseReceived: YesOrNo.NO,
+          },
+        ],
+      },
+      session: {
+        selectedRespondentIndex: 0,
+      },
+    });
+    setRequestRuntime(req);
+    req.session.errors = [{ propertyName: 'reasonableAdjustments', errorType: 'required' }];
+    (req.t as jest.Mock).mockReturnValue({ legend: 'Support legend' });
+    const res = mockResponse();
+
+    await controller.get(req, res);
+
+    expect(res.render).toHaveBeenCalledWith(
+      'your-support',
+      expect.objectContaining({
+        cancelLink: `${PageUrls.RESPONDENT_RESPONSE_TASK_LIST}${languages.ENGLISH_URL_PARAMETER}`,
+        sessionErrors: [{ propertyName: 'reasonableAdjustments', errorType: 'required' }],
+        showNoSupport: true,
+        supportNo: YesOrNo.NO,
+        supportYes: YesOrNo.YES,
+      })
+    );
+    expect(req.session.errors).toEqual([]);
+  });
+
+  it('should redirect from your support page when the case cannot access the CUI journey', async () => {
+    const controller = new YourSupportController();
+    const req = mockRequest({
+      userCase: {
+        id: undefined,
+      },
+    });
+    setRequestRuntime(req);
+    const res = mockResponse();
+
+    await controller.get(req, res);
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}${languages.ENGLISH_URL_PARAMETER}`
+    );
+  });
+
+  it('should redirect to CUI when yes is selected', async () => {
+    const startJourneyMock = jest.fn().mockResolvedValue({ url: 'https://cui.example/start' });
+    (getCuiService as jest.Mock).mockReturnValue({ startJourney: startJourneyMock });
+    const controller = new YourSupportController({
+      getToken: jest.fn().mockResolvedValue('service-token'),
+    } as never);
+    const req = mockRequest({
+      body: {
+        reasonableAdjustments: YesOrNo.YES,
+      },
+      userCase: {
+        id: '1234',
+        respondentRepresented: true,
+      },
+      session: {
+        user: {
+          accessToken: 'idam-token',
+          givenName: 'Alex',
+          familyName: 'Smith',
+        },
+      },
+    });
+    setRequestRuntime(req);
+    const res = mockResponse();
+
+    await controller.post(req, res);
+
+    expect(startJourneyMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        callbackUrl: `https://et-syr.example${PageUrls.YOUR_SUPPORT_CALLBACK}`,
+        correlationId: '1234',
+        existingFlags: expect.objectContaining({
+          partyName: 'Alex Smith',
+          roleOnCase: 'Representative',
+        }),
+        language: languages.ENGLISH,
+        masterFlagCode: 'RA0001',
+      }),
+      {
+        serviceToken: 'service-token',
+        idamToken: 'idam-token',
+      }
+    );
+    expect(res.redirect).toHaveBeenCalledWith('https://cui.example/start');
+  });
+
+  it('should update a draft case and exit when no support is selected', async () => {
+    (handleUpdateDraftCase as jest.Mock).mockResolvedValue(undefined);
+    const controller = new YourSupportController();
+    const req = mockRequest({
+      body: {
+        reasonableAdjustments: YesOrNo.NO,
+      },
+      userCase: {
+        id: '1234',
+        state: CaseState.AWAITING_SUBMISSION_TO_HMCTS,
+      },
+      session: {
+        returnUrl: PageUrls.CHECK_YOUR_ANSWERS_ET3,
+      },
+    });
+    setRequestRuntime(req);
+    const res = mockResponse();
+
+    await controller.post(req, res);
+
+    expect(handleUpdateDraftCase).toHaveBeenCalledWith(req, expect.anything());
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_ET3);
+    expect(req.session.returnUrl).toBe('');
+  });
+
+  it('should redirect with a required error when no option is selected', async () => {
+    const controller = new YourSupportController();
+    const req = mockRequest({
+      body: {},
+      userCase: {
+        id: '1234',
+      },
+    });
+    setRequestRuntime(req);
+    const res = mockResponse();
+
+    await controller.post(req, res);
+
+    expect(req.session.errors).toEqual([{ propertyName: 'reasonableAdjustments', errorType: 'required' }]);
+    expect(res.redirect).toHaveBeenCalledWith(`${PageUrls.YOUR_SUPPORT}${languages.ENGLISH_URL_PARAMETER}`);
+  });
+
+  it('should redirect with an error when CUI does not return a start URL', async () => {
+    (getCuiService as jest.Mock).mockReturnValue({ startJourney: jest.fn().mockResolvedValue({}) });
+    const controller = new YourSupportController({
+      getToken: jest.fn().mockResolvedValue('service-token'),
+    } as never);
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+      },
+      session: {
+        user: { accessToken: 'idam-token' },
+      },
+    });
+    setRequestRuntime(req);
+    const res = mockResponse();
+
+    await controller.redirectToCuiJourney(req, res);
+
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER);
+  });
+
+  it('should return to your support when starting CUI throws', async () => {
+    (getCuiService as jest.Mock).mockReturnValue({
+      startJourney: jest.fn().mockRejectedValue(new Error('CUI unavailable')),
+    });
+    const controller = new YourSupportController({
+      getToken: jest.fn().mockResolvedValue('service-token'),
+    } as never);
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+      },
+      session: {
+        user: { accessToken: 'idam-token' },
+      },
+    });
+    setRequestRuntime(req);
+    const res = mockResponse();
+
+    await controller.redirectToCuiJourney(req, res);
+
+    expect(req.session.errors).toEqual([{ propertyName: 'yourSupportRedirect', errorType: 'required' }]);
+    expect(res.redirect).toHaveBeenCalledWith(`${PageUrls.YOUR_SUPPORT}${languages.ENGLISH_URL_PARAMETER}`);
+  });
+
+  it('should redirect back without saving when CUI journey is cancelled', async () => {
+    const getJourneyDataMock = jest.fn().mockResolvedValue({
+      action: CUIActions.CANCEL,
+      correlationId: '1234',
+    });
+    (getCuiService as jest.Mock).mockReturnValue({ getJourneyData: getJourneyDataMock });
+    const controller = new YourSupportController({
+      getToken: jest.fn().mockResolvedValue('service-token'),
+    } as never);
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+        responseReceived: YesOrNo.NO,
+      },
+      session: {
+        returnUrl: PageUrls.CASE_LIST,
+      },
+    });
+    req.params = {
+      ...req.params,
+      id: 'journey-id',
+    };
+    setRequestRuntime(req);
+    const res = mockResponse();
+
+    await controller.callback(req, res);
+
+    expect(getJourneyDataMock).toHaveBeenCalledWith('journey-id', { serviceToken: 'service-token' });
+    expect(handleUpdateDraftCase).not.toHaveBeenCalled();
+    expect(handleUpdateSubmittedCaseFlags).not.toHaveBeenCalled();
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_LIST);
+    expect(req.session.returnUrl).toBe('');
+  });
+
+  it('should redirect to case details when CUI callback correlation does not match', async () => {
+    (getCuiService as jest.Mock).mockReturnValue({
+      getJourneyData: jest.fn().mockResolvedValue({
+        action: CUIActions.SUBMIT,
+        correlationId: 'different-case',
+        replacementFlags: { partyName: 'Party', roleOnCase: 'Respondent', details: [] },
+      }),
+    });
+    const controller = new YourSupportController({
+      getToken: jest.fn().mockResolvedValue('service-token'),
+    } as never);
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+      },
+    });
+    req.params = {
+      ...req.params,
+      id: ['journey-id'],
+    };
+    setRequestRuntime(req);
+    const res = mockResponse();
+
+    await controller.callback(req, res);
+
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER);
+  });
+
+  it('should redirect to case details when submitted CUI callback has no replacement flags', async () => {
+    (getCuiService as jest.Mock).mockReturnValue({
+      getJourneyData: jest.fn().mockResolvedValue({
+        action: CUIActions.SUBMIT,
+        correlationId: '1234',
+      }),
+    });
+    const controller = new YourSupportController({
+      getToken: jest.fn().mockResolvedValue('service-token'),
+    } as never);
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+      },
+    });
+    req.params = {
+      ...req.params,
+      id: 'journey-id',
+    };
+    setRequestRuntime(req);
+    const res = mockResponse();
+
+    await controller.callback(req, res);
+
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER);
+  });
+
   it('should render submitted confirmation with a resolved case overview link', async () => {
     const controller = new YourSupportController();
     const req = mockRequest({
@@ -53,7 +335,7 @@ describe('YourSupportController', () => {
       },
     });
     req.url = `${TranslationKeys.YOUR_SUPPORT_SUBMITTED_CONFIRMATION}${languages.ENGLISH_URL_PARAMETER}`;
-    (req.t as any) = jest.fn().mockReturnValue({});
+    (req.t as jest.Mock).mockReturnValue({});
     const res = mockResponse();
 
     await controller.submittedConfirmation(req, res);
@@ -110,7 +392,7 @@ describe('YourSupportController', () => {
       id: 'journey-id',
     };
     req.url = `${PageUrls.YOUR_SUPPORT_CALLBACK.replace(':id', 'journey-id')}${languages.ENGLISH_URL_PARAMETER}`;
-    (req as any).hostname = 'localhost';
+    Object.assign(req, { hostname: 'localhost' });
     req.app = { locals: { developmentMode: false } } as never;
     const res = mockResponse();
 
@@ -175,7 +457,7 @@ describe('YourSupportController', () => {
       id: 'journey-id',
     };
     req.url = `${PageUrls.YOUR_SUPPORT_CALLBACK.replace(':id', 'journey-id')}${languages.ENGLISH_URL_PARAMETER}`;
-    (req as any).hostname = 'localhost';
+    Object.assign(req, { hostname: 'localhost' });
     req.app = { locals: { developmentMode: false } } as never;
     const res = mockResponse();
 
@@ -208,7 +490,7 @@ describe('YourSupportController', () => {
       },
     });
     req.url = `${PageUrls.YOUR_SUPPORT_CONFIRMATION}${languages.ENGLISH_URL_PARAMETER}`;
-    (req.t as any) = jest.fn().mockReturnValue({});
+    (req.t as jest.Mock).mockReturnValue({});
     const res = mockResponse();
 
     await controller.confirmation(req, res);

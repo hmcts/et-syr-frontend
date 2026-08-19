@@ -89,6 +89,25 @@ describe('handle update submitted case flags', () => {
     expect(caseApi.updateDraftCase).not.toHaveBeenCalled();
     expect(req.session.userCase.respondentExternalFlags).toEqual(respondentExternalFlags);
   });
+
+  it('should log and rethrow when submitted case flags cannot be saved', async () => {
+    caseApi.updateSubmittedCaseFlags = jest.fn().mockRejectedValueOnce(new Error('backend unavailable'));
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+        caseTypeId: CaseTypeId.ENGLAND_WALES,
+        state: CaseState.ACCEPTED,
+        respondentExternalFlags: {
+          roleOnCase: 'Respondent',
+          details: [],
+        },
+      },
+    });
+
+    await expect(handleUpdateSubmittedCaseFlags(req, mockLogger)).rejects.toThrow('backend unavailable');
+
+    expect(mockLogger.error).toHaveBeenCalledWith('Failed to update submitted case flags 1234: backend unavailable');
+  });
 });
 
 describe('reset fields', () => {
