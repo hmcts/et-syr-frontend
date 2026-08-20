@@ -11,8 +11,8 @@ import {
   getYourSupportLinkStatus,
   isEt3ResponseSubmitted,
 } from '../../../../main/helpers/controller/CaseDetailsHelper';
-import { CaseApi } from '../../../../main/services/CaseService';
 import * as CaseService from '../../../../main/services/CaseService';
+import { CaseApi } from '../../../../main/services/CaseService';
 import { mockRequest, mockRequestWithTranslation } from '../../mocks/mockRequest';
 import { mockUserDetails } from '../../mocks/mockUser';
 import mockUserCase from '../../mocks/mockUserCase';
@@ -31,7 +31,9 @@ describe('Case Details Helper', () => {
     caseApi.changeApplicationStatus = jest.fn().mockResolvedValue(Promise.resolve(mockUserCase));
 
     beforeEach(() => {
-      req = mockRequest({});
+      req = mockRequest({
+        userCase: mockUserCase,
+      });
       req.session.user = mockUserDetails;
       req.session.userCase = {
         ...mockUserCase,
@@ -225,6 +227,24 @@ describe('Case Details Helper', () => {
       const statuses = {};
       const result = await getET3CaseDetailsLinkNames(statuses, req);
       expect(result[ET3CaseDetailsLinkNames.OtherRespondentApplications]).toBe(LinkStatus.VIEWED);
+    });
+
+    it('returns SUBMITTED when responseReceived is Yes', async () => {
+      req.session.userCase.responseReceived = YesOrNo.YES;
+      const statuses: ET3CaseDetailsLinksStatuses = {
+        [ET3CaseDetailsLinkNames.RespondentResponse]: LinkStatus.IN_PROGRESS,
+      };
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.SUBMITTED);
+    });
+
+    it('returns existing status when ET3 form not exist', async () => {
+      req.session.userCase.responseReceived = YesOrNo.NO;
+      const statuses: ET3CaseDetailsLinksStatuses = {
+        [ET3CaseDetailsLinkNames.RespondentResponse]: LinkStatus.CANNOT_START_YET,
+      };
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.CANNOT_START_YET);
     });
   });
 

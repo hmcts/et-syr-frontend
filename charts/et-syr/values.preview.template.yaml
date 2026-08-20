@@ -6,6 +6,7 @@ nodejs:
   devmemoryRequests: 512Mi
   environment:
     HMCTS_ACCESS: 'false'
+    CUI_URL: 'https://cui-ra.{{ .Values.global.environment }}.platform.hmcts.net'
   keyVaults:
     et:
       resourceGroup: et
@@ -16,8 +17,7 @@ nodejs:
         - os-places-token
         - pcq-token-key
         - launch-darkly-sdk-key
-  environment:
-    CUI_URL: 'https://cui-ra.{{ .Values.global.environment }}.platform.hmcts.net'
+        - s2s-secret-syr
 idam-pr:
   enabled: true
   redirect_uris:

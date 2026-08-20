@@ -17,5 +17,6 @@ nodejs:
         - os-places-token
         - pcq-token-key
         - launch-darkly-sdk-key
+        - s2s-secret-syr
 idam-pr:
   enabled: false
