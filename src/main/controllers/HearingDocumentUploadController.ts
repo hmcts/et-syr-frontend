@@ -26,6 +26,7 @@ export default class HearingDocumentUploadController {
         classes: 'govuk-heading-m',
         label: (l: AnyRecord): string => l.files.title,
         type: 'insetFields',
+        divider: true,
         subFields: {
           hearingDocument: {
             id: 'hearingDocument',
