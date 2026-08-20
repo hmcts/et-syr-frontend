@@ -98,6 +98,7 @@ export const TranslationKeys = {
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
   CHANGE_LEGAL_REPRESENTATIVE: 'change-legal-representative',
+  TRANSFERRED_CASE: 'transferred-case',
 } as const;
 
 export const PageUrls = {
@@ -202,6 +203,7 @@ export const PageUrls = {
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
   CHANGE_LEGAL_REPRESENTATIVE: '/change-legal-representative',
+  TRANSFERRED_CASE: '/transferred-case',
 } as const;
 
 export const InterceptPaths = {

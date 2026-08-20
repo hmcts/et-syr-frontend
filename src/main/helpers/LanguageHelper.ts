@@ -54,6 +54,25 @@ export const addParameterToUrl = (url: string, parameter: string, validUrls?: st
   return url;
 };
 
+/**
+ * Builds the language toggle href. Swaps lng in place when present so query params
+ * such as caseId are preserved (e.g. /transferred-case?lng=en&caseId=123).
+ */
+export const getLanguageToggleHref = (currentUrl: string, currentLanguage: string): string => {
+  const url = currentUrl ?? DefaultValues.STRING_EMPTY;
+  const language = currentLanguage === languages.WELSH ? languages.WELSH : languages.ENGLISH;
+  const targetLanguage = language === languages.WELSH ? languages.ENGLISH : languages.WELSH;
+
+  if (url.includes('lng=')) {
+    return url.replace(`lng=${language}`, `lng=${targetLanguage}`);
+  }
+
+  const prefix = url.includes(DefaultValues.STRING_QUESTION_MARK)
+    ? DefaultValues.STRING_AMPERSAND
+    : DefaultValues.STRING_QUESTION_MARK;
+  return `${url}${prefix}lng=${targetLanguage}`;
+};
+
 export const setChangeAnswersUrlLanguage = (req: AppRequest): string => {
   if (req.cookies.i18next === languages.WELSH) {
     return languages.WELSH_URL_PARAMETER;
