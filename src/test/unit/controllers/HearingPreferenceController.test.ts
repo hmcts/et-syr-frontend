@@ -1,3 +1,6 @@
+jest.mock('../../../main/modules/featureFlag/launchDarkly', () => ({
+  getFlagValue: jest.fn().mockResolvedValue(true),
+}));
 import HearingPreferencesController from '../../../main/controllers/HearingPreferencesController';
 import { HearingPreference } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';

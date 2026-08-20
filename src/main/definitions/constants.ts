@@ -101,6 +101,10 @@ export const TranslationKeys = {
   TRANSFERRED_CASE: 'transferred-case',
 } as const;
 
+export const FEATURE_FLAGS = {
+  ERA_OCTOBER_2026: 'eraOctober2026',
+} as const;
+
 export const PageUrls = {
   NOT_IMPLEMENTED: '#',
   HOME: '/',

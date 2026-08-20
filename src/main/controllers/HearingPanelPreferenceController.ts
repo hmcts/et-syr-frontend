@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { CaseWithId } from '../definitions/case';
-import { PageUrls, TranslationKeys } from '../definitions/constants';
+import { FEATURE_FLAGS, PageUrls, TranslationKeys } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios';
@@ -11,6 +11,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { isClearSelection } from '../helpers/RouterHelpers';
+import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import ET3Util from '../utils/ET3Util';
 import { isContentCharsOrLessAndNotEmpty, isFieldFilledIn } from '../validators/validator';
 
@@ -79,6 +80,10 @@ export default class HearingPanelPreferenceController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    if (!(await getFlagValue(FEATURE_FLAGS.ERA_OCTOBER_2026, null))) {
+      res.redirect(PageUrls.REASONABLE_ADJUSTMENTS);
+      return;
+    }
     if (Array.isArray(req.body.respondentHearingPanelPreferenceReason)) {
       req.body.respondentHearingPanelPreferenceReason =
         req.body.respondentHearingPanelPreferenceReason.find((val: string) => val && val.trim().length > 0) ||
@@ -105,7 +110,11 @@ export default class HearingPanelPreferenceController {
     );
   };
 
-  public get = (req: AppRequest, res: Response): void => {
+  public get = async (req: AppRequest, res: Response): Promise<void> => {
+    if (!(await getFlagValue(FEATURE_FLAGS.ERA_OCTOBER_2026, null))) {
+      res.redirect(PageUrls.REASONABLE_ADJUSTMENTS);
+      return;
+    }
     const redirectUrl = setUrlLanguage(req, PageUrls.HEARING_PANEL_PREFERENCE);
 
     if (isClearSelection(req)) {
