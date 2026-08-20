@@ -1,5 +1,5 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
-import { CaseWithId, RespondentET3Model } from '../../definitions/case';
+import { CaseWithId, RespondentET3Model, YesOrNo } from '../../definitions/case';
 import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
 import { TranslationKeys } from '../../definitions/constants';
 import {
@@ -39,6 +39,10 @@ export const getET3CaseDetailsLinkNames = async (
   statuses = getResponseCaseDetailsLinkStatusesByRespondentCaseDetailsLinkStatuses(statuses);
   await updateApplicationsStatusIfNotExist(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantContactDetails] = LinkStatus.READY_TO_VIEW;
+  statuses[ET3CaseDetailsLinkNames.RespondentResponse] = getRespondentResponseLinkStatus(
+    req.session.userCase,
+    statuses[ET3CaseDetailsLinkNames.RespondentResponse]
+  );
   statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getClaimantAppsLinkStatus(req);
   statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = getOtherRespondentAppsLinkStatus(req);
@@ -56,6 +60,10 @@ const updateApplicationsStatusIfNotExist = async (req: AppRequest): Promise<void
     const newState: LinkStatus = getApplicationStateIfNotExist(app.value, req.session.user);
     await getCaseApi(req.session.user?.accessToken).changeApplicationStatus(req, app, newState);
   }
+};
+
+const getRespondentResponseLinkStatus = (userCase: CaseWithId, linkName: LinkStatus): LinkStatus => {
+  return userCase?.responseReceived === YesOrNo.YES ? LinkStatus.SUBMITTED : linkName;
 };
 
 const getYourRequestsAndApplications = (req: AppRequest): LinkStatus => {
@@ -124,15 +132,13 @@ function getSectionLink(
   translations: AnyRecord,
   linkName: ET3CaseDetailsLinkNames,
   status: LinkStatus,
-  languageParam: string,
-  selectedRespondent: RespondentET3Model,
-  userCase: CaseWithId
+  eT3CaseDetailsLinksUrlMap: Map<string, string>
 ): SectionLink {
   return {
     linkTxt: translations[linkName],
     status: translations[status],
     shouldShow: shouldCaseDetailsLinkBeClickable(status),
-    url: getET3CaseDetailsLinksUrlMap(languageParam, selectedRespondent.et3Status, userCase).get(linkName),
+    url: eT3CaseDetailsLinksUrlMap.get(linkName),
     statusColor: linkStatusColorMap.get(status),
   };
 }
@@ -141,15 +147,13 @@ function getSection(
   translations: AnyRecord,
   index: number,
   et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses,
-  languageParam: string,
-  selectedRespondent: RespondentET3Model,
-  userCase: CaseWithId
+  eT3CaseDetailsLinksUrlMap: Map<string, string>
 ): Section {
   return {
     title: translations[`section${index + 1}`],
     links: SectionIndexToEt3CaseDetailsLinkNames[index].map(linkName => {
       const status = et3CaseDetailsLinksStatuses[linkName];
-      return getSectionLink(translations, linkName, status, languageParam, selectedRespondent, userCase);
+      return getSectionLink(translations, linkName, status, eT3CaseDetailsLinksUrlMap);
     }),
   };
 }
@@ -165,14 +169,8 @@ export function getSections(
     ...req.t(TranslationKeys.CASE_DETAILS_STATUS as never, { returnObjects: true } as never),
     ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER as never, { returnObjects: true } as never),
   };
+  const eT3CaseDetailsLinksUrlMap = getET3CaseDetailsLinksUrlMap(languageParam, selectedRespondent);
   return Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
-    return getSection(
-      translations,
-      index,
-      et3CaseDetailsLinksStatuses,
-      languageParam,
-      selectedRespondent,
-      req.session.userCase
-    );
+    return getSection(translations, index, et3CaseDetailsLinksStatuses, eT3CaseDetailsLinksUrlMap);
   });
 }
