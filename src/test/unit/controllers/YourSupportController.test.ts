@@ -24,7 +24,24 @@ jest.mock('../../../main/services/CuiService', () => ({
     CANCEL: 'cancel',
   },
   getCuiService: jest.fn(),
-  mergeCUIFlagItems: jest.fn((existingFlags = [], replacementFlags = []) => [...existingFlags, ...replacementFlags]),
+  mergeCUIFlagItems: jest.fn((existingFlags = [], replacementFlags = []) => {
+    const mergedFlags = [...existingFlags];
+    for (const replacementFlag of replacementFlags) {
+      if (replacementFlag.id === undefined) {
+        mergedFlags.push(replacementFlag);
+        continue;
+      }
+
+      const existingIndex = mergedFlags.findIndex(existingFlag => existingFlag.id === replacementFlag.id);
+      if (existingIndex === -1) {
+        mergedFlags.push(replacementFlag);
+      } else {
+        mergedFlags[existingIndex] = replacementFlag;
+      }
+    }
+
+    return mergedFlags;
+  }),
 }));
 
 describe('YourSupportController', () => {
@@ -37,6 +54,26 @@ describe('YourSupportController', () => {
     Object.assign(req, { hostname: 'et-syr.example' });
     req.app = { locals: { developmentMode: false } } as never;
   };
+
+  const getExistingFlags = () => ({
+    partyName: 'Test Respondent',
+    roleOnCase: 'Respondent',
+    details: [
+      {
+        id: 'flag-1',
+        value: {
+          name: 'Support',
+          name_cy: 'Support',
+          dateTimeCreated: '2026-07-14T00:00:00',
+          path: [] as never[],
+          hearingRelevant: 'No',
+          flagCode: 'RA0001',
+          availableExternally: 'Yes',
+          status: 'Active',
+        },
+      },
+    ],
+  });
 
   it('should render your support page when the case can access the CUI journey', async () => {
     const controller = new YourSupportController();
@@ -288,19 +325,22 @@ describe('YourSupportController', () => {
     expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER);
   });
 
-  it('should redirect to case details when submitted CUI callback has no replacement flags', async () => {
-    (getCuiService as jest.Mock).mockReturnValue({
-      getJourneyData: jest.fn().mockResolvedValue({
-        action: CUIActions.SUBMIT,
-        correlationId: '1234',
-      }),
+  it('should redirect back without saving when submitted CUI callback has no flag data', async () => {
+    const getJourneyDataMock = jest.fn().mockResolvedValue({
+      action: CUIActions.SUBMIT,
+      correlationId: '1234',
     });
+    (getCuiService as jest.Mock).mockReturnValue({ getJourneyData: getJourneyDataMock });
     const controller = new YourSupportController({
       getToken: jest.fn().mockResolvedValue('service-token'),
     } as never);
     const req = mockRequest({
       userCase: {
         id: '1234',
+        responseReceived: YesOrNo.NO,
+      },
+      session: {
+        returnUrl: PageUrls.CHECK_YOUR_ANSWERS_ET3,
       },
     });
     req.params = {
@@ -312,7 +352,130 @@ describe('YourSupportController', () => {
 
     await controller.callback(req, res);
 
-    expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER);
+    expect(getJourneyDataMock).toHaveBeenCalledWith('journey-id', { serviceToken: 'service-token' });
+    expect(handleUpdateDraftCase).not.toHaveBeenCalled();
+    expect(handleUpdateSubmittedCaseFlags).not.toHaveBeenCalled();
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_ET3);
+    expect(req.session.returnUrl).toBe('');
+  });
+
+  it('should save when only flags as supplied has details', async () => {
+    const existingFlags = getExistingFlags();
+    const modifiedExistingFlag = {
+      ...existingFlags.details[0],
+      value: {
+        ...existingFlags.details[0].value,
+        status: 'Inactive',
+        flagUpdateComment: 'Updated by CUI',
+      },
+    };
+    const getJourneyDataMock = jest.fn().mockResolvedValue({
+      action: CUIActions.SUBMIT,
+      correlationId: '1234',
+      replacementFlags: { partyName: 'Test Respondent', roleOnCase: 'Respondent', details: [] },
+      flagsAsSupplied: {
+        ...existingFlags,
+        details: [modifiedExistingFlag],
+      },
+    });
+    (getCuiService as jest.Mock).mockReturnValue({ getJourneyData: getJourneyDataMock });
+    (handleUpdateDraftCase as jest.Mock).mockResolvedValue(undefined);
+
+    const controller = new YourSupportController({
+      getToken: jest.fn().mockResolvedValue('service-token'),
+    } as never);
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+        state: CaseState.AWAITING_SUBMISSION_TO_HMCTS,
+        respondentExternalFlags: existingFlags,
+      },
+      session: {
+        user: { accessToken: 'idam-token' },
+      },
+    });
+    req.params = {
+      ...req.params,
+      id: 'journey-id',
+    };
+    req.url = `${PageUrls.YOUR_SUPPORT_CALLBACK.replace(':id', 'journey-id')}${languages.ENGLISH_URL_PARAMETER}`;
+    Object.assign(req, { hostname: 'localhost' });
+    req.app = { locals: { developmentMode: false } } as never;
+    const res = mockResponse();
+
+    await controller.callback(req, res);
+
+    expect(getJourneyDataMock).toHaveBeenCalledWith('journey-id', { serviceToken: 'service-token' });
+    expect(handleUpdateDraftCase).toHaveBeenCalledWith(req, expect.anything());
+    expect(req.session.userCase.respondentExternalFlags.details).toEqual([modifiedExistingFlag]);
+    expect(res.redirect).toHaveBeenCalledWith(
+      `${PageUrls.YOUR_SUPPORT_CONFIRMATION}${languages.ENGLISH_URL_PARAMETER}`
+    );
+  });
+
+  it('should save supplied flag changes with replacement flags', async () => {
+    const existingFlags = getExistingFlags();
+    const modifiedExistingFlag = {
+      ...existingFlags.details[0],
+      value: {
+        ...existingFlags.details[0].value,
+        status: 'Inactive',
+        flagUpdateComment: 'Updated by CUI',
+      },
+    };
+    const newFlag = {
+      value: {
+        name: 'New support',
+        name_cy: 'New support',
+        dateTimeCreated: '2026-07-15T00:00:00',
+        path: [] as never[],
+        hearingRelevant: 'No',
+        flagCode: 'RA0002',
+        availableExternally: 'Yes',
+      },
+    };
+    const getJourneyDataMock = jest.fn().mockResolvedValue({
+      action: CUIActions.SUBMIT,
+      correlationId: '1234',
+      replacementFlags: { partyName: 'Test Respondent', roleOnCase: 'Respondent', details: [newFlag] },
+      flagsAsSupplied: {
+        ...existingFlags,
+        details: [modifiedExistingFlag],
+      },
+    });
+    (getCuiService as jest.Mock).mockReturnValue({ getJourneyData: getJourneyDataMock });
+    (handleUpdateDraftCase as jest.Mock).mockResolvedValue(undefined);
+
+    const controller = new YourSupportController({
+      getToken: jest.fn().mockResolvedValue('service-token'),
+    } as never);
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+        state: CaseState.AWAITING_SUBMISSION_TO_HMCTS,
+        respondentExternalFlags: existingFlags,
+      },
+      session: {
+        user: { accessToken: 'idam-token' },
+      },
+    });
+    req.params = {
+      ...req.params,
+      id: 'journey-id',
+    };
+    req.url = `${PageUrls.YOUR_SUPPORT_CALLBACK.replace(':id', 'journey-id')}${languages.ENGLISH_URL_PARAMETER}`;
+    Object.assign(req, { hostname: 'localhost' });
+    req.app = { locals: { developmentMode: false } } as never;
+    const res = mockResponse();
+
+    await controller.callback(req, res);
+
+    expect(getJourneyDataMock).toHaveBeenCalledWith('journey-id', { serviceToken: 'service-token' });
+    expect(handleUpdateDraftCase).toHaveBeenCalledWith(req, expect.anything());
+    expect(req.session.userCase.respondentExternalFlags.details).toEqual([modifiedExistingFlag, newFlag]);
+    expect(res.redirect).toHaveBeenCalledWith(
+      `${PageUrls.YOUR_SUPPORT_CONFIRMATION}${languages.ENGLISH_URL_PARAMETER}`
+    );
   });
 
   it('should render submitted confirmation with a resolved case overview link', async () => {
