@@ -156,7 +156,7 @@ export default class YourSupportController {
   };
 
   public confirmation = async (req: AppRequest, res: Response): Promise<void> => {
-    const link = this.getExitUrl(req);
+    const link = this.getExitUrl(req, true);
     this.renderConfirmation(
       req,
       res,
@@ -172,7 +172,7 @@ export default class YourSupportController {
       res,
       TranslationKeys.YOUR_SUPPORT_SUBMITTED_CONFIRMATION,
       YOUR_SUPPORT_SUBMITTED_CONFIRMATION_TEMPLATE,
-      this.getExitUrl(req)
+      this.getExitUrl(req, true)
     );
   };
 

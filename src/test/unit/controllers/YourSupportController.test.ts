@@ -513,6 +513,42 @@ describe('YourSupportController', () => {
     expect((res.render as jest.Mock).mock.calls[0][1].link).not.toContain(':ccdId');
   });
 
+  it('should render submitted confirmation with return url and consume it', async () => {
+    const controller = new YourSupportController();
+    const req = mockRequest({
+      userCase: {
+        id: '1782812031617616',
+        ccdId: '1782812031617616',
+        state: CaseState.ACCEPTED,
+        responseReceived: YesOrNo.YES,
+        respondents: [
+          {
+            respondentName: 'Test Respondent',
+            ccdId: 'respondent-ccd-id',
+            responseReceived: YesOrNo.YES,
+          },
+        ],
+      },
+      session: {
+        selectedRespondentIndex: 0,
+        returnUrl: `${PageUrls.CASE_LIST}${languages.WELSH_URL_PARAMETER}`,
+      },
+    });
+    req.url = `${TranslationKeys.YOUR_SUPPORT_SUBMITTED_CONFIRMATION}${languages.WELSH_URL_PARAMETER}`;
+    (req.t as unknown as jest.Mock).mockReturnValue({});
+    const res = mockResponse();
+
+    await controller.submittedConfirmation(req, res);
+
+    expect(res.render).toHaveBeenCalledWith(
+      TranslationKeys.YOUR_SUPPORT_SUBMITTED_CONFIRMATION,
+      expect.objectContaining({
+        link: `${PageUrls.CASE_LIST}${languages.WELSH_URL_PARAMETER}`,
+      })
+    );
+    expect(req.session.returnUrl).toBe('');
+  });
+
   it('should redirect draft CUI callback to your support confirmation after saving flags', async () => {
     const getJourneyDataMock = jest.fn().mockResolvedValue({
       action: CUIActions.SUBMIT,
@@ -665,5 +701,40 @@ describe('YourSupportController', () => {
         link: `${PageUrls.RESPONDENT_RESPONSE_TASK_LIST}${languages.ENGLISH_URL_PARAMETER}`,
       })
     );
+  });
+
+  it('should render pre-submitted confirmation with return url and consume it', async () => {
+    const controller = new YourSupportController();
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+        state: CaseState.ACCEPTED,
+        responseReceived: YesOrNo.NO,
+        respondents: [
+          {
+            respondentName: 'Test Respondent',
+            ccdId: 'respondent-ccd-id',
+            responseReceived: YesOrNo.NO,
+          },
+        ],
+      },
+      session: {
+        selectedRespondentIndex: 0,
+        returnUrl: `${PageUrls.CHECK_YOUR_ANSWERS_ET3}${languages.ENGLISH_URL_PARAMETER}`,
+      },
+    });
+    req.url = `${PageUrls.YOUR_SUPPORT_CONFIRMATION}${languages.ENGLISH_URL_PARAMETER}`;
+    (req.t as unknown as jest.Mock).mockReturnValue({});
+    const res = mockResponse();
+
+    await controller.confirmation(req, res);
+
+    expect(res.render).toHaveBeenCalledWith(
+      TranslationKeys.YOUR_SUPPORT_CONFIRMATION,
+      expect.objectContaining({
+        link: `${PageUrls.CHECK_YOUR_ANSWERS_ET3}${languages.ENGLISH_URL_PARAMETER}`,
+      })
+    );
+    expect(req.session.returnUrl).toBe('');
   });
 });
