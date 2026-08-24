@@ -3009,31 +3009,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@launchdarkly/js-sdk-common@npm:2.25.1":
-  version: 2.25.1
-  resolution: "@launchdarkly/js-sdk-common@npm:2.25.1"
-  checksum: 10/4b99f83fb637af2a0b546afbaa400918f83f66464ed9259583520c1a632cfa401e08906cf07b5f85480c5f5c8c9b698b7e624c20f038a0a2429a88abc93cb636
+"@launchdarkly/js-sdk-common@npm:2.25.2":
+  version: 2.25.2
+  resolution: "@launchdarkly/js-sdk-common@npm:2.25.2"
+  checksum: 10/7b9ffdfd5e6e92ec7e916c795abec647af7a9b97293c74c9edaa922d53f6e688a7e6b276f5005532fa049ed270fe912c124ee0ff3e1316d61758658814a165fb
   languageName: node
   linkType: hard
 
-"@launchdarkly/js-server-sdk-common@npm:2.19.2":
-  version: 2.19.2
-  resolution: "@launchdarkly/js-server-sdk-common@npm:2.19.2"
+"@launchdarkly/js-server-sdk-common@npm:2.20.1":
+  version: 2.20.1
+  resolution: "@launchdarkly/js-server-sdk-common@npm:2.20.1"
   dependencies:
-    "@launchdarkly/js-sdk-common": "npm:2.25.1"
+    "@launchdarkly/js-sdk-common": "npm:2.25.2"
     semver: "npm:7.5.4"
-  checksum: 10/737f2c0b9d6932cf377d818dca23bffd1bd8b94f96d8b611bf5b1392b5c68d226d9d9180ee542cc1ce9ef1c75fd46ea9c24f2c585893668f989719729e97ed41
+  checksum: 10/67282f6a111b986780594b789e6b50245deeccf1fcd17f770bbe92dfc6643d52e6b8495b812cb657549bf586f86349502bdf78cc9874cb832f6f478e2ead78cb
   languageName: node
   linkType: hard
 
 "@launchdarkly/node-server-sdk@npm:^9.0.0":
-  version: 9.11.3
-  resolution: "@launchdarkly/node-server-sdk@npm:9.11.3"
+  version: 9.13.1
+  resolution: "@launchdarkly/node-server-sdk@npm:9.13.1"
   dependencies:
-    "@launchdarkly/js-server-sdk-common": "npm:2.19.2"
+    "@launchdarkly/js-server-sdk-common": "npm:2.20.1"
     https-proxy-agent: "npm:^7.0.6"
     launchdarkly-eventsource: "npm:2.2.0"
-  checksum: 10/175f7fec9b52344f257507b177d84046e9b9c449d15082612990589f67c44789a6e62adbb498051cc31d33c37126b9431658280bf220216bd5960a156b9a5939
+  checksum: 10/ef43ddc9485f338f0d1ab09215f9f8d749140c82fef94f3dc81732fdb59275cf353ec30c1495d3a3dd2d3578807ba84b7c7d872e2e7c0182af4800a1c51fd185
   languageName: node
   linkType: hard
 
