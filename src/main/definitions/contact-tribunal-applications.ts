@@ -110,6 +110,13 @@ export const application: { [key: string]: Application } = {
     type: ApplicationType.A,
     isRespondentApp: true,
   },
+  SUBMIT_DOCUMENTS_FOR_HEARING: {
+    code: 'Submit documents for a hearing',
+    claimant: 'Submit documents for a hearing',
+    claimantLegalRep: 'Submit documents for a hearing',
+    type: ApplicationType.A,
+    isRespondentApp: true,
+  },
   WITHDRAWAL_OF_ALL_OR_PART_CLAIM: {
     claimant: 'Withdraw all/part of claim',
     claimantLegalRep: 'Withdraw all or part of claim',

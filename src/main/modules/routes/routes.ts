@@ -6,7 +6,9 @@ import { Application } from 'express';
 import rateLimit from 'express-rate-limit';
 import multer, { FileFilterCallback } from 'multer';
 
+import AboutHearingDocumentsController from '../../controllers/AboutHearingDocumentsController';
 import AcasEarlyConciliationCertificateController from '../../controllers/AcasEarlyConciliationCertificateController';
+import AgreeingDocumentsController from '../../controllers/AgreeingDocumentsController';
 import ApplicationDetailsController from '../../controllers/ApplicationDetailsController';
 import ApplicationSubmittedController from '../../controllers/ApplicationSubmittedController';
 import AppointLegalRepController from '../../controllers/AppointLegalRepController';
@@ -62,6 +64,7 @@ import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignm
 import NotificationController from '../../controllers/NotificationController';
 import NotificationDetailsController from '../../controllers/NotificationDetailsController';
 import OtherRespondentApplicationsController from '../../controllers/OtherRespondentApplicationsController';
+import PrepareAndSubmitHearingDocumentsController from '../../controllers/PrepareAndSubmitHearingDocumentsController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
 import RespondToApplicationCYAController from '../../controllers/RespondToApplicationCYAController';
@@ -298,6 +301,11 @@ export class Routes {
     app.get(PageUrls.CONTACT_TRIBUNAL_STORE_COMPLETE, new ContactTribunalStoreCompleteController().get);
     app.get(PageUrls.STORED_CORRESPONDENCE_SUBMIT, new ContactTribunalSubmitStoredController().get);
     app.post(PageUrls.STORED_CORRESPONDENCE_SUBMIT, new ContactTribunalSubmitStoredController().post);
+    app.get(PageUrls.PREPARE_AND_SUBMIT_HEARING_DOCUMENTS, new PrepareAndSubmitHearingDocumentsController().get);
+    app.get(PageUrls.AGREEING_DOCUMENTS, new AgreeingDocumentsController().get);
+    app.post(PageUrls.AGREEING_DOCUMENTS, new AgreeingDocumentsController().post);
+    app.get(PageUrls.ABOUT_HEARING_DOCUMENTS, new AboutHearingDocumentsController().get);
+    app.post(PageUrls.ABOUT_HEARING_DOCUMENTS, new AboutHearingDocumentsController().post);
     // Your request and applications
     app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
     app.get(PageUrls.CLAIMANTS_APPLICATIONS, new ClaimantsApplicationsController().get);

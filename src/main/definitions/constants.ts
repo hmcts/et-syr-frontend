@@ -75,6 +75,9 @@ export const TranslationKeys = {
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: 'contact-tribunal-submit-complete',
   CONTACT_TRIBUNAL_STORE_COMPLETE: 'contact-tribunal-store-complete',
   STORED_CORRESPONDENCE_SUBMIT: 'stored-correspondence-submit',
+  PREPARE_AND_SUBMIT_HEARING_DOCUMENTS: 'prepare-and-submit-hearing-documents',
+  AGREEING_DOCUMENTS: 'agreeing-documents',
+  ABOUT_HEARING_DOCUMENTS: 'about-hearing-documents',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
   CLAIMANTS_APPLICATIONS: 'claimants-applications',
@@ -174,6 +177,10 @@ export const PageUrls = {
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
   CONTACT_TRIBUNAL_STORE_COMPLETE: '/contact-tribunal-store-complete/:appId',
   STORED_CORRESPONDENCE_SUBMIT: '/stored-correspondence-submit/:appId',
+  PREPARE_AND_SUBMIT_HEARING_DOCUMENTS: '/prepare-and-submit-documents',
+  AGREEING_DOCUMENTS: '/agreeing-documents',
+  ABOUT_HEARING_DOCUMENTS: '/about-hearing-documents',
+  HEARING_DOCUMENT_UPLOAD: '/hearing-document-upload/:hearingId',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
   CLAIMANTS_APPLICATIONS: '/claimants-applications',
