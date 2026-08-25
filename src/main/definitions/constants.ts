@@ -75,6 +75,9 @@ export const TranslationKeys = {
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: 'contact-tribunal-submit-complete',
   CONTACT_TRIBUNAL_STORE_COMPLETE: 'contact-tribunal-store-complete',
   STORED_CORRESPONDENCE_SUBMIT: 'stored-correspondence-submit',
+  PREPARE_AND_SUBMIT_HEARING_DOCUMENTS: 'prepare-and-submit-hearing-documents',
+  AGREEING_DOCUMENTS: 'agreeing-documents',
+  ABOUT_HEARING_DOCUMENTS: 'about-hearing-documents',
   HEARING_DOCUMENT_UPLOAD: 'hearing-document-upload',
   BUNDLES_DOCS_FOR_HEARING_CYA: 'bundles-docs-for-hearing-cya',
   BUNDLES_COMPLETED: 'bundles-completed',
@@ -177,6 +180,7 @@ export const PageUrls = {
   CONTACT_TRIBUNAL_SUBMIT_COMPLETE: '/contact-tribunal-submit-complete',
   CONTACT_TRIBUNAL_STORE_COMPLETE: '/contact-tribunal-store-complete/:appId',
   STORED_CORRESPONDENCE_SUBMIT: '/stored-correspondence-submit/:appId',
+  PREPARE_AND_SUBMIT_HEARING_DOCUMENTS: '/prepare-and-submit-documents',
   AGREEING_DOCUMENTS: '/agreeing-documents',
   ABOUT_HEARING_DOCUMENTS: '/about-hearing-documents',
   HEARING_DOCUMENT_UPLOAD: '/hearing-document-upload/:hearingId',
@@ -690,3 +694,7 @@ export const LEGAL_REPRESENTATIVE_CHANGE_OPTIONS = {
   change: 'change',
   remove: 'remove',
 } as const;
+
+export const enum Et3ResponseStatus {
+  ET3_RESPONSE_STATUS_ACCEPTED = 'Accepted',
+}

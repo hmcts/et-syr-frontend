@@ -1,0 +1,31 @@
+{
+  "title": "[W]Agreeing documents",
+  "caption": "[W]Prepare documents for a hearing",
+  "h1": "[W]Agreeing documents",
+  "inset": "[W]You may have been told in an order from the tribunal to work with the other party to agree on the documents that will be relied upon at the hearing.",
+  "bundlesRespondentAgreedDocWith": {
+    "label": "[W]Have you agreed these documents with the other party?",
+    "yes": "[W]Yes",
+    "agreedBut": "[W]We have agreed but there are some disputed documents",
+    "notAgreed": "[W]No, we have not agreed and I want to provide my own documents"
+  },
+  "bundlesRespondentAgreedDocWithBut": {
+    "label": "[W]Tell us which documents are disputed"
+  },
+  "bundlesRespondentAgreedDocWithNo": {
+    "label": "[W]Tell us why you've not been able to agree with the other party"
+  },
+  "errors": {
+    "bundlesRespondentAgreedDocWith": {
+      "required": "[W]Tell us if you have agreed these documents with the other party"
+    },
+    "bundlesRespondentAgreedDocWithBut": {
+      "required": "[W]Tell us which documents are disputed",
+      "tooLong": "[W]Tell us which documents are disputed must be entered as less than 2500 characters"
+    },
+    "bundlesRespondentAgreedDocWithNo": {
+      "required": "[W]Tell us why you've not been able to agree with the other party",
+      "tooLong": "[W]Tell us why you've not been able to agree with the other party must be entered as less than 2500 characters"
+    }
+  }
+}

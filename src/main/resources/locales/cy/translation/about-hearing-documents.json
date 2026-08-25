@@ -1,0 +1,24 @@
+{
+  "title": "[W]About your hearing documents",
+  "h1": "[W]About your hearing documents",
+  "headingCaption": "[W]Prepare documents for a hearing",
+  "Question1": "[W]Select the hearing these documents are for",
+  "Question2": "[W]Whose hearing documents are you uploading?",
+  "Question2Radio1": "[W]My hearing documents only",
+  "Question2Radio2": "[W]Both parties' hearing documents combined",
+  "Question3": "[W]What are these documents?",
+  "Question3Radio1": "[W]All hearing documents",
+  "Question3Radio2": "[W]Supplementary or other documents",
+  "Question3Radio3": "[W]Witness statements only",
+  "errors": {
+    "hearingDocumentsAreFor": {
+      "required": "[W]Select which hearing these documents are for"
+    },
+    "whoseHearingDocumentsAreYouUploading": {
+      "required": "[W]Select whose hearing documents you are uploading"
+    },
+    "whatAreTheseDocuments": {
+      "required": "[W]Select what these documents are"
+    }
+  }
+}
