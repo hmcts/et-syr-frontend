@@ -7,16 +7,25 @@
 
 {% block head %}
   {% include "../../webpack/css.njk" %}
-  <script>
-    window.dataLayer = window.dataLayer || [];
-  </script>
+  {% if globals.enableTracking == "true" %}
+    <!-- Data Layer -->
+    <meta name="gtm-one-time" content="{{ globals.nonce }}">
+    <script nonce="{{ globals.nonce }}">
+      window.dataLayer = window.dataLayer || [];
+      const userPreferenceCookie = document.cookie.match(new RegExp('(^| )' + 'cm-user-preferences' + '=([^;]+)'));
+      if (userPreferenceCookie) {
+        const cookiePreferences = JSON.parse(decodeURIComponent(userPreferenceCookie[2]));
+        window.dataLayer.push({'event': 'Cookie Preferences', 'cookiePreferences': cookiePreferences});
+      }
+    </script>
+  {% endif %}
   <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
+  <script nonce="{{ globals.nonce }}">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
       {'gtm.start': new Date().getTime(),event:'gtm.js'}
     );var f=d.getElementsByTagName(s)[0],
       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-5F47WFXR');
+    })(window,document,'script','dataLayer','GTM-M29HRGV');
   </script>
   <!-- End Google Tag Manager -->
 
@@ -26,7 +35,7 @@
 {% block bodyStart %}
   <!-- Google Tag Manager (noscript) -->
   <noscript>
-    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5F47WFXR"
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M29HRGV"
                     height="0" width="0" style="display:none;visibility:hidden">
     </iframe>
   </noscript>
