@@ -9,7 +9,10 @@
     "roleName": "et-syr"
   },
   "featureFlags": {
-    "welsh": "true"
+    "welsh": "true",
+    "cuiYourSupport": {
+      "enabledCaseTypeIds": []
+    }
   },
   "session": {
     "maxAgeInMs": "3600000",
