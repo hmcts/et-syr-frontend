@@ -78,6 +78,9 @@ export const TranslationKeys = {
   PREPARE_AND_SUBMIT_HEARING_DOCUMENTS: 'prepare-and-submit-hearing-documents',
   AGREEING_DOCUMENTS: 'agreeing-documents',
   ABOUT_HEARING_DOCUMENTS: 'about-hearing-documents',
+  HEARING_DOCUMENT_UPLOAD: 'hearing-document-upload',
+  BUNDLES_DOCS_FOR_HEARING_CYA: 'bundles-docs-for-hearing-cya',
+  BUNDLES_COMPLETED: 'bundles-completed',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: 'your-request-and-applications',
   CLAIMANTS_APPLICATIONS: 'claimants-applications',
@@ -181,6 +184,9 @@ export const PageUrls = {
   AGREEING_DOCUMENTS: '/agreeing-documents',
   ABOUT_HEARING_DOCUMENTS: '/about-hearing-documents',
   HEARING_DOCUMENT_UPLOAD: '/hearing-document-upload/:hearingId',
+  HEARING_DOCUMENT_REMOVE: '/hearing-document-upload/:hearingId/remove',
+  BUNDLES_DOCS_FOR_HEARING_CYA: '/documents-for-hearing',
+  BUNDLES_COMPLETED: '/bundles-completed',
   // Your request and applications
   YOUR_REQUEST_AND_APPLICATIONS: '/your-request-and-applications',
   CLAIMANTS_APPLICATIONS: '/claimants-applications',
@@ -231,6 +237,7 @@ export const InterceptPaths = {
   // Tribunal Notification
   RESPOND_TO_NOTIFICATION_SUBMIT: '/submitRespondToNotification',
   RESPOND_TO_NOTIFICATION_STORE: '/storeRespondToNotification',
+  SUBMIT_BUNDLES_HEARING_DOCS_CYA: '/submitBundlesHearingDocsCya',
 } as const;
 
 export const RedirectKeys = {
@@ -327,6 +334,8 @@ export const JavaApiUrls = {
   STORE_RESPONSE_TO_NOTIFICATION: 'sendNotification/store-respondent-respond-to-notification',
   SUBMIT_STORE_RESPONSE_TO_NOTIFICATION: 'sendNotification/submit-respondent-respond-to-notification',
   REVOKE_RESPONDENT_REPRESENTATIVE: '/manageCaseRole/revokeRespondentSolicitorRole',
+  SUBMIT_BUNDLES: 'bundles/submit-bundles',
+  SUBMIT_RESPONDENT_BUNDLES: 'bundles/submit-respondent-bundles',
 } as const;
 
 export const Roles = {
@@ -578,6 +587,9 @@ export const FormFieldNames = {
   },
   RESPOND_TO_NOTIFICATION: {
     SUPPORTING_MATERIAL_FILE: 'supportingMaterialFile',
+  },
+  HEARING_DOCUMENT_UPLOAD: {
+    HEARING_DOCUMENT: 'hearingDocument',
   },
 } as const;
 

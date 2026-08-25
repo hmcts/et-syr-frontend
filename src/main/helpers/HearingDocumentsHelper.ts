@@ -1,4 +1,10 @@
 import { HearingModel } from '../definitions/api/caseApiResponse';
+import { CaseWithId, Document } from '../definitions/case';
+import { PageUrls } from '../definitions/constants';
+import { FormError } from '../definitions/form';
+import { SummaryListRow } from '../definitions/govuk/govukSummaryList';
+import { AnyRecord } from '../definitions/util-types';
+import { hasInvalidFileName, isNotPdfFileType } from '../validators/validator';
 
 const formatDate = (rawDate: Date): string =>
   new Intl.DateTimeFormat('en-GB', {
@@ -55,4 +61,89 @@ export const createRadioBtnsForHearings = (
     value: hearing.id,
     name: 'hearingDocumentsAreFor',
   }));
+};
+
+export const getFilesRows = (
+  userCase: CaseWithId | undefined,
+  hearingId: string,
+  translations: AnyRecord
+): SummaryListRow[] => {
+  if (userCase?.hearingDocument === undefined) {
+    return [
+      {
+        key: {
+          html: translations.noFilesUpload,
+          classes: 'govuk-!-font-weight-regular-m',
+        },
+        value: {
+          text: '',
+        },
+        actions: {
+          items: [],
+        },
+      },
+    ];
+  }
+
+  return [
+    {
+      key: {
+        text: userCase.hearingDocument.document_filename,
+        classes: 'govuk-!-font-weight-regular-m',
+      },
+      value: {
+        text: '',
+      },
+      actions: {
+        items: [
+          {
+            href: PageUrls.HEARING_DOCUMENT_REMOVE.replace(':hearingId', hearingId),
+            text: translations.remove,
+            visuallyHiddenText: translations.remove,
+          },
+        ],
+      },
+    },
+  ];
+};
+
+export const getPdfUploadError = (
+  file: Express.Multer.File,
+  fileTooLarge: boolean,
+  uploadedFile: Document,
+  propertyName: string
+): FormError | undefined => {
+  const fileProvided = file !== undefined;
+
+  if (!fileProvided && !uploadedFile) {
+    return { propertyName, errorType: 'required' };
+  }
+
+  if (fileTooLarge) {
+    return { propertyName, errorType: 'invalidFileSize' };
+  }
+
+  const fileFormatInvalid = isNotPdfFileType(file);
+  if (fileFormatInvalid) {
+    return { propertyName, errorType: fileFormatInvalid };
+  }
+
+  const fileNameInvalid = hasInvalidFileName(file?.originalname);
+  if (fileNameInvalid) {
+    return { propertyName, errorType: fileNameInvalid };
+  }
+
+  return undefined;
+};
+
+export const getFileErrorMessage = (errors: FormError[], errorTranslations: AnyRecord): string | undefined => {
+  if (!errors?.length) {
+    return undefined;
+  }
+  for (let i = errors.length - 1; i >= 0; i--) {
+    if (errors[i].propertyName === 'hearingDocument') {
+      return errorTranslations[errors[i].errorType];
+    }
+  }
+  return undefined;
 };
