@@ -3,6 +3,7 @@ import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import { CaseState } from '../../../main/definitions/definition';
 import { handleUpdateDraftCase, handleUpdateSubmittedCaseFlags } from '../../../main/helpers/CaseHelpers';
+import * as CuiYourSupportFeatureModule from '../../../main/modules/featureFlag/CuiYourSupportFeature';
 import { CUIActions, getCuiService } from '../../../main/services/CuiService';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -47,6 +48,10 @@ jest.mock('../../../main/services/CuiService', () => ({
 describe('YourSupportController', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature').mockReturnValue({
+      isEnabled: jest.fn().mockReturnValue(true),
+      getSupportPageUrl: jest.fn().mockReturnValue(PageUrls.YOUR_SUPPORT),
+    } as unknown as CuiYourSupportFeatureModule.CuiYourSupportFeature);
   });
 
   const setRequestRuntime = (req: ReturnType<typeof mockRequest>): void => {
@@ -126,6 +131,58 @@ describe('YourSupportController', () => {
 
     expect(res.redirect).toHaveBeenCalledWith(
       `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}${languages.ENGLISH_URL_PARAMETER}`
+    );
+  });
+
+  it('should redirect disabled draft cases to the legacy reasonable adjustments page', async () => {
+    jest.spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature').mockReturnValue({
+      isEnabled: jest.fn().mockReturnValue(false),
+      getSupportPageUrl: jest.fn().mockReturnValue(PageUrls.REASONABLE_ADJUSTMENTS),
+    } as unknown as CuiYourSupportFeatureModule.CuiYourSupportFeature);
+    const controller = new YourSupportController();
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+        state: CaseState.AWAITING_SUBMISSION_TO_HMCTS,
+      },
+    });
+    setRequestRuntime(req);
+    const res = mockResponse();
+
+    await controller.get(req, res);
+
+    expect(res.redirect).toHaveBeenCalledWith(`${PageUrls.REASONABLE_ADJUSTMENTS}${languages.ENGLISH_URL_PARAMETER}`);
+  });
+
+  it('should redirect disabled submitted cases to case details fallback', async () => {
+    jest.spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature').mockReturnValue({
+      isEnabled: jest.fn().mockReturnValue(false),
+      getSupportPageUrl: jest.fn().mockReturnValue(PageUrls.REASONABLE_ADJUSTMENTS),
+    } as unknown as CuiYourSupportFeatureModule.CuiYourSupportFeature);
+    const controller = new YourSupportController();
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+        respondents: [
+          {
+            ccdId: 'respondent-ccd-id',
+          },
+        ],
+      },
+      session: {
+        selectedRespondentIndex: 0,
+      },
+    });
+    setRequestRuntime(req);
+    const res = mockResponse();
+
+    await controller.get(req, res);
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      `${PageUrls.CASE_DETAILS_WITH_CASE_ID_RESPONDENT_CCD_ID_PARAMETERS.replace(
+        ':caseSubmissionReference',
+        '1234'
+      ).replace(':ccdId', 'respondent-ccd-id')}${languages.ENGLISH_URL_PARAMETER}`
     );
   });
 

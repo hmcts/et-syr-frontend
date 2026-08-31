@@ -8,7 +8,7 @@ export const expectedRespondentHubTestTaskList = {
 };
 
 export const expectedRespondentHubTestLinkTexts = [
-  ['Contact details', 'Hearing format and employer details', 'Your Support'],
+  ['Contact details', 'Hearing format and employer details'],
   ['Early conciliation and employee details', 'Pay, pension and benefits details'],
   ['Contest the claim', "Employer's Contract Claim"],
   ['Check your answers'],
@@ -17,14 +17,14 @@ export const expectedRespondentHubTestLinkTexts = [
 export const sectionTitleTranslationKeys = ['section1', 'section2', 'section3', 'section4'];
 
 export const subSectionTitleTranslationKeys = [
-  ['contactDetails', 'employerDetails', 'yourSupport'],
+  ['contactDetails', 'employerDetails'],
   ['conciliationAndEmployeeDetails', 'payPensionBenefitDetails'],
   ['contestClaim', 'employersContractClaim'],
   ['checkYorAnswers'],
 ];
 
 export const expectedRespondentHubTestStatuses = [
-  ['Not started yet', 'Not started yet', 'Optional'],
+  ['Not started yet', 'Not started yet'],
   ['Not started yet', 'Not started yet'],
   ['Not started yet', 'Not started yet'],
   ['Cannot start yet'],

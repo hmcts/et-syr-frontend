@@ -1,5 +1,8 @@
 import RespondentResponseTaskListController from '../../../main/controllers/RespondentResponseTaskListController';
+import { CaseTypeId } from '../../../main/definitions/case';
 import { DefaultValues, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
+import { CuiYourSupportFeature } from '../../../main/modules/featureFlag/CuiYourSupportFeature';
+import * as CuiYourSupportFeatureModule from '../../../main/modules/featureFlag/CuiYourSupportFeature';
 import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -33,6 +36,7 @@ describe('Respondent response task list controller', () => {
   beforeEach(() => {
     mockLdClient.mockClear();
     mockWelshFlag.mockClear();
+    jest.spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature').mockReturnValue(new CuiYourSupportFeature([]));
   });
 
   it('should render the Respondent Response Task List with sections for ET3 with employer contract claim section', async () => {
@@ -131,7 +135,29 @@ describe('Respondent response task list controller', () => {
     expect(request.t).toHaveBeenCalledWith(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true });
   });
 
-  it('should show Your Support as submitted when respondent external flags exist', async () => {
+  it('should not show Your Support by default when CUI Your Support is disabled', async () => {
+    mockWelshFlag.mockResolvedValue(true);
+    const controller = new RespondentResponseTaskListController();
+    const response = mockResponse();
+    const request = mockRequest({ session: { userCase: mockUserCaseComplete, user: mockUserDetails } });
+    request.session.selectedRespondentIndex = 0;
+    (request.t as unknown as jest.Mock).mockReturnValue(mockRespondentHubTranslations);
+
+    await controller.get(request, response);
+
+    const renderMock = response.render as jest.Mock;
+    const sections: Section[] = renderMock.mock.calls[0][1].sections;
+    const yourSupportLink = sections[0].links.find(
+      link => link.linkTxt(mockRespondentHubTranslations) === 'Your Support'
+    );
+
+    expect(yourSupportLink).toBeUndefined();
+  });
+
+  it('should show Your Support as submitted when respondent external flags exist and Scotland is enabled', async () => {
+    jest
+      .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+      .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
     mockWelshFlag.mockResolvedValue(true);
     const controller = new RespondentResponseTaskListController();
     const response = mockResponse();
@@ -139,6 +165,7 @@ describe('Respondent response task list controller', () => {
       session: {
         userCase: {
           ...mockUserCaseComplete,
+          caseTypeId: CaseTypeId.SCOTLAND,
           respondentExternalFlags: {
             details: [
               {
@@ -164,5 +191,36 @@ describe('Respondent response task list controller', () => {
 
     expect(yourSupportLink.status(mockRespondentHubTranslations)).toBe('Submitted');
     expect(yourSupportLink.url()).toBe(PageUrls.YOUR_SUPPORT);
+  });
+
+  it('should preserve the Welsh language parameter on the Your Support task when Scotland is enabled', async () => {
+    jest
+      .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+      .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
+    mockWelshFlag.mockResolvedValue(true);
+    const controller = new RespondentResponseTaskListController();
+    const response = mockResponse();
+    const request = mockRequest({
+      session: {
+        userCase: {
+          ...mockUserCaseComplete,
+          caseTypeId: CaseTypeId.SCOTLAND,
+        },
+        user: mockUserDetails,
+      },
+    });
+    request.session.selectedRespondentIndex = 0;
+    request.url = PageUrls.RESPONDENT_RESPONSE_TASK_LIST + languages.WELSH_URL_PARAMETER;
+    (request.t as unknown as jest.Mock).mockReturnValue(mockRespondentHubTranslations);
+
+    await controller.get(request, response);
+
+    const renderMock = response.render as jest.Mock;
+    const sections: Section[] = renderMock.mock.calls[0][1].sections;
+    const yourSupportLink = sections[0].links.find(
+      link => link.linkTxt(mockRespondentHubTranslations) === 'Your Support'
+    );
+
+    expect(yourSupportLink.url()).toBe(PageUrls.YOUR_SUPPORT + languages.WELSH_URL_PARAMETER);
   });
 });

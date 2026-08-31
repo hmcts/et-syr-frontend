@@ -1,10 +1,12 @@
 import { AppRequest } from '../../../../main/definitions/appRequest';
 import {
+  CaseTypeId,
   CaseWithId,
   HearingPreferenceET3,
   TypeOfOrganisation,
   YesOrNo,
   YesOrNoOrNotApplicable,
+  YesOrNoOrNotSure,
 } from '../../../../main/definitions/case';
 import { PageUrls } from '../../../../main/definitions/constants';
 import {
@@ -21,11 +23,17 @@ import {
   getEt3Section5,
   getEt3Section6,
 } from '../../../../main/helpers/controller/CheckYourAnswersET3Helper';
+import { CuiYourSupportFeature } from '../../../../main/modules/featureFlag/CuiYourSupportFeature';
+import * as CuiYourSupportFeatureModule from '../../../../main/modules/featureFlag/CuiYourSupportFeature';
 import checkYourAnswerET3CommonJson from '../../../../main/resources/locales/en/translation/check-your-answers-et3-common.json';
 import commonJson from '../../../../main/resources/locales/en/translation/common.json';
 import { mockRequest } from '../../mocks/mockRequest';
 
 describe('CheckYourAnswersET3Helper', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   const userCase: CaseWithId = {
     createdDate: '',
     lastModified: '',
@@ -55,6 +63,7 @@ describe('CheckYourAnswersET3Helper', () => {
   // Define URLs for sections 2
   const section2Urls = [
     PageUrls.HEARING_PREFERENCES,
+    PageUrls.REASONABLE_ADJUSTMENTS,
     PageUrls.RESPONDENT_EMPLOYEES,
     PageUrls.RESPONDENT_SITES,
     PageUrls.RESPONDENT_SITE_EMPLOYEES,
@@ -175,6 +184,7 @@ describe('CheckYourAnswersET3Helper', () => {
     }
 
     userCase.et3ResponseHearingRespondent = [HearingPreferenceET3.PHONE];
+    userCase.et3ResponseRespondentSupportNeeded = YesOrNoOrNotSure.NO;
     userCase.et3ResponseRespondentSupportDetails = '';
     userCase.et3ResponseEmploymentCount = '10';
     userCase.et3ResponseMultipleSites = YesOrNo.YES;
@@ -186,10 +196,18 @@ describe('CheckYourAnswersET3Helper', () => {
   });
 
   // Tests for section 2 with POST SELECTED
-  it('should not include legacy reasonable adjustments rows in section 2', () => {
+  it('should include legacy reasonable adjustments detail rows in section 2 by default', () => {
     const expectedRows: SummaryListRow[] = [];
+    const section2UrlsWithSupportDetail = [
+      PageUrls.HEARING_PREFERENCES,
+      PageUrls.REASONABLE_ADJUSTMENTS,
+      PageUrls.REASONABLE_ADJUSTMENTS,
+      PageUrls.RESPONDENT_EMPLOYEES,
+      PageUrls.RESPONDENT_SITES,
+      PageUrls.RESPONDENT_SITE_EMPLOYEES,
+    ];
 
-    for (const pageUrl of section2Urls) {
+    for (const pageUrl of section2UrlsWithSupportDetail) {
       expectedRows.push(
         addSummaryRowWithAction(
           expect.any(String), // field1
@@ -201,6 +219,7 @@ describe('CheckYourAnswersET3Helper', () => {
     }
 
     userCase.et3ResponseHearingRespondent = [HearingPreferenceET3.PHONE];
+    userCase.et3ResponseRespondentSupportNeeded = YesOrNoOrNotSure.YES;
     userCase.et3ResponseRespondentSupportDetails = 'Support Needed';
     userCase.et3ResponseEmploymentCount = '10';
     userCase.et3ResponseMultipleSites = YesOrNo.YES;
@@ -209,9 +228,33 @@ describe('CheckYourAnswersET3Helper', () => {
     const result = getEt3Section2(userCase, translationsMock);
 
     expect(result).toEqual(expectedRows);
-    expect(result).not.toEqual(
-      expect.arrayContaining([expect.objectContaining({ key: { text: translationsMock.section2.disabilitySupport } })])
-    );
+  });
+
+  it('should link support to Your Support and hide legacy support detail when Scotland is enabled', () => {
+    jest
+      .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+      .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
+    const scotlandUserCase: CaseWithId = {
+      ...userCase,
+      caseTypeId: CaseTypeId.SCOTLAND,
+      et3ResponseRespondentSupportNeeded: YesOrNoOrNotSure.YES,
+      et3ResponseRespondentSupportDetails: 'Legacy support detail',
+      respondentExternalFlags: {
+        details: [
+          {
+            id: 'flag-1',
+            value: {},
+          },
+        ],
+      },
+    };
+
+    const result = getEt3Section2(scotlandUserCase, translationsMock, '?change');
+
+    const supportRows = result.filter(row => row.key.text === translationsMock.section2.disabilitySupport);
+    expect(supportRows).toHaveLength(1);
+    expect(supportRows[0].actions.items[0].href).toBe(PageUrls.YOUR_SUPPORT + '?change');
+    expect(result.map(row => row.key.text)).not.toContain(translationsMock.section2.supportRequest);
   });
 
   // Tests for section 3

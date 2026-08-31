@@ -9,6 +9,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { getCuiYourSupportFeature } from '../modules/featureFlag/CuiYourSupportFeature';
 import ET3Util from '../utils/ET3Util';
 
 export default class HearingPreferencesController {
@@ -51,7 +52,7 @@ export default class HearingPreferencesController {
       this.form,
       ET3HubLinkNames.EmployerDetails,
       LinkStatus.IN_PROGRESS,
-      PageUrls.RESPONDENT_EMPLOYEES
+      getCuiYourSupportFeature().getSupportPageUrl(req.session.userCase?.caseTypeId)
     );
   };
 

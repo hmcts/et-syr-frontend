@@ -11,6 +11,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { isClearSelection } from '../helpers/RouterHelpers';
+import { getCuiYourSupportFeature } from '../modules/featureFlag/CuiYourSupportFeature';
 import ET3Util from '../utils/ET3Util';
 import { isContentCharsOrLessAndNotEmpty } from '../validators/validator';
 
@@ -67,6 +68,11 @@ export default class ReasonableAdjustmentsController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    if (getCuiYourSupportFeature().isEnabled(req.session.userCase?.caseTypeId)) {
+      res.redirect(setUrlLanguage(req, PageUrls.YOUR_SUPPORT));
+      return;
+    }
+
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
     const fieldsToReset: string[] = [];
 
@@ -86,6 +92,11 @@ export default class ReasonableAdjustmentsController {
   };
 
   public get = (req: AppRequest, res: Response): void => {
+    if (getCuiYourSupportFeature().isEnabled(req.session.userCase?.caseTypeId)) {
+      res.redirect(setUrlLanguage(req, PageUrls.YOUR_SUPPORT));
+      return;
+    }
+
     const redirectUrl = setUrlLanguage(req, PageUrls.REASONABLE_ADJUSTMENTS);
 
     if (isClearSelection(req)) {

@@ -7,6 +7,7 @@ import {
   TypeOfOrganisation,
   YesOrNo,
   YesOrNoOrNotApplicable,
+  YesOrNoOrNotSure,
 } from '../../definitions/case';
 import { Et1Address } from '../../definitions/complexTypes/et1Address';
 import { DefaultValues, PageUrls } from '../../definitions/constants';
@@ -16,6 +17,7 @@ import {
   addSummaryRowWithAction,
 } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
+import { getCuiYourSupportFeature } from '../../modules/featureFlag/CuiYourSupportFeature';
 import AddressUtils from '../../utils/AddressUtils';
 import DocumentUtils from '../../utils/DocumentUtils';
 import NumberUtils from '../../utils/NumberUtils';
@@ -192,6 +194,45 @@ export const getEt3Section2 = (
     )
   );
 
+  const cuiYourSupportFeature = getCuiYourSupportFeature();
+  if (cuiYourSupportFeature.isEnabled(userCase.caseTypeId)) {
+    et3ResponseSection2.push(
+      addSummaryRowWithAction(
+        translations.section2.disabilitySupport,
+        getCuiYourSupportAnswer(userCase, translations),
+        cuiYourSupportFeature.getSupportPageUrl(userCase.caseTypeId),
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
+      )
+    );
+  } else {
+    et3ResponseSection2.push(
+      addSummaryRowWithAction(
+        translations.section2.disabilitySupport,
+        {
+          [YesOrNoOrNotSure.YES]: translations.oesYesOrNo.yes,
+          [YesOrNoOrNotSure.NO]: translations.oesYesOrNo.no,
+          [YesOrNoOrNotSure.NOT_SURE]: translations.section2.disabilitySupportNotSure,
+        }[userCase.et3ResponseRespondentSupportNeeded] ?? translations.notProvided,
+        PageUrls.REASONABLE_ADJUSTMENTS,
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
+      )
+    );
+
+    if (YesOrNoOrNotSure.YES === userCase.et3ResponseRespondentSupportNeeded) {
+      et3ResponseSection2.push(
+        addSummaryRowWithAction(
+          translations.section2.supportRequest,
+          userCase.et3ResponseRespondentSupportDetails,
+          PageUrls.REASONABLE_ADJUSTMENTS,
+          hideChangeLink ? undefined : translations.change,
+          hideChangeLink ? undefined : sectionCya
+        )
+      );
+    }
+  }
+
   et3ResponseSection2.push(
     addSummaryRowWithAction(
       translations.section2.employeesInGreatBritain,
@@ -217,6 +258,18 @@ export const getEt3Section2 = (
   );
 
   return et3ResponseSection2;
+};
+
+const getCuiYourSupportAnswer = (userCase: CaseWithId, translations: AnyRecord): string => {
+  if (userCase.respondentExternalFlags?.details?.length) {
+    return translations.oesYesOrNo.yes;
+  }
+
+  if (userCase.reasonableAdjustments === YesOrNo.NO) {
+    return translations.oesYesOrNo.no;
+  }
+
+  return translations.notProvided;
 };
 
 export const getEt3Section3 = (

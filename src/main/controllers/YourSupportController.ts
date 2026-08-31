@@ -14,6 +14,7 @@ import { getLanguageCode, returnValidUrl } from '../helpers/RouterHelpers';
 import { isEt3ResponseSubmitted as hasEt3ResponseSubmitted } from '../helpers/controller/CaseDetailsHelper';
 import { buildCuiFlagDetails, mergeRespondentExternalFlags } from '../helpers/controller/CuiFlagHelper';
 import { getLogger } from '../logger';
+import { getCuiYourSupportFeature } from '../modules/featureFlag/CuiYourSupportFeature';
 
 import {
   CUIActions,
@@ -72,8 +73,7 @@ export default class YourSupportController {
   }
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
-    if (!this.canAccessYourSupport(req)) {
-      res.redirect(this.getFallbackUrl(req));
+    if (this.redirectIfUnavailable(req, res)) {
       return;
     }
 
@@ -96,8 +96,7 @@ export default class YourSupportController {
   };
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    if (!this.canAccessYourSupport(req)) {
-      res.redirect(this.getFallbackUrl(req));
+    if (this.redirectIfUnavailable(req, res)) {
       return;
     }
 
@@ -108,9 +107,9 @@ export default class YourSupportController {
       case YesOrNo.YES:
         return this.redirectToCuiJourney(req, res);
       case YesOrNo.NO:
-        return this.redirectNoSupport(req, res);
+        return this.handleNoSupportSelected(req, res);
       default:
-        return this.redirectWithRequiredError(req, res);
+        return this.redirectWithRequiredSupportSelectionError(req, res);
     }
   };
 
@@ -135,11 +134,15 @@ export default class YourSupportController {
   };
 
   public callback = async (req: AppRequest, res: Response): Promise<void> => {
+    if (this.redirectIfUnavailable(req, res)) {
+      return;
+    }
+
     try {
       const result = await this.getCuiJourneyData(req);
       this.validateJourneyCorrelationId(req, result);
 
-      if (!this.isSubmittedJourney(result) || !this.hasChange(result)) {
+      if (!this.isSubmittedJourney(result) || !this.hasCuiFlagChanges(result)) {
         logger.info(
           `CUI journey completed with action "${result.action}", redirecting back to case page without updating flags`
         );
@@ -147,7 +150,7 @@ export default class YourSupportController {
         return;
       }
 
-      await this.saveSubmittedJourney(req, result);
+      await this.saveCuiFlagChanges(req, result);
       res.redirect(this.getCuiCompletionUrl(req));
     } catch (error) {
       logger.error('Error retrieving CUI journey data', error);
@@ -156,6 +159,10 @@ export default class YourSupportController {
   };
 
   public confirmation = async (req: AppRequest, res: Response): Promise<void> => {
+    if (this.redirectIfUnavailable(req, res)) {
+      return;
+    }
+
     const link = this.getExitUrl(req, true);
     this.renderConfirmation(
       req,
@@ -167,6 +174,10 @@ export default class YourSupportController {
   };
 
   public submittedConfirmation = async (req: AppRequest, res: Response): Promise<void> => {
+    if (this.redirectIfUnavailable(req, res)) {
+      return;
+    }
+
     this.renderConfirmation(
       req,
       res,
@@ -176,13 +187,13 @@ export default class YourSupportController {
     );
   };
 
-  private async redirectNoSupport(req: AppRequest, res: Response): Promise<void> {
+  private async handleNoSupportSelected(req: AppRequest, res: Response): Promise<void> {
     req.session.errors = [];
     await this.updateDraftCaseIfNeeded(req);
     res.redirect(this.getExitUrl(req, true));
   }
 
-  private redirectWithRequiredError(req: AppRequest, res: Response): void {
+  private redirectWithRequiredSupportSelectionError(req: AppRequest, res: Response): void {
     req.session.errors = [{ propertyName: YOUR_SUPPORT_FIELD, errorType: 'required' }];
     res.redirect(setUrlLanguage(req, PageUrls.YOUR_SUPPORT));
   }
@@ -259,7 +270,7 @@ export default class YourSupportController {
     return result.action === CUIActions.SUBMIT;
   }
 
-  private hasChange(result: CUIJourneyData): boolean {
+  private hasCuiFlagChanges(result: CUIJourneyData): boolean {
     if (result.replacementFlags?.details?.length) {
       return true;
     }
@@ -267,16 +278,16 @@ export default class YourSupportController {
     return !!this.getFlagsAsSupplied(result)?.details?.length;
   }
 
-  private async saveSubmittedJourney(req: AppRequest, result: CUIJourneyData): Promise<void> {
+  private async saveCuiFlagChanges(req: AppRequest, result: CUIJourneyData): Promise<void> {
     const flagsAsSupplied = this.getFlagsAsSupplied(result);
     const replacementFlags = result.replacementFlags;
 
     if (flagsAsSupplied?.details?.length) {
-      this.setReplacementFlags(req, flagsAsSupplied);
+      this.mergeReplacementFlagsIntoSession(req, flagsAsSupplied);
     }
 
     if (replacementFlags?.details?.length) {
-      this.setReplacementFlags(req, replacementFlags);
+      this.mergeReplacementFlagsIntoSession(req, replacementFlags);
     }
 
     if (this.isDraftCase(req)) {
@@ -294,7 +305,7 @@ export default class YourSupportController {
     return (result as AnyRecord).flagsAsSupplied as CUIFlagDetails | undefined;
   }
 
-  private setReplacementFlags(req: AppRequest, replacementFlags: CUIFlagDetails): void {
+  private mergeReplacementFlagsIntoSession(req: AppRequest, replacementFlags: CUIFlagDetails): void {
     req.session.userCase = {
       ...req.session.userCase,
       respondentExternalFlags: mergeRespondentExternalFlags(
@@ -314,15 +325,32 @@ export default class YourSupportController {
     return String(req.session?.userCase?.id ?? '');
   }
 
+  private redirectIfUnavailable(req: AppRequest, res: Response): boolean {
+    if (this.canAccessYourSupport(req)) {
+      return false;
+    }
+
+    res.redirect(this.getUnavailableRedirectUrl(req));
+    return true;
+  }
+
   private canAccessYourSupport(req: AppRequest): boolean {
-    return this.isDraftCase(req) || !!req.session?.userCase?.id;
+    return this.isCuiYourSupportEnabled(req) && (this.isDraftCase(req) || !!req.session?.userCase?.id);
   }
 
   private isDraftCase(req: AppRequest): boolean {
     return req.session?.userCase?.state === CaseState.AWAITING_SUBMISSION_TO_HMCTS;
   }
 
-  private getFallbackUrl(req: AppRequest): string {
+  private isCuiYourSupportEnabled(req: AppRequest): boolean {
+    return getCuiYourSupportFeature().isEnabled(req.session?.userCase?.caseTypeId);
+  }
+
+  private getUnavailableRedirectUrl(req: AppRequest): string {
+    if (!this.isCuiYourSupportEnabled(req) && this.isDraftCase(req)) {
+      return setUrlLanguage(req, PageUrls.REASONABLE_ADJUSTMENTS);
+    }
+
     const caseDetailsUrl = this.getCaseDetailsUrl(req);
     if (caseDetailsUrl) {
       return setUrlLanguage(req, caseDetailsUrl);

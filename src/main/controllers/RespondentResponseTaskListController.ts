@@ -15,6 +15,7 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getET3HubLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../helpers/ResponseHubHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { getYourSupportLinkStatus } from '../helpers/controller/CaseDetailsHelper';
+import { getCuiYourSupportFeature } from '../modules/featureFlag/CuiYourSupportFeature';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import DocumentUtils from '../utils/DocumentUtils';
 
@@ -56,16 +57,18 @@ export default class RespondentResponseTaskListController {
         }),
       };
     });
-    const yourSupportStatus = getYourSupportLinkStatus(req);
-    const yourSupportLanguageParam =
-      languageParam === languages.WELSH_URL_PARAMETER ? languages.WELSH_URL_PARAMETER : '';
-    sections[0].links.push({
-      linkTxt: (l: AnyRecord): string => l[ET3CaseDetailsLinkNames.YourSupport],
-      status: (l: AnyRecord): string => l[yourSupportStatus],
-      shouldShow: shouldCaseDetailsLinkBeClickable(yourSupportStatus),
-      url: () => PageUrls.YOUR_SUPPORT + yourSupportLanguageParam,
-      statusColor: () => linkStatusColorMap.get(yourSupportStatus),
-    });
+    if (getCuiYourSupportFeature().isEnabled(req.session.userCase?.caseTypeId)) {
+      const yourSupportStatus = getYourSupportLinkStatus(req);
+      const yourSupportLanguageParam =
+        languageParam === languages.WELSH_URL_PARAMETER ? languages.WELSH_URL_PARAMETER : '';
+      sections[0].links.push({
+        linkTxt: (l: AnyRecord): string => l[ET3CaseDetailsLinkNames.YourSupport],
+        status: (l: AnyRecord): string => l[yourSupportStatus],
+        shouldShow: shouldCaseDetailsLinkBeClickable(yourSupportStatus),
+        url: () => PageUrls.YOUR_SUPPORT + yourSupportLanguageParam,
+        statusColor: () => linkStatusColorMap.get(yourSupportStatus),
+      });
+    }
 
     res.render(TranslationKeys.RESPONDENT_RESPONSE_TASK_LIST, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
