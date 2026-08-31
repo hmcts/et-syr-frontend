@@ -1,16 +1,19 @@
 import AxiosInstance from 'axios';
 
 import { AppRequest } from '../../../../main/definitions/appRequest';
-import { YesOrNo } from '../../../../main/definitions/case';
+import { CaseTypeId, YesOrNo } from '../../../../main/definitions/case';
 import { Applicant, PageUrls, PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../../../../main/definitions/links';
 import { isResponseToTribunalRequired } from '../../../../main/helpers/GenericTseApplicationHelper';
 import {
   getET3CaseDetailsLinkNames,
+  getSectionIndexToEt3CaseDetailsLinkNames,
   getSections,
   getYourSupportLinkStatus,
   isEt3ResponseSubmitted,
 } from '../../../../main/helpers/controller/CaseDetailsHelper';
+import { CuiYourSupportFeature } from '../../../../main/modules/featureFlag/CuiYourSupportFeature';
+import * as CuiYourSupportFeatureModule from '../../../../main/modules/featureFlag/CuiYourSupportFeature';
 import * as CaseService from '../../../../main/services/CaseService';
 import { CaseApi } from '../../../../main/services/CaseService';
 import { mockRequest, mockRequestWithTranslation } from '../../mocks/mockRequest';
@@ -18,6 +21,10 @@ import { mockUserDetails } from '../../mocks/mockUser';
 import mockUserCase from '../../mocks/mockUserCase';
 
 describe('Case Details Helper', () => {
+  beforeEach(() => {
+    jest.spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature').mockReturnValue(new CuiYourSupportFeature([]));
+  });
+
   describe('getET3CaseDetailsLinkNames', () => {
     let req: AppRequest;
 
@@ -54,7 +61,7 @@ describe('Case Details Helper', () => {
       const statuses: ET3CaseDetailsLinksStatuses = null;
       const result = await getET3CaseDetailsLinkNames(statuses, req);
       expect(result[ET3CaseDetailsLinkNames.PersonalDetails]).toBe(LinkStatus.NOT_YET_AVAILABLE);
-      expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.NOT_YET_AVAILABLE);
+      expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBeUndefined();
       expect(result[ET3CaseDetailsLinkNames.ET1ClaimForm]).toBe(LinkStatus.NOT_VIEWED);
       expect(result[ET3CaseDetailsLinkNames.ClaimantContactDetails]).toBe(LinkStatus.READY_TO_VIEW);
       expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.NOT_STARTED_YET);
@@ -67,7 +74,7 @@ describe('Case Details Helper', () => {
       const statuses: ET3CaseDetailsLinksStatuses = undefined;
       const result = await getET3CaseDetailsLinkNames(statuses, req);
       expect(result[ET3CaseDetailsLinkNames.PersonalDetails]).toBe(LinkStatus.NOT_YET_AVAILABLE);
-      expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.NOT_YET_AVAILABLE);
+      expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBeUndefined();
       expect(result[ET3CaseDetailsLinkNames.ET1ClaimForm]).toBe(LinkStatus.NOT_VIEWED);
       expect(result[ET3CaseDetailsLinkNames.ClaimantContactDetails]).toBe(LinkStatus.READY_TO_VIEW);
       expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.NOT_STARTED_YET);
@@ -75,8 +82,12 @@ describe('Case Details Helper', () => {
       expect(result[ET3CaseDetailsLinkNames.Documents]).toBe(LinkStatus.OPTIONAL);
     });
 
-    it('returns SUBMITTED for Your Support when respondent external flags have details', async () => {
+    it('returns SUBMITTED for Your Support when respondent external flags have details and Scotland is enabled', async () => {
+      jest
+        .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+        .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
       req.session.userCase.genericTseApplicationCollection = [];
+      req.session.userCase.caseTypeId = CaseTypeId.SCOTLAND;
       req.session.userCase.responseReceived = YesOrNo.YES;
       req.session.userCase.respondentExternalFlags = {
         details: [
@@ -95,8 +106,12 @@ describe('Case Details Helper', () => {
       expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.SUBMITTED);
     });
 
-    it('returns OPTIONAL for Your Support when respondent external flags have no details', async () => {
+    it('returns OPTIONAL for Your Support when respondent external flags have no details and Scotland is enabled', async () => {
+      jest
+        .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+        .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
       req.session.userCase.genericTseApplicationCollection = [];
+      req.session.userCase.caseTypeId = CaseTypeId.SCOTLAND;
       req.session.userCase.responseReceived = YesOrNo.YES;
       req.session.userCase.respondentExternalFlags = {
         details: [],
@@ -108,8 +123,12 @@ describe('Case Details Helper', () => {
       expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.OPTIONAL);
     });
 
-    it('returns NOT_YET_AVAILABLE for Your Support before the ET3 response is submitted', async () => {
+    it('returns NOT_YET_AVAILABLE for Your Support before the ET3 response is submitted when Scotland is enabled', async () => {
+      jest
+        .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+        .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
       req.session.userCase.genericTseApplicationCollection = [];
+      req.session.userCase.caseTypeId = CaseTypeId.SCOTLAND;
       req.session.userCase.responseReceived = YesOrNo.NO;
       req.session.userCase.respondentExternalFlags = {
         details: [],
@@ -249,9 +268,35 @@ describe('Case Details Helper', () => {
   });
 
   describe('getSections', () => {
-    it('adds Your Support under personal details in the first section', () => {
+    it('does not add Your Support under personal details when CUI Your Support is disabled', () => {
       const req = mockRequestWithTranslation(
         {},
+        {
+          section1: 'About you',
+          personalDetails: 'View and edit your personal details',
+          yourSupport: 'Your Support',
+          notAvailableYet: 'Not available yet',
+          optional: 'Optional',
+        }
+      );
+      const selectedRespondent = { et3Status: '' };
+      const statuses = new ET3CaseDetailsLinksStatuses();
+
+      const sections = getSections(statuses, selectedRespondent, req);
+
+      expect(sections[0].links.map(link => link.linkTxt)).toEqual(['View and edit your personal details']);
+    });
+
+    it('adds Your Support under personal details when Scotland is enabled', () => {
+      jest
+        .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+        .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
+      const req = mockRequestWithTranslation(
+        {
+          userCase: {
+            caseTypeId: CaseTypeId.SCOTLAND,
+          },
+        },
         {
           section1: 'About you',
           personalDetails: 'View and edit your personal details',
@@ -277,6 +322,24 @@ describe('Case Details Helper', () => {
           url: PageUrls.YOUR_SUPPORT,
         })
       );
+    });
+
+    it('only adds Your Support to section link names when Scotland is enabled', () => {
+      expect(
+        getSectionIndexToEt3CaseDetailsLinkNames(CaseTypeId.ENGLAND_WALES)
+          .flat()
+          .filter(linkName => linkName === ET3CaseDetailsLinkNames.YourSupport)
+      ).toHaveLength(0);
+
+      jest
+        .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+        .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
+
+      expect(
+        getSectionIndexToEt3CaseDetailsLinkNames(CaseTypeId.SCOTLAND)
+          .flat()
+          .filter(linkName => linkName === ET3CaseDetailsLinkNames.YourSupport)
+      ).toHaveLength(1);
     });
   });
 
