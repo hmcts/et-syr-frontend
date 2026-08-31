@@ -684,3 +684,7 @@ export const LEGAL_REPRESENTATIVE_CHANGE_OPTIONS = {
   change: 'change',
   remove: 'remove',
 } as const;
+
+export const enum Et3ResponseStatus {
+  ET3_RESPONSE_STATUS_ACCEPTED = 'Accepted',
+}

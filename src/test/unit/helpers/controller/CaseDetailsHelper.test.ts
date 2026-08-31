@@ -2,7 +2,13 @@ import AxiosInstance from 'axios';
 
 import { AppRequest } from '../../../../main/definitions/appRequest';
 import { CaseTypeId, YesOrNo } from '../../../../main/definitions/case';
-import { Applicant, PageUrls, PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
+import {
+  Applicant,
+  Et3ResponseStatus,
+  PageUrls,
+  PartiesNotify,
+  PartiesRespond,
+} from '../../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../../../../main/definitions/links';
 import { isResponseToTribunalRequired } from '../../../../main/helpers/GenericTseApplicationHelper';
 import {
@@ -246,6 +252,15 @@ describe('Case Details Helper', () => {
       const statuses = {};
       const result = await getET3CaseDetailsLinkNames(statuses, req);
       expect(result[ET3CaseDetailsLinkNames.OtherRespondentApplications]).toBe(LinkStatus.VIEWED);
+    });
+
+    it('returns ACCEPTED when responseStatus is accepted', async () => {
+      req.session.userCase.responseStatus = Et3ResponseStatus.ET3_RESPONSE_STATUS_ACCEPTED;
+      const statuses: ET3CaseDetailsLinksStatuses = {
+        [ET3CaseDetailsLinkNames.RespondentResponse]: LinkStatus.IN_PROGRESS,
+      };
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.ACCEPTED);
     });
 
     it('returns SUBMITTED when responseReceived is Yes', async () => {

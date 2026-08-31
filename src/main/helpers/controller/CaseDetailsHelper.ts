@@ -1,7 +1,7 @@
 import { AppRequest, UserDetails } from '../../definitions/appRequest';
 import { CaseWithId, RespondentET3Model, YesOrNo } from '../../definitions/case';
 import { GenericTseApplicationTypeItem } from '../../definitions/complexTypes/genericTseApplicationTypeItem';
-import { TranslationKeys } from '../../definitions/constants';
+import { Et3ResponseStatus, TranslationKeys } from '../../definitions/constants';
 import {
   ET3CaseDetailsLinkNames,
   ET3CaseDetailsLinksStatuses,
@@ -69,6 +69,9 @@ const updateApplicationsStatusIfNotExist = async (req: AppRequest): Promise<void
 };
 
 const getRespondentResponseLinkStatus = (userCase: CaseWithId, linkName: LinkStatus): LinkStatus => {
+  if (userCase?.responseStatus === Et3ResponseStatus.ET3_RESPONSE_STATUS_ACCEPTED) {
+    return LinkStatus.ACCEPTED;
+  }
   return userCase?.responseReceived === YesOrNo.YES ? LinkStatus.SUBMITTED : linkName;
 };
 
