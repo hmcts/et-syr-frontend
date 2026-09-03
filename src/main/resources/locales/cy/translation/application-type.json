@@ -12,7 +12,7 @@
     "STRIKE_OUT_CLAIM": "Dileu’r hawliad",
     "RECONSIDER_JUDGMENT": "Ailystyried dyfarniad",
     "CONTACT_TRIBUNAL": "Cysylltu â’r tribiwnlys",
-    "SUBMIT_DOCUMENTS_FOR_HEARING": "[W]Submit documents for a hearing"
+    "SUBMIT_DOCUMENTS_FOR_HEARING": "Cyflwyno dogfennau ar gyfer gwrandawiad"
   },
   "claimantAppName": {
     "CHANGE_PERSONAL_DETAILS": "Newid fy manylion personol",
@@ -27,7 +27,7 @@
     "STRIKE_OUT_CLAIM": "Dileu’r hawliad",
     "RECONSIDER_JUDGMENT": "Ailystyried dyfarniad",
     "CONTACT_TRIBUNAL": "Cysylltu â’r tribiwnlys",
-    "SUBMIT_DOCUMENTS_FOR_HEARING": "[W]Submit documents for a hearing",
+    "SUBMIT_DOCUMENTS_FOR_HEARING": "Cyflwyno dogfennau ar gyfer gwrandawiad",
     "WITHDRAWAL_OF_ALL_OR_PART_CLAIM": "Tynnu’r cyfan neu ran o’r hawliad yn ôl"
   }
 }

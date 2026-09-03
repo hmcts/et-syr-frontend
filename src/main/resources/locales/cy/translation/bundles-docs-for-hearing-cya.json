@@ -1,22 +1,22 @@
 {
-  "title": "[W]Check your answers",
-  "titleCya": "[W]Check your answers",
-  "q1": "[W]Have you agreed these documents?",
-  "q2": "[W]Select the hearing this document is for",
-  "q3": "[W]Whose hearing document are you uploading?",
-  "q4": "[W]What is this document?",
-  "q5": "[W]Your documents",
+  "title": "Gwiriwch eich atebion",
+  "titleCya": "Gwiriwch eich atebion",
+  "q1": "Ydych chi wedi cytuno ar y dogfennau hyn?",
+  "q2": "Dewiswch y gwrandawiad y mae’r ddogfen hon ar ei gyfer",
+  "q3": "Dogfen gwrandawiad pwy ydych chi’n ei huwchlwytho?",
+  "q4": "Beth yw'r ddogfen hon?",
+  "q5": "Eich dogfennau",
   "whoseHearingDocument": {
-    "My hearing documents only": "[W]My hearing documents only",
-    "Both parties\u2019 hearing documents combined": "[W]Both parties' hearing documents combined"
+    "My hearing documents only": "Dim ond dogfennau fy ngwrandawiad i",
+    "Both parties’ hearing documents combined": "Dogfennau gwrandawiad y ddau barti wedi’u cyfuno"
   },
   "whatAreTheHearingDocuments": {
-    "All hearing documents": "[W]All hearing documents",
-    "Supplementary or other documents": "[W]Supplementary or other documents",
-    "Witness statements only": "[W]Witness statements only"
+    "All hearing documents": "Holl ddogfennau gwrandawiad",
+    "Supplementary or other documents": "Dogfennau atodol neu ddogfennau eraill",
+    "Witness statements only": "Datganiadau tyst yn unig"
   },
-  "important": "[W]Important:",
-  "paragraphAboutSubmittingDocsInAdvance": "[W]You will not be able to change this once you select 'Submit'. If you need to submit further documents later, you must do so in advance of the hearing date. It will be up to the tribunal whether they can be included in the hearing agenda. This document will also be sent to the other parties.",
-  "submitBtn": "[W]Submit",
-  "cancelLinkText": "[W]Cancel"
+  "important": "Pwysig:",
+  "paragraphAboutSubmittingDocsInAdvance": "Ni fyddwch yn gallu newid hyn unwaith y byddwch chi'n dewis 'Submit'. Os oes angen i chi gyflwyno dogfennau pellach yn ddiweddarach, rhaid i chi wneud hynny cyn dyddiad y gwrandawiad. Mater i’r tribiwnlys fydd a oes modd eu cynnwys yn y gwrandawiad ai peidio. Bydd y ddogfen hon hefyd yn cael ei hanfon at y partȋon eraill.",
+  "submitBtn": "Cyflwyno",
+  "cancelLinkText": "Canslo"
 }

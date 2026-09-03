@@ -1,12 +1,12 @@
 {
-  "title": "[W]Prepare and submit documents for a hearing",
-  "h1": "[W]Prepare and submit documents for a hearing",
-  "p1": "[W]The tribunal should have told you in a letter which documents you need to submit for your hearing.",
-  "p2": "[W]These documents, usually agreed by both parties, will form part of the evidence at the hearing. You should include all the documents that are important to your case, and that both parties want to refer to at the hearing.",
-  "p3": "[W]The combined set of documents must be in one PDF document, usually submitted by one party unless instructed otherwise by the tribunal.",
-  "p4": "[W]If an index is requested, items should be in date order or an order in which the tribunal has requested.",
-  "p5": "[W]The single PDF document should be created offline before uploading through this form.",
-  "p6": "[W]You must submit hearing documents according to any time limits set out in the order from the tribunal.",
-  "p7": "[W]Refer to the orders from the tribunal about whether you need to include your witness statements here or separately.",
-  "inset": "[W]Providing an appropriate set of documents will ensure your case gets a fairer hearing and limit delays for you and the tribunal."
+  "title": "Paratoi a chyflwyno dogfennau ar gyfer gwrandawiad",
+  "h1": "Paratoi a chyflwyno dogfennau ar gyfer gwrandawiad",
+  "p1": "Dylai'r tribiwnlys fod wedi dweud wrthych mewn llythyr pa ddogfennau sydd angen i chi eu cyflwyno ar gyfer eich gwrandawiad.",
+  "p2": "Bydd y dogfennau hyn, y cytunwyd arnynt gan y ddau barti fel arfer, yn ffurfio rhan o'r dystiolaeth yn y gwrandawiad.  Dylech gynnwys yr holl ddogfennau sy'n bwysig yn eich achos chi, ac mae'r ddau barti eisiau cyfeirio atynt yn y gwrandawiad.",
+  "p3": "Rhaid i'r set gyfunol o ddogfennau fod mewn un ddogfen PDF, a gyflwynir gan un parti fel arfer oni bai bod y tribiwnlys wedi rhoi cyfarwyddiadau fel arall.",
+  "p4": "Os oes angen mynegai, dylai eitemau fod yn nhrefn dyddiad neu mewn trefn y gofynnwyd amdani gan y tribiwnlys.",
+  "p5": "Dylai'r un ddogfen PDF gael ei chreu all-lein cyn uwchlwytho drwy'r ffurflen hon.",
+  "p6": "Rhaid i chi gyflwyno dogfennau gwrandawiad yn unol ag unrhyw derfynau amser a nodwyd yn y gorchymyn gan y tribiwnlys.",
+  "p7": "Cyfeiriwch at y gorchmynion gan y tribiwnlys am pa un a ydych angen cynnwys eich datganiadau tyst yma neu ar wahân.",
+  "inset": "Bydd darparu set priodol o ddogfennau yn sicrhau bod eich achos yn cael gwrandawiad teg ac yn lleihau oedi i chi a'r tribiwnlys."
 }
