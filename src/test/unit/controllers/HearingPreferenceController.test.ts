@@ -1,3 +1,6 @@
+jest.mock('../../../main/modules/featureFlag/launchDarkly', () => ({
+  getFlagValue: jest.fn().mockResolvedValue(true),
+}));
 import HearingPreferencesController from '../../../main/controllers/HearingPreferencesController';
 import { HearingPreference } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
@@ -38,10 +41,10 @@ describe('HearingPreferencesController', () => {
           et3ResponseHearingRespondent: HearingPreference.VIDEO,
         },
       });
-      request.url = PageUrls.REASONABLE_ADJUSTMENTS;
+      request.url = PageUrls.HEARING_PANEL_PREFERENCE;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.HEARING_PANEL_PREFERENCE);
     });
 
     it('should redirect to next page when NEITHER is selected and details is filled in', async () => {
@@ -50,10 +53,10 @@ describe('HearingPreferencesController', () => {
           et3ResponseHearingRespondent: HearingPreference.NEITHER,
         },
       });
-      request.url = PageUrls.REASONABLE_ADJUSTMENTS;
+      request.url = PageUrls.HEARING_PANEL_PREFERENCE;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.HEARING_PANEL_PREFERENCE);
     });
   });
 });

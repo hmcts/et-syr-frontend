@@ -39,6 +39,7 @@ export const TranslationKeys = {
   RESPONDENT_CONTACT_PREFERENCES: 'respondent-contact-preferences',
   CHECK_YOUR_ANSWERS_CONTACT_DETAILS: 'check-your-answers-contact-details',
   HEARING_PREFERENCES: 'hearing-preferences',
+  HEARING_PANEL_PREFERENCE: 'hearing-panel-preference',
   REASONABLE_ADJUSTMENTS: 'reasonable-adjustments',
   RESPONDENT_EMPLOYEES: 'respondent-employees',
   RESPONDENT_SITES: 'respondent-sites',
@@ -100,6 +101,10 @@ export const TranslationKeys = {
   TRANSFERRED_CASE: 'transferred-case',
 } as const;
 
+export const FEATURE_FLAGS = {
+  ERA_OCTOBER_2026: 'eraOctober2026',
+} as const;
+
 export const PageUrls = {
   NOT_IMPLEMENTED: '#',
   HOME: '/',
@@ -138,6 +143,7 @@ export const PageUrls = {
   RESPONDENT_CONTACT_PREFERENCES: '/respondent-contact-preferences',
   CHECK_YOUR_ANSWERS_CONTACT_DETAILS: '/check-your-answers-contact-details',
   HEARING_PREFERENCES: '/hearing-preferences',
+  HEARING_PANEL_PREFERENCE: '/hearing-panel-preference',
   REASONABLE_ADJUSTMENTS: '/reasonable-adjustments',
   RESPONDENT_EMPLOYEES: '/respondent-employees',
   RESPONDENT_SITES: '/respondent-sites',

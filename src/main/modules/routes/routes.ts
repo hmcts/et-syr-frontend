@@ -52,6 +52,7 @@ import DocumentsController from '../../controllers/DocumentsController';
 import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
 import GetCaseDocumentController from '../../controllers/GetCaseDocumentController';
+import HearingPanelPreferenceController from '../../controllers/HearingPanelPreferenceController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HoldingPageController from '../../controllers/HoldingPageController';
 import HomeController from '../../controllers/HomeController';
@@ -193,6 +194,8 @@ export class Routes {
     // 1. Tell us about the respondent (hearing preferences)
     app.get(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().get);
     app.post(PageUrls.HEARING_PREFERENCES, new HearingPreferencesController().post);
+    app.get(PageUrls.HEARING_PANEL_PREFERENCE, new HearingPanelPreferenceController().get);
+    app.post(PageUrls.HEARING_PANEL_PREFERENCE, new HearingPanelPreferenceController().post);
     app.get(PageUrls.REASONABLE_ADJUSTMENTS, new ReasonableAdjustmentsController().get);
     app.post(PageUrls.REASONABLE_ADJUSTMENTS, new ReasonableAdjustmentsController().post);
     app.get(PageUrls.RESPONDENT_EMPLOYEES, new RespondentEmployeesController().get);
