@@ -1,0 +1,24 @@
+{
+  "title": "Ynglŷn â’ch dogfennau gwrandawiad",
+  "h1": "Ynglŷn â’ch dogfennau gwrandawiad",
+  "headingCaption": "Paratoi dogfennau ar gyfer gwrandawiad",
+  "Question1": "Dewiswch y gwrandawiad y mae’r dogfennau hyn ar ei gyfer",
+  "Question2": "Dogfennau gwrandawiad pwy ydych chi’n eu huwchlwytho?",
+  "Question2Radio1": "Dogfennau fy ngwrandawiad i yn unig",
+  "Question2Radio2": "Dogfennau gwrandawiad y ddau barti wedi’u cyfuno",
+  "Question3": "Beth yw’r dogfennau hyn?",
+  "Question3Radio1": "Holl ddogfennau gwrandawiad",
+  "Question3Radio2": "Dogfennau atodol neu ddogfennau eraill",
+  "Question3Radio3": "Datganiadau tyst yn unig",
+  "errors": {
+    "hearingDocumentsAreFor": {
+      "required": "Dewiswch y gwrandawiad y mae’r dogfennau hyn ar ei gyfer"
+    },
+    "whoseHearingDocumentsAreYouUploading": {
+      "required": "Dewiswch ddogfennu pwy yr ydych yn eu huwchlwytho"
+    },
+    "whatAreTheseDocuments": {
+      "required": "Dewiswch beth yw’r dogfennau hyn"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block beforeContent %}
+  {{ super() }}
+  {% include "back-link.njk" %}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">{{ titleCya }}</h1>
+
+      {{ govukSummaryList({
+        rows: cyaContent
+      }) }}
+
+      <h2 class="govuk-heading-s">{{ important }}</h2>
+      <p class="govuk-body govuk-!-margin-bottom-6">{{ paragraphAboutSubmittingDocsInAdvance }}</p>
+
+      <div class="govuk-button-group">
+        {{ govukButton({
+          text: submitBtn,
+          href: submitLink,
+          preventDoubleClick: true
+        }) }}
+        <a class="govuk-link" href="{{ cancelLink }}">{{ cancelLinkText }}</a>
+      </div>
+    </div>
+
+    <div class="govuk-grid-column-one-third-from-desktop">
+      {% set sideBarContent %}
+        {% include "./components/sidebar/sidebar.njk" %}
+      {% endset %}
+
+      {{ govukDetails({
+        summaryHtml: "<span id='contact-us-sidebar'>" + contact + "</span>",
+        html: sideBarContent
+      }) }}
+    </div>
+  </div>
+{% endblock %}
