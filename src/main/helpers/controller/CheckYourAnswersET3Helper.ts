@@ -17,6 +17,7 @@ import {
   addSummaryRowWithAction,
 } from '../../definitions/govuk/govukSummaryList';
 import { AnyRecord } from '../../definitions/util-types';
+import { getCuiYourSupportFeature } from '../../modules/featureFlag/CuiYourSupportFeature';
 import AddressUtils from '../../utils/AddressUtils';
 import DocumentUtils from '../../utils/DocumentUtils';
 import NumberUtils from '../../utils/NumberUtils';
@@ -175,12 +176,12 @@ export const getEt3Section1 = (
   return et3ResponseSection1;
 };
 
-export const getEt3Section2 = (
+export const getEt3Section2 = async (
   userCase: CaseWithId,
   translations: AnyRecord,
   sectionCya?: string,
   hideChangeLink?: boolean
-): SummaryListRow[] => {
+): Promise<SummaryListRow[]> => {
   const et3ResponseSection2: SummaryListRow[] = [];
 
   et3ResponseSection2.push(
@@ -193,30 +194,43 @@ export const getEt3Section2 = (
     )
   );
 
-  et3ResponseSection2.push(
-    addSummaryRowWithAction(
-      translations.section2.disabilitySupport,
-      {
-        [YesOrNoOrNotSure.YES]: translations.oesYesOrNo.yes,
-        [YesOrNoOrNotSure.NO]: translations.oesYesOrNo.no,
-        [YesOrNoOrNotSure.NOT_SURE]: translations.section2.disabilitySupportNotSure,
-      }[userCase.et3ResponseRespondentSupportNeeded] ?? translations.notProvided,
-      PageUrls.REASONABLE_ADJUSTMENTS,
-      hideChangeLink ? undefined : translations.change,
-      hideChangeLink ? undefined : sectionCya
-    )
-  );
-
-  if (YesOrNoOrNotSure.YES === userCase.et3ResponseRespondentSupportNeeded) {
+  const cuiYourSupportFeature = getCuiYourSupportFeature();
+  if (await cuiYourSupportFeature.isEnabled(userCase.caseTypeId)) {
     et3ResponseSection2.push(
       addSummaryRowWithAction(
-        translations.section2.supportRequest,
-        userCase.et3ResponseRespondentSupportDetails,
+        translations.section2.disabilitySupport,
+        getCuiYourSupportAnswer(userCase, translations),
+        await cuiYourSupportFeature.getSupportPageUrl(userCase.caseTypeId),
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
+      )
+    );
+  } else {
+    et3ResponseSection2.push(
+      addSummaryRowWithAction(
+        translations.section2.disabilitySupport,
+        {
+          [YesOrNoOrNotSure.YES]: translations.oesYesOrNo.yes,
+          [YesOrNoOrNotSure.NO]: translations.oesYesOrNo.no,
+          [YesOrNoOrNotSure.NOT_SURE]: translations.section2.disabilitySupportNotSure,
+        }[userCase.et3ResponseRespondentSupportNeeded] ?? translations.notProvided,
         PageUrls.REASONABLE_ADJUSTMENTS,
         hideChangeLink ? undefined : translations.change,
         hideChangeLink ? undefined : sectionCya
       )
     );
+
+    if (YesOrNoOrNotSure.YES === userCase.et3ResponseRespondentSupportNeeded) {
+      et3ResponseSection2.push(
+        addSummaryRowWithAction(
+          translations.section2.supportRequest,
+          userCase.et3ResponseRespondentSupportDetails,
+          PageUrls.REASONABLE_ADJUSTMENTS,
+          hideChangeLink ? undefined : translations.change,
+          hideChangeLink ? undefined : sectionCya
+        )
+      );
+    }
   }
 
   et3ResponseSection2.push(
@@ -244,6 +258,18 @@ export const getEt3Section2 = (
   );
 
   return et3ResponseSection2;
+};
+
+const getCuiYourSupportAnswer = (userCase: CaseWithId, translations: AnyRecord): string => {
+  if (userCase.respondentExternalFlags?.details?.length) {
+    return translations.oesYesOrNo.yes;
+  }
+
+  if (userCase.reasonableAdjustments === YesOrNo.NO) {
+    return translations.oesYesOrNo.no;
+  }
+
+  return translations.notProvided;
 };
 
 export const getEt3Section3 = (

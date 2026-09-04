@@ -5,6 +5,7 @@ import {
 } from '../../../main/definitions/api/caseApiResponse';
 import { DocumentUploadResponse } from '../../../main/definitions/api/documentApiResponse';
 import {
+  CaseFlags,
   CaseType,
   CaseTypeId,
   CaseWithId,
@@ -289,6 +290,25 @@ describe('Format document model', () => {
 });
 
 describe('Format Case Data to Frontend Model', () => {
+  it('should map respondent external flags from API case data', () => {
+    const respondentExternalFlags: CaseFlags = {
+      partyName: 'Test Respondent',
+      roleOnCase: 'Respondent',
+      details: [],
+    };
+    const result = formatApiCaseDataToCaseWithId({
+      id: '1234',
+      state: CaseState.ACCEPTED,
+      created_date: '2022-08-19T09:19:25.817549',
+      last_modified: '2022-08-19T09:19:25.817549',
+      case_data: {
+        respondentExternalFlags,
+      },
+    });
+
+    expect(result.respondentExternalFlags).toEqual(respondentExternalFlags);
+  });
+
   it('should format Case Api Response`', () => {
     const result = formatApiCaseDataToCaseWithId(mockedApiData);
     expect(result).toEqual(mockUserCaseComplete);
@@ -370,6 +390,7 @@ describe('Format Case Data to Frontend Model', () => {
       noticeEnds: undefined,
       hearingPreferences: undefined,
       hearingAssistance: undefined,
+      respondentExternalFlags: undefined,
       claimantContactPreference: undefined,
       claimantContactLanguagePreference: undefined,
       claimantHearingLanguagePreference: undefined,
@@ -611,6 +632,25 @@ describe('Format Case Data to Frontend Model', () => {
     expect(apiData.case_data.claimantIndType.claimant_date_of_birth).toEqual(null);
     expect(apiData.case_data.claimantOtherType.claimant_employed_from).toEqual(null);
     expect(apiData.case_data.claimantOtherType.claimant_employed_notice_period).toEqual(null);
+  });
+
+  it('should include respondent external flags in update case body', () => {
+    const respondentExternalFlags: CaseFlags = {
+      partyName: 'Test Respondent',
+      roleOnCase: 'Respondent',
+      details: [],
+    };
+    const caseItem: CaseWithId = {
+      id: '1234',
+      createdDate: '19 August 2022',
+      lastModified: '19 August 2022',
+      state: CaseState.ACCEPTED,
+      respondentExternalFlags,
+    };
+
+    const apiData = toApiFormat(caseItem);
+
+    expect(apiData.case_data.respondentExternalFlags).toEqual(respondentExternalFlags);
   });
 });
 

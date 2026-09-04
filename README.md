@@ -39,6 +39,7 @@ Run Dev Mode With Redis server:
 ```bash
 $ yarn start:dev-red
 ```
+
 Before starting the app, create a new case by using claimant journey (et-sya-api, https://localhost:3002). Use
 caseReferenceId and connect to this app by using the link https://localhost:3003/response-hub/{{caseReferenceId}}?lng=en
 

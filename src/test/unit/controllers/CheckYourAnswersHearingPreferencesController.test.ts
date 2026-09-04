@@ -1,7 +1,10 @@
 import CheckYourAnswersHearingPreferencesController from '../../../main/controllers/CheckYourAnswersHearingPreferencesController';
+import { CaseTypeId } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { LinkStatus } from '../../../main/definitions/links';
 import { conditionalRedirect } from '../../../main/helpers/RouterHelpers'; // Ensure this import is correct
+import { CuiYourSupportFeature } from '../../../main/modules/featureFlag/CuiYourSupportFeature';
+import * as CuiYourSupportFeatureModule from '../../../main/modules/featureFlag/CuiYourSupportFeature';
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
 import commonJsonRaw from '../../../main/resources/locales/cy/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -34,12 +37,13 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
     ET3Util.updateET3ResponseWithET3Form = updateET3ResponseWithET3FormMock;
     response = mockResponse();
     jest.clearAllMocks();
+    jest.spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature').mockReturnValue(new CuiYourSupportFeature([]));
   });
 
   describe('GET method', () => {
-    it('should render the page', () => {
+    it('should render the page', async () => {
       request = mockRequestWithTranslation({}, translationJsons);
-      controller.get(request, response);
+      await controller.get(request, response);
 
       expect(response.render).toHaveBeenCalledWith(
         TranslationKeys.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES,
@@ -49,12 +53,12 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
   });
 
   describe('POST method', () => {
-    it('should go to the respondent response task list on valid submission when Yes is selected', async () => {
+    it('should go to reasonable adjustments by default on valid submission when Yes is selected', async () => {
       (conditionalRedirect as jest.Mock).mockReturnValue(true);
 
       updateET3ResponseWithET3FormMock.mockImplementation(
         createMockedUpdateET3ResponseWithET3FormFunction(
-          PageUrls.RESPONDENT_RESPONSE_TASK_LIST,
+          PageUrls.REASONABLE_ADJUSTMENTS,
           request,
           response,
           [],
@@ -65,23 +69,27 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
       await controller.post(request, response);
 
       expect(request.session.userCase).toEqual(mockCaseWithIdWithRespondents);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_RESPONSE_TASK_LIST);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
       expect(updateET3ResponseWithET3FormMock).toHaveBeenCalledWith(
         request,
         response,
         expect.anything(),
         expect.anything(),
         LinkStatus.COMPLETED,
-        PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+        PageUrls.REASONABLE_ADJUSTMENTS
       );
     });
 
-    it('should go to the respondent response task list on valid submission when No is selected', async () => {
+    it('should go to your support for enabled Scotland on valid submission when No is selected', async () => {
+      jest
+        .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+        .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
+      request.session.userCase.caseTypeId = CaseTypeId.SCOTLAND;
       (conditionalRedirect as jest.Mock).mockReturnValue(false);
 
       updateET3ResponseWithET3FormMock.mockImplementation(
         createMockedUpdateET3ResponseWithET3FormFunction(
-          PageUrls.RESPONDENT_RESPONSE_TASK_LIST,
+          PageUrls.YOUR_SUPPORT,
           request,
           response,
           [],
@@ -92,14 +100,14 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
       await controller.post(request, response);
 
       expect(request.session.userCase).toEqual(mockCaseWithIdWithRespondents);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_RESPONSE_TASK_LIST);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.YOUR_SUPPORT);
       expect(updateET3ResponseWithET3FormMock).toHaveBeenCalledWith(
         request,
         response,
         expect.anything(),
         expect.anything(),
         LinkStatus.IN_PROGRESS_CYA,
-        PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+        PageUrls.YOUR_SUPPORT
       );
     });
 

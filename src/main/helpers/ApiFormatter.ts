@@ -106,6 +106,7 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
     noticeEnds: parseDateFromString(fromApiCaseData.case_data?.claimantOtherType?.claimant_employed_notice_period),
     hearingPreferences: fromApiCaseData.case_data?.claimantHearingPreference?.hearing_preferences,
     hearingAssistance: fromApiCaseData.case_data?.claimantHearingPreference?.hearing_assistance,
+    respondentExternalFlags: fromApiCaseData.case_data?.respondentExternalFlags,
     claimantContactPreference: fromApiCaseData.case_data?.claimantType?.claimant_contact_preference,
     claimantContactLanguagePreference: fromApiCaseData.case_data?.claimantHearingPreference?.contact_language,
     claimantHearingLanguagePreference: fromApiCaseData.case_data?.claimantHearingPreference?.hearing_language,
@@ -521,6 +522,7 @@ export function getUpdateCaseBody(caseItem: CaseWithId): UpdateCaseBody {
         contact_language: caseItem.claimantContactLanguagePreference,
         hearing_language: caseItem.claimantHearingLanguagePreference,
       },
+      respondentExternalFlags: caseItem.respondentExternalFlags,
       claimantRequests: {
         discrimination_claims: caseItem.claimTypeDiscrimination,
         pay_claims: caseItem.claimTypePay,
