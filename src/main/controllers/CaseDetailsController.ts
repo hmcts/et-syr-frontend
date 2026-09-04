@@ -53,7 +53,7 @@ export default class CaseDetailsController {
       selectedRespondent.et3CaseDetailsLinksStatuses,
       req
     );
-    const sections = getSections(et3CaseDetailsLinksStatuses, selectedRespondent, req);
+    const sections = await getSections(et3CaseDetailsLinksStatuses, selectedRespondent, req);
 
     const appNotifications: TseNotification = getAppNotifications(
       req.session.userCase.genericTseApplicationCollection,

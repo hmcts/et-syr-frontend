@@ -41,9 +41,9 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
   });
 
   describe('GET method', () => {
-    it('should render the page', () => {
+    it('should render the page', async () => {
       request = mockRequestWithTranslation({}, translationJsons);
-      controller.get(request, response);
+      await controller.get(request, response);
 
       expect(response.render).toHaveBeenCalledWith(
         TranslationKeys.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES,
