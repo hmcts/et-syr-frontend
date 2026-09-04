@@ -283,7 +283,7 @@ describe('Case Details Helper', () => {
   });
 
   describe('getSections', () => {
-    it('does not add Your Support under personal details when CUI Your Support is disabled', () => {
+    it('does not add Your Support under personal details when CUI Your Support is disabled', async () => {
       const req = mockRequestWithTranslation(
         {},
         {
@@ -297,12 +297,12 @@ describe('Case Details Helper', () => {
       const selectedRespondent = { et3Status: '' };
       const statuses = new ET3CaseDetailsLinksStatuses();
 
-      const sections = getSections(statuses, selectedRespondent, req);
+      const sections = await getSections(statuses, selectedRespondent, req);
 
       expect(sections[0].links.map(link => link.linkTxt)).toEqual(['View and edit your personal details']);
     });
 
-    it('adds Your Support under personal details when Scotland is enabled', () => {
+    it('adds Your Support under personal details when Scotland is enabled', async () => {
       jest
         .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
         .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
@@ -323,7 +323,7 @@ describe('Case Details Helper', () => {
       const selectedRespondent = { et3Status: '' };
       const statuses = new ET3CaseDetailsLinksStatuses();
 
-      const sections = getSections(statuses, selectedRespondent, req);
+      const sections = await getSections(statuses, selectedRespondent, req);
 
       expect(sections[0].links.map(link => link.linkTxt)).toEqual([
         'View and edit your personal details',
@@ -339,9 +339,9 @@ describe('Case Details Helper', () => {
       );
     });
 
-    it('only adds Your Support to section link names when Scotland is enabled', () => {
+    it('only adds Your Support to section link names when Scotland is enabled', async () => {
       expect(
-        getSectionIndexToEt3CaseDetailsLinkNames(CaseTypeId.ENGLAND_WALES)
+        (await getSectionIndexToEt3CaseDetailsLinkNames(CaseTypeId.ENGLAND_WALES))
           .flat()
           .filter(linkName => linkName === ET3CaseDetailsLinkNames.YourSupport)
       ).toHaveLength(0);
@@ -351,7 +351,7 @@ describe('Case Details Helper', () => {
         .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
 
       expect(
-        getSectionIndexToEt3CaseDetailsLinkNames(CaseTypeId.SCOTLAND)
+        (await getSectionIndexToEt3CaseDetailsLinkNames(CaseTypeId.SCOTLAND))
           .flat()
           .filter(linkName => linkName === ET3CaseDetailsLinkNames.YourSupport)
       ).toHaveLength(1);

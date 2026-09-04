@@ -1,9 +1,4 @@
 {
-  "featureFlags": {
-    "cuiYourSupport": {
-      "enabledCaseTypeIds": "CUI_YOUR_SUPPORT_ENABLED_CASE_TYPE_IDS"
-    }
-  },
   "services": {
     "cui": {
       "endpoint": "CUI_URL"

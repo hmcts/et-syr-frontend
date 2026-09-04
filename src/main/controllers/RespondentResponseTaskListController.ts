@@ -57,7 +57,7 @@ export default class RespondentResponseTaskListController {
         }),
       };
     });
-    if (getCuiYourSupportFeature().isEnabled(req.session.userCase?.caseTypeId)) {
+    if (await getCuiYourSupportFeature().isEnabled(req.session.userCase?.caseTypeId)) {
       const yourSupportStatus = getYourSupportLinkStatus(req);
       const yourSupportLanguageParam =
         languageParam === languages.WELSH_URL_PARAMETER ? languages.WELSH_URL_PARAMETER : '';
