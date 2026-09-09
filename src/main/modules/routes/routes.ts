@@ -109,9 +109,13 @@ import { AppRequest } from '../../definitions/appRequest';
 import { FILE_SIZE_LIMIT, FormFieldNames, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
 
 const handleUploads = multer({
+  // no upload field uses bracket array notation, so any numeric index is rejected. Without this the
+  // default of Infinity leaves multer open to GHSA-535w-7cp7-47q4. @types/multer does not declare the
+  // option yet, hence the assertion.
   limits: {
     fileSize: FILE_SIZE_LIMIT,
-  },
+    fieldArrayIndexLimit: 0,
+  } as multer.Options['limits'],
   fileFilter: (req: AppRequest, file: Express.Multer.File, callback: FileFilterCallback) => {
     req.fileTooLarge = parseInt(req.headers['content-length']) > FILE_SIZE_LIMIT;
     return callback(null, !req.fileTooLarge);
