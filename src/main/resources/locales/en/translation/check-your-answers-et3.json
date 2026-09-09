@@ -7,7 +7,7 @@
   "errors": {
     "hiddenErrorField": {
       "api": "A system error occurred, Please try again later",
-      "mandatoryQuestionsNotAnswered": "You cannot submit your response until all the mandatory questions have been answered"
+      "mandatoryQuestionsNotAnswered": "You must complete all the mandatory questions before you can submit"
     }
   }
 }

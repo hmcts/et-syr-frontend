@@ -55,13 +55,9 @@ export default abstract class BaseCYAController {
   }
 
   /**
-   * Status the section should be given for this submission. Answering yes to the section completion
-   * question only completes the section once every mandatory question in it has been answered, otherwise
-   * the section is left in progress. Returns undefined when the respondent has to be sent back to the
-   * section's check your answers page to answer the outstanding mandatory questions first.
-   *
-   * @param req request holding the submitted answer and the user case the answers are read from.
-   * @param et3HubLinkName the section being completed.
+   * Status for this submission: yes only completes the section once its mandatory questions have been
+   * answered, otherwise it stays in progress. Undefined means the respondent must be sent back to the
+   * check your answers page to answer them.
    */
   protected getSectionLinkStatus(req: AppRequest, et3HubLinkName: string): string {
     if (!conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)) {
@@ -83,14 +79,9 @@ export default abstract class BaseCYAController {
   }
 
   /**
-   * Error summary entries for the mandatory questions of the section that are still unanswered, each one
-   * linking to the page it is answered on. Only returns entries once the respondent has tried to mark the
-   * section as completed, so the page is not pre-populated with errors.
-   *
-   * @param req request holding the user case and the errors of the previous submission.
-   * @param et3HubLinkName the section being completed.
-   * @param translations translations holding the mandatory question labels.
-   * @param interceptPath change path that returns the respondent to this check your answers page.
+   * Error summary entries for the section's unanswered mandatory questions, each linking to the page it
+   * is answered on. Empty until the respondent has tried to mark the section as completed, so the page
+   * is not pre-populated with errors.
    */
   protected getMandatoryQuestionErrors(
     req: AppRequest,

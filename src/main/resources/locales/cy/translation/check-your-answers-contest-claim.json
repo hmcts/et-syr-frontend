@@ -3,7 +3,7 @@
   "errors": {
     "contestClaimSection": {
       "required": "Dewiswch",
-      "mandatoryQuestionsNotAnswered": "Ni allwch nodi bod yr adran hon wedi’i chwblhau nes bod yr holl gwestiynau gorfodol wedi’u hateb"
+      "mandatoryQuestionsNotAnswered": "Rhaid i chi gwblhau’r adran Herio’r hawliad cyn y gallwch ei marcio fel un sydd wedi’i chwblhau"
     },
     "hiddenErrorField": {
       "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",

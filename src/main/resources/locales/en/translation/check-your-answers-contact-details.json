@@ -3,7 +3,7 @@
   "errors": {
     "personalDetailsSection": {
       "required": "Make a selection",
-      "mandatoryQuestionsNotAnswered": "You cannot mark this section as completed until all the mandatory questions have been answered"
+      "mandatoryQuestionsNotAnswered": "You must complete the Contact details section before you can mark it as completed"
     },
     "hiddenErrorField": {
       "sessionUserCase": "User case not found in session",
