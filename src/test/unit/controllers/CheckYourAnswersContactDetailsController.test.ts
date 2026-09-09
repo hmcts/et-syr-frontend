@@ -1,17 +1,19 @@
 import CheckYourAnswersContactDetailsController from '../../../main/controllers/CheckYourAnswersContactDetailsController';
-import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { YesOrNo } from '../../../main/definitions/case';
+import { PageUrls, TranslationKeys, ValidationErrors } from '../../../main/definitions/constants';
 import { LinkStatus } from '../../../main/definitions/links';
 import { conditionalRedirect } from '../../../main/helpers/RouterHelpers'; // Ensure this import is correct
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
 import commonJsonRaw from '../../../main/resources/locales/cy/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
-import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
+import { mockCaseWithIdWithMandatoryQuestionsAnswered, mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import { createMockedUpdateET3ResponseWithET3FormFunction, mockFormError } from '../mocks/mockStaticFunctions';
 
 jest.mock('../../../main/helpers/RouterHelpers', () => ({
   conditionalRedirect: jest.fn(),
+  returnValidUrl: jest.fn(url => url),
 }));
 
 describe('CheckYourAnswersContactDetailsController', () => {
@@ -25,7 +27,7 @@ describe('CheckYourAnswersContactDetailsController', () => {
     controller = new CheckYourAnswersContactDetailsController();
     request = mockRequest({
       session: {
-        userCase: mockCaseWithIdWithRespondents,
+        userCase: { ...mockCaseWithIdWithMandatoryQuestionsAnswered },
         selectedRespondent: {
           contactDetailsSection: 'Yes', // Change hearingPreferencesSection to contactDetailsSection
         },
@@ -95,6 +97,60 @@ describe('CheckYourAnswersContactDetailsController', () => {
 
       expect(request.session.userCase).toEqual(mockCaseWithIdWithRespondents);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.HEARING_PREFERENCES);
+      expect(updateET3ResponseWithET3FormMock).toHaveBeenCalledWith(
+        request,
+        response,
+        expect.anything(),
+        expect.anything(),
+        LinkStatus.IN_PROGRESS_CYA,
+        PageUrls.HEARING_PREFERENCES
+      );
+    });
+
+    it('should not complete the section when a mandatory question is unanswered', async () => {
+      (conditionalRedirect as jest.Mock).mockReturnValue(true);
+      request.session.userCase.responseRespondentNameQuestion = undefined;
+
+      await controller.post(request, response);
+
+      expect(updateET3ResponseWithET3FormMock).not.toHaveBeenCalled();
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS);
+      expect(request.session.errors).toEqual([
+        {
+          errorType: ValidationErrors.MANDATORY_QUESTIONS_NOT_ANSWERED,
+          propertyName: 'personalDetailsSection',
+        },
+      ]);
+    });
+
+    it('should not complete the section when the corrected respondent name is not given', async () => {
+      (conditionalRedirect as jest.Mock).mockReturnValue(true);
+      request.session.userCase.responseRespondentNameQuestion = YesOrNo.NO;
+      request.session.userCase.responseRespondentName = undefined;
+
+      await controller.post(request, response);
+
+      expect(updateET3ResponseWithET3FormMock).not.toHaveBeenCalled();
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS);
+    });
+
+    it('should leave the section in progress instead of blocking when saving for later', async () => {
+      (conditionalRedirect as jest.Mock).mockReturnValue(true);
+      request.session.userCase.et3IsRespondentAddressCorrect = undefined;
+      request.body = { saveForLater: true };
+
+      updateET3ResponseWithET3FormMock.mockImplementation(
+        createMockedUpdateET3ResponseWithET3FormFunction(
+          PageUrls.HEARING_PREFERENCES,
+          request,
+          response,
+          [],
+          mockCaseWithIdWithRespondents
+        )
+      );
+
+      await controller.post(request, response);
+
       expect(updateET3ResponseWithET3FormMock).toHaveBeenCalledWith(
         request,
         response,

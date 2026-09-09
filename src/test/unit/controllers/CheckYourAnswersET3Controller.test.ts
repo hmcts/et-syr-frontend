@@ -1,5 +1,5 @@
 import CheckYourAnswersET3Controller from '../../../main/controllers/CheckYourAnswersET3Controller';
-import { TranslationKeys } from '../../../main/definitions/constants';
+import { PageUrls, TranslationKeys, ValidationErrors } from '../../../main/definitions/constants';
 import {
   getEt3Section1,
   getEt3Section2,
@@ -8,6 +8,8 @@ import {
   getEt3Section5,
 } from '../../../main/helpers/controller/CheckYourAnswersET3Helper';
 import { getFlagValue } from '../../../main/modules/featureFlag/launchDarkly';
+import ET3Util from '../../../main/utils/ET3Util';
+import { mockCaseWithIdWithMandatoryQuestionsAnswered } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
@@ -58,6 +60,38 @@ describe('ET3CYAController', () => {
           welshEnabled: true, // Check if the Welsh feature flag is true
         })
       );
+    });
+  });
+  describe('POST method', () => {
+    it('should not submit the response while a mandatory question is unanswered', async () => {
+      const updateET3DataMock = jest.fn();
+      ET3Util.updateET3Data = updateET3DataMock;
+      request.body = { submit: true };
+      request.session.userCase = { ...mockCaseWithIdWithMandatoryQuestionsAnswered };
+      request.session.userCase.et3ResponseRespondentContestClaim = undefined;
+
+      await controller.post(request, response);
+
+      expect(updateET3DataMock).not.toHaveBeenCalled();
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_ET3);
+      expect(request.session.errors).toEqual([
+        {
+          errorType: ValidationErrors.MANDATORY_QUESTIONS_NOT_ANSWERED,
+          propertyName: 'hiddenErrorField',
+        },
+      ]);
+    });
+
+    it('should submit the response once every mandatory question is answered', async () => {
+      const updateET3DataMock = jest.fn().mockResolvedValue(mockCaseWithIdWithMandatoryQuestionsAnswered);
+      ET3Util.updateET3Data = updateET3DataMock;
+      request.body = { submit: true };
+      request.session.userCase = { ...mockCaseWithIdWithMandatoryQuestionsAnswered };
+
+      await controller.post(request, response);
+
+      expect(updateET3DataMock).toHaveBeenCalled();
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.APPLICATION_SUBMITTED);
     });
   });
 });

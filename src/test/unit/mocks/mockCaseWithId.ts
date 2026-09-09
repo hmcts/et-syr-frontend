@@ -322,6 +322,18 @@ export const mockCaseWithIdWithRespondents: CaseWithId = {
   otherClaim: 'other claim description',
 };
 
+/**
+ * Same as {@link mockCaseWithIdWithRespondents} but with every mandatory ET3 question answered, so each
+ * section of the response can be marked as completed.
+ */
+export const mockCaseWithIdWithMandatoryQuestionsAnswered: CaseWithId = {
+  ...mockCaseWithIdWithRespondents,
+  responseRespondentNameQuestion: YesOrNo.YES,
+  et3IsRespondentAddressCorrect: YesOrNo.YES,
+  et3ResponseRespondentContestClaim: YesOrNo.NO,
+  et3ResponseEmployerClaim: YesOrNo.NO,
+};
+
 export const mockCaseWithIdForET3DataModelUtilConvertSelectedRespondentToRespondentTypeTest: CaseWithId = {
   id: 'testCaseWithId_id',
   state: CaseState.ACCEPTED,

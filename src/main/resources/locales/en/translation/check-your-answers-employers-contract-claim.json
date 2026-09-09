@@ -2,7 +2,8 @@
   "header": "Employer’s contract claim",
   "errors": {
     "employersContractClaimSection": {
-      "required": "Make a selection"
+      "required": "Make a selection",
+      "mandatoryQuestionsNotAnswered": "You cannot mark this section as completed until all the mandatory questions have been answered"
     },
     "hiddenErrorField": {
       "sessionUserCase": "User case not found in session",

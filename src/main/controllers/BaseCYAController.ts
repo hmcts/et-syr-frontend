@@ -1,15 +1,28 @@
 import { Form } from '../components/form';
+import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
+import { ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { LinkStatus } from '../definitions/links';
 import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios';
 import { AnyRecord } from '../definitions/util-types';
+import {
+  getMandatoryQuestionErrorSummaryItems,
+  getUnansweredMandatoryQuestions,
+  isSectionComplete,
+} from '../helpers/ET3MandatoryQuestionHelper';
+import { conditionalRedirect } from '../helpers/RouterHelpers';
+import CollectionUtils from '../utils/CollectionUtils';
+import ErrorUtils from '../utils/ErrorUtils';
 import { isOptionSelected } from '../validators/validator';
 
 export default abstract class BaseCYAController {
   protected readonly form: Form;
   protected readonly formContent: FormContent;
+  protected readonly sectionName: string;
 
   constructor(sectionName: string) {
+    this.sectionName = sectionName;
     this.formContent = {
       fields: {
         [sectionName]: {
@@ -39,5 +52,66 @@ export default abstract class BaseCYAController {
     } as never;
 
     this.form = new Form(<FormFields>this.formContent.fields);
+  }
+
+  /**
+   * Status the section should be given for this submission. Answering yes to the section completion
+   * question only completes the section once every mandatory question in it has been answered, otherwise
+   * the section is left in progress. Returns undefined when the respondent has to be sent back to the
+   * section's check your answers page to answer the outstanding mandatory questions first.
+   *
+   * @param req request holding the submitted answer and the user case the answers are read from.
+   * @param et3HubLinkName the section being completed.
+   */
+  protected getSectionLinkStatus(req: AppRequest, et3HubLinkName: string): string {
+    if (!conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)) {
+      return LinkStatus.IN_PROGRESS_CYA;
+    }
+    if (isSectionComplete(req.session.userCase, et3HubLinkName)) {
+      return LinkStatus.COMPLETED;
+    }
+    // saving for later never stops the respondent, the section is simply left incomplete
+    if (req.body?.saveForLater) {
+      return LinkStatus.IN_PROGRESS_CYA;
+    }
+    ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
+      req,
+      ValidationErrors.MANDATORY_QUESTIONS_NOT_ANSWERED,
+      this.sectionName
+    );
+    return undefined;
+  }
+
+  /**
+   * Error summary entries for the mandatory questions of the section that are still unanswered, each one
+   * linking to the page it is answered on. Only returns entries once the respondent has tried to mark the
+   * section as completed, so the page is not pre-populated with errors.
+   *
+   * @param req request holding the user case and the errors of the previous submission.
+   * @param et3HubLinkName the section being completed.
+   * @param translations translations holding the mandatory question labels.
+   * @param interceptPath change path that returns the respondent to this check your answers page.
+   */
+  protected getMandatoryQuestionErrors(
+    req: AppRequest,
+    et3HubLinkName: string,
+    translations: AnyRecord,
+    interceptPath: string
+  ): { text: string; href: string }[] {
+    const sectionCompletionAttempted = req.session.errors?.some(
+      error => error.errorType === ValidationErrors.MANDATORY_QUESTIONS_NOT_ANSWERED
+    );
+    if (!sectionCompletionAttempted) {
+      return [];
+    }
+    const unansweredQuestions = getUnansweredMandatoryQuestions(req.session.userCase, et3HubLinkName);
+    if (CollectionUtils.isEmpty(unansweredQuestions)) {
+      // the outstanding questions have been answered since, so the error no longer applies
+      req.session.errors = req.session.errors.filter(
+        error => error.errorType !== ValidationErrors.MANDATORY_QUESTIONS_NOT_ANSWERED
+      );
+      return [];
+    }
+    return getMandatoryQuestionErrorSummaryItems(unansweredQuestions, translations, interceptPath);
   }
 }

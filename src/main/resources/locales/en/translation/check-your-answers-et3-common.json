@@ -70,5 +70,14 @@
     "employerContractClaimDetails": "Provide the background and details of your Employer’s Contract Claim",
     "supportingMaterials": "Supporting material",
     "exampleData": "[example data]"
+  },
+  "mandatoryQuestions": {
+    "respondentNameQuestion": "Select whether this is the respondent’s correct name",
+    "respondentName": "Enter the respondent’s registered or legal name",
+    "respondentAddressQuestion": "Select whether this is the respondent’s correct address",
+    "respondentAddressPostCode": "Enter a UK postcode for the respondent’s address",
+    "contestClaim": "Select whether the respondent contests the claim",
+    "contestClaimDetails": "Explain why the respondent contests the claim",
+    "employersContractClaimDetails": "Provide the background and details of the Employer’s contract claim"
   }
 }

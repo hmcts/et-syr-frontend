@@ -2,7 +2,8 @@
   "header": "Manylion cyswllt",
   "errors": {
     "personalDetailsSection": {
-      "required": "Dewiswch"
+      "required": "Dewiswch",
+      "mandatoryQuestionsNotAnswered": "Ni allwch nodi bod yr adran hon wedi’i chwblhau nes bod yr holl gwestiynau gorfodol wedi’u hateb"
     },
     "hiddenErrorField": {
       "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
