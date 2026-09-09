@@ -11,7 +11,8 @@
     "RESTRICT_PUBLICITY": "Restrict publicity",
     "STRIKE_OUT_CLAIM": "Strike out the claim",
     "RECONSIDER_JUDGMENT": "Reconsider a judgment",
-    "CONTACT_TRIBUNAL": "Contact the tribunal"
+    "CONTACT_TRIBUNAL": "Contact the tribunal",
+    "SUBMIT_DOCUMENTS_FOR_HEARING": "Submit documents for a hearing"
   },
   "claimantAppName": {
     "CHANGE_PERSONAL_DETAILS": "Change my personal details",
@@ -26,6 +27,7 @@
     "STRIKE_OUT_CLAIM": "Strike out the claim",
     "RECONSIDER_JUDGMENT": "Reconsider a judgment",
     "CONTACT_TRIBUNAL": "Contact the tribunal",
+    "SUBMIT_DOCUMENTS_FOR_HEARING": "Submit documents for a hearing",
     "WITHDRAWAL_OF_ALL_OR_PART_CLAIM": "Withdraw all or part of claim"
   }
 }
