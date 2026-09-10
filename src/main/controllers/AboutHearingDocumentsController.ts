@@ -9,8 +9,9 @@ import { FormContent, FormFields, FormInput, ValidationCheck } from '../definiti
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { createLabelForHearing, createRadioBtnsForHearings } from '../helpers/HearingDocumentsHelper';
-import { getLanguageParam } from '../helpers/RouterHelpers';
+import { getLanguageParam, returnSafeCaseDetailsUrl } from '../helpers/RouterHelpers';
 import { getLogger } from '../logger';
+import { RespondentUtils } from '../utils/RespondentUtils';
 import UrlUtils from '../utils/UrlUtils';
 import { isFieldFilledIn } from '../validators/validator';
 
@@ -108,16 +109,22 @@ export default class AboutHearingDocumentsController {
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const caseDetailsUrl = UrlUtils.getCaseDetailsUrlByRequest(req);
+    const selectedRespondent = RespondentUtils.findSelectedRespondentByRequest(req);
+    const safeCaseDetailsRedirectUrl = returnSafeCaseDetailsUrl(
+      String(req.session?.userCase?.id ?? ''),
+      selectedRespondent?.ccdId ?? '',
+      req
+    );
 
     if (!req.session?.userCase?.hearingCollection?.length) {
       logger.info('no hearing collection found, redirecting to case details');
-      return res.redirect(caseDetailsUrl);
+      return res.redirect(safeCaseDetailsRedirectUrl);
     }
 
     const hearingRadios = createRadioBtnsForHearings(req.session.userCase.hearingCollection);
     if (!hearingRadios?.length) {
       logger.info('no unheard hearings found, redirecting to case details');
-      return res.redirect(caseDetailsUrl);
+      return res.redirect(safeCaseDetailsRedirectUrl);
     }
 
     const formContent = this.getFormContent(hearingRadios);

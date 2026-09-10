@@ -2,6 +2,7 @@ import AboutHearingDocumentsController from '../../../main/controllers/AboutHear
 import { WhatAreTheHearingDocuments, WhoseHearingDocument } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import aboutHearingDocumentsJson from '../../../main/resources/locales/en/translation/about-hearing-documents.json';
+import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockHearingCollectionFutureDates } from '../mocks/mockHearing';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -77,54 +78,60 @@ describe('About Hearing Documents Controller', () => {
     const controller = new AboutHearingDocumentsController();
     const response = mockResponse();
     const request = mockRequestWithTranslation({}, aboutHearingDocumentsJson);
+    request.session.userCase = { ...mockCaseWithIdWithRespondents };
+    request.session.selectedRespondentIndex = 0;
     request.url = PageUrls.ABOUT_HEARING_DOCUMENTS + languages.ENGLISH_URL_PARAMETER;
     await controller.get(request, response);
-    expect(response.redirect).toHaveBeenCalled();
+    expect(response.redirect).toHaveBeenCalledWith('/case-details/1234/3453xaa?lng=en');
   });
 
   it('should redirect to case details if there are no hearings for future dates', async () => {
     const controller = new AboutHearingDocumentsController();
     const response = mockResponse();
     const request = mockRequestWithTranslation({}, aboutHearingDocumentsJson);
-    request.session.userCase.hearingCollection = [
-      {
-        id: '236c8a94-e485-4034-bbdb-99f982679138',
-        value: {
-          Hearing_type: 'Hearing',
-          Hearing_notes: 'notes',
-          Hearing_stage: 'Stage 1',
-          Hearing_venue: {
-            value: {
-              code: 'RCJ',
-              label: 'RCJ',
-            },
-            list_items: [],
-            selectedCode: 'RCJ',
-            selectedLabel: 'RCJ',
-          },
-          hearingFormat: ['In person'],
-          hearingNumber: '3333',
-          hearingSitAlone: 'Sit Alone',
-          judicialMediation: 'Yes',
-          hearingEstLengthNum: 22,
-          hearingPublicPrivate: 'Public',
-          hearingDateCollection: [
-            {
-              id: '3890feaa-ad4b-4822-9040-3bc09279450a',
+    request.session.userCase = {
+      ...mockCaseWithIdWithRespondents,
+      hearingCollection: [
+        {
+          id: '236c8a94-e485-4034-bbdb-99f982679138',
+          value: {
+            Hearing_type: 'Hearing',
+            Hearing_notes: 'notes',
+            Hearing_stage: 'Stage 1',
+            Hearing_venue: {
               value: {
-                listedDate: new Date('2022-07-04T14:00:00.000'),
-                Hearing_status: 'Listed',
-                hearingTimingStart: new Date('2022-04-13T11:00:00.000'),
-                hearingTimingFinish: new Date('2022-04-13T11:00:00.000'),
+                code: 'RCJ',
+                label: 'RCJ',
               },
+              list_items: [],
+              selectedCode: 'RCJ',
+              selectedLabel: 'RCJ',
             },
-          ],
+            hearingFormat: ['In person'],
+            hearingNumber: '3333',
+            hearingSitAlone: 'Sit Alone',
+            judicialMediation: 'Yes',
+            hearingEstLengthNum: 22,
+            hearingPublicPrivate: 'Public',
+            hearingDateCollection: [
+              {
+                id: '3890feaa-ad4b-4822-9040-3bc09279450a',
+                value: {
+                  listedDate: new Date('2022-07-04T14:00:00.000'),
+                  Hearing_status: 'Listed',
+                  hearingTimingStart: new Date('2022-04-13T11:00:00.000'),
+                  hearingTimingFinish: new Date('2022-04-13T11:00:00.000'),
+                },
+              },
+            ],
+          },
         },
-      },
-    ];
+      ],
+    };
+    request.session.selectedRespondentIndex = 0;
     request.url = PageUrls.ABOUT_HEARING_DOCUMENTS + languages.ENGLISH_URL_PARAMETER;
     await controller.get(request, response);
-    expect(response.redirect).toHaveBeenCalled();
+    expect(response.redirect).toHaveBeenCalledWith('/case-details/1234/3453xaa?lng=en');
   });
 
   it('should add a required error when selected hearing id is not in the collection', async () => {
