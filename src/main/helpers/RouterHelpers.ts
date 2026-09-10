@@ -160,24 +160,26 @@ export const returnSafeCaseDetailsUrl = (caseId: string, ccdId: string, request:
     StringUtils.isBlank(caseId) ||
     StringUtils.isBlank(ccdId) ||
     !/^[\w-]+$/.test(caseId) ||
-    !/^[\w-]+$/.test(ccdId) ||
-    String(request?.session?.userCase?.id) !== caseId ||
-    !request?.session?.userCase?.respondents?.some(r => r.ccdId === ccdId)
+    !/^[\w-]+$/.test(ccdId)
   ) {
     return ErrorPages.NOT_FOUND;
   }
-  const validatedCaseId = String(request.session.userCase.id);
-  const validatedCcdId = request.session.userCase.respondents.find(r => r.ccdId === ccdId)?.ccdId;
-  if (StringUtils.isBlank(validatedCcdId)) {
+  const sessionCaseId = request?.session?.userCase?.id;
+  const respondents = request?.session?.userCase?.respondents;
+  if (String(sessionCaseId) !== caseId || !respondents?.length) {
+    return ErrorPages.NOT_FOUND;
+  }
+  const matchedRespondent = respondents.find(r => r.ccdId === ccdId);
+  if (StringUtils.isBlank(matchedRespondent?.ccdId)) {
     return ErrorPages.NOT_FOUND;
   }
   const langParam =
-    request?.session?.lang === languages.WELSH ? languages.WELSH_URL_PARAMETER : languages.ENGLISH_URL_PARAMETER;
+    request.session.lang === languages.WELSH ? languages.WELSH_URL_PARAMETER : languages.ENGLISH_URL_PARAMETER;
   return (
     PageUrls.CASE_DETAILS_WITH_CASE_ID_RESPONDENT_CCD_ID_PARAMETERS.replace(
       ':caseSubmissionReference',
-      validatedCaseId
-    ).replace(':ccdId', validatedCcdId) + langParam
+      String(sessionCaseId)
+    ).replace(':ccdId', matchedRespondent.ccdId) + langParam
   );
 };
 

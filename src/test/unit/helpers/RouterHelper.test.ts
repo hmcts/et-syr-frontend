@@ -328,8 +328,33 @@ describe('RouterHelper', () => {
       expect(returnSafeCaseDetailsUrl('1234', '3453xaa?x=1', req)).toBe(ErrorPages.NOT_FOUND);
     });
 
+    it('should return NOT_FOUND when request is undefined', () => {
+      expect(returnSafeCaseDetailsUrl('1234', '3453xaa', undefined as unknown as AppRequest)).toBe(
+        ErrorPages.NOT_FOUND
+      );
+    });
+
+    it('should return NOT_FOUND when request has no session', () => {
+      expect(returnSafeCaseDetailsUrl('1234', '3453xaa', {} as AppRequest)).toBe(ErrorPages.NOT_FOUND);
+    });
+
+    it('should return NOT_FOUND when session has no userCase', () => {
+      req.session.userCase = undefined;
+      expect(returnSafeCaseDetailsUrl('1234', '3453xaa', req)).toBe(ErrorPages.NOT_FOUND);
+    });
+
     it('should return NOT_FOUND when caseId does not match the session case ID', () => {
       expect(returnSafeCaseDetailsUrl('9999', '3453xaa', req)).toBe(ErrorPages.NOT_FOUND);
+    });
+
+    it('should return NOT_FOUND when respondents list is missing', () => {
+      req.session.userCase.respondents = undefined;
+      expect(returnSafeCaseDetailsUrl('1234', '3453xaa', req)).toBe(ErrorPages.NOT_FOUND);
+    });
+
+    it('should return NOT_FOUND when respondents list is empty', () => {
+      req.session.userCase.respondents = [];
+      expect(returnSafeCaseDetailsUrl('1234', '3453xaa', req)).toBe(ErrorPages.NOT_FOUND);
     });
 
     it('should return NOT_FOUND when ccdId is not found in session respondents', () => {
@@ -338,6 +363,11 @@ describe('RouterHelper', () => {
 
     it('should return the case details URL with English language param', () => {
       req.session.lang = languages.ENGLISH;
+      expect(returnSafeCaseDetailsUrl('1234', '3453xaa', req)).toBe('/case-details/1234/3453xaa?lng=en');
+    });
+
+    it('should return the case details URL with English language param when session lang is unset', () => {
+      req.session.lang = undefined;
       expect(returnSafeCaseDetailsUrl('1234', '3453xaa', req)).toBe('/case-details/1234/3453xaa?lng=en');
     });
 

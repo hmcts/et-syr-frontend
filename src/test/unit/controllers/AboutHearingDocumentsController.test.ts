@@ -1,11 +1,48 @@
 import AboutHearingDocumentsController from '../../../main/controllers/AboutHearingDocumentsController';
 import { WhatAreTheHearingDocuments, WhoseHearingDocument } from '../../../main/definitions/case';
-import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
+import { ErrorPages, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import aboutHearingDocumentsJson from '../../../main/resources/locales/en/translation/about-hearing-documents.json';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockHearingCollectionFutureDates } from '../mocks/mockHearing';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
+
+const pastHearingCollection = [
+  {
+    id: '236c8a94-e485-4034-bbdb-99f982679138',
+    value: {
+      Hearing_type: 'Hearing',
+      Hearing_notes: 'notes',
+      Hearing_stage: 'Stage 1',
+      Hearing_venue: {
+        value: {
+          code: 'RCJ',
+          label: 'RCJ',
+        },
+        list_items: [],
+        selectedCode: 'RCJ',
+        selectedLabel: 'RCJ',
+      },
+      hearingFormat: ['In person'],
+      hearingNumber: '3333',
+      hearingSitAlone: 'Sit Alone',
+      judicialMediation: 'Yes',
+      hearingEstLengthNum: 22,
+      hearingPublicPrivate: 'Public',
+      hearingDateCollection: [
+        {
+          id: '3890feaa-ad4b-4822-9040-3bc09279450a',
+          value: {
+            listedDate: new Date('2022-07-04T14:00:00.000'),
+            Hearing_status: 'Listed',
+            hearingTimingStart: new Date('2022-04-13T11:00:00.000'),
+            hearingTimingFinish: new Date('2022-04-13T11:00:00.000'),
+          },
+        },
+      ],
+    },
+  },
+];
 
 describe('About Hearing Documents Controller', () => {
   it('should render the About Hearing Documents page', async () => {
@@ -91,47 +128,113 @@ describe('About Hearing Documents Controller', () => {
     const request = mockRequestWithTranslation({}, aboutHearingDocumentsJson);
     request.session.userCase = {
       ...mockCaseWithIdWithRespondents,
-      hearingCollection: [
-        {
-          id: '236c8a94-e485-4034-bbdb-99f982679138',
-          value: {
-            Hearing_type: 'Hearing',
-            Hearing_notes: 'notes',
-            Hearing_stage: 'Stage 1',
-            Hearing_venue: {
-              value: {
-                code: 'RCJ',
-                label: 'RCJ',
-              },
-              list_items: [],
-              selectedCode: 'RCJ',
-              selectedLabel: 'RCJ',
-            },
-            hearingFormat: ['In person'],
-            hearingNumber: '3333',
-            hearingSitAlone: 'Sit Alone',
-            judicialMediation: 'Yes',
-            hearingEstLengthNum: 22,
-            hearingPublicPrivate: 'Public',
-            hearingDateCollection: [
-              {
-                id: '3890feaa-ad4b-4822-9040-3bc09279450a',
-                value: {
-                  listedDate: new Date('2022-07-04T14:00:00.000'),
-                  Hearing_status: 'Listed',
-                  hearingTimingStart: new Date('2022-04-13T11:00:00.000'),
-                  hearingTimingFinish: new Date('2022-04-13T11:00:00.000'),
-                },
-              },
-            ],
-          },
-        },
-      ],
+      hearingCollection: pastHearingCollection,
     };
     request.session.selectedRespondentIndex = 0;
     request.url = PageUrls.ABOUT_HEARING_DOCUMENTS + languages.ENGLISH_URL_PARAMETER;
     await controller.get(request, response);
     expect(response.redirect).toHaveBeenCalledWith('/case-details/1234/3453xaa?lng=en');
+  });
+
+  it('should redirect to not found when session is missing', async () => {
+    const controller = new AboutHearingDocumentsController();
+    const response = mockResponse();
+    const request = mockRequestWithTranslation({}, aboutHearingDocumentsJson);
+    request.session = undefined;
+    request.url = PageUrls.ABOUT_HEARING_DOCUMENTS + languages.ENGLISH_URL_PARAMETER;
+    await controller.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+  });
+
+  it('should redirect to not found when userCase is missing', async () => {
+    const controller = new AboutHearingDocumentsController();
+    const response = mockResponse();
+    const request = mockRequestWithTranslation({}, aboutHearingDocumentsJson);
+    request.session.userCase = undefined;
+    request.session.selectedRespondentIndex = undefined;
+    request.url = PageUrls.ABOUT_HEARING_DOCUMENTS + languages.ENGLISH_URL_PARAMETER;
+    await controller.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+  });
+
+  it('should redirect to not found when no hearings are present and no respondent is selected', async () => {
+    const controller = new AboutHearingDocumentsController();
+    const response = mockResponse();
+    const request = mockRequestWithTranslation({}, aboutHearingDocumentsJson);
+    request.session.userCase = { ...mockCaseWithIdWithRespondents };
+    request.session.selectedRespondentIndex = undefined;
+    request.url = PageUrls.ABOUT_HEARING_DOCUMENTS + languages.ENGLISH_URL_PARAMETER;
+    await controller.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+  });
+
+  it('should redirect to not found when no hearings are present and case id is missing', async () => {
+    const controller = new AboutHearingDocumentsController();
+    const response = mockResponse();
+    const request = mockRequestWithTranslation({}, aboutHearingDocumentsJson);
+    request.session.userCase = { ...mockCaseWithIdWithRespondents, id: undefined };
+    request.session.selectedRespondentIndex = 0;
+    request.url = PageUrls.ABOUT_HEARING_DOCUMENTS + languages.ENGLISH_URL_PARAMETER;
+    await controller.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+  });
+
+  it('should redirect to not found when there are no future hearings and no respondent is selected', async () => {
+    const controller = new AboutHearingDocumentsController();
+    const response = mockResponse();
+    const request = mockRequestWithTranslation({}, aboutHearingDocumentsJson);
+    request.session.userCase = {
+      ...mockCaseWithIdWithRespondents,
+      hearingCollection: pastHearingCollection,
+    };
+    request.session.selectedRespondentIndex = undefined;
+    request.url = PageUrls.ABOUT_HEARING_DOCUMENTS + languages.ENGLISH_URL_PARAMETER;
+    await controller.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+  });
+
+  it('should redirect to not found when there are no future hearings and case id is missing', async () => {
+    const controller = new AboutHearingDocumentsController();
+    const response = mockResponse();
+    const request = mockRequestWithTranslation({}, aboutHearingDocumentsJson);
+    request.session.userCase = {
+      ...mockCaseWithIdWithRespondents,
+      id: undefined,
+      hearingCollection: pastHearingCollection,
+    };
+    request.session.selectedRespondentIndex = 0;
+    request.url = PageUrls.ABOUT_HEARING_DOCUMENTS + languages.ENGLISH_URL_PARAMETER;
+    await controller.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+  });
+
+  it('should redirect to not found when no hearings are present and selected respondent has no ccdId', async () => {
+    const controller = new AboutHearingDocumentsController();
+    const response = mockResponse();
+    const request = mockRequestWithTranslation({}, aboutHearingDocumentsJson);
+    request.session.userCase = {
+      ...mockCaseWithIdWithRespondents,
+      respondents: [{ ...mockCaseWithIdWithRespondents.respondents[0], ccdId: undefined }],
+    };
+    request.session.selectedRespondentIndex = 0;
+    request.url = PageUrls.ABOUT_HEARING_DOCUMENTS + languages.ENGLISH_URL_PARAMETER;
+    await controller.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+  });
+
+  it('should redirect to not found when there are no future hearings and selected respondent has no ccdId', async () => {
+    const controller = new AboutHearingDocumentsController();
+    const response = mockResponse();
+    const request = mockRequestWithTranslation({}, aboutHearingDocumentsJson);
+    request.session.userCase = {
+      ...mockCaseWithIdWithRespondents,
+      respondents: [{ ...mockCaseWithIdWithRespondents.respondents[0], ccdId: undefined }],
+      hearingCollection: pastHearingCollection,
+    };
+    request.session.selectedRespondentIndex = 0;
+    request.url = PageUrls.ABOUT_HEARING_DOCUMENTS + languages.ENGLISH_URL_PARAMETER;
+    await controller.get(request, response);
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
   });
 
   it('should add a required error when selected hearing id is not in the collection', async () => {

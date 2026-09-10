@@ -121,7 +121,7 @@ export default class AboutHearingDocumentsController {
       logger.info('no unheard hearings found, redirecting to case details');
       const selectedRespondent = RespondentUtils.findSelectedRespondentByRequest(req);
       return res.redirect(
-        returnSafeCaseDetailsUrl(String(req.session?.userCase?.id ?? ''), selectedRespondent?.ccdId ?? '', req)
+        returnSafeCaseDetailsUrl(String(req.session.userCase.id ?? ''), selectedRespondent?.ccdId ?? '', req)
       );
     }
 
