@@ -108,23 +108,21 @@ export default class AboutHearingDocumentsController {
   };
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
-    const caseDetailsUrl = UrlUtils.getCaseDetailsUrlByRequest(req);
-    const selectedRespondent = RespondentUtils.findSelectedRespondentByRequest(req);
-    const safeCaseDetailsRedirectUrl = returnSafeCaseDetailsUrl(
-      String(req.session?.userCase?.id ?? ''),
-      selectedRespondent?.ccdId ?? '',
-      req
-    );
-
     if (!req.session?.userCase?.hearingCollection?.length) {
       logger.info('no hearing collection found, redirecting to case details');
-      return res.redirect(safeCaseDetailsRedirectUrl);
+      const selectedRespondent = RespondentUtils.findSelectedRespondentByRequest(req);
+      return res.redirect(
+        returnSafeCaseDetailsUrl(String(req.session?.userCase?.id ?? ''), selectedRespondent?.ccdId ?? '', req)
+      );
     }
 
     const hearingRadios = createRadioBtnsForHearings(req.session.userCase.hearingCollection);
     if (!hearingRadios?.length) {
       logger.info('no unheard hearings found, redirecting to case details');
-      return res.redirect(safeCaseDetailsRedirectUrl);
+      const selectedRespondent = RespondentUtils.findSelectedRespondentByRequest(req);
+      return res.redirect(
+        returnSafeCaseDetailsUrl(String(req.session?.userCase?.id ?? ''), selectedRespondent?.ccdId ?? '', req)
+      );
     }
 
     const formContent = this.getFormContent(hearingRadios);
@@ -137,7 +135,7 @@ export default class AboutHearingDocumentsController {
     res.render(TranslationKeys.ABOUT_HEARING_DOCUMENTS, {
       ...content,
       hideContactUs: true,
-      cancelLink: caseDetailsUrl,
+      cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
     });
   };
 }

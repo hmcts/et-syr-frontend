@@ -320,6 +320,14 @@ describe('RouterHelper', () => {
       expect(returnSafeCaseDetailsUrl('1234', '', req)).toBe(ErrorPages.NOT_FOUND);
     });
 
+    it('should return NOT_FOUND when caseId contains unsafe characters', () => {
+      expect(returnSafeCaseDetailsUrl('1234/../evil', '3453xaa', req)).toBe(ErrorPages.NOT_FOUND);
+    });
+
+    it('should return NOT_FOUND when ccdId contains unsafe characters', () => {
+      expect(returnSafeCaseDetailsUrl('1234', '3453xaa?x=1', req)).toBe(ErrorPages.NOT_FOUND);
+    });
+
     it('should return NOT_FOUND when caseId does not match the session case ID', () => {
       expect(returnSafeCaseDetailsUrl('9999', '3453xaa', req)).toBe(ErrorPages.NOT_FOUND);
     });

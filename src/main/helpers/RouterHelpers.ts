@@ -159,14 +159,26 @@ export const returnSafeCaseDetailsUrl = (caseId: string, ccdId: string, request:
   if (
     StringUtils.isBlank(caseId) ||
     StringUtils.isBlank(ccdId) ||
+    !/^[\w-]+$/.test(caseId) ||
+    !/^[\w-]+$/.test(ccdId) ||
     String(request?.session?.userCase?.id) !== caseId ||
     !request?.session?.userCase?.respondents?.some(r => r.ccdId === ccdId)
   ) {
     return ErrorPages.NOT_FOUND;
   }
+  const validatedCaseId = String(request.session.userCase.id);
+  const validatedCcdId = request.session.userCase.respondents.find(r => r.ccdId === ccdId)?.ccdId;
+  if (StringUtils.isBlank(validatedCcdId)) {
+    return ErrorPages.NOT_FOUND;
+  }
   const langParam =
     request?.session?.lang === languages.WELSH ? languages.WELSH_URL_PARAMETER : languages.ENGLISH_URL_PARAMETER;
-  return `${PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER}/${caseId}/${ccdId}${langParam}`;
+  return (
+    PageUrls.CASE_DETAILS_WITH_CASE_ID_RESPONDENT_CCD_ID_PARAMETERS.replace(
+      ':caseSubmissionReference',
+      validatedCaseId
+    ).replace(':ccdId', validatedCcdId) + langParam
+  );
 };
 
 export const isClearSelection = (req: AppRequest): boolean => {
