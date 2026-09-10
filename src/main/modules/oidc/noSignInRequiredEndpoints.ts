@@ -7,6 +7,7 @@ export const noSignInRequiredEndpoints: string[] = [
   PageUrls.RETURN_TO_EXISTING_RESPONSE,
   PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE,
   PageUrls.MANIFEST_URL,
+  PageUrls.COOKIE_PREFERENCES,
 ];
 
 export const validateNoSignInEndpoints = (url: string): boolean => {

@@ -3,6 +3,7 @@ import EventEmitter from 'events';
 import { Request } from 'express';
 import { Session } from 'express-session';
 
+import { CaseTransferInfoResponse } from './api/caseTransferInfoResponse';
 import { CaseWithId } from './case';
 import { ApiDocumentTypeItem } from './complexTypes/documentTypeItem';
 import { FormError } from './form';
@@ -65,6 +66,7 @@ export interface AppSession extends Session {
   user: UserDetails;
   userCase: CaseWithId;
   isSelfAssignment?: boolean;
+  caseTransferInfo?: CaseTransferInfoResponse;
 }
 
 export interface UserDetails {

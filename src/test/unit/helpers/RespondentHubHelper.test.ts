@@ -1,6 +1,9 @@
+import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, languages } from '../../../main/definitions/constants';
+import { ET3Status } from '../../../main/definitions/definition';
 import { ET3CaseDetailsLinkNames, ET3HubLinkNames } from '../../../main/definitions/links';
 import { getET3CaseDetailsLinksUrlMap, getET3HubLinksUrlMap } from '../../../main/helpers/ResponseHubHelper';
+import { mockRespondentET3Model } from '../mocks/mockRespondentET3Model';
 
 describe('getET3HubLinksUrlMap', () => {
   const et3HubLinksMapWelsh: Map<string, string> = new Map<string, string>([
@@ -76,27 +79,74 @@ describe('getET3CaseDetailsLinksUrlMap', () => {
     [ET3CaseDetailsLinkNames.TribunalJudgements, PageUrls.NOT_IMPLEMENTED],
     [ET3CaseDetailsLinkNames.Documents, PageUrls.DOCUMENTS],
   ]);
+
   it('returns correct links when respondent is system user in English', () => {
-    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, undefined, undefined)).toEqual(
+    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, mockRespondentET3Model)).toEqual(
       et3CaseDetailsLinksMapEnglish
     );
   });
 
   it('returns correct links when respondent is system user in Welsh', () => {
-    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, undefined, undefined)).toEqual(
+    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, mockRespondentET3Model)).toEqual(
       et3CaseDetailsLinksMapWelsh
     );
   });
 
   it('returns correct links when respondent is non-system user in English', () => {
-    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, undefined, undefined)).toEqual(
+    expect(getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, mockRespondentET3Model)).toEqual(
       et3CaseDetailsLinksMapEnglish
     );
   });
 
   it('returns correct links when respondent is non-system user in Welsh', () => {
-    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, undefined, undefined)).toEqual(
+    expect(getET3CaseDetailsLinksUrlMap(languages.WELSH_URL_PARAMETER, mockRespondentET3Model)).toEqual(
       et3CaseDetailsLinksMapWelsh
     );
+  });
+
+  it('returns correct links when et3Status is completed', () => {
+    const respondent = {
+      ...mockRespondentET3Model,
+      et3Status: ET3Status.COMPLETED,
+    };
+    const links = getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, respondent);
+    expect(links.get(ET3CaseDetailsLinkNames.RespondentResponse)).toEqual(PageUrls.YOUR_RESPONSE_FORM);
+  });
+
+  it('returns correct links when responseReceived is yes', () => {
+    const respondent = {
+      ...mockRespondentET3Model,
+      et3Status: ET3Status.IN_PROGRESS,
+      responseReceived: YesOrNo.YES,
+    };
+    const links = getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, respondent);
+    expect(links.get(ET3CaseDetailsLinkNames.RespondentResponse)).toEqual(PageUrls.YOUR_RESPONSE_FORM);
+  });
+
+  it('returns correct links when et3Status is inProgress', () => {
+    const respondent = {
+      ...mockRespondentET3Model,
+      et3Status: ET3Status.IN_PROGRESS,
+    };
+    const links = getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, respondent);
+    expect(links.get(ET3CaseDetailsLinkNames.RespondentResponse)).toEqual(PageUrls.RESPONDENT_RESPONSE_LANDING);
+  });
+
+  it('returns correct links when et3Status is undefined', () => {
+    const respondent = {
+      ...mockRespondentET3Model,
+    };
+    delete respondent.et3Status;
+    const links = getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, respondent);
+    expect(links.get(ET3CaseDetailsLinkNames.RespondentResponse)).toEqual(PageUrls.RESPONDENT_RESPONSE_LANDING);
+  });
+
+  it('returns correct links when et3Status is invalid', () => {
+    const respondent = {
+      ...mockRespondentET3Model,
+      et3Status: 'testing',
+    };
+    const links = getET3CaseDetailsLinksUrlMap(languages.ENGLISH_URL_PARAMETER, respondent);
+    expect(links.get(ET3CaseDetailsLinkNames.RespondentResponse)).toEqual(PageUrls.NOT_IMPLEMENTED);
   });
 });

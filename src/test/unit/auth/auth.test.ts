@@ -51,7 +51,7 @@ describe('AuthorisationTest', () => {
       );
     });
 
-    test('should use HMCTS Access authorize URL when HMCTS_ACCESS is true', () => {
+    test('should use HMCTS Access authorize URL with prompt=login when HMCTS_ACCESS is true', () => {
       process.env.HMCTS_ACCESS = 'true';
       expect(
         getRedirectUrl(
@@ -61,7 +61,7 @@ describe('AuthorisationTest', () => {
           languages.ENGLISH
         )
       ).toBe(
-        `${hmctsAccessLoginUrl}?client_id=et-syr&response_type=code&redirect_uri=http://localhost/oauth2/callback&state=${AuthorisationTestConstants.GUID}&ui_locales=${languages.ENGLISH}&scope=openid%20profile%20roles`
+        `${hmctsAccessLoginUrl}?client_id=et-syr&response_type=code&redirect_uri=http://localhost/oauth2/callback&state=${AuthorisationTestConstants.GUID}&ui_locales=${languages.ENGLISH}&scope=openid%20profile%20roles&prompt=login`
       );
     });
   });

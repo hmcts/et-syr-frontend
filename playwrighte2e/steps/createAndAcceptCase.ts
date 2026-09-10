@@ -33,6 +33,9 @@ export default class createAndAcceptCase extends BaseStep {
       await this.et1CaseServingPage.processET1CaseServingPages(),
     ]);
 
+    // Allow accepted case data to propagate before respondent self-assignment
+    await this.page.waitForTimeout(15000);
+
     return { subRef, caseNumber };
   }
 }

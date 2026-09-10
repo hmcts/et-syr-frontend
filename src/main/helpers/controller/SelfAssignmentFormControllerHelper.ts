@@ -37,14 +37,13 @@ export default class SelfAssignmentFormControllerHelper {
    * @param caseData CaseApiData response that has respondent name.
    */
   public static readonly setRespondentName = (req: AppRequest, caseData: CaseApiDataResponse): void => {
-    if (req.session.userCase) {
-      if (caseData?.case_data?.respondentCollection) {
-        caseData?.case_data?.respondentCollection.forEach(respondent => {
-          if (respondent?.value?.respondent_name) {
-            req.session.userCase.respondentName = respondent.value.respondent_name;
-          }
-        });
-      }
+    if (!req.session.userCase) {
+      return;
+    }
+
+    const respondentName = caseData?.case_data?.respondentCollection?.[0]?.value?.respondent_name;
+    if (respondentName) {
+      req.session.userCase.respondentName = respondentName;
     }
   };
 }

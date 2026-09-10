@@ -1,4 +1,5 @@
 import { CaseWithId, RespondentET3Model } from '../definitions/case';
+import { Et3ResponseStatus } from '../definitions/constants';
 import { AnyRecord } from '../definitions/util-types';
 
 export interface ProgressBarItem {
@@ -14,10 +15,6 @@ const enum ActiveState {
   RESPONSE_ACCEPTED = 'responseAccepted',
   HEARING_DETAILS = 'hearingDetails',
   CASE_DECISION = 'caseDecision',
-}
-
-const enum Et3ResponseStatus {
-  ET3_RESPONSE_STATUS_ACCEPTED = 'Accepted',
 }
 
 /**

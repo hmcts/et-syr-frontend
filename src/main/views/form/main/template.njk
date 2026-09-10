@@ -7,11 +7,20 @@
 
 {% block head %}
   {% include "../../webpack/css.njk" %}
-  <script>
-    window.dataLayer = window.dataLayer || [];
-  </script>
+  {% if globals.enableTracking == "true" %}
+    <!-- Data Layer -->
+    <meta name="gtm-one-time" content="{{ globals.nonce }}">
+    <script nonce="{{ globals.nonce }}">
+      window.dataLayer = window.dataLayer || [];
+      const userPreferenceCookie = document.cookie.match(new RegExp('(^| )' + 'cm-user-preferences' + '=([^;]+)'));
+      if (userPreferenceCookie) {
+        const cookiePreferences = JSON.parse(decodeURIComponent(userPreferenceCookie[2]));
+        window.dataLayer.push({'event': 'Cookie Preferences', 'cookiePreferences': cookiePreferences});
+      }
+    </script>
+  {% endif %}
   <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
+  <script nonce="{{ globals.nonce }}">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
       {'gtm.start': new Date().getTime(),event:'gtm.js'}
     );var f=d.getElementsByTagName(s)[0],
       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -79,26 +88,8 @@
 
 
   {% if welshEnabled == null or welshEnabled === 'undefined' or welshEnabled === true %}
-    {% set queryStringConcat = "" %}
-
-    {% if "lng=" in currentUrl %}
-      {% set currentUrl = currentUrl | replace("?lng=en", "") | replace("&lng=en", "") | replace("?lng=cy", "") | replace("&lng=cy", "") %}
-    {% endif %}
-
-    {% if "?" not in currentUrl %}
-      {% set queryStringConcat = "?" %}
-    {% else %}
-      {% set queryStringConcat = "&" %}
-    {% endif %}
-
-    {% set languageFlag = "" %}
-    {% if i18n.language == "en" %}
-      {% set languageFlag = queryStringConcat + "lng=cy" %}
-    {% else %}
-      {% set languageFlag = queryStringConcat + "lng=en" %}
-    {% endif %}
-
-    {% set phaseBarHtml = phaseBarHtml + (phaseBanner.languageToggle | replace("{currentUrl}", currentUrl) | replace("{languageFlag}", languageFlag)) %}
+    {% set languageToggleHref = getLanguageToggleHref(currentUrl, i18n.language) %}
+    {% set phaseBarHtml = phaseBarHtml + (phaseBanner.languageToggle | replace("{currentUrl}", languageToggleHref) | replace("{languageFlag}", "")) %}
   {% else %}
   {% endif %}
 

@@ -77,12 +77,10 @@ withPipeline(type, product, component) {
   ])
   enableSlackNotifications('#et-builds')
 
-   env.TEST_URL = params.ET_SYA_URL_TO_TEST
    env.IDAM_URL = params.IDAM_URL
    env.TEST_MANAGE_CASE_URL = params.CCD_CALLBACKS_URL
    env.ET_CASE_API_URL = params.ET_CASE_API_URL
    env.RUNNING_ENV = params.ENVIRONMENT_VARS
-   env.TEST_RESP_URL = params.ET_SYR_URL_TO_TEST
 
 
   afterAlways('build') {
@@ -94,11 +92,11 @@ withPipeline(type, product, component) {
                     allowMissing         : true,
                     alwaysLinkToLastBuild: true,
                     keepAll              : true,
-                    reportDir            : 'playwright-report',
+                    reportDir            : 'smoke-output/reports',
                     reportFiles          : 'index.html',
                     reportName           : 'ET Smoke Test Report'
     ])
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'playwright-report/**'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**'
   }
 
   afterAlways('smoketest:aat') {
@@ -106,10 +104,10 @@ withPipeline(type, product, component) {
                     allowMissing         : true,
                     alwaysLinkToLastBuild: true,
                     keepAll              : true,
-                    reportDir            : 'playwright-report',
+                    reportDir            : 'smoke-output/reports',
                     reportFiles          : 'index.html',
                     reportName           : 'ET Smoke Test Report'
     ])
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'playwright-report/**'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**'
   }
 }
