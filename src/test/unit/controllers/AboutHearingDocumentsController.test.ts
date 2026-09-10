@@ -1,4 +1,5 @@
 import AboutHearingDocumentsController from '../../../main/controllers/AboutHearingDocumentsController';
+import { HearingModel } from '../../../main/definitions/api/caseApiResponse';
 import { WhatAreTheHearingDocuments, WhoseHearingDocument } from '../../../main/definitions/case';
 import { ErrorPages, PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import aboutHearingDocumentsJson from '../../../main/resources/locales/en/translation/about-hearing-documents.json';
@@ -7,7 +8,7 @@ import { mockHearingCollectionFutureDates } from '../mocks/mockHearing';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 
-const pastHearingCollection = [
+const pastHearingCollection: HearingModel[] = [
   {
     id: '236c8a94-e485-4034-bbdb-99f982679138',
     value: {
