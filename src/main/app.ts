@@ -40,6 +40,7 @@ new Helmet(config.get('security'), [
   process.env.PCQ_URL ?? config.get('services.pcq.url'),
   process.env.ET1_BASE_URL ?? config.get('services.et1Legacy.url'),
   getLegacySignUpUrl(),
+  process.env.CUI_URL ?? config.get('services.cui.endpoint'),
 ]).enableFor(app);
 
 new I18Next().enableFor(app);

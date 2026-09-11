@@ -10,6 +10,23 @@ import UrlUtils from '../utils/UrlUtils';
 
 import { addParameterToUrl, setUrlLanguage } from './LanguageHelper';
 
+export const validateLanguageParam = (lng: string): boolean => {
+  const validLanguages = [languages.WELSH, languages.ENGLISH];
+  return validLanguages.includes(lng);
+};
+
+export const getLanguageCode = (url: string): string => {
+  if (!url?.includes('?')) {
+    return languages.ENGLISH;
+  }
+  const urlParams = new URLSearchParams(url.split('?')[1]);
+  const lng = urlParams.get('lng');
+  if (lng && validateLanguageParam(lng)) {
+    return lng;
+  }
+  return languages.ENGLISH;
+};
+
 export const getLanguageParam = (url: string): string => {
   if (url?.includes(languages.WELSH_URL_POSTFIX)) {
     return languages.WELSH_URL_PARAMETER;

@@ -2,6 +2,7 @@ import axiosService, { AxiosInstance, AxiosResponse } from 'axios';
 import config from 'config';
 import FormData from 'form-data';
 
+import { UpdateSubmittedCaseFlagsBody } from '../definitions/api/caseApiBody';
 import { CaseApiDataResponse, CaseAssignmentResponse } from '../definitions/api/caseApiResponse';
 import { CaseTransferInfoResponse } from '../definitions/api/caseTransferInfoResponse';
 import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
@@ -51,6 +52,26 @@ export class CaseApi {
       return await this.axios.put(JavaApiUrls.UPDATE_CASE_DRAFT, toApiFormat(caseItem));
     } catch (error) {
       throw new Error(ServiceErrors.ERROR_UPDATING_DRAFT_CASE + axiosErrorDetails(error));
+    }
+  };
+
+  updateSubmittedCaseFlags = async (caseItem: CaseWithId): Promise<AxiosResponse<CaseApiDataResponse>> => {
+    try {
+      if (!caseItem.respondentExternalFlags) {
+        throw new Error('respondentExternalFlags must be set');
+      }
+
+      const updateSubmittedCaseFlagsBody: UpdateSubmittedCaseFlagsBody = {
+        case_id: caseItem.id,
+        case_type_id: caseItem.caseTypeId,
+        case_data: {
+          respondentExternalFlags: caseItem.respondentExternalFlags,
+        },
+      };
+
+      return await this.axios.post(JavaApiUrls.UPDATE_SUBMITTED_CASE, updateSubmittedCaseFlagsBody);
+    } catch (error) {
+      throw new Error('Error updating submitted case flags: ' + axiosErrorDetails(error));
     }
   };
 

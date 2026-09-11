@@ -1,6 +1,8 @@
 import HearingPreferencesController from '../../../main/controllers/HearingPreferencesController';
-import { HearingPreference } from '../../../main/definitions/case';
+import { CaseTypeId, HearingPreference } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { CuiYourSupportFeature } from '../../../main/modules/featureFlag/CuiYourSupportFeature';
+import * as CuiYourSupportFeatureModule from '../../../main/modules/featureFlag/CuiYourSupportFeature';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/hearing-preferences.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -21,6 +23,8 @@ describe('HearingPreferencesController', () => {
     controller = new HearingPreferencesController();
     request = mockRequest({});
     response = mockResponse();
+    updateET3DataMock.mockClear();
+    jest.spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature').mockReturnValue(new CuiYourSupportFeature([]));
   });
 
   describe('GET method', () => {
@@ -32,28 +36,37 @@ describe('HearingPreferencesController', () => {
   });
 
   describe('POST method', () => {
-    it('should call ET3Util.updateET3ResponseWithET3Form with the correct parameters when preferences are valid', async () => {
+    it('should redirect to reasonable adjustments by default when preferences are valid', async () => {
       request = mockRequest({
         body: {
           et3ResponseHearingRespondent: HearingPreference.VIDEO,
         },
       });
-      request.url = PageUrls.REASONABLE_ADJUSTMENTS;
+      request.url = PageUrls.HEARING_PREFERENCES;
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
     });
 
-    it('should redirect to next page when NEITHER is selected and details is filled in', async () => {
+    it('should redirect to Your Support when Scotland is enabled', async () => {
+      jest
+        .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+        .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
       request = mockRequest({
         body: {
           et3ResponseHearingRespondent: HearingPreference.NEITHER,
         },
+        userCase: {
+          caseTypeId: CaseTypeId.SCOTLAND,
+        },
       });
-      request.url = PageUrls.REASONABLE_ADJUSTMENTS;
-      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      request.url = PageUrls.HEARING_PREFERENCES;
+      updateET3DataMock.mockResolvedValue({
+        ...mockCaseWithIdWithRespondents,
+        caseTypeId: CaseTypeId.SCOTLAND,
+      });
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.YOUR_SUPPORT);
     });
   });
 });

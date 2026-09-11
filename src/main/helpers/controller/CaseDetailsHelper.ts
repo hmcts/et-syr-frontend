@@ -11,6 +11,7 @@ import {
   linkStatusColorMap,
 } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
+import { getCuiYourSupportFeature } from '../../modules/featureFlag/CuiYourSupportFeature';
 import { getCaseApi } from '../../services/CaseService';
 import { getApplicationStateIfNotExist } from '../ApplicationStateHelper';
 import { getTribunalNotificationLinkStatus } from '../NotificationHelper';
@@ -39,6 +40,11 @@ export const getET3CaseDetailsLinkNames = async (
   statuses = getResponseCaseDetailsLinkStatusesByRespondentCaseDetailsLinkStatuses(statuses);
   await updateApplicationsStatusIfNotExist(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantContactDetails] = LinkStatus.READY_TO_VIEW;
+  if (await getCuiYourSupportFeature().isEnabled(req.session.userCase?.caseTypeId)) {
+    statuses[ET3CaseDetailsLinkNames.YourSupport] = getYourSupportCaseDetailsLinkStatus(req);
+  } else {
+    delete statuses[ET3CaseDetailsLinkNames.YourSupport];
+  }
   statuses[ET3CaseDetailsLinkNames.RespondentResponse] = getRespondentResponseLinkStatus(
     req.session.userCase,
     statuses[ET3CaseDetailsLinkNames.RespondentResponse]
@@ -90,6 +96,25 @@ const getOtherRespondentAppsLinkStatus = (req: AppRequest): LinkStatus => {
   const apps =
     userCase?.genericTseApplicationCollection?.filter(app => isOtherRespApplicationShare(app.value, user)) || [];
   return getLinkStatus(apps, user, false);
+};
+
+export const getYourSupportLinkStatus = (req: AppRequest): LinkStatus => {
+  return req.session?.userCase?.respondentExternalFlags?.details?.length ? LinkStatus.SUBMITTED : LinkStatus.OPTIONAL;
+};
+
+export const isEt3ResponseSubmitted = (req: AppRequest): boolean => {
+  const userCase = req.session?.userCase;
+  const selectedRespondentIndex = req.session?.selectedRespondentIndex;
+  const selectedRespondent =
+    selectedRespondentIndex === undefined || selectedRespondentIndex === null
+      ? undefined
+      : userCase?.respondents?.[selectedRespondentIndex];
+
+  return userCase?.responseReceived === YesOrNo.YES || selectedRespondent?.responseReceived === YesOrNo.YES;
+};
+
+const getYourSupportCaseDetailsLinkStatus = (req: AppRequest): LinkStatus => {
+  return isEt3ResponseSubmitted(req) ? getYourSupportLinkStatus(req) : LinkStatus.NOT_YET_AVAILABLE;
 };
 
 const getLinkStatus = (apps: GenericTseApplicationTypeItem[], user: UserDetails, isYours: boolean): LinkStatus => {
@@ -150,22 +175,35 @@ function getSection(
   translations: AnyRecord,
   index: number,
   et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses,
-  eT3CaseDetailsLinksUrlMap: Map<string, string>
+  eT3CaseDetailsLinksUrlMap: Map<string, string>,
+  sectionIndexToEt3CaseDetailsLinkNames: ET3CaseDetailsLinkNames[][]
 ): Section {
   return {
     title: translations[`section${index + 1}`],
-    links: SectionIndexToEt3CaseDetailsLinkNames[index].map(linkName => {
+    links: sectionIndexToEt3CaseDetailsLinkNames[index].map(linkName => {
       const status = et3CaseDetailsLinksStatuses[linkName];
       return getSectionLink(translations, linkName, status, eT3CaseDetailsLinksUrlMap);
     }),
   };
 }
 
-export function getSections(
+export const getSectionIndexToEt3CaseDetailsLinkNames = async (
+  caseTypeId?: string
+): Promise<ET3CaseDetailsLinkNames[][]> => {
+  const sectionIndexToEt3CaseDetailsLinkNames = SectionIndexToEt3CaseDetailsLinkNames.map(linkNames => [...linkNames]);
+
+  if (await getCuiYourSupportFeature().isEnabled(caseTypeId)) {
+    sectionIndexToEt3CaseDetailsLinkNames[0].push(ET3CaseDetailsLinkNames.YourSupport);
+  }
+
+  return sectionIndexToEt3CaseDetailsLinkNames;
+};
+
+export async function getSections(
   et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses,
   selectedRespondent: RespondentET3Model,
   req: AppRequest
-): Section[] {
+): Promise<Section[]> {
   const languageParam = getLanguageParam(req.url);
   const translations: AnyRecord = {
     ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
@@ -173,7 +211,16 @@ export function getSections(
     ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER as never, { returnObjects: true } as never),
   };
   const eT3CaseDetailsLinksUrlMap = getET3CaseDetailsLinksUrlMap(languageParam, selectedRespondent);
-  return Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
-    return getSection(translations, index, et3CaseDetailsLinksStatuses, eT3CaseDetailsLinksUrlMap);
+  const sectionIndexToEt3CaseDetailsLinkNames = await getSectionIndexToEt3CaseDetailsLinkNames(
+    req.session.userCase?.caseTypeId
+  );
+  return Array.from(Array(sectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
+    return getSection(
+      translations,
+      index,
+      et3CaseDetailsLinksStatuses,
+      eT3CaseDetailsLinksUrlMap,
+      sectionIndexToEt3CaseDetailsLinkNames
+    );
   });
 }

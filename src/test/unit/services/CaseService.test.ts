@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { CaseTypeId } from '../../../main/definitions/case';
-import { DefaultValues, ET3ModificationTypes, ServiceErrors } from '../../../main/definitions/constants';
+import { CaseFlags, CaseTypeId } from '../../../main/definitions/case';
+import { DefaultValues, ET3ModificationTypes, JavaApiUrls, ServiceErrors } from '../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, ET3HubLinkNames, LinkStatus } from '../../../main/definitions/links';
 import {
   CaseApi,
@@ -48,6 +48,49 @@ describe('Case Service Tests', () => {
       await expect(() => api.updateDraftCase(mockCaseWithIdWithHubLinkStatuses)).rejects.toEqual(
         new Error(ServiceErrors.ERROR_UPDATING_DRAFT_CASE + ServiceErrors.ERROR_CASE_NOT_FOUND)
       );
+    });
+  });
+
+  describe('Update submitted case flags', () => {
+    it('should only send respondentExternalFlags when updating a submitted case from your support', async () => {
+      const respondentExternalFlags: CaseFlags = {
+        roleOnCase: 'Respondent',
+        details: [],
+      };
+      const caseItem = {
+        ...mockValidCaseWithId,
+        id: '1234',
+        caseTypeId: CaseTypeId.ENGLAND_WALES,
+        respondentExternalFlags,
+      };
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.post.mockClear();
+      mockedAxios.post.mockResolvedValueOnce(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse);
+
+      await api.updateSubmittedCaseFlags(caseItem);
+
+      expect(mockedAxios.post).toHaveBeenCalledWith(JavaApiUrls.UPDATE_SUBMITTED_CASE, {
+        case_id: '1234',
+        case_type_id: CaseTypeId.ENGLAND_WALES,
+        case_data: {
+          respondentExternalFlags,
+        },
+      });
+    });
+
+    it('should not update submitted case flags without respondentExternalFlags', async () => {
+      const caseItem = {
+        ...mockValidCaseWithId,
+        id: '1234',
+        caseTypeId: CaseTypeId.ENGLAND_WALES,
+      };
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.post.mockClear();
+
+      await expect(api.updateSubmittedCaseFlags(caseItem)).rejects.toThrow('respondentExternalFlags must be set');
+      expect(mockedAxios.post).not.toHaveBeenCalled();
     });
   });
 
