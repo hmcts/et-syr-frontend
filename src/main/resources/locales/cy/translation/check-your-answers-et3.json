@@ -6,7 +6,8 @@
   "submit": "Cyflwyno",
   "errors": {
     "hiddenErrorField": {
-      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen."
+      "api": "Mae gwall wedi digwydd yn y system, rhowch gynnig arall arni hwyrach ymlaen.",
+      "mandatoryQuestionsNotAnswered": "Rhaid i chi gwblhau’r holl gwestiynau gorfodol cyn y gallwch gyflwyno"
     }
   }
 }
