@@ -6,6 +6,10 @@
 {% if formErrors|length %}
   {% set errors = errors.concat(formErrors) %}
 {% endif %}
+{# unanswered mandatory ET3 questions, each linking to the page it is answered on #}
+{% if mandatoryQuestionErrors|length %}
+  {% set errors = errors.concat(mandatoryQuestionErrors) %}
+{% endif %}
 {{
   govukErrorSummary({
     titleText: errorSummaryTitle,

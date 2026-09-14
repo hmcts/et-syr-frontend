@@ -2,7 +2,8 @@
   "header": "Contest the claim",
   "errors": {
     "contestClaimSection": {
-      "required": "Make a selection"
+      "required": "Make a selection",
+      "mandatoryQuestionsNotAnswered": "You must complete the Contest the claim section before you can mark it as completed"
     },
     "hiddenErrorField": {
       "sessionUserCase": "User case not found in session",

@@ -1,10 +1,11 @@
 import CheckYourAnswersEmployersContractClaimController from '../../../main/controllers/CheckYourAnswersEmployersContractClaimController';
-import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { YesOrNo } from '../../../main/definitions/case';
+import { PageUrls, TranslationKeys, ValidationErrors } from '../../../main/definitions/constants';
 import { conditionalRedirect } from '../../../main/helpers/RouterHelpers';
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
 import commonJsonRaw from '../../../main/resources/locales/cy/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
-import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
+import { mockCaseWithIdWithMandatoryQuestionsAnswered, mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
 import { createMockedUpdateET3ResponseWithET3FormFunction, mockFormError } from '../mocks/mockStaticFunctions';
@@ -13,6 +14,7 @@ jest.mock('../../../main/helpers/controller/CheckYourAnswersET3Helper');
 jest.mock('../../../main/utils/ET3Util');
 jest.mock('../../../main/helpers/RouterHelpers', () => ({
   conditionalRedirect: jest.fn(),
+  returnValidUrl: jest.fn(url => url),
 }));
 
 describe('CheckYourAnswersEmployersContractClaimController', () => {
@@ -26,7 +28,7 @@ describe('CheckYourAnswersEmployersContractClaimController', () => {
     controller = new CheckYourAnswersEmployersContractClaimController();
     request = mockRequest({
       session: {
-        mockCaseWithIdWithRespondents,
+        userCase: { ...mockCaseWithIdWithMandatoryQuestionsAnswered },
         selectedRespondent: {
           employersContractClaimSection: 'Yes',
         },
@@ -65,6 +67,24 @@ describe('CheckYourAnswersEmployersContractClaimController', () => {
 
       expect(request.session.userCase).toEqual(mockCaseWithIdWithRespondents); // Validate the userCase is set
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_RESPONSE_TASK_LIST); // Ensure the correct redirect occurs
+    });
+
+    it('should not complete the section when the contract claim details are not given', async () => {
+      (conditionalRedirect as jest.Mock).mockReturnValue(true);
+      request.session.userCase.et3ResponseEmployerClaim = YesOrNo.YES;
+      request.session.userCase.et3ResponseEmployerClaimDetails = undefined;
+      request.session.userCase.et3ResponseEmployerClaimDocument = undefined;
+
+      await controller.post(request, response);
+
+      expect(updateET3ResponseWithET3FormMock).not.toHaveBeenCalled();
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM);
+      expect(request.session.errors).toEqual([
+        {
+          errorType: ValidationErrors.MANDATORY_QUESTIONS_NOT_ANSWERED,
+          propertyName: 'employersContractClaimSection',
+        },
+      ]);
     });
 
     it('should redirect back to Employers Contract Claim if ET3 data update fails', async () => {
