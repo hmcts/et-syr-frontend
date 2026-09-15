@@ -1,0 +1,22 @@
+{
+  "title": "Gwiriwch eich atebion",
+  "titleCya": "Gwiriwch eich atebion",
+  "q1": "Ydych chi wedi cytuno ar y dogfennau hyn?",
+  "q2": "Dewiswch y gwrandawiad y mae’r ddogfen hon ar ei gyfer",
+  "q3": "Dogfen gwrandawiad pwy ydych chi’n ei huwchlwytho?",
+  "q4": "Beth yw'r ddogfen hon?",
+  "q5": "Eich dogfennau",
+  "whoseHearingDocument": {
+    "My hearing documents only": "Dim ond dogfennau fy ngwrandawiad i",
+    "Both parties’ hearing documents combined": "Dogfennau gwrandawiad y ddau barti wedi’u cyfuno"
+  },
+  "whatAreTheHearingDocuments": {
+    "All hearing documents": "Holl ddogfennau gwrandawiad",
+    "Supplementary or other documents": "Dogfennau atodol neu ddogfennau eraill",
+    "Witness statements only": "Datganiadau tyst yn unig"
+  },
+  "important": "Pwysig:",
+  "paragraphAboutSubmittingDocsInAdvance": "Ni fyddwch yn gallu newid hyn unwaith y byddwch chi'n dewis 'Submit'. Os oes angen i chi gyflwyno dogfennau pellach yn ddiweddarach, rhaid i chi wneud hynny cyn dyddiad y gwrandawiad. Mater i’r tribiwnlys fydd a oes modd eu cynnwys yn y gwrandawiad ai peidio. Bydd y ddogfen hon hefyd yn cael ei hanfon at y partȋon eraill.",
+  "submitBtn": "Cyflwyno",
+  "cancelLinkText": "Canslo"
+}
