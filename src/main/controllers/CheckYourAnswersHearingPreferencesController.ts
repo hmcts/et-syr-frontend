@@ -8,6 +8,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { conditionalRedirect } from '../helpers/RouterHelpers';
 import { getEt3Section2 } from '../helpers/controller/CheckYourAnswersET3Helper';
+import { getCuiYourSupportFeature } from '../modules/featureFlag/CuiYourSupportFeature';
 import ET3Util from '../utils/ET3Util';
 
 import BaseCYAController from './BaseCYAController';
@@ -22,13 +23,15 @@ export default class CheckYourAnswersHearingPreferencesController extends BaseCY
       ? LinkStatus.COMPLETED
       : LinkStatus.IN_PROGRESS_CYA;
 
+    const supportPageUrl = await getCuiYourSupportFeature().getSupportPageUrl(req.session.userCase?.caseTypeId);
+
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.EmployerDetails,
       linkStatus,
-      PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+      supportPageUrl
     );
   };
 
@@ -50,7 +53,7 @@ export default class CheckYourAnswersHearingPreferencesController extends BaseCY
       PageUrls,
       sessionErrors: req.session.errors,
       form: this.formContent,
-      et3ResponseSection2: getEt3Section2(userCase, sectionTranslations, InterceptPaths.EMPLOYER_DETAILS_CHANGE),
+      et3ResponseSection2: await getEt3Section2(userCase, sectionTranslations, InterceptPaths.EMPLOYER_DETAILS_CHANGE),
       redirectUrl,
       hideContactUs: true,
     });

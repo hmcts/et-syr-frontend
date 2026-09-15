@@ -106,6 +106,7 @@ export function formatApiCaseDataToCaseWithId(fromApiCaseData: CaseApiDataRespon
     noticeEnds: parseDateFromString(fromApiCaseData.case_data?.claimantOtherType?.claimant_employed_notice_period),
     hearingPreferences: fromApiCaseData.case_data?.claimantHearingPreference?.hearing_preferences,
     hearingAssistance: fromApiCaseData.case_data?.claimantHearingPreference?.hearing_assistance,
+    respondentExternalFlags: fromApiCaseData.case_data?.respondentExternalFlags,
     claimantContactPreference: fromApiCaseData.case_data?.claimantType?.claimant_contact_preference,
     claimantContactLanguagePreference: fromApiCaseData.case_data?.claimantHearingPreference?.contact_language,
     claimantHearingLanguagePreference: fromApiCaseData.case_data?.claimantHearingPreference?.hearing_language,
@@ -521,6 +522,7 @@ export function getUpdateCaseBody(caseItem: CaseWithId): UpdateCaseBody {
         contact_language: caseItem.claimantContactLanguagePreference,
         hearing_language: caseItem.claimantHearingLanguagePreference,
       },
+      respondentExternalFlags: caseItem.respondentExternalFlags,
       claimantRequests: {
         discrimination_claims: caseItem.claimTypeDiscrimination,
         pay_claims: caseItem.claimTypePay,
@@ -790,21 +792,24 @@ export const mapRepresentatives = (representatives: RepresentativeApiModel[]): R
 };
 
 export const mapRespondentToRep = (caseData: CaseData, userId: string): Representative => {
-  const respondents = caseData.respondentCollection;
-
-  const currentRespondent = respondents?.find(respondent => respondent.value.idamId === userId);
-
   const repCollection = caseData.repCollection;
 
-  if (!repCollection || repCollection.length === 0) {
+  if (!userId || !repCollection?.length) {
+    return undefined;
+  }
+
+  const currentRespondentName = caseData.respondentCollection?.find(respondent => respondent?.value?.idamId === userId)
+    ?.value?.respondent_name;
+
+  if (!currentRespondentName) {
     return undefined;
   }
 
   const respondentRep = repCollection.find(
     r =>
-      r.value.myHmctsYesNo === YesOrNo.YES &&
+      r?.value?.myHmctsYesNo === YesOrNo.YES &&
       r.value.name_of_organisation &&
-      currentRespondent.value.respondent_name === r.value.resp_rep_name
+      currentRespondentName === r.value.resp_rep_name
   );
 
   return respondentRep?.value;
