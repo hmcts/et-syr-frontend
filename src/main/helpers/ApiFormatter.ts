@@ -792,21 +792,24 @@ export const mapRepresentatives = (representatives: RepresentativeApiModel[]): R
 };
 
 export const mapRespondentToRep = (caseData: CaseData, userId: string): Representative => {
-  const respondents = caseData.respondentCollection;
-
-  const currentRespondent = respondents?.find(respondent => respondent.value.idamId === userId);
-
   const repCollection = caseData.repCollection;
 
-  if (!repCollection || repCollection.length === 0) {
+  if (!userId || !repCollection?.length) {
+    return undefined;
+  }
+
+  const currentRespondentName = caseData.respondentCollection?.find(respondent => respondent?.value?.idamId === userId)
+    ?.value?.respondent_name;
+
+  if (!currentRespondentName) {
     return undefined;
   }
 
   const respondentRep = repCollection.find(
     r =>
-      r.value.myHmctsYesNo === YesOrNo.YES &&
+      r?.value?.myHmctsYesNo === YesOrNo.YES &&
       r.value.name_of_organisation &&
-      currentRespondent.value.respondent_name === r.value.resp_rep_name
+      currentRespondentName === r.value.resp_rep_name
   );
 
   return respondentRep?.value;

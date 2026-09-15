@@ -1,5 +1,6 @@
 import {
   CaseApiDataResponse,
+  CaseData,
   DocumentApiModel,
   HearingBundleType,
 } from '../../../main/definitions/api/caseApiResponse';
@@ -38,6 +39,7 @@ import {
   isOtherTitle,
   isValidPreferredTitle,
   mapBundlesDocs,
+  mapRespondentToRep,
   parseDateFromString,
   returnPreferredTitle,
   setDocumentValues,
@@ -290,6 +292,57 @@ describe('Format document model', () => {
 });
 
 describe('Format Case Data to Frontend Model', () => {
+  describe('mapRespondentToRep', () => {
+    const representative = {
+      myHmctsYesNo: YesOrNo.YES,
+      respondentId: 'respondent-id',
+      name_of_organisation: 'Representative organisation',
+      resp_rep_name: 'Respondent Ltd',
+    };
+
+    it('returns the representative for the respondent assigned to the current user', () => {
+      const caseData: CaseData = {
+        respondentCollection: [
+          { value: undefined },
+          {
+            value: {
+              idamId: 'current-user-id',
+              respondent_name: 'Respondent Ltd',
+            },
+          },
+        ],
+        repCollection: [{ value: undefined }, { value: representative }],
+      };
+
+      expect(mapRespondentToRep(caseData, 'current-user-id')).toEqual(representative);
+    });
+
+    it('returns undefined when no respondent is assigned to the current user', () => {
+      const caseData: CaseData = {
+        respondentCollection: [
+          {
+            value: {
+              idamId: 'another-user-id',
+              respondent_name: 'Respondent Ltd',
+            },
+          },
+        ],
+        repCollection: [{ value: representative }],
+      };
+
+      expect(mapRespondentToRep(caseData, 'current-user-id')).toBeUndefined();
+    });
+
+    it('returns undefined when the current user ID is missing', () => {
+      const caseData: CaseData = {
+        respondentCollection: [{ value: { respondent_name: 'Respondent Ltd' } }],
+        repCollection: [{ value: representative }],
+      };
+
+      expect(mapRespondentToRep(caseData, undefined)).toBeUndefined();
+    });
+  });
+
   it('should map respondent external flags from API case data', () => {
     const respondentExternalFlags: CaseFlags = {
       partyName: 'Test Respondent',
