@@ -23,7 +23,7 @@ export default class CheckYourAnswersHearingPreferencesController extends BaseCY
       ? LinkStatus.COMPLETED
       : LinkStatus.IN_PROGRESS_CYA;
 
-    const supportPageUrl = getCuiYourSupportFeature().getSupportPageUrl(req.session.userCase?.caseTypeId);
+    const supportPageUrl = await getCuiYourSupportFeature().getSupportPageUrl(req.session.userCase?.caseTypeId);
 
     await ET3Util.updateET3ResponseWithET3Form(
       req,
@@ -53,7 +53,7 @@ export default class CheckYourAnswersHearingPreferencesController extends BaseCY
       PageUrls,
       sessionErrors: req.session.errors,
       form: this.formContent,
-      et3ResponseSection2: getEt3Section2(userCase, sectionTranslations, InterceptPaths.EMPLOYER_DETAILS_CHANGE),
+      et3ResponseSection2: await getEt3Section2(userCase, sectionTranslations, InterceptPaths.EMPLOYER_DETAILS_CHANGE),
       redirectUrl,
       hideContactUs: true,
     });

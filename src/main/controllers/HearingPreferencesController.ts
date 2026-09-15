@@ -52,7 +52,7 @@ export default class HearingPreferencesController {
       this.form,
       ET3HubLinkNames.EmployerDetails,
       LinkStatus.IN_PROGRESS,
-      getCuiYourSupportFeature().getSupportPageUrl(req.session.userCase?.caseTypeId)
+      await getCuiYourSupportFeature().getSupportPageUrl(req.session.userCase?.caseTypeId)
     );
   };
 

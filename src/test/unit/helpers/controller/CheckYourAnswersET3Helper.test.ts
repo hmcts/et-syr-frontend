@@ -169,7 +169,7 @@ describe('CheckYourAnswersET3Helper', () => {
   });
 
   // Tests for section 2
-  it('should return correct summary list rows for section 2 when all fields are populated', () => {
+  it('should return correct summary list rows for section 2 when all fields are populated', async () => {
     const expectedRows: SummaryListRow[] = [];
 
     for (const pageUrl of section2Urls) {
@@ -190,13 +190,13 @@ describe('CheckYourAnswersET3Helper', () => {
     userCase.et3ResponseMultipleSites = YesOrNo.YES;
     userCase.et3ResponseSiteEmploymentCount = '100';
 
-    const result = getEt3Section2(userCase, translationsMock);
+    const result = await getEt3Section2(userCase, translationsMock);
 
     expect(result).toEqual(expectedRows);
   });
 
   // Tests for section 2 with POST SELECTED
-  it('should include legacy reasonable adjustments detail rows in section 2 by default', () => {
+  it('should include legacy reasonable adjustments detail rows in section 2 by default', async () => {
     const expectedRows: SummaryListRow[] = [];
     const section2UrlsWithSupportDetail = [
       PageUrls.HEARING_PREFERENCES,
@@ -225,12 +225,12 @@ describe('CheckYourAnswersET3Helper', () => {
     userCase.et3ResponseMultipleSites = YesOrNo.YES;
     userCase.et3ResponseSiteEmploymentCount = '100';
 
-    const result = getEt3Section2(userCase, translationsMock);
+    const result = await getEt3Section2(userCase, translationsMock);
 
     expect(result).toEqual(expectedRows);
   });
 
-  it('should link support to Your Support and hide legacy support detail when Scotland is enabled', () => {
+  it('should link support to Your Support and hide legacy support detail when Scotland is enabled', async () => {
     jest
       .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
       .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
@@ -249,7 +249,7 @@ describe('CheckYourAnswersET3Helper', () => {
       },
     };
 
-    const result = getEt3Section2(scotlandUserCase, translationsMock, '?change');
+    const result = await getEt3Section2(scotlandUserCase, translationsMock, '?change');
 
     const supportRows = result.filter(row => row.key.text === translationsMock.section2.disabilitySupport);
     expect(supportRows).toHaveLength(1);
@@ -376,11 +376,11 @@ describe('CheckYourAnswersET3Helper', () => {
     expect(result).toEqual(expectedRows);
   });
 
-  it('should exclude "Change" links when hideChangeLink is true', () => {
+  it('should exclude "Change" links when hideChangeLink is true', async () => {
     const request: AppRequest = mockRequest({});
     request.session.userCase = userCase;
     const result = getEt3Section1(request, translationsMock, undefined, true);
-    const result2 = getEt3Section2(userCase, translationsMock, undefined, true);
+    const result2 = await getEt3Section2(userCase, translationsMock, undefined, true);
     const result3 = getEt3Section3(request, translationsMock, undefined, true);
     const result4 = getEt3Section4(userCase, translationsMock, undefined, true);
     const result5 = getEt3Section5(userCase, translationsMock, undefined, true);

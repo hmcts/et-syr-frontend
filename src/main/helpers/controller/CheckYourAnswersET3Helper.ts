@@ -176,12 +176,12 @@ export const getEt3Section1 = (
   return et3ResponseSection1;
 };
 
-export const getEt3Section2 = (
+export const getEt3Section2 = async (
   userCase: CaseWithId,
   translations: AnyRecord,
   sectionCya?: string,
   hideChangeLink?: boolean
-): SummaryListRow[] => {
+): Promise<SummaryListRow[]> => {
   const et3ResponseSection2: SummaryListRow[] = [];
 
   et3ResponseSection2.push(
@@ -195,12 +195,12 @@ export const getEt3Section2 = (
   );
 
   const cuiYourSupportFeature = getCuiYourSupportFeature();
-  if (cuiYourSupportFeature.isEnabled(userCase.caseTypeId)) {
+  if (await cuiYourSupportFeature.isEnabled(userCase.caseTypeId)) {
     et3ResponseSection2.push(
       addSummaryRowWithAction(
         translations.section2.disabilitySupport,
         getCuiYourSupportAnswer(userCase, translations),
-        cuiYourSupportFeature.getSupportPageUrl(userCase.caseTypeId),
+        await cuiYourSupportFeature.getSupportPageUrl(userCase.caseTypeId),
         hideChangeLink ? undefined : translations.change,
         hideChangeLink ? undefined : sectionCya
       )

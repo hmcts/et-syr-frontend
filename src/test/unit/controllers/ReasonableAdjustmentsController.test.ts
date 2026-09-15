@@ -28,19 +28,19 @@ describe('ReasonableAdjustmentsController', () => {
   });
 
   describe('GET method', () => {
-    it('should render the page with the correct translations', () => {
+    it('should render the page with the correct translations', async () => {
       request = mockRequestWithTranslation({}, translationJsons);
-      controller.get(request, response);
+      await controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.REASONABLE_ADJUSTMENTS, expect.anything());
     });
 
-    it('should redirect to Your Support when CUI Your Support is enabled for Scotland', () => {
+    it('should redirect to Your Support when CUI Your Support is enabled for Scotland', async () => {
       jest
         .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
         .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
       request = mockRequestWithTranslation({ userCase: { caseTypeId: CaseTypeId.SCOTLAND } }, translationJsons);
 
-      controller.get(request, response);
+      await controller.get(request, response);
 
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.YOUR_SUPPORT);
     });
