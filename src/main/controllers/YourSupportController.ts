@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, YesOrNo, YesOrNoOrNotSure } from '../definitions/case';
+import { CaseWithId, YesOrNo } from '../definitions/case';
 import { AuthUrls, PageUrls, TranslationKeys } from '../definitions/constants';
 import { CaseState } from '../definitions/definition';
 import { FormContent, FormFields } from '../definitions/form';
@@ -199,7 +199,6 @@ export default class YourSupportController {
 
   private async handleNoSupportSelected(req: AppRequest, res: Response): Promise<void> {
     req.session.errors = [];
-    req.session.userCase.et3ResponseRespondentSupportNeeded = YesOrNoOrNotSure.NO;
     await this.updateDraftCaseIfNeeded(req);
     res.redirect(this.getExitUrl(req, true));
   }

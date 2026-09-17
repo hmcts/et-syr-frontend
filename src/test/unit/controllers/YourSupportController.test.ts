@@ -1,5 +1,5 @@
 import YourSupportController from '../../../main/controllers/YourSupportController';
-import { YesOrNo, YesOrNoOrNotSure } from '../../../main/definitions/case';
+import { YesOrNo } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import { CaseState } from '../../../main/definitions/definition';
 import { handleUpdateDraftCase, handleUpdateSubmittedCaseFlags } from '../../../main/helpers/CaseHelpers';
@@ -284,7 +284,6 @@ describe('YourSupportController', () => {
     await controller.post(req, res);
 
     expect(handleUpdateDraftCase).toHaveBeenCalledWith(req, expect.anything());
-    expect(req.session.userCase.et3ResponseRespondentSupportNeeded).toBe(YesOrNoOrNotSure.NO);
     expect(res.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_ET3);
     expect(req.session.returnUrl).toBe('');
   });

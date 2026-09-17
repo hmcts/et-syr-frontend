@@ -195,17 +195,7 @@ export const getEt3Section2 = async (
   );
 
   const cuiYourSupportFeature = getCuiYourSupportFeature();
-  if (await cuiYourSupportFeature.isEnabled(userCase.caseTypeId)) {
-    et3ResponseSection2.push(
-      addSummaryRowWithAction(
-        translations.section2.disabilitySupport,
-        getCuiYourSupportAnswer(userCase, translations),
-        await cuiYourSupportFeature.getSupportPageUrl(userCase.caseTypeId),
-        hideChangeLink ? undefined : translations.change,
-        hideChangeLink ? undefined : sectionCya
-      )
-    );
-  } else {
+  if (!(await cuiYourSupportFeature.isEnabled(userCase.caseTypeId))) {
     et3ResponseSection2.push(
       addSummaryRowWithAction(
         translations.section2.disabilitySupport,
@@ -258,30 +248,6 @@ export const getEt3Section2 = async (
   );
 
   return et3ResponseSection2;
-};
-
-const getCuiYourSupportAnswer = (userCase: CaseWithId, translations: AnyRecord): string => {
-  if (
-    userCase.et3ResponseRespondentSupportNeeded === YesOrNoOrNotSure.NO ||
-    userCase.reasonableAdjustments === YesOrNo.NO
-  ) {
-    return translations.oesYesOrNo.no;
-  }
-
-  const flagDetails = userCase.respondentExternalFlags?.details;
-  if (flagDetails?.some(flag => flag.value?.status !== 'Inactive')) {
-    return translations.oesYesOrNo.yes;
-  }
-
-  if (flagDetails?.length) {
-    return translations.oesYesOrNo.no;
-  }
-
-  if (userCase.et3ResponseRespondentSupportNeeded === YesOrNoOrNotSure.YES) {
-    return translations.oesYesOrNo.yes;
-  }
-
-  return translations.notProvided;
 };
 
 export const getEt3Section3 = (
