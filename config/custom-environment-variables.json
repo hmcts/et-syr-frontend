@@ -1,5 +1,8 @@
 {
   "services": {
+    "cui": {
+      "endpoint": "CUI_URL"
+    },
     "et3Legacy": {
       "url": "ET3_LEGACY_URL"
     },

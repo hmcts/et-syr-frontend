@@ -7,15 +7,18 @@ import {
   conditionalRedirect,
   endSubSection,
   endSubSectionReturnNextPage,
+  getLanguageCode,
   getLanguageParam,
   isClearSelection,
   isClearSelectionWithoutRequestUserCaseCheck,
+  isSelfAssignment,
   returnNextPage,
   returnSafeCaseDetailsUrl,
   returnValidNotAllowedEndPointsForwardingUrl,
   returnValidUrl,
   returnValidUrlWithPathParam,
   startSubSection,
+  validateLanguageParam,
 } from '../../../main/helpers/RouterHelpers';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
@@ -23,6 +26,25 @@ import { mockResponse } from '../mocks/mockResponse';
 import mockUserCase from '../mocks/mockUserCase';
 
 describe('RouterHelper', () => {
+  describe('validateLanguageParam', () => {
+    it('should validate supported language values', () => {
+      expect(validateLanguageParam(languages.ENGLISH)).toBe(true);
+      expect(validateLanguageParam(languages.WELSH)).toBe(true);
+      expect(validateLanguageParam('fr')).toBe(false);
+    });
+  });
+
+  describe('getLanguageCode', () => {
+    it('should return Welsh when the URL has a valid Welsh language parameter', () => {
+      expect(getLanguageCode('/some-url?lng=cy')).toBe(languages.WELSH);
+    });
+
+    it('should fall back to English when the URL has no valid language parameter', () => {
+      expect(getLanguageCode('/some-url?lng=fr')).toBe(languages.ENGLISH);
+      expect(getLanguageCode('/some-url')).toBe(languages.ENGLISH);
+    });
+  });
+
   describe('getLanguageParam', () => {
     it('should return Welsh language parameter if url contains lng=cy', () => {
       const result = getLanguageParam('/some-url?lng=cy');
@@ -278,6 +300,25 @@ describe('RouterHelper', () => {
       expect(isClearSelectionWithoutRequestUserCaseCheck(request)).toBe(true);
     });
   });
+
+  describe('isSelfAssignment', () => {
+    it('should return true when the redirect query is self assignment', () => {
+      const request = mockRequest({});
+      request.query = { redirect: DefaultValues.SELF_ASSIGNMENT };
+
+      expect(isSelfAssignment(request)).toBe(true);
+    });
+
+    it('should return false when the redirect query is missing or different', () => {
+      const request = mockRequest({});
+
+      expect(isSelfAssignment(request)).toBe(false);
+
+      request.query = { redirect: DefaultValues.CLEAR_SELECTION };
+      expect(isSelfAssignment(request)).toBe(false);
+    });
+  });
+
   describe('returnValidUrlWithPathParam', () => {
     it('should return NOT_FOUND when paramValue is blank', () => {
       expect(returnValidUrlWithPathParam(PageUrls.RESPOND_TO_NOTIFICATION, 'itemId', '', '?lng=en')).toBe(
