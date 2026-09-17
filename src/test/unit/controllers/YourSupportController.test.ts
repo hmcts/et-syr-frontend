@@ -1,5 +1,5 @@
 import YourSupportController from '../../../main/controllers/YourSupportController';
-import { YesOrNo } from '../../../main/definitions/case';
+import { YesOrNo, YesOrNoOrNotSure } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys, languages } from '../../../main/definitions/constants';
 import { CaseState } from '../../../main/definitions/definition';
 import { handleUpdateDraftCase, handleUpdateSubmittedCaseFlags } from '../../../main/helpers/CaseHelpers';
@@ -115,6 +115,35 @@ describe('YourSupportController', () => {
       })
     );
     expect(req.session.errors).toEqual([]);
+  });
+
+  it('should use the staged hearing preferences check answers URL when entered from that flow', async () => {
+    const controller = new YourSupportController();
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+        responseReceived: YesOrNo.NO,
+      },
+      session: {
+        subSectionUrl: `${PageUrls.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES}${languages.ENGLISH_URL_PARAMETER}`,
+      },
+    });
+    setRequestRuntime(req);
+    (req.t as unknown as jest.Mock).mockReturnValue({});
+    const res = mockResponse();
+
+    await controller.get(req, res);
+
+    expect(res.render).toHaveBeenCalledWith(
+      'your-support',
+      expect.objectContaining({
+        cancelLink: `${PageUrls.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES}${languages.ENGLISH_URL_PARAMETER}`,
+      })
+    );
+    expect(req.session.returnUrl).toBe(
+      `${PageUrls.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES}${languages.ENGLISH_URL_PARAMETER}`
+    );
+    expect(req.session.subSectionUrl).toBeUndefined();
   });
 
   it('should redirect from your support page when the case cannot access the CUI journey', async () => {
@@ -255,6 +284,7 @@ describe('YourSupportController', () => {
     await controller.post(req, res);
 
     expect(handleUpdateDraftCase).toHaveBeenCalledWith(req, expect.anything());
+    expect(req.session.userCase.et3ResponseRespondentSupportNeeded).toBe(YesOrNoOrNotSure.NO);
     expect(res.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_ET3);
     expect(req.session.returnUrl).toBe('');
   });
@@ -414,6 +444,37 @@ describe('YourSupportController', () => {
     expect(handleUpdateSubmittedCaseFlags).not.toHaveBeenCalled();
     expect(res.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_ET3);
     expect(req.session.returnUrl).toBe('');
+  });
+
+  it('should redirect a direct CUI callback with no flag changes to the task list', async () => {
+    const getJourneyDataMock = jest.fn().mockResolvedValue({
+      action: CUIActions.SUBMIT,
+      correlationId: '1234',
+    });
+    (getCuiService as jest.Mock).mockReturnValue({ getJourneyData: getJourneyDataMock });
+    const controller = new YourSupportController({
+      getToken: jest.fn().mockResolvedValue('service-token'),
+    } as never);
+    const req = mockRequest({
+      userCase: {
+        id: '1234',
+        responseReceived: YesOrNo.NO,
+      },
+    });
+    req.params = {
+      ...req.params,
+      id: 'journey-id',
+    };
+    setRequestRuntime(req);
+    const res = mockResponse();
+
+    await controller.callback(req, res);
+
+    expect(handleUpdateDraftCase).not.toHaveBeenCalled();
+    expect(handleUpdateSubmittedCaseFlags).not.toHaveBeenCalled();
+    expect(res.redirect).toHaveBeenCalledWith(
+      `${PageUrls.RESPONDENT_RESPONSE_TASK_LIST}${languages.ENGLISH_URL_PARAMETER}`
+    );
   });
 
   it('should save when only flags as supplied has details', async () => {

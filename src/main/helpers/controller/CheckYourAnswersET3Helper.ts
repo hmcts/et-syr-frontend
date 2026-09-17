@@ -261,12 +261,24 @@ export const getEt3Section2 = async (
 };
 
 const getCuiYourSupportAnswer = (userCase: CaseWithId, translations: AnyRecord): string => {
-  if (userCase.respondentExternalFlags?.details?.length) {
+  if (
+    userCase.et3ResponseRespondentSupportNeeded === YesOrNoOrNotSure.NO ||
+    userCase.reasonableAdjustments === YesOrNo.NO
+  ) {
+    return translations.oesYesOrNo.no;
+  }
+
+  const flagDetails = userCase.respondentExternalFlags?.details;
+  if (flagDetails?.some(flag => flag.value?.status !== 'Inactive')) {
     return translations.oesYesOrNo.yes;
   }
 
-  if (userCase.reasonableAdjustments === YesOrNo.NO) {
+  if (flagDetails?.length) {
     return translations.oesYesOrNo.no;
+  }
+
+  if (userCase.et3ResponseRespondentSupportNeeded === YesOrNoOrNotSure.YES) {
+    return translations.oesYesOrNo.yes;
   }
 
   return translations.notProvided;

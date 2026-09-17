@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, YesOrNo } from '../definitions/case';
+import { CaseWithId, YesOrNo, YesOrNoOrNotSure } from '../definitions/case';
 import { AuthUrls, PageUrls, TranslationKeys } from '../definitions/constants';
 import { CaseState } from '../definitions/definition';
 import { FormContent, FormFields } from '../definitions/form';
@@ -10,7 +10,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { handleUpdateDraftCase, handleUpdateSubmittedCaseFlags, setUserCase } from '../helpers/CaseHelpers';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
-import { getLanguageCode, returnValidUrl } from '../helpers/RouterHelpers';
+import { endSubSection, getLanguageCode, returnValidUrl } from '../helpers/RouterHelpers';
 import { isEt3ResponseSubmitted as hasEt3ResponseSubmitted } from '../helpers/controller/CaseDetailsHelper';
 import { buildCuiFlagDetails, mergeRespondentExternalFlags } from '../helpers/controller/CuiFlagHelper';
 import { getLogger } from '../logger';
@@ -76,6 +76,8 @@ export default class YourSupportController {
     if (await this.redirectIfUnavailable(req, res)) {
       return;
     }
+
+    endSubSection(req);
 
     const content = getPageContent(req, this.yourSupportContent, [
       TranslationKeys.COMMON,
@@ -197,6 +199,7 @@ export default class YourSupportController {
 
   private async handleNoSupportSelected(req: AppRequest, res: Response): Promise<void> {
     req.session.errors = [];
+    req.session.userCase.et3ResponseRespondentSupportNeeded = YesOrNoOrNotSure.NO;
     await this.updateDraftCaseIfNeeded(req);
     res.redirect(this.getExitUrl(req, true));
   }

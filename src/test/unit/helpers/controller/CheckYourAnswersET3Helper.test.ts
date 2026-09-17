@@ -257,6 +257,53 @@ describe('CheckYourAnswersET3Helper', () => {
     expect(result.map(row => row.key.text)).not.toContain(translationsMock.section2.supportRequest);
   });
 
+  it('should show no support when the CUI start page selection is no', async () => {
+    jest
+      .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+      .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
+    const scotlandUserCase: CaseWithId = {
+      ...userCase,
+      caseTypeId: CaseTypeId.SCOTLAND,
+      et3ResponseRespondentSupportNeeded: YesOrNoOrNotSure.NO,
+      respondentExternalFlags: {
+        details: [
+          {
+            id: 'flag-1',
+            value: {},
+          },
+        ],
+      },
+    };
+
+    const result = await getEt3Section2(scotlandUserCase, translationsMock);
+    const supportRow = result.find(row => row.key.text === translationsMock.section2.disabilitySupport);
+
+    expect(supportRow?.value.text).toBe(translationsMock.oesYesOrNo.no);
+  });
+
+  it('should show no support when all CUI flags are inactive', async () => {
+    jest
+      .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+      .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
+    const scotlandUserCase: CaseWithId = {
+      ...userCase,
+      caseTypeId: CaseTypeId.SCOTLAND,
+      respondentExternalFlags: {
+        details: [
+          {
+            id: 'flag-1',
+            value: { status: 'Inactive' },
+          },
+        ],
+      },
+    };
+
+    const result = await getEt3Section2(scotlandUserCase, translationsMock);
+    const supportRow = result.find(row => row.key.text === translationsMock.section2.disabilitySupport);
+
+    expect(supportRow?.value.text).toBe(translationsMock.oesYesOrNo.no);
+  });
+
   // Tests for section 3
   it('should return correct summary list rows for section 3 when all fields are populated', () => {
     const expectedRows: SummaryListRow[] = [];
