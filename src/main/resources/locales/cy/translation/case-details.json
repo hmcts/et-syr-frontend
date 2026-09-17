@@ -35,11 +35,26 @@
   "busyPeriod": ". Gall gymryd mwy o amser na hyn ar adegau prysur.",
   "appointLegalRepresentative": "Penodi cynrychiolydd cyfreithiol",
   "changeLegalRepresentative": "Newid fy nghynrychiolydd cyfreithiol",
+  "groupClaims": {
+    "inset": {
+      "header": "[W] You are the respondent in a group claim",
+      "p1": "[W] You can make applications and contact the tribunal.",
+      "p2": "[W] You will be asked to share any communication to the tribunal with the claimant party.",
+      "p3": "[W] Go to 'Group claim requests and applications' to see updates from other parties in the claimant party.",
+      "p4": "[W] Read our ",
+      "p4Url": "#",
+      "p4UrlText": "[W] guidance on group claims (opens in new tab)"
+    }
+  },
   "notificationBanner": {
     "viewResponse": {
       "header": "Mae’r tribiwnlys wedi cydnabod hawliad yn erbyn ",
       "p1": "Rydych wedi ymateb i'r hawliad hwn",
-      "link": "Gweld yr ymateb"
+      "link": "Gweld yr ymateb",
+      "groupClaim": {
+        "header": "[W] The tribunal has acknowledged a group claim against ",
+        "p1": "[W] You have responded to this group claim"
+      }
     },
     "acknowledgement": {
       "header": "Mae’r tribiwnlys wedi cydnabod hawliad yn erbyn ",
@@ -47,7 +62,14 @@
       "link2": "Ymateb i’r hawliad",
       "returnToResponse": "Dychwelyd at yr ymateb yr ydych wedi’i gadw",
       "p1": "Dylech ymateb i’r hawliad hwn erbyn ",
-      "p2": "<span class=\"govuk-body govuk-!-font-weight-bold\">Beth sy’n digwydd nesaf </span><br>Mae’r tribiwnlys wedi gofyn i’r atebydd ymateb i’ch cais erbyn"
+      "p2": "<span class=\"govuk-body govuk-!-font-weight-bold\">Beth sy’n digwydd nesaf </span><br>Mae’r tribiwnlys wedi gofyn i’r atebydd ymateb i’ch cais erbyn",
+      "whatHappensNext": "Beth sy’n digwydd nesaf?",
+      "groupClaims": {
+        "header": "[W] The tribunal has acknowledged a group claim against ",
+        "p1": "[W] More than one claimant has made a claim against you. The claims contain similar issues of fact and law.",
+        "link": "[W] ET1 group claim form",
+        "viewET1Form": "[W] View the group claim form:"
+      }
     },
     "rejection": {
       "header": "Mae’r tribiwnlys wedi gwrthod y cyfan neu ran o’ch hawliad",

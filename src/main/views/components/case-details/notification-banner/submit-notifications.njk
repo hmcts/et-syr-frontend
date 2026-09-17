@@ -1,0 +1,18 @@
+{% for app in appSubmitNotifications %}
+  {% if loop.index <= 5 %}
+    {% set htmlForAppSubmitNotifications %}
+      <h3 class="govuk-notification-banner__heading">{{ notificationBanner.tseHasSubmit.p1a }} {{ app.from }} {{ app.fromName }} {{ notificationBanner.tseHasSubmit.p1b }} {{ app.appName }}</h3>
+      {% if app.isTypeB %}
+        <p class="govuk-body">{{ notificationBanner.tseHasSubmit.p2TypeB }}</p>
+      {% endif %}
+      <p class="govuk-body">{{ notificationBanner.tseHasSubmit.p3a }} <b>{{ dateToLocale(app.dueDate) }}</b> {{ notificationBanner.tseHasSubmit.p3b }}</p>
+      <h3 class="govuk-notification-banner__heading">
+        <a class="govuk-link" href="{{ app.appUrl }}">{{ notificationBanner.tseHasSubmit.linkText }}</a>
+      </h3>
+    {% endset %}
+    {{ govukNotificationBanner({
+      html: htmlForAppSubmitNotifications,
+      titleText: important
+    }) }}
+  {% endif %}
+{% endfor %}
