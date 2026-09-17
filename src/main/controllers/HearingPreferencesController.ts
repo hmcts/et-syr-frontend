@@ -46,16 +46,9 @@ export default class HearingPreferencesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
-    const supportPageUrl = await getCuiYourSupportFeature().getSupportPageUrl(req.session.userCase?.caseTypeId);
-
-    if (
-      supportPageUrl === PageUrls.YOUR_SUPPORT &&
-      !req.body?.saveForLater &&
-      !req.session.returnUrl &&
-      !req.session.subSectionUrl
-    ) {
-      req.session.subSectionUrl = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES);
-    }
+    const nextPage = (await getCuiYourSupportFeature().isEnabled(req.session.userCase?.caseTypeId))
+      ? PageUrls.RESPONDENT_EMPLOYEES
+      : PageUrls.REASONABLE_ADJUSTMENTS;
 
     await ET3Util.updateET3ResponseWithET3Form(
       req,
@@ -63,7 +56,7 @@ export default class HearingPreferencesController {
       this.form,
       ET3HubLinkNames.EmployerDetails,
       LinkStatus.IN_PROGRESS,
-      supportPageUrl
+      nextPage
     );
   };
 
