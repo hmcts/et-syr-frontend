@@ -142,7 +142,14 @@ export default class YourSupportController {
       const result = await this.getCuiJourneyData(req);
       this.validateJourneyCorrelationId(req, result);
 
-      if (!this.isSubmittedJourney(result) || !this.hasCuiFlagChanges(result)) {
+      if (!this.isSubmittedJourney(result)) {
+        logger.info(`CUI journey completed with action "${result.action}", redirecting to the ET home page`);
+        req.session.returnUrl = '';
+        res.redirect(PageUrls.HOME);
+        return;
+      }
+
+      if (!this.hasCuiFlagChanges(result)) {
         logger.info(
           `CUI journey completed with action "${result.action}", redirecting back to case page without updating flags`
         );

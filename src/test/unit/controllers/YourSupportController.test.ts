@@ -321,7 +321,7 @@ describe('YourSupportController', () => {
     expect(res.redirect).toHaveBeenCalledWith(`${PageUrls.YOUR_SUPPORT}${languages.ENGLISH_URL_PARAMETER}`);
   });
 
-  it('should redirect back without saving when CUI journey is cancelled', async () => {
+  it('should redirect to the ET home page without saving when CUI journey is cancelled', async () => {
     const getJourneyDataMock = jest.fn().mockResolvedValue({
       action: CUIActions.CANCEL,
       correlationId: '1234',
@@ -351,7 +351,7 @@ describe('YourSupportController', () => {
     expect(getJourneyDataMock).toHaveBeenCalledWith('journey-id', { serviceToken: 'service-token' });
     expect(handleUpdateDraftCase).not.toHaveBeenCalled();
     expect(handleUpdateSubmittedCaseFlags).not.toHaveBeenCalled();
-    expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_LIST);
+    expect(res.redirect).toHaveBeenCalledWith(PageUrls.HOME);
     expect(req.session.returnUrl).toBe('');
   });
 
