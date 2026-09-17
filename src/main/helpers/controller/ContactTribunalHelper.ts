@@ -21,13 +21,17 @@ export const getApplicationsAccordionItems = (url: string, translations: AnyReco
 };
 
 const getContentHtml = (key: keyof typeof application, translations: AnyRecord, languageParam: string): string => {
+  const href =
+    key === 'SUBMIT_DOCUMENTS_FOR_HEARING'
+      ? PageUrls.PREPARE_AND_SUBMIT_HEARING_DOCUMENTS + languageParam
+      : PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', application[key].url ?? '') + languageParam;
+
   return (
     '<p class="govuk-body">' +
     translations.sections[key].body +
     '</p>' +
     '<a class="govuk-link govuk-body" href="' +
-    PageUrls.CONTACT_TRIBUNAL_SELECTED.replace(':selectedOption', application[key].url) +
-    languageParam +
+    href +
     '">' +
     translations.sections[key].label +
     '</a>'

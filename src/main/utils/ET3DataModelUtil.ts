@@ -4,6 +4,7 @@ import { CaseWithId, RespondentET3Model } from '../definitions/case';
 import { Et1Address } from '../definitions/complexTypes/et1Address';
 import { RespondentSumType, RespondentType } from '../definitions/complexTypes/respondent';
 import { FormFieldNames, LoggerConstants, ServiceErrors, ValidationErrors } from '../definitions/constants';
+import { ET3Status } from '../definitions/definition';
 import { getLogger } from '../logger';
 
 import AddressUtils from './AddressUtils';
@@ -231,7 +232,7 @@ export default class ET3DataModelUtil {
       idamId: StringUtils.isNotBlank(caseWithId.idamId) ? caseWithId.idamId : selectedRespondent.idamId,
       et3CaseDetailsLinksStatuses: caseWithId.et3CaseDetailsLinksStatuses,
       et3IsRespondentAddressCorrect: caseWithId.et3IsRespondentAddressCorrect,
-      et3Status: caseWithId.et3Status ?? 'inProgress',
+      et3Status: caseWithId.et3Status ?? ET3Status.IN_PROGRESS,
       et3HubLinksStatuses: caseWithId.et3HubLinksStatuses,
       et3FormWelsh: caseWithId.et3FormWelsh,
       et3Form: caseWithId.et3Form,

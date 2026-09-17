@@ -6,15 +6,15 @@ import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { ET3Status } from '../definitions/definition';
 import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../definitions/links';
 import { TseNotification } from '../definitions/notification/tseNotification';
-import { formatApiCaseDataToCaseWithId, formatDate, getDueDate } from '../helpers/ApiFormatter';
+import { formatDate, getDueDate } from '../helpers/ApiFormatter';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { LoadUserCaseResults, loadUserCaseFromApi } from '../helpers/LoadUserCaseHelper';
 import { getProgressBarItems } from '../helpers/ProgressBarHelpers';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import { getET3CaseDetailsLinkNames, getSections } from '../helpers/controller/CaseDetailsHelper';
 import { getAppNotifications } from '../helpers/notification/ApplicationNotificationHelper';
 import { getStoredBannerList } from '../helpers/notification/StoredNotificationHelper';
 import { getTribunalNotificationBanner } from '../helpers/notification/TribunalNotificationHelper';
-import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
 import ET3DataModelUtil from '../utils/ET3DataModelUtil';
 import ET3Util from '../utils/ET3Util';
@@ -23,10 +23,16 @@ import { RespondentUtils } from '../utils/RespondentUtils';
 const DAYS_FOR_PROCESSING = 7;
 export default class CaseDetailsController {
   public async get(req: AppRequest, res: Response): Promise<void> {
-    req.session.userCase = formatApiCaseDataToCaseWithId(
-      (await getCaseApi(req.session.user?.accessToken).getUserCase(req.params.caseSubmissionReference)).data,
-      req
-    );
+    const loadResult = await loadUserCaseFromApi(req, res, req.params.caseSubmissionReference, req.params.ccdId);
+
+    if (loadResult === LoadUserCaseResults.TRANSFERRED) {
+      return;
+    }
+
+    if (loadResult === LoadUserCaseResults.FAILED) {
+      return res.redirect(PageUrls.NOT_FOUND + getLanguageParam(req.url));
+    }
+
     req.session.selectedRespondentIndex = ET3Util.findSelectedRespondentIndex(req);
 
     if (CollectionUtils.isNotEmpty(req.session.errors)) {

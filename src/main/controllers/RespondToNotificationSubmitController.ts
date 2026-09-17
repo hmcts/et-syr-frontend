@@ -2,11 +2,12 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { ErrorPages, PageUrls, TseErrors } from '../definitions/constants';
-import { formatApiCaseDataToCaseWithId } from '../helpers/ApiFormatter';
+import { LoadUserCaseResults, loadUserCaseFromApi } from '../helpers/LoadUserCaseHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
 import { clearTempFields } from '../helpers/controller/RespondToNotificationSubmitHelper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
+import { RespondentUtils } from '../utils/RespondentUtils';
 
 const logger = getLogger('RespondToNotificationSubmitController');
 
@@ -23,10 +24,20 @@ export default class RespondToNotificationSubmitController {
       clearTempFields(userCase);
 
       // refresh userCase from api
-      req.session.userCase = formatApiCaseDataToCaseWithId(
-        (await getCaseApi(user?.accessToken).getUserCase(userCase.id)).data,
-        req
+      const loadResult = await loadUserCaseFromApi(
+        req,
+        res,
+        userCase.id,
+        RespondentUtils.findSelectedRespondentByRequest(req)?.ccdId
       );
+
+      if (loadResult === LoadUserCaseResults.TRANSFERRED) {
+        return;
+      }
+
+      if (loadResult === LoadUserCaseResults.FAILED) {
+        return res.redirect(ErrorPages.NOT_FOUND + languageParam);
+      }
 
       return res.redirect(PageUrls.RESPOND_TO_NOTIFICATION_COMPLETE + languageParam);
     } catch (error) {

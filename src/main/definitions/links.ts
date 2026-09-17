@@ -133,6 +133,7 @@ export const LinkColors = {
 export const enum LinkStatus {
   COMPLETED = 'completed',
   SUBMITTED = 'submitted',
+  ACCEPTED = 'accepted',
   OPTIONAL = 'optional',
   VIEWED = 'viewed',
   NOT_VIEWED = 'notViewedYet',
@@ -156,6 +157,7 @@ export const enum LinkStatus {
 export const linkStatusColorMap = new Map<LinkStatus, string>([
   [LinkStatus.COMPLETED, LinkColors.GREEN],
   [LinkStatus.SUBMITTED, LinkColors.TEAL],
+  [LinkStatus.ACCEPTED, LinkColors.GREEN],
   [LinkStatus.OPTIONAL, LinkColors.BLUE],
   [LinkStatus.VIEWED, LinkColors.TEAL],
   [LinkStatus.NOT_VIEWED, LinkColors.RED],

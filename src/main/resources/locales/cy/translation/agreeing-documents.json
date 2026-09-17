@@ -1,0 +1,31 @@
+{
+  "title": "Cytuno ar ddogfennau",
+  "caption": "Paratoi dogfennau ar gyfer gwrandawiad",
+  "h1": "Cytuno ar ddogfennau",
+  "inset": "Efallai y dywedwyd wrthych mewn gorchymyn gan y tribiwnlys i weithio gyda’r parti arall i gytuno ar y dogfennau y dibynnir arnynt yn y gwrandawiad.",
+  "bundlesRespondentAgreedDocWith": {
+    "label": "Ydych chi wedi cytuno ar y dogfennau hyn gyda’r parti arall?",
+    "yes": "Ydw",
+    "agreedBut": "Rydym wedi cytuno ond mae yna rai dogfennau dadleuol",
+    "notAgreed": "Na, nid ydym wedi cytuno ac rwyf eisiau darparu fy nogfennau fy hun"
+  },
+  "bundlesRespondentAgreedDocWithBut": {
+    "label": "Dywedwch wrthym pa ddogfennau sy'n destun anghydfod"
+  },
+  "bundlesRespondentAgreedDocWithNo": {
+    "label": "Dywedwch wrthym pam nad ydych wedi gallu cytuno â’r parti arall"
+  },
+  "errors": {
+    "bundlesRespondentAgreedDocWith": {
+      "required": "Dywedwch wrthym os ydych wedi cytuno ar y dogfennau hyn gyda’r parti arall?"
+    },
+    "bundlesRespondentAgreedDocWithBut": {
+      "required": "Dywedwch wrthym pa ddogfennau sy'n destun anghydfod",
+      "tooLong": "Dylech ddweud wrthym pa ddogfennau sy'n destun anghydfod mewn llai na 2500 o lythrennau"
+    },
+    "bundlesRespondentAgreedDocWithNo": {
+      "required": "Dywedwch wrthym pam nad ydych wedi gallu cytuno â’r parti arall",
+      "tooLong": "Dylech ddweud wrthym pam nad ydych wedi gallu cytuno gyda'r parti arall mewn llai na 2500 o lythrennau"
+    }
+  }
+}

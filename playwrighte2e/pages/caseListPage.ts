@@ -57,10 +57,14 @@ export default class CaseListPage extends BasePage {
     await this.webActions.verifyElementContainsText(this.page.locator('#search-result'), submissionReference);
   }
 
-  async processCaseFromCaseList(): Promise<string[]> {
-    const caseNumber = await this.page.getByLabel('go to case with Case').allTextContents();
+  async processCaseFromCaseList(): Promise<string> {
+    const caseLink = this.page.getByLabel(/go to case with Case/i).first();
+    const ariaLabel = (await caseLink.getAttribute('aria-label')) ?? '';
+    const caseNumberMatch = ariaLabel.match(/\d{1,7}\/\d{4}/);
+    const caseNumber = caseNumberMatch?.[0] ?? (await caseLink.textContent())?.trim() ?? '';
+
     console.log('The value of the Case Number ' + caseNumber);
-    await this.webActions.clickElementByLabel('go to case with Case');
+    await caseLink.click();
 
     await expect(this.page.getByRole('tab', { name: 'Case Details' }).locator('div')).toContainText('Case Details');
     return caseNumber;
