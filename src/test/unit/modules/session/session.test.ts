@@ -140,14 +140,15 @@ describe('Session', () => {
       }
     );
 
-    it('stays on the primary when enabled without a secondary host', () => {
+    it('relies on the flag alone, creating a secondary client even without a secondary host', () => {
       process.env.REDIS_DUAL_WRITE_ENABLED = 'true';
       const app = buildApp();
 
       new Session().enableFor(app);
 
-      expect(mockCreateClient).toHaveBeenCalledTimes(1);
-      expect(app.locals.redisClient).toBe(primaryClient);
+      expect(mockCreateClient).toHaveBeenCalledTimes(2);
+      expect(mockCreateClient).toHaveBeenLastCalledWith(expect.objectContaining({ host: undefined, port: 10000 }));
+      expect(app.locals.redisClient).not.toBe(primaryClient);
     });
   });
 
