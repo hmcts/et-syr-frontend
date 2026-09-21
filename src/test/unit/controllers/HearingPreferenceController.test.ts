@@ -1,5 +1,5 @@
 import HearingPreferencesController from '../../../main/controllers/HearingPreferencesController';
-import { CaseTypeId, HearingPreference } from '../../../main/definitions/case';
+import { CaseTypeId, HearingPreferenceET3 } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { CuiYourSupportFeature } from '../../../main/modules/featureFlag/CuiYourSupportFeature';
 import * as CuiYourSupportFeatureModule from '../../../main/modules/featureFlag/CuiYourSupportFeature';
@@ -39,7 +39,7 @@ describe('HearingPreferencesController', () => {
     it('should redirect to reasonable adjustments by default when preferences are valid', async () => {
       request = mockRequest({
         body: {
-          et3ResponseHearingRespondent: HearingPreference.VIDEO,
+          et3ResponseHearingRespondent: HearingPreferenceET3.VIDEO,
         },
       });
       request.url = PageUrls.HEARING_PREFERENCES;
@@ -48,13 +48,13 @@ describe('HearingPreferencesController', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
     });
 
-    it('should redirect to Your Support when Scotland is enabled', async () => {
+    it('should redirect to respondent employees when Scotland is enabled', async () => {
       jest
         .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
         .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
       request = mockRequest({
         body: {
-          et3ResponseHearingRespondent: HearingPreference.NEITHER,
+          et3ResponseHearingRespondent: HearingPreferenceET3.PHONE,
         },
         userCase: {
           caseTypeId: CaseTypeId.SCOTLAND,
@@ -66,7 +66,7 @@ describe('HearingPreferencesController', () => {
         caseTypeId: CaseTypeId.SCOTLAND,
       });
       await controller.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.YOUR_SUPPORT);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_EMPLOYEES);
     });
   });
 });
