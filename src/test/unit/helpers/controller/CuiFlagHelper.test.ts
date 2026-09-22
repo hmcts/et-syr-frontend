@@ -107,7 +107,10 @@ describe('CuiFlagHelper', () => {
       details: [
         {
           id: 'existing-flag',
-          value: { name: 'Existing flag' },
+          value: {
+            name: 'Existing flag',
+            path: [{ id: 'existing-path', value: 'Party' }],
+          },
         },
       ],
     };
@@ -121,7 +124,13 @@ describe('CuiFlagHelper', () => {
             name: 'Replacement flag',
             name_cy: 'Replacement flag',
             dateTimeCreated: '2026-08-18T10:00:00',
-            path: [],
+            path: [
+              { id: 'party-path', name: 'Party' },
+              { name: 'Reasonable adjustment' },
+              { name: 'I need help communicating and understanding' },
+              { name: 'Hearing Enhancement System (Hearing' },
+              { name: 'Induction Loop, Infrared Receiver)' },
+            ],
             hearingRelevant: cuiNo,
             flagCode: 'RA0001',
             availableExternally: cuiYes,
@@ -137,7 +146,10 @@ describe('CuiFlagHelper', () => {
       details: [
         {
           id: 'existing-flag',
-          value: { name: 'Existing flag' },
+          value: {
+            name: 'Existing flag',
+            path: [{ id: 'existing-path', value: 'Party' }],
+          },
         },
         {
           id: 'replacement-flag',
@@ -145,7 +157,13 @@ describe('CuiFlagHelper', () => {
             name: 'Replacement flag',
             name_cy: 'Replacement flag',
             dateTimeCreated: '2026-08-18T10:00:00',
-            path: [],
+            path: [
+              { id: 'party-path', value: 'Party' },
+              { value: 'Reasonable adjustment' },
+              { value: 'I need help communicating and understanding' },
+              { value: 'Hearing Enhancement System (Hearing' },
+              { value: 'Induction Loop, Infrared Receiver)' },
+            ],
             hearingRelevant: cuiNo,
             flagCode: 'RA0001',
             availableExternally: cuiYes,
