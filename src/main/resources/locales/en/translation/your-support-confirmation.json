@@ -1,10 +1,10 @@
 {
-  "title": "You have added your support request to your claim",
-  "h1": "You have added your support request to your claim",
+  "title": "You have added your support request to your response",
+  "h1": "You have added your support request to your response",
   "h2": "What happens next",
   "legend": "",
-  "p": "Once you submit your claim, the tribunal will review your support request and contact you if it needs any more information. You can tell us if your support needs change after you submit your claim.",
-  "buttonText": "Continue your claim",
+  "p": "Once you submit your response, the tribunal will review your support request and contact you if it needs any more information. You can tell us if your support needs change after you submit your response.",
+  "buttonText": "Continue your response",
   "textAreaHint": "You can describe to us what you need",
   "errors": {
     "reasonableAdjustmentsDetail": {
