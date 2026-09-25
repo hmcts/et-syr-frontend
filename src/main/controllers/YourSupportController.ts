@@ -179,7 +179,7 @@ export default class YourSupportController {
       TranslationKeys.YOUR_SUPPORT_CONFIRMATION,
       YOUR_SUPPORT_CONFIRMATION_TEMPLATE,
       link,
-      setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_TASK_LIST)
+      setUrlLanguage(req, PageUrls.RESPONSE_SAVED)
     );
   };
 

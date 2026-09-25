@@ -787,7 +787,7 @@ describe('YourSupportController', () => {
     );
   });
 
-  it('should render pre-submitted confirmation with a task list link', async () => {
+  it('should render pre-submitted confirmation with a response saved link', async () => {
     const controller = new YourSupportController();
     const req = mockRequest({
       userCase: {
@@ -816,7 +816,7 @@ describe('YourSupportController', () => {
       TranslationKeys.YOUR_SUPPORT_CONFIRMATION,
       expect.objectContaining({
         link: `${PageUrls.RESPONDENT_RESPONSE_TASK_LIST}${languages.ENGLISH_URL_PARAMETER}`,
-        saveAsDraftLink: `${PageUrls.RESPONDENT_RESPONSE_TASK_LIST}${languages.ENGLISH_URL_PARAMETER}`,
+        saveAsDraftLink: `${PageUrls.RESPONSE_SAVED}${languages.ENGLISH_URL_PARAMETER}`,
       })
     );
   });
@@ -851,7 +851,7 @@ describe('YourSupportController', () => {
       TranslationKeys.YOUR_SUPPORT_CONFIRMATION,
       expect.objectContaining({
         link: `${PageUrls.CHECK_YOUR_ANSWERS_ET3}${languages.ENGLISH_URL_PARAMETER}`,
-        saveAsDraftLink: `${PageUrls.RESPONDENT_RESPONSE_TASK_LIST}${languages.ENGLISH_URL_PARAMETER}`,
+        saveAsDraftLink: `${PageUrls.RESPONSE_SAVED}${languages.ENGLISH_URL_PARAMETER}`,
       })
     );
     expect(req.session.returnUrl).toBe('');
