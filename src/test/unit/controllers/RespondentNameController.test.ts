@@ -78,5 +78,26 @@ describe('RespondentNameController', () => {
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.TYPE_OF_ORGANISATION);
     });
+
+    it('should redirect back with an error when no option is selected', async () => {
+      request.body = {};
+      updateET3DataMock.mockClear();
+      await controller.post(request, response);
+      expect(request.session.errors).toEqual([
+        { propertyName: 'responseRespondentNameQuestion', errorType: 'required' },
+      ]);
+      expect(updateET3DataMock).not.toHaveBeenCalled();
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_NAME);
+    });
+
+    it('should redirect back with an error when No is selected and name is empty', async () => {
+      request.body = {
+        responseRespondentNameQuestion: YesOrNo.NO,
+        responseRespondentName: '',
+      };
+      await controller.post(request, response);
+      expect(request.session.errors).toEqual([{ propertyName: 'responseRespondentName', errorType: 'required' }]);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_NAME);
+    });
   });
 });

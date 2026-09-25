@@ -6,7 +6,8 @@
   "submit": "Submit",
   "errors": {
     "hiddenErrorField": {
-      "api": "A system error occurred, Please try again later"
+      "api": "A system error occurred, Please try again later",
+      "mandatoryQuestionsNotAnswered": "You must complete all the mandatory questions before you can submit"
     }
   }
 }

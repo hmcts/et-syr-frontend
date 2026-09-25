@@ -63,6 +63,10 @@ export default class RespondentNameController {
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const formData: Partial<CaseWithId> = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
+    req.session.errors = this.form.getValidatorErrors(formData);
+    if (CollectionUtils.isNotEmpty(req.session.errors)) {
+      return res.redirect(returnValidUrl(PageUrls.RESPONDENT_NAME));
+    }
     setUserCase(req, formData, []);
     if (YesOrNo.NO !== formData.responseRespondentNameQuestion) {
       const selectedRespondent: RespondentET3Model = RespondentUtils.findSelectedRespondentByRequest(req);

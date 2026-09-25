@@ -1,13 +1,14 @@
 import _ from 'lodash';
 
 import CheckYourAnswersContestClaimController from '../../../main/controllers/CheckYourAnswersContestClaimController';
-import { CLAIM_TYPES, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { YesOrNo } from '../../../main/definitions/case';
+import { CLAIM_TYPES, PageUrls, TranslationKeys, ValidationErrors } from '../../../main/definitions/constants';
 import { LinkStatus } from '../../../main/definitions/links';
 import { conditionalRedirect } from '../../../main/helpers/RouterHelpers';
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
 import commonJsonRaw from '../../../main/resources/locales/cy/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
-import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
+import { mockCaseWithIdWithMandatoryQuestionsAnswered, mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockDocumentTypeItemFromMockDocumentUploadResponse } from '../mocks/mockDocumentUploadResponse';
 import { mockRequest, mockRequestWithTranslation } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -15,6 +16,7 @@ import { createMockedUpdateET3ResponseWithET3FormFunction, mockFormError } from 
 
 jest.mock('../../../main/helpers/RouterHelpers', () => ({
   conditionalRedirect: jest.fn(),
+  returnValidUrl: jest.fn(url => url),
 }));
 
 describe('CheckYourAnswersContestClaimController', () => {
@@ -27,7 +29,7 @@ describe('CheckYourAnswersContestClaimController', () => {
     controller = new CheckYourAnswersContestClaimController();
     request = mockRequest({
       session: {
-        mockCaseWithIdWithRespondents,
+        userCase: { ...mockCaseWithIdWithMandatoryQuestionsAnswered },
         selectedRespondent: {
           contestClaimSection: 'Yes',
         },
@@ -130,7 +132,7 @@ describe('CheckYourAnswersContestClaimController', () => {
         )
       );
       const req = _.cloneDeep(request);
-      req.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
+      req.session.userCase = _.cloneDeep(mockCaseWithIdWithMandatoryQuestionsAnswered);
       req.session.userCase.typeOfClaim = [CLAIM_TYPES.BREACH_OF_CONTRACT];
       await controller.post(req, response);
 
@@ -145,6 +147,34 @@ describe('CheckYourAnswersContestClaimController', () => {
         PageUrls.EMPLOYERS_CONTRACT_CLAIM
       );
     });
+    it('should not complete the section when the contest claim question is unanswered', async () => {
+      (conditionalRedirect as jest.Mock).mockReturnValue(true);
+      request.session.userCase.et3ResponseRespondentContestClaim = undefined;
+
+      await controller.post(request, response);
+
+      expect(updateET3ResponseWithET3FormMock).not.toHaveBeenCalled();
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM);
+      expect(request.session.errors).toEqual([
+        {
+          errorType: ValidationErrors.MANDATORY_QUESTIONS_NOT_ANSWERED,
+          propertyName: 'contestClaimSection',
+        },
+      ]);
+    });
+
+    it('should not complete the section when the claim is contested without any details or documents', async () => {
+      (conditionalRedirect as jest.Mock).mockReturnValue(true);
+      request.session.userCase.et3ResponseRespondentContestClaim = YesOrNo.YES;
+      request.session.userCase.et3ResponseContestClaimDetails = undefined;
+      request.session.userCase.et3ResponseContestClaimDocument = undefined;
+
+      await controller.post(request, response);
+
+      expect(updateET3ResponseWithET3FormMock).not.toHaveBeenCalled();
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_CONTEST_CLAIM);
+    });
+
     it('should redirect back to Check Contest Claim if ET3 data update fails', async () => {
       updateET3ResponseWithET3FormMock.mockImplementation(
         createMockedUpdateET3ResponseWithET3FormFunction(

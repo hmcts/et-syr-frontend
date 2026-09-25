@@ -2,7 +2,8 @@
   "header": "Herio’r hawliad",
   "errors": {
     "contestClaimSection": {
-      "required": "Dewiswch"
+      "required": "Dewiswch",
+      "mandatoryQuestionsNotAnswered": "Rhaid i chi gwblhau’r adran Herio’r hawliad cyn y gallwch ei marcio fel un sydd wedi’i chwblhau"
     },
     "hiddenErrorField": {
       "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
