@@ -103,6 +103,9 @@ export const TranslationKeys = {
   // others
   RETURN_TO_EXISTING_RESPONSE: 'return-to-existing-response',
   CHANGE_LEGAL_REPRESENTATIVE: 'change-legal-representative',
+  YOUR_SUPPORT: 'your-support',
+  YOUR_SUPPORT_CONFIRMATION: 'your-support-confirmation',
+  YOUR_SUPPORT_SUBMITTED_CONFIRMATION: 'your-support-submitted-confirmation',
   TRANSFERRED_CASE: 'transferred-case',
 } as const;
 
@@ -214,6 +217,11 @@ export const PageUrls = {
   // others
   RETURN_TO_EXISTING_RESPONSE: '/return-to-existing-response',
   CHANGE_LEGAL_REPRESENTATIVE: '/change-legal-representative',
+  YOUR_SUPPORT: '/your-support',
+  YOUR_SUPPORT_REDIRECT: '/your-support-redirect',
+  YOUR_SUPPORT_CALLBACK: '/your-support/:id',
+  YOUR_SUPPORT_CONFIRMATION: '/your-support-confirmation',
+  YOUR_SUPPORT_SUBMITTED_CONFIRMATION: '/your-support-submitted-confirmation',
   TRANSFERRED_CASE: '/transferred-case',
 } as const;
 
@@ -322,6 +330,7 @@ export const JavaApiUrls = {
   INITIATE_CASE_DRAFT: 'cases/initiate-case',
   UPDATE_CASE_DRAFT: 'cases/update-case',
   SUBMIT_CASE: 'cases/submit-case',
+  UPDATE_SUBMITTED_CASE: 'cases/update-case-submitted',
   ROLE_PARAM_NAME: 'case_user_role',
   MODIFY_ET3_DATA: '/et3/modifyEt3Data',
   FIND_CASE_BY_ETHOS_CASE_REFERENCE_PARAM_NAME: 'ethosCaseReference',

@@ -6,6 +6,7 @@ nodejs:
   devmemoryRequests: 512Mi
   environment:
     HMCTS_ACCESS: 'false'
+    CUI_URL: 'https://cui-ra.{{ .Values.global.environment }}.platform.hmcts.net'
     REDIS_SECONDARY_HOST: 'et-managed-redis-aat.uksouth.redis.azure.net'
     REDIS_SECONDARY_PORT: '10000'
   keyVaults:

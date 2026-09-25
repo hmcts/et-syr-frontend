@@ -37,9 +37,9 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
   });
 
   describe('GET method', () => {
-    it('should render the page', () => {
+    it('should render the page', async () => {
       request = mockRequestWithTranslation({}, translationJsons);
-      controller.get(request, response);
+      await controller.get(request, response);
 
       expect(response.render).toHaveBeenCalledWith(
         TranslationKeys.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES,
@@ -49,7 +49,7 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
   });
 
   describe('POST method', () => {
-    it('should go to the respondent response task list on valid submission when Yes is selected', async () => {
+    it('should return to the task list on valid submission when Yes is selected', async () => {
       (conditionalRedirect as jest.Mock).mockReturnValue(true);
 
       updateET3ResponseWithET3FormMock.mockImplementation(
@@ -76,7 +76,7 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
       );
     });
 
-    it('should go to the respondent response task list on valid submission when No is selected', async () => {
+    it('should return to the task list on valid submission when No is selected', async () => {
       (conditionalRedirect as jest.Mock).mockReturnValue(false);
 
       updateET3ResponseWithET3FormMock.mockImplementation(

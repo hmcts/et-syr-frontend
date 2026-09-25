@@ -9,6 +9,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { getCuiYourSupportFeature } from '../modules/featureFlag/CuiYourSupportFeature';
 import ET3Util from '../utils/ET3Util';
 
 export default class HearingPreferencesController {
@@ -45,13 +46,17 @@ export default class HearingPreferencesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    const nextPage = (await getCuiYourSupportFeature().isEnabled(req.session.userCase?.caseTypeId))
+      ? PageUrls.RESPONDENT_EMPLOYEES
+      : PageUrls.REASONABLE_ADJUSTMENTS;
+
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.EmployerDetails,
       LinkStatus.IN_PROGRESS,
-      PageUrls.REASONABLE_ADJUSTMENTS
+      nextPage
     );
   };
 
