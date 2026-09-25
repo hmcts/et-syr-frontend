@@ -1,0 +1,13 @@
+{% for app in appRequestNotifications %}
+  {% set htmlForAppRequestNotifications %}
+    <p class="govuk-notification-banner__heading">{{ notificationBanner.tseFromTribunal.p1a }} {{ app.from }} {{ notificationBanner.tseFromTribunal.p1b }} {{ app.appName }}</p>
+    <p class="govuk-body">{{ notificationBanner.tseFromTribunal.p2 }}</p>
+    <p class="govuk-notification-banner__heading">
+      <a class="govuk-link" href="{{ app.appUrl }}">{{ notificationBanner.tseFromTribunal.linkText }}</a>
+    </p>
+  {% endset %}
+  {{ govukNotificationBanner({
+    html: htmlForAppRequestNotifications,
+    titleText: important
+  }) }}
+{% endfor %}
