@@ -540,6 +540,49 @@ describe('Case Service Tests', () => {
     });
   });
 
+  describe('Submit bundles hearing doc', () => {
+    it('should submit bundles hearing documents successfully', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.put.mockResolvedValue(MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse);
+      const value = await api.submitBundlesHearingDoc({
+        ...mockUserCase,
+        bundlesRespondentAgreedDocWithBut: undefined,
+        bundlesRespondentAgreedDocWithNo: undefined,
+        hearingDocumentsAreFor: 'hearing-1',
+        formattedSelectedHearing: 'Hearing label',
+        hearingDocument: {
+          document_url: 'http://dm/documents/doc-1',
+          document_filename: 'Hearing Doc1.pdf',
+          document_binary_url: 'http://dm/documents/doc-1/binary',
+        },
+      });
+      expect(value.data).toEqual(mockCaseApiDataResponse);
+      expect(mockedAxios.put).toHaveBeenCalledWith(
+        'bundles/submit-respondent-bundles',
+        expect.objectContaining({
+          case_id: mockUserCase.id,
+          respondent_bundles: expect.objectContaining({
+            hearing: 'hearing-1',
+            agreedDocWithBut: '',
+            agreedDocWithNo: '',
+          }),
+        })
+      );
+    });
+
+    it('should throw exception when there is a problem while submitting bundles', async () => {
+      const mockedAxios = axios as jest.Mocked<typeof axios>;
+      const api = new CaseApi(mockedAxios);
+      mockedAxios.put.mockImplementation(() => {
+        throw mockAxiosError('TEST', ServiceErrors.ERROR_CASE_NOT_FOUND, 404);
+      });
+      await expect(() => api.submitBundlesHearingDoc(mockUserCase)).rejects.toEqual(
+        new Error('Error submitting bundles: ' + ServiceErrors.ERROR_CASE_NOT_FOUND)
+      );
+    });
+  });
+
   describe('Store respondent tse', () => {
     const request = mockRequest({
       session: { userCase: mockUserCase, user: mockUserDetails },

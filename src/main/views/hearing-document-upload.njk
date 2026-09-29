@@ -1,0 +1,57 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% block beforeContent %}
+  {{ super() }}
+  {% include "back-link.njk" %}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      {% block errorSummary %}
+        {% include "./form/main/error-summary.njk" %}
+      {% endblock %}
+
+      {{ govukErrorSummary({
+        titleText: errorSummaryTitle,
+        errorList: [
+          {
+            text: errorMessage,
+            href: "#hearingDocument"
+          }
+        ]
+      }) if errorMessage }}
+
+      <span class="govuk-caption-l">{{ headingCaption }}</span>
+      <h1 class="govuk-heading-l">{{ h1 }}</h1>
+      <p class="govuk-body">{{ p1 }}</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>{{ bullet1 }}</li>
+        <li>{{ bullet2 }}</li>
+        <li>{{ bullet3 }}</li>
+        <li>{{ bullet4 }}</li>
+        <li>{{ bullet5 }}</li>
+      </ul>
+      <p class="govuk-body">{{ p2 }}</p>
+      <p class="govuk-body">{{ p3Before }}<a href="{{ documentsLink }}" class="govuk-link" rel="noreferrer noopener" target="_blank">{{ p3Link }}</a></p>
+
+      {% block form %}
+        {% include "form/multipartForm.njk" %}
+      {% endblock %}
+    </div>
+
+    <div class="govuk-grid-column-one-third-from-desktop">
+      {% set sideBarContent %}
+        {% include "./components/sidebar/sidebar.njk" %}
+      {% endset %}
+
+      {{ govukDetails({
+        summaryHtml: "<span id='contact-us-sidebar'>" + contact + "</span>",
+        html: sideBarContent
+      }) }}
+    </div>
+  </div>
+{% endblock %}

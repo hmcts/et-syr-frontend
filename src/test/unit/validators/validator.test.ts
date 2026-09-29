@@ -9,6 +9,7 @@ import {
   isContentCharsOrLessAndNotEmpty,
   isFieldFilledIn,
   isNameValid,
+  isNotPdfFileType,
   isOptionSelected,
   isPhoneNumberValid,
   isValidAvgWeeklyHours,
@@ -205,6 +206,22 @@ describe('Validation', () => {
     ])('Check filename %o', ({ fileName, expected }) => {
       expect(hasInvalidFileName(fileName)).toEqual(expected);
       expect(hasInvalidFileName('')).toBeUndefined();
+    });
+  });
+  describe('isNotPdfFileType()', () => {
+    it.each([
+      { fileName: 'file.pdf', expected: undefined },
+      { fileName: 'file.PDF', expected: undefined },
+      { fileName: 'file.docx', expected: 'invalidFileFormat' },
+      { fileName: 'file', expected: 'invalidFileFormat' },
+    ])('Check pdf-only format %o', ({ fileName, expected }) => {
+      const newFile = { ...mockFile, originalname: fileName };
+      expect(isNotPdfFileType(newFile)).toEqual(expected);
+    });
+
+    it('should return undefined when file or originalname is missing', () => {
+      expect(isNotPdfFileType(undefined)).toBeUndefined();
+      expect(isNotPdfFileType({ ...mockFile, originalname: undefined })).toBeUndefined();
     });
   });
   describe('isAcasNumberValid()', () => {
