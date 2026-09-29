@@ -89,7 +89,7 @@
     "mocha": "^11.2.0",
     "mocha-multi": "1.1.7",
     "mochawesome": "^7.1.4",
-    "multer": "^2.3.0",
+    "multer": "^2.4.0",
     "nunjucks": "^3.2.4",
     "playwright": "^1.56.1",
     "postcode": "^5.1.0",
@@ -195,7 +195,7 @@
     "underscore": "^1.13.8",
     "serialize-javascript": "^7.0.5",
     "uuid": "^14.0.0",
-    "ip-address": "^10.3.1",
+    "ip-address": "^10.5.1",
     "body-parser": "^2.3.0",
     "immutable": "^5.1.8",
     "joi": "^17.13.6"
