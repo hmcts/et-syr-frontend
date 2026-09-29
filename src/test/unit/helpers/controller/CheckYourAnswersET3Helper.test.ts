@@ -184,9 +184,26 @@ describe('CheckYourAnswersET3Helper', () => {
     userCase.et3ResponseMultipleSites = YesOrNo.YES;
     userCase.et3ResponseSiteEmploymentCount = '100';
 
-    const result = getEt3Section2(userCase, translationsMock);
+    const result = getEt3Section2(userCase, translationsMock, undefined, undefined, true);
 
     expect(result).toEqual(expectedRows);
+  });
+  it('should omit the hearing-panel preference rows when the ERA feature is disabled', () => {
+    const result = getEt3Section2(
+      {
+        ...userCase,
+        respondentHearingPanelPreference: 'Judge',
+        respondentHearingPanelPreferenceReason: 'Complex legal issues',
+        et3ResponseRespondentSupportNeeded: YesOrNoOrNotSure.NO,
+        et3ResponseEmploymentCount: '10',
+        et3ResponseMultipleSites: YesOrNo.YES,
+        et3ResponseSiteEmploymentCount: '100',
+      },
+      translationsMock
+    );
+
+    expect(result).toHaveLength(5);
+    expect(JSON.stringify(result)).not.toContain(PageUrls.HEARING_PANEL_PREFERENCE);
   });
 
   // Tests for section 2 with POST SELECTED
@@ -213,7 +230,7 @@ describe('CheckYourAnswersET3Helper', () => {
     userCase.et3ResponseMultipleSites = YesOrNo.YES;
     userCase.et3ResponseSiteEmploymentCount = '100';
 
-    const result = getEt3Section2(userCase, translationsMock);
+    const result = getEt3Section2(userCase, translationsMock, undefined, undefined, true);
 
     expect(result).toEqual(expectedRows);
   });
