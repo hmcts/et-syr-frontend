@@ -2,7 +2,8 @@
   "header": "Contact details",
   "errors": {
     "personalDetailsSection": {
-      "required": "Make a selection"
+      "required": "Make a selection",
+      "mandatoryQuestionsNotAnswered": "You must complete the Contact details section before you can mark it as completed"
     },
     "hiddenErrorField": {
       "sessionUserCase": "User case not found in session",

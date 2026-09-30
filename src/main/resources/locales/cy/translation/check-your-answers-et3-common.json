@@ -70,5 +70,14 @@
     "employerContractClaimDetails": "Rhowch gefndir a manylion eich Hawliad Contract y Cyflogwr",
     "supportingMaterials": "Deunydd ategol",
     "exampleData": "[data enghreifftiol]"
+  },
+  "mandatoryQuestions": {
+    "respondentNameQuestion": "Dewiswch a yw hwn yn enw cywir yr atebydd",
+    "respondentName": "Nodwch enw cofrestredig neu enw cyfreithiol yr atebydd",
+    "respondentAddressQuestion": "Dewiswch a yw hwn yn gyfeiriad cywir yr atebydd",
+    "respondentAddressPostCode": "Nodwch god post yn y DU ar gyfer cyfeiriad yr atebydd",
+    "contestClaim": "Dewiswch a yw’r atebydd yn herio’r hawliad",
+    "contestClaimDetails": "Eglurwch pam mae’r atebydd yn herio’r hawliad",
+    "employersContractClaimDetails": "Rhowch gefndir a manylion hawliad contract y cyflogwr"
   }
 }

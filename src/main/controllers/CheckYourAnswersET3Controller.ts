@@ -2,10 +2,22 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { ET3ModificationTypes, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
+import {
+  ET3ModificationTypes,
+  FormFieldNames,
+  InterceptPaths,
+  PageUrls,
+  TranslationKeys,
+  ValidationErrors,
+} from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
+import {
+  areAllMandatoryQuestionsAnswered,
+  getAllUnansweredMandatoryQuestions,
+  getMandatoryQuestionErrorSummaryItems,
+} from '../helpers/ET3MandatoryQuestionHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import {
@@ -18,6 +30,7 @@ import {
 } from '../helpers/controller/CheckYourAnswersET3Helper';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import ET3Util from '../utils/ET3Util';
+import ErrorUtils from '../utils/ErrorUtils';
 
 export default class CheckYourAnswersET3Controller {
   readonly form: Form;
@@ -41,6 +54,15 @@ export default class CheckYourAnswersET3Controller {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     if (req.body.saveAsDraft) {
       return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.RESPONSE_SAVED)));
+    }
+    // the response cannot be submitted while any mandatory question is still unanswered
+    if (!areAllMandatoryQuestionsAnswered(req.session.userCase)) {
+      ErrorUtils.setManualErrorToRequestSessionWithRemovingExistingErrors(
+        req,
+        ValidationErrors.MANDATORY_QUESTIONS_NOT_ANSWERED,
+        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+      );
+      return res.redirect(returnValidUrl(setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3)));
     }
     const userCase = await ET3Util.updateET3Data(
       req,
@@ -66,6 +88,12 @@ export default class CheckYourAnswersET3Controller {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
     };
 
+    const mandatoryQuestionErrors = getMandatoryQuestionErrorSummaryItems(
+      getAllUnansweredMandatoryQuestions(userCase),
+      sectionTranslations,
+      InterceptPaths.ANSWERS_CHANGE
+    );
+
     // TODO: ET3 cya data needs to be populated AND Submit & Save for Later buttons
     res.render(TranslationKeys.CHECK_YOUR_ANSWERS_ET3, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
@@ -76,6 +104,7 @@ export default class CheckYourAnswersET3Controller {
       PageUrls,
       hideContactUs: true,
       sessionErrors: req.session.errors,
+      mandatoryQuestionErrors,
       et3ResponseSection1: getEt3Section1(req, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
       et3ResponseSection2: getEt3Section2(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
       et3ResponseSection3: getEt3Section3(req, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),

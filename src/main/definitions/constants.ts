@@ -299,6 +299,7 @@ export const ValidationErrors = {
   INVALID_CASE_DETAILS: 'invalidCaseDetails',
   WITHOUT_UPLOAD_BUTTON: 'WithoutUploadButton',
   REQUIRED_FILE: 'requiredFile',
+  MANDATORY_QUESTIONS_NOT_ANSWERED: 'mandatoryQuestionsNotAnswered',
 } as const;
 
 export const AuthUrls = {
