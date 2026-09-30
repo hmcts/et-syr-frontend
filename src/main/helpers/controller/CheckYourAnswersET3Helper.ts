@@ -180,8 +180,9 @@ export const getEt3Section2 = async (
   userCase: CaseWithId,
   translations: AnyRecord,
   sectionCya?: string,
-  hideChangeLink?: boolean
-): Promise<SummaryListRow[]> => {
+  hideChangeLink?: boolean,
+  eraOctober2026Enabled = false
+): SummaryListRow[] => {
   const et3ResponseSection2: SummaryListRow[] = [];
 
   et3ResponseSection2.push(
@@ -194,6 +195,30 @@ export const getEt3Section2 = async (
     )
   );
 
+  if (eraOctober2026Enabled) {
+    et3ResponseSection2.push(
+      addSummaryRowWithAction(
+        translations.section2.hearingPanelPreference,
+        userCase.respondentHearingPanelPreference ?? translations.notProvided,
+        PageUrls.HEARING_PANEL_PREFERENCE,
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
+      )
+    );
+
+    if (userCase.respondentHearingPanelPreferenceReason) {
+      et3ResponseSection2.push(
+        addSummaryRowWithAction(
+          translations.section2.hearingPanelPreferenceReason,
+          userCase.respondentHearingPanelPreferenceReason,
+          PageUrls.HEARING_PANEL_PREFERENCE,
+          hideChangeLink ? undefined : translations.change,
+          hideChangeLink ? undefined : sectionCya
+        )
+      );
+    }
+  }
+  
   const cuiYourSupportFeature = getCuiYourSupportFeature();
   if (!(await cuiYourSupportFeature.isEnabled(userCase.caseTypeId))) {
     et3ResponseSection2.push(
@@ -210,17 +235,20 @@ export const getEt3Section2 = async (
       )
     );
 
-    if (YesOrNoOrNotSure.YES === userCase.et3ResponseRespondentSupportNeeded) {
+  if (YesOrNoOrNotSure.YES === userCase.et3ResponseRespondentSupportNeeded) {
       et3ResponseSection2.push(
-        addSummaryRowWithAction(
-          translations.section2.supportRequest,
-          userCase.et3ResponseRespondentSupportDetails,
-          PageUrls.REASONABLE_ADJUSTMENTS,
-          hideChangeLink ? undefined : translations.change,
-          hideChangeLink ? undefined : sectionCya
-        )
-      );
-    }
+          addSummaryRowWithAction(
+            translations.section2.disabilitySupport,
+            {
+              [YesOrNoOrNotSure.YES]: translations.oesYesOrNo.yes,
+              [YesOrNoOrNotSure.NO]: translations.oesYesOrNo.no,
+              [YesOrNoOrNotSure.NOT_SURE]: translations.section2.disabilitySupportNotSure,
+            }[userCase.et3ResponseRespondentSupportNeeded] ?? translations.notProvided,
+            PageUrls.REASONABLE_ADJUSTMENTS,
+            hideChangeLink ? undefined : translations.change,
+            hideChangeLink ? undefined : sectionCya
+          )
+        );
   }
 
   et3ResponseSection2.push(

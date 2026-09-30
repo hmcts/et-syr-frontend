@@ -2,7 +2,13 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { ET3ModificationTypes, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
+import {
+  ET3ModificationTypes,
+  FEATURE_FLAGS,
+  InterceptPaths,
+  PageUrls,
+  TranslationKeys,
+} from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
@@ -59,6 +65,7 @@ export default class CheckYourAnswersET3Controller {
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
+    const eraOctober2026Enabled = await getFlagValue(FEATURE_FLAGS.ERA_OCTOBER_2026, null);
     const redirectUrl = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_ET3);
     const userCase = req.session.userCase;
     const sectionTranslations: AnyRecord = {
@@ -77,7 +84,7 @@ export default class CheckYourAnswersET3Controller {
       hideContactUs: true,
       sessionErrors: req.session.errors,
       et3ResponseSection1: getEt3Section1(req, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
-      et3ResponseSection2: await getEt3Section2(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
+      et3ResponseSection2: await getEt3Section2(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE, undefined, eraOctober2026Enabled),
       et3ResponseSection3: getEt3Section3(req, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
       et3ResponseSection4: getEt3Section4(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
       et3ResponseSection5: getEt3Section5(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),

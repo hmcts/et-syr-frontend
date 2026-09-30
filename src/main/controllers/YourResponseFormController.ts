@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
+import { FEATURE_FLAGS, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLanguageParam } from '../helpers/RouterHelpers';
@@ -21,6 +21,7 @@ export default class YourResponseFormController {
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const redirectUrl: string = setUrlLanguage(req, PageUrls.YOUR_RESPONSE_FORM);
     const welshEnabled = await getFlagValue(TranslationKeys.WELSH_ENABLED, null);
+    const eraOctober2026Enabled = await getFlagValue(FEATURE_FLAGS.ERA_OCTOBER_2026, null);
     const et3FormId: string = DocumentUtils.findET3FormIdByRequest(req);
     const userCase = req.session.userCase;
     const sectionTranslations: AnyRecord = {
@@ -36,7 +37,7 @@ export default class YourResponseFormController {
       hideContactUs: true,
       sessionErrors: req.session.errors,
       et3ResponseSection1: getEt3Section1(req, sectionTranslations, InterceptPaths.ANSWERS_CHANGE, true),
-      et3ResponseSection2: await getEt3Section2(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE, true),
+      et3ResponseSection2: await getEt3Section2(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE, true, eraOctober2026Enabled),
       et3ResponseSection3: getEt3Section3(req, sectionTranslations, InterceptPaths.ANSWERS_CHANGE, true),
       et3ResponseSection4: getEt3Section4(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE, true),
       et3ResponseSection5: getEt3Section5(userCase, sectionTranslations, InterceptPaths.ANSWERS_CHANGE, true),

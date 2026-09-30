@@ -2,12 +2,13 @@ import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
 import { YesOrNo } from '../definitions/case';
-import { InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
+import { FEATURE_FLAGS, InterceptPaths, PageUrls, TranslationKeys } from '../definitions/constants';
 import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { AnyRecord } from '../definitions/util-types';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { conditionalRedirect } from '../helpers/RouterHelpers';
 import { getEt3Section2 } from '../helpers/controller/CheckYourAnswersET3Helper';
+import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import ET3Util from '../utils/ET3Util';
 
 import BaseCYAController from './BaseCYAController';
@@ -35,6 +36,7 @@ export default class CheckYourAnswersHearingPreferencesController extends BaseCY
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     const redirectUrl = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES);
     const userCase = req.session.userCase;
+    const eraOctober2026Enabled = await getFlagValue(FEATURE_FLAGS.ERA_OCTOBER_2026, null);
 
     const sectionTranslations: AnyRecord = {
       ...req.t(TranslationKeys.CHECK_YOUR_ANSWERS_ET3_COMMON as never, { returnObjects: true } as never),
@@ -50,7 +52,7 @@ export default class CheckYourAnswersHearingPreferencesController extends BaseCY
       PageUrls,
       sessionErrors: req.session.errors,
       form: this.formContent,
-      et3ResponseSection2: await getEt3Section2(userCase, sectionTranslations, InterceptPaths.EMPLOYER_DETAILS_CHANGE),
+      et3ResponseSection2: await getEt3Section2(userCase, sectionTranslations, InterceptPaths.EMPLOYER_DETAILS_CHANGE, undefined,  eraOctober2026Enabled),
       redirectUrl,
       hideContactUs: true,
     });

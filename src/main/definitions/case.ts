@@ -142,6 +142,8 @@ export interface RespondentET3Model extends ET3VettingCommonTypes {
   et3ResponseRespondentCompanyNumber?: string;
   et3ResponseHearingRepresentative?: string[];
   et3ResponseHearingRespondent?: HearingPreferenceET3[];
+  respondentHearingPanelPreference?: string;
+  respondentHearingPanelPreferenceReason?: string;
   et3ResponseEmploymentCount?: string;
   et3ResponseMultipleSites?: YesOrNo;
   et3ResponseSiteEmploymentCount?: string;

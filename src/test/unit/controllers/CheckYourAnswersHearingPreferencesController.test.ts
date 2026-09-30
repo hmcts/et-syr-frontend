@@ -2,6 +2,7 @@ import CheckYourAnswersHearingPreferencesController from '../../../main/controll
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { LinkStatus } from '../../../main/definitions/links';
 import { conditionalRedirect } from '../../../main/helpers/RouterHelpers'; // Ensure this import is correct
+import { getFlagValue } from '../../../main/modules/featureFlag/launchDarkly';
 import pageJsonRaw from '../../../main/resources/locales/cy/translation/check-your-answers-et3-common.json';
 import commonJsonRaw from '../../../main/resources/locales/cy/translation/common.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -13,6 +14,7 @@ import { createMockedUpdateET3ResponseWithET3FormFunction, mockFormError } from 
 jest.mock('../../../main/helpers/RouterHelpers', () => ({
   conditionalRedirect: jest.fn(),
 }));
+jest.mock('../../../main/modules/featureFlag/launchDarkly');
 
 describe('CheckYourAnswersHearingPreferencesController', () => {
   let controller: CheckYourAnswersHearingPreferencesController;
@@ -34,6 +36,7 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
     ET3Util.updateET3ResponseWithET3Form = updateET3ResponseWithET3FormMock;
     response = mockResponse();
     jest.clearAllMocks();
+    (getFlagValue as jest.Mock).mockResolvedValue(false);
   });
 
   describe('GET method', () => {
