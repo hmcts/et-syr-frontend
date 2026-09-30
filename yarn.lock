@@ -3018,31 +3018,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@launchdarkly/js-sdk-common@npm:2.26.1":
-  version: 2.26.1
-  resolution: "@launchdarkly/js-sdk-common@npm:2.26.1"
-  checksum: 10/b7e5df006ef78bec334c4bc6a8b387bf1cede23e56ef24d2e98decfb0c1771d5778144909f34bdb0b786cdf73ab0fa2dbdb4d8e69a84004f5a012bb9deb07b6c
+"@launchdarkly/js-sdk-common@npm:2.27.0":
+  version: 2.27.0
+  resolution: "@launchdarkly/js-sdk-common@npm:2.27.0"
+  checksum: 10/0d167c7cd65c1e275dde01901bfb9c68ee573be311d8b85a2da5ca9aba0a7b2153efb1749e15df1567406091cad174adf9e89942bdbf66386e207bb0be1c5a70
   languageName: node
   linkType: hard
 
-"@launchdarkly/js-server-sdk-common@npm:2.21.5":
-  version: 2.21.5
-  resolution: "@launchdarkly/js-server-sdk-common@npm:2.21.5"
+"@launchdarkly/js-server-sdk-common@npm:2.21.6":
+  version: 2.21.6
+  resolution: "@launchdarkly/js-server-sdk-common@npm:2.21.6"
   dependencies:
-    "@launchdarkly/js-sdk-common": "npm:2.26.1"
+    "@launchdarkly/js-sdk-common": "npm:2.27.0"
     semver: "npm:7.5.4"
-  checksum: 10/f0087da469d80621e8856afb5bab1cd15d7f23100dc9e92419a6f035f96a28b9e8d7de88a500094a2a0ef739886c6251a6cb1771adb76a1a856d85e09881d4e7
+  checksum: 10/af9052af25c077b20077a67c5b60f186123e6b9c4c23c6eafdfd5c9ed3cc5a0dab256e679f6086fd801271ffcdfe3004d1f0a7bafb6ab1f2dd36cf9a00f459bd
   languageName: node
   linkType: hard
 
 "@launchdarkly/node-server-sdk@npm:^9.0.0":
-  version: 9.13.7
-  resolution: "@launchdarkly/node-server-sdk@npm:9.13.7"
+  version: 9.13.8
+  resolution: "@launchdarkly/node-server-sdk@npm:9.13.8"
   dependencies:
-    "@launchdarkly/js-server-sdk-common": "npm:2.21.5"
+    "@launchdarkly/js-server-sdk-common": "npm:2.21.6"
     https-proxy-agent: "npm:^7.0.6"
     launchdarkly-eventsource: "npm:2.2.0"
-  checksum: 10/5f58a2bf6b21b6fbedc9fbbfd4ea797ed126835cf101b6e8a25788fd37e266ef6b090c9eed71439f8b59b2e8d1a0925f63ad92c7fa6b36ae289997e3be8331d4
+  checksum: 10/d8144304fdc519e3f196b0388a634e522960ad3ce902e0b8efd1730b56fe5df3526a53703152f3e325b6ade28cf1dbeced607e2e755878eb330b97812005efad
   languageName: node
   linkType: hard
 
@@ -11180,15 +11180,15 @@ __metadata:
   linkType: hard
 
 "joi@npm:^17.13.6":
-  version: 17.13.7
-  resolution: "joi@npm:17.13.7"
+  version: 17.13.8
+  resolution: "joi@npm:17.13.8"
   dependencies:
     "@hapi/hoek": "npm:^9.3.0"
     "@hapi/topo": "npm:^5.1.0"
     "@sideway/address": "npm:^4.1.5"
     "@sideway/formula": "npm:^3.0.1"
     "@sideway/pinpoint": "npm:^2.0.0"
-  checksum: 10/fad61c93d40faa1ec3c96c600ac2f865eaa6ee7dd2a3f342c2bb8fa613463ec1e3f2b8541959e010d63a350214412ec14982e062bc90e20ea5d39426dd331b5a
+  checksum: 10/7d8ccb06cee958516748519cb46430b1bf5b732f54428a5daf8f8630290c928be1abb7d3c3c2506d68ba76d1c1abe480e087255c34b839aae47b2ee2c76f587d
   languageName: node
   linkType: hard
 
@@ -11244,14 +11244,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^5.2.2":
-  version: 5.2.3
-  resolution: "js-yaml@npm:5.2.3"
+"js-yaml@npm:5.4.1":
+  version: 5.4.1
+  resolution: "js-yaml@npm:5.4.1"
   dependencies:
     argparse: "npm:^2.0.1"
   bin:
     js-yaml: bin/js-yaml.mjs
-  checksum: 10/5d2562f2d7e7bc51bd678b43d2dbc3965129ac854222c794157369c8904d249cfc78325dff8fc64becb505a2506242548c54c8fa50cdb24554bb1a557e460004
+  checksum: 10/6fff9ee00bd59aeb7e1484b4281f5e927b117cbfbf3ffa6c0fef0c58519317eb61527e93c4aa70f417709229bc1eeed63cba773913577a64405975a72fba7180
   languageName: node
   linkType: hard
 
@@ -12424,10 +12424,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.29.4":
-  version: 2.30.1
-  resolution: "moment@npm:2.30.1"
-  checksum: 10/ae42d876d4ec831ef66110bdc302c0657c664991e45cf2afffc4b0f6cd6d251dde11375c982a5c0564ccc0fa593fc564576ddceb8c8845e87c15f58aa6baca69
+"moment@npm:2.31.0":
+  version: 2.31.0
+  resolution: "moment@npm:2.31.0"
+  checksum: 10/fd3708d46f820c64fe1e064a60747533a55ee0aefd944490e18f08b2a83a5b6418bb4f42e1de47ef1f1a29f450c7ac41edd1fa6f940db30ded247c9717301b9f
   languageName: node
   linkType: hard
 
