@@ -43,6 +43,8 @@ export interface RespondentType {
   respondent_phone2?: string;
   respondent_email?: string;
   respondent_contact_preference?: string;
+  respondent_hearing_panel_preference?: string;
+  respondent_hearing_panel_preference_reason?: string;
   responseStruckOut?: YesOrNo;
   responseStruckOutDate?: string;
   responseStruckOutChairman?: string;
