@@ -195,8 +195,8 @@ describe('CheckYourAnswersET3Helper', () => {
 
     expect(result).toEqual(expectedRows);
   });
-  it('should omit the hearing-panel preference rows when the ERA feature is disabled', () => {
-    const result = getEt3Section2(
+  it('should omit the hearing-panel preference rows when the ERA feature is disabled', async () => {
+    const result = await getEt3Section2(
       {
         ...userCase,
         respondentHearingPanelPreference: 'Judge',
@@ -218,6 +218,7 @@ describe('CheckYourAnswersET3Helper', () => {
     const expectedRows: SummaryListRow[] = [];
     const section2UrlsWithSupportDetail = [
       PageUrls.HEARING_PREFERENCES,
+      PageUrls.HEARING_PANEL_PREFERENCE,
       PageUrls.REASONABLE_ADJUSTMENTS,
       PageUrls.REASONABLE_ADJUSTMENTS,
       PageUrls.RESPONDENT_EMPLOYEES,
