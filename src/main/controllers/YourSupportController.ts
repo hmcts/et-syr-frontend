@@ -145,9 +145,9 @@ export default class YourSupportController {
       this.validateJourneyCorrelationId(req, result);
 
       if (!this.isSubmittedJourney(result)) {
-        logger.info(`CUI journey completed with action "${result.action}", redirecting to the ET home page`);
+        logger.info(`CUI journey completed with action "${result.action}", redirecting to a list page`);
         req.session.returnUrl = '';
-        res.redirect(PageUrls.HOME);
+        res.redirect(this.getCancelCallbackRedirectUrl(req));
         return;
       }
 
@@ -385,6 +385,15 @@ export default class YourSupportController {
     }
 
     return setUrlLanguage(req, PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER);
+  }
+
+  private getCancelCallbackRedirectUrl(req: AppRequest): string {
+    if (!this.isEt3ResponseSubmitted(req)) {
+      return setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_TASK_LIST);
+    }
+
+    const caseDetailsUrl = this.getCaseDetailsUrl(req);
+    return setUrlLanguage(req, caseDetailsUrl ?? PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER);
   }
 
   private getCaseDetailsUrl(req: AppRequest): string | undefined {

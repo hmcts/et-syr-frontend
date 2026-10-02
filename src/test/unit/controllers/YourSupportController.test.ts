@@ -350,7 +350,7 @@ describe('YourSupportController', () => {
     expect(res.redirect).toHaveBeenCalledWith(`${PageUrls.YOUR_SUPPORT}${languages.ENGLISH_URL_PARAMETER}`);
   });
 
-  it('should redirect to the ET home page without saving when CUI journey is cancelled', async () => {
+  it('should redirect to the respondent response task list without saving when a draft CUI journey is cancelled', async () => {
     const getJourneyDataMock = jest.fn().mockResolvedValue({
       action: CUIActions.CANCEL,
       correlationId: '1234',
@@ -380,7 +380,52 @@ describe('YourSupportController', () => {
     expect(getJourneyDataMock).toHaveBeenCalledWith('journey-id', { serviceToken: 'service-token' });
     expect(handleUpdateDraftCase).not.toHaveBeenCalled();
     expect(handleUpdateSubmittedCaseFlags).not.toHaveBeenCalled();
-    expect(res.redirect).toHaveBeenCalledWith(PageUrls.HOME);
+    expect(res.redirect).toHaveBeenCalledWith(
+      `${PageUrls.RESPONDENT_RESPONSE_TASK_LIST}${languages.ENGLISH_URL_PARAMETER}`
+    );
+    expect(req.session.returnUrl).toBe('');
+  });
+
+  it('should redirect to case details without saving when a submitted CUI journey is cancelled', async () => {
+    const getJourneyDataMock = jest.fn().mockResolvedValue({
+      action: CUIActions.CANCEL,
+      correlationId: '1782812031617616',
+    });
+    (getCuiService as jest.Mock).mockReturnValue({ getJourneyData: getJourneyDataMock });
+    const controller = new YourSupportController({
+      getToken: jest.fn().mockResolvedValue('service-token'),
+    } as never);
+    const req = mockRequest({
+      userCase: {
+        id: '1782812031617616',
+        responseReceived: YesOrNo.YES,
+        respondents: [
+          {
+            ccdId: '04960c7b-caec-4dac-a327-d0bad3bd9689',
+            responseReceived: YesOrNo.YES,
+          },
+        ],
+      },
+      session: {
+        selectedRespondentIndex: 0,
+        returnUrl: PageUrls.CHECK_YOUR_ANSWERS_ET3,
+      },
+    });
+    req.params = {
+      ...req.params,
+      id: 'journey-id',
+    };
+    setRequestRuntime(req);
+    const res = mockResponse();
+
+    await controller.callback(req, res);
+
+    expect(getJourneyDataMock).toHaveBeenCalledWith('journey-id', { serviceToken: 'service-token' });
+    expect(handleUpdateDraftCase).not.toHaveBeenCalled();
+    expect(handleUpdateSubmittedCaseFlags).not.toHaveBeenCalled();
+    expect(res.redirect).toHaveBeenCalledWith(
+      `/case-details/1782812031617616/04960c7b-caec-4dac-a327-d0bad3bd9689${languages.ENGLISH_URL_PARAMETER}`
+    );
     expect(req.session.returnUrl).toBe('');
   });
 
