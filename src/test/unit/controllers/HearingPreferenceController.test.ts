@@ -2,8 +2,10 @@ jest.mock('../../../main/modules/featureFlag/launchDarkly', () => ({
   getFlagValue: jest.fn().mockResolvedValue(true),
 }));
 import HearingPreferencesController from '../../../main/controllers/HearingPreferencesController';
-import { HearingPreference } from '../../../main/definitions/case';
+import { CaseTypeId, HearingPreferenceET3 } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { CuiYourSupportFeature } from '../../../main/modules/featureFlag/CuiYourSupportFeature';
+import * as CuiYourSupportFeatureModule from '../../../main/modules/featureFlag/CuiYourSupportFeature';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/hearing-preferences.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -24,6 +26,8 @@ describe('HearingPreferencesController', () => {
     controller = new HearingPreferencesController();
     request = mockRequest({});
     response = mockResponse();
+    updateET3DataMock.mockClear();
+    jest.spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature').mockReturnValue(new CuiYourSupportFeature([]));
   });
 
   describe('GET method', () => {
@@ -35,10 +39,10 @@ describe('HearingPreferencesController', () => {
   });
 
   describe('POST method', () => {
-    it('should call ET3Util.updateET3ResponseWithET3Form with the correct parameters when preferences are valid', async () => {
+    it('should redirect to reasonable adjustments by default when preferences are valid', async () => {
       request = mockRequest({
         body: {
-          et3ResponseHearingRespondent: HearingPreference.VIDEO,
+          et3ResponseHearingRespondent: HearingPreferenceET3.VIDEO,
         },
       });
       request.url = PageUrls.HEARING_PANEL_PREFERENCE;
@@ -47,10 +51,16 @@ describe('HearingPreferencesController', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.HEARING_PANEL_PREFERENCE);
     });
 
-    it('should redirect to next page when NEITHER is selected and details is filled in', async () => {
+    it('should redirect to respondent employees when Scotland is enabled', async () => {
+      jest
+        .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+        .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
       request = mockRequest({
         body: {
-          et3ResponseHearingRespondent: HearingPreference.NEITHER,
+          et3ResponseHearingRespondent: HearingPreferenceET3.PHONE,
+        },
+        userCase: {
+          caseTypeId: CaseTypeId.SCOTLAND,
         },
       });
       request.url = PageUrls.HEARING_PANEL_PREFERENCE;

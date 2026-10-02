@@ -1,6 +1,8 @@
 import CaseDetailsController from '../../../main/controllers/CaseDetailsController';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { LoadUserCaseResults, loadUserCaseFromApi } from '../../../main/helpers/LoadUserCaseHelper';
+import { CuiYourSupportFeature } from '../../../main/modules/featureFlag/CuiYourSupportFeature';
+import * as CuiYourSupportFeatureModule from '../../../main/modules/featureFlag/CuiYourSupportFeature';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -25,6 +27,7 @@ describe('CaseDetailsController', () => {
   beforeEach(() => {
     loadUserCaseFromApiMock.mockResolvedValue(LoadUserCaseResults.LOADED);
     jest.clearAllMocks();
+    jest.spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature').mockReturnValue(new CuiYourSupportFeature([]));
   });
 
   it('should render respondent replies page', async () => {

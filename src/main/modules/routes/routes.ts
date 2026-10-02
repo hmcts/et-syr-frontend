@@ -56,9 +56,9 @@ import DocumentsController from '../../controllers/DocumentsController';
 import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
 import GetCaseDocumentController from '../../controllers/GetCaseDocumentController';
-import HearingPanelPreferenceController from '../../controllers/HearingPanelPreferenceController';
 import HearingDocumentFileController from '../../controllers/HearingDocumentFileController';
 import HearingDocumentUploadController from '../../controllers/HearingDocumentUploadController';
+import HearingPanelPreferenceController from '../../controllers/HearingPanelPreferenceController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HoldingPageController from '../../controllers/HoldingPageController';
 import HomeController from '../../controllers/HomeController';
@@ -114,6 +114,7 @@ import TransferredCaseController from '../../controllers/TransferredCaseControll
 import TypeOfOrganisationController from '../../controllers/TypeOfOrganisationController';
 import YourRequestAndApplicationsController from '../../controllers/YourRequestAndApplicationsController';
 import YourResponseFormController from '../../controllers/YourResponseFormController';
+import YourSupportController from '../../controllers/YourSupportController';
 import { AppRequest } from '../../definitions/appRequest';
 import { FILE_SIZE_LIMIT, FormFieldNames, InterceptPaths, PageUrls, Urls } from '../../definitions/constants';
 
@@ -166,6 +167,11 @@ export class Routes {
     app.get(PageUrls.TRANSFERRED_CASE, new TransferredCaseController().get);
     app.get(PageUrls.NEW_SELF_ASSIGNMENT_REQUEST, new NewSelfAssignmentRequestController().get);
     app.get(PageUrls.COOKIE_PREFERENCES, new CookiePreferencesController().get);
+    app.get(PageUrls.YOUR_SUPPORT, new YourSupportController().get);
+    app.post(PageUrls.YOUR_SUPPORT, new YourSupportController().post);
+    app.get(PageUrls.YOUR_SUPPORT_CALLBACK, new YourSupportController().callback);
+    app.get(PageUrls.YOUR_SUPPORT_CONFIRMATION, new YourSupportController().confirmation);
+    app.get(PageUrls.YOUR_SUPPORT_SUBMITTED_CONFIRMATION, new YourSupportController().submittedConfirmation);
     app.get(PageUrls.APPLICATION_SUBMITTED, new ApplicationSubmittedController().get);
     app.get(PageUrls.RESPONSE_SAVED, new ResponseSavedController().get);
     app.get(PageUrls.CHECK_YOUR_ANSWERS_ET3, new CheckYourAnswersET3Controller().get);

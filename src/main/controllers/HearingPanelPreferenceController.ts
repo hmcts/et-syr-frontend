@@ -11,6 +11,7 @@ import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { isClearSelection } from '../helpers/RouterHelpers';
+import { getCuiYourSupportFeature } from '../modules/featureFlag/CuiYourSupportFeature';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import ET3Util from '../utils/ET3Util';
 import { isContentCharsOrLessAndNotEmpty, isFieldFilledIn } from '../validators/validator';
@@ -80,8 +81,9 @@ export default class HearingPanelPreferenceController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    const nextPage = await getNextPage(req);
     if (!(await getFlagValue(FEATURE_FLAGS.ERA_OCTOBER_2026, null))) {
-      res.redirect(PageUrls.REASONABLE_ADJUSTMENTS);
+      res.redirect(nextPage);
       return;
     }
     if (Array.isArray(req.body.respondentHearingPanelPreferenceReason)) {
@@ -105,20 +107,21 @@ export default class HearingPanelPreferenceController {
       this.form,
       ET3HubLinkNames.EmployerDetails,
       LinkStatus.IN_PROGRESS,
-      PageUrls.REASONABLE_ADJUSTMENTS,
+      nextPage,
       fieldsToReset
     );
   };
 
   public get = async (req: AppRequest, res: Response): Promise<void> => {
     if (!(await getFlagValue(FEATURE_FLAGS.ERA_OCTOBER_2026, null))) {
-      res.redirect(PageUrls.REASONABLE_ADJUSTMENTS);
+      res.redirect(await getNextPage(req));
       return;
     }
     const redirectUrl = setUrlLanguage(req, PageUrls.HEARING_PANEL_PREFERENCE);
 
     if (isClearSelection(req)) {
       req.session.userCase.respondentHearingPanelPreference = undefined;
+      req.session.userCase.respondentHearingPanelPreferenceReason = undefined;
     }
 
     const content = getPageContent(req, this.hearingPanelPreference, [
@@ -133,3 +136,9 @@ export default class HearingPanelPreferenceController {
     });
   };
 }
+
+const getNextPage = async (req: AppRequest): Promise<string> => {
+  return (await getCuiYourSupportFeature().isEnabled(req.session.userCase?.caseTypeId))
+    ? PageUrls.RESPONDENT_EMPLOYEES
+    : PageUrls.REASONABLE_ADJUSTMENTS;
+};
