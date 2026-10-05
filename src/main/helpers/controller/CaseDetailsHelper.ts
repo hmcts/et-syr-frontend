@@ -43,6 +43,7 @@ export const getET3CaseDetailsLinkNames = async (
     req.session.userCase,
     statuses[ET3CaseDetailsLinkNames.RespondentResponse]
   );
+  statuses[ET3CaseDetailsLinkNames.HearingDetails] = LinkStatus.READY_TO_VIEW;
   statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getClaimantAppsLinkStatus(req);
   statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = getOtherRespondentAppsLinkStatus(req);

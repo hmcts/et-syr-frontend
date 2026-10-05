@@ -65,6 +65,8 @@ export const TranslationKeys = {
   EMPLOYERS_CONTRACT_CLAIM: 'employers-contract-claim',
   EMPLOYERS_CONTRACT_CLAIM_DETAILS: 'employers-contract-claim-details',
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: 'check-your-answers-employers-contract-claim',
+  // Hearing Details
+  HEARING_DETAILS: 'hearing-details',
   // Contact the tribunal about your case
   APPLICATION_TYPE: 'application-type',
   CONTACT_TRIBUNAL: 'contact-tribunal',
@@ -176,6 +178,8 @@ export const PageUrls = {
   CHECK_YOUR_ANSWERS_EMPLOYERS_CONTRACT_CLAIM: '/check-your-answers-employers-contract-claim',
   GET_CASE_DOCUMENT: '/getCaseDocument/:docId',
   GET_SUPPORTING_MATERIAL: '/getSupportingMaterial/:docId',
+  // Hearing Details
+  HEARING_DETAILS: '/hearing-details',
   // Contact the tribunal about your case
   CONTACT_TRIBUNAL: '/contact-tribunal',
   CONTACT_TRIBUNAL_SELECTED: '/contact-tribunal/:selectedOption',
@@ -467,6 +471,7 @@ export const AllDocumentTypes = {
 export type AllDocumentTypeValue = (typeof AllDocumentTypes)[keyof typeof AllDocumentTypes];
 
 export const NotificationSubjects = {
+  HEARING: 'Hearing',
   GENERAL_CORRESPONDENCE: 'Other (General correspondence)',
   ORDER_OR_REQUEST: 'Case management orders / requests',
   ECC: 'Employer Contract Claim',
