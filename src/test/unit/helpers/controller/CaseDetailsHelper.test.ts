@@ -198,5 +198,29 @@ describe('Case Details Helper', () => {
       const result = await getET3CaseDetailsLinkNames(statuses, req);
       expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.CANNOT_START_YET);
     });
+
+    it('returns not available yet for other respondent ET3 when there is one respondent', async () => {
+      req.session.userCase.respondents = [{ responseStatus: 'Accepted' }];
+      req.session.selectedRespondentIndex = 0;
+      const result = await getET3CaseDetailsLinkNames({}, req);
+      expect(result[ET3CaseDetailsLinkNames.OtherRespondentEt3]).toBe(LinkStatus.NOT_YET_AVAILABLE);
+    });
+
+    it('returns ready to view for other respondent ET3 when a co-respondent ET3 is accepted', async () => {
+      req.session.userCase.respondents = [{ responseStatus: 'Submitted' }, { responseStatus: 'Accepted' }];
+      req.session.selectedRespondentIndex = 0;
+      const result = await getET3CaseDetailsLinkNames({}, req);
+      expect(result[ET3CaseDetailsLinkNames.OtherRespondentEt3]).toBe(LinkStatus.READY_TO_VIEW);
+    });
+
+    it('keeps viewed for other respondent ET3 after the documents have been opened', async () => {
+      req.session.userCase.respondents = [{ responseStatus: 'Submitted' }, { responseStatus: 'Accepted' }];
+      req.session.selectedRespondentIndex = 0;
+      const statuses: ET3CaseDetailsLinksStatuses = {
+        [ET3CaseDetailsLinkNames.OtherRespondentEt3]: LinkStatus.VIEWED,
+      };
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      expect(result[ET3CaseDetailsLinkNames.OtherRespondentEt3]).toBe(LinkStatus.VIEWED);
+    });
   });
 });

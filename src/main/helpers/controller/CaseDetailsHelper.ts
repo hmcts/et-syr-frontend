@@ -20,6 +20,7 @@ import { getYourStoredApplicationList } from '../StoredApplicationHelper';
 
 import { isClaimantApplicationShare } from './ClaimantsApplicationsHelper';
 import { isOtherRespApplicationShare } from './OtherRespondentApplicationsHelper';
+import { getOtherRespondentEt3LinkStatus } from './OtherRespondentsEt3Helper';
 import { isYourApplication } from './YourRequestAndApplicationsHelper';
 
 const priorityOrder = [
@@ -46,6 +47,10 @@ export const getET3CaseDetailsLinkNames = async (
   statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getClaimantAppsLinkStatus(req);
   statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = getOtherRespondentAppsLinkStatus(req);
+  statuses[ET3CaseDetailsLinkNames.OtherRespondentEt3] = getOtherRespondentEt3LinkStatus(
+    req,
+    statuses[ET3CaseDetailsLinkNames.OtherRespondentEt3]
+  );
   statuses[ET3CaseDetailsLinkNames.TribunalNotification] = getTribunalNotificationLinkStatus(req);
   return statuses;
 };
