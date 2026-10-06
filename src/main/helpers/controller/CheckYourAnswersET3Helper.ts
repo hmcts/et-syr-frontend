@@ -179,7 +179,8 @@ export const getEt3Section2 = (
   userCase: CaseWithId,
   translations: AnyRecord,
   sectionCya?: string,
-  hideChangeLink?: boolean
+  hideChangeLink?: boolean,
+  eraOctober2026Enabled = false
 ): SummaryListRow[] => {
   const et3ResponseSection2: SummaryListRow[] = [];
 
@@ -192,6 +193,30 @@ export const getEt3Section2 = (
       hideChangeLink ? undefined : sectionCya
     )
   );
+
+  if (eraOctober2026Enabled) {
+    et3ResponseSection2.push(
+      addSummaryRowWithAction(
+        translations.section2.hearingPanelPreference,
+        userCase.respondentHearingPanelPreference ?? translations.notProvided,
+        PageUrls.HEARING_PANEL_PREFERENCE,
+        hideChangeLink ? undefined : translations.change,
+        hideChangeLink ? undefined : sectionCya
+      )
+    );
+
+    if (userCase.respondentHearingPanelPreferenceReason) {
+      et3ResponseSection2.push(
+        addSummaryRowWithAction(
+          translations.section2.hearingPanelPreferenceReason,
+          userCase.respondentHearingPanelPreferenceReason,
+          PageUrls.HEARING_PANEL_PREFERENCE,
+          hideChangeLink ? undefined : translations.change,
+          hideChangeLink ? undefined : sectionCya
+        )
+      );
+    }
+  }
 
   et3ResponseSection2.push(
     addSummaryRowWithAction(
