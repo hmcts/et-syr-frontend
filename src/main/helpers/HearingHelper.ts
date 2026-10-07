@@ -14,25 +14,20 @@ import { getLanguageParam } from './RouterHelpers';
  * @param req request
  */
 export const getHearingCollection = (req: AppRequest): HearingDetails[] => {
-  const list: HearingDetails[] = [];
   const { userCase, user } = req.session;
-  const hearings = userCase.hearingCollection || [];
-  const notifications = userCase.sendNotificationCollection || [];
   const languageParam = getLanguageParam(req.url);
   const translations: AnyRecord = {
     ...req.t(TranslationKeys.HEARING_DETAILS, { returnObjects: true }),
   };
+  const hearings = userCase.hearingCollection || [];
+  const notifications = userCase.sendNotificationCollection || [];
   const hearingNotifications = getHearingNotificationsToRespondent(notifications);
-  for (const hearing of hearings) {
-    const details: HearingDetails = {
-      hearingNumber: hearing.value?.hearingNumber,
-      hearingType: translations[hearing.value?.Hearing_type],
-      hearingDateRows: getHearingDateRows(hearing, translations),
-      notifications: getMatchedNotifications(hearingNotifications, hearing, user, languageParam, translations),
-    };
-    list.push(details);
-  }
-  return list;
+  return hearings.map(hearing => ({
+    hearingNumber: hearing.value?.hearingNumber,
+    hearingType: translations[hearing.value?.Hearing_type],
+    hearingDateRows: getHearingDateRows(hearing, translations),
+    notifications: getMatchedNotifications(hearingNotifications, hearing, user, languageParam, translations),
+  }));
 };
 
 const getHearingNotificationsToRespondent = (notifications: SendNotificationTypeItem[]): SendNotificationTypeItem[] =>
