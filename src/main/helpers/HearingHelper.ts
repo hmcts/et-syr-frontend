@@ -22,7 +22,6 @@ export const getHearingCollection = (req: AppRequest): HearingDetails[] => {
   const translations: AnyRecord = {
     ...req.t(TranslationKeys.HEARING_DETAILS, { returnObjects: true }),
   };
-
   const hearingNotifications = getHearingNotificationsToRespondent(notifications);
   for (const hearing of hearings) {
     const details: HearingDetails = {
@@ -37,15 +36,17 @@ export const getHearingCollection = (req: AppRequest): HearingDetails[] => {
 };
 
 const getHearingNotificationsToRespondent = (notifications: SendNotificationTypeItem[]): SendNotificationTypeItem[] =>
-  notifications.filter(
-    notification =>
-      (notification.value?.sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY ||
-        notification.value?.sendNotificationNotify === PartiesNotify.BOTH_PARTIES) &&
-      notification.value?.sendNotificationSubject?.includes(NotificationSubjects.HEARING)
-  );
+  notifications.filter(notification => isForRespondent(notification) && isForHearing(notification));
+
+const isForRespondent = (notification: SendNotificationTypeItem): boolean =>
+  notification.value?.sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY ||
+  notification.value?.sendNotificationNotify === PartiesNotify.BOTH_PARTIES;
+
+const isForHearing = (notification: SendNotificationTypeItem): boolean =>
+  notification.value?.sendNotificationSubject?.includes(NotificationSubjects.HEARING) ?? false;
 
 const getHearingDateRows = (hearing: HearingModel, translations: AnyRecord): HearingDateRow[] =>
-  hearing.value?.hearingDateCollection.map(hearingDate => ({
+  hearing.value?.hearingDateCollection?.map(hearingDate => ({
     date: hearingDate.value?.listedDate,
     status: translations[hearingDate.value?.Hearing_status],
     venue: hearingDate.value?.hearingVenueDay?.value.label || '',
@@ -59,13 +60,13 @@ const getMatchedNotifications = (
   translations: AnyRecord
 ): HearingNotificationRow[] =>
   notifications
-    .filter(notification => isNotificationsWithIdMatch(notification, hearing))
+    .filter(notification => doesNotificationMatchHearing(hearing, notification))
     .map(notification => getNotificationRow(notification, user, languageParam, translations));
 
-const isNotificationsWithIdMatch = (notification: SendNotificationTypeItem, hearing: HearingModel): boolean =>
+const doesNotificationMatchHearing = (hearing: HearingModel, notification: SendNotificationTypeItem): boolean =>
   hearing.value?.hearingDateCollection?.some(
-    hearingDate => notification.value?.sendNotificationSelectHearing?.selectedCode === hearingDate.id
-  );
+    hearingDate => hearingDate.id === notification.value?.sendNotificationSelectHearing?.selectedCode
+  ) ?? false;
 
 const getNotificationRow = (
   notification: SendNotificationTypeItem,
