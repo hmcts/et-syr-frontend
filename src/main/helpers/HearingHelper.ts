@@ -36,24 +36,20 @@ export const getHearingCollection = (req: AppRequest): HearingDetails[] => {
   return list;
 };
 
-const getHearingNotificationsToRespondent = (notifications: SendNotificationTypeItem[]): SendNotificationTypeItem[] => {
-  return (
-    notifications?.filter(
-      notification =>
-        (notification.value?.sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY ||
-          notification.value?.sendNotificationNotify === PartiesNotify.BOTH_PARTIES) &&
-        notification.value?.sendNotificationSubject?.includes(NotificationSubjects.HEARING)
-    ) || []
+const getHearingNotificationsToRespondent = (notifications: SendNotificationTypeItem[]): SendNotificationTypeItem[] =>
+  notifications.filter(
+    notification =>
+      (notification.value?.sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY ||
+        notification.value?.sendNotificationNotify === PartiesNotify.BOTH_PARTIES) &&
+      notification.value?.sendNotificationSubject?.includes(NotificationSubjects.HEARING)
   );
-};
 
-const getHearingDateRows = (hearing: HearingModel, translations: AnyRecord): HearingDateRow[] => {
-  return hearing.value?.hearingDateCollection.map(hearingDate => ({
+const getHearingDateRows = (hearing: HearingModel, translations: AnyRecord): HearingDateRow[] =>
+  hearing.value?.hearingDateCollection.map(hearingDate => ({
     date: hearingDate.value?.listedDate,
     status: translations[hearingDate.value?.Hearing_status],
     venue: hearingDate.value?.hearingVenueDay?.value.label || '',
-  }));
-};
+  })) ?? [];
 
 const getMatchedNotifications = (
   notifications: SendNotificationTypeItem[],
@@ -61,17 +57,15 @@ const getMatchedNotifications = (
   user: UserDetails,
   languageParam: string,
   translations: AnyRecord
-): HearingNotificationRow[] => {
-  return notifications
+): HearingNotificationRow[] =>
+  notifications
     .filter(notification => isNotificationsWithIdMatch(notification, hearing))
     .map(notification => getNotificationRow(notification, user, languageParam, translations));
-};
 
-const isNotificationsWithIdMatch = (notification: SendNotificationTypeItem, hearing: HearingModel): boolean => {
-  return hearing.value?.hearingDateCollection?.some(hearingDate => {
-    return notification.value?.sendNotificationSelectHearing?.selectedCode === hearingDate.id;
-  });
-};
+const isNotificationsWithIdMatch = (notification: SendNotificationTypeItem, hearing: HearingModel): boolean =>
+  hearing.value?.hearingDateCollection?.some(
+    hearingDate => notification.value?.sendNotificationSelectHearing?.selectedCode === hearingDate.id
+  );
 
 const getNotificationRow = (
   notification: SendNotificationTypeItem,

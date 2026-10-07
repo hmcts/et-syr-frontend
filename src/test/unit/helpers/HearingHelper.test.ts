@@ -38,7 +38,9 @@ describe('Hearing Helpers', () => {
           },
         },
       ];
-      const actual = getHearingCollection(mockHearingCollection, sendNotificationCollection, request);
+      request.session.userCase.hearingCollection = mockHearingCollection;
+      request.session.userCase.sendNotificationCollection = sendNotificationCollection;
+      const actual = getHearingCollection(request);
       const expected: HearingDetails[] = [
         {
           hearingNumber: '3333',
@@ -88,7 +90,9 @@ describe('Hearing Helpers', () => {
           },
         },
       ];
-      const actual = getHearingCollection(mockHearingCollection, sendNotificationCollection, request);
+      request.session.userCase.hearingCollection = mockHearingCollection;
+      request.session.userCase.sendNotificationCollection = sendNotificationCollection;
+      const actual = getHearingCollection(request);
       const expected: HearingDetails[] = [
         {
           hearingNumber: '3333',
@@ -115,7 +119,9 @@ describe('Hearing Helpers', () => {
     });
 
     it('should render the hearing details page without notification', () => {
-      const actual = getHearingCollection(mockHearingCollection, undefined, request);
+      request.session.userCase.hearingCollection = mockHearingCollection;
+      request.session.userCase.sendNotificationCollection = undefined;
+      const actual = getHearingCollection(request);
       const expected: HearingDetails[] = [
         {
           hearingNumber: '3333',
@@ -134,7 +140,9 @@ describe('Hearing Helpers', () => {
     });
 
     it('should render the hearing details page without hearing', () => {
-      const actual = getHearingCollection(undefined, undefined, request);
+      request.session.userCase.hearingCollection = undefined;
+      request.session.userCase.sendNotificationCollection = undefined;
+      const actual = getHearingCollection(request);
       const expected: HearingDetails[] = [];
       expect(actual).toEqual(expected);
     });
