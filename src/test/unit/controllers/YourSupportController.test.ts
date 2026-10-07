@@ -429,7 +429,49 @@ describe('YourSupportController', () => {
     expect(req.session.returnUrl).toBe('');
   });
 
-  it('should redirect to case details when CUI callback correlation does not match', async () => {
+  it.each([YesOrNo.NO, YesOrNo.YES])(
+    'should record a callback error and return to the list page when CUI data retrieval fails (response received: %s)',
+    async responseReceived => {
+      const getJourneyDataMock = jest.fn().mockRejectedValue(new Error('CUI unavailable'));
+      (getCuiService as jest.Mock).mockReturnValue({ getJourneyData: getJourneyDataMock });
+      const controller = new YourSupportController({
+        getToken: jest.fn().mockResolvedValue('service-token'),
+      } as never);
+      const req = mockRequest({
+        userCase: {
+          id: '1234',
+          responseReceived,
+          respondents: [{ ccdId: 'respondent-ccd-id', responseReceived }],
+        },
+        session: {
+          selectedRespondentIndex: 0,
+          returnUrl: PageUrls.CHECK_YOUR_ANSWERS_ET3,
+        },
+      });
+      req.params.id = 'journey-id';
+      setRequestRuntime(req);
+      const existingError = { propertyName: 'otherField', errorType: 'required' };
+      req.session.errors = [existingError];
+      const res = mockResponse();
+
+      await controller.callback(req, res);
+
+      expect(req.session.errors).toEqual([existingError, { propertyName: 'yourSupportCallback', errorType: 'failed' }]);
+      expect(req.session.returnUrl).toBe('');
+      expect(getJourneyDataMock).toHaveBeenCalledWith('journey-id', { serviceToken: 'service-token' });
+      expect(handleUpdateDraftCase).not.toHaveBeenCalled();
+      expect(handleUpdateSubmittedCaseFlags).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        `${
+          responseReceived === YesOrNo.YES
+            ? '/case-details/1234/respondent-ccd-id'
+            : PageUrls.RESPONDENT_RESPONSE_TASK_LIST
+        }${languages.ENGLISH_URL_PARAMETER}`
+      );
+    }
+  );
+
+  it('should redirect to the respondent response task list when CUI callback correlation does not match', async () => {
     (getCuiService as jest.Mock).mockReturnValue({
       getJourneyData: jest.fn().mockResolvedValue({
         action: CUIActions.SUBMIT,
@@ -453,7 +495,10 @@ describe('YourSupportController', () => {
 
     await controller.callback(req, res);
 
-    expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER);
+    expect(req.session.errors).toEqual([{ propertyName: 'yourSupportCallback', errorType: 'failed' }]);
+    expect(res.redirect).toHaveBeenCalledWith(
+      `${PageUrls.RESPONDENT_RESPONSE_TASK_LIST}${languages.ENGLISH_URL_PARAMETER}`
+    );
   });
 
   it('should redirect back without saving when submitted CUI callback has no flag data', async () => {

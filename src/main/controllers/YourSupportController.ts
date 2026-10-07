@@ -15,6 +15,7 @@ import { isEt3ResponseSubmitted as hasEt3ResponseSubmitted } from '../helpers/co
 import { buildCuiFlagDetails, mergeRespondentExternalFlags } from '../helpers/controller/CuiFlagHelper';
 import { getLogger } from '../logger';
 import { getCuiYourSupportFeature } from '../modules/featureFlag/CuiYourSupportFeature';
+import ErrorUtils from '../utils/ErrorUtils';
 
 import {
   CUIActions,
@@ -38,6 +39,7 @@ const YOUR_SUPPORT_SUBMITTED_CONFIRMATION_TEMPLATE = 'your-support-submitted-con
 
 const YOUR_SUPPORT_FIELD = 'reasonableAdjustments';
 const YOUR_SUPPORT_REDIRECT_ERROR = 'yourSupportRedirect';
+const YOUR_SUPPORT_CALLBACK_ERROR = 'yourSupportCallback';
 
 const formatError = (error: unknown): string => {
   if (error instanceof Error) {
@@ -163,7 +165,9 @@ export default class YourSupportController {
       res.redirect(this.getCuiCompletionUrl(req));
     } catch (error) {
       logger.error('Error retrieving CUI journey data', error);
-      res.redirect(PageUrls.CASE_DETAILS_WITHOUT_CASE_ID_PARAMETER);
+      ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(req, 'failed', YOUR_SUPPORT_CALLBACK_ERROR);
+      req.session.returnUrl = '';
+      res.redirect(this.getCancelCallbackRedirectUrl(req));
     }
   };
 

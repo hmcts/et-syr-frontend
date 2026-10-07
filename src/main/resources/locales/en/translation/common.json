@@ -99,6 +99,9 @@
   "email": "Email",
   "post": "Post",
   "errors": {
+    "yourSupportCallback": {
+      "failed": "There was a problem saving your support request. Please try again later"
+    },
     "hiddenErrorField": {
       "sessionUserCase": "User case not found in session",
       "sessionUser": "User not found in session",

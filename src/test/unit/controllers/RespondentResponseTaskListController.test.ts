@@ -135,6 +135,34 @@ describe('Respondent response task list controller', () => {
     expect(request.t).toHaveBeenCalledWith(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true });
   });
 
+  it('should display a callback error once and preserve unrelated session errors', async () => {
+    mockWelshFlag.mockResolvedValue(true);
+    const controller = new RespondentResponseTaskListController();
+    const response = mockResponse();
+    const request = mockRequest({ session: { userCase: mockUserCaseComplete, user: mockUserDetails } });
+    request.session.selectedRespondentIndex = 0;
+    const callbackError = { propertyName: 'yourSupportCallback', errorType: 'failed' };
+    const unrelatedError = { propertyName: 'otherField', errorType: 'required' };
+    request.session.errors = [callbackError, unrelatedError];
+
+    await controller.get(request, response);
+
+    expect(response.render).toHaveBeenCalledWith(
+      TranslationKeys.RESPONDENT_RESPONSE_TASK_LIST,
+      expect.objectContaining({ sessionErrors: [callbackError] })
+    );
+    expect(request.session.errors).toEqual([unrelatedError]);
+
+    const nextResponse = mockResponse();
+    await controller.get(request, nextResponse);
+
+    expect(nextResponse.render).toHaveBeenCalledWith(
+      TranslationKeys.RESPONDENT_RESPONSE_TASK_LIST,
+      expect.objectContaining({ sessionErrors: [] })
+    );
+    expect(request.session.errors).toEqual([unrelatedError]);
+  });
+
   it('should not show Your Support by default when CUI Your Support is disabled', async () => {
     mockWelshFlag.mockResolvedValue(true);
     const controller = new RespondentResponseTaskListController();

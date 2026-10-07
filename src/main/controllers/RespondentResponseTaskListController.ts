@@ -70,11 +70,15 @@ export default class RespondentResponseTaskListController {
       });
     }
 
+    const sessionErrors = (req.session.errors || []).filter(error => error.propertyName === 'yourSupportCallback');
+    req.session.errors = req.session.errors?.filter(error => error.propertyName !== 'yourSupportCallback');
+
     res.render(TranslationKeys.RESPONDENT_RESPONSE_TASK_LIST, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CASE_DETAILS_STATUS as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.RESPONDENT_RESPONSE_TASK_LIST as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
+      sessionErrors,
       PageUrls,
       hideContactUs: true,
       sections,
