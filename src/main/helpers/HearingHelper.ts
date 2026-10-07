@@ -11,33 +11,25 @@ import { getLanguageParam } from './RouterHelpers';
 
 /**
  * Get hearing data to display in Hearing Details page
- * @param hearings hearing collections
- * @param notifications notification collections to map with hearings
  * @param req request
  */
-export const getHearingCollection = (
-  hearings: HearingModel[],
-  notifications: SendNotificationTypeItem[],
-  req: AppRequest
-): HearingDetails[] => {
+export const getHearingCollection = (req: AppRequest): HearingDetails[] => {
   const list: HearingDetails[] = [];
+  const { userCase, user } = req.session;
+  const hearings = userCase.hearingCollection || [];
+  const notifications = userCase.sendNotificationCollection || [];
   const languageParam = getLanguageParam(req.url);
   const translations: AnyRecord = {
     ...req.t(TranslationKeys.HEARING_DETAILS, { returnObjects: true }),
   };
+
   const hearingNotifications = getHearingNotificationsToRespondent(notifications);
-  for (const hearing of hearings || []) {
+  for (const hearing of hearings) {
     const details: HearingDetails = {
       hearingNumber: hearing.value?.hearingNumber,
       hearingType: translations[hearing.value?.Hearing_type],
       hearingDateRows: getHearingDateRows(hearing, translations),
-      notifications: getMatchedNotifications(
-        hearingNotifications,
-        hearing,
-        req.session.user,
-        languageParam,
-        translations
-      ),
+      notifications: getMatchedNotifications(hearingNotifications, hearing, user, languageParam, translations),
     };
     list.push(details);
   }
