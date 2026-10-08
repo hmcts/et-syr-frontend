@@ -56,9 +56,10 @@ import DocumentsController from '../../controllers/DocumentsController';
 import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
 import GetCaseDocumentController from '../../controllers/GetCaseDocumentController';
-import HearingPanelPreferenceController from '../../controllers/HearingPanelPreferenceController';
+import HearingDetailsController from '../../controllers/HearingDetailsController';
 import HearingDocumentFileController from '../../controllers/HearingDocumentFileController';
 import HearingDocumentUploadController from '../../controllers/HearingDocumentUploadController';
+import HearingPanelPreferenceController from '../../controllers/HearingPanelPreferenceController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HoldingPageController from '../../controllers/HoldingPageController';
 import HomeController from '../../controllers/HomeController';
@@ -325,6 +326,7 @@ export class Routes {
     app.get(PageUrls.BUNDLES_DOCS_FOR_HEARING_CYA, new BundlesDocsForHearingCYAController().get);
     app.get(InterceptPaths.SUBMIT_BUNDLES_HEARING_DOCS_CYA, new SubmitBundlesHearingDocsCYAController().get);
     app.get(PageUrls.BUNDLES_COMPLETED, new BundlesCompletedController().get);
+    app.get(PageUrls.HEARING_DETAILS, new HearingDetailsController().get);
     // Your request and applications
     app.get(PageUrls.YOUR_REQUEST_AND_APPLICATIONS, new YourRequestAndApplicationsController().get);
     app.get(PageUrls.CLAIMANTS_APPLICATIONS, new ClaimantsApplicationsController().get);
