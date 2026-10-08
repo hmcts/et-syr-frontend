@@ -114,6 +114,15 @@ describe('HearingPanelPreferenceController', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_EMPLOYEES);
     });
 
+    it('should continue to reasonable adjustments when no preference is selected (optional question)', async () => {
+      request = mockRequest({ body: {} });
+      request.url = PageUrls.REASONABLE_ADJUSTMENTS;
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+      await controller.post(request, response);
+      expect(request.session.errors).toEqual([]);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
+    });
+
     it('should not save a hearing-panel preference when the ERA feature is disabled', async () => {
       jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(false);
       request = mockRequest({
