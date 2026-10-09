@@ -52,7 +52,7 @@ export default class CheckYourAnswersHearingPreferencesController extends BaseCY
       PageUrls,
       sessionErrors: req.session.errors,
       form: this.formContent,
-      et3ResponseSection2: getEt3Section2(
+      et3ResponseSection2: await getEt3Section2(
         userCase,
         sectionTranslations,
         InterceptPaths.EMPLOYER_DETAILS_CHANGE,
