@@ -1,16 +1,16 @@
 {
   "title": "Ymateb i hawliad ET1 (ET3)",
   "pageTitle": "Ymateb i hawliad y tribiwnlys cyflogaeth ET1 (ET3)",
-  "responseLandingTxt1": "Rhaid cwblhau a chyflwyno’r ymateb hwn cyn pen 28 diwrnod o ddyddiad anfon y ffurflen hawlio gan y tribiwnlys.",
-  "responseLandingTxt2": "Rhaid i chi ddarparu eich ymateb i'r hawliad hyd yn oed os ydych yn credu bod atebydd arall yn atebol.",
+  "responseLandingTxt1": "[W] You must respond within 28 days of the date of the claim form being sent by the tribunal.",
+  "responseLandingTxt2": "[W] You must respond to the claim even if you believe that another respondent is liable.",
   "responseLandingTxt3,": "Os na fyddwch yn darparu ymateb, gellir cyhoeddi dyfarniad yn eich erbyn heb wrandawiad.",
-  "responseLandingTxt4": "Os ydych chi’n ystyried y gallai unigolyn neu gwmni arall fod yn atebol, dylech ddal i gyflwyno ymateb. Gallwch egluro pam eich bod yn meddwl y gallai rhywun arall fod yn atebol yn yr adran Herio’r Hawliad.",
+  "responseLandingTxt4": "[W] If you consider another person or company may be liable, you should still submit a response. You can explain why you think someone else may be liable in section 3 of the form",
   "completeFormInfo": "I lenwi’r ffurflen hon, byddwch angen:",
   "completeFormInfoTxt1": "dyddiadau dechrau a gorffen cyflogaeth yr hawlydd, ei oriau gwaith a’r cyfnod rhybudd",
   "completeFormInfoTxt2": "tâl a buddion yr hawlydd, cyn ac ar ôl treth",
   "completeFormInfoTxt3": "eich ymateb manwl i'r hawliad",
   "rememberTxt": "Cofiwch:",
-  "rememberTxt1": "nid oes rhaid i chi ateb cwestiynau sydd wedi’u nodi’n ddewisol",
+  "rememberTxt1": "nid oes rhaid i chi ateb cwestiynau sydd wedi’u nodi’n 'ddewisol'",
   "rememberTxt2": "gallwch adolygu a golygu eich atebion cyn cyflwyno’r ffurflen",
   "rememberTxt3": "gall gymryd awr i lenwi’r ffurflen, felly cadwch fersiwn ddrafft os oes arnoch angen gwneud hynny"
 }

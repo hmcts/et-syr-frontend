@@ -16,6 +16,14 @@
 
       <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
+      {% if isGroupClaim %}
+        <p class="govuk-body">{{ groupClaims.p1 }}</p>
+        <p class="govuk-body">{{ groupClaims.p2 }}</p>
+        <p class="govuk-body">
+          <a href="{{ claimantDetailsUrl }}" class="govuk-link">{{ groupClaims.claimantDetails }}</a>
+        </p>
+      {% endif %}
+
       <p class="govuk-body">{{ responseLandingTxt1 }}</p>
       <p class="govuk-body">{{ responseLandingTxt2 }}</p>
       <p class="govuk-body">{{ responseLandingTxt3 }}</p>

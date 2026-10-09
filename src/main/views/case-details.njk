@@ -32,7 +32,9 @@
               classes: ''
             }) }}
 
-            {% include "./components/case-details/case-details-notification-banner.njk" %}
+            {% include "./components/case-details/notification-banner.njk" %}
+
+            {% include "./components/case-details/multiples-inset.njk" %}
 
             <ol class="app-task-list">
               {% for section in sections %}
