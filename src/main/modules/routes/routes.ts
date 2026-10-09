@@ -56,9 +56,9 @@ import DocumentsController from '../../controllers/DocumentsController';
 import EmployersContractClaimController from '../../controllers/EmployersContractClaimController';
 import EmployersContractClaimDetailsController from '../../controllers/EmployersContractClaimDetailsController';
 import GetCaseDocumentController from '../../controllers/GetCaseDocumentController';
-import HearingPanelPreferenceController from '../../controllers/HearingPanelPreferenceController';
 import HearingDocumentFileController from '../../controllers/HearingDocumentFileController';
 import HearingDocumentUploadController from '../../controllers/HearingDocumentUploadController';
+import HearingPanelPreferenceController from '../../controllers/HearingPanelPreferenceController';
 import HearingPreferencesController from '../../controllers/HearingPreferencesController';
 import HoldingPageController from '../../controllers/HoldingPageController';
 import HomeController from '../../controllers/HomeController';
@@ -69,6 +69,7 @@ import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignm
 import NotificationController from '../../controllers/NotificationController';
 import NotificationDetailsController from '../../controllers/NotificationDetailsController';
 import OtherRespondentApplicationsController from '../../controllers/OtherRespondentApplicationsController';
+import OtherRespondentsEt3Controller from '../../controllers/OtherRespondentsEt3Controller';
 import PrepareAndSubmitHearingDocumentsController from '../../controllers/PrepareAndSubmitHearingDocumentsController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
@@ -173,6 +174,7 @@ export class Routes {
     // hub links
     app.get(PageUrls.CLAIMANT_ET1_FORM, new ClaimantET1FormController().get);
     app.get(PageUrls.CLAIMANT_CONTACT_DETAILS, new ClaimantContactDetailsController().get);
+    app.get(PageUrls.OTHER_RESPONDENTS_ET3, new OtherRespondentsEt3Controller().get);
     app.get(PageUrls.RESPONDENT_RESPONSE_LANDING, new RespondentResponseLandingController().get);
     // ET3 task list
     app.get(PageUrls.RESPONDENT_RESPONSE_TASK_LIST, new RespondentResponseTaskListController().get);

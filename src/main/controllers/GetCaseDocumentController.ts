@@ -1,8 +1,9 @@
 import { Response } from 'express';
 
 import { AppRequest } from '../definitions/appRequest';
-import { RespondentET3Model } from '../definitions/case';
-import { AllDocumentTypes, PageUrls, et3AttachmentDocTypes } from '../definitions/constants';
+import { RespondentET3Model, UploadedDocumentType } from '../definitions/case';
+import { DocumentTypeItem } from '../definitions/complexTypes/documentTypeItem';
+import { AllDocumentTypes, ET3_FORM, PageUrls, et3AttachmentDocTypes } from '../definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../definitions/links';
 import {
   combineUserCaseDocuments,
@@ -16,7 +17,6 @@ import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
 import DocumentUtils from '../utils/DocumentUtils';
 import ET3Util from '../utils/ET3Util';
-import NumberUtils from '../utils/NumberUtils';
 import ObjectUtils from '../utils/ObjectUtils';
 import StringUtils from '../utils/StringUtils';
 
@@ -44,35 +44,11 @@ export default class GetCaseDocumentController {
     } else {
       logger.info('requested document not found in userCase fields checking document collection');
       let documentTypeItem = req.session.userCase.documentCollection?.find(doc => doc.id === req.params.docId);
-      let selectedRespondent: RespondentET3Model;
-      if (!documentTypeItem) {
-        if (
-          CollectionUtils.isNotEmpty(req?.session?.userCase?.respondents) &&
-          NumberUtils.isNotEmpty(req?.session?.selectedRespondentIndex)
-        ) {
-          selectedRespondent = req.session.userCase.respondents[req.session.selectedRespondentIndex];
-        }
-        if (ObjectUtils.isNotEmpty(selectedRespondent)) {
-          documentTypeItem = (selectedRespondent?.et3ResponseContestClaimDocument || []).find(
-            doc => doc.id === req.params.docId
-          );
-          if (ObjectUtils.isEmpty(documentTypeItem)) {
-            if (ObjectUtils.isNotEmpty(selectedRespondent?.et3ResponseEmployerClaimDocument)) {
-              const employerClaimDocumentId = DocumentUtils.findDocumentIdByURL(
-                selectedRespondent.et3ResponseEmployerClaimDocument.document_url
-              );
-              if (StringUtils.isNotBlank(employerClaimDocumentId) && employerClaimDocumentId === req.params.docId) {
-                documentTypeItem = {
-                  id: employerClaimDocumentId,
-                  value: {
-                    uploadedDocument: selectedRespondent.et3ResponseEmployerClaimDocument,
-                    typeOfDocument: et3AttachmentDocTypes[0],
-                    creationDate: selectedRespondent.et3ResponseEmployerClaimDocument.upload_timestamp,
-                    shortDescription: selectedRespondent.et3ResponseEmployerClaimDocument.document_filename,
-                  },
-                };
-              }
-            }
+      if (!documentTypeItem && CollectionUtils.isNotEmpty(req.session.userCase.respondents)) {
+        for (const respondent of req.session.userCase.respondents) {
+          documentTypeItem = findRespondentDocument(respondent, req.params.docId);
+          if (ObjectUtils.isNotEmpty(documentTypeItem)) {
+            break;
           }
         }
       }
@@ -121,3 +97,41 @@ export default class GetCaseDocumentController {
     }
   }
 }
+
+const findRespondentDocument = (respondent: RespondentET3Model, docId: string): DocumentTypeItem | undefined => {
+  const contestDocument = (respondent?.et3ResponseContestClaimDocument || []).find(doc => doc.id === docId);
+  if (ObjectUtils.isNotEmpty(contestDocument)) {
+    return contestDocument;
+  }
+
+  const attachment = [respondent?.et3ResponseEmployerClaimDocument, respondent?.et3ResponseRespondentSupportDocument]
+    .map(document => toDocumentTypeItem(document, docId, et3AttachmentDocTypes[0]))
+    .find(document => ObjectUtils.isNotEmpty(document));
+  if (attachment) {
+    return attachment;
+  }
+
+  return [respondent?.et3Form, respondent?.et3FormWelsh]
+    .map(document => toDocumentTypeItem(document, docId, ET3_FORM))
+    .find(document => ObjectUtils.isNotEmpty(document));
+};
+
+const toDocumentTypeItem = (
+  document: UploadedDocumentType | undefined,
+  docId: string,
+  typeOfDocument: string
+): DocumentTypeItem | undefined => {
+  const documentId = DocumentUtils.findDocumentIdByURL(document?.document_url);
+  if (StringUtils.isBlank(documentId) || documentId !== docId) {
+    return undefined;
+  }
+  return {
+    id: documentId,
+    value: {
+      uploadedDocument: document,
+      typeOfDocument,
+      creationDate: document.upload_timestamp,
+      shortDescription: document.document_filename,
+    },
+  };
+};
