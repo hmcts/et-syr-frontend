@@ -15,6 +15,7 @@ import {
   getExistingNotificationState,
   isPartiesRespondRequired,
   isRespondNotificationPartyToNotify,
+  isSendNotificationNotify,
 } from '../NotificationHelper';
 import { datesStringToDateInLocale } from '../dateInLocale';
 
@@ -86,7 +87,9 @@ export const getNotificationContent = (notification: SendNotificationType, req: 
     notification.sendNotificationUploadDocument.forEach(doc => {
       rows.push(
         addSummaryRow(translations.description, doc.value.shortDescription),
-        addSummaryHtmlRow(translations.document, getLinkFromDocument(doc.value.uploadedDocument))
+        isSendNotificationNotify(notification)
+          ? addSummaryHtmlRow(translations.document, getLinkFromDocument(doc.value.uploadedDocument))
+          : addSummaryRow(translations.document, doc.value.uploadedDocument?.document_filename)
       );
     });
   }
@@ -205,10 +208,11 @@ const addAdminResponse = (
   }
 
   response.respondNotificationUploadDocument?.forEach(doc => {
-    const link = getLinkFromDocument(doc.value.uploadedDocument);
     rowsToDisplay.push(
       addSummaryRow(translations.description, doc.value.shortDescription),
-      addSummaryHtmlRow(translations.document, link)
+      isRespondNotificationPartyToNotify(response)
+        ? addSummaryHtmlRow(translations.document, getLinkFromDocument(doc.value.uploadedDocument))
+        : addSummaryRow(translations.document, doc.value.uploadedDocument?.document_filename)
     );
   });
 
