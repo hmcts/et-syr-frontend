@@ -15,51 +15,41 @@ import { TypeItem } from '../definitions/util-types';
  * compare with sendNotificationSelectParties in SendNotificationType
  * @param item sendNotificationSelectParties
  */
-export const isPartiesRespondRequired = (item: SendNotificationType): boolean => {
-  return (
-    item.sendNotificationSelectParties === PartiesRespond.BOTH_PARTIES ||
-    item.sendNotificationSelectParties === PartiesRespond.RESPONDENT ||
-    item.sendNotificationSelectParties === PartiesNotify.RESPONDENT_ONLY
-  );
-};
+export const isPartiesRespondRequired = (item: SendNotificationType): boolean =>
+  item.sendNotificationSelectParties === PartiesRespond.BOTH_PARTIES ||
+  item.sendNotificationSelectParties === PartiesRespond.RESPONDENT ||
+  item.sendNotificationSelectParties === PartiesNotify.RESPONDENT_ONLY;
 
 /**
  * Check if tribunal response is shared with respondent
  * @param item RespondNotificationType
  */
-export const isRespondNotificationPartyToNotify = (item: RespondNotificationType): boolean => {
-  return (
-    item.respondNotificationPartyToNotify === PartiesNotify.BOTH_PARTIES ||
-    item.respondNotificationPartyToNotify === PartiesNotify.RESPONDENT_ONLY
-  );
-};
+export const isRespondNotificationPartyToNotify = (item: RespondNotificationType): boolean =>
+  item.respondNotificationPartyToNotify === PartiesNotify.BOTH_PARTIES ||
+  item.respondNotificationPartyToNotify === PartiesNotify.RESPONDENT_ONLY;
 
 /**
  * Check if sendNotification is visible to the user
  * @param item SendNotificationType
  */
-export const isNotificationVisible = (item: SendNotificationType): boolean => {
-  return (
-    isSendNotificationNotify(item) ||
-    hasTribunalResponseShared(item.respondNotificationTypeCollection) ||
-    hasOtherPartyResponseShared(item.respondCollection)
-  );
-};
+export const isNotificationVisible = (item: SendNotificationType): boolean =>
+  isSendNotificationNotify(item) ||
+  hasTribunalResponseShared(item.respondNotificationTypeCollection) ||
+  hasOtherPartyResponseShared(item.respondCollection);
 
-const isSendNotificationNotify = (item: SendNotificationType): boolean => {
-  return (
-    item.sendNotificationNotify === PartiesNotify.BOTH_PARTIES ||
-    item.sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY
-  );
-};
+/**
+ * Check if sendNotification is visible to the user
+ * @param item SendNotificationType
+ */
+export const isSendNotificationNotify = (item: SendNotificationType): boolean =>
+  item.sendNotificationNotify === PartiesNotify.BOTH_PARTIES ||
+  item.sendNotificationNotify === PartiesNotify.RESPONDENT_ONLY;
 
-const hasTribunalResponseShared = (responseList: TypeItem<RespondNotificationType>[]): boolean => {
-  return responseList?.some(r => isRespondNotificationPartyToNotify(r.value)) ?? false;
-};
+const hasTribunalResponseShared = (responseList: TypeItem<RespondNotificationType>[]): boolean =>
+  responseList?.some(r => isRespondNotificationPartyToNotify(r.value)) ?? false;
 
-const hasOtherPartyResponseShared = (responseList: TypeItem<PseResponseType>[]): boolean => {
-  return responseList?.some(r => r.value.copyToOtherParty === YesOrNo.YES) ?? false;
-};
+const hasOtherPartyResponseShared = (responseList: TypeItem<PseResponseType>[]): boolean =>
+  responseList?.some(r => r.value.copyToOtherParty === YesOrNo.YES) ?? false;
 
 /**
  * Return selected notification
@@ -69,9 +59,7 @@ const hasOtherPartyResponseShared = (responseList: TypeItem<PseResponseType>[]):
 export const findSelectedSendNotification = (
   items: SendNotificationTypeItem[],
   notificationId: string
-): SendNotificationTypeItem => {
-  return items?.find(it => it.id === notificationId);
-};
+): SendNotificationTypeItem => items?.find(it => it.id === notificationId);
 
 /**
  * Return selected notification response
@@ -83,9 +71,8 @@ export const findSelectedStoredPseResponse = (
   item: SendNotificationType,
   responseId: string,
   user: UserDetails
-): TypeItem<PseResponseType> => {
-  return item?.respondentRespondStoredCollection?.find(it => it.id === responseId && it.value.fromIdamId === user.id);
-};
+): TypeItem<PseResponseType> =>
+  item?.respondentRespondStoredCollection?.find(it => it.id === responseId && it.value.fromIdamId === user.id);
 
 /**
  * Get existing notification state for the current user
@@ -122,9 +109,8 @@ const getLinkStatus = (items: SendNotificationTypeItem[]): LinkStatus => {
  * Get notification details url
  * @param item selected notification
  */
-export const getNotificationDetailsUrl = (item: SendNotificationTypeItem): string => {
-  return PageUrls.NOTIFICATION_DETAILS.replace(':itemId', item.id);
-};
+export const getNotificationDetailsUrl = (item: SendNotificationTypeItem): string =>
+  PageUrls.NOTIFICATION_DETAILS.replace(':itemId', item.id);
 
 /**
  * Get notification details url
@@ -134,9 +120,8 @@ export const getNotificationDetailsUrl = (item: SendNotificationTypeItem): strin
 export const getNotificationStoredSubmitUrl = (
   item: SendNotificationTypeItem,
   response: TypeItem<PseResponseType>
-): string => {
-  return PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT.replace(':itemId', item.id).replace(':responseId', response.id);
-};
+): string =>
+  PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT.replace(':itemId', item.id).replace(':responseId', response.id);
 
 /**
  * Get stored response for the current user
@@ -146,6 +131,5 @@ export const getNotificationStoredSubmitUrl = (
 export const getAnyStoredResponse = (
   notification: SendNotificationType,
   user: UserDetails
-): TypeItem<PseResponseType> => {
-  return notification?.respondentRespondStoredCollection?.find(r => r.value.fromIdamId === user.id);
-};
+): TypeItem<PseResponseType> =>
+  notification?.respondentRespondStoredCollection?.find(r => r.value.fromIdamId === user.id);

@@ -95,6 +95,7 @@ describe('Attachment Helper', () => {
                   {
                     id: '1',
                     value: {
+                      respondNotificationPartyToNotify: 'Both parties',
                       respondNotificationUploadDocument: [
                         {
                           value: {
