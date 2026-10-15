@@ -51,7 +51,7 @@ describe('getET3CaseDetailsLinksUrlMap', () => {
     [ET3CaseDetailsLinkNames.ClaimantContactDetails, PageUrls.CLAIMANT_CONTACT_DETAILS + languages.WELSH_URL_PARAMETER],
     [ET3CaseDetailsLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING + languages.WELSH_URL_PARAMETER],
     [ET3CaseDetailsLinkNames.OtherRespondentEt3, PageUrls.OTHER_RESPONDENTS_ET3 + languages.WELSH_URL_PARAMETER],
-    [ET3CaseDetailsLinkNames.HearingDetails, PageUrls.NOT_IMPLEMENTED + languages.WELSH_URL_PARAMETER],
+    [ET3CaseDetailsLinkNames.HearingDetails, PageUrls.HEARING_DETAILS + languages.WELSH_URL_PARAMETER],
     [
       ET3CaseDetailsLinkNames.YourRequestsAndApplications,
       PageUrls.YOUR_REQUEST_AND_APPLICATIONS + languages.WELSH_URL_PARAMETER,
@@ -72,7 +72,7 @@ describe('getET3CaseDetailsLinksUrlMap', () => {
     [ET3CaseDetailsLinkNames.ClaimantContactDetails, PageUrls.CLAIMANT_CONTACT_DETAILS],
     [ET3CaseDetailsLinkNames.RespondentResponse, PageUrls.RESPONDENT_RESPONSE_LANDING],
     [ET3CaseDetailsLinkNames.OtherRespondentEt3, PageUrls.OTHER_RESPONDENTS_ET3],
-    [ET3CaseDetailsLinkNames.HearingDetails, PageUrls.NOT_IMPLEMENTED],
+    [ET3CaseDetailsLinkNames.HearingDetails, PageUrls.HEARING_DETAILS],
     [ET3CaseDetailsLinkNames.YourRequestsAndApplications, PageUrls.YOUR_REQUEST_AND_APPLICATIONS],
     [ET3CaseDetailsLinkNames.ClaimantApplications, PageUrls.CLAIMANTS_APPLICATIONS],
     [ET3CaseDetailsLinkNames.OtherRespondentApplications, PageUrls.OTHER_RESPONDENT_APPLICATIONS],
