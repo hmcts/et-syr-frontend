@@ -70,7 +70,7 @@ const isDocOnNotificationPage = (
 };
 
 const isNotificationDocId = (notification: SendNotificationType, docId: string): boolean => {
-  if (isSendNotificationNotify(notification)) {
+  if (!isSendNotificationNotify(notification)) {
     return false;
   }
   const docs = notification?.sendNotificationUploadDocument ?? [];

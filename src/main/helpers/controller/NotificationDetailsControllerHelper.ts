@@ -208,11 +208,10 @@ const addAdminResponse = (
   }
 
   response.respondNotificationUploadDocument?.forEach(doc => {
-    const link = getLinkFromDocument(doc.value.uploadedDocument);
-    rowsToDisplay.push(
-      addSummaryRow(translations.description, doc.value.shortDescription),
-      addSummaryHtmlRow(translations.document, link)
-    );
+    if (doc.value.shortDescription) {
+      rowsToDisplay.push(addSummaryRow(translations.description, doc.value.shortDescription));
+    }
+    rowsToDisplay.push(addSummaryHtmlRow(translations.document, getLinkFromDocument(doc.value.uploadedDocument)));
   });
 
   rowsToDisplay.push(
