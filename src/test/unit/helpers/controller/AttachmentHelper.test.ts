@@ -80,6 +80,7 @@ describe('Attachment Helper', () => {
           sendNotificationCollection: [
             {
               value: {
+                sendNotificationNotify: 'Both parties',
                 sendNotificationUploadDocument: [
                   {
                     value: {
