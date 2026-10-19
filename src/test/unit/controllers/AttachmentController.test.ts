@@ -1,3 +1,17 @@
+jest.mock('../../../main/logger', () => {
+  const logger = {
+    warn: jest.fn(),
+    error: jest.fn(),
+  };
+
+  return {
+    getLogger: jest.fn(() => logger),
+    __logger: logger,
+  };
+});
+
+const { __logger: mockLogger } = jest.requireMock('../../../main/logger');
+
 import AttachmentController from '../../../main/controllers/AttachmentController';
 import { ErrorPages } from '../../../main/definitions/constants';
 import * as CaseService from '../../../main/services/CaseService';
@@ -85,5 +99,19 @@ describe('Attachment Controller', () => {
     request.session.user = undefined;
     await controller.get(request, response);
     expect(getCaseApiMock).toHaveBeenCalledWith(undefined);
+  });
+
+  it('should log a warning and redirect when the document ID is invalid', async () => {
+    mockLogger.warn.mockClear();
+    const controller = new AttachmentController();
+    const { request, response } = setupValidRequest();
+    request.params.docId = '99999';
+
+    await controller.get(request, response);
+
+    expect(mockLogger.warn).toHaveBeenCalledWith(
+      'bad request parameter - empty or invalid document url. caseId: 1234, docId: 99999'
+    );
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
   });
 });
