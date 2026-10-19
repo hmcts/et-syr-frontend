@@ -1,7 +1,8 @@
 import { AppRequest } from '../../definitions/appRequest';
-import { RespondentET3Model } from '../../definitions/case';
+import { RespondentET3Model, YesOrNo } from '../../definitions/case';
 import { DocumentTypeItem } from '../../definitions/complexTypes/documentTypeItem';
 import { Et3ResponseStatus, responseAcceptedDocTypes } from '../../definitions/constants';
+import { ET3Status } from '../../definitions/definition';
 import { LinkStatus } from '../../definitions/links';
 import DateUtils from '../../utils/DateUtils';
 import DocumentUtils from '../../utils/DocumentUtils';
@@ -37,7 +38,7 @@ interface TableCell {
 }
 
 export const getOtherRespondentEt3LinkStatus = (req: AppRequest, existingStatus: LinkStatus): LinkStatus => {
-  if (!hasAcceptedOtherRespondentEt3(req)) {
+  if (!hasSubmittedOtherRespondentEt3(req)) {
     return LinkStatus.NOT_YET_AVAILABLE;
   }
   if (existingStatus === LinkStatus.VIEWED) {
@@ -52,13 +53,13 @@ export const getOtherRespondentEt3TableRows = (req: AppRequest, labels: OtherRes
     .filter((row): row is TableCell[] => row !== undefined);
 };
 
-const hasAcceptedOtherRespondentEt3 = (req: AppRequest): boolean => {
+const hasSubmittedOtherRespondentEt3 = (req: AppRequest): boolean => {
   const respondents = req.session?.userCase?.respondents;
   const selectedIndex = req.session?.selectedRespondentIndex;
   if (!respondents || respondents.length < 2 || selectedIndex === undefined || selectedIndex === null) {
     return false;
   }
-  return respondents.some((respondent, index) => index !== selectedIndex && isAcceptedRespondent(respondent));
+  return respondents.some((respondent, index) => index !== selectedIndex && hasSubmittedEt3(respondent));
 };
 
 const listOtherRespondentEt3Documents = (req: AppRequest): ListedDocument[] => {
@@ -70,7 +71,7 @@ const listOtherRespondentEt3Documents = (req: AppRequest): ListedDocument[] => {
   const documentsByUrlId = new Map<string, ListedDocument>();
 
   respondents.forEach((respondent, index) => {
-    if (index === selectedIndex || !isAcceptedRespondent(respondent)) {
+    if (index === selectedIndex || !hasSubmittedEt3(respondent)) {
       return;
     }
     addRespondentDocuments(documentsByUrlId, respondent);
@@ -83,8 +84,12 @@ const listOtherRespondentEt3Documents = (req: AppRequest): ListedDocument[] => {
   );
 };
 
-const isAcceptedRespondent = (respondent: RespondentET3Model): boolean => {
-  return respondent?.responseStatus === Et3ResponseStatus.ET3_RESPONSE_STATUS_ACCEPTED;
+const hasSubmittedEt3 = (respondent: RespondentET3Model): boolean => {
+  return (
+    respondent?.responseReceived === YesOrNo.YES ||
+    respondent?.et3Status === ET3Status.COMPLETED ||
+    respondent?.responseStatus === Et3ResponseStatus.ET3_RESPONSE_STATUS_ACCEPTED
+  );
 };
 
 const addRespondentDocuments = (

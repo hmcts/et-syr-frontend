@@ -230,6 +230,13 @@ describe('Case Details Helper', () => {
       expect(result[ET3CaseDetailsLinkNames.OtherRespondentEt3]).toBe(LinkStatus.READY_TO_VIEW);
     });
 
+    it('returns ready to view for other respondent ET3 when a represented co-respondent has submitted', async () => {
+      req.session.userCase.respondents = [{ responseReceived: YesOrNo.NO }, { responseReceived: YesOrNo.YES }];
+      req.session.selectedRespondentIndex = 0;
+      const result = await getET3CaseDetailsLinkNames({}, req);
+      expect(result[ET3CaseDetailsLinkNames.OtherRespondentEt3]).toBe(LinkStatus.READY_TO_VIEW);
+    });
+
     it('keeps viewed for other respondent ET3 after the documents have been opened', async () => {
       req.session.userCase.respondents = [{ responseStatus: 'Submitted' }, { responseStatus: 'Accepted' }];
       req.session.selectedRespondentIndex = 0;

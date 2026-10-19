@@ -1,4 +1,5 @@
 import OtherRespondentsEt3Controller from '../../../main/controllers/OtherRespondentsEt3Controller';
+import { YesOrNo } from '../../../main/definitions/case';
 import { Et3ResponseStatus, PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, LinkStatus } from '../../../main/definitions/links';
 import { setUrlLanguage } from '../../../main/helpers/LanguageHelper';
@@ -74,11 +75,25 @@ describe('Other respondents ET3 controller', () => {
     );
   });
 
-  it('does not update the hub link when there is no accepted co-respondent ET3', async () => {
-    request.session.userCase.respondents[1].responseStatus = 'Submitted';
+  it('does not update the hub link when the co-respondent has not submitted an ET3', async () => {
+    request.session.userCase.respondents[1].responseStatus = undefined;
+    request.session.userCase.respondents[1].responseReceived = YesOrNo.NO;
 
     await controller.get(request, response);
 
     expect(ET3Util.updateCaseDetailsLinkStatuses).not.toHaveBeenCalled();
+  });
+
+  it('marks the hub link viewed when a represented co-respondent has submitted their ET3', async () => {
+    request.session.userCase.respondents[1].responseStatus = undefined;
+    request.session.userCase.respondents[1].responseReceived = YesOrNo.YES;
+
+    await controller.get(request, response);
+
+    expect(ET3Util.updateCaseDetailsLinkStatuses).toHaveBeenCalledWith(
+      request,
+      ET3CaseDetailsLinkNames.OtherRespondentEt3,
+      LinkStatus.VIEWED
+    );
   });
 });

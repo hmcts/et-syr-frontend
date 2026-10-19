@@ -1,3 +1,4 @@
+import { YesOrNo } from '../../../../main/definitions/case';
 import { Et3ResponseStatus } from '../../../../main/definitions/constants';
 import { LinkStatus } from '../../../../main/definitions/links';
 import {
@@ -81,13 +82,23 @@ describe('Other respondents ET3 helper', () => {
     expect(getOtherRespondentEt3LinkStatus(req, LinkStatus.NOT_YET_AVAILABLE)).toBe(LinkStatus.NOT_YET_AVAILABLE);
   });
 
-  it('stays not available yet when the co-respondent ET3 is not accepted', () => {
-    req.session.userCase.respondents[1].responseStatus = 'Submitted';
+  it('stays not available yet when the co-respondent has not submitted an ET3', () => {
+    req.session.userCase.respondents[1].responseStatus = undefined;
+    req.session.userCase.respondents[1].responseReceived = YesOrNo.NO;
     expect(getOtherRespondentEt3LinkStatus(req, LinkStatus.NOT_YET_AVAILABLE)).toBe(LinkStatus.NOT_YET_AVAILABLE);
   });
 
   it('is ready to view when another respondent ET3 has been accepted', () => {
     expect(getOtherRespondentEt3LinkStatus(req, LinkStatus.NOT_YET_AVAILABLE)).toBe(LinkStatus.READY_TO_VIEW);
+  });
+
+  it('is ready to view when a represented co-respondent has submitted their ET3', () => {
+    req.session.userCase.respondents[1].responseStatus = undefined;
+    req.session.userCase.respondents[1].responseReceived = YesOrNo.YES;
+    expect(getOtherRespondentEt3LinkStatus(req, LinkStatus.NOT_YET_AVAILABLE)).toBe(LinkStatus.READY_TO_VIEW);
+
+    const rows = getOtherRespondentEt3TableRows(req, labels);
+    expect(rows.map(row => row[2].html).join(' ')).toContain('Magic Roundabout Partnership-ET3_Response.pdf');
   });
 
   it('stays viewed after the co-respondent ET3s have been opened', () => {
