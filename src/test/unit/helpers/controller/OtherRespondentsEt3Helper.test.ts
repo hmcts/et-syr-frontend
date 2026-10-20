@@ -119,4 +119,54 @@ describe('Other respondents ET3 helper', () => {
     expect(rows[2][2].html).toContain('GoR.docx');
     expect(rows.map(row => row[2].html).join(' ')).not.toContain('Current respondent ET3.pdf');
   });
+
+  it('lists accepted ET3 documents from the case document list when the respondent record has no form', () => {
+    req.session.userCase.respondents[1] = {
+      responseStatus: Et3ResponseStatus.ET3_RESPONSE_STATUS_ACCEPTED,
+    };
+    req.session.userCase.documentCollection = [
+      {
+        id: 'collection-et3',
+        value: {
+          typeOfDocument: 'ET3',
+          dateOfCorrespondence: '2026-02-25',
+          uploadedDocument: {
+            document_url: 'http://dm-store/documents/represented-et3',
+            document_filename: 'ET3 - Ermintrude Cow.pdf',
+            document_binary_url: 'http://dm-store/documents/represented-et3/binary',
+          },
+        },
+      },
+      {
+        id: 'collection-attachment',
+        value: {
+          typeOfDocument: 'ET3 Attachment',
+          dateOfCorrespondence: '2026-02-24',
+          uploadedDocument: {
+            document_url: 'http://dm-store/documents/represented-attachment',
+            document_filename: 'GoR.docx',
+            document_binary_url: 'http://dm-store/documents/represented-attachment/binary',
+          },
+        },
+      },
+      {
+        id: 'current-collection-et3',
+        value: {
+          typeOfDocument: 'ET3',
+          dateOfCorrespondence: '2026-02-20',
+          uploadedDocument: {
+            document_url: 'http://dm-store/documents/current-et3',
+            document_filename: 'Current respondent ET3.pdf',
+            document_binary_url: 'http://dm-store/documents/current-et3/binary',
+          },
+        },
+      },
+    ];
+
+    const rows = getOtherRespondentEt3TableRows(req, labels);
+
+    expect(rows.map(row => row[2].html).join(' ')).toContain('ET3 - Ermintrude Cow.pdf');
+    expect(rows.map(row => row[2].html).join(' ')).toContain('GoR.docx');
+    expect(rows.map(row => row[2].html).join(' ')).not.toContain('Current respondent ET3.pdf');
+  });
 });

@@ -1,7 +1,12 @@
 import { AppRequest } from '../../definitions/appRequest';
 import { RespondentET3Model, YesOrNo } from '../../definitions/case';
 import { DocumentTypeItem } from '../../definitions/complexTypes/documentTypeItem';
-import { Et3ResponseStatus, responseAcceptedDocTypes } from '../../definitions/constants';
+import {
+  Et3ResponseStatus,
+  et3AttachmentDocTypes,
+  et3FormDocTypes,
+  responseAcceptedDocTypes,
+} from '../../definitions/constants';
 import { ET3Status } from '../../definitions/definition';
 import { LinkStatus } from '../../definitions/links';
 import DateUtils from '../../utils/DateUtils';
@@ -150,6 +155,7 @@ const applyDocumentCollection = (
       return;
     }
     const existing = documentsByUrlId.get(urlId);
+    const kind = kindForCollectionDocument(document);
     if (existing) {
       existing.id = document.id || existing.id;
       existing.name = document.value?.uploadedDocument?.document_filename || existing.name;
@@ -159,22 +165,45 @@ const applyDocumentCollection = (
         document.value?.uploadedDocument?.createdOn,
         existing.dateRaw
       );
+      if (kind) {
+        existing.kind = kind;
+      }
       return;
     }
-    if (isResponseAcceptedDocument(document)) {
-      documentsByUrlId.set(urlId, {
-        id: document.id || urlId,
-        urlId,
-        name: document.value?.uploadedDocument?.document_filename,
-        dateRaw: firstDate(
-          document.value?.dateOfCorrespondence,
-          document.value?.creationDate,
-          document.value?.uploadedDocument?.createdOn
-        ),
-        kind: 'accepted',
-      });
+    if (!kind) {
+      return;
     }
+    documentsByUrlId.set(urlId, {
+      id: document.id || urlId,
+      urlId,
+      name: document.value?.uploadedDocument?.document_filename,
+      dateRaw: firstDate(
+        document.value?.dateOfCorrespondence,
+        document.value?.creationDate,
+        document.value?.uploadedDocument?.createdOn
+      ),
+      kind,
+    });
   });
+};
+
+const kindForCollectionDocument = (document: DocumentTypeItem): ListedDocument['kind'] | undefined => {
+  if (isResponseAcceptedDocument(document)) {
+    return 'accepted';
+  }
+  const typeOfDocument = document?.value?.typeOfDocument;
+  const documentType = document?.value?.documentType;
+  if (matchesDocumentType(et3FormDocTypes, typeOfDocument, documentType)) {
+    return 'form';
+  }
+  if (matchesDocumentType(et3AttachmentDocTypes, typeOfDocument, documentType)) {
+    return 'attachment';
+  }
+  return undefined;
+};
+
+const matchesDocumentType = (types: string[], typeOfDocument?: string, documentType?: string): boolean => {
+  return types.includes(typeOfDocument) || types.includes(documentType);
 };
 
 const isResponseAcceptedDocument = (document: DocumentTypeItem): boolean => {
