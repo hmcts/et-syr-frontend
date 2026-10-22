@@ -181,12 +181,9 @@
     "cross-spawn": "^7.0.5",
     "brace-expansion": "^5.0.9",
     "basic-ftp": ">=5.2.2",
-    "axios": "^1.18.1",
     "form-data": "^4.0.4",
     "glob": "^13.0.1",
     "js-yaml": "5.4.2",
-    "moment": "2.31.0",
-    "path-to-regexp": "0.1.13",
     "picomatch": ">=2.3.2",
     "tmp": "^0.2.7",
     "diff": "^8.0.3",
@@ -197,9 +194,7 @@
     "serialize-javascript": "^7.0.5",
     "uuid": "^14.0.0",
     "ip-address": "^10.5.1",
-    "body-parser": "^2.3.0",
-    "immutable": "^5.1.8",
-    "joi": "^17.13.6"
+    "body-parser": "^2.3.0"
   },
   "packageManager": "yarn@4.12.0"
 }
