@@ -10,6 +10,7 @@ import {
 } from '../../definitions/complexTypes/sendNotificationTypeItem';
 import { Applicant } from '../../definitions/constants';
 import { getDocId } from '../ApiFormatter';
+import { isRespondNotificationPartyToNotify, isSendNotificationNotify } from '../NotificationHelper';
 
 export const isDocIdValid = (docId: string, req: AppRequest): boolean => {
   const { userCase, user } = req.session;
@@ -69,14 +70,18 @@ const isDocOnNotificationPage = (
 };
 
 const isNotificationDocId = (notification: SendNotificationType, docId: string): boolean => {
+  if (!isSendNotificationNotify(notification)) {
+    return false;
+  }
   const docs = notification?.sendNotificationUploadDocument ?? [];
   return docs.some(doc => getDocId(doc.value?.uploadedDocument?.document_url) === docId);
 };
 
 const isNotificationTribunalResponseDocId = (notification: SendNotificationType, docId: string): boolean => {
   const docs =
-    notification?.respondNotificationTypeCollection?.flatMap(nt => nt.value?.respondNotificationUploadDocument ?? []) ??
-    [];
+    notification?.respondNotificationTypeCollection
+      ?.filter(r => isRespondNotificationPartyToNotify(r.value))
+      .flatMap(r => r.value?.respondNotificationUploadDocument ?? []) ?? [];
   return docs.some(doc => doc.value.uploadedDocument && getDocId(doc.value.uploadedDocument.document_url) === docId);
 };
 
