@@ -234,4 +234,26 @@ describe('Get case document controller', () => {
     await getCaseDocumentController.get(request, response);
     expect(response.status(200).send).toHaveBeenCalled();
   });
+
+  it('Should find another respondent ET3 form when it is not in the document collection', async () => {
+    const otherEt3Id = 'other-respondent-et3';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.documentCollection = [];
+    request.session.userCase.respondents[1] = {
+      et3Form: {
+        document_url: `http://dm-store:8080/documents/${otherEt3Id}`,
+        document_filename: 'ET3 - Ermintrude Cow.pdf',
+        document_binary_url: `http://dm-store:8080/documents/${otherEt3Id}/binary`,
+        category_id: 'ET3',
+        upload_timestamp: '2026-02-25T10:00:00.000Z',
+      },
+    };
+    request.params.docId = otherEt3Id;
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(response.status(200).send).toHaveBeenCalled();
+  });
 });
