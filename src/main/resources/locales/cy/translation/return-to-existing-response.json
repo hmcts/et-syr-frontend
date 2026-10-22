@@ -1,24 +1,36 @@
 {
-  "title": "[W]Respond to an existing claim",
-  "h1": "[W]Respond to an existing claim",
-  "p1": {
-    "t1": "[W]You’ll need to use either a",
-    "t2": "[W]‘save and return number’",
-    "t3": "[W]or your new",
-    "t4": "[W]‘Employment Tribunal account’",
-    "t5": "[W]to respond to an existing claim."
+  "title": "[W]Return to a draft or submitted response",
+  "returnToDraft": {
+    "heading": "[W]Return to a draft response",
+    "intro": "[W]You can return to a draft response by using:",
+    "bullet1": "[W]the account details you used when you started the response",
+    "bullet2": "[W]your save and return number, for example A7F9-K3P2"
   },
-  "p2": "[W]Have you got a ‘save and return number’ or a new ‘Employment Tribunal account’? ",
-  "p3": {
-    "t1": "[W]Don't have these details",
-    "t2": "[W]respond to a new claim.",
-    "t3": "[W]"
+  "returnToSubmitted": {
+    "heading": "[W]Return to a submitted response",
+    "intro": "[W]You can return to a submitted response by:",
+    "bullet1": "[W]using the account details you used when you submitted the response",
+    "bullet2": "[W]creating an account. You can only access responses where the case number starts with 6 or 8."
   },
-  "optionText1": "[W]I’ve got a <span class=\"govuk-!-font-weight-bold\">‘save and return number’</span>",
-  "optionText2": "[W]I’ve got a new <span class=\"govuk-!-font-weight-bold\">‘Employment Tribunal account’</span>",
+  "mainQuestion": {
+    "question": "[W]What type of response do you want to return to?",
+    "option1": "[W]I want to return to a draft response",
+    "option2": "[W]I want to access or return to a submitted response"
+  },
+  "draftOption": {
+    "question": "[W]How do you want to access the response?",
+    "option1": "[W]I have an Employment Tribunal account",
+    "option2": "[W]I have a save and return number"
+  },
+  "submittedOption": {
+    "question": "[W]How do you want to access the response?",
+    "option1": "[W]I have an Employment Tribunal account",
+    "option2": "[W]I have a response but no Employment Tribunal account",
+    "supportingText": "[W]You will be able to create an account and access the response if the case number starts with a 6 or 8."
+  },
   "errors": {
     "returnToExisting": {
-      "required": "[W]Tell us if you have a save and return number or an Employment Tribunal account"
+      "required": "[W]Select what type of response you want to return to"
     }
   }
 }

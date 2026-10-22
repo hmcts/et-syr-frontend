@@ -2,46 +2,73 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { YesOrNo } from '../definitions/case';
+import { ReturnToExistingOption } from '../definitions/case';
 import { FormFieldNames, LegacyUrls, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
-import { FormContent, FormFields } from '../definitions/form';
+import { FormContent, FormError, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
-import { conditionalRedirect, getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
-import ErrorUtils from '../utils/ErrorUtils';
+import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import StringUtils from '../utils/StringUtils';
-import { isFieldFilledIn } from '../validators/validator';
 
 export default class ReturnToExistingResponseController {
   private readonly form: Form;
   private readonly returnToExistingContent: FormContent = {
     fields: {
       returnToExisting: {
-        id: 'return_number_or_account',
+        id: 'return_to_existing',
         type: 'radios',
-        classes: 'govuk-date-input',
-        label: (l: AnyRecord): string => l.p2,
-        labelHidden: true,
+        label: (l: AnyRecord): string => l.mainQuestion.question,
         values: [
           {
-            name: 'have_return_number',
-            label: (l: AnyRecord): string => l.optionText1,
-            value: YesOrNo.YES,
-            selected: false,
+            label: (l: AnyRecord): string => l.mainQuestion.option1,
+            value: ReturnToExistingOption.DRAFT_RESPONSE,
+            subFields: {
+              draftOption: {
+                id: 'draft_claim_option',
+                type: 'radios',
+                label: (l: AnyRecord): string => l.draftOption.question,
+                labelSize: 's',
+                values: [
+                  {
+                    label: (l: AnyRecord): string => l.draftOption.option1,
+                    value: ReturnToExistingOption.HAVE_ACCOUNT,
+                  },
+                  {
+                    label: (l: AnyRecord): string => l.draftOption.option2,
+                    value: ReturnToExistingOption.HAVE_RETURN_NUMBER,
+                  },
+                ],
+              },
+            },
           },
           {
-            name: 'have_account',
-            label: (l: AnyRecord): string => l.optionText2,
-            value: YesOrNo.NO,
-            selected: false,
+            label: (l: AnyRecord): string => l.mainQuestion.option2,
+            value: ReturnToExistingOption.SUBMITTED_RESPONSE,
+            subFields: {
+              submittedOption: {
+                id: 'submitted_claim_option',
+                type: 'radios',
+                label: (l: AnyRecord): string => l.submittedOption.question,
+                labelSize: 's',
+                values: [
+                  {
+                    label: (l: AnyRecord): string => l.submittedOption.option1,
+                    value: ReturnToExistingOption.HAVE_ACCOUNT,
+                  },
+                  {
+                    label: (l: AnyRecord): string => l.submittedOption.option2,
+                    hint: (l: AnyRecord): string => l.submittedOption.supportingText,
+                    value: ReturnToExistingOption.NO_ACCOUNT,
+                  },
+                ],
+              },
+            },
           },
         ],
-        validator: isFieldFilledIn,
       },
     },
     submit: {
       text: (l: AnyRecord): string => l.continue,
-      classes: 'govuk-!-margin-right-2',
     },
   };
 
@@ -50,17 +77,14 @@ export default class ReturnToExistingResponseController {
   }
 
   public post = (req: AppRequest, res: Response): void => {
-    if (StringUtils.isBlank(req?.body?.returnToExisting)) {
-      ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
-        req,
-        ValidationErrors.REQUIRED,
-        FormFieldNames.RETURN_TO_EXISTING.RETURN_TO_EXISTING_RADIOBUTTON
-      );
-      return res.redirect(returnValidUrl(PageUrls.RETURN_TO_EXISTING_RESPONSE + getLanguageParam(req.url)));
+    req.session.errors = [];
+    const error = getFormDataError(req);
+    if (error) {
+      req.session.errors.push(error);
+      return res.redirect(PageUrls.RETURN_TO_EXISTING_RESPONSE + getLanguageParam(req.url));
     }
-    const redirectUrl = conditionalRedirect(req, this.form.getFormFields(), YesOrNo.YES)
-      ? LegacyUrls.SIGN_IN
-      : PageUrls.CASE_LIST + getLanguageParam(req.url);
+
+    const redirectUrl = getRedirectUrl(req);
     res.redirect(returnValidUrl(redirectUrl));
   };
 
@@ -77,3 +101,41 @@ export default class ReturnToExistingResponseController {
     });
   };
 }
+
+const getFormDataError = (req: AppRequest): FormError => {
+  const { returnToExisting, draftOption, submittedOption } = req.body;
+
+  const isMissingSelection = StringUtils.isBlank(returnToExisting);
+  const isMissingDraftOption =
+    returnToExisting === ReturnToExistingOption.DRAFT_RESPONSE && StringUtils.isBlank(draftOption);
+  const isMissingSubmittedOption =
+    returnToExisting === ReturnToExistingOption.SUBMITTED_RESPONSE && StringUtils.isBlank(submittedOption);
+
+  if (isMissingSelection || isMissingDraftOption || isMissingSubmittedOption) {
+    return {
+      propertyName: FormFieldNames.RETURN_TO_EXISTING.RETURN_TO_EXISTING_RADIOBUTTON,
+      errorType: ValidationErrors.REQUIRED,
+    };
+  }
+};
+
+const getRedirectUrl = (req: AppRequest): string => {
+  const { returnToExisting, draftOption, submittedOption } = req.body;
+
+  if (returnToExisting === ReturnToExistingOption.DRAFT_RESPONSE) {
+    if (draftOption === ReturnToExistingOption.HAVE_ACCOUNT) {
+      return PageUrls.CASE_LIST + getLanguageParam(req.url);
+    }
+    if (draftOption === ReturnToExistingOption.HAVE_RETURN_NUMBER) {
+      return LegacyUrls.SIGN_IN;
+    }
+  } else if (returnToExisting === ReturnToExistingOption.SUBMITTED_RESPONSE) {
+    if (submittedOption === ReturnToExistingOption.HAVE_ACCOUNT) {
+      return PageUrls.CASE_LIST + getLanguageParam(req.url);
+    }
+    if (submittedOption === ReturnToExistingOption.NO_ACCOUNT) {
+      return PageUrls.CASE_NUMBER_CHECK + getLanguageParam(req.url);
+    }
+  }
+  return PageUrls.RETURN_TO_EXISTING_RESPONSE + getLanguageParam(req.url);
+};
