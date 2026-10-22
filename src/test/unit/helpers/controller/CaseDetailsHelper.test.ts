@@ -240,6 +240,8 @@ describe('Case Details Helper', () => {
             document_url: 'http://dm-store/documents/other-et3',
             document_filename: 'ET3 - Ermintrude Cow.pdf',
             document_binary_url: 'http://dm-store/documents/other-et3/binary',
+            category_id: 'ET3',
+            upload_timestamp: '2026-02-25T10:00:00.000Z',
           },
         },
       ];
@@ -258,6 +260,8 @@ describe('Case Details Helper', () => {
             document_url: 'http://dm-store/documents/other-et3',
             document_filename: 'ET3 - Ermintrude Cow.pdf',
             document_binary_url: 'http://dm-store/documents/other-et3/binary',
+            category_id: 'ET3',
+            upload_timestamp: '2026-02-25T10:00:00.000Z',
           },
         },
       ];
