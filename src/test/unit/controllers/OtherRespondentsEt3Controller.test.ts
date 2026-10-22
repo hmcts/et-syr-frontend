@@ -75,9 +75,11 @@ describe('Other respondents ET3 controller', () => {
     );
   });
 
-  it('does not update the hub link when the co-respondent has not submitted an ET3', async () => {
+  it('does not update the hub link when there is no other respondent ET3 to open', async () => {
     request.session.userCase.respondents[1].responseStatus = undefined;
-    request.session.userCase.respondents[1].responseReceived = YesOrNo.NO;
+    request.session.userCase.respondents[1].responseReceived = YesOrNo.YES;
+    request.session.userCase.respondents[1].et3Form = undefined;
+    request.session.userCase.documentCollection = [];
 
     await controller.get(request, response);
 

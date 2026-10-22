@@ -31,7 +31,6 @@ interface StoredDocument {
 
 interface ListedDocument {
   id: string;
-  urlId: string;
   name: string;
   dateRaw?: string;
   kind: 'form' | 'attachment' | 'accepted';
@@ -43,7 +42,7 @@ interface TableCell {
 }
 
 export const getOtherRespondentEt3LinkStatus = (req: AppRequest, existingStatus: LinkStatus): LinkStatus => {
-  if (!hasSubmittedOtherRespondentEt3(req)) {
+  if (!hasOtherRespondentEt3ToView(req)) {
     return LinkStatus.NOT_YET_AVAILABLE;
   }
   if (existingStatus === LinkStatus.VIEWED) {
@@ -58,13 +57,10 @@ export const getOtherRespondentEt3TableRows = (req: AppRequest, labels: OtherRes
     .filter((row): row is TableCell[] => row !== undefined);
 };
 
-const hasSubmittedOtherRespondentEt3 = (req: AppRequest): boolean => {
-  const respondents = req.session?.userCase?.respondents;
-  const selectedIndex = req.session?.selectedRespondentIndex;
-  if (!respondents || respondents.length < 2 || selectedIndex === undefined || selectedIndex === null) {
-    return false;
-  }
-  return respondents.some((respondent, index) => index !== selectedIndex && hasSubmittedEt3(respondent));
+const hasOtherRespondentEt3ToView = (req: AppRequest): boolean => {
+  return listOtherRespondentEt3Documents(req).some(
+    document => StringUtils.isNotBlank(document.name) && StringUtils.isNotBlank(document.id)
+  );
 };
 
 const listOtherRespondentEt3Documents = (req: AppRequest): ListedDocument[] => {
@@ -137,7 +133,6 @@ const addUploadedDocument = (
   }
   documentsByUrlId.set(urlId, {
     id: urlId,
-    urlId,
     name: document.document_filename,
     dateRaw: document.upload_timestamp || document.createdOn || dateRaw,
     kind,
@@ -175,7 +170,6 @@ const applyDocumentCollection = (
     }
     documentsByUrlId.set(urlId, {
       id: document.id || urlId,
-      urlId,
       name: document.value?.uploadedDocument?.document_filename,
       dateRaw: firstDate(
         document.value?.dateOfCorrespondence,

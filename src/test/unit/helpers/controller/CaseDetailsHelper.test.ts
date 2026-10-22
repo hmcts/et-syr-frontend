@@ -223,22 +223,45 @@ describe('Case Details Helper', () => {
       expect(result[ET3CaseDetailsLinkNames.OtherRespondentEt3]).toBe(LinkStatus.NOT_YET_AVAILABLE);
     });
 
-    it('returns ready to view for other respondent ET3 when a co-respondent ET3 is accepted', async () => {
+    it('returns not available yet when a co-respondent ET3 is accepted but there is no document to show', async () => {
       req.session.userCase.respondents = [{ responseStatus: 'Submitted' }, { responseStatus: 'Accepted' }];
+      req.session.userCase.documentCollection = [];
       req.session.selectedRespondentIndex = 0;
       const result = await getET3CaseDetailsLinkNames({}, req);
-      expect(result[ET3CaseDetailsLinkNames.OtherRespondentEt3]).toBe(LinkStatus.READY_TO_VIEW);
+      expect(result[ET3CaseDetailsLinkNames.OtherRespondentEt3]).toBe(LinkStatus.NOT_YET_AVAILABLE);
     });
 
-    it('returns ready to view for other respondent ET3 when a represented co-respondent has submitted', async () => {
-      req.session.userCase.respondents = [{ responseReceived: YesOrNo.NO }, { responseReceived: YesOrNo.YES }];
+    it('returns ready to view when a co-respondent has an ET3 document to open', async () => {
+      req.session.userCase.respondents = [
+        { responseReceived: YesOrNo.NO },
+        {
+          responseReceived: YesOrNo.YES,
+          et3Form: {
+            document_url: 'http://dm-store/documents/other-et3',
+            document_filename: 'ET3 - Ermintrude Cow.pdf',
+            document_binary_url: 'http://dm-store/documents/other-et3/binary',
+          },
+        },
+      ];
+      req.session.userCase.documentCollection = [];
       req.session.selectedRespondentIndex = 0;
       const result = await getET3CaseDetailsLinkNames({}, req);
       expect(result[ET3CaseDetailsLinkNames.OtherRespondentEt3]).toBe(LinkStatus.READY_TO_VIEW);
     });
 
     it('keeps viewed for other respondent ET3 after the documents have been opened', async () => {
-      req.session.userCase.respondents = [{ responseStatus: 'Submitted' }, { responseStatus: 'Accepted' }];
+      req.session.userCase.respondents = [
+        { responseStatus: 'Submitted' },
+        {
+          responseStatus: 'Accepted',
+          et3Form: {
+            document_url: 'http://dm-store/documents/other-et3',
+            document_filename: 'ET3 - Ermintrude Cow.pdf',
+            document_binary_url: 'http://dm-store/documents/other-et3/binary',
+          },
+        },
+      ];
+      req.session.userCase.documentCollection = [];
       req.session.selectedRespondentIndex = 0;
       const statuses: ET3CaseDetailsLinksStatuses = {
         [ET3CaseDetailsLinkNames.OtherRespondentEt3]: LinkStatus.VIEWED,

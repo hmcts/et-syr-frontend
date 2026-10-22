@@ -79,13 +79,27 @@ describe('Other respondents ET3 helper', () => {
 
   it('stays not available yet when the case has one respondent', () => {
     req.session.userCase.respondents = [req.session.userCase.respondents[0]];
+    req.session.userCase.documentCollection = [];
     expect(getOtherRespondentEt3LinkStatus(req, LinkStatus.NOT_YET_AVAILABLE)).toBe(LinkStatus.NOT_YET_AVAILABLE);
   });
 
   it('stays not available yet when the co-respondent has not submitted an ET3', () => {
     req.session.userCase.respondents[1].responseStatus = undefined;
     req.session.userCase.respondents[1].responseReceived = YesOrNo.NO;
+    req.session.userCase.respondents[1].et3Form = undefined;
+    req.session.userCase.respondents[1].et3ResponseEmployerClaimDocument = undefined;
+    req.session.userCase.documentCollection = [];
     expect(getOtherRespondentEt3LinkStatus(req, LinkStatus.NOT_YET_AVAILABLE)).toBe(LinkStatus.NOT_YET_AVAILABLE);
+  });
+
+  it('stays not available yet when the ET3 is received but there is no document to open', () => {
+    req.session.userCase.respondents[1].responseStatus = undefined;
+    req.session.userCase.respondents[1].responseReceived = YesOrNo.YES;
+    req.session.userCase.respondents[1].et3Form = undefined;
+    req.session.userCase.respondents[1].et3ResponseEmployerClaimDocument = undefined;
+    req.session.userCase.documentCollection = [];
+    expect(getOtherRespondentEt3LinkStatus(req, LinkStatus.NOT_YET_AVAILABLE)).toBe(LinkStatus.NOT_YET_AVAILABLE);
+    expect(getOtherRespondentEt3TableRows(req, labels)).toHaveLength(0);
   });
 
   it('is ready to view when another respondent ET3 has been accepted', () => {
