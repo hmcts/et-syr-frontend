@@ -114,4 +114,21 @@ describe('Attachment Controller', () => {
     );
     expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
   });
+
+  it('should log a warning when userCase is missing and document ID is invalid', async () => {
+    mockLogger.warn.mockClear();
+
+    const controller = new AttachmentController();
+    const { request, response } = setupValidRequest();
+
+    request.params.docId = '99999';
+    request.session.userCase = undefined;
+
+    await controller.get(request, response);
+
+    expect(mockLogger.warn).toHaveBeenCalledWith(
+      'bad request parameter - empty or invalid document url. caseId: undefined, docId: 99999'
+    );
+    expect(response.redirect).toHaveBeenCalledWith(ErrorPages.NOT_FOUND);
+  });
 });
