@@ -1,6 +1,12 @@
+import axios from 'axios';
+
 import CaseDetailsController from '../../../main/controllers/CaseDetailsController';
+import { CaseType } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
 import { LoadUserCaseResults, loadUserCaseFromApi } from '../../../main/helpers/LoadUserCaseHelper';
+import * as caseService from '../../../main/services/CaseService';
+import { CaseApi } from '../../../main/services/CaseService';
+import { MockAxiosResponses } from '../mocks/mockAxiosResponses';
 import { mockCaseWithIdWithRespondents } from '../mocks/mockCaseWithId';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -13,6 +19,8 @@ jest.mock('../../../main/helpers/LoadUserCaseHelper', () => ({
 }));
 
 const loadUserCaseFromApiMock = loadUserCaseFromApi as jest.MockedFunction<typeof loadUserCaseFromApi>;
+const getCaseApiMock = jest.spyOn(caseService, 'getCaseApi');
+const api = new CaseApi(axios);
 
 describe('CaseDetailsController', () => {
   const t = {
@@ -28,8 +36,24 @@ describe('CaseDetailsController', () => {
   });
 
   it('should render respondent replies page', async () => {
+    getCaseApiMock.mockReturnValue(api);
+    const multipleCaseApiResponse = {
+      ...MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse,
+      data: {
+        ...MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse.data,
+        case_data: {
+          ...MockAxiosResponses.mockAxiosResponseWithCaseApiDataResponse.data.case_data,
+          caseType: CaseType.MULTIPLE,
+        },
+      },
+    };
+    api.getUserCase = jest.fn().mockResolvedValueOnce(Promise.resolve(multipleCaseApiResponse));
+
     loadUserCaseFromApiMock.mockImplementationOnce(async req => {
-      req.session.userCase = mockCaseWithIdWithRespondents;
+      req.session.userCase = {
+        ...mockCaseWithIdWithRespondents,
+        caseType: CaseType.MULTIPLE,
+      };
       return LoadUserCaseResults.LOADED;
     });
     request.session.user = mockUserDetails;
@@ -40,7 +64,9 @@ describe('CaseDetailsController', () => {
     expect(loadUserCaseFromApiMock).toHaveBeenCalledWith(request, response, '1234', '3453xaa');
     expect(response.render).toHaveBeenCalledWith(
       TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER,
-      expect.anything()
+      expect.objectContaining({
+        isGroupClaim: true,
+      })
     );
   });
 

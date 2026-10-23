@@ -35,11 +35,26 @@
   "busyPeriod": ". In busy periods it may take longer.",
   "appointLegalRepresentative": "Appoint a legal representative",
   "changeLegalRepresentative": "Change my legal representative",
+  "groupClaims": {
+    "inset": {
+      "header": "You are the respondent in a group claim",
+      "p1": "You can make applications and contact the tribunal.",
+      "p2": "You will be asked to share any communication to the tribunal with the claimant party.",
+      "p3": "Go to 'Group claim requests and applications' to see updates from other parties in the claimant party.",
+      "p4": "Read our ",
+      "p4Url": "#",
+      "p4UrlText": "guidance on group claims (opens in new tab)"
+    }
+  },
   "notificationBanner": {
     "viewResponse": {
       "header": "The tribunal has acknowledged a claim against ",
       "p1": "You have responded to this claim",
-      "link": "View the response"
+      "link": "View the response",
+      "groupClaim": {
+        "header": "The tribunal has acknowledged a group claim against ",
+        "p1": "You have responded to this group claim"
+      }
     },
     "acknowledgement": {
       "header": "The tribunal has acknowledged a claim against ",
@@ -47,7 +62,14 @@
       "link2": "Respond to the claim",
       "returnToResponse": "Return to your saved response",
       "p1": "You should respond to this claim by ",
-      "p2": "<span class=\"govuk-body govuk-!-font-weight-bold\">What happens next</span><br>The tribunal has asked the respondent to respond to your claim by"
+      "p2": "<span class=\"govuk-body govuk-!-font-weight-bold\">What happens next</span><br>The tribunal has asked the respondent to respond to your claim by",
+      "whatHappensNext": "What happens next?",
+      "groupClaims": {
+        "header": "The tribunal has acknowledged a group claim against ",
+        "p1": "More than one claimant has made a claim against you. The claims contain similar issues of fact and law.",
+        "link": "ET1 group claim form",
+        "viewET1Form": "View the group claim form:"
+      }
     },
     "rejection": {
       "header": "The tribunal has rejected all or part of your claim",
