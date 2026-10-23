@@ -1,5 +1,5 @@
 import ReturnToExistingResponseController from '../../../main/controllers/ReturnToExistingResponseController';
-import { YesOrNo } from '../../../main/definitions/case';
+import { ReturnToExistingOption } from '../../../main/definitions/case';
 import { LegacyUrls, PageUrls, languages } from '../../../main/definitions/constants';
 import { mockRequest } from '../mocks/mockRequest';
 import { mockResponse } from '../mocks/mockResponse';
@@ -10,6 +10,7 @@ describe('ReturnToExistingResponseController', () => {
   const t = {
     home: {},
   };
+
   describe('get', () => {
     it('should render the introduction (home) page', () => {
       const response = mockResponse();
@@ -18,32 +19,48 @@ describe('ReturnToExistingResponseController', () => {
       expect(response.render).toHaveBeenCalledWith('return-to-existing-response', expect.anything());
     });
   });
+
   describe('post', () => {
     it('should forward to return to existing page when request body returnToExisting is empty', () => {
       const response = mockResponse();
-      const request = mockRequest({ t });
+      const request = mockRequest({ body: {}, t });
       returnToExistingResponseController.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(
         PageUrls.RETURN_TO_EXISTING_RESPONSE + languages.ENGLISH_URL_PARAMETER
       );
     });
-    it('should forward to Legacy ET3 url when request body returnToExisting is Yes', () => {
+
+    it('should forward to case list when request body is HAVE_ACCOUNT', () => {
+      const response = mockResponse();
+      const request = mockRequest({ body: {}, t });
+      request.body = {
+        returnToExisting: ReturnToExistingOption.DRAFT_RESPONSE,
+        draftOption: ReturnToExistingOption.HAVE_ACCOUNT,
+      };
+      returnToExistingResponseController.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CASE_LIST + languages.ENGLISH_URL_PARAMETER);
+    });
+
+    it('should forward to Legacy ET3 url when request body is HAVE_RETURN_NUMBER', () => {
       const response = mockResponse();
       const request = mockRequest({ t });
       request.body = {
-        returnToExisting: YesOrNo.YES,
+        returnToExisting: ReturnToExistingOption.DRAFT_RESPONSE,
+        draftOption: ReturnToExistingOption.HAVE_RETURN_NUMBER,
       };
       returnToExistingResponseController.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(LegacyUrls.SIGN_IN);
     });
-    it('should forward to case list when request body returnToExisting is No', () => {
+
+    it('should forward to case list when request body is NO_ACCOUNT', () => {
       const response = mockResponse();
-      const request = mockRequest({ t });
+      const request = mockRequest({ body: {}, t });
       request.body = {
-        returnToExisting: YesOrNo.NO,
+        returnToExisting: ReturnToExistingOption.SUBMITTED_RESPONSE,
+        submittedOption: ReturnToExistingOption.NO_ACCOUNT,
       };
       returnToExistingResponseController.post(request, response);
-      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CASE_LIST + languages.ENGLISH_URL_PARAMETER);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.CASE_NUMBER_CHECK + languages.ENGLISH_URL_PARAMETER);
     });
   });
 });
