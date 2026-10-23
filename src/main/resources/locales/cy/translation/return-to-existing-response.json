@@ -19,12 +19,12 @@
   },
   "draftOption": {
     "question": "[W]How do you want to access the response?",
-    "option1": "[W]I have an Employment Tribunal account",
-    "option2": "[W]I have a save and return number"
+    "option1": "Mae gennyf gyfrif tribiwnlys cyflogaeth",
+    "option2": "Mae gennyf rif cadw a dychwelyd"
   },
   "submittedOption": {
     "question": "[W]How do you want to access the response?",
-    "option1": "[W]I have an Employment Tribunal account",
+    "option1": "Mae gennyf gyfrif tribiwnlys cyflogaeth",
     "option2": "[W]I have a response but no Employment Tribunal account",
     "supportingText": "[W]You will be able to create an account and access the response if the case number starts with a 6 or 8."
   },
