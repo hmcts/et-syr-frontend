@@ -4,11 +4,10 @@ import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { ReturnToExistingOption } from '../definitions/case';
 import { FormFieldNames, LegacyUrls, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
-import { FormContent, FormError, FormFields } from '../definitions/form';
+import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
-import StringUtils from '../utils/StringUtils';
 
 export default class ReturnToExistingResponseController {
   private readonly form: Form;
@@ -78,13 +77,17 @@ export default class ReturnToExistingResponseController {
 
   public post = (req: AppRequest, res: Response): void => {
     req.session.errors = [];
-    const error = getFormDataError(req);
-    if (error) {
-      req.session.errors.push(error);
+
+    const redirectUrl = getRedirectUrl(req);
+
+    if (!redirectUrl) {
+      req.session.errors.push({
+        propertyName: FormFieldNames.RETURN_TO_EXISTING.RETURN_TO_EXISTING_RADIOBUTTON,
+        errorType: ValidationErrors.REQUIRED,
+      });
       return res.redirect(PageUrls.RETURN_TO_EXISTING_RESPONSE + getLanguageParam(req.url));
     }
 
-    const redirectUrl = getRedirectUrl(req);
     res.redirect(returnValidUrl(redirectUrl));
   };
 
@@ -102,23 +105,6 @@ export default class ReturnToExistingResponseController {
   };
 }
 
-const getFormDataError = (req: AppRequest): FormError => {
-  const { returnToExisting, draftOption, submittedOption } = req.body;
-
-  const isMissingSelection = StringUtils.isBlank(returnToExisting);
-  const isMissingDraftOption =
-    returnToExisting === ReturnToExistingOption.DRAFT_RESPONSE && StringUtils.isBlank(draftOption);
-  const isMissingSubmittedOption =
-    returnToExisting === ReturnToExistingOption.SUBMITTED_RESPONSE && StringUtils.isBlank(submittedOption);
-
-  if (isMissingSelection || isMissingDraftOption || isMissingSubmittedOption) {
-    return {
-      propertyName: FormFieldNames.RETURN_TO_EXISTING.RETURN_TO_EXISTING_RADIOBUTTON,
-      errorType: ValidationErrors.REQUIRED,
-    };
-  }
-};
-
 const getRedirectUrl = (req: AppRequest): string => {
   const { returnToExisting, draftOption, submittedOption } = req.body;
 
@@ -129,7 +115,9 @@ const getRedirectUrl = (req: AppRequest): string => {
     if (draftOption === ReturnToExistingOption.HAVE_RETURN_NUMBER) {
       return LegacyUrls.SIGN_IN;
     }
-  } else if (returnToExisting === ReturnToExistingOption.SUBMITTED_RESPONSE) {
+  }
+
+  if (returnToExisting === ReturnToExistingOption.SUBMITTED_RESPONSE) {
     if (submittedOption === ReturnToExistingOption.HAVE_ACCOUNT) {
       return PageUrls.CASE_LIST + getLanguageParam(req.url);
     }
@@ -137,5 +125,6 @@ const getRedirectUrl = (req: AppRequest): string => {
       return PageUrls.CASE_NUMBER_CHECK + getLanguageParam(req.url);
     }
   }
-  return PageUrls.RETURN_TO_EXISTING_RESPONSE + getLanguageParam(req.url);
+
+  return undefined;
 };
