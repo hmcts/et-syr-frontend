@@ -5,7 +5,7 @@ import { YesOrNo } from '../../../../main/definitions/case';
 import { Applicant, Et3ResponseStatus, PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../../../../main/definitions/links';
 import { isResponseToTribunalRequired } from '../../../../main/helpers/GenericTseApplicationHelper';
-import { getET3CaseDetailsLinkNames } from '../../../../main/helpers/controller/CaseDetailsHelper';
+import { getET3CaseDetailsLinkNames, getSections } from '../../../../main/helpers/controller/CaseDetailsHelper';
 import * as CaseService from '../../../../main/services/CaseService';
 import { CaseApi } from '../../../../main/services/CaseService';
 import { mockHearingCollection } from '../../mocks/mockHearing';
@@ -272,6 +272,42 @@ describe('Case Details Helper', () => {
       };
       const result = await getET3CaseDetailsLinkNames(statuses, req);
       expect(result[ET3CaseDetailsLinkNames.OtherRespondentEt3]).toBe(LinkStatus.VIEWED);
+    });
+  });
+
+  describe('getSections', () => {
+    const yourResponseLinkNames = (respondentCount: number): string[] => {
+      const req = mockRequest({
+        userCase: {
+          ...mockUserCase,
+          respondents: Array.from({ length: respondentCount }, () => ({ responseStatus: 'Submitted' })),
+        },
+      });
+      req.url = '/case-details';
+      req.t = jest.fn().mockReturnValue({
+        ...Object.fromEntries(Object.values(ET3CaseDetailsLinkNames).map(name => [name, name])),
+        ...Object.fromEntries(Object.values(LinkStatus).map(status => [status, status])),
+        section3: 'section3',
+      }) as AppRequest['t'];
+      const yourResponse = getSections(new ET3CaseDetailsLinksStatuses(), {}, req).find(
+        section => section.title === 'section3'
+      );
+      return yourResponse.links.map(link => link.linkTxt);
+    };
+
+    it('hides Other respondent ET3 when the case has one respondent', () => {
+      expect(yourResponseLinkNames(1)).toEqual([ET3CaseDetailsLinkNames.RespondentResponse]);
+    });
+
+    it('hides Other respondent ET3 when the case has no respondents', () => {
+      expect(yourResponseLinkNames(0)).toEqual([ET3CaseDetailsLinkNames.RespondentResponse]);
+    });
+
+    it('shows Other respondent ET3 when the case has more than one respondent', () => {
+      expect(yourResponseLinkNames(2)).toEqual([
+        ET3CaseDetailsLinkNames.RespondentResponse,
+        ET3CaseDetailsLinkNames.OtherRespondentEt3,
+      ]);
     });
   });
 });
