@@ -285,10 +285,12 @@ describe('Case Details Helper', () => {
       });
       req.url = '/case-details';
       req.t = jest.fn().mockReturnValue({
-        ...Object.fromEntries(Object.values(ET3CaseDetailsLinkNames).map(name => [name, name])),
-        ...Object.fromEntries(Object.values(LinkStatus).map(status => [status, status])),
+        [ET3CaseDetailsLinkNames.RespondentResponse]: ET3CaseDetailsLinkNames.RespondentResponse,
+        [ET3CaseDetailsLinkNames.OtherRespondentEt3]: ET3CaseDetailsLinkNames.OtherRespondentEt3,
+        [LinkStatus.NOT_STARTED_YET]: LinkStatus.NOT_STARTED_YET,
+        [LinkStatus.NOT_YET_AVAILABLE]: LinkStatus.NOT_YET_AVAILABLE,
         section3: 'section3',
-      }) as AppRequest['t'];
+      }) as unknown as AppRequest['t'];
       const yourResponse = getSections(new ET3CaseDetailsLinksStatuses(), {}, req).find(
         section => section.title === 'section3'
       );
