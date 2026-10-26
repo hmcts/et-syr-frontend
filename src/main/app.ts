@@ -61,7 +61,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
       ? encoding.some(e => e.toLowerCase().includes('br'))
       : encoding.toLowerCase().includes('br'))
   ) {
-    return res.status(415).send('Unsupported Media Type');
+    res.status(415).send('Unsupported Media Type');
+    return;
   }
   next();
 });
