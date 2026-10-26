@@ -13,6 +13,7 @@ import { ET3Status } from '../../definitions/definition';
 import { LinkStatus } from '../../definitions/links';
 import DateUtils from '../../utils/DateUtils';
 import DocumentUtils from '../../utils/DocumentUtils';
+import ET3Util from '../../utils/ET3Util';
 import StringUtils from '../../utils/StringUtils';
 import { dateInLocale } from '../dateInLocale';
 
@@ -72,7 +73,8 @@ const listOtherRespondentEt3Documents = (req: AppRequest): ListedDocument[] => {
     return [];
   }
   const otherRespondents = respondents.filter((_, index) => index !== selectedIndex);
-  if (!otherRespondents.some(hasSubmittedEt3)) {
+  const submittedCoRespondents = otherRespondents.filter(hasSubmittedEt3);
+  if (submittedCoRespondents.length === 0) {
     return [];
   }
   const currentRespondent = respondents[selectedIndex];
@@ -92,7 +94,13 @@ const listOtherRespondentEt3Documents = (req: AppRequest): ListedDocument[] => {
     addRespondentDocuments(documentsByUrlId, respondent);
   });
 
-  applyDocumentCollection(req.session?.userCase?.documentCollection, documentsByUrlId, hiddenDocumentIds);
+  applyDocumentCollection(
+    req.session?.userCase?.documentCollection,
+    documentsByUrlId,
+    hiddenDocumentIds,
+    currentRespondent,
+    submittedCoRespondents
+  );
 
   return Array.from(documentsByUrlId.values()).sort(
     (left, right) => documentTime(right.dateRaw) - documentTime(left.dateRaw)
@@ -150,7 +158,9 @@ const addUploadedDocument = (
 const applyDocumentCollection = (
   documentCollection: DocumentTypeItem[] | undefined,
   documentsByUrlId: Map<string, ListedDocument>,
-  currentDocumentIds: Set<string>
+  currentDocumentIds: Set<string>,
+  currentRespondent: RespondentET3Model | undefined,
+  submittedCoRespondents: RespondentET3Model[]
 ): void => {
   documentCollection?.forEach(document => {
     const urlId = documentIdFromUrl(document?.value?.uploadedDocument?.document_url);
@@ -173,7 +183,7 @@ const applyDocumentCollection = (
       }
       return;
     }
-    if (!kind) {
+    if (!kind || !isOtherRespondentCollectionDocument(document, kind, currentRespondent, submittedCoRespondents)) {
       return;
     }
     documentsByUrlId.set(urlId, {
@@ -187,6 +197,56 @@ const applyDocumentCollection = (
       kind,
     });
   });
+};
+
+const isOtherRespondentCollectionDocument = (
+  document: DocumentTypeItem,
+  kind: ListedDocument['kind'],
+  currentRespondent: RespondentET3Model | undefined,
+  submittedCoRespondents: RespondentET3Model[]
+): boolean => {
+  if (matchesStoredFilename(document, currentRespondent)) {
+    return false;
+  }
+  const text = collectionDocumentText(document);
+  if (textMentionsRespondent(text, currentRespondent)) {
+    return false;
+  }
+  if (submittedCoRespondents.some(respondent => textMentionsRespondent(text, respondent))) {
+    return true;
+  }
+  if (kind === 'accepted') {
+    return !hasSubmittedEt3(currentRespondent);
+  }
+  return true;
+};
+
+const matchesStoredFilename = (document: DocumentTypeItem, respondent: RespondentET3Model | undefined): boolean => {
+  const filename = document?.value?.uploadedDocument?.document_filename;
+  if (StringUtils.isBlank(filename) || !respondent) {
+    return false;
+  }
+  const storedNames = [
+    respondent.et3Form?.document_filename,
+    respondent.et3FormWelsh?.document_filename,
+    respondent.et3ResponseEmployerClaimDocument?.document_filename,
+    ...(respondent.et3ResponseContestClaimDocument || []).map(item => item?.value?.uploadedDocument?.document_filename),
+  ];
+  return storedNames.some(storedName => storedName === filename);
+};
+
+const collectionDocumentText = (document: DocumentTypeItem): string => {
+  return [document?.value?.uploadedDocument?.document_filename, document?.value?.shortDescription]
+    .filter(value => StringUtils.isNotBlank(value))
+    .join(' ');
+};
+
+const textMentionsRespondent = (text: string, respondent: RespondentET3Model | undefined): boolean => {
+  const name = ET3Util.getUserNameByRespondent(respondent);
+  if (StringUtils.isBlank(name) || name.trim().length < 3) {
+    return false;
+  }
+  return text.toLowerCase().includes(name.trim().toLowerCase());
 };
 
 const kindForCollectionDocument = (document: DocumentTypeItem): ListedDocument['kind'] | undefined => {

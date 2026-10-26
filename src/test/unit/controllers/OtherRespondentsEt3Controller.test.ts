@@ -86,6 +86,15 @@ describe('Other respondents ET3 controller', () => {
     expect(ET3Util.updateCaseDetailsLinkStatuses).not.toHaveBeenCalled();
   });
 
+  it('does not mark the hub link viewed when the case update fails', async () => {
+    jest.spyOn(ET3Util, 'updateCaseDetailsLinkStatuses').mockResolvedValue(undefined);
+
+    await controller.get(request, response);
+
+    expect(request.session.userCase.respondents[0].et3CaseDetailsLinksStatuses).toBeUndefined();
+    expect(response.render).toHaveBeenCalled();
+  });
+
   it('marks the hub link viewed when a represented co-respondent has submitted their ET3', async () => {
     request.session.userCase.respondents[1].responseStatus = undefined;
     request.session.userCase.respondents[1].responseReceived = YesOrNo.YES;

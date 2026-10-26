@@ -270,6 +270,100 @@ describe('Other respondents ET3 helper', () => {
     expect(rowHtml).toContain('Magic Roundabout Partnership-ET3_Response.pdf');
   });
 
+  it('does not list the signed-in respondent acceptance letter when they have also submitted', () => {
+    req.session.userCase.respondents[0].responseStatus = Et3ResponseStatus.ET3_RESPONSE_STATUS_ACCEPTED;
+    req.session.userCase.respondents[0].respondentName = 'Current Respondent';
+    req.session.userCase.respondents[1].respondentName = 'Magic Roundabout Partnership';
+    req.session.userCase.documentCollection.push({
+      id: 'own-acceptance-doc',
+      value: {
+        responseClaimDocuments: 'Response accepted',
+        dateOfCorrespondence: '2026-02-27',
+        uploadedDocument: {
+          document_url: 'http://dm-store/documents/own-acceptance',
+          document_filename: 'Acceptance of ET3 2.11.docx',
+          document_binary_url: 'http://dm-store/documents/own-acceptance/binary',
+        },
+      },
+    });
+
+    const rowHtml = getOtherRespondentEt3TableRows(req, labels)
+      .map(row => row[2].html)
+      .join(' ');
+
+    expect(rowHtml).not.toContain('own-acceptance');
+    expect(rowHtml).not.toContain('acceptance-doc');
+    expect(rowHtml).toContain('Magic Roundabout Partnership-ET3_Response.pdf');
+    expect(rowHtml).toContain('GoR.docx');
+  });
+
+  it('lists a co-respondent acceptance letter named after that respondent when both have submitted', () => {
+    req.session.userCase.respondents[0].responseStatus = Et3ResponseStatus.ET3_RESPONSE_STATUS_ACCEPTED;
+    req.session.userCase.respondents[0].respondentName = 'Current Respondent';
+    req.session.userCase.respondents[1].respondentName = 'Magic Roundabout Partnership';
+    req.session.userCase.documentCollection[0].value.uploadedDocument.document_filename =
+      'Magic Roundabout Partnership acceptance of ET3.docx';
+    req.session.userCase.documentCollection.push({
+      id: 'own-acceptance-doc',
+      value: {
+        responseClaimDocuments: 'Response accepted',
+        dateOfCorrespondence: '2026-02-27',
+        shortDescription: 'Current Respondent acceptance of ET3',
+        uploadedDocument: {
+          document_url: 'http://dm-store/documents/own-acceptance',
+          document_filename: 'Acceptance of ET3 2.11.docx',
+          document_binary_url: 'http://dm-store/documents/own-acceptance/binary',
+        },
+      },
+    });
+
+    const rowHtml = getOtherRespondentEt3TableRows(req, labels)
+      .map(row => row[2].html)
+      .join(' ');
+
+    expect(rowHtml).toContain('Magic Roundabout Partnership acceptance of ET3.docx');
+    expect(rowHtml).not.toContain('own-acceptance');
+    expect(rowHtml).not.toContain('Current respondent ET3.pdf');
+  });
+
+  it('does not list a case document whose name or file matches the signed-in respondent', () => {
+    req.session.userCase.respondents[0].respondentName = 'Current Respondent';
+    req.session.userCase.documentCollection.push(
+      {
+        id: 'own-named-et3',
+        value: {
+          typeOfDocument: 'ET3',
+          dateOfCorrespondence: '2026-02-27',
+          uploadedDocument: {
+            document_url: 'http://dm-store/documents/own-named-et3',
+            document_filename: 'Current Respondent-ET3_Response.pdf',
+            document_binary_url: 'http://dm-store/documents/own-named-et3/binary',
+          },
+        },
+      },
+      {
+        id: 'own-copied-et3',
+        value: {
+          typeOfDocument: 'ET3',
+          dateOfCorrespondence: '2026-02-27',
+          uploadedDocument: {
+            document_url: 'http://dm-store/documents/own-copied-et3',
+            document_filename: 'Current respondent ET3.pdf',
+            document_binary_url: 'http://dm-store/documents/own-copied-et3/binary',
+          },
+        },
+      }
+    );
+
+    const rowHtml = getOtherRespondentEt3TableRows(req, labels)
+      .map(row => row[2].html)
+      .join(' ');
+
+    expect(rowHtml).not.toContain('Current Respondent-ET3_Response.pdf');
+    expect(rowHtml).not.toContain('own-copied-et3');
+    expect(rowHtml).toContain('Magic Roundabout Partnership-ET3_Response.pdf');
+  });
+
   it('does not list an unsubmitted co-respondent draft from the case document list', () => {
     req.session.userCase.respondents[2] = {
       responseReceived: YesOrNo.NO,

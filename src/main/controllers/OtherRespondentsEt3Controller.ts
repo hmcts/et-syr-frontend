@@ -60,9 +60,10 @@ const markOtherRespondentEt3Viewed = async (req: AppRequest): Promise<void> => {
     ET3CaseDetailsLinkNames.OtherRespondentEt3,
     LinkStatus.VIEWED
   );
-  if (updatedCase) {
-    req.session.userCase = updatedCase;
+  if (!updatedCase) {
+    return;
   }
+  req.session.userCase = updatedCase;
 
   const respondent = req.session?.userCase?.respondents?.[selectedIndex];
   if (!respondent) {
