@@ -1,32 +1,32 @@
 {
-  "title": "[W]Return to a draft or submitted response",
+  "title": "Dychwelyd i ymateb drafft neu ymateb a gyflwynwyd",
   "returnToDraft": {
-    "heading": "[W]Return to a draft response",
-    "intro": "[W]You can return to a draft response by using:",
-    "bullet1": "[W]the account details you used when you started the response",
-    "bullet2": "[W]your save and return number, for example A7F9-K3P2"
+    "heading": "Dychwelyd i ymateb drafft",
+    "intro": "Gallwch ddychwelyd i ymateb drafft drwy ddefnyddio:",
+    "bullet1": "manylion y cyfrif a ddefnyddiwyd gennych pan wnaethoch ddechrau'r ymateb",
+    "bullet2": "eich rhif cadw a dychwelyd, er enghraifft A7F9-K3P2"
   },
   "returnToSubmitted": {
-    "heading": "[W]Return to a submitted response",
-    "intro": "[W]You can return to a submitted response by:",
-    "bullet1": "[W]using the account details you used when you submitted the response",
-    "bullet2": "[W]creating an account. You can only access responses where the case number starts with 6 or 8."
+    "heading": "Dychwelyd i ymateb a gyflwynwyd",
+    "intro": "Gallwch ddychwelyd i ymateb a gyflwynwyd drwy:",
+    "bullet1": "ddefnyddio manylion y cyfrif a ddefnyddiwyd gennych pan wnaethoch gyflwyno'r ymateb",
+    "bullet2": "creu cyfrif. Gallwch ond cael mynediad i ymatebion os yw'r rhif achos yn dechrau gyda 6 neu 8."
   },
   "mainQuestion": {
-    "question": "[W]What type of response do you want to return to?",
-    "option1": "[W]I want to return to a draft response",
-    "option2": "[W]I want to access or return to a submitted response"
+    "question": "Pa fath o ymateb ydych chi eisiau dychwelyd ato?",
+    "option1": "Rwyf am ddychwelyd at ymateb drafft",
+    "option2": "Rwyf am ddychwelyd at ymateb a gyflwynwyd"
   },
   "draftOption": {
-    "question": "[W]How do you want to access the response?",
-    "option1": "[W]I have an Employment Tribunal account",
-    "option2": "[W]I have a save and return number"
+    "question": "Sut ydych chi eisiau cael mynediad i'r ymateb?",
+    "option1": "Mae gennyf gyfrif tribiwnlys cyflogaeth",
+    "option2": "Mae gennyf rif cadw a dychwelyd"
   },
   "submittedOption": {
-    "question": "[W]How do you want to access the response?",
-    "option1": "[W]I have an Employment Tribunal account",
-    "option2": "[W]I have a response but no Employment Tribunal account",
-    "supportingText": "[W]You will be able to create an account and access the response if the case number starts with a 6 or 8."
+    "question": "Sut ydych chi eisiau cael mynediad i'r ymateb?",
+    "option1": "Mae gennyf gyfrif tribiwnlys cyflogaeth",
+    "option2": "Mae gennyf ymateb ond nid oes gennyf gyfrif Tribiwnlys Cyflogaeth",
+    "supportingText": "Byddwch yn gallu creu cyfrif a chael mynediad i'r ymateb os yw rhif yr achos yn dechrau gyda 6 neu 8"
   },
   "errors": {
     "returnToExisting": {
