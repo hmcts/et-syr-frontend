@@ -235,6 +235,37 @@ describe('Get case document controller', () => {
     expect(response.status(200).send).toHaveBeenCalled();
   });
 
+  it('Should find another respondent contest claim document by its document store id', async () => {
+    const collectionItemId = 'ccd-collection-item-id';
+    const documentStoreId = 'dm-store-contest-claim-id';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.documentCollection = [];
+    request.session.userCase.respondents[1] = {
+      et3ResponseContestClaimDocument: [
+        {
+          id: collectionItemId,
+          value: {
+            uploadedDocument: {
+              document_url: `http://dm-store:8080/documents/${documentStoreId}`,
+              document_filename: 'contest_claim.pdf',
+              document_binary_url: `http://dm-store:8080/documents/${documentStoreId}/binary`,
+            },
+            typeOfDocument: 'ET3 Attachment',
+            shortDescription: 'Contest claim document',
+          },
+        },
+      ],
+    };
+    request.params.docId = documentStoreId;
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(api.getCaseDocument).toHaveBeenCalledWith(documentStoreId);
+    expect(response.status(200).send).toHaveBeenCalled();
+  });
+
   it('Should find another respondent ET3 form when it is not in the document collection', async () => {
     const otherEt3Id = 'other-respondent-et3';
     const request = mockRequest({});

@@ -66,8 +66,14 @@ const hasOtherRespondentEt3ToView = (req: AppRequest): boolean => {
 const listOtherRespondentEt3Documents = (req: AppRequest): ListedDocument[] => {
   const respondents = req.session?.userCase?.respondents || [];
   const selectedIndex = req.session?.selectedRespondentIndex;
-  const currentRespondent =
-    selectedIndex === undefined || selectedIndex === null ? undefined : respondents[selectedIndex];
+  if (respondents.length <= 1 || selectedIndex === undefined || selectedIndex === null) {
+    return [];
+  }
+  const otherRespondents = respondents.filter((_, index) => index !== selectedIndex);
+  if (!otherRespondents.some(hasSubmittedEt3)) {
+    return [];
+  }
+  const currentRespondent = respondents[selectedIndex];
   const currentDocumentIds = collectRespondentDocumentIds(currentRespondent);
   const documentsByUrlId = new Map<string, ListedDocument>();
 

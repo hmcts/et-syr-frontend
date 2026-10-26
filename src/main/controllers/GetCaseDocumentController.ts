@@ -99,7 +99,9 @@ export default class GetCaseDocumentController {
 }
 
 const findRespondentDocument = (respondent: RespondentET3Model, docId: string): DocumentTypeItem | undefined => {
-  const contestDocument = (respondent?.et3ResponseContestClaimDocument || []).find(doc => doc.id === docId);
+  const contestDocument = (respondent?.et3ResponseContestClaimDocument || []).find(
+    doc => doc.id === docId || DocumentUtils.findDocumentIdByURL(doc?.value?.uploadedDocument?.document_url) === docId
+  );
   if (ObjectUtils.isNotEmpty(contestDocument)) {
     return contestDocument;
   }
