@@ -17,6 +17,11 @@
           caption: h2,
           firstCellIsHeader: true,
           captionClasses: "govuk-table__caption--m",
+          head: [
+            { text: tableHeaderDate },
+            { text: tableHeaderType },
+            { text: tableHeaderDocument }
+          ],
           rows: tableRows
         }) }}
       {% endif %}

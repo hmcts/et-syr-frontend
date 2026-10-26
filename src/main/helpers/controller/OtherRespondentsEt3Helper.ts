@@ -288,7 +288,7 @@ const toTableRow = (
       html:
         '<a href="/getCaseDocument/' +
         escapeHtml(document.id) +
-        '" target="_blank" class="govuk-link">' +
+        '" target="_blank" rel="noreferrer noopener" class="govuk-link">' +
         escapeHtml(document.name) +
         '</a>',
     },

@@ -145,6 +145,7 @@ describe('Other respondents ET3 helper', () => {
     expect(rows[0][1].text).toBe('Response accepted');
     expect(rows[0][2].html).toContain('Acceptance of ET3 2.11.docx');
     expect(rows[0][2].html).toContain('/getCaseDocument/acceptance-doc');
+    expect(rows[0][2].html).toContain('rel="noreferrer noopener"');
     expect(rows[1][1].text).toBe('ET3 Form');
     expect(rows[1][2].html).toContain('Magic Roundabout Partnership-ET3_Response.pdf');
     expect(rows[1][2].html).toContain('/getCaseDocument/collection-et3');
