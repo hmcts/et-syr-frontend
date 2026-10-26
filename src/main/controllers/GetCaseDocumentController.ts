@@ -12,6 +12,7 @@ import {
   findContentTypeByDocumentName,
   findUploadedDocumentIdByDocumentUrl,
 } from '../helpers/DocumentHelpers';
+import { hasSubmittedEt3 } from '../helpers/controller/OtherRespondentsEt3Helper';
 import { getLogger } from '../logger';
 import { getCaseApi } from '../services/CaseService';
 import CollectionUtils from '../utils/CollectionUtils';
@@ -45,7 +46,11 @@ export default class GetCaseDocumentController {
       logger.info('requested document not found in userCase fields checking document collection');
       let documentTypeItem = req.session.userCase.documentCollection?.find(doc => doc.id === req.params.docId);
       if (!documentTypeItem && CollectionUtils.isNotEmpty(req.session.userCase.respondents)) {
-        for (const respondent of req.session.userCase.respondents) {
+        for (let index = 0; index < req.session.userCase.respondents.length; index++) {
+          const respondent = req.session.userCase.respondents[index];
+          if (index !== req.session.selectedRespondentIndex && !hasSubmittedEt3(respondent)) {
+            continue;
+          }
           documentTypeItem = findRespondentDocument(respondent, req.params.docId);
           if (ObjectUtils.isNotEmpty(documentTypeItem)) {
             break;

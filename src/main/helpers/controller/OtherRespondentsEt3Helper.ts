@@ -2,7 +2,9 @@ import { AppRequest } from '../../definitions/appRequest';
 import { RespondentET3Model, YesOrNo } from '../../definitions/case';
 import { DocumentTypeItem } from '../../definitions/complexTypes/documentTypeItem';
 import {
+  AllDocumentTypes,
   Et3ResponseStatus,
+  et1DocTypes,
   et3AttachmentDocTypes,
   et3FormDocTypes,
   responseAcceptedDocTypes,
@@ -75,8 +77,11 @@ const listOtherRespondentEt3Documents = (req: AppRequest): ListedDocument[] => {
   }
   const currentRespondent = respondents[selectedIndex];
   const hiddenDocumentIds = collectRespondentDocumentIds(currentRespondent);
-  respondents.forEach(respondent => {
+  respondents.forEach((respondent, index) => {
     addDocumentId(hiddenDocumentIds, respondent?.et3ResponseRespondentSupportDocument?.document_url);
+    if (index !== selectedIndex && !hasSubmittedEt3(respondent)) {
+      collectRespondentDocumentIds(respondent).forEach(id => hiddenDocumentIds.add(id));
+    }
   });
   const documentsByUrlId = new Map<string, ListedDocument>();
 
@@ -94,7 +99,7 @@ const listOtherRespondentEt3Documents = (req: AppRequest): ListedDocument[] => {
   );
 };
 
-const hasSubmittedEt3 = (respondent: RespondentET3Model): boolean => {
+export const hasSubmittedEt3 = (respondent: RespondentET3Model): boolean => {
   return (
     respondent?.responseReceived === YesOrNo.YES ||
     respondent?.et3Status === ET3Status.COMPLETED ||
@@ -185,6 +190,9 @@ const applyDocumentCollection = (
 };
 
 const kindForCollectionDocument = (document: DocumentTypeItem): ListedDocument['kind'] | undefined => {
+  if (isEt1Document(document)) {
+    return undefined;
+  }
   if (isResponseAcceptedDocument(document)) {
     return 'accepted';
   }
@@ -201,6 +209,17 @@ const kindForCollectionDocument = (document: DocumentTypeItem): ListedDocument['
 
 const matchesDocumentType = (types: string[], typeOfDocument?: string, documentType?: string): boolean => {
   return types.includes(typeOfDocument) || types.includes(documentType);
+};
+
+const isEt1Document = (document: DocumentTypeItem): boolean => {
+  const typeOfDocument = document?.value?.typeOfDocument;
+  const documentType = document?.value?.documentType;
+  const filename = document?.value?.uploadedDocument?.document_filename;
+  return (
+    matchesDocumentType(et1DocTypes, typeOfDocument, documentType) ||
+    matchesDocumentType([AllDocumentTypes.ET1_ATTACHMENT], typeOfDocument, documentType) ||
+    filename?.startsWith('ET1 -')
+  );
 };
 
 const isResponseAcceptedDocument = (document: DocumentTypeItem): boolean => {

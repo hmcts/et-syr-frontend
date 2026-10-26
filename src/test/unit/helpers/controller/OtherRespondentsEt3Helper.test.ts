@@ -231,4 +231,74 @@ describe('Other respondents ET3 helper', () => {
     expect(rowHtml).not.toContain('support-doc');
     expect(rowHtml).toContain('GoR.docx');
   });
+
+  it('does not list ET1 documents from the case document list', () => {
+    req.session.userCase.documentCollection.push(
+      {
+        id: 'et1-form',
+        value: {
+          typeOfDocument: 'ET1',
+          dateOfCorrespondence: '2026-02-27',
+          uploadedDocument: {
+            document_url: 'http://dm-store/documents/et1-form',
+            document_filename: 'ET1 - claimant.pdf',
+            document_binary_url: 'http://dm-store/documents/et1-form/binary',
+          },
+        },
+      },
+      {
+        id: 'et1-attachment',
+        value: {
+          typeOfDocument: 'ET1 Attachment',
+          dateOfCorrespondence: '2026-02-27',
+          uploadedDocument: {
+            document_url: 'http://dm-store/documents/et1-attachment',
+            document_filename: 'Schedule of loss.pdf',
+            document_binary_url: 'http://dm-store/documents/et1-attachment/binary',
+          },
+        },
+      }
+    );
+
+    const rowHtml = getOtherRespondentEt3TableRows(req, labels)
+      .map(row => row[2].html)
+      .join(' ');
+
+    expect(rowHtml).not.toContain('ET1 - claimant.pdf');
+    expect(rowHtml).not.toContain('Schedule of loss.pdf');
+    expect(rowHtml).toContain('Magic Roundabout Partnership-ET3_Response.pdf');
+  });
+
+  it('does not list an unsubmitted co-respondent draft from the case document list', () => {
+    req.session.userCase.respondents[2] = {
+      responseReceived: YesOrNo.NO,
+      et3Form: {
+        document_url: 'http://dm-store/documents/draft-et3',
+        document_filename: 'Draft ET3.pdf',
+        document_binary_url: 'http://dm-store/documents/draft-et3/binary',
+        category_id: 'ET3',
+        upload_timestamp: '2026-02-27T10:00:00.000Z',
+      },
+    };
+    req.session.userCase.documentCollection.push({
+      id: 'collection-draft-et3',
+      value: {
+        typeOfDocument: 'ET3',
+        dateOfCorrespondence: '2026-02-27',
+        uploadedDocument: {
+          document_url: 'http://dm-store/documents/draft-et3',
+          document_filename: 'Draft ET3.pdf',
+          document_binary_url: 'http://dm-store/documents/draft-et3/binary',
+        },
+      },
+    });
+
+    const rowHtml = getOtherRespondentEt3TableRows(req, labels)
+      .map(row => row[2].html)
+      .join(' ');
+
+    expect(rowHtml).not.toContain('Draft ET3.pdf');
+    expect(rowHtml).toContain('Magic Roundabout Partnership-ET3_Response.pdf');
+    expect(rowHtml).toContain('GoR.docx');
+  });
 });
