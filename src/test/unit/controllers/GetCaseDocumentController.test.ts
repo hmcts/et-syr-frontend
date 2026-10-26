@@ -287,4 +287,62 @@ describe('Get case document controller', () => {
     await getCaseDocumentController.get(request, response);
     expect(response.status(200).send).toHaveBeenCalled();
   });
+
+  it('Should forward to not found when the document is a respondent support document', async () => {
+    const supportDocumentId = 'respondent-support-doc';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.documentCollection = [];
+    request.session.userCase.respondents[1] = {
+      et3ResponseRespondentSupportDocument: {
+        document_url: `http://dm-store:8080/documents/${supportDocumentId}`,
+        document_filename: 'Reasonable adjustment.pdf',
+        document_binary_url: `http://dm-store:8080/documents/${supportDocumentId}/binary`,
+        category_id: 'ET3 Attachment',
+        upload_timestamp: '2026-02-24T12:00:00.000Z',
+      },
+    };
+    request.params.docId = supportDocumentId;
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(api.getCaseDocument).not.toHaveBeenCalled();
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
+  });
+
+  it('Should forward to not found when a support document is copied into the case document list', async () => {
+    const supportDocumentId = 'respondent-support-doc-in-collection';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.respondents[1] = {
+      et3ResponseRespondentSupportDocument: {
+        document_url: `http://dm-store:8080/documents/${supportDocumentId}`,
+        document_filename: 'Reasonable adjustment.pdf',
+        document_binary_url: `http://dm-store:8080/documents/${supportDocumentId}/binary`,
+        category_id: 'ET3 Attachment',
+        upload_timestamp: '2026-02-24T12:00:00.000Z',
+      },
+    };
+    request.session.userCase.documentCollection = [
+      {
+        id: 'collection-support-doc',
+        value: {
+          typeOfDocument: 'ET3 Attachment',
+          uploadedDocument: {
+            document_url: `http://dm-store:8080/documents/${supportDocumentId}`,
+            document_filename: 'Reasonable adjustment.pdf',
+            document_binary_url: `http://dm-store:8080/documents/${supportDocumentId}/binary`,
+          },
+        },
+      },
+    ];
+    request.params.docId = 'collection-support-doc';
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(api.getCaseDocument).not.toHaveBeenCalled();
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
+  });
 });

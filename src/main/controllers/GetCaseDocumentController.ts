@@ -63,7 +63,7 @@ export default class GetCaseDocumentController {
       }
     }
     try {
-      if (StringUtils.isBlank(uploadedDocumentId)) {
+      if (StringUtils.isBlank(uploadedDocumentId) || isRespondentSupportDocument(req, uploadedDocumentId)) {
         logger.error('Document Id does not match with any document in the case');
         return res.redirect(PageUrls.NOT_FOUND);
       }
@@ -98,6 +98,14 @@ export default class GetCaseDocumentController {
   }
 }
 
+const isRespondentSupportDocument = (req: AppRequest, docId: string): boolean => {
+  const supportDocumentUrls = (req.session?.userCase?.respondents || []).map(
+    respondent => respondent?.et3ResponseRespondentSupportDocument?.document_url
+  );
+  supportDocumentUrls.push(req.session?.userCase?.et3ResponseRespondentSupportDocumentUrl);
+  return supportDocumentUrls.some(url => DocumentUtils.findDocumentIdByURL(url) === docId);
+};
+
 const findRespondentDocument = (respondent: RespondentET3Model, docId: string): DocumentTypeItem | undefined => {
   const contestDocument = (respondent?.et3ResponseContestClaimDocument || []).find(
     doc => doc.id === docId || DocumentUtils.findDocumentIdByURL(doc?.value?.uploadedDocument?.document_url) === docId
@@ -106,9 +114,7 @@ const findRespondentDocument = (respondent: RespondentET3Model, docId: string): 
     return contestDocument;
   }
 
-  const attachment = [respondent?.et3ResponseEmployerClaimDocument, respondent?.et3ResponseRespondentSupportDocument]
-    .map(document => toDocumentTypeItem(document, docId, et3AttachmentDocTypes[0]))
-    .find(document => ObjectUtils.isNotEmpty(document));
+  const attachment = toDocumentTypeItem(respondent?.et3ResponseEmployerClaimDocument, docId, et3AttachmentDocTypes[0]);
   if (attachment) {
     return attachment;
   }

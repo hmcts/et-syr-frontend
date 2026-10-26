@@ -202,4 +202,33 @@ describe('Other respondents ET3 helper', () => {
     expect(rows.map(row => row[2].html).join(' ')).toContain('GoR.docx');
     expect(rows.map(row => row[2].html).join(' ')).not.toContain('Current respondent ET3.pdf');
   });
+
+  it('does not list a co-respondent reasonable adjustments support document', () => {
+    req.session.userCase.respondents[1].et3ResponseRespondentSupportDocument = {
+      document_url: 'http://dm-store/documents/support-doc',
+      document_filename: 'Reasonable adjustment.pdf',
+      document_binary_url: 'http://dm-store/documents/support-doc/binary',
+      category_id: 'ET3 Attachment',
+      upload_timestamp: '2026-02-24T12:00:00.000Z',
+    };
+    req.session.userCase.documentCollection.push({
+      id: 'collection-support-doc',
+      value: {
+        typeOfDocument: 'ET3 Attachment',
+        dateOfCorrespondence: '2026-02-24',
+        uploadedDocument: {
+          document_url: 'http://dm-store/documents/support-doc',
+          document_filename: 'Reasonable adjustment.pdf',
+          document_binary_url: 'http://dm-store/documents/support-doc/binary',
+        },
+      },
+    });
+
+    const rows = getOtherRespondentEt3TableRows(req, labels);
+    const rowHtml = rows.map(row => row[2].html).join(' ');
+
+    expect(rowHtml).not.toContain('Reasonable adjustment.pdf');
+    expect(rowHtml).not.toContain('support-doc');
+    expect(rowHtml).toContain('GoR.docx');
+  });
 });

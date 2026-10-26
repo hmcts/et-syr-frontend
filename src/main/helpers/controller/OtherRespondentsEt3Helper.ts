@@ -74,7 +74,10 @@ const listOtherRespondentEt3Documents = (req: AppRequest): ListedDocument[] => {
     return [];
   }
   const currentRespondent = respondents[selectedIndex];
-  const currentDocumentIds = collectRespondentDocumentIds(currentRespondent);
+  const hiddenDocumentIds = collectRespondentDocumentIds(currentRespondent);
+  respondents.forEach(respondent => {
+    addDocumentId(hiddenDocumentIds, respondent?.et3ResponseRespondentSupportDocument?.document_url);
+  });
   const documentsByUrlId = new Map<string, ListedDocument>();
 
   respondents.forEach((respondent, index) => {
@@ -84,7 +87,7 @@ const listOtherRespondentEt3Documents = (req: AppRequest): ListedDocument[] => {
     addRespondentDocuments(documentsByUrlId, respondent);
   });
 
-  applyDocumentCollection(req.session?.userCase?.documentCollection, documentsByUrlId, currentDocumentIds);
+  applyDocumentCollection(req.session?.userCase?.documentCollection, documentsByUrlId, hiddenDocumentIds);
 
   return Array.from(documentsByUrlId.values()).sort(
     (left, right) => documentTime(right.dateRaw) - documentTime(left.dateRaw)
@@ -108,12 +111,6 @@ const addRespondentDocuments = (
   addUploadedDocument(
     documentsByUrlId,
     respondent.et3ResponseEmployerClaimDocument,
-    'attachment',
-    respondent.responseReceivedDate
-  );
-  addUploadedDocument(
-    documentsByUrlId,
-    respondent.et3ResponseRespondentSupportDocument,
     'attachment',
     respondent.responseReceivedDate
   );
