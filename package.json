@@ -194,7 +194,7 @@
     "serialize-javascript": "^7.0.5",
     "uuid": "^14.0.0",
     "ip-address": "^10.7.4",
-    "body-parser": "^2.3.0"
+    "body-parser": "^2.4.0"
   },
   "packageManager": "yarn@4.12.0"
 }
