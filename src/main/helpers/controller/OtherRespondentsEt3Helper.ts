@@ -170,7 +170,6 @@ const applyDocumentCollection = (
     const existing = documentsByUrlId.get(urlId);
     const kind = kindForCollectionDocument(document);
     if (existing) {
-      existing.id = document.id || existing.id;
       existing.name = document.value?.uploadedDocument?.document_filename || existing.name;
       existing.dateRaw = firstDate(
         document.value?.dateOfCorrespondence,
@@ -187,7 +186,7 @@ const applyDocumentCollection = (
       return;
     }
     documentsByUrlId.set(urlId, {
-      id: document.id || urlId,
+      id: urlId,
       name: document.value?.uploadedDocument?.document_filename,
       dateRaw: firstDate(
         document.value?.dateOfCorrespondence,
@@ -346,7 +345,7 @@ const toTableRow = (
     { text: labelForKind(document.kind, labels) },
     {
       html:
-        '<a href="/getCaseDocument/' +
+        '<a href="getCaseDocument/' +
         escapeHtml(document.id) +
         '" target="_blank" rel="noreferrer noopener" class="govuk-link">' +
         escapeHtml(document.name) +

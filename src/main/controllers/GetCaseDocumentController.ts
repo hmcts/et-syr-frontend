@@ -44,7 +44,7 @@ export default class GetCaseDocumentController {
       contentType = findContentTypeByDocumentDetail(documentDetails);
     } else {
       logger.info('requested document not found in userCase fields checking document collection');
-      let documentTypeItem = req.session.userCase.documentCollection?.find(doc => doc.id === req.params.docId);
+      let documentTypeItem = findDocumentInCollection(req.session.userCase.documentCollection, req.params.docId);
       if (!documentTypeItem && CollectionUtils.isNotEmpty(req.session.userCase.respondents)) {
         for (let index = 0; index < req.session.userCase.respondents.length; index++) {
           const respondent = req.session.userCase.respondents[index];
@@ -102,6 +102,15 @@ export default class GetCaseDocumentController {
     }
   }
 }
+
+const findDocumentInCollection = (
+  documentCollection: DocumentTypeItem[] | undefined,
+  docId: string
+): DocumentTypeItem | undefined => {
+  return documentCollection?.find(
+    doc => doc.id === docId || DocumentUtils.findDocumentIdByURL(doc?.value?.uploadedDocument?.document_url) === docId
+  );
+};
 
 const isRespondentSupportDocument = (req: AppRequest, docId: string): boolean => {
   const supportDocumentUrls = (req.session?.userCase?.respondents || []).map(

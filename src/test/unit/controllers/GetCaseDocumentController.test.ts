@@ -291,6 +291,37 @@ describe('Get case document controller', () => {
     expect(response.status(200).send).toHaveBeenCalled();
   });
 
+  it('Should find a represented respondent ET3 in the document collection by its document store id', async () => {
+    const collectionItemId = '83dbf7d6-9942-48ba-b9ad-5ab7307cbdaa';
+    const documentStoreId = 'represented-et3-store-id';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.responseEt3FormDocumentDetail = [];
+    request.session.userCase.respondents[1] = {
+      responseReceived: YesOrNo.YES,
+    };
+    request.session.userCase.documentCollection = [
+      {
+        id: collectionItemId,
+        value: {
+          typeOfDocument: 'ET3',
+          uploadedDocument: {
+            document_url: `http://dm-store:8080/documents/${documentStoreId}`,
+            document_filename: 'Respondent2 Represented-ET3_Response.pdf',
+            document_binary_url: `http://dm-store:8080/documents/${documentStoreId}/binary`,
+          },
+        },
+      },
+    ];
+    request.params.docId = documentStoreId;
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(api.getCaseDocument).toHaveBeenCalledWith(documentStoreId);
+    expect(response.status(200).send).toHaveBeenCalled();
+  });
+
   it('Should forward to not found when the document is a respondent support document', async () => {
     const supportDocumentId = 'respondent-support-doc';
     const request = mockRequest({});
