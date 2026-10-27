@@ -15,11 +15,11 @@ import { isRespondNotificationPartyToNotify, isSendNotificationNotify } from '..
 export const isDocIdValid = (docId: string, req: AppRequest): boolean => {
   const { userCase, user } = req.session;
   return (
-    docId === getDocId(userCase.contactApplicationFile?.document_url) ||
-    docId === getDocId(userCase.supportingMaterialFile?.document_url) ||
-    isDocOnApplicationPage(docId, userCase.genericTseApplicationCollection) ||
-    isDocOnApplicationPage(docId, userCase.tseRespondentStoredCollection) ||
-    isDocOnNotificationPage(docId, userCase.sendNotificationCollection, user)
+    docId === getDocId(userCase?.contactApplicationFile?.document_url) ||
+    docId === getDocId(userCase?.supportingMaterialFile?.document_url) ||
+    isDocOnApplicationPage(docId, userCase?.genericTseApplicationCollection) ||
+    isDocOnApplicationPage(docId, userCase?.tseRespondentStoredCollection) ||
+    isDocOnNotificationPage(docId, userCase?.sendNotificationCollection, user)
   );
 };
 
