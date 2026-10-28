@@ -76,7 +76,7 @@ const getRedirectUrl = (req: AppRequest): string => {
   }
 
   if (respondentRepresentedQuestion === RespondentRepresented.LEGAL_REP) {
-    return 'RET-6806'; // ToDo
+    return PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE + getLanguageParam(req.url);
   }
 
   return undefined;

@@ -34,7 +34,7 @@ describe('LipOrRepController', () => {
     it('redirects to MANAGE_CASE_URL when RespondentRepresented LEGAL_REP', () => {
       req.body = { respondentRepresentedQuestion: RespondentRepresented.LEGAL_REP };
       controller.post(req, res);
-      expect(res.redirect).toHaveBeenCalledWith('RET-6806'); // ToDo
+      expect(res.redirect).toHaveBeenCalledWith(PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE + '?lng=en');
     });
 
     it('redirects to LIP_OR_REPRESENTATIVE when empty', () => {
