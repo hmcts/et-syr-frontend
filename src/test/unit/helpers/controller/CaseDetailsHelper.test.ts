@@ -22,6 +22,7 @@ import { CuiYourSupportFeature } from '../../../../main/modules/featureFlag/CuiY
 import * as CuiYourSupportFeatureModule from '../../../../main/modules/featureFlag/CuiYourSupportFeature';
 import * as CaseService from '../../../../main/services/CaseService';
 import { CaseApi } from '../../../../main/services/CaseService';
+import { mockHearingCollection } from '../../mocks/mockHearing';
 import { mockRequest, mockRequestWithTranslation } from '../../mocks/mockRequest';
 import { mockUserDetails } from '../../mocks/mockUser';
 import mockUserCase from '../../mocks/mockUserCase';
@@ -71,6 +72,7 @@ describe('Case Details Helper', () => {
       expect(result[ET3CaseDetailsLinkNames.ET1ClaimForm]).toBe(LinkStatus.NOT_VIEWED);
       expect(result[ET3CaseDetailsLinkNames.ClaimantContactDetails]).toBe(LinkStatus.READY_TO_VIEW);
       expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.NOT_STARTED_YET);
+      expect(result[ET3CaseDetailsLinkNames.HearingDetails]).toBe(LinkStatus.NOT_YET_AVAILABLE);
       expect(result[ET3CaseDetailsLinkNames.ContactTribunal]).toBe(LinkStatus.OPTIONAL);
       expect(result[ET3CaseDetailsLinkNames.Documents]).toBe(LinkStatus.OPTIONAL);
     });
@@ -84,6 +86,7 @@ describe('Case Details Helper', () => {
       expect(result[ET3CaseDetailsLinkNames.ET1ClaimForm]).toBe(LinkStatus.NOT_VIEWED);
       expect(result[ET3CaseDetailsLinkNames.ClaimantContactDetails]).toBe(LinkStatus.READY_TO_VIEW);
       expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.NOT_STARTED_YET);
+      expect(result[ET3CaseDetailsLinkNames.HearingDetails]).toBe(LinkStatus.NOT_YET_AVAILABLE);
       expect(result[ET3CaseDetailsLinkNames.ContactTribunal]).toBe(LinkStatus.OPTIONAL);
       expect(result[ET3CaseDetailsLinkNames.Documents]).toBe(LinkStatus.OPTIONAL);
     });
@@ -144,6 +147,18 @@ describe('Case Details Helper', () => {
       const result = await getET3CaseDetailsLinkNames(statuses, req);
 
       expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.NOT_YET_AVAILABLE);
+    it('returns NOT_YET_AVAILABLE when no hearing exist', async () => {
+      req.session.userCase.hearingCollection = [];
+      const statuses = {};
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      expect(result[ET3CaseDetailsLinkNames.HearingDetails]).toBe(LinkStatus.NOT_YET_AVAILABLE);
+    });
+
+    it('returns READY_TO_VIEW when hearing exist', async () => {
+      req.session.userCase.hearingCollection = mockHearingCollection;
+      const statuses = {};
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      expect(result[ET3CaseDetailsLinkNames.HearingDetails]).toBe(LinkStatus.READY_TO_VIEW);
     });
 
     it('returns NOT_YET_AVAILABLE when application collection is undefined', async () => {

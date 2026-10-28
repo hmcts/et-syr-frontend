@@ -1,6 +1,6 @@
 import { YesOrNo } from '../../../../main/definitions/case';
 import { SendNotificationType } from '../../../../main/definitions/complexTypes/sendNotificationTypeItem';
-import { PartiesRespond } from '../../../../main/definitions/constants';
+import { PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
 import { LinkStatus } from '../../../../main/definitions/links';
 import {
   getNotificationContent,
@@ -191,6 +191,34 @@ describe('NotificationDetailsControllerHelper', () => {
       expect(result[3].value.text).toEqual('Test Short description');
       expect(result[4].key.text).toEqual('Document');
       expect(result[4].value.text).toEqual(undefined);
+      expect(result[4].value.html).toEqual(
+        '<a href="/getSupportingMaterial/00adf2f4-5fd0-4811-9597-cae66058e98e" target="_blank">Test.pdf</a><br>'
+      );
+    });
+
+    it('no doc link if notification is Claimant only', () => {
+      const item: SendNotificationType = {
+        ...baseItem,
+        sendNotificationNotify: PartiesNotify.CLAIMANT_ONLY,
+        sendNotificationUploadDocument: [
+          {
+            id: '1875343a-1753-4df5-abaa-e487126f6cbd',
+            value: {
+              shortDescription: 'Test Short description',
+              uploadedDocument: {
+                document_url: 'http://dummy/documents/00adf2f4-5fd0-4811-9597-cae66058e98e',
+                document_filename: 'Test.pdf',
+                document_binary_url: 'http://dummy/documents/00adf2f4-5fd0-4811-9597-cae66058e98e/binary',
+              },
+            },
+          },
+        ],
+      };
+      const result = getNotificationContent(item, req);
+      expect(result).toHaveLength(6);
+      expect(result[4].key.text).toEqual('Document');
+      expect(result[4].value.text).toEqual('Test.pdf');
+      expect(result[4].value.html).toEqual(undefined);
     });
   });
 
