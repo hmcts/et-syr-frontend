@@ -564,3 +564,9 @@ export interface Organisation {
   organisationID?: string;
   organisationName?: string;
 }
+
+export const enum RespondentRepresented {
+  MYSELF = 'myself',
+  SOMEONE_ELSE = 'someone else',
+  LEGAL_REP = 'legal representative',
+}

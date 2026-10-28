@@ -52,6 +52,7 @@ export const returnValidUrl = (redirectUrl: string, validUrls?: string[]): strin
   // if undefined use PageURLs
   validUrls = validUrls ?? Object.values(PageUrls);
   validUrls.push(LegacyUrls.SIGN_IN);
+  validUrls.push('RET-6806');
   // split url, first part will always be the url (in a format similar to that in PageUrls)
   const urlStr = redirectUrl.split('?');
   const baseUrl = urlStr[0];
