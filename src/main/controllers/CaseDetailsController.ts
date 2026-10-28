@@ -33,6 +33,9 @@ export default class CaseDetailsController {
       return res.redirect(PageUrls.NOT_FOUND + getLanguageParam(req.url));
     }
 
+    const sessionErrors = (req.session.errors || []).filter(error => error.propertyName === 'yourSupportCallback');
+    req.session.errors = req.session.errors?.filter(error => error.propertyName !== 'yourSupportCallback');
+
     req.session.selectedRespondentIndex = ET3Util.findSelectedRespondentIndex(req);
 
     if (CollectionUtils.isNotEmpty(req.session.errors)) {
@@ -53,7 +56,7 @@ export default class CaseDetailsController {
       selectedRespondent.et3CaseDetailsLinksStatuses,
       req
     );
-    const sections = getSections(et3CaseDetailsLinksStatuses, selectedRespondent, req);
+    const sections = await getSections(et3CaseDetailsLinksStatuses, selectedRespondent, req);
 
     const appNotifications: TseNotification = getAppNotifications(
       req.session.userCase.genericTseApplicationCollection,
@@ -65,6 +68,7 @@ export default class CaseDetailsController {
       ...req.t(TranslationKeys.CASE_DETAILS_STATUS as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
+      sessionErrors,
       PageUrls,
       userCase: req.session.userCase,
       progressBarItems: getProgressBarItems(selectedRespondent, req.session.userCase, {

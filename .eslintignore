@@ -2,6 +2,7 @@
 # build artefacts
 dist/*
 coverage/*
+playwright-report/*
 # data definition files
 **/*.d.ts
 # 3rd party libs

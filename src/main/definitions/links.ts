@@ -2,6 +2,7 @@
 //******************************************************************//
 export enum ET3CaseDetailsLinkNames {
   PersonalDetails = 'personalDetails',
+  YourSupport = 'yourSupport',
   ET1ClaimForm = 'et1ClaimForm',
   ClaimantContactDetails = 'claimantContactDetails',
   RespondentResponse = 'respondentResponse',
@@ -22,6 +23,8 @@ export class ET3CaseDetailsLinksStatuses {
     Object.values(ET3CaseDetailsLinkNames).forEach(name => {
       if (name === ET3CaseDetailsLinkNames.PersonalDetails) {
         this[name] = LinkStatus.NOT_YET_AVAILABLE;
+      } else if (name === ET3CaseDetailsLinkNames.YourSupport) {
+        this[name] = LinkStatus.OPTIONAL;
       } else if (name === ET3CaseDetailsLinkNames.ET1ClaimForm) {
         this[name] = LinkStatus.NOT_VIEWED;
       } else if (name === ET3CaseDetailsLinkNames.ClaimantContactDetails) {

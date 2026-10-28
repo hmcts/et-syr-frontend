@@ -1,3 +1,4 @@
+import { CaseFlags } from '../case';
 import { ClaimantTse } from '../complexTypes/ClaimantTse';
 import { ClaimantCorrespondence } from '../complexTypes/claimantCorrespondence';
 import { ClaimantEmploymentDetails } from '../complexTypes/claimantEmploymentDetails';
@@ -21,6 +22,7 @@ interface CaseDataApiBody {
   claimantIndType?: ClaimantIndividual;
   claimantType?: ClaimantCorrespondence;
   claimantHearingPreference?: ClaimantHearingPreference;
+  respondentExternalFlags?: CaseFlags;
   claimantTaskListChecks?: TaskListCheckType;
   claimantOtherType?: ClaimantEmploymentDetails;
   claimantRequests?: ClaimantRequests;
@@ -42,6 +44,14 @@ export interface UpdateCaseBody {
   case_id: string;
   case_type_id: string;
   case_data: CaseDataApiBody;
+}
+
+export interface UpdateSubmittedCaseFlagsBody {
+  case_id: string;
+  case_type_id: string;
+  case_data: {
+    respondentExternalFlags: CaseFlags;
+  };
 }
 
 export interface RespondentRequestBody {

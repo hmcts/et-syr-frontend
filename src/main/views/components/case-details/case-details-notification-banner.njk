@@ -1,5 +1,15 @@
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
+{% set yourSupportCallbackError = getError('yourSupportCallback') %}
+{% if yourSupportCallbackError %}
+  {{ govukNotificationBanner({
+    titleText: errorSummaryTitle,
+    titleId: 'your-support-callback-error-title',
+    role: 'alert',
+    text: yourSupportCallbackError.text
+  }) }}
+{% endif %}
+
 {% include "components/case-details/notifications-respondent-represented.njk" %}
 
 {% if not respondentRepresented %}
