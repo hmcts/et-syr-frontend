@@ -20,19 +20,19 @@ describe('LipOrRepController', () => {
 
   describe('POST method', () => {
     it('redirects to CASE_NUMBER_CHECK when RespondentRepresented MYSELF', () => {
-      req.body = { respondentRepresentedQuestion: RespondentRepresented.MYSELF };
+      req.body = { respondentLipOrRep: RespondentRepresented.MYSELF };
       controller.post(req, res);
       expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_NUMBER_CHECK + '?lng=en');
     });
 
     it('redirects to CASE_NUMBER_CHECK when RespondentRepresented SOMEONE_ELSE', () => {
-      req.body = { respondentRepresentedQuestion: RespondentRepresented.SOMEONE_ELSE };
+      req.body = { respondentLipOrRep: RespondentRepresented.SOMEONE_ELSE };
       controller.post(req, res);
       expect(res.redirect).toHaveBeenCalledWith(PageUrls.CASE_NUMBER_CHECK + '?lng=en');
     });
 
     it('redirects to MANAGE_CASE_URL when RespondentRepresented LEGAL_REP', () => {
-      req.body = { respondentRepresentedQuestion: RespondentRepresented.LEGAL_REP };
+      req.body = { respondentLipOrRep: RespondentRepresented.LEGAL_REP };
       controller.post(req, res);
       expect(res.redirect).toHaveBeenCalledWith(PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE + '?lng=en');
     });

@@ -1,17 +1,19 @@
 import { Response } from 'express';
 
+import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
 import { RespondentRepresented } from '../definitions/case';
 import { PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
-import { FormContent } from '../definitions/form';
-import { getPageContent } from '../helpers/FormHelper';
+import { FormContent, FormFields } from '../definitions/form';
+import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 import { isFieldFilledIn } from '../validators/validator';
 
 export default class LipOrRepController {
+  private readonly form: Form;
   private readonly lipOrRepContent: FormContent = {
     fields: {
-      respondentRepresentedQuestion: {
+      respondentLipOrRep: {
         type: 'radios',
         classes: 'govuk-radios',
         id: 'lip-or-representative',
@@ -38,6 +40,10 @@ export default class LipOrRepController {
     },
   };
 
+  constructor() {
+    this.form = new Form(<FormFields>this.lipOrRepContent.fields);
+  }
+
   public post = (req: AppRequest, res: Response): void => {
     req.session.errors = [];
 
@@ -45,7 +51,7 @@ export default class LipOrRepController {
 
     if (!redirectUrl) {
       req.session.errors.push({
-        propertyName: 'respondentRepresentedQuestion',
+        propertyName: 'respondentLipOrRep',
         errorType: ValidationErrors.REQUIRED,
       });
       return res.redirect(PageUrls.LIP_OR_REPRESENTATIVE + getLanguageParam(req.url));
@@ -59,6 +65,7 @@ export default class LipOrRepController {
       TranslationKeys.COMMON,
       TranslationKeys.LIP_OR_REPRESENTATIVE,
     ]);
+    assignFormData(req.session.userCase, this.form.getFormFields());
     res.render(TranslationKeys.LIP_OR_REPRESENTATIVE, {
       ...content,
     });
@@ -66,16 +73,16 @@ export default class LipOrRepController {
 }
 
 const getRedirectUrl = (req: AppRequest): string => {
-  const { respondentRepresentedQuestion } = req.body;
+  const { respondentLipOrRep } = req.body;
 
   if (
-    respondentRepresentedQuestion === RespondentRepresented.MYSELF ||
-    respondentRepresentedQuestion === RespondentRepresented.SOMEONE_ELSE
+    respondentLipOrRep === RespondentRepresented.MYSELF ||
+    respondentLipOrRep === RespondentRepresented.SOMEONE_ELSE
   ) {
     return PageUrls.CASE_NUMBER_CHECK + getLanguageParam(req.url);
   }
 
-  if (respondentRepresentedQuestion === RespondentRepresented.LEGAL_REP) {
+  if (respondentLipOrRep === RespondentRepresented.LEGAL_REP) {
     return PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE + getLanguageParam(req.url);
   }
 

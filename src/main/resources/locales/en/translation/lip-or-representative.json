@@ -62,7 +62,7 @@
   "radio2": "I’m making this response for someone else and acting as their representative",
   "radio3": "I’m a legal representative making this response for a client",
   "errors": {
-    "respondentRepresentedQuestion": {
+    "respondentLipOrRep": {
       "required": "Tell us if you are representing yourself or acting as a representative"
     }
   }

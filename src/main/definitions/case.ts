@@ -390,6 +390,7 @@ export interface Case {
   respondentResponse?: YesOrNo;
   preAcceptCase?: PreAcceptCase;
   respondentRepresented?: Representative;
+  respondentLipOrRep?: string;
 }
 
 export const enum StillWorking {
