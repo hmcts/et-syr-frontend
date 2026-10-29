@@ -30,7 +30,7 @@
   },
   "errors": {
     "returnToExisting": {
-      "required": "Select what type of response you want to return to"
+      "required": "Select how you want to access the response"
     }
   }
 }
