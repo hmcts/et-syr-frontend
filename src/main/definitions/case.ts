@@ -255,7 +255,6 @@ export interface Case {
   caseTypeId?: CaseTypeId;
   telNumber?: string;
   validNoAcasReason?: YesOrNo;
-  returnToExisting?: YesOrNo;
   jobTitle?: string;
   typeOfClaim?: string[];
   pastEmployer?: YesOrNo;
@@ -564,6 +563,14 @@ export interface RepresentedTypeC {
 export interface Organisation {
   organisationID?: string;
   organisationName?: string;
+}
+
+export const enum ReturnToExistingOption {
+  DRAFT_RESPONSE = 'return to a draft response',
+  SUBMITTED_RESPONSE = 'return to a submitted response',
+  HAVE_ACCOUNT = 'have an Employment Tribunal account',
+  HAVE_RETURN_NUMBER = 'have a save and return number',
+  NO_ACCOUNT = 'have a response but no Employment Tribunal account',
 }
 
 export const enum RespondentRepresented {
