@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import GetCaseDocumentController from '../../../main/controllers/GetCaseDocumentController';
 import { AppRequest } from '../../../main/definitions/appRequest';
+import { YesOrNo } from '../../../main/definitions/case';
 import { ApiDocumentTypeItem } from '../../../main/definitions/complexTypes/documentTypeItem';
 import { PageUrls, ServiceErrors } from '../../../main/definitions/constants';
 import * as caseService from '../../../main/services/CaseService';
@@ -232,6 +233,210 @@ describe('Get case document controller', () => {
     getCaseApiMock.mockReturnValue(api);
     api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
     await getCaseDocumentController.get(request, response);
+    expect(response.status(200).send).toHaveBeenCalled();
+  });
+
+  it('Should find another respondent contest claim document by its document store id', async () => {
+    const collectionItemId = 'ccd-collection-item-id';
+    const documentStoreId = 'dm-store-contest-claim-id';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.documentCollection = [];
+    request.session.userCase.respondents[1] = {
+      responseReceived: YesOrNo.YES,
+      et3ResponseContestClaimDocument: [
+        {
+          id: collectionItemId,
+          value: {
+            uploadedDocument: {
+              document_url: `http://dm-store:8080/documents/${documentStoreId}`,
+              document_filename: 'contest_claim.pdf',
+              document_binary_url: `http://dm-store:8080/documents/${documentStoreId}/binary`,
+            },
+            typeOfDocument: 'ET3 Attachment',
+            shortDescription: 'Contest claim document',
+          },
+        },
+      ],
+    };
+    request.params.docId = documentStoreId;
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(api.getCaseDocument).toHaveBeenCalledWith(documentStoreId);
+    expect(response.status(200).send).toHaveBeenCalled();
+  });
+
+  it('Should find another respondent ET3 form when it is not in the document collection', async () => {
+    const otherEt3Id = 'other-respondent-et3';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.documentCollection = [];
+    request.session.userCase.respondents[1] = {
+      responseReceived: YesOrNo.YES,
+      et3Form: {
+        document_url: `http://dm-store:8080/documents/${otherEt3Id}`,
+        document_filename: 'ET3 - Ermintrude Cow.pdf',
+        document_binary_url: `http://dm-store:8080/documents/${otherEt3Id}/binary`,
+        category_id: 'ET3',
+        upload_timestamp: '2026-02-25T10:00:00.000Z',
+      },
+    };
+    request.params.docId = otherEt3Id;
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(response.status(200).send).toHaveBeenCalled();
+  });
+
+  it('Should find a represented respondent ET3 in the document collection by its document store id', async () => {
+    const collectionItemId = '83dbf7d6-9942-48ba-b9ad-5ab7307cbdaa';
+    const documentStoreId = 'represented-et3-store-id';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.responseEt3FormDocumentDetail = [];
+    request.session.userCase.respondents[1] = {
+      responseReceived: YesOrNo.YES,
+    };
+    request.session.userCase.documentCollection = [
+      {
+        id: collectionItemId,
+        value: {
+          typeOfDocument: 'ET3',
+          uploadedDocument: {
+            document_url: `http://dm-store:8080/documents/${documentStoreId}`,
+            document_filename: 'Respondent2 Represented-ET3_Response.pdf',
+            document_binary_url: `http://dm-store:8080/documents/${documentStoreId}/binary`,
+          },
+        },
+      },
+    ];
+    request.params.docId = documentStoreId;
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(api.getCaseDocument).toHaveBeenCalledWith(documentStoreId);
+    expect(response.status(200).send).toHaveBeenCalled();
+  });
+
+  it('Should forward to not found when the document is a respondent support document', async () => {
+    const supportDocumentId = 'respondent-support-doc';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.documentCollection = [];
+    request.session.userCase.respondents[1] = {
+      et3ResponseRespondentSupportDocument: {
+        document_url: `http://dm-store:8080/documents/${supportDocumentId}`,
+        document_filename: 'Reasonable adjustment.pdf',
+        document_binary_url: `http://dm-store:8080/documents/${supportDocumentId}/binary`,
+        category_id: 'ET3 Attachment',
+        upload_timestamp: '2026-02-24T12:00:00.000Z',
+      },
+    };
+    request.params.docId = supportDocumentId;
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(api.getCaseDocument).not.toHaveBeenCalled();
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
+  });
+
+  it('Should forward to not found when a support document is copied into the case document list', async () => {
+    const supportDocumentId = 'respondent-support-doc-in-collection';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.respondents[1] = {
+      et3ResponseRespondentSupportDocument: {
+        document_url: `http://dm-store:8080/documents/${supportDocumentId}`,
+        document_filename: 'Reasonable adjustment.pdf',
+        document_binary_url: `http://dm-store:8080/documents/${supportDocumentId}/binary`,
+        category_id: 'ET3 Attachment',
+        upload_timestamp: '2026-02-24T12:00:00.000Z',
+      },
+    };
+    request.session.userCase.documentCollection = [
+      {
+        id: 'collection-support-doc',
+        value: {
+          typeOfDocument: 'ET3 Attachment',
+          uploadedDocument: {
+            document_url: `http://dm-store:8080/documents/${supportDocumentId}`,
+            document_filename: 'Reasonable adjustment.pdf',
+            document_binary_url: `http://dm-store:8080/documents/${supportDocumentId}/binary`,
+          },
+        },
+      },
+    ];
+    request.params.docId = 'collection-support-doc';
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(api.getCaseDocument).not.toHaveBeenCalled();
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
+  });
+
+  it('Should forward to not found when another respondent has not submitted their contest claim document', async () => {
+    const documentStoreId = 'unsubmitted-contest-claim';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.documentCollection = [];
+    request.session.userCase.respondents[1] = {
+      responseReceived: YesOrNo.NO,
+      et3ResponseContestClaimDocument: [
+        {
+          id: 'ccd-unsubmitted-contest-claim',
+          value: {
+            uploadedDocument: {
+              document_url: `http://dm-store:8080/documents/${documentStoreId}`,
+              document_filename: 'draft_contest_claim.pdf',
+              document_binary_url: `http://dm-store:8080/documents/${documentStoreId}/binary`,
+            },
+            typeOfDocument: 'ET3 Attachment',
+            shortDescription: 'Draft contest claim document',
+          },
+        },
+      ],
+    };
+    request.params.docId = documentStoreId;
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(api.getCaseDocument).not.toHaveBeenCalled();
+    expect(response.redirect).toHaveBeenCalledWith(PageUrls.NOT_FOUND);
+  });
+
+  it('Should find the selected respondent draft contest claim document', async () => {
+    const documentStoreId = 'selected-respondent-draft-contest-claim';
+    const request = mockRequest({});
+    request.session.userCase = mockCaseWithIdWithRespondents;
+    request.session.selectedRespondentIndex = 0;
+    request.session.userCase.documentCollection = [];
+    request.session.userCase.respondents[0].responseReceived = YesOrNo.NO;
+    request.session.userCase.respondents[0].et3ResponseContestClaimDocument = [
+      {
+        id: 'ccd-selected-draft-contest-claim',
+        value: {
+          uploadedDocument: {
+            document_url: `http://dm-store:8080/documents/${documentStoreId}`,
+            document_filename: 'my_draft_contest_claim.pdf',
+            document_binary_url: `http://dm-store:8080/documents/${documentStoreId}/binary`,
+          },
+          typeOfDocument: 'ET3 Attachment',
+          shortDescription: 'Selected respondent draft contest claim',
+        },
+      },
+    ];
+    request.params.docId = documentStoreId;
+    getCaseApiMock.mockReturnValue(api);
+    api.getCaseDocument = jest.fn().mockResolvedValueOnce(Promise.resolve(mockedET1FormDocument));
+    await getCaseDocumentController.get(request, response);
+    expect(api.getCaseDocument).toHaveBeenCalledWith(documentStoreId);
     expect(response.status(200).send).toHaveBeenCalled();
   });
 });

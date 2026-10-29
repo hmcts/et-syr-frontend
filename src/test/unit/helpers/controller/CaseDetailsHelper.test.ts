@@ -5,7 +5,7 @@ import { YesOrNo } from '../../../../main/definitions/case';
 import { Applicant, Et3ResponseStatus, PartiesNotify, PartiesRespond } from '../../../../main/definitions/constants';
 import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../../../../main/definitions/links';
 import { isResponseToTribunalRequired } from '../../../../main/helpers/GenericTseApplicationHelper';
-import { getET3CaseDetailsLinkNames } from '../../../../main/helpers/controller/CaseDetailsHelper';
+import { getET3CaseDetailsLinkNames, getSections } from '../../../../main/helpers/controller/CaseDetailsHelper';
 import * as CaseService from '../../../../main/services/CaseService';
 import { CaseApi } from '../../../../main/services/CaseService';
 import { mockHearingCollection } from '../../mocks/mockHearing';
@@ -214,6 +214,102 @@ describe('Case Details Helper', () => {
       };
       const result = await getET3CaseDetailsLinkNames(statuses, req);
       expect(result[ET3CaseDetailsLinkNames.RespondentResponse]).toBe(LinkStatus.CANNOT_START_YET);
+    });
+
+    it('returns not available yet for other respondent ET3 when there is one respondent', async () => {
+      req.session.userCase.respondents = [{ responseStatus: 'Accepted' }];
+      req.session.selectedRespondentIndex = 0;
+      const result = await getET3CaseDetailsLinkNames({}, req);
+      expect(result[ET3CaseDetailsLinkNames.OtherRespondentEt3]).toBe(LinkStatus.NOT_YET_AVAILABLE);
+    });
+
+    it('returns not available yet when a co-respondent ET3 is accepted but there is no document to show', async () => {
+      req.session.userCase.respondents = [{ responseStatus: 'Submitted' }, { responseStatus: 'Accepted' }];
+      req.session.userCase.documentCollection = [];
+      req.session.selectedRespondentIndex = 0;
+      const result = await getET3CaseDetailsLinkNames({}, req);
+      expect(result[ET3CaseDetailsLinkNames.OtherRespondentEt3]).toBe(LinkStatus.NOT_YET_AVAILABLE);
+    });
+
+    it('returns ready to view when a co-respondent has an ET3 document to open', async () => {
+      req.session.userCase.respondents = [
+        { responseReceived: YesOrNo.NO },
+        {
+          responseReceived: YesOrNo.YES,
+          et3Form: {
+            document_url: 'http://dm-store/documents/other-et3',
+            document_filename: 'ET3 - Ermintrude Cow.pdf',
+            document_binary_url: 'http://dm-store/documents/other-et3/binary',
+            category_id: 'ET3',
+            upload_timestamp: '2026-02-25T10:00:00.000Z',
+          },
+        },
+      ];
+      req.session.userCase.documentCollection = [];
+      req.session.selectedRespondentIndex = 0;
+      const result = await getET3CaseDetailsLinkNames({}, req);
+      expect(result[ET3CaseDetailsLinkNames.OtherRespondentEt3]).toBe(LinkStatus.READY_TO_VIEW);
+    });
+
+    it('keeps viewed for other respondent ET3 after the documents have been opened', async () => {
+      req.session.userCase.respondents = [
+        { responseStatus: 'Submitted' },
+        {
+          responseStatus: 'Accepted',
+          et3Form: {
+            document_url: 'http://dm-store/documents/other-et3',
+            document_filename: 'ET3 - Ermintrude Cow.pdf',
+            document_binary_url: 'http://dm-store/documents/other-et3/binary',
+            category_id: 'ET3',
+            upload_timestamp: '2026-02-25T10:00:00.000Z',
+          },
+        },
+      ];
+      req.session.userCase.documentCollection = [];
+      req.session.selectedRespondentIndex = 0;
+      const statuses: ET3CaseDetailsLinksStatuses = {
+        [ET3CaseDetailsLinkNames.OtherRespondentEt3]: LinkStatus.VIEWED,
+      };
+      const result = await getET3CaseDetailsLinkNames(statuses, req);
+      expect(result[ET3CaseDetailsLinkNames.OtherRespondentEt3]).toBe(LinkStatus.VIEWED);
+    });
+  });
+
+  describe('getSections', () => {
+    const yourResponseLinkNames = (respondentCount: number): string[] => {
+      const req = mockRequest({
+        userCase: {
+          ...mockUserCase,
+          respondents: Array.from({ length: respondentCount }, () => ({ responseStatus: 'Submitted' })),
+        },
+      });
+      req.url = '/case-details';
+      req.t = jest.fn().mockReturnValue({
+        [ET3CaseDetailsLinkNames.RespondentResponse]: ET3CaseDetailsLinkNames.RespondentResponse,
+        [ET3CaseDetailsLinkNames.OtherRespondentEt3]: ET3CaseDetailsLinkNames.OtherRespondentEt3,
+        [LinkStatus.NOT_STARTED_YET]: LinkStatus.NOT_STARTED_YET,
+        [LinkStatus.NOT_YET_AVAILABLE]: LinkStatus.NOT_YET_AVAILABLE,
+        section3: 'section3',
+      }) as unknown as AppRequest['t'];
+      const yourResponse = getSections(new ET3CaseDetailsLinksStatuses(), {}, req).find(
+        section => section.title === 'section3'
+      );
+      return yourResponse.links.map(link => link.linkTxt);
+    };
+
+    it('hides Other respondent ET3 when the case has one respondent', () => {
+      expect(yourResponseLinkNames(1)).toEqual([ET3CaseDetailsLinkNames.RespondentResponse]);
+    });
+
+    it('hides Other respondent ET3 when the case has no respondents', () => {
+      expect(yourResponseLinkNames(0)).toEqual([ET3CaseDetailsLinkNames.RespondentResponse]);
+    });
+
+    it('shows Other respondent ET3 when the case has more than one respondent', () => {
+      expect(yourResponseLinkNames(2)).toEqual([
+        ET3CaseDetailsLinkNames.RespondentResponse,
+        ET3CaseDetailsLinkNames.OtherRespondentEt3,
+      ]);
     });
   });
 });
