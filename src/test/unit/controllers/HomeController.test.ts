@@ -15,13 +15,12 @@ describe('Home controller', () => {
   it('should render the introduction (home) page', () => {
     const response = mockResponse();
     const request = mockRequest({ t });
-    const redirectUrl = setUrlLanguage(request, PageUrls.CASE_NUMBER_CHECK);
     homeController.get(request, response);
 
     expect(response.render).toHaveBeenCalledWith('home', {
       ...(<AnyRecord>request.t('home', { returnObjects: true })),
       PageUrls,
-      redirectUrl,
+      redirectUrl: setUrlLanguage(request, PageUrls.LIP_OR_REPRESENTATIVE),
       languageParam: '?lng=en',
     });
   });

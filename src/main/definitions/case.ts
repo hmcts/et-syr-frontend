@@ -389,6 +389,7 @@ export interface Case {
   respondentResponse?: YesOrNo;
   preAcceptCase?: PreAcceptCase;
   respondentRepresented?: Representative;
+  respondentLipOrRep?: string;
 }
 
 export const enum StillWorking {
@@ -570,4 +571,10 @@ export const enum ReturnToExistingOption {
   HAVE_ACCOUNT = 'have an Employment Tribunal account',
   HAVE_RETURN_NUMBER = 'have a save and return number',
   NO_ACCOUNT = 'have a response but no Employment Tribunal account',
+}
+
+export const enum RespondentRepresented {
+  MYSELF = 'myself',
+  SOMEONE_ELSE = 'someone else',
+  LEGAL_REP = 'legal representative',
 }

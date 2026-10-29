@@ -1,0 +1,61 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% block beforeContent %}
+{{ super() }}
+{% include "back-link.njk"%}
+{% endblock %}
+
+{% block content %}
+{% block errorSummary %}
+{% include "./form/main/error-summary.njk" %}
+{% endblock %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-l">{{ title }}</h1>
+    <p class="govuk-body">{{ p1 }}</p>
+
+    {% call govukDetails({
+      summaryText: detailsSummary1
+      }) %}
+      <p class="govuk-body">{{ detailsText1.p1 }}</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>{{ detailsText1.li1 }}</li>
+        <li>{{ detailsText1.li2 }}</li>
+        <li>{{ detailsText1.li3 }}</li>
+        <li>{{ detailsText1.li4 }}</li>
+        <li>{{ detailsText1.li5 }}</li>
+        <li>{{ detailsText1.li6 }}</li>
+      </ul>
+      <p class="govuk-body">{{ detailsText1.p2 }}</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>{{ detailsText1.li7 }}</li>
+        <li>{{ detailsText1.li8 }}</li>
+        <li>{{ detailsText1.li9 }}</li>
+        <li>{{ detailsText1.li10 }}</li>
+      </ul>
+    {% endcall %}
+
+    {% call govukDetails({
+      summaryText: detailsSummary2
+      }) %}
+      <p class="govuk-body">{{ detailsText2.p1 }}</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li><a href="https://solicitors.lawsociety.org.uk/" class="govuk-link" rel="noreferrer noopener" target="_blank">{{ detailsText2.li1.t1 }}<span class="govuk-visually-hidden">{{ detailsText2.opensInNewTab }}</span>{{ detailsText2.li1.t2 }}</a> – {{ detailsText2.li1.t3 }}</li>
+        <li><a href="https://www.lawscot.org.uk/find-a-solicitor/" class="govuk-link" rel="noreferrer noopener" target="_blank">{{ detailsText2.li2.t1 }}<span class="govuk-visually-hidden">{{ detailsText2.opensInNewTab }}</span>{{ detailsText2.li2.t2 }}</a> – {{ detailsText2.li2.t3 }}</li>
+        <li><a href="https://www.thefru.org.uk/" class="govuk-link" rel="noreferrer noopener" target="_blank">{{ detailsText2.li3.t1 }}<span class="govuk-visually-hidden">{{ detailsText2.opensInNewTab }}</span>{{ detailsText2.li3.t2 }}</a> – {{ detailsText2.li3.t3 }}</li>
+        <li>{{ detailsText2.li4.t1 }}<a href="https://www.abdn.ac.uk/law/research/the-scottish-university-law-clinic-network-546.php" class="govuk-link" rel="noreferrer noopener" target="_blank">{{ detailsText2.li4.t2 }}<span class="govuk-visually-hidden">{{ detailsText2.opensInNewTab }}</span>{{ detailsText2.li4.t3 }}</a></li>
+        <li>{{ detailsText2.li5 }}</li>
+      </ul>
+      <p class="govuk-body govuk-!-margin-top-4">{{ detailsText2.p2.t1 }} <a href="https://www.citizensadvice.org.uk/" class="govuk-link" rel="noreferrer noopener" target="_blank">{{ detailsText2.p2.t2 }}<span class="govuk-visually-hidden">{{ detailsText2.opensInNewTab }}</span>{{ detailsText2.p2.t3 }}</a> {{ detailsText2.p2.t4 }} <a href="https://www.cas.org.uk/" class="govuk-link" rel="noreferrer noopener" target="_blank">{{ detailsText2.p2.t5 }}<span class="govuk-visually-hidden">{{ detailsText2.opensInNewTab }}</span>{{ detailsText2.p2.t6 }}</a>.</p>
+      <p class="govuk-body">{{ detailsText2.p3.t1 }} <a href="https://www.equalityadvisoryservice.com/" class="govuk-link" rel="noreferrer noopener" target="_blank">{{ detailsText2.p3.t2 }}<span class="govuk-visually-hidden">{{ detailsText2.opensInNewTab }}</span>{{ detailsText2.p3.t3 }}</a> {{ detailsText2.p3.t4 }}</p>
+      <p class="govuk-body">{{ detailsText2.p4 }}</p>
+    {% endcall %}
+
+    {% block form %}
+      {% include "form/form.njk" %}
+    {% endblock %}
+  </div>
+</div>
+{% endblock %}
