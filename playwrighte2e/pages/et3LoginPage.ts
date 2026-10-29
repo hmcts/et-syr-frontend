@@ -30,7 +30,7 @@ export default class Et3LoginPage extends BasePage {
   elements = {
     returnToExistingResponse: this.page.locator('[href="/return-to-existing?lng=en"]'),
     submit: this.page.locator('[type="submit"]'),
-    startNow: this.page.locator('[href="/case-number-check"]'),
+    startNow: this.page.locator('[href="/lip-or-representative"]'),
     respondToNewClaim: '[href="/case-number-check?lng=en&redirect=selfAssignment"]',
     caseNumber: '#ethosCaseReference',
     submissionRefNumber: '#caseReferenceId',
