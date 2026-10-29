@@ -1,24 +1,36 @@
 {
-  "title": "[W]Respond to an existing claim",
-  "h1": "[W]Respond to an existing claim",
-  "p1": {
-    "t1": "[W]You’ll need to use either a",
-    "t2": "[W]‘save and return number’",
-    "t3": "[W]or your new",
-    "t4": "[W]‘Employment Tribunal account’",
-    "t5": "[W]to respond to an existing claim."
+  "title": "Dychwelyd i ymateb drafft neu ymateb a gyflwynwyd",
+  "returnToDraft": {
+    "heading": "Dychwelyd i ymateb drafft",
+    "intro": "Gallwch ddychwelyd i ymateb drafft drwy ddefnyddio:",
+    "bullet1": "manylion y cyfrif a ddefnyddiwyd gennych pan wnaethoch ddechrau'r ymateb",
+    "bullet2": "eich rhif cadw a dychwelyd, er enghraifft A7F9-K3P2"
   },
-  "p2": "[W]Have you got a ‘save and return number’ or a new ‘Employment Tribunal account’? ",
-  "p3": {
-    "t1": "[W]Don't have these details",
-    "t2": "[W]respond to a new claim.",
-    "t3": "[W]"
+  "returnToSubmitted": {
+    "heading": "Dychwelyd i ymateb a gyflwynwyd",
+    "intro": "Gallwch ddychwelyd i ymateb a gyflwynwyd drwy:",
+    "bullet1": "ddefnyddio manylion y cyfrif a ddefnyddiwyd gennych pan wnaethoch gyflwyno'r ymateb",
+    "bullet2": "creu cyfrif. Gallwch ond cael mynediad i ymatebion os yw'r rhif achos yn dechrau gyda 6 neu 8."
   },
-  "optionText1": "[W]I’ve got a <span class=\"govuk-!-font-weight-bold\">‘save and return number’</span>",
-  "optionText2": "[W]I’ve got a new <span class=\"govuk-!-font-weight-bold\">‘Employment Tribunal account’</span>",
+  "mainQuestion": {
+    "question": "Pa fath o ymateb ydych chi eisiau dychwelyd ato?",
+    "option1": "Rwyf am ddychwelyd at ymateb drafft",
+    "option2": "Rwyf am ddychwelyd at ymateb a gyflwynwyd"
+  },
+  "draftOption": {
+    "question": "Sut ydych chi eisiau cael mynediad i'r ymateb?",
+    "option1": "Mae gennyf gyfrif tribiwnlys cyflogaeth",
+    "option2": "Mae gennyf rif cadw a dychwelyd"
+  },
+  "submittedOption": {
+    "question": "Sut ydych chi eisiau cael mynediad i'r ymateb?",
+    "option1": "Mae gennyf gyfrif tribiwnlys cyflogaeth",
+    "option2": "Mae gennyf ymateb ond nid oes gennyf gyfrif Tribiwnlys Cyflogaeth",
+    "supportingText": "Byddwch yn gallu creu cyfrif a chael mynediad i'r ymateb os yw rhif yr achos yn dechrau gyda 6 neu 8"
+  },
   "errors": {
     "returnToExisting": {
-      "required": "[W]Tell us if you have a save and return number or an Employment Tribunal account"
+      "required": "Dewiswch sut ydych chi eisiau cael mynediad i'r ymateb"
     }
   }
 }
