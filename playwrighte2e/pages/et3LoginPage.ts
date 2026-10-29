@@ -58,7 +58,7 @@ export default class Et3LoginPage extends BasePage {
 
   async processLipOrRep(): Promise<void> {
     await this.page.waitForSelector('#main-form', { timeout: 5000 });
-    await this.page.locator('#lip-or-representative input[type="radio"]').first().check();
+    await this.page.check('input[id=lip-or-representative]');
     await this.clickContinue();
   }
 
