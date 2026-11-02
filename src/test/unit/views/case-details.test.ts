@@ -52,11 +52,12 @@ new Nunjucks(false).enableFor(caseOverviewApp);
 new I18Next().enableFor(caseOverviewApp);
 
 caseOverviewApp.get('/case-overview', (req: AppRequest, res) => {
-  const caseDetails = req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER, { returnObjects: true });
+  const welsh = req.query.lng === 'cy';
+  const caseDetails = welsh ? cyCaseDetails : enCaseDetails;
   res.render(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER, {
     ...req.t(TranslationKeys.COMMON, { returnObjects: true }),
     ...req.t(TranslationKeys.CASE_DETAILS_STATUS, { returnObjects: true }),
-    ...caseDetails,
+    ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER, { returnObjects: true }),
     ...req.t(TranslationKeys.SIDEBAR_CONTACT_US, { returnObjects: true }),
     PageUrls,
     hideContactUs: true,
@@ -77,7 +78,7 @@ caseOverviewApp.get('/case-overview', (req: AppRequest, res) => {
         ],
       },
     ],
-    languageParam: req.query.lng === 'cy' ? '?lng=cy' : '?lng=en',
+    languageParam: welsh ? '?lng=cy' : '?lng=en',
     respondentRepresented: false,
   });
 });
