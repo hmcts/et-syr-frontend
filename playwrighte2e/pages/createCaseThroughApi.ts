@@ -176,12 +176,6 @@ export default class CreateCaseThroughApi extends BasePage {
       throw new Error(`Unsupported case type: ${caseType}`);
     }
     dataPayload = JSON.parse(JSON.stringify(sourcePayload));
-    // feeGroupReference must be 12 or 16 digits. Set it on create so ET3 self-assignment
-    // does not depend on the callback copying the CCD id into this field.
-    const submissionReference = `${Date.now()}${Math.floor(Math.random() * 1000)
-      .toString()
-      .padStart(3, '0')}`;
-    dataPayload.feeGroupReference = submissionReference;
 
     //start case creation
     const createCasetemp = {
@@ -220,7 +214,8 @@ export default class CreateCaseThroughApi extends BasePage {
         }
         return {
           caseId: String(caseId),
-          submissionReference: String(caseData.feeGroupReference || submissionReference),
+          // Self-assignment looks the reference up on reference.keyword, which is the CCD case id.
+          submissionReference: String(caseId),
           ethosCaseReference: caseData.ethosCaseReference ? String(caseData.ethosCaseReference) : '',
         };
       })
