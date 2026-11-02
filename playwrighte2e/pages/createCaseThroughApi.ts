@@ -336,13 +336,8 @@ export default class CreateCaseThroughApi extends BasePage {
     };
 
     console.log('... executing et1Vetting event ...');
-    axios
-      .request(config)
-      .then(response => {
-        console.log('et1 vetting completed successfully...' + JSON.stringify(response.data));
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    const vettingResponse = await axios.request(config);
+    console.log('et1 vetting completed successfully...' + JSON.stringify(vettingResponse.data));
+    return vettingResponse.data;
   }
 }
