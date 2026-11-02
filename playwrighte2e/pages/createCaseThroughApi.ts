@@ -29,11 +29,16 @@ export default class CreateCaseThroughApi extends BasePage {
     //Getting the User Id based on the Authentication Token that is passed for this User.
     const userId = await this.getUserDetails(authToken);
     const token = await this.createACaseGetRequest(authToken, serviceToken, userId, location);
-    const case_id = await this.createACasePostRequest(caseType, authToken, serviceToken, userId, token, location);
-    console.log('case Id is:' + case_id);
-    const response = await this.performCaseVettingEventGetRequest(authToken, serviceToken, case_id);
-    await this.performCaseVettingEventPostRequest(authToken, serviceToken, case_id, response);
-    return case_id;
+    const createdCase = await this.createACasePostRequest(caseType, authToken, serviceToken, userId, token, location);
+    if (!createdCase?.caseId) {
+      throw new Error('Creating the case did not return a case id');
+    }
+    console.log(
+      `case Id is: ${createdCase.caseId}, submission reference: ${createdCase.submissionReference}, ethos case reference: ${createdCase.ethosCaseReference}`
+    );
+    const response = await this.performCaseVettingEventGetRequest(authToken, serviceToken, createdCase.caseId);
+    await this.performCaseVettingEventPostRequest(authToken, serviceToken, createdCase.caseId, response);
+    return createdCase;
   }
 
   async processCuiCaseToAcceptedState() {
@@ -166,7 +171,17 @@ export default class CreateCaseThroughApi extends BasePage {
       Scotland: scotCasePayload,
     };
 
-    dataPayload = payloadMap[caseType] || new Error('Unsupported case type');
+    const sourcePayload = payloadMap[caseType];
+    if (!sourcePayload) {
+      throw new Error(`Unsupported case type: ${caseType}`);
+    }
+    dataPayload = JSON.parse(JSON.stringify(sourcePayload));
+    // feeGroupReference must be 12 or 16 digits. Set it on create so ET3 self-assignment
+    // does not depend on the callback copying the CCD id into this field.
+    const submissionReference = `${Date.now()}${Math.floor(Math.random() * 1000)
+      .toString()
+      .padStart(3, '0')}`;
+    dataPayload.feeGroupReference = submissionReference;
 
     //start case creation
     const createCasetemp = {
@@ -194,15 +209,24 @@ export default class CreateCaseThroughApi extends BasePage {
       data: createCaseBody,
     };
 
-    let case_id;
     return await axios
       .request(config)
       .then(response => {
         console.log(JSON.stringify(response.data));
-        return (case_id = response.data.id);
+        const caseData = response.data?.case_data ?? {};
+        const caseId = response.data?.id;
+        if (!caseId) {
+          throw new Error('CCD create case response did not include an id');
+        }
+        return {
+          caseId: String(caseId),
+          submissionReference: String(caseData.feeGroupReference || submissionReference),
+          ethosCaseReference: caseData.ethosCaseReference ? String(caseData.ethosCaseReference) : '',
+        };
       })
       .catch(error => {
-        console.log(error);
+        console.log(error?.response?.data ?? error);
+        throw error;
       });
   }
 
@@ -336,7 +360,7 @@ export default class CreateCaseThroughApi extends BasePage {
     };
 
     console.log('... executing et1Vetting event ...');
-    axios
+    return axios
       .request(config)
       .then(response => {
         console.log('et1 vetting completed successfully...' + JSON.stringify(response.data));
