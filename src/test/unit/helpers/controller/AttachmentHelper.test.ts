@@ -80,6 +80,7 @@ describe('Attachment Helper', () => {
           sendNotificationCollection: [
             {
               value: {
+                sendNotificationNotify: 'Both parties',
                 sendNotificationUploadDocument: [
                   {
                     value: {
@@ -95,6 +96,7 @@ describe('Attachment Helper', () => {
                   {
                     id: '1',
                     value: {
+                      respondNotificationPartyToNotify: 'Both parties',
                       respondNotificationUploadDocument: [
                         {
                           value: {

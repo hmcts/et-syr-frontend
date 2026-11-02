@@ -13,7 +13,7 @@ import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { isClearSelection } from '../helpers/RouterHelpers';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import ET3Util from '../utils/ET3Util';
-import { isContentCharsOrLessAndNotEmpty, isFieldFilledIn } from '../validators/validator';
+import { isContentCharsOrLessAndNotEmpty } from '../validators/validator';
 
 export default class HearingPanelPreferenceController {
   private readonly form: Form;
@@ -25,7 +25,6 @@ export default class HearingPanelPreferenceController {
         type: 'radios',
         label: (l: AnyRecord): string => l.legend,
         labelHidden: false,
-        validator: isFieldFilledIn,
         values: [
           {
             name: 'respondentHearingPanelPreference',

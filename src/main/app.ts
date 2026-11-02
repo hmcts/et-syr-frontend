@@ -51,8 +51,24 @@ const faviconPath = path.join(__dirname, 'public/assets/images/favicon.ico');
 if (fs.existsSync(faviconPath)) {
   app.use(favicon(faviconPath));
 }
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+
+// Mitigate CVE-2026-111497 (Node2Shell): Reject Brotli-compressed request bodies before body-parser
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const encoding = req.headers['content-encoding'];
+  if (
+    encoding &&
+    (Array.isArray(encoding)
+      ? encoding.some(e => e.toLowerCase().includes('br'))
+      : encoding.toLowerCase().includes('br'))
+  ) {
+    res.status(415).send('Unsupported Media Type');
+    return;
+  }
+  next();
+});
+
+app.use(bodyParser.json({ inflate: false }));
+app.use(bodyParser.urlencoded({ extended: false, inflate: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1y', immutable: true }));
 app.use((req, res, next) => {

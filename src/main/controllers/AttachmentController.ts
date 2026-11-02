@@ -18,7 +18,9 @@ export default class AttachmentController {
     }
 
     if (!isDocIdValid(docId, req)) {
-      logger.warn('bad request parameter - empty or invalid document url');
+      logger.warn(
+        `bad request parameter - empty or invalid document url. caseId: ${req.session?.userCase?.id}, docId: ${docId}`
+      );
       return res.redirect(ErrorPages.NOT_FOUND);
     }
 

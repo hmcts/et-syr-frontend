@@ -43,6 +43,7 @@ export const getET3CaseDetailsLinkNames = async (
     req.session.userCase,
     statuses[ET3CaseDetailsLinkNames.RespondentResponse]
   );
+  statuses[ET3CaseDetailsLinkNames.HearingDetails] = getHearingDetailsLinkStatus(req.session.userCase);
   statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getClaimantAppsLinkStatus(req);
   statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = getOtherRespondentAppsLinkStatus(req);
@@ -67,6 +68,10 @@ const getRespondentResponseLinkStatus = (userCase: CaseWithId, linkName: LinkSta
     return LinkStatus.ACCEPTED;
   }
   return userCase?.responseReceived === YesOrNo.YES ? LinkStatus.SUBMITTED : linkName;
+};
+
+const getHearingDetailsLinkStatus = (userCase: CaseWithId): LinkStatus => {
+  return userCase.hearingCollection?.length > 0 ? LinkStatus.READY_TO_VIEW : LinkStatus.NOT_YET_AVAILABLE;
 };
 
 const getYourRequestsAndApplications = (req: AppRequest): LinkStatus => {
