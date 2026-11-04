@@ -2,9 +2,10 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { CaseWithId, RespondentRepresented } from '../definitions/case';
+import { RespondentRepresented } from '../definitions/case';
 import { PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
+import { setUserCaseIfUndefined } from '../helpers/CaseHelpers';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
 
@@ -45,10 +46,6 @@ export default class LipOrRepController {
   public post = (req: AppRequest, res: Response): void => {
     req.session.errors = [];
 
-    if (!req.session.userCase) {
-      req.session.userCase = {} as CaseWithId;
-    }
-
     const redirectUrl = getRedirectUrl(req);
 
     if (!redirectUrl) {
@@ -81,6 +78,7 @@ const getRedirectUrl = (req: AppRequest): string => {
     respondentLipOrRep === RespondentRepresented.MYSELF ||
     respondentLipOrRep === RespondentRepresented.SOMEONE_ELSE
   ) {
+    setUserCaseIfUndefined(req);
     req.session.userCase.respondentLipOrRep = respondentLipOrRep;
     return PageUrls.CASE_NUMBER_CHECK + getLanguageParam(req.url);
   }
