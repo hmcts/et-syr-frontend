@@ -7,7 +7,6 @@ import { PageUrls, TranslationKeys, ValidationErrors } from '../definitions/cons
 import { FormContent, FormFields } from '../definitions/form';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
-import { isFieldFilledIn } from '../validators/validator';
 
 export default class LipOrRepController {
   private readonly form: Form;
@@ -32,7 +31,6 @@ export default class LipOrRepController {
             value: RespondentRepresented.LEGAL_REP,
           },
         ],
-        validator: isFieldFilledIn,
       },
     },
     submit: {
@@ -79,6 +77,7 @@ const getRedirectUrl = (req: AppRequest): string => {
     respondentLipOrRep === RespondentRepresented.MYSELF ||
     respondentLipOrRep === RespondentRepresented.SOMEONE_ELSE
   ) {
+    req.session.userCase.respondentLipOrRep = respondentLipOrRep;
     return PageUrls.CASE_NUMBER_CHECK + getLanguageParam(req.url);
   }
 
