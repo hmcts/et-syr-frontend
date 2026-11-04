@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import { Form } from '../components/form';
 import { AppRequest } from '../definitions/appRequest';
-import { RespondentRepresented } from '../definitions/case';
+import { CaseWithId, RespondentRepresented } from '../definitions/case';
 import { PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { assignFormData, getPageContent } from '../helpers/FormHelper';
@@ -44,6 +44,10 @@ export default class LipOrRepController {
 
   public post = (req: AppRequest, res: Response): void => {
     req.session.errors = [];
+
+    if (!req.session.userCase) {
+      req.session.userCase = {} as CaseWithId;
+    }
 
     const redirectUrl = getRedirectUrl(req);
 
