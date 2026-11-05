@@ -66,7 +66,7 @@ export default class CaseListPage extends BasePage {
     console.log('The value of the Case Number ' + caseNumber);
     await caseLink.click();
 
-    await expect(this.page.getByRole('tab', { name: 'Case Details' }).locator('div')).toContainText('Case Details');
+    await expect(this.page.getByRole('tab', { name: 'Case Details' })).toBeVisible();
     return caseNumber;
   }
 

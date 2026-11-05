@@ -40,22 +40,18 @@
         <li>{{ howToCompleteFormListTxt3 }}</li>
       </ul>
 
-      <h2 class="govuk-heading-m">{{ dataProtectionHeading }}</h2>
+      <div class="govuk-button-group">
+        {{ govukButton({
+          text: startNewResponse,
+          href: redirectUrl
+        }) }}
 
-      <ul class="govuk-list">
-        <li>{{ dataProtectionTxt1 }}</li>
-      </ul>
-
-      {{ govukButton({
-        text: startNow,
-        href: redirectUrl,
-        isStartButton: true
-      }) }}
-
-      <ul class="govuk-list">
-        <li><b>{{ claimStartedTxt }}</b></li>
-        <li><a href="{{ PageUrls.RETURN_TO_EXISTING_RESPONSE + languageParam }}" class="govuk-link">{{ returnClaimTxt }}</a></li>
-      </ul>
+        {{ govukButton({
+          text: returnToDraftOrSubmittedResponse,
+          classes: "govuk-button--secondary",
+          href: PageUrls.RETURN_TO_EXISTING_RESPONSE + languageParam
+        }) }}
+      </div>
 
       <h2 class="govuk-heading-m">{{ contactUsHelpTitle }}</h2>
       <div class="govuk-body">
