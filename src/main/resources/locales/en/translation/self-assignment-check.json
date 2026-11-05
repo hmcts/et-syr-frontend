@@ -1,21 +1,13 @@
 {
   "title": "Check and submit",
-  "pageTitle": "Check and submit",
-  "respondentSelfAssignmentInfo": "You must enter the claimant and respondent details exactly as they're written on the case, including any mistakes. For example, if the client's last name is Smyth but it has been spelled 'Smith', you should enter Smith.",
+  "caseReferenceId": "Submission Reference",
   "respondentName": "Respondent's Name",
   "claimantFirstName": "Claimant's First Name",
   "claimantLastName": "Claimant's Last Name",
   "confirmation": {
-    "title": "I confirm all these details are accurate and match what is written on the case.",
-    "checkbox": "I confirm all these details are accurate and match what is written on the case.",
-    "hint": ""
+    "checkbox": "I confirm all these details are accurate and match what is written on the case."
   },
-  "request": "Request",
   "submit": "Submit",
-  "caseReferenceId": "Submission Reference",
-  "caseAssignment": "Case assignment",
-  "tick": "You should tick to 'sign' when:",
-  "satisfied": "You're satisfied that all these details are accurate and match what is written on the case",
   "errors": {
     "selfAssignmentCheck": {
       "required": "Please confirm case assignment."
