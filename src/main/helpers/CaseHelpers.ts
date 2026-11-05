@@ -64,10 +64,14 @@ export const handleUpdateDraftCase = async (req: AppRequest, logger: Logger): Pr
   }
 };
 
-export const setUserCase = (req: AppRequest, formData: Partial<CaseWithId>, fieldsToReset: string[]): void => {
+export function setUserCaseIfUndefined(req: AppRequest): void {
   if (!req.session.userCase) {
     req.session.userCase = {} as CaseWithId;
   }
+}
+
+export const setUserCase = (req: AppRequest, formData: Partial<CaseWithId>, fieldsToReset: string[]): void => {
+  setUserCaseIfUndefined(req);
   resetFields(formData, fieldsToReset);
   trimFormData(formData);
   Object.assign(req.session.userCase, formData);
