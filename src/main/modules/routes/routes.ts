@@ -64,6 +64,7 @@ import HearingPreferencesController from '../../controllers/HearingPreferencesCo
 import HoldingPageController from '../../controllers/HoldingPageController';
 import HomeController from '../../controllers/HomeController';
 import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
+import LipOrRepController from '../../controllers/LipOrRepController';
 import MakingResponseAsLegalRepController from '../../controllers/MakingResponseAsLegalRepController';
 import ManifestController from '../../controllers/ManifestController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
@@ -378,6 +379,8 @@ export class Routes {
     app.get(PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT, new RespondToNotificationStoredSubmitController().get);
     app.post(PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT, new RespondToNotificationStoredSubmitController().post);
     // others
+    app.get(PageUrls.LIP_OR_REPRESENTATIVE, new LipOrRepController().get);
+    app.post(PageUrls.LIP_OR_REPRESENTATIVE, new LipOrRepController().post);
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
