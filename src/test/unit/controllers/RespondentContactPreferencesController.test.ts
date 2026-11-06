@@ -1,6 +1,6 @@
 import RespondentContactPreferencesController from '../../../main/controllers/RespondentContactPreferencesController';
 import { EmailOrPost, EnglishOrWelsh } from '../../../main/definitions/case';
-import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { PageUrls, TranslationKeys, ValidationErrors } from '../../../main/definitions/constants';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/respondent-contact-preferences.json';
 import ET3Util from '../../../main/utils/ET3Util';
@@ -44,6 +44,26 @@ describe('Respondent Contact Preferences Controller', () => {
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CHECK_YOUR_ANSWERS_CONTACT_DETAILS);
+    });
+
+    it('should keep the post answer when the reason is missing', async () => {
+      request = mockRequest({
+        body: {
+          responseRespondentContactPreference: EmailOrPost.POST,
+          et3ResponseContactReason: '',
+        },
+      });
+      request.url = PageUrls.RESPONDENT_CONTACT_PREFERENCES;
+      await controller.post(request, response);
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTACT_PREFERENCES);
+      expect(request.session.errors).toEqual([
+        {
+          propertyName: 'et3ResponseContactReason',
+          errorType: ValidationErrors.REQUIRED,
+        },
+      ]);
+      expect(request.session.userCase.responseRespondentContactPreference).toBe(EmailOrPost.POST);
+      expect(request.session.userCase.et3ResponseContactReason).toBe('');
     });
   });
 });
