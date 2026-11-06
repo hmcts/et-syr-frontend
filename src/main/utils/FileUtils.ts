@@ -1,4 +1,5 @@
 import { AxiosResponse } from 'axios';
+import { escape } from 'lodash';
 
 import { DocumentUploadResponse } from '../definitions/api/documentApiResponse';
 import { UploadedFile } from '../definitions/api/uploadedFile';
@@ -25,6 +26,13 @@ import ObjectUtils from './ObjectUtils';
 import StringUtils from './StringUtils';
 
 const logger = getLogger('FileUtils');
+
+function hiddenFileName(fileName: string | undefined): string {
+  if (!fileName || StringUtils.isBlank(fileName)) {
+    return '';
+  }
+  return '<span class="govuk-visually-hidden"> ' + escape(fileName) + '</span>';
+}
 
 export default class FileUtils {
   public static checkFile(req: AppRequest, formFieldName: string): boolean {
@@ -143,8 +151,9 @@ export default class FileUtils {
       ? 'undefined'
       : req.session.userCase.et3ResponseContestClaimDetails;
     for (const documentTypeItem of req.session.userCase.et3ResponseContestClaimDocument) {
+      const fileName = documentTypeItem.value?.uploadedDocument?.document_filename;
       govUKTableRows.push([
-        { text: documentTypeItem.value?.uploadedDocument?.document_filename },
+        { text: fileName },
         {
           html:
             '<a href="remove-file' +
@@ -155,6 +164,7 @@ export default class FileUtils {
             languageParam +
             '">' +
             textRemove +
+            hiddenFileName(fileName) +
             '</a>',
         },
       ]);
