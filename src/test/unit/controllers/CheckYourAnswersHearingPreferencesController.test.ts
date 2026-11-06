@@ -52,7 +52,7 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
   });
 
   describe('POST method', () => {
-    it('should go to the respondent response task list on valid submission when Yes is selected', async () => {
+    it('should return to the task list on valid submission when Yes is selected', async () => {
       (conditionalRedirect as jest.Mock).mockReturnValue(true);
 
       updateET3ResponseWithET3FormMock.mockImplementation(
@@ -79,7 +79,7 @@ describe('CheckYourAnswersHearingPreferencesController', () => {
       );
     });
 
-    it('should go to the respondent response task list on valid submission when No is selected', async () => {
+    it('should return to the task list on valid submission when No is selected', async () => {
       (conditionalRedirect as jest.Mock).mockReturnValue(false);
 
       updateET3ResponseWithET3FormMock.mockImplementation(

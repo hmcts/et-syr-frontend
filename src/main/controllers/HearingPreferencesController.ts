@@ -9,6 +9,7 @@ import { ET3HubLinkNames, LinkStatus } from '../definitions/links';
 import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { getCuiYourSupportFeature } from '../modules/featureFlag/CuiYourSupportFeature';
 import { getFlagValue } from '../modules/featureFlag/launchDarkly';
 import ET3Util from '../utils/ET3Util';
 
@@ -46,8 +47,11 @@ export default class HearingPreferencesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    const nextPage = (await getCuiYourSupportFeature().isEnabled(req.session.userCase?.caseTypeId))
+      ? PageUrls.RESPONDENT_EMPLOYEES
+      : PageUrls.REASONABLE_ADJUSTMENTS;
     const eraOctober2026Enabled = await getFlagValue(FEATURE_FLAGS.ERA_OCTOBER_2026, null);
-    const redirectUrl = eraOctober2026Enabled ? PageUrls.HEARING_PANEL_PREFERENCE : PageUrls.REASONABLE_ADJUSTMENTS;
+    const redirectUrl = eraOctober2026Enabled ? PageUrls.HEARING_PANEL_PREFERENCE : nextPage;
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
