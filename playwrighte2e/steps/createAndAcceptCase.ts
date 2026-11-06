@@ -20,12 +20,14 @@ export default class createAndAcceptCase extends BaseStep {
   ): Promise<{ subRef: string; caseNumber: any }> {
     submissionRef = await this.createCaseThroughApi.processCaseToAcceptedState(region, caseType);
     subRef = submissionRef.toString();
+    if (!subRef || subRef === 'undefined') {
+      throw new Error('Creating the case did not return a case id');
+    }
 
     await page.goto(params.TestUrlForManageCaseAAT);
     await this.loginPage.processLogin(params.TestEnvETCaseWorkerUser, params.TestEnvETPassword);
-    const searchReference = region === 'England' ? 'Eng/Wales - Singles' : `${region} - Singles`;
-    await this.caseListPage.searchCaseApplicationWithSubmissionReference(searchReference, subRef);
-    caseNumber = await this.caseListPage.processCaseFromCaseList();
+    await page.waitForURL(/manage-case\./);
+    caseNumber = await this.caseListPage.openCaseById(caseType, subRef);
 
     // Accept case
     await Promise.all([

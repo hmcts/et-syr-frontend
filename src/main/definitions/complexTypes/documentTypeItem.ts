@@ -12,6 +12,9 @@ export interface DocumentType {
   uploadedDocument?: Document;
   typeOfDocument?: string;
   creationDate?: string;
+  dateOfCorrespondence?: string;
+  responseClaimDocuments?: string;
+  documentType?: string;
 }
 
 export interface ApiDocumentTypeItem {

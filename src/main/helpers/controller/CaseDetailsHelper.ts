@@ -20,6 +20,7 @@ import { getYourStoredApplicationList } from '../StoredApplicationHelper';
 
 import { isClaimantApplicationShare } from './ClaimantsApplicationsHelper';
 import { isOtherRespApplicationShare } from './OtherRespondentApplicationsHelper';
+import { getOtherRespondentEt3LinkStatus } from './OtherRespondentsEt3Helper';
 import { isYourApplication } from './YourRequestAndApplicationsHelper';
 
 const priorityOrder = [
@@ -47,6 +48,10 @@ export const getET3CaseDetailsLinkNames = async (
   statuses[ET3CaseDetailsLinkNames.YourRequestsAndApplications] = getYourRequestsAndApplications(req);
   statuses[ET3CaseDetailsLinkNames.ClaimantApplications] = getClaimantAppsLinkStatus(req);
   statuses[ET3CaseDetailsLinkNames.OtherRespondentApplications] = getOtherRespondentAppsLinkStatus(req);
+  statuses[ET3CaseDetailsLinkNames.OtherRespondentEt3] = getOtherRespondentEt3LinkStatus(
+    req,
+    statuses[ET3CaseDetailsLinkNames.OtherRespondentEt3]
+  );
   statuses[ET3CaseDetailsLinkNames.TribunalNotification] = getTribunalNotificationLinkStatus(req);
   return statuses;
 };
@@ -155,16 +160,26 @@ function getSection(
   translations: AnyRecord,
   index: number,
   et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses,
-  eT3CaseDetailsLinksUrlMap: Map<string, string>
+  eT3CaseDetailsLinksUrlMap: Map<string, string>,
+  req: AppRequest
 ): Section {
   return {
     title: translations[`section${index + 1}`],
-    links: SectionIndexToEt3CaseDetailsLinkNames[index].map(linkName => {
-      const status = et3CaseDetailsLinksStatuses[linkName];
-      return getSectionLink(translations, linkName, status, eT3CaseDetailsLinksUrlMap);
-    }),
+    links: SectionIndexToEt3CaseDetailsLinkNames[index]
+      .filter(linkName => isCaseDetailsLinkVisible(linkName, req))
+      .map(linkName => {
+        const status = et3CaseDetailsLinksStatuses[linkName];
+        return getSectionLink(translations, linkName, status, eT3CaseDetailsLinksUrlMap);
+      }),
   };
 }
+
+const isCaseDetailsLinkVisible = (linkName: ET3CaseDetailsLinkNames, req: AppRequest): boolean => {
+  if (linkName !== ET3CaseDetailsLinkNames.OtherRespondentEt3) {
+    return true;
+  }
+  return (req.session?.userCase?.respondents?.length ?? 0) > 1;
+};
 
 export function getSections(
   et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses,
@@ -179,6 +194,6 @@ export function getSections(
   };
   const eT3CaseDetailsLinksUrlMap = getET3CaseDetailsLinksUrlMap(languageParam, selectedRespondent);
   return Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
-    return getSection(translations, index, et3CaseDetailsLinksStatuses, eT3CaseDetailsLinksUrlMap);
+    return getSection(translations, index, et3CaseDetailsLinksStatuses, eT3CaseDetailsLinksUrlMap, req);
   });
 }
