@@ -7,6 +7,7 @@ import { CaseWithId } from '../definitions/case';
 import { FormFieldNames, PageUrls, TranslationKeys, ValidationErrors } from '../definitions/constants';
 import { FormContent, FormFields } from '../definitions/form';
 import { AnyRecord } from '../definitions/util-types';
+import { setUserCaseIfUndefined } from '../helpers/CaseHelpers';
 import { assignFormData } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { getLegacySignUpUrl } from '../helpers/LegacyUrlHelper';
@@ -41,9 +42,7 @@ export default class CaseNumberCheckController {
   public post = async (req: AppRequest, res: Response): Promise<void> => {
     const languageParam = getLanguageParam(req.url);
     const formData = this.form.getParsedBody<CaseWithId>(req.body, this.form.getFormFields());
-    if (!req.session.userCase) {
-      req.session.userCase = { createdDate: '', id: '', lastModified: '', state: undefined };
-    }
+    setUserCaseIfUndefined(req);
     req.session.userCase.ethosCaseReference = formData.ethosCaseReference;
     const errors = this.form.getValidatorErrors(formData);
     if (errors.length > 0) {
