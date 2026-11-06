@@ -18,6 +18,9 @@ export default class IsClaimantEmploymentWithRespondentContinuingController {
     fields: {
       et3ResponseContinuingEmployment: {
         type: 'radios',
+        label: (l: AnyRecord): string => l.title,
+        labelSize: 'l',
+        isPageHeading: true,
         hint: (l: AnyRecord): string => l.hint,
         values: [
           {
