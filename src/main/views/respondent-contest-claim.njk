@@ -2,6 +2,8 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
+{% block pageTitle %}{{ h1 + userCase.respondentName + h1Extra }} - {{ serviceName }} - {{ govUk }}{% endblock %}
+
 {% block beforeContent %}
   {{ super() }}
   {% include "back-link.njk"%}

@@ -3,6 +3,8 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
+{% block pageTitle %}{{ title }} - {{ documentTitleSuffix }} - {{ serviceName }} - {{ govUk }}{% endblock %}
+
 {% block beforeContent %}
   {{ super() }}
   {% include "back-link.njk" %}
