@@ -147,6 +147,8 @@ describe('Case Details Helper', () => {
       const result = await getET3CaseDetailsLinkNames(statuses, req);
 
       expect(result[ET3CaseDetailsLinkNames.YourSupport]).toBe(LinkStatus.NOT_YET_AVAILABLE);
+    });
+
     it('returns NOT_YET_AVAILABLE when no hearing exist', async () => {
       req.session.userCase.hearingCollection = [];
       const statuses = {};
