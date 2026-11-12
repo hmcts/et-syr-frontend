@@ -13,7 +13,7 @@
   },
   "errors": {
     "et3ResponseClaimantCorrectHours": {
-      "notANumber": "Rhowch yr oriau gwaith wythnosol cyfartalog gan ddefnyddio rhifau yn unig, fel 37.5",
+      "notANumber": "Rhaid i'r oriau gwaith wythnosol cyfartalog gynnwys rhifau yn unig. Er enghraifft, 37.5",
       "exceeded": "Rhaid i'r oriau gwaith wythnosol cyfartalog a gofnodwyd fod yn 168 awr neu lai"
     },
     "hiddenErrorField": {

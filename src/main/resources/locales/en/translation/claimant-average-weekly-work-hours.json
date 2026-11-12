@@ -13,7 +13,7 @@
   },
   "errors": {
     "et3ResponseClaimantCorrectHours": {
-      "notANumber": "Enter the average weekly work hours using numbers only, like 37.5",
+      "notANumber": "The average weekly work hours must contain numbers only. For example, 37.5",
       "exceeded": "The average weekly work hours entered must be 168 hours or less"
     },
     "hiddenErrorField": {
