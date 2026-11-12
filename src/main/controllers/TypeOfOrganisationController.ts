@@ -22,6 +22,9 @@ export default class TypeOfOrganisationController {
         classes: 'govuk-radios',
         id: 'et3ResponseRespondentEmployerType',
         type: 'radios',
+        label: (l: AnyRecord): string => l.h1,
+        labelSize: 'l',
+        isPageHeading: true,
         labelHidden: false,
         values: [
           {
