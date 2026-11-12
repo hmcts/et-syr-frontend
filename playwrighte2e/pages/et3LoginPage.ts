@@ -123,19 +123,35 @@ export default class Et3LoginPage extends BasePage {
   ): Promise<void> {
     const ethosCaseReference = this.normalizeCaseNumber(caseNumber);
     await this.clickContinue();
-    const heading = this.page.locator('h1');
-    await heading.waitFor({ state: 'visible' });
+    await this.waitForChecklistToAdvance();
 
-    const pageHeading = (await heading.textContent())?.trim() ?? '';
+    const pageHeading = await this.headingText();
 
     if (pageHeading.includes('ET3 Responses')) {
       await this.webActions.clickElementByCss(this.elements.respondToNewClaim);
       await this.caseNumberPage(ethosCaseReference);
     } else if (!pageHeading.includes('Case Details')) {
-      await this.webActions.verifyElementContainsText(heading, 'Case Details');
+      await this.webActions.verifyElementContainsText(this.page.locator('h1').first(), 'Case Details');
     }
 
     await this.caseDetailsPage(submissionRef);
+  }
+
+  private async waitForChecklistToAdvance(): Promise<void> {
+    await expect(async () => {
+      if (this.page.url().includes('/checklist')) {
+        await this.clickContinue();
+      }
+
+      const heading = this.page.locator('h1').first();
+      await expect(heading).toBeVisible({ timeout: 20000 });
+      const pageHeading = (await heading.innerText()).trim();
+      const advanced =
+        pageHeading.includes('ET3 Responses') ||
+        pageHeading.includes('Case Details') ||
+        pageHeading.includes('Case Number');
+      expect(advanced, `Heading "${pageHeading}" on ${this.page.url()}`).toBeTruthy();
+    }).toPass({ timeout: 90000, intervals: [2000, 5000] });
   }
 
   async caseNumberPage(caseNumber: string): Promise<void> {
