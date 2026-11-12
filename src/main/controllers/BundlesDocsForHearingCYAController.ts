@@ -26,6 +26,9 @@ export default class BundlesDocsForHearingCYAController {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.BUNDLES_DOCS_FOR_HEARING_CYA as never, { returnObjects: true } as never),
     };
+    const aboutHearingDocuments = req.t(TranslationKeys.ABOUT_HEARING_DOCUMENTS, {
+      returnObjects: true,
+    }) as AnyRecord;
 
     const downloadLink = createDownloadLinkForHearingDoc(userCase?.hearingDocument);
     const foundHearing = userCase?.hearingCollection?.find(hearing => hearing.id === userCase.hearingDocumentsAreFor);
@@ -41,6 +44,7 @@ export default class BundlesDocsForHearingCYAController {
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,
       hideContactUs: true,
+      documentTitleSuffix: aboutHearingDocuments.headingCaption,
       cancelLink: UrlUtils.getCaseDetailsUrlByRequest(req),
       submitLink: InterceptPaths.SUBMIT_BUNDLES_HEARING_DOCS_CYA + languageParam,
       cyaContent: getBundlesCyaContent(
