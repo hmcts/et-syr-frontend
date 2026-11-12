@@ -160,17 +160,23 @@ export const isNameValid: Validator = value => {
   }
 };
 
+// Together these match the CCD 'PhoneUK' field type used for responseRespondentPhone1, otherwise the API
+// rejects the value and the user sees a generic system error instead of a field validation error.
+// Split by area code length (4+3+3, 3+3+4, 2+4+4 digits) to keep each regex simple.
+const UK_PHONE_PATTERNS = [
+  /^(?:\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3}$/,
+  /^(?:\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?\d{4}$/,
+  /^(?:\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}$/,
+];
+const UK_PHONE_EXTENSION_PATTERN = /\s?#\d{3,4}$/;
+
 export const isPhoneNumberValid: Validator = value => {
   if (!value || (value as string).trim().length === 0) {
     return;
   }
 
-  // Must match the CCD 'PhoneUK' field type used for responseRespondentPhone1, otherwise the API
-  // rejects the value and the user sees a generic system error instead of a field validation error.
-  const phonePattern =
-    /^(((\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3})|((\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?\d{4})|((\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}))(\s?#(\d{4}|\d{3}))?$/;
-
-  if (!phonePattern.test((value as string).trim())) {
+  const phoneNumber = (value as string).trim().replace(UK_PHONE_EXTENSION_PATTERN, '');
+  if (!UK_PHONE_PATTERNS.some(pattern => pattern.test(phoneNumber))) {
     return ValidationErrors.INVALID_PHONE_NUMBER;
   }
 };
