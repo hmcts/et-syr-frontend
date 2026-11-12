@@ -23,7 +23,8 @@ export default class RespondentContestClaimController {
         classes: 'govuk-radios',
         id: 'et3ResponseRespondentContestClaim',
         type: 'radios',
-        labelHidden: true,
+        labelSize: 'l',
+        isPageHeading: true,
         values: [
           {
             name: 'et3ResponseRespondentContestClaim',
@@ -71,9 +72,11 @@ export default class RespondentContestClaimController {
     const userCase = req.session.userCase;
     const respondentName = userCase.respondentName;
 
-    // Updating the labels to include both yes1, no1 and respondentName, yes2, no2
+    // Question and option labels include the respondent name.
     const radioButtonFields = this.form.getFormFields();
 
+    radioButtonFields.et3ResponseRespondentContestClaim.label = (l: AnyRecord): string =>
+      `${l.h1}${respondentName ?? ''}${l.h1Extra}`;
     radioButtonFields.et3ResponseRespondentContestClaim.values[0].label = (l: AnyRecord): string =>
       `${l.yes1} ${respondentName} ${l.yes2}`;
     radioButtonFields.et3ResponseRespondentContestClaim.values[1].label = (l: AnyRecord): string =>
