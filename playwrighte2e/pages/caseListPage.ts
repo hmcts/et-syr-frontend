@@ -57,6 +57,13 @@ export default class CaseListPage extends BasePage {
     await this.webActions.verifyElementContainsText(this.page.locator('#search-result'), submissionReference);
   }
 
+  async openCaseById(caseTypeId: string, caseId: string): Promise<void> {
+    await this.webActions.verifyElementToBeVisible(this.page.locator(this.elements.caseListLink));
+    const origin = new URL(this.page.url()).origin;
+    await this.page.goto(`${origin}/case-details/EMPLOYMENT/${caseTypeId}/${caseId}#Case%20Details`);
+    await expect(this.page.getByRole('tab', { name: 'Case Details' })).toBeVisible();
+  }
+
   async processCaseFromCaseList(): Promise<string> {
     const caseLink = this.page.getByLabel(/go to case with Case/i).first();
     const ariaLabel = (await caseLink.getAttribute('aria-label')) ?? '';
@@ -66,7 +73,7 @@ export default class CaseListPage extends BasePage {
     console.log('The value of the Case Number ' + caseNumber);
     await caseLink.click();
 
-    await expect(this.page.getByRole('tab', { name: 'Case Details' }).locator('div')).toContainText('Case Details');
+    await expect(this.page.getByRole('tab', { name: 'Case Details' })).toBeVisible();
     return caseNumber;
   }
 
