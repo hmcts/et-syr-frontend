@@ -77,8 +77,8 @@ export const isValidAvgWeeklyHours: Validator = value => {
     return;
   }
 
-  if (!isValidNumber(valueAsString)) {
-    return ValidationErrors.INVALID_VALUE;
+  if (!isValidNumber(valueAsString.trim())) {
+    return ValidationErrors.NOT_A_NUMBER;
   }
 
   const maxValue = 168;
@@ -165,11 +165,12 @@ export const isPhoneNumberValid: Validator = value => {
     return;
   }
 
-  // regular expression to cover Uk and International number upto 20 chars
-  const phonePattern = /^\+?[0-9\s\-().]{7,20}$/;
+  // Must match the CCD 'PhoneUK' field type used for responseRespondentPhone1, otherwise the API
+  // rejects the value and the user sees a generic system error instead of a field validation error.
+  const phonePattern =
+    /^(((\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3})|((\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?\d{4})|((\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}))(\s?#(\d{4}|\d{3}))?$/;
 
-  // Test the value against the regular expression
-  if (!phonePattern.test(value as string)) {
+  if (!phonePattern.test((value as string).trim())) {
     return ValidationErrors.INVALID_PHONE_NUMBER;
   }
 };

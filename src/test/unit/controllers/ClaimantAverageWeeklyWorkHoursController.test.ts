@@ -82,7 +82,7 @@ describe('Claimant average weekly work hours Controller', () => {
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS);
-      const errors = [{ propertyName: 'et3ResponseClaimantCorrectHours', errorType: 'invalid' }];
+      const errors = [{ propertyName: 'et3ResponseClaimantCorrectHours', errorType: 'notANumber' }];
       expect(request.session.errors).toEqual(errors);
     });
 

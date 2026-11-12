@@ -13,8 +13,8 @@
   },
   "errors": {
     "et3ResponseClaimantCorrectHours": {
-      "invalid": "The average weekly work hours’ entered must be less than 168 hours",
-      "exceeded": "The average weekly work hours’ entered must be less than 168 hours"
+      "notANumber": "Enter the average weekly work hours using numbers only, like 37.5",
+      "exceeded": "The average weekly work hours entered must be 168 hours or less"
     },
     "hiddenErrorField": {
       "sessionUserCase": "User case not found in session",
