@@ -141,7 +141,8 @@ describe('Unique document titles', () => {
       const document = new DOMParser().parseFromString(response.text, 'text/html');
       expect(document.title).to.equal(page.title, page.url);
       if (page.heading) {
-        expect(document.getElementsByClassName('govuk-heading-l')[0].textContent.trim()).to.equal(page.heading);
+        const heading = document.querySelector('h1.govuk-heading-l, h1.govuk-fieldset__heading');
+        expect(heading?.textContent.trim(), page.url).to.equal(page.heading);
       }
       titles.push(document.title);
     }
