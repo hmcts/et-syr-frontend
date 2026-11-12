@@ -1,0 +1,81 @@
+{% set htmlForAcknowledgementAlert %}
+  {% if showAcknowledgementAlert or showSavedResponseAlert %}
+    <h3 class="govuk-notification-banner__heading">
+      {% if isGroupClaim %}
+        {{ notificationBanner.acknowledgement.groupClaims.header }}
+      {% else %}
+        {{ notificationBanner.acknowledgement.header }}
+      {% endif %}
+
+      {% if selectedRespondent.respondentName !== null
+              and selectedRespondent.respondentName !== ""
+              and selectedRespondent.respondentName !== undefined %}
+        {{ selectedRespondent.respondentName }}
+      {% elif (selectedRespondent.respondentOrganisation !== null
+                and selectedRespondent.respondentOrganisation !== ""
+                and selectedRespondent.respondentOrganisation !== undefined) %}
+        {{ selectedRespondent.respondentOrganisation }}
+      {% else %}
+        {{ selectedRespondent.respondentFirstName + " " + selectedRespondent.respondentLastName }}
+      {% endif %}
+    </h3>
+
+    {% if isGroupClaim %}
+      <p class="govuk-body">{{ notificationBanner.acknowledgement.groupClaims.p1 }}</p>
+
+      <p class="govuk-body">
+        {{ notificationBanner.acknowledgement.groupClaims.viewET1Form }}<br>
+        <a class="govuk-link" href="{{ et1FormUrl }}"><b>{{ notificationBanner.acknowledgement.groupClaims.link }}</b></a><br>
+      </p>
+    {% endif %}
+
+    <p class="govuk-body">
+      {% if isGroupClaim %}
+        <span class="govuk-body govuk-!-font-weight-bold">{{ notificationBanner.acknowledgement.whatHappensNext }}</span><br>
+      {% endif %}
+      {{ notificationBanner.acknowledgement.p1 + respondentResponseDeadline }}
+      {% if isGroupClaim %}
+        <br><a class="govuk-link" href="{{ respondToClaimUrl }}"><b>{{ notificationBanner.acknowledgement.link2 }}</b></a>
+      {% endif %}
+    </p>
+
+    {% if showAcknowledgementAlert and not isGroupClaim %}
+      <p class="govuk-body">
+        <a class="govuk-link" href="{{ et1FormUrl }}"><b>{{ notificationBanner.acknowledgement.link }}</b></a><br>
+        <a class="govuk-link" href="{{ respondToClaimUrl }}"><b>{{ notificationBanner.acknowledgement.link2 }}</b></a>
+      </p>
+    {% elif showSavedResponseAlert and not showAcknowledgementAlert %}
+      <p class="govuk-body">
+        <a class="govuk-link" href="{{ respondToClaimUrl }}"><b>{{ notificationBanner.acknowledgement.returnToResponse }}</b></a>
+      </p>
+    {% endif %}
+  {% endif %}
+
+  {% if showViewResponseAlert %}
+    {% if not isGroupClaim %}
+      <h3 class="govuk-notification-banner__heading">
+        {{ notificationBanner.viewResponse.header + userCase.respondents[0].respondentName }}
+      </h3>
+      <p class="govuk-body">
+        {{ notificationBanner.viewResponse.p1 }}
+      </p>
+    {% else %}
+      <h3 class="govuk-notification-banner__heading">
+        {{ notificationBanner.viewResponse.groupClaim.header + userCase.respondents[0].respondentName }}
+      </h3>
+      <p class="govuk-body">
+        {{ notificationBanner.viewResponse.groupClaim.p1 }}
+      </p>
+    {% endif %}
+    <p class="govuk-body">
+      <a class="govuk-link" href="{{ et3Response }}"><b>{{ notificationBanner.viewResponse.link }}</b></a><br>
+    </p>
+  {% endif %}
+{% endset %}
+
+{% if showAcknowledgementAlert or showViewResponseAlert or showSavedResponseAlert %}
+  {{ govukNotificationBanner({
+    html: htmlForAcknowledgementAlert,
+    titleText: important
+  }) }}
+{% endif %}

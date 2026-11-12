@@ -1,0 +1,26 @@
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+{% include "components/case-details/notifications-respondent-represented.njk" %}
+
+{% if not respondentRepresented %}
+  {% include "components/case-details/notification-banner/acknowledgement-and-view-response.njk" %}
+  {% include "components/case-details/notification-banner/request-notifications.njk" %}
+  {% include "components/case-details/notification-banner/submit-notifications.njk" %}
+{% endif %}
+
+{% if selectedRespondent.representativeRemoved and selectedRespondent.representativeRemoved === 'Yes'  %}
+  {% set htmlForRespondentNotRepresentedBanner %}
+    <p class="govuk-body">
+      <b>{{ notificationBanner.respondentNotRepresented.p1 }}</b>
+    </p>
+  {% endset %}
+  {{ govukNotificationBanner({
+      html: htmlForRespondentNotRepresentedBanner,
+      titleText: important
+    })
+  }}
+{% endif %}
+
+{% include "notification-banner/stored-correspondence.njk"%}
+
+{% include "notification-banner/tribunal-notification.njk"%}
