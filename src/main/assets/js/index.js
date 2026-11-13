@@ -12,6 +12,7 @@ import './set-focus';
 import { initialize, ready } from './session/utils';
 import './data-layer';
 import './navigation-click-guard';
+import './radio-set-size';
 // Initialize GOV.UK Frontend components
 initAll();
 
