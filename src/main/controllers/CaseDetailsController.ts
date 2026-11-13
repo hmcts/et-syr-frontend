@@ -5,10 +5,10 @@ import { RespondentET3Model, YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { ET3Status } from '../definitions/definition';
 import {
-  CaseOverviewSectionIndex,
   ET3CaseDetailsLinkNames,
   ET3CaseDetailsLinksStatuses,
   LinkStatus,
+  SectionIndexToEt3CaseDetailsLinkNames,
 } from '../definitions/links';
 import { TseNotification } from '../definitions/notification/tseNotification';
 import { formatDate, getDueDate } from '../helpers/ApiFormatter';
@@ -74,7 +74,12 @@ export default class CaseDetailsController {
       progressBarItems: getProgressBarItems(selectedRespondent, req.session.userCase, {
         ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER, { returnObjects: true }),
       }),
-      sections: getSections(CaseOverviewSectionIndex, et3CaseDetailsLinksStatuses, selectedRespondent, req),
+      sections: getSections(
+        SectionIndexToEt3CaseDetailsLinkNames,
+        et3CaseDetailsLinksStatuses,
+        selectedRespondent,
+        req
+      ),
       et1FormUrl: setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM),
       respondToClaimUrl: setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_LANDING),
       selectedRespondent,

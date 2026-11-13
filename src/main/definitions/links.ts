@@ -54,7 +54,7 @@ export class ET3CaseDetailsLinksStatuses {
   }
 }
 
-export const CaseOverviewSectionIndex: ET3CaseDetailsLinkNames[][] = [
+export const SectionIndexToEt3CaseDetailsLinkNames: ET3CaseDetailsLinkNames[][] = [
   [ET3CaseDetailsLinkNames.PersonalDetails],
   [ET3CaseDetailsLinkNames.ET1ClaimForm, ET3CaseDetailsLinkNames.ClaimantContactDetails],
   [ET3CaseDetailsLinkNames.RespondentResponse],
