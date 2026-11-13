@@ -64,6 +64,17 @@ export default class ClaimantAverageWeeklyWorkHoursController {
     if (YesOrNoOrNotApplicable.NO !== formData.et3ResponseClaimantWeeklyHours) {
       fieldsToReset.push(formData.et3ResponseClaimantCorrectHours);
     }
+
+    // Keep the submitted answer so a validation error can focus the visible hours field.
+    const userCase = req.session.userCase;
+    if (userCase) {
+      if (formData.et3ResponseClaimantWeeklyHours !== undefined) {
+        userCase.et3ResponseClaimantWeeklyHours = formData.et3ResponseClaimantWeeklyHours;
+      }
+      if (formData.et3ResponseClaimantCorrectHours !== undefined) {
+        userCase.et3ResponseClaimantCorrectHours = formData.et3ResponseClaimantCorrectHours;
+      }
+    }
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,

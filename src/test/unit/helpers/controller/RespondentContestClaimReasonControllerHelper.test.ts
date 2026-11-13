@@ -12,7 +12,7 @@ import { mockRespondentET3Model } from '../../mocks/mockRespondentET3Model';
 describe('RespondentContestClaimReasonControllerHelper', () => {
   const request = mockRequest({});
   describe('checkInputs', () => {
-    it('sets required error to session for hidden field when there is no file and detail entered', () => {
+    it('sets required error on the contest details field when there is no file and no detail entered', () => {
       request.session.userCase = mockCaseWithIdWithRespondents;
       request.session.selectedRespondentIndex = 0;
       request.session.userCase.respondents[0].et3ResponseContestClaimDocument = undefined;
@@ -23,7 +23,7 @@ describe('RespondentContestClaimReasonControllerHelper', () => {
       expect(request.session.errors).toEqual([
         {
           errorType: ValidationErrors.REQUIRED,
-          propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
+          propertyName: FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.ET3_RESPONSE_CONTEST_CLAIM_DETAILS,
         },
       ]);
     });

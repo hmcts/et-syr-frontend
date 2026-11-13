@@ -84,6 +84,8 @@ describe('Claimant average weekly work hours Controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS);
       const errors = [{ propertyName: 'et3ResponseClaimantCorrectHours', errorType: 'notANumber' }];
       expect(request.session.errors).toEqual(errors);
+      expect(request.session.userCase.et3ResponseClaimantWeeklyHours).toBe(YesOrNoOrNotApplicable.NO);
+      expect(request.session.userCase.et3ResponseClaimantCorrectHours).toBe('Test');
     });
 
     it('should redirect to next page when no is selected but hour exceeded', async () => {
@@ -99,6 +101,8 @@ describe('Claimant average weekly work hours Controller', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.CLAIMANT_AVERAGE_WEEKLY_WORK_HOURS);
       const errors = [{ propertyName: 'et3ResponseClaimantCorrectHours', errorType: 'exceeded' }];
       expect(request.session.errors).toEqual(errors);
+      expect(request.session.userCase.et3ResponseClaimantWeeklyHours).toBe(YesOrNoOrNotApplicable.NO);
+      expect(request.session.userCase.et3ResponseClaimantCorrectHours).toBe('169');
     });
 
     it('should redirect to next page when Not Sure is selected', async () => {
