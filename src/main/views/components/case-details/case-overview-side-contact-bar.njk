@@ -1,0 +1,40 @@
+<div class="govuk-grid-column-one-third-from-desktop">
+  <div class="top-border-blue">
+    <h2 class="govuk-heading-s">
+      {{ iWantTo }}
+    </h2>
+    <p class="govuk-body">
+      <a href="{{ PageUrls.CONTACT_TRIBUNAL + languageParam }}">
+        {{ contactTribunalAboutTheCase }}
+      </a>
+    </p>
+
+    <p class="govuk-body">
+      <a href="https://www.gov.uk/find-legal-advice" target="_blank">
+        {{ findLegalAdvice }}
+      </a>
+    </p>
+    {% if respondentRepresented %}
+    <p class="govuk-body">
+      <a href="/change-legal-representative">
+        {{ changeLegalRepresentative }}
+      </a>
+    </p>
+    {% else %}
+    <p class="govuk-body">
+      <a href="/appoint-legal-representative">
+        {{ appointLegalRepresentative }}
+      </a>
+    </p>
+    {% endif %}
+
+    {% set sideBarContent %}
+    {% include "../sidebar/sidebar.njk" %}
+    {% endset %}
+
+    {{ govukDetails({
+    summaryHtml: "<span id='contact-us-sidebar'>" + contact + "</span>",
+    html: sideBarContent
+    }) }}
+  </div>
+</div>

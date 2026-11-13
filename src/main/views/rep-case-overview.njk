@@ -1,22 +1,35 @@
 {% extends "form/main/template.njk" %}
+{% from "components/hmcts-progress-bar/macro.njk" import hmctsProgressBar %}
 {% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% block content %}
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-l">{{ header }} {{ userCase.firstName }} {{ userCase.lastName }} vs {{ respondentName }}</h1>
+    <p id="caseNumber" class="govuk-body">{{ caseNumber + userCase.ethosCaseReference }}</p>
 
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-
-        {% for section in sections %}
-          <h2 class="govuk-heading-m govuk-!-margin-top-5">{{ getContent(section.title) }}</h2>
-          {{ govukTaskList({
-            items: section.items
+        <div class="top-border-blue">
+          {{ hmctsProgressBar({
+            items: progressBarItems,
+            classes: ''
           }) }}
-        {% endfor %}
 
+          {% include "./components/case-details/case-details-notification-banner.njk" %}
+
+          {% for section in sections %}
+            <h2 class="govuk-heading-m govuk-!-margin-top-5">{{ getContent(section.title) }}</h2>
+            {{ govukTaskList({
+              items: section.items
+            }) }}
+          {% endfor %}
+        </div>
       </div>
+
+      {% include "./components/case-details/case-overview-side-contact-bar.njk" %}
     </div>
 
   </div>
