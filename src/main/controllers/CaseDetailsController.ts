@@ -4,14 +4,19 @@ import { AppRequest } from '../definitions/appRequest';
 import { RespondentET3Model, YesOrNo } from '../definitions/case';
 import { PageUrls, TranslationKeys } from '../definitions/constants';
 import { ET3Status } from '../definitions/definition';
-import { ET3CaseDetailsLinkNames, ET3CaseDetailsLinksStatuses, LinkStatus } from '../definitions/links';
+import {
+  CaseOverviewSectionIndex,
+  ET3CaseDetailsLinkNames,
+  ET3CaseDetailsLinksStatuses,
+  LinkStatus,
+} from '../definitions/links';
 import { TseNotification } from '../definitions/notification/tseNotification';
 import { formatDate, getDueDate } from '../helpers/ApiFormatter';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
 import { LoadUserCaseResults, loadUserCaseFromApi } from '../helpers/LoadUserCaseHelper';
 import { getProgressBarItems } from '../helpers/ProgressBarHelpers';
 import { getLanguageParam, returnValidUrl } from '../helpers/RouterHelpers';
-import { getET3CaseDetailsLinkNames, getSections } from '../helpers/controller/CaseDetailsHelper';
+import { getET3CaseDetailsLinkNames, getRespondentName, getSections } from '../helpers/controller/CaseDetailsHelper';
 import { getAppNotifications } from '../helpers/notification/ApplicationNotificationHelper';
 import { getStoredBannerList } from '../helpers/notification/StoredNotificationHelper';
 import { getTribunalNotificationBanner } from '../helpers/notification/TribunalNotificationHelper';
@@ -53,7 +58,6 @@ export default class CaseDetailsController {
       selectedRespondent.et3CaseDetailsLinksStatuses,
       req
     );
-    const sections = getSections(et3CaseDetailsLinksStatuses, selectedRespondent, req);
 
     const appNotifications: TseNotification = getAppNotifications(
       req.session.userCase.genericTseApplicationCollection,
@@ -62,15 +66,15 @@ export default class CaseDetailsController {
 
     res.render(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER, {
       ...req.t(TranslationKeys.COMMON as never, { returnObjects: true } as never),
-      ...req.t(TranslationKeys.CASE_DETAILS_STATUS as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.SIDEBAR_CONTACT_US as never, { returnObjects: true } as never),
       PageUrls,
       userCase: req.session.userCase,
+      respondentName: getRespondentName(selectedRespondent),
       progressBarItems: getProgressBarItems(selectedRespondent, req.session.userCase, {
         ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER, { returnObjects: true }),
       }),
-      sections,
+      sections: getSections(CaseOverviewSectionIndex, et3CaseDetailsLinksStatuses, selectedRespondent, req),
       et1FormUrl: setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM),
       respondToClaimUrl: setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_LANDING),
       selectedRespondent,
