@@ -54,7 +54,7 @@ export const getET3CaseDetailsLinksUrlMap = (
   );
   caseDetailsLinksMap.set(
     ET3CaseDetailsLinkNames.RespondentContactDetails,
-    PageUrls.REP_CASE_OVERVIEW + baseUrls[languageParam]
+    PageUrls.RESPONDENT_CONTACT_DETAILS + baseUrls[languageParam]
   );
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.HearingDetails, PageUrls.HEARING_DETAILS + baseUrls[languageParam]);
   caseDetailsLinksMap.set(
