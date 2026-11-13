@@ -25,6 +25,15 @@
     },
     "launchDarkly": {
       "key": "TO BE PICKED FROM ENV"
+    },
+    "cui": {
+      "endpoint": "http://localhost:3100",
+      "hmctsServiceId": "BHA1"
+    },
+    "s2s": {
+      "secret": "TO BE PICKED UP FROM ENV",
+      "url": "http://host.docker.internal:8489",
+      "serviceName": "et_syr"
     }
   },
   "session": {
