@@ -57,8 +57,6 @@ describe('Self assignment check controller', () => {
     expect(renderContext.userCase).toBeUndefined();
     expect(renderContext.user).toBeUndefined();
     expect(renderContext.formRespondentName).toBe('Respondent Name');
-    expect(renderContext.form.fields.selfAssignmentCheck.label({ h1: 'Heading' })).toBe('Heading');
-    expect(renderContext.form.fields.selfAssignmentCheck.hint({ hint: 'Hint text' })).toBe('Hint text');
     expect(
       renderContext.form.fields.selfAssignmentCheck.values[0].label({
         confirmation: { checkbox: 'I confirm' },

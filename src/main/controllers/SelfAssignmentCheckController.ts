@@ -31,11 +31,7 @@ export default class SelfAssignmentCheckController {
       selfAssignmentCheck: {
         id: FormFieldNames.SELF_ASSIGNMENT_CHECK_FIELDS.SELF_ASSIGNMENT_CHECK,
         type: 'checkboxes',
-        labelHidden: false,
-        label: (l: AnyRecord) => l.h1,
-        labelSize: 'xl',
-        isPageHeading: true,
-        hint: (l: AnyRecord) => l.hint,
+        labelHidden: true,
         validator: atLeastOneFieldIsChecked,
         values: [
           {
