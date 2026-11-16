@@ -1,0 +1,39 @@
+// Stacks table rows into blocks on narrow screens (and at 400% zoom) so content reflows
+// into a single column without horizontal scrolling (WCAG 2.1 SC 1.4.10 Reflow).
+// Each cell needs a data-label attribute holding its column heading.
+.app-responsive-table {
+  .govuk-table__cell {
+    overflow-wrap: anywhere;
+  }
+
+  @include govuk-media-query($until: tablet) {
+    .govuk-table,
+    .govuk-table__body,
+    .govuk-table__row,
+    .govuk-table__cell {
+      display: block;
+      width: 100%;
+    }
+
+    .govuk-table__head {
+      @include govuk-visually-hidden;
+    }
+
+    .govuk-table__row {
+      margin-bottom: govuk-spacing(4);
+      border-bottom: 2px solid $govuk-border-colour;
+    }
+
+    .govuk-table__cell {
+      padding: govuk-spacing(1) 0;
+      border-bottom: 0;
+      text-align: left;
+
+      &::before {
+        content: attr(data-label);
+        display: block;
+        font-weight: $govuk-font-weight-bold;
+      }
+    }
+  }
+}
