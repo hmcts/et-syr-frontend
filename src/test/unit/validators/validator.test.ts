@@ -121,10 +121,12 @@ describe('Validation', () => {
 
   describe('isValidAvgWeeklyHours()', () => {
     it.each([
-      { mockRef: 'a', expected: 'invalid' },
-      { mockRef: '%', expected: 'invalid' },
-      { mockRef: '25a', expected: 'invalid' },
-      { mockRef: '-4', expected: 'invalid' },
+      { mockRef: 'a', expected: 'notANumber' },
+      { mockRef: '%', expected: 'notANumber' },
+      { mockRef: '25a', expected: 'notANumber' },
+      { mockRef: 'forty', expected: 'notANumber' },
+      { mockRef: '-4', expected: 'notANumber' },
+      { mockRef: ' 40 ', expected: undefined },
       { mockRef: '169', expected: 'exceeded' },
       { mockRef: '168', expected: undefined },
       { mockRef: '20.00', expected: undefined },
@@ -370,13 +372,12 @@ describe('Validation', () => {
       const validPhoneNumbers = [
         '01234567890', // Standard UK phone number
         '+441632960961', // UK phone number with international code
-        '+1 (202) 555-0165', // US phone number with international code and formatting
-        '123-456-7890', // US phone number with dashes
         '+44 20 7946 0958', // UK phone number with international code and spaces
-        '555-1234', // Shorter phone number format
-        '+33 1 70 18 99 00', // French phone number with international code and spaces
-        '(555) 123-4567', // US phone number with parentheses and dashes
-        '+91 9876543210', // Indian phone number with international code
+        '01632 960 001', // UK landline with spaces
+        '07700 900 982', // UK mobile with spaces
+        '+44 808 157 0192', // UK freephone with international code
+        '(01632) 960001', // UK landline with area code in brackets
+        ' 07700900982 ', // Surrounding whitespace
       ];
 
       validPhoneNumbers.forEach(phoneNumber => {
@@ -393,6 +394,10 @@ describe('Validation', () => {
         '1234ABCD', // Phone number with letters
         '+44 15', // Phone number too short
         '55555', // Phone number too short
+        '+1 (202) 555-0165', // Non-UK number rejected by CCD PhoneUK field type
+        '+33 1 70 18 99 00', // Non-UK number rejected by CCD PhoneUK field type
+        '+91 9876543210', // Non-UK number rejected by CCD PhoneUK field type
+        '123-456-7890', // Not a UK format
       ];
 
       invalidPhoneNumbers.forEach(phoneNumber => {

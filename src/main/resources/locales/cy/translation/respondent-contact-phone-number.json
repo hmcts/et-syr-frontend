@@ -1,10 +1,10 @@
 {
   "title": "Rhif ffôn yr Atebydd",
   "h1": "Beth yw rhif ffôn eich unigolyn cyswllt? (dewisol)",
-  "respondentContactPhoneNumber": "Sut allwn ni gysylltu â chi yn ystod y dydd. Ar gyfer rhifau rhyngwladol, nodwch god y wlad",
+  "respondentContactPhoneNumber": "Sut allwn ni gysylltu â chi yn ystod y dydd. Rhowch rif ffôn yn y DU.",
   "errors": {
     "responseRespondentPhone1": {
-      "invalidPhoneNumber": "[Os yw Rhif Ffôn yn cynnwys swyn alffa-rhifol] Rhowch rif ffôn, fel 01632 960 001, 07700 900 982 neu +44 808 157 0192"
+      "invalidPhoneNumber": "Rhowch rif ffôn yn y DU, fel 01632 960 001, 07700 900 982 neu +44 808 157 0192"
     },
     "hiddenErrorField": {
       "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",
