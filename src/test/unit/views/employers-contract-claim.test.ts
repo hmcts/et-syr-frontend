@@ -9,6 +9,9 @@ import { mockApp } from '../mocks/mockApp';
 const commonJson = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, '../../../main/resources/locales/en/translation/common.json'), 'utf-8')
 );
+const templateJson = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, '../../../main/resources/locales/en/translation/template.json'), 'utf-8')
+);
 const pageJson = JSON.parse(
   fs.readFileSync(
     path.resolve(__dirname, '../../../main/resources/locales/en/translation/employers-contract-claim.json'),
@@ -44,6 +47,10 @@ describe('Employer’s contract claim page', () => {
   it('should display title', () => {
     const title = htmlRes.getElementsByClassName(titleClass);
     expect(title[0].innerHTML).contains(expectedTitle, 'Page title does not exist');
+  });
+
+  it('should set the document title from the page heading', () => {
+    expect(htmlRes.title).to.equal(`${pageJson.title} - ${templateJson.serviceName} - ${commonJson.govUk}`);
   });
 
   it('should display 2 input fields', () => {

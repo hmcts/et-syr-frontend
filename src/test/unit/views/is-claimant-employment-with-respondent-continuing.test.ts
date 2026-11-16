@@ -4,6 +4,7 @@ import path from 'path';
 import { expect } from 'chai';
 import request from 'supertest';
 
+import { languages } from '../../../main/definitions/constants';
 import { mockApp } from '../mocks/mockApp';
 
 const commonJson = JSON.parse(
@@ -18,11 +19,19 @@ const pageJson = JSON.parse(
     'utf-8'
   )
 );
+const welshPageJson = JSON.parse(
+  fs.readFileSync(
+    path.resolve(
+      __dirname,
+      '../../../main/resources/locales/cy/translation/is-claimant-employment-with-respondent-continuing.json'
+    ),
+    'utf-8'
+  )
+);
 
 const PAGE_URL = '/is-claimant-employment-with-respondent-continuing';
 const sectionTitleClass = 'govuk-caption-l';
 const expectedSectionTitle = commonJson.sectionTitle.s2;
-const titleClass = 'govuk-heading-l';
 const expectedTitle = pageJson.title;
 const radioClass = 'govuk-radios__item';
 const expectedRadioLabel1 = commonJson.yes;
@@ -45,9 +54,23 @@ describe('Is the claimant’s employment with the respondent continuing? page', 
     expect(sectionTitle[0].innerHTML).contains(expectedSectionTitle, 'Page title does not exist');
   });
 
-  it('should display title', () => {
-    const title = htmlRes.getElementsByClassName(titleClass);
-    expect(title[0].innerHTML).contains(expectedTitle, 'Page title does not exist');
+  it('should display the question as the radio group legend', () => {
+    const heading = htmlRes.getElementsByClassName('govuk-fieldset__heading');
+    expect(heading.length).equal(1, 'Expected one question heading');
+    expect(heading[0].innerHTML).contains(expectedTitle, 'Page title does not exist');
+    expect(heading[0].parentElement?.className).contains('govuk-fieldset__legend--l');
+    const fieldset = heading[0].parentElement?.parentElement;
+    expect(fieldset?.tagName).equal('FIELDSET');
+    expect(fieldset?.getElementsByClassName(radioClass).length).equal(3);
+    expect(fieldset?.innerHTML).contains(pageJson.hint, 'Hint does not exist');
+  });
+
+  it('should show the Welsh question as the radio group legend', async () => {
+    const response = await request(mockApp({})).get(PAGE_URL + languages.WELSH_URL_PARAMETER);
+    const welshPage = new DOMParser().parseFromString(response.text, 'text/html');
+    const heading = welshPage.getElementsByClassName('govuk-fieldset__heading');
+    expect(heading.length).equal(1, 'Expected one question heading');
+    expect(heading[0].textContent).contains(welshPageJson.title);
   });
 
   it('should display 3 input fields', () => {

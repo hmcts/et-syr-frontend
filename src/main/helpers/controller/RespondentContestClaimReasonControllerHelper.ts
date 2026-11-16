@@ -19,7 +19,7 @@ export default class RespondentContestClaimReasonControllerHelper {
       ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
         req,
         ValidationErrors.REQUIRED,
-        FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+        FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.ET3_RESPONSE_CONTEST_CLAIM_DETAILS
       );
       return false;
     }
