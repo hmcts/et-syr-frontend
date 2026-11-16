@@ -197,7 +197,9 @@
     "uuid": "^14.0.0",
     "ip-address": "^10.7.5",
     "body-parser": "^2.4.0",
-    "zod": "4.6.6"
+    "zod": "4.6.6",
+    "follow-redirects": "^1.16.2",
+    "joi": "^17.13.9"
   },
   "packageManager": "yarn@4.12.0"
 }

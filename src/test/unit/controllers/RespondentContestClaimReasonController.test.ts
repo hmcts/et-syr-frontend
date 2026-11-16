@@ -178,7 +178,7 @@ describe('RespondentContestClaimReasonController', () => {
         ErrorUtils.setManualErrorToRequestSessionWithExistingErrors(
           request,
           ValidationErrors.REQUIRED,
-          FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD
+          FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.ET3_RESPONSE_CONTEST_CLAIM_DETAILS
         );
         return false;
       });
@@ -186,7 +186,7 @@ describe('RespondentContestClaimReasonController', () => {
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_CONTEST_CLAIM_REASON);
       expect(request.session.errors).toStrictEqual([
         {
-          propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
+          propertyName: FormFieldNames.RESPONDENT_CONTEST_CLAIM_REASON.ET3_RESPONSE_CONTEST_CLAIM_DETAILS,
           errorType: ValidationErrors.REQUIRED,
         },
       ]);

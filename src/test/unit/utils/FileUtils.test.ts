@@ -183,6 +183,66 @@ describe('FileUtils', () => {
       const govUKTableRows = FileUtils.convertDocumentTypeItemsToGovUkTableRows(request);
       expect(govUKTableRows).toStrictEqual(mockGovUKTableRowArrayFromDocumentTypeItem);
     });
+    test('Should name each remove link after its own file and escape filename characters', async () => {
+      request.session.selectedRespondentIndex = 0;
+      request.session.userCase = mockCaseWithIdWithRespondents;
+      const firstDocument = mockDocumentTypeItemFromMockDocumentUploadResponse;
+      const secondDocument = {
+        ...mockDocumentTypeItemFromMockDocumentUploadResponse,
+        id: '11111111-2222-3333-4444-555555555555',
+        value: {
+          ...mockDocumentTypeItemFromMockDocumentUploadResponse.value,
+          uploadedDocument: {
+            ...mockDocumentTypeItemFromMockDocumentUploadResponse.value.uploadedDocument,
+            document_filename: "Smith & Jones' response.pdf",
+          },
+        },
+      };
+      request.session.userCase.et3ResponseContestClaimDocument = [firstDocument, secondDocument];
+      const govUKTableRows = FileUtils.convertDocumentTypeItemsToGovUkTableRows(request);
+      expect(govUKTableRows[0][1].html).toStrictEqual(
+        '<a href="remove-file/900d4265-aaeb-455f-9cdd-bc0bdf61c918/undefined?lng=en">' +
+          'remove<span class="govuk-visually-hidden"> Screenshot 2024-11-03 at 18.53.00.png</span></a>'
+      );
+      expect(govUKTableRows[1][0].text).toStrictEqual("Smith & Jones' response.pdf");
+      expect(govUKTableRows[1][1].html).toStrictEqual(
+        '<a href="remove-file/11111111-2222-3333-4444-555555555555/undefined?lng=en">' +
+          'remove<span class="govuk-visually-hidden"> Smith &amp; Jones&#39; response.pdf</span></a>'
+      );
+    });
+    test('Should leave the remove link without hidden text when the filename is blank', async () => {
+      request.session.selectedRespondentIndex = 0;
+      request.session.userCase = mockCaseWithIdWithRespondents;
+      const blankNameDocument = {
+        ...mockDocumentTypeItemFromMockDocumentUploadResponse,
+        value: {
+          ...mockDocumentTypeItemFromMockDocumentUploadResponse.value,
+          uploadedDocument: {
+            ...mockDocumentTypeItemFromMockDocumentUploadResponse.value.uploadedDocument,
+            document_filename: '   ',
+          },
+        },
+      };
+      const missingNameDocument = {
+        ...mockDocumentTypeItemFromMockDocumentUploadResponse,
+        id: '11111111-2222-3333-4444-555555555555',
+        value: {
+          ...mockDocumentTypeItemFromMockDocumentUploadResponse.value,
+          uploadedDocument: {
+            ...mockDocumentTypeItemFromMockDocumentUploadResponse.value.uploadedDocument,
+            document_filename: '',
+          },
+        },
+      };
+      request.session.userCase.et3ResponseContestClaimDocument = [blankNameDocument, missingNameDocument];
+      const govUKTableRows = FileUtils.convertDocumentTypeItemsToGovUkTableRows(request);
+      expect(govUKTableRows[0][1].html).toStrictEqual(
+        '<a href="remove-file/900d4265-aaeb-455f-9cdd-bc0bdf61c918/undefined?lng=en">remove</a>'
+      );
+      expect(govUKTableRows[1][1].html).toStrictEqual(
+        '<a href="remove-file/11111111-2222-3333-4444-555555555555/undefined?lng=en">remove</a>'
+      );
+    });
   });
   describe('fileAlreadyExists', () => {
     test('Should return true if req file name is equal to one of the existing contest claim documents file name.', async () => {

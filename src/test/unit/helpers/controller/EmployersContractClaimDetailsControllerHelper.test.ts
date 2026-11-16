@@ -17,7 +17,7 @@ import { mockRespondentET3Model } from '../../mocks/mockRespondentET3Model';
 describe('EmployersContractClaimDetailsControllerHelper tests', () => {
   describe('areInputValuesValid', () => {
     const request = mockRequest({});
-    it('sets required error to session for hidden field when there is no file and detail entered', () => {
+    it('sets required error on the employer claim details field when there is no file and no detail entered', () => {
       request.session.userCase = _.cloneDeep(mockCaseWithIdWithRespondents);
       request.session.selectedRespondentIndex = 0;
       request.session.userCase.et3ResponseEmployerClaimDocument = undefined;
@@ -29,7 +29,7 @@ describe('EmployersContractClaimDetailsControllerHelper tests', () => {
       expect(request.session.errors).toEqual([
         {
           errorType: ValidationErrors.REQUIRED,
-          propertyName: FormFieldNames.GENERIC_FORM_FIELDS.HIDDEN_ERROR_FIELD,
+          propertyName: FormFieldNames.EMPLOYERS_CONTRACT_CLAIM_DETAILS.ET3_RESPONSE_EMPLOYER_CLAIM_DETAILS,
         },
       ]);
     });
