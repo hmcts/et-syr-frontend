@@ -1,6 +1,3 @@
-// Stacks table rows into blocks on narrow screens (and at 400% zoom) so content reflows
-// into a single column without horizontal scrolling (WCAG 2.1 SC 1.4.10 Reflow).
-// Each cell needs a data-label attribute holding its column heading.
 .app-responsive-table {
   .govuk-table__cell {
     overflow-wrap: anywhere;
