@@ -3,6 +3,8 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
+{% block pageTitle %}{{ cya.title }} - {{ header }} - {{ serviceName }} - {{ govUk }}{% endblock %}
+
 {% block beforeContent %}
   {{ super() }}
   {% include "back-link.njk" %}
