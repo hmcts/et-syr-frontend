@@ -26,6 +26,7 @@ export const TranslationKeys = {
   CLAIMANT_CONTACT_DETAILS: 'claimant-contact-details',
   DOCUMENTS: 'documents',
   RESPONDENT_RESPONSE_LANDING: 'respondent-response-landing',
+  RESPONDENT_RESPONSE_LANDING_FOR_REP: 'respondent-response-landing-for-rep',
   RESPONDENT_RESPONSE_TASK_LIST: 'respondent-response-task-list',
   RESPONDENT_NAME: 'respondent-name',
   TYPE_OF_ORGANISATION: 'type-of-organisation',
@@ -230,6 +231,7 @@ export const PageUrls = {
   TRANSFERRED_CASE: '/transferred-case',
   // non-MyHMCTS Respondent rep
   REP_CASE_OVERVIEW: '/rep-case-overview',
+  REP_RESPONSE_LANDING: '/rep-response-landing',
   RESPONDENT_CONTACT_DETAILS: '/respondent-contact-details',
 } as const;
 

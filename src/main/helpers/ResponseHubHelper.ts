@@ -37,9 +37,14 @@ const getRespondentResponseUrl = (respondent: RespondentET3Model): string => {
   return PageUrls.NOT_IMPLEMENTED;
 };
 
+const getRepResponseUrl = (): string => {
+  return PageUrls.REP_RESPONSE_LANDING;
+};
+
 export const getET3CaseDetailsLinksUrlMap = (
   languageParam: string,
-  respondent: RespondentET3Model
+  respondent: RespondentET3Model,
+  isRep: boolean
 ): Map<string, string> => {
   const caseDetailsLinksMap = new Map<string, string>();
   caseDetailsLinksMap.set(ET3CaseDetailsLinkNames.PersonalDetails, PageUrls.NOT_IMPLEMENTED + baseUrls[languageParam]);
@@ -50,7 +55,7 @@ export const getET3CaseDetailsLinksUrlMap = (
   );
   caseDetailsLinksMap.set(
     ET3CaseDetailsLinkNames.RespondentResponse,
-    getRespondentResponseUrl(respondent) + baseUrls[languageParam]
+    isRep ? getRepResponseUrl() : getRespondentResponseUrl(respondent) + baseUrls[languageParam]
   );
   caseDetailsLinksMap.set(
     ET3CaseDetailsLinkNames.RespondentContactDetails,

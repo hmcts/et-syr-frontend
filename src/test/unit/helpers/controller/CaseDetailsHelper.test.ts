@@ -240,7 +240,7 @@ describe('Case Details Helper', () => {
       const req = mockRequestWithTranslation({ session: { userCase: mockUserCase } }, translations);
       const statuses = new ET3CaseDetailsLinksStatuses();
 
-      const actual = getSections(SectionIndexToEt3CaseDetailsLinkNames, statuses, mockRespondentET3Model, req);
+      const actual = getSections(SectionIndexToEt3CaseDetailsLinkNames, statuses, mockRespondentET3Model, req, false);
       expect(actual).toHaveLength(8);
 
       expect(actual[0].items).toHaveLength(1);

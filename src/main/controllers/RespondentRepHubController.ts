@@ -27,7 +27,7 @@ export default class RespondentRepHubController {
       progressBarItems: getProgressBarItems(selectedRespondent, req.session.userCase, {
         ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER, { returnObjects: true }),
       }),
-      sections: getSections(CaseOverviewSectionIndexForRep, et3CaseDetailsLinksStatuses, selectedRespondent, req),
+      sections: getSections(CaseOverviewSectionIndexForRep, et3CaseDetailsLinksStatuses, selectedRespondent, req, true),
     });
   }
 }

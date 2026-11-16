@@ -78,7 +78,8 @@ export default class CaseDetailsController {
         SectionIndexToEt3CaseDetailsLinkNames,
         et3CaseDetailsLinksStatuses,
         selectedRespondent,
-        req
+        req,
+        false
       ),
       et1FormUrl: setUrlLanguage(req, PageUrls.CLAIMANT_ET1_FORM),
       respondToClaimUrl: setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_LANDING),
