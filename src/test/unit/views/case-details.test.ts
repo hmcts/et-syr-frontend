@@ -75,6 +75,13 @@ caseOverviewApp.get('/case-overview', (req: AppRequest, res) => {
             statusColor: '--grey',
             url: '#',
           },
+          {
+            shouldShow: true,
+            linkTxt: 'Respond to claim',
+            status: 'In progress',
+            statusColor: '--yellow',
+            url: '/respond-to-claim',
+          },
         ],
       },
     ],
@@ -129,6 +136,16 @@ describe('Case overview page', () => {
 
     expect(sectionHeading.textContent).contains(enCaseDetails.section1);
     expect(sidebarHeading.textContent).contains(enCaseDetails.iWantTo);
+  });
+
+  it('associates each task link with its status using aria-describedby', async () => {
+    const htmlRes = await renderCaseOverview('en', namedRespondent);
+    const taskLink = htmlRes.querySelector('.app-task-list__item a');
+    const statusId = taskLink.getAttribute('aria-describedby');
+
+    expect(collapseWhitespace(taskLink.textContent)).equal('Respond to claim');
+    expect(statusId).equal('task-status-1-2');
+    expect(collapseWhitespace(htmlRes.getElementById(statusId).textContent)).equal('In progress');
   });
 
   it('renders the Welsh case overview heading as the only h1', async () => {

@@ -42,7 +42,7 @@
 
       <ol class="app-task-list">
         {% for section in sections %}
-
+          {% set sectionIndex = loop.index %}
           <li>
             <h2 class="app-task-list__section">
               <span class="app-task-list__section-number">{{loop.index}}. </span> {{ getContent(section.title) }}
@@ -50,19 +50,19 @@
             <ul class="app-task-list__items">
 
               {% for link in section.links %}
+                {% set statusId = "task-status-" + sectionIndex + "-" + loop.index %}
                 <li class="app-task-list__item">
                 <span class="app-task-list__task-name--300px">
                     {% if getContent(link.url) !="" and getContent(link.shouldShow) === true %}
-                      <a href= "{{ getContent(link.url) }}">
-                    {{ getContent(link.linkTxt) }}
-                    </a>
+                      <a href="{{ getContent(link.url) }}" class="govuk-link" aria-describedby="{{ statusId }}">{{ getContent(link.linkTxt) }}</a>
                     {% else %}
                       {{getContent(link.linkTxt)}}
                     {% endif %}
                 </span>
                 {{ govukTag({
                   text: getContent(link.status),
-                  classes: "no-text-transform app-task-list__tag govuk-tag" + getContent(link.statusColor)
+                  classes: "no-text-transform app-task-list__tag govuk-tag" + getContent(link.statusColor),
+                  attributes: { id: statusId }
                 }) }}
                 </li>
               {% endfor %}
