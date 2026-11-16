@@ -92,5 +92,11 @@ describe('Acas early conciliation certificate page', () => {
     expect(group?.getAttribute('aria-owns')).to.equal(radioInputs.map(input => input.id).join(' '));
     expect(htmlRes.querySelector('fieldset')?.getAttribute('role')).to.equal('presentation');
     expect(group?.getAttribute('aria-owns')).to.not.contain('et3ResponseAcasAgreeReason');
+    const reveal = htmlRes.querySelector('#conditional-et3ResponseAcasAgree-2');
+    expect(reveal?.closest('fieldset')).to.equal(null);
+    radioInputs.forEach(input => {
+      expect(input.hasAttribute('aria-controls')).to.equal(false);
+      expect(input.hasAttribute('data-aria-controls')).to.equal(false);
+    });
   });
 });

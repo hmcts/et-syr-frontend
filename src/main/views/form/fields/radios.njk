@@ -3,11 +3,12 @@
 {% set idPrefix = field.id if field.id else fieldName %}
 {% set legendClasses %}{% if field.labelSize !== null%}govuk-fieldset__legend--{{ field.labelSize if field.labelSize else "m"}}{% endif %}{% endset %}
 {% set radioItems = formItems(field.values, userCase[fieldName]) | radioPositions %}
+{% set prepared = radioItems | prepareRadioReveals(idPrefix) %}
 {% set owns = radioItems | radioOwns(idPrefix) %}
 {% set describedBy = (idPrefix + "-hint " + idPrefix + "-error") if getError(fieldName) else (idPrefix + "-hint") %}
 {% set legendHtml %}<span id="{{ idPrefix }}-legend">{{ getContent(field.label) }}</span>{% endset %}
-{# The revealed field stays in the fieldset so it still appears under its option.
-   This group owns only the radios, so browsers do not count that field as another option. #}
+{# The follow-up field is rendered after the group, and the radio does not use aria-controls.
+   Chrome and Edge otherwise count that field as another option. #}
 {% if owns %}
 <div role="radiogroup" aria-labelledby="{{ idPrefix }}-legend" aria-describedby="{{ describedBy }}" aria-owns="{{ owns }}"></div>
 {% endif %}
@@ -28,9 +29,14 @@
     hint: {
       html: getContent(field.hint)
     },
-    items: radioItems,
+    items: prepared.items,
     errorMessage: getError(fieldName),
     formGroup: {
       classes: "hidden " + field.id if field.hidden else field.id
     }
   }) }}
+{% for reveal in prepared.reveals %}
+<div class="govuk-radios__conditional{% if not reveal.open %} govuk-radios__conditional--hidden{% endif %}" id="{{ reveal.id }}">
+  {{ reveal.html | safe }}
+</div>
+{% endfor %}

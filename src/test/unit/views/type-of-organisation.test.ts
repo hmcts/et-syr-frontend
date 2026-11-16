@@ -36,7 +36,8 @@ const expectQuestionLegend = (htmlRes: Document, expectedQuestion: string): void
   const fieldset = heading[0].parentElement?.parentElement;
   expect(fieldset?.tagName).equal('FIELDSET');
   expect(fieldset?.getElementsByClassName(radioClass).length).equal(5);
-  expect(fieldset?.textContent).contains(pageJson.limitedCompanyTextLabel);
+  expect(fieldset?.textContent).not.contains(pageJson.limitedCompanyTextLabel);
+  expect(htmlRes.body.textContent).contains(pageJson.limitedCompanyTextLabel);
   const duplicateHeadings = htmlRes.getElementsByClassName('govuk-heading-l');
   for (const duplicate of Array.from(duplicateHeadings)) {
     expect(duplicate.textContent).not.contains(expectedQuestion);

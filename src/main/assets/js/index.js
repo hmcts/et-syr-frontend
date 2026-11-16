@@ -9,11 +9,13 @@ import './print';
 import './cookie';
 import './set-focus';
 // import './submit-claim';
+import { syncRadioReveals } from './radio-reveal';
 import { initialize, ready } from './session/utils';
 import './data-layer';
 import './navigation-click-guard';
 // Initialize GOV.UK Frontend components
 initAll();
+syncRadioReveals();
 
 // Initialize other components or modules
 ready(initialize);

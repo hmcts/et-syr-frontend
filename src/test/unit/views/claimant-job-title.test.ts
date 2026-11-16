@@ -98,5 +98,9 @@ describe('Claimant job title page', () => {
     expect(group?.getAttribute('aria-owns')).to.equal(radioInputs.map(input => input.id).join(' '));
     expect(group?.getAttribute('aria-owns')).to.not.contain('et3ResponseCorrectJobTitle');
     expect(htmlRes.querySelector('.govuk-form-group fieldset')?.getAttribute('role')).to.equal('presentation');
+    expect(htmlRes.querySelector('#et3ResponseCorrectJobTitle')?.closest('fieldset')).to.equal(null);
+    radioInputs.forEach(input => {
+      expect(input.hasAttribute('aria-controls')).to.equal(false);
+    });
   });
 });

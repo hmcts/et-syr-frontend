@@ -64,6 +64,32 @@ describe('njkFilters', () => {
       expect(radioOwns([{ id: 'custom-no', value: 'No' }], 'question')).toEqual('custom-no');
     });
 
+    test('should move a follow-up field out of the radio and remember when it is open', () => {
+      const prepareRadioReveals = env.getFilter('prepareRadioReveals');
+      const input = [
+        { value: 'Yes', attributes: { 'aria-setsize': 2 } },
+        {
+          value: 'No',
+          checked: true,
+          conditional: { html: '<input id="name">' },
+          attributes: { 'aria-setsize': 2 },
+        },
+      ];
+
+      expect(prepareRadioReveals(input, 'question')).toEqual({
+        items: [
+          { value: 'Yes', attributes: { 'aria-setsize': 2 } },
+          {
+            value: 'No',
+            checked: true,
+            conditional: { html: '' },
+            attributes: { 'aria-setsize': 2, 'data-reveal': 'conditional-question-2' },
+          },
+        ],
+        reveals: [{ id: 'conditional-question-2', html: '<input id="name">', open: true }],
+      });
+    });
+
     test('should not count or number dividers', () => {
       const radioPositions = env.getFilter('radioPositions');
       const input = [{ value: 'A' }, { divider: 'or' }, { value: 'B' }];
