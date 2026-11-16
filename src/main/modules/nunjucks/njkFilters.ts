@@ -53,6 +53,6 @@ function createFilters(env: nunjucks.Environment): void {
   });
 }
 
-type RadioItem = { divider?: string; attributes?: Record<string, unknown> };
+type RadioItem = { id?: string; divider?: string; attributes?: Record<string, unknown> };
 
 export default createFilters;
