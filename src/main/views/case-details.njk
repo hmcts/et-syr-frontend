@@ -4,24 +4,25 @@
 {%- from "govuk/components/tag/macro.njk" import govukTag -%}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
+{% if selectedRespondent.respondentName %}
+  {% set respondentDisplayName = selectedRespondent.respondentName %}
+{% elif selectedRespondent.respondentOrganisation %}
+  {% set respondentDisplayName = selectedRespondent.respondentOrganisation %}
+{% else %}
+  {% set respondentDisplayName = selectedRespondent.respondentFirstName + " " + selectedRespondent.respondentLastName %}
+{% endif %}
+{# Shared by the <h1> and the page <title> so they always match #}
+{% set caseOverviewHeading = header + userCase.firstName + " " + userCase.lastName + " vs " + respondentDisplayName %}
+
+{% block pageTitle %}
+  {{ caseOverviewHeading }} - {{ serviceName }} - {{ govUk }}
+{% endblock %}
+
 {% block content %}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-      <h1 class="govuk-heading-l">
-        {{ header + userCase.firstName + ' ' + userCase.lastName }} vs
-        {% if selectedRespondent.respondentName !== null
-                and selectedRespondent.respondentName !== ""
-                and selectedRespondent.respondentName !== undefined %}
-          {{ selectedRespondent.respondentName }}
-        {% elif (selectedRespondent.respondentOrganisation !== null
-                  and selectedRespondent.respondentOrganisation !== ""
-                  and selectedRespondent.respondentOrganisation !== undefined) %}
-          {{ selectedRespondent.respondentOrganisation }}
-        {% else %}
-          {{ selectedRespondent.respondentFirstName + " " + selectedRespondent.respondentLastName }}
-        {% endif %}
-      </h1>
+      <h1 class="govuk-heading-l">{{ caseOverviewHeading }}</h1>
       <p id="caseNumber" class="govuk-body">{{ caseNumber + userCase.ethosCaseReference }}</p>
 
       <div class="govuk-grid-row">

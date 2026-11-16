@@ -106,7 +106,7 @@ describe('Case overview page', () => {
     expect(headings[0].classList.contains('govuk-heading-l')).equal(true);
     expect(collapseWhitespace(headings[0].textContent)).equal(headingText('en', 'Acme Ltd'));
     expect(mainHeadings[0].tagName).equal('H1');
-    expect(htmlRes.title).equal(`${enCaseDetails.title} - ${enTemplate.serviceName} - ${enCommon.govUk}`);
+    expect(htmlRes.title).equal(`${headingText('en', 'Acme Ltd')} - ${enTemplate.serviceName} - ${enCommon.govUk}`);
   });
 
   it('uses the organisation name when the respondent name is blank', async () => {
@@ -119,6 +119,7 @@ describe('Case overview page', () => {
     const htmlRes = await renderCaseOverview('en', individualRespondent);
 
     expect(collapseWhitespace(htmlRes.querySelector('h1').textContent)).equal(headingText('en', 'Alex Jones'));
+    expect(htmlRes.title).equal(`${headingText('en', 'Alex Jones')} - ${enTemplate.serviceName} - ${enCommon.govUk}`);
   });
 
   it('keeps the task list and sidebar headings as h2', async () => {
@@ -136,6 +137,6 @@ describe('Case overview page', () => {
 
     expect(headings.length).equal(1, 'page should have one h1');
     expect(collapseWhitespace(headings[0].textContent)).equal(headingText('cy', 'Acme Ltd'));
-    expect(htmlRes.title).equal(`${cyCaseDetails.title} - ${cyTemplate.serviceName} - ${cyCommon.govUk}`);
+    expect(htmlRes.title).equal(`${headingText('cy', 'Acme Ltd')} - ${cyTemplate.serviceName} - ${cyCommon.govUk}`);
   });
 });
