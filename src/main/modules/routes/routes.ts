@@ -101,6 +101,7 @@ import RespondentEnterAddressController from '../../controllers/RespondentEnterA
 import RespondentEnterPostCodeController from '../../controllers/RespondentEnterPostCodeController';
 import RespondentNameController from '../../controllers/RespondentNameController';
 import RespondentPreferredContactNameController from '../../controllers/RespondentPreferredContactNameController';
+import RespondentRepHubController from '../../controllers/RespondentRepHubController';
 import RespondentResponseLandingController from '../../controllers/RespondentResponseLandingController';
 import RespondentResponseTaskListController from '../../controllers/RespondentResponseTaskListController';
 import RespondentSelectPostCodeController from '../../controllers/RespondentSelectPostCodeController';
@@ -394,6 +395,7 @@ export class Routes {
     app.get(PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE, new MakingResponseAsLegalRepController().get);
     app.get(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().get);
     app.post(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().post);
+    app.get(PageUrls.REP_CASE_OVERVIEW, new RespondentRepHubController().get);
     app.get(
       Urls.INFO,
       infoRequestHandler({

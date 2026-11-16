@@ -26,25 +26,7 @@ const cyTemplate = readTranslation('cy', 'template');
 const enCommon = readTranslation('en', 'common');
 const cyCommon = readTranslation('cy', 'common');
 
-type RespondentFixture = {
-  respondentName?: string | null;
-  respondentOrganisation?: string | null;
-  respondentFirstName?: string;
-  respondentLastName?: string;
-};
-
 const claimant = { firstName: 'Jane', lastName: 'Smith', ethosCaseReference: '6000012/2024' };
-
-const namedRespondent: RespondentFixture = { respondentName: 'Acme Ltd' };
-const organisationRespondent: RespondentFixture = { respondentName: '', respondentOrganisation: 'Acme Ltd' };
-const individualRespondent: RespondentFixture = {
-  respondentName: null,
-  respondentOrganisation: '',
-  respondentFirstName: 'Alex',
-  respondentLastName: 'Jones',
-};
-
-let selectedRespondent: RespondentFixture = namedRespondent;
 
 const caseOverviewApp: Express = express();
 caseOverviewApp.locals.developmentMode = false;
@@ -62,7 +44,7 @@ caseOverviewApp.get('/case-overview', (req: AppRequest, res) => {
     PageUrls,
     hideContactUs: true,
     userCase: claimant,
-    selectedRespondent,
+    respondentName: 'Acme Ltd',
     progressBarItems: [],
     sections: [
       {
@@ -85,8 +67,7 @@ caseOverviewApp.get('/case-overview', (req: AppRequest, res) => {
 
 const collapseWhitespace = (value: string): string => value.replace(/\s+/g, ' ').trim();
 
-const renderCaseOverview = async (language: 'en' | 'cy', respondent: RespondentFixture): Promise<Document> => {
-  selectedRespondent = respondent;
+const renderCaseOverview = async (language: 'en' | 'cy'): Promise<Document> => {
   const response = await request(caseOverviewApp).get('/case-overview').query({ lng: language });
   return new DOMParser().parseFromString(response.text, 'text/html');
 };
@@ -98,7 +79,7 @@ const headingText = (language: 'en' | 'cy', respondentLabel: string): string => 
 
 describe('Case overview page', () => {
   it('renders one h1 for the case overview heading when the respondent has a name', async () => {
-    const htmlRes = await renderCaseOverview('en', namedRespondent);
+    const htmlRes = await renderCaseOverview('en');
     const headings = htmlRes.querySelectorAll('h1');
     const mainHeadings = htmlRes.querySelectorAll('main h1, main h2');
 
@@ -109,21 +90,9 @@ describe('Case overview page', () => {
     expect(htmlRes.title).equal(`${enCaseDetails.title} - ${enTemplate.serviceName} - ${enCommon.govUk}`);
   });
 
-  it('uses the organisation name when the respondent name is blank', async () => {
-    const htmlRes = await renderCaseOverview('en', organisationRespondent);
-
-    expect(collapseWhitespace(htmlRes.querySelector('h1').textContent)).equal(headingText('en', 'Acme Ltd'));
-  });
-
-  it('uses the respondent first and last name when name and organisation are blank', async () => {
-    const htmlRes = await renderCaseOverview('en', individualRespondent);
-
-    expect(collapseWhitespace(htmlRes.querySelector('h1').textContent)).equal(headingText('en', 'Alex Jones'));
-  });
-
   it('keeps the task list and sidebar headings as h2', async () => {
-    const htmlRes = await renderCaseOverview('en', namedRespondent);
-    const sectionHeading = htmlRes.querySelector('h2.app-task-list__section');
+    const htmlRes = await renderCaseOverview('en');
+    const sectionHeading = htmlRes.querySelector('main h2.govuk-heading-m');
     const sidebarHeading = htmlRes.querySelector('h2.govuk-heading-s');
 
     expect(sectionHeading.textContent).contains(enCaseDetails.section1);
@@ -131,7 +100,7 @@ describe('Case overview page', () => {
   });
 
   it('renders the Welsh case overview heading as the only h1', async () => {
-    const htmlRes = await renderCaseOverview('cy', namedRespondent);
+    const htmlRes = await renderCaseOverview('cy');
     const headings = htmlRes.querySelectorAll('h1');
 
     expect(headings.length).equal(1, 'page should have one h1');

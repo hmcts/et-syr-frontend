@@ -6,12 +6,12 @@ import {
   ET3CaseDetailsLinkNames,
   ET3CaseDetailsLinksStatuses,
   LinkStatus,
-  SectionIndexToEt3CaseDetailsLinkNames,
   getResponseCaseDetailsLinkStatusesByRespondentCaseDetailsLinkStatuses,
   linkStatusColorMap,
 } from '../../definitions/links';
 import { AnyRecord } from '../../definitions/util-types';
 import { getCaseApi } from '../../services/CaseService';
+import StringUtils from '../../utils/StringUtils';
 import { getApplicationStateIfNotExist } from '../ApplicationStateHelper';
 import { getTribunalNotificationLinkStatus } from '../NotificationHelper';
 import { getET3CaseDetailsLinksUrlMap, shouldCaseDetailsLinkBeClickable } from '../ResponseHubHelper';
@@ -123,35 +123,53 @@ const getUserApplicationStates = (apps: GenericTseApplicationTypeItem[], user: U
   );
 };
 
-interface SectionLink {
-  linkTxt: string;
-  status: string;
-  shouldShow: boolean;
-  url: string;
-  statusColor: string;
+interface SectionItem {
+  title: {
+    text: string;
+  };
+  href?: string;
+  status: {
+    text?: string;
+    tag?: {
+      text: string;
+      classes: string;
+    };
+  };
 }
 
 interface Section {
   title: string;
-  links: SectionLink[];
+  items: SectionItem[];
 }
 
-function getSectionLink(
+function getSectionItems(
   translations: AnyRecord,
   linkName: ET3CaseDetailsLinkNames,
   status: LinkStatus,
   eT3CaseDetailsLinksUrlMap: Map<string, string>
-): SectionLink {
-  return {
-    linkTxt: translations[linkName],
-    status: translations[status],
-    shouldShow: shouldCaseDetailsLinkBeClickable(status),
-    url: eT3CaseDetailsLinksUrlMap.get(linkName),
-    statusColor: linkStatusColorMap.get(status),
+): SectionItem {
+  const shouldLinkClickable: boolean = shouldCaseDetailsLinkBeClickable(status);
+  const title = {
+    text: translations[linkName],
   };
+  const tag = {
+    text: translations[status],
+    classes: 'govuk-tag' + linkStatusColorMap.get(status),
+  };
+  return shouldLinkClickable
+    ? {
+        title,
+        href: eT3CaseDetailsLinksUrlMap.get(linkName),
+        status: { tag },
+      }
+    : {
+        title,
+        status: { tag },
+      };
 }
 
 function getSection(
+  SectionIndex: ET3CaseDetailsLinkNames[][],
   translations: AnyRecord,
   index: number,
   et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses,
@@ -159,14 +177,15 @@ function getSection(
 ): Section {
   return {
     title: translations[`section${index + 1}`],
-    links: SectionIndexToEt3CaseDetailsLinkNames[index].map(linkName => {
+    items: SectionIndex[index].map(linkName => {
       const status = et3CaseDetailsLinksStatuses[linkName];
-      return getSectionLink(translations, linkName, status, eT3CaseDetailsLinksUrlMap);
+      return getSectionItems(translations, linkName, status, eT3CaseDetailsLinksUrlMap);
     }),
   };
 }
 
 export function getSections(
+  SectionIndex: ET3CaseDetailsLinkNames[][],
   et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses,
   selectedRespondent: RespondentET3Model,
   req: AppRequest
@@ -178,7 +197,17 @@ export function getSections(
     ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER as never, { returnObjects: true } as never),
   };
   const eT3CaseDetailsLinksUrlMap = getET3CaseDetailsLinksUrlMap(languageParam, selectedRespondent);
-  return Array.from(Array(SectionIndexToEt3CaseDetailsLinkNames.length)).map((__ignored, index) => {
-    return getSection(translations, index, et3CaseDetailsLinksStatuses, eT3CaseDetailsLinksUrlMap);
+  return Array.from(Array(SectionIndex.length)).map((__ignored, index) => {
+    return getSection(SectionIndex, translations, index, et3CaseDetailsLinksStatuses, eT3CaseDetailsLinksUrlMap);
   });
 }
+
+export const getRespondentName = (selectedRespondent: RespondentET3Model): string => {
+  if (StringUtils.isNotBlank(selectedRespondent.respondentName)) {
+    return selectedRespondent.respondentName;
+  }
+  if (StringUtils.isNotBlank(selectedRespondent.respondentOrganisation)) {
+    return selectedRespondent.respondentOrganisation;
+  }
+  return selectedRespondent.respondentFirstName + ' ' + selectedRespondent.respondentLastName;
+};
