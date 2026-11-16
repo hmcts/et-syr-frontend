@@ -55,6 +55,15 @@ describe('njkFilters', () => {
       ]);
     });
 
+    test('should build the owned radio ids, skipping dividers', () => {
+      const radioOwns = env.getFilter('radioOwns');
+
+      expect(radioOwns([{ value: 'Yes' }, { divider: 'or' }, { value: 'No' }], 'question')).toEqual(
+        'question question-3'
+      );
+      expect(radioOwns([{ id: 'custom-no', value: 'No' }], 'question')).toEqual('custom-no');
+    });
+
     test('should not count or number dividers', () => {
       const radioPositions = env.getFilter('radioPositions');
       const input = [{ value: 'A' }, { divider: 'or' }, { value: 'B' }];

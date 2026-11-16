@@ -1,13 +1,26 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 
+{% set idPrefix = field.id if field.id else fieldName %}
 {% set legendClasses %}{% if field.labelSize !== null%}govuk-fieldset__legend--{{ field.labelSize if field.labelSize else "m"}}{% endif %}{% endset %}
+{% set radioItems = formItems(field.values, userCase[fieldName]) | radioPositions %}
+{% set owns = radioItems | radioOwns(idPrefix) %}
+{% set describedBy = (idPrefix + "-hint " + idPrefix + "-error") if getError(fieldName) else (idPrefix + "-hint") %}
+{% set legendHtml %}<span id="{{ idPrefix }}-legend">{{ getContent(field.label) }}</span>{% endset %}
+{# The revealed field stays in the fieldset so it still appears under its option.
+   This group owns only the radios, so browsers do not count that field as another option. #}
+{% if owns %}
+<div role="radiogroup" aria-labelledby="{{ idPrefix }}-legend" aria-describedby="{{ describedBy }}" aria-owns="{{ owns }}"></div>
+{% endif %}
 {{ govukRadios({
     classes: field.classes,
-    idPrefix: field.id if field.id else fieldName,
+    idPrefix: idPrefix,
     name: fieldName,
     fieldset: {
+      attributes: {
+        role: "presentation"
+      },
       legend: {
-        text: getContent(field.label),
+        html: legendHtml,
         classes: "hidden" if field.labelHidden else legendClasses,
         isPageHeading: field.isPageHeading
       }
@@ -15,7 +28,7 @@
     hint: {
       html: getContent(field.hint)
     },
-    items: formItems(field.values, userCase[fieldName]) | radioPositions,
+    items: radioItems,
     errorMessage: getError(fieldName),
     formGroup: {
       classes: "hidden " + field.id if field.hidden else field.id

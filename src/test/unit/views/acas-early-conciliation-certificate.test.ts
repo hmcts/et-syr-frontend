@@ -85,4 +85,12 @@ describe('Acas early conciliation certificate page', () => {
     expect(radioInputs.map(input => input.getAttribute('aria-posinset'))).to.deep.equal(['1', '2']);
     expect(radioInputs.map(input => input.getAttribute('aria-setsize'))).to.deep.equal(['2', '2']);
   });
+
+  it('should keep a revealed field out of the radio group', () => {
+    const group = htmlRes.querySelector('[role="radiogroup"]');
+    const radioInputs = Array.from(htmlRes.querySelectorAll('input[name="et3ResponseAcasAgree"]'));
+    expect(group?.getAttribute('aria-owns')).to.equal(radioInputs.map(input => input.id).join(' '));
+    expect(htmlRes.querySelector('fieldset')?.getAttribute('role')).to.equal('presentation');
+    expect(group?.getAttribute('aria-owns')).to.not.contain('et3ResponseAcasAgreeReason');
+  });
 });

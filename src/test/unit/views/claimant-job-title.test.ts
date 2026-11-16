@@ -91,4 +91,12 @@ describe('Claimant job title page', () => {
     expect(radioInputs.map(input => input.getAttribute('aria-setsize'))).to.deep.equal(['3', '3', '3']);
     expect(htmlRes.querySelector('#et3ResponseCorrectJobTitle')?.hasAttribute('aria-setsize')).to.equal(false);
   });
+
+  it('should keep a revealed field out of the radio group', () => {
+    const group = htmlRes.querySelector('[role="radiogroup"]');
+    const radioInputs = Array.from(htmlRes.querySelectorAll('input[name="et3ResponseIsJobTitleCorrect"]'));
+    expect(group?.getAttribute('aria-owns')).to.equal(radioInputs.map(input => input.id).join(' '));
+    expect(group?.getAttribute('aria-owns')).to.not.contain('et3ResponseCorrectJobTitle');
+    expect(htmlRes.querySelector('.govuk-form-group fieldset')?.getAttribute('role')).to.equal('presentation');
+  });
 });
