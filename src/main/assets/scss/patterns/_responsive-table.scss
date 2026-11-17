@@ -1,8 +1,4 @@
 .app-responsive-table {
-  .govuk-table__cell {
-    overflow-wrap: anywhere;
-  }
-
   @include govuk-media-query($until: tablet) {
     .govuk-table,
     .govuk-table__body,
@@ -25,6 +21,7 @@
       padding: govuk-spacing(1) 0;
       border-bottom: 0;
       text-align: left;
+      overflow-wrap: anywhere;
 
       &::before {
         content: attr(data-label);
