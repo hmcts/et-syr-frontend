@@ -1,4 +1,4 @@
-import { CaseType, CaseTypeId, Document, RepresentedTypeC, YesOrNo } from '../case';
+import { CaseFlags, CaseType, CaseTypeId, Document, RepresentedTypeC, YesOrNo } from '../case';
 import { ClaimantCorrespondence } from '../complexTypes/claimantCorrespondence';
 import { ClaimantEmploymentDetails } from '../complexTypes/claimantEmploymentDetails';
 import { ClaimantHearingPreference } from '../complexTypes/claimantHearingPreference';
@@ -47,6 +47,7 @@ export interface CaseData {
   newEmploymentType?: NewEmploymentDetails;
   claimantRequests?: ClaimantRequests;
   claimantHearingPreference?: ClaimantHearingPreference;
+  respondentExternalFlags?: CaseFlags;
   claimantTaskListChecks?: TaskListCheckType;
   respondentCollection?: RespondentApiModel[];
   claimantWorkAddressQuestion?: YesOrNo;
