@@ -84,7 +84,7 @@ export default class CheckYourAnswersET3Controller {
       hideContactUs: true,
       sessionErrors: req.session.errors,
       et3ResponseSection1: getEt3Section1(req, sectionTranslations, InterceptPaths.ANSWERS_CHANGE),
-      et3ResponseSection2: getEt3Section2(
+      et3ResponseSection2: await getEt3Section2(
         userCase,
         sectionTranslations,
         InterceptPaths.ANSWERS_CHANGE,
