@@ -47,6 +47,20 @@ describe('RespondentContestClaimController', () => {
       // Assert that the response.render method is called with the correct translation key and any content
       expect(response.render).toHaveBeenCalledWith(TranslationKeys.RESPONDENT_CONTEST_CLAIM, expect.anything());
     });
+
+    it('should set the page title to match the h1 including the respondent name', () => {
+      request = mockRequestWithTranslation(
+        { session: { userCase: { respondentName: 'Mrs Test Auto' } } },
+        translationJsons
+      );
+
+      controller.get(request, response);
+
+      expect(response.render).toHaveBeenCalledWith(
+        TranslationKeys.RESPONDENT_CONTEST_CLAIM,
+        expect.objectContaining({ title: 'Does Mrs Test Auto contest the claim?' })
+      );
+    });
   });
   it('should render the respondent contest claim page with the correct translations when request url is welsh', () => {
     // Prepare the mock request with translation and session data

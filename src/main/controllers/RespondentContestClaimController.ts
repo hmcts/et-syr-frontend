@@ -89,6 +89,8 @@ export default class RespondentContestClaimController {
     ]);
     res.render(TranslationKeys.RESPONDENT_CONTEST_CLAIM, {
       ...content,
+      // Page <title> must match the question heading, which includes the respondent name.
+      title: `${content.h1}${respondentName ?? ''}${content.h1Extra}`,
       redirectUrl,
       hideContactUs: true,
     });
