@@ -24,16 +24,17 @@ export const subSectionTitleTranslationKeys = [
 ];
 
 export const expectedRespondentHubTestStatuses = [
-  'Not started yet',
-  'Not started yet',
-  'Not started yet',
-  'Cannot start yet',
+  ['Not started yet', 'Not started yet'],
+  ['Not started yet', 'Not started yet'],
+  ['Not started yet', 'Not started yet'],
+  ['Cannot start yet'],
 ];
 
 export const mockRespondentHubTranslations = {
   section1: 'Tell us about the respondent',
   contactDetails: 'Contact details',
   employerDetails: 'Hearing format and employer details',
+  yourSupport: 'Your Support',
   section2: 'Tell us about the claimant ',
   conciliationAndEmployeeDetails: 'Early conciliation and employee details',
   payPensionBenefitDetails: 'Pay, pension and benefits details',
@@ -44,4 +45,6 @@ export const mockRespondentHubTranslations = {
   checkYorAnswers: 'Check your answers',
   notStartedYet: 'Not started yet',
   cannotStartYet: 'Cannot start yet',
+  optional: 'Optional',
+  submitted: 'Submitted',
 };

@@ -9,6 +9,7 @@ import { saveAndContinueButton, saveForLaterButton } from '../definitions/radios
 import { AnyRecord } from '../definitions/util-types';
 import { getPageContent } from '../helpers/FormHelper';
 import { setUrlLanguage } from '../helpers/LanguageHelper';
+import { getCuiYourSupportFeature } from '../modules/featureFlag/CuiYourSupportFeature';
 import ET3Util from '../utils/ET3Util';
 import { isAValidNumber } from '../validators/validator';
 
@@ -35,13 +36,20 @@ export default class RespondentSiteEmployeesController {
   }
 
   public post = async (req: AppRequest, res: Response): Promise<void> => {
+    const cuiYourSupportEnabled = await getCuiYourSupportFeature().isEnabled(req.session.userCase?.caseTypeId);
+    const nextPage = cuiYourSupportEnabled ? PageUrls.YOUR_SUPPORT : PageUrls.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES;
+
+    if (cuiYourSupportEnabled && !req.body?.saveForLater && !req.session.returnUrl && !req.session.subSectionUrl) {
+      req.session.subSectionUrl = setUrlLanguage(req, PageUrls.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES);
+    }
+
     await ET3Util.updateET3ResponseWithET3Form(
       req,
       res,
       this.form,
       ET3HubLinkNames.EmployerDetails,
       LinkStatus.IN_PROGRESS,
-      PageUrls.CHECK_YOUR_ANSWERS_HEARING_PREFERENCES
+      nextPage
     );
   };
 

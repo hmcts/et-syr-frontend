@@ -1,5 +1,8 @@
 import HearingPanelPreferenceController from '../../../main/controllers/HearingPanelPreferenceController';
+import { CaseTypeId } from '../../../main/definitions/case';
 import { PageUrls, TranslationKeys } from '../../../main/definitions/constants';
+import { CuiYourSupportFeature } from '../../../main/modules/featureFlag/CuiYourSupportFeature';
+import * as CuiYourSupportFeatureModule from '../../../main/modules/featureFlag/CuiYourSupportFeature';
 import * as LaunchDarkly from '../../../main/modules/featureFlag/launchDarkly';
 import commonJsonRaw from '../../../main/resources/locales/en/translation/common.json';
 import pageJsonRaw from '../../../main/resources/locales/en/translation/hearing-panel-preference.json';
@@ -22,6 +25,7 @@ describe('HearingPanelPreferenceController', () => {
     request = mockRequest({});
     response = mockResponse();
     jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(true);
+    jest.spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature').mockReturnValue(new CuiYourSupportFeature([]));
   });
 
   afterEach(() => {
@@ -42,6 +46,38 @@ describe('HearingPanelPreferenceController', () => {
 
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
     });
+
+    it('should redirect to respondent employees when ERA is disabled and CUI Your Support is enabled', async () => {
+      jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(false);
+      jest
+        .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+        .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
+      request = mockRequest({
+        userCase: {
+          caseTypeId: CaseTypeId.SCOTLAND,
+        },
+      });
+
+      await controller.get(request, response);
+
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_EMPLOYEES);
+    });
+
+    it('should clear the preference and reason when clear selection is requested', async () => {
+      request = mockRequest({
+        userCase: {
+          respondentHearingPanelPreference: 'Judge',
+          respondentHearingPanelPreferenceReason: 'Legal issues',
+        },
+      });
+      request.query = { redirect: 'clearSelection' };
+
+      await controller.get(request, response);
+
+      expect(request.session.userCase.respondentHearingPanelPreference).toBeUndefined();
+      expect(request.session.userCase.respondentHearingPanelPreferenceReason).toBeUndefined();
+      expect(response.render).toHaveBeenCalledWith(TranslationKeys.HEARING_PANEL_PREFERENCE, expect.anything());
+    });
   });
 
   describe('POST method', () => {
@@ -56,6 +92,26 @@ describe('HearingPanelPreferenceController', () => {
       updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
       await controller.post(request, response);
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
+    });
+
+    it('should continue to respondent employees when CUI Your Support is enabled', async () => {
+      jest
+        .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+        .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
+      request = mockRequest({
+        body: {
+          respondentHearingPanelPreference: 'Panel',
+          respondentHearingPanelPreferenceReason: 'Workplace experience would help',
+        },
+        userCase: {
+          caseTypeId: CaseTypeId.SCOTLAND,
+        },
+      });
+      updateET3DataMock.mockResolvedValue(mockCaseWithIdWithRespondents);
+
+      await controller.post(request, response);
+
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_EMPLOYEES);
     });
 
     it('should continue to reasonable adjustments when no preference is selected (optional question)', async () => {
@@ -78,7 +134,29 @@ describe('HearingPanelPreferenceController', () => {
 
       await controller.post(request, response);
 
+      expect(updateET3DataMock).not.toHaveBeenCalled();
       expect(response.redirect).toHaveBeenCalledWith(PageUrls.REASONABLE_ADJUSTMENTS);
+    });
+
+    it('should continue to respondent employees without saving when ERA is disabled and CUI Your Support is enabled', async () => {
+      jest.spyOn(LaunchDarkly, 'getFlagValue').mockResolvedValue(false);
+      jest
+        .spyOn(CuiYourSupportFeatureModule, 'getCuiYourSupportFeature')
+        .mockReturnValue(new CuiYourSupportFeature([CaseTypeId.SCOTLAND]));
+      request = mockRequest({
+        body: {
+          respondentHearingPanelPreference: 'Judge',
+          respondentHearingPanelPreferenceReason: 'Legal issues',
+        },
+        userCase: {
+          caseTypeId: CaseTypeId.SCOTLAND,
+        },
+      });
+
+      await controller.post(request, response);
+
+      expect(updateET3DataMock).not.toHaveBeenCalled();
+      expect(response.redirect).toHaveBeenCalledWith(PageUrls.RESPONDENT_EMPLOYEES);
     });
   });
 });
