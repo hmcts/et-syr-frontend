@@ -4,6 +4,8 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
+{% block pageTitle %}{{ h1 }} - {{ serviceName }} - {{ govUk }}{% endblock %}
+
 {% block beforeContent %}
   {{ super() }}
   {% include "back-link.njk"%}
