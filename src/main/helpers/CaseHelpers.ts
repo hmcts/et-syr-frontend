@@ -79,6 +79,12 @@ export const handleUpdateSubmittedCaseFlags = async (req: AppRequest, logger: Lo
   }
 };
 
+export const setUserCaseIfUndefined = (req: AppRequest): void => {
+  if (!req.session.userCase) {
+    req.session.userCase = {} as CaseWithId;
+  }
+};
+
 export const setUserCase = (req: AppRequest, formData: Partial<CaseWithId>, fieldsToReset: string[]): void => {
   if (!req.session.userCase) {
     req.session.userCase = {} as CaseWithId;

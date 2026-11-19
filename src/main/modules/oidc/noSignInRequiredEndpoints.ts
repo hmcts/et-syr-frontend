@@ -3,6 +3,7 @@ import { PageUrls, Urls, languages } from '../../definitions/constants';
 export const noSignInRequiredEndpoints: string[] = [
   Urls.INFO,
   Urls.HOME,
+  PageUrls.LIP_OR_REPRESENTATIVE,
   PageUrls.CASE_NUMBER_CHECK,
   PageUrls.RETURN_TO_EXISTING_RESPONSE,
   PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE,
