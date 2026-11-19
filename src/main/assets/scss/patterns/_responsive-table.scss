@@ -1,0 +1,33 @@
+.app-responsive-table {
+  @include govuk-media-query($until: tablet) {
+    .govuk-table,
+    .govuk-table__body,
+    .govuk-table__row,
+    .govuk-table__cell {
+      display: block;
+      width: 100%;
+    }
+
+    .govuk-table__head {
+      @include govuk-visually-hidden;
+    }
+
+    .govuk-table__row {
+      margin-bottom: govuk-spacing(4);
+      border-bottom: 2px solid $govuk-border-colour;
+    }
+
+    .govuk-table__cell {
+      padding: govuk-spacing(1) 0;
+      border-bottom: 0;
+      text-align: left;
+      overflow-wrap: anywhere;
+
+      &::before {
+        content: attr(data-label);
+        display: block;
+        font-weight: $govuk-font-weight-bold;
+      }
+    }
+  }
+}
