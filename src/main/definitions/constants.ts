@@ -115,6 +115,7 @@ export const TranslationKeys = {
   TRANSFERRED_CASE: 'transferred-case',
   // non-MyHMCTS Respondent rep
   REP_CASE_OVERVIEW: 'rep-case-overview',
+  REP_RESPONSE_LANDING: 'rep-response-landing',
 } as const;
 
 export const FEATURE_FLAGS = {
@@ -148,6 +149,7 @@ export const PageUrls = {
   OTHER_RESPONDENTS_ET3: '/other-respondents-et3',
   CLAIMANT_CONTACT_DETAILS: '/claimant-contact-details',
   RESPONDENT_RESPONSE_LANDING: '/respondent-response-landing',
+  REP_RESPONSE_LANDING: '/rep-response-landing',
   RESPONDENT_RESPONSE_TASK_LIST: '/respondent-response-task-list',
   RESPONDENT_NAME: '/respondent-name',
   TYPE_OF_ORGANISATION: '/type-of-organisation',
