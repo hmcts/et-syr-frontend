@@ -76,6 +76,7 @@ import PrepareAndSubmitHearingDocumentsController from '../../controllers/Prepar
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
 import RepCaseOverviewController from '../../controllers/RepCaseOverviewController';
+import RepResponseLandingController from '../../controllers/RepResponseLandingController';
 import RespondToApplicationCYAController from '../../controllers/RespondToApplicationCYAController';
 import RespondToApplicationCompleteController from '../../controllers/RespondToApplicationCompleteController';
 import RespondToApplicationController from '../../controllers/RespondToApplicationController';
@@ -404,6 +405,7 @@ export class Routes {
     app.get(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().get);
     app.post(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().post);
     app.get(PageUrls.REP_CASE_OVERVIEW, new RepCaseOverviewController().get);
+    app.get(PageUrls.REP_RESPONSE_LANDING, new RepResponseLandingController().get);
     app.get(
       Urls.INFO,
       infoRequestHandler({
