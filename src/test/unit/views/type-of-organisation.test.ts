@@ -36,8 +36,7 @@ const expectQuestionLegend = (htmlRes: Document, expectedQuestion: string): void
   const fieldset = heading[0].parentElement?.parentElement;
   expect(fieldset?.tagName).equal('FIELDSET');
   expect(fieldset?.getElementsByClassName(radioClass).length).equal(5);
-  expect(fieldset?.textContent).not.contains(pageJson.limitedCompanyTextLabel);
-  expect(htmlRes.body.textContent).contains(pageJson.limitedCompanyTextLabel);
+  expect(fieldset?.textContent).contains(pageJson.limitedCompanyTextLabel);
   const duplicateHeadings = htmlRes.getElementsByClassName('govuk-heading-l');
   for (const duplicate of Array.from(duplicateHeadings)) {
     expect(duplicate.textContent).not.contains(expectedQuestion);
@@ -59,5 +58,17 @@ describe('What type of organisation is the respondent page', () => {
     const heading = htmlRes.getElementsByClassName('govuk-fieldset__heading');
     expect(heading.length).equal(1, 'Expected one question heading');
     expect(heading[0].textContent).contains(welshPageJson.h1);
+  });
+
+  it('should render each conditional reveal directly after its radio option', async () => {
+    const htmlRes = await renderPage(PAGE_URL);
+    const radios = htmlRes.getElementsByClassName(radioClass);
+    const firstReveal = htmlRes.querySelector('#conditional-et3ResponseRespondentEmployerType');
+    const secondReveal = htmlRes.querySelector('#conditional-et3ResponseRespondentEmployerType-2');
+
+    expect(firstReveal?.previousElementSibling).to.equal(radios[0]);
+    expect(firstReveal?.nextElementSibling).to.equal(radios[1]);
+    expect(secondReveal?.previousElementSibling).to.equal(radios[1]);
+    expect(secondReveal?.nextElementSibling).to.equal(radios[2]);
   });
 });

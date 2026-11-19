@@ -86,17 +86,12 @@ describe('Acas early conciliation certificate page', () => {
     expect(radioInputs.map(input => input.getAttribute('aria-setsize'))).to.deep.equal(['2', '2']);
   });
 
-  it('should keep a revealed field out of the radio group', () => {
-    const group = htmlRes.querySelector('[role="radiogroup"]');
+  it('should render conditional reveal inside the fieldset using GOV.UK markup', () => {
     const radioInputs = Array.from(htmlRes.querySelectorAll('input[name="et3ResponseAcasAgree"]'));
-    expect(group?.getAttribute('aria-owns')).to.equal(radioInputs.map(input => input.id).join(' '));
-    expect(htmlRes.querySelector('fieldset')?.getAttribute('role')).to.equal('presentation');
-    expect(group?.getAttribute('aria-owns')).to.not.contain('et3ResponseAcasAgreeReason');
     const reveal = htmlRes.querySelector('#conditional-et3ResponseAcasAgree-2');
-    expect(reveal?.closest('fieldset')).to.equal(null);
-    radioInputs.forEach(input => {
-      expect(input.hasAttribute('aria-controls')).to.equal(false);
-      expect(input.hasAttribute('data-aria-controls')).to.equal(false);
-    });
+    expect(reveal).to.not.equal(null);
+    expect(reveal?.closest('fieldset')).to.not.equal(null);
+    expect(radioInputs[1].getAttribute('data-aria-controls')).to.equal('conditional-et3ResponseAcasAgree-2');
+    expect(reveal?.previousElementSibling).to.equal(radioInputs[1].closest('.govuk-radios__item'));
   });
 });

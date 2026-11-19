@@ -92,15 +92,13 @@ describe('Claimant job title page', () => {
     expect(htmlRes.querySelector('#et3ResponseCorrectJobTitle')?.hasAttribute('aria-setsize')).to.equal(false);
   });
 
-  it('should keep a revealed field out of the radio group', () => {
-    const group = htmlRes.querySelector('[role="radiogroup"]');
+  it('should render conditional reveal directly under its triggering radio item inside the fieldset', () => {
     const radioInputs = Array.from(htmlRes.querySelectorAll('input[name="et3ResponseIsJobTitleCorrect"]'));
-    expect(group?.getAttribute('aria-owns')).to.equal(radioInputs.map(input => input.id).join(' '));
-    expect(group?.getAttribute('aria-owns')).to.not.contain('et3ResponseCorrectJobTitle');
-    expect(htmlRes.querySelector('.govuk-form-group fieldset')?.getAttribute('role')).to.equal('presentation');
-    expect(htmlRes.querySelector('#et3ResponseCorrectJobTitle')?.closest('fieldset')).to.equal(null);
-    radioInputs.forEach(input => {
-      expect(input.hasAttribute('aria-controls')).to.equal(false);
-    });
+    const reveal = htmlRes.querySelector('#conditional-et3ResponseIsJobTitleCorrect-2');
+    expect(reveal).to.not.equal(null);
+    expect(reveal?.closest('fieldset')).to.not.equal(null);
+    expect(radioInputs[1].getAttribute('data-aria-controls')).to.equal('conditional-et3ResponseIsJobTitleCorrect-2');
+    expect(reveal?.previousElementSibling).to.equal(radioInputs[1].closest('.govuk-radios__item'));
+    expect(reveal?.nextElementSibling).to.equal(radioInputs[2].closest('.govuk-radios__item'));
   });
 });
