@@ -79,4 +79,19 @@ describe('Acas early conciliation certificate page', () => {
     const button = htmlRes.getElementsByClassName(buttonClass);
     expect(button[6].innerHTML).contains('Save as draft', 'Could not find the button');
   });
+
+  it('should give each radio a fixed position and set size', () => {
+    const radioInputs = Array.from(htmlRes.querySelectorAll('input[name="et3ResponseAcasAgree"]'));
+    expect(radioInputs.map(input => input.getAttribute('aria-posinset'))).to.deep.equal(['1', '2']);
+    expect(radioInputs.map(input => input.getAttribute('aria-setsize'))).to.deep.equal(['2', '2']);
+  });
+
+  it('should render conditional reveal inside the fieldset using GOV.UK markup', () => {
+    const radioInputs = Array.from(htmlRes.querySelectorAll('input[name="et3ResponseAcasAgree"]'));
+    const reveal = htmlRes.querySelector('#conditional-et3ResponseAcasAgree-2');
+    expect(reveal).to.not.equal(null);
+    expect(reveal?.closest('fieldset')).to.not.equal(null);
+    expect(radioInputs[1].getAttribute('data-aria-controls')).to.equal('conditional-et3ResponseAcasAgree-2');
+    expect(reveal?.previousElementSibling).to.equal(radioInputs[1].closest('.govuk-radios__item'));
+  });
 });

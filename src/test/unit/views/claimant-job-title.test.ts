@@ -84,4 +84,21 @@ describe('Claimant job title page', () => {
     const button = htmlRes.getElementsByClassName(buttonClass);
     expect(button[6].innerHTML).contains('Save as draft', 'Could not find the button');
   });
+
+  it('should give each radio a fixed position and set size', () => {
+    const radioInputs = Array.from(htmlRes.querySelectorAll('input[name="et3ResponseIsJobTitleCorrect"]'));
+    expect(radioInputs.map(input => input.getAttribute('aria-posinset'))).to.deep.equal(['1', '2', '3']);
+    expect(radioInputs.map(input => input.getAttribute('aria-setsize'))).to.deep.equal(['3', '3', '3']);
+    expect(htmlRes.querySelector('#et3ResponseCorrectJobTitle')?.hasAttribute('aria-setsize')).to.equal(false);
+  });
+
+  it('should render conditional reveal directly under its triggering radio item inside the fieldset', () => {
+    const radioInputs = Array.from(htmlRes.querySelectorAll('input[name="et3ResponseIsJobTitleCorrect"]'));
+    const reveal = htmlRes.querySelector('#conditional-et3ResponseIsJobTitleCorrect-2');
+    expect(reveal).to.not.equal(null);
+    expect(reveal?.closest('fieldset')).to.not.equal(null);
+    expect(radioInputs[1].getAttribute('data-aria-controls')).to.equal('conditional-et3ResponseIsJobTitleCorrect-2');
+    expect(reveal?.previousElementSibling).to.equal(radioInputs[1].closest('.govuk-radios__item'));
+    expect(reveal?.nextElementSibling).to.equal(radioInputs[2].closest('.govuk-radios__item'));
+  });
 });
