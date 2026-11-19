@@ -29,5 +29,6 @@
   "howToMakeResponseLinkTxt": "How to make a response",
   "howToMakeResponseLinkUrl": "https://www.gov.uk/being-taken-to-employment-tribunal-by-employee",
   "moreFromLinkTxt": "More from the Working, jobs and pensions category",
-  "moreFromLinkUrl": "http://gov.uk/browse/working"
+  "moreFromLinkUrl": "http://gov.uk/browse/working",
+  "opensInNewTab": "opens in new tab"
 }

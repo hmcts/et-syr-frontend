@@ -29,5 +29,6 @@
   "howToMakeResponseLinkTxt": "Sut i ymateb",
   "howToMakeResponseLinkUrl": "https://www.gov.uk/being-taken-to-employment-tribunal-by-employee",
   "moreFromLinkTxt": "Mwy o'r categori gweithio, swyddi a phensiynau",
-  "moreFromLinkUrl": "http://gov.uk/browse/working"
+  "moreFromLinkUrl": "http://gov.uk/browse/working",
+  "opensInNewTab": "yn agor mewn tab newydd"
 }

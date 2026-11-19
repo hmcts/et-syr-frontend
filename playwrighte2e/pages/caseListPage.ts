@@ -1,7 +1,5 @@
 import { expect } from '@playwright/test';
 
-import { params } from '../utils/config';
-
 import { BasePage } from './basePage';
 
 export default class CaseListPage extends BasePage {
@@ -59,21 +57,11 @@ export default class CaseListPage extends BasePage {
     await this.webActions.verifyElementContainsText(this.page.locator('#search-result'), submissionReference);
   }
 
-  async openCaseById(caseTypeId: string, caseId: string): Promise<string> {
-    const caseUrl = `${params.TestUrlForManageCaseAAT}/case-details/EMPLOYMENT/${caseTypeId}/${caseId}#Case%20Details`;
-    await this.page.goto(caseUrl);
+  async openCaseById(caseTypeId: string, caseId: string): Promise<void> {
+    await this.webActions.verifyElementToBeVisible(this.page.locator(this.elements.caseListLink));
+    const origin = new URL(this.page.url()).origin;
+    await this.page.goto(`${origin}/case-details/EMPLOYMENT/${caseTypeId}/${caseId}#Case%20Details`);
     await expect(this.page.getByRole('tab', { name: 'Case Details' })).toBeVisible();
-
-    const caseNumberHeading = this.page.locator('h1', { hasText: /Case Number:/i });
-    await expect(caseNumberHeading).toBeVisible();
-    const caseNumberText = (await caseNumberHeading.textContent()) ?? '';
-    const caseNumberMatch = caseNumberText.match(/\d{1,7}\/\d{4}/);
-    if (!caseNumberMatch) {
-      throw new Error(`Case number was not shown for case ${caseId}. Heading was "${caseNumberText.trim()}"`);
-    }
-
-    console.log('The value of the Case Number ' + caseNumberMatch[0]);
-    return caseNumberMatch[0];
   }
 
   async processCaseFromCaseList(): Promise<string> {

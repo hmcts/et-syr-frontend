@@ -13,8 +13,8 @@
   },
   "errors": {
     "et3ResponseClaimantCorrectHours": {
-      "invalid": "Rhaid i'r oriau gwaith wythnosol cyfartalog a gofnodwyd fod yn llai na 168 awr",
-      "exceeded": "Rhaid i'r oriau gwaith wythnosol cyfartalog a gofnodwyd fod yn llai na 168 awr"
+      "notANumber": "Rhaid i'r oriau gwaith wythnosol cyfartalog gynnwys rhifau yn unig. Er enghraifft, 37.5",
+      "exceeded": "Rhaid i'r oriau gwaith wythnosol cyfartalog a gofnodwyd fod yn 168 awr neu lai"
     },
     "hiddenErrorField": {
       "sessionUserCase": "Achos y defnyddiwr heb ei ganfod yn y sesiwn",

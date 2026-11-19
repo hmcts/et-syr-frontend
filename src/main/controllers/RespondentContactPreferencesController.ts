@@ -91,6 +91,16 @@ export default class RespondentContactPreferencesController {
       fieldsToReset.push('et3ResponseContactReason');
     }
 
+    // Keep the submitted answer so a validation error can focus the visible reason field.
+    if (userCase) {
+      if (formData.responseRespondentContactPreference !== undefined) {
+        userCase.responseRespondentContactPreference = formData.responseRespondentContactPreference;
+      }
+      if (formData.et3ResponseContactReason !== undefined) {
+        userCase.et3ResponseContactReason = formData.et3ResponseContactReason;
+      }
+    }
+
     //hide the language preference if it's a Scottish office
     if (userCase.managingOffice === 'Scotland') {
       delete this.form.getFormFields().et3ResponseLanguagePreference;
