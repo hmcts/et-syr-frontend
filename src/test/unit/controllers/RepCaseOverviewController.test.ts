@@ -18,7 +18,7 @@ describe('RepCaseOverviewController', () => {
   });
 
   describe('GET method', () => {
-    it('should render the Respondent Name page with the correct form content', async () => {
+    it('should render the Rep case overview page', async () => {
       await controller.get(request, response);
       expect(response.render).toHaveBeenCalledWith(
         TranslationKeys.REP_CASE_OVERVIEW,
