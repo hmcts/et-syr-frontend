@@ -1,7 +1,7 @@
 import { RespondentET3Model } from '../../../../main/definitions/case';
 import { ET3CaseDetailsLinksStatuses } from '../../../../main/definitions/links';
 import { AnyRecord } from '../../../../main/definitions/util-types';
-import { getRespondentName, getSectionsForRep } from '../../../../main/helpers/controller/RespondentRepHubHelper';
+import { getRespondentName, getSectionsForRep } from '../../../../main/helpers/controller/RepCaseOverviewHelper';
 import caseDetailsStatusJson from '../../../../main/resources/locales/en/translation/case-details-status.json';
 import caseDetailsJson from '../../../../main/resources/locales/en/translation/case-details.json';
 import { mockRequestWithTranslation } from '../../mocks/mockRequest';
