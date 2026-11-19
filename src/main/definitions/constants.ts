@@ -113,6 +113,8 @@ export const TranslationKeys = {
   YOUR_SUPPORT_CONFIRMATION: 'your-support-confirmation',
   YOUR_SUPPORT_SUBMITTED_CONFIRMATION: 'your-support-submitted-confirmation',
   TRANSFERRED_CASE: 'transferred-case',
+  // non-MyHMCTS Respondent rep
+  REP_CASE_OVERVIEW: 'rep-case-overview',
 } as const;
 
 export const FEATURE_FLAGS = {
@@ -238,6 +240,9 @@ export const PageUrls = {
   YOUR_SUPPORT_CONFIRMATION: '/your-support-confirmation',
   YOUR_SUPPORT_SUBMITTED_CONFIRMATION: '/your-support-submitted-confirmation',
   TRANSFERRED_CASE: '/transferred-case',
+  // non-MyHMCTS Respondent rep
+  REP_CASE_OVERVIEW: '/rep-case-overview',
+  RESPONDENT_CONTACT_DETAILS: '/respondent-contact-details',
 } as const;
 
 export const InterceptPaths = {

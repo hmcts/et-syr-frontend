@@ -1,0 +1,75 @@
+{% extends "form/main/template.njk" %}
+{% from "components/hmcts-progress-bar/macro.njk" import hmctsProgressBar %}
+{% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-l">{{ header }} {{ userCase.firstName }} {{ userCase.lastName }} vs {{ respondentName }}</h1>
+      <p id="caseNumber" class="govuk-body">{{ caseNumber + userCase.ethosCaseReference }}</p>
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+          <div class="top-border-blue">
+            {{ hmctsProgressBar({
+              items: progressBarItems,
+              classes: ''
+            }) }}
+
+            {% include "./components/case-details/case-details-notification-banner.njk" %}
+
+            {% for section in sections %}
+              <h2 class="govuk-heading-m govuk-!-margin-top-5">{{ getContent(section.title) }}</h2>
+              {{ govukTaskList({
+                items: section.items
+                }) }}
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-one-third-from-desktop">
+          <div class="top-border-blue">
+            <h2 class="govuk-heading-s">
+              {{ iWantTo }}
+            </h2>
+            <p class="govuk-body">
+              <a href="{{ PageUrls.CONTACT_TRIBUNAL + languageParam }}">
+                {{ contactTribunalAboutTheCase }}
+              </a>
+            </p>
+
+            <p class="govuk-body">
+              <a href="https://www.gov.uk/find-legal-advice" target="_blank">
+                {{ findLegalAdvice }}
+              </a>
+            </p>
+            {% if respondentRepresented %}
+              <p class="govuk-body">
+                <a href="/change-legal-representative">
+                  {{ changeLegalRepresentative }}
+                </a>
+              </p>
+            {% else %}
+              <p class="govuk-body">
+                <a href="/appoint-legal-representative">
+                  {{ appointLegalRepresentative }}
+                </a>
+              </p>
+            {% endif %}
+
+            {% set sideBarContent %}
+            {% include "./components/sidebar/sidebar.njk" %}
+            {% endset %}
+
+            {{ govukDetails({
+              summaryHtml: "<span id='contact-us-sidebar'>" + contact + "</span>",
+              html: sideBarContent
+            }) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
