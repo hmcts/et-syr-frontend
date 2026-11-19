@@ -6,9 +6,9 @@ import { TranslationKeys } from '../definitions/constants';
 import { ET3CaseDetailsLinksStatuses } from '../definitions/links';
 import { getProgressBarItems } from '../helpers/ProgressBarHelpers';
 import { getET3CaseDetailsLinkNames } from '../helpers/controller/CaseDetailsHelper';
-import { getRespondentName, getSectionsForRep } from '../helpers/controller/RespondentRepHubHelper';
+import { getRespondentName, getSectionsForRep } from '../helpers/controller/RepCaseOverviewHelper';
 
-export default class RespondentRepHubController {
+export default class RepCaseOverviewController {
   public async get(req: AppRequest, res: Response): Promise<void> {
     const selectedRespondent: RespondentET3Model =
       req.session.userCase.respondents[req.session.selectedRespondentIndex];
