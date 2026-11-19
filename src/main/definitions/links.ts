@@ -6,6 +6,7 @@ export enum ET3CaseDetailsLinkNames {
   ET1ClaimForm = 'et1ClaimForm',
   ClaimantContactDetails = 'claimantContactDetails',
   RespondentResponse = 'respondentResponse',
+  OtherRespondentEt3 = 'otherRespondentEt3',
   HearingDetails = 'hearingDetails',
   YourRequestsAndApplications = 'respondentRequestsAndApplications',
   ClaimantApplications = 'claimantApplications',
@@ -31,6 +32,8 @@ export class ET3CaseDetailsLinksStatuses {
         this[name] = LinkStatus.READY_TO_VIEW;
       } else if (name === ET3CaseDetailsLinkNames.RespondentResponse) {
         this[name] = LinkStatus.NOT_STARTED_YET;
+      } else if (name === ET3CaseDetailsLinkNames.OtherRespondentEt3) {
+        this[name] = LinkStatus.NOT_YET_AVAILABLE;
       } else if (name === ET3CaseDetailsLinkNames.HearingDetails) {
         this[name] = LinkStatus.NOT_YET_AVAILABLE;
       } else if (name === ET3CaseDetailsLinkNames.YourRequestsAndApplications) {
@@ -57,7 +60,7 @@ export class ET3CaseDetailsLinksStatuses {
 export const SectionIndexToEt3CaseDetailsLinkNames: ET3CaseDetailsLinkNames[][] = [
   [ET3CaseDetailsLinkNames.PersonalDetails],
   [ET3CaseDetailsLinkNames.ET1ClaimForm, ET3CaseDetailsLinkNames.ClaimantContactDetails],
-  [ET3CaseDetailsLinkNames.RespondentResponse],
+  [ET3CaseDetailsLinkNames.RespondentResponse, ET3CaseDetailsLinkNames.OtherRespondentEt3],
   [ET3CaseDetailsLinkNames.HearingDetails],
   [
     ET3CaseDetailsLinkNames.YourRequestsAndApplications,
