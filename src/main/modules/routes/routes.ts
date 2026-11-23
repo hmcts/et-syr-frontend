@@ -75,6 +75,7 @@ import OtherRespondentsEt3Controller from '../../controllers/OtherRespondentsEt3
 import PrepareAndSubmitHearingDocumentsController from '../../controllers/PrepareAndSubmitHearingDocumentsController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
+import RepCaseOverviewController from '../../controllers/RepCaseOverviewController';
 import RespondToApplicationCYAController from '../../controllers/RespondToApplicationCYAController';
 import RespondToApplicationCompleteController from '../../controllers/RespondToApplicationCompleteController';
 import RespondToApplicationController from '../../controllers/RespondToApplicationController';
@@ -402,6 +403,7 @@ export class Routes {
     app.get(PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE, new MakingResponseAsLegalRepController().get);
     app.get(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().get);
     app.post(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().post);
+    app.get(PageUrls.REP_CASE_OVERVIEW, new RepCaseOverviewController().get);
     app.get(
       Urls.INFO,
       infoRequestHandler({
