@@ -80,7 +80,8 @@ const getSections = (
   SectionIndex: ET3CaseDetailsLinkNames[][],
   et3CaseDetailsLinksStatuses: ET3CaseDetailsLinksStatuses,
   selectedRespondent: RespondentET3Model,
-  req: AppRequest
+  req: AppRequest,
+  isRep: boolean
 ): Section[] => {
   const languageParam = getLanguageParam(req.url);
   const translations: AnyRecord = {
@@ -88,7 +89,7 @@ const getSections = (
     ...req.t(TranslationKeys.CASE_DETAILS_STATUS as never, { returnObjects: true } as never),
     ...req.t(TranslationKeys.CASE_DETAILS_WITH_CASE_ID_PARAMETER as never, { returnObjects: true } as never),
   };
-  const eT3CaseDetailsLinksUrlMap = getET3CaseDetailsLinksUrlMap(languageParam, selectedRespondent);
+  const eT3CaseDetailsLinksUrlMap = getET3CaseDetailsLinksUrlMap(languageParam, selectedRespondent, isRep);
   return Array.from(Array(SectionIndex.length)).map((__ignored, index) => {
     return getSection(SectionIndex, translations, index, et3CaseDetailsLinksStatuses, eT3CaseDetailsLinksUrlMap);
   });
@@ -99,7 +100,7 @@ export const getSectionsForRep = (
   selectedRespondent: RespondentET3Model,
   req: AppRequest
 ): Section[] => {
-  return getSections(CaseOverviewSectionIndexForRep, et3CaseDetailsLinksStatuses, selectedRespondent, req);
+  return getSections(CaseOverviewSectionIndexForRep, et3CaseDetailsLinksStatuses, selectedRespondent, req, true);
 };
 
 export const getRespondentName = (selectedRespondent: RespondentET3Model): string => {
