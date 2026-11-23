@@ -30,7 +30,7 @@ export default class Et3LoginPage extends BasePage {
   elements = {
     returnToExistingResponse: this.page.locator('[href="/return-to-existing?lng=en"]'),
     submit: this.page.locator('[type="submit"]'),
-    startNow: this.page.locator('[href="/case-number-check"]'),
+    startNow: this.page.locator('[href="/lip-or-representative"]'),
     respondToNewClaim: '[href="/case-number-check?lng=en&redirect=selfAssignment"]',
     caseNumber: '#ethosCaseReference',
     submissionRefNumber: '#caseReferenceId',
@@ -44,15 +44,30 @@ export default class Et3LoginPage extends BasePage {
     // Clear IDAM session so the caseworker login from beforeEach doesn't interfere
     await this.page.context().clearCookies();
 
-    const ethosCaseReference = this.normalizeCaseNumber(caseNumber);
+    await this.processHomeStartNow();
+    await this.processLipOrRep();
+    await this.processCaseNumberCheck(caseNumber);
+    await this.loginRespondentUi(username, password);
+  }
+
+  async processHomeStartNow(): Promise<void> {
     await this.page.goto(params.TestUrlRespondentUi);
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Introduction');
-    await this.webActions.clickElementByCss('[href="/case-number-check"]');
+    await this.webActions.clickElementByCss('[href="/lip-or-representative"]');
+  }
+
+  async processLipOrRep(): Promise<void> {
+    await this.page.waitForSelector('#main-form', { timeout: 5000 });
+    await this.page.check('input[id=lip-or-representative]');
+    await this.clickContinue();
+  }
+
+  async processCaseNumberCheck(caseNumber: string | string[]): Promise<void> {
+    const ethosCaseReference = this.normalizeCaseNumber(caseNumber);
     await this.wait(10);
     await this.webActions.verifyElementContainsText(this.page.locator('h1'), 'Case Number');
     await this.webActions.fillField(this.elements.caseNumber, ethosCaseReference);
     await this.clickContinue();
-    await this.loginRespondentUi(username, password);
   }
 
   private async headingText(): Promise<string> {
