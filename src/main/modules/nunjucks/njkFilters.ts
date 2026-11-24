@@ -20,6 +20,24 @@ function createFilters(env: nunjucks.Environment): void {
       return titleCaseArray;
     }
   });
+
+  // Record the real radio count so screen readers don't count dividers or conditionally revealed fields.
+  env.addFilter('radioPositions', function (items: RadioItem[]) {
+    const setSize = items.filter(item => item && !item.divider).length;
+    let position = 0;
+    return items.map(item => {
+      if (!item || item.divider) {
+        return item;
+      }
+      position++;
+      return {
+        ...item,
+        attributes: { ...item.attributes, 'aria-posinset': position, 'aria-setsize': setSize },
+      };
+    });
+  });
 }
+
+type RadioItem = { divider?: string; attributes?: Record<string, unknown> };
 
 export default createFilters;
