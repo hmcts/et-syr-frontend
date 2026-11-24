@@ -19,6 +19,7 @@
     "claimantContactDetails": "readyToView",
     "respondentResponse": "notStartedYet",
     "otherRespondentEt3": "notAvailableYet",
+    "respondentContactDetails": "notAvailableYet",
     "hearingDetails": "notAvailableYet",
     "respondentRequestsAndApplications": "notAvailableYet",
     "claimantApplications": "notAvailableYet",

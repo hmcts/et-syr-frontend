@@ -64,6 +64,7 @@ import HearingPreferencesController from '../../controllers/HearingPreferencesCo
 import HoldingPageController from '../../controllers/HoldingPageController';
 import HomeController from '../../controllers/HomeController';
 import IsClaimantEmploymentWithRespondentContinuingController from '../../controllers/IsClaimantEmploymentWithRespondentContinuingController';
+import LipOrRepController from '../../controllers/LipOrRepController';
 import MakingResponseAsLegalRepController from '../../controllers/MakingResponseAsLegalRepController';
 import ManifestController from '../../controllers/ManifestController';
 import NewSelfAssignmentRequestController from '../../controllers/NewSelfAssignmentRequestController';
@@ -74,6 +75,8 @@ import OtherRespondentsEt3Controller from '../../controllers/OtherRespondentsEt3
 import PrepareAndSubmitHearingDocumentsController from '../../controllers/PrepareAndSubmitHearingDocumentsController';
 import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustmentsController';
 import RemoveFileController from '../../controllers/RemoveFileController';
+import RepCaseOverviewController from '../../controllers/RepCaseOverviewController';
+import RepResponseLandingController from '../../controllers/RepResponseLandingController';
 import RespondToApplicationCYAController from '../../controllers/RespondToApplicationCYAController';
 import RespondToApplicationCompleteController from '../../controllers/RespondToApplicationCompleteController';
 import RespondToApplicationController from '../../controllers/RespondToApplicationController';
@@ -386,6 +389,8 @@ export class Routes {
     app.get(PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT, new RespondToNotificationStoredSubmitController().get);
     app.post(PageUrls.RESPOND_TO_NOTIFICATION_STORED_SUBMIT, new RespondToNotificationStoredSubmitController().post);
     // others
+    app.get(PageUrls.LIP_OR_REPRESENTATIVE, new LipOrRepController().get);
+    app.post(PageUrls.LIP_OR_REPRESENTATIVE, new LipOrRepController().post);
     app.get(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().get);
     app.post(PageUrls.RETURN_TO_EXISTING_RESPONSE, new ReturnToExistingResponseController().post);
     app.get(Urls.EXTEND_SESSION, new SessionTimeoutController().getExtendSession);
@@ -399,6 +404,8 @@ export class Routes {
     app.get(PageUrls.MAKING_RESPONSE_AS_LEGAL_REPRESENTATIVE, new MakingResponseAsLegalRepController().get);
     app.get(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().get);
     app.post(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().post);
+    app.get(PageUrls.REP_CASE_OVERVIEW, new RepCaseOverviewController().get);
+    app.get(PageUrls.REP_RESPONSE_LANDING, new RepResponseLandingController().get);
     app.get(
       Urls.INFO,
       infoRequestHandler({

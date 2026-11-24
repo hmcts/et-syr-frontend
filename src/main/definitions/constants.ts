@@ -9,6 +9,7 @@ export const TranslationKeys = {
   HOME: 'home',
   HOLDING_PAGE: 'holding-page',
   CHECKLIST: 'checklist',
+  LIP_OR_REPRESENTATIVE: 'lip-or-representative',
   COOKIE_PREFERENCES: 'cookie-preferences',
   CASE_DETAILS_WITH_CASE_ID_PARAMETER: 'case-details',
   CASE_DETAILS_STATUS: 'case-details-status',
@@ -112,6 +113,9 @@ export const TranslationKeys = {
   YOUR_SUPPORT_CONFIRMATION: 'your-support-confirmation',
   YOUR_SUPPORT_SUBMITTED_CONFIRMATION: 'your-support-submitted-confirmation',
   TRANSFERRED_CASE: 'transferred-case',
+  // non-MyHMCTS Respondent rep
+  REP_CASE_OVERVIEW: 'rep-case-overview',
+  REP_RESPONSE_LANDING: 'rep-response-landing',
 } as const;
 
 export const FEATURE_FLAGS = {
@@ -124,6 +128,7 @@ export const PageUrls = {
   NOT_FOUND: '/not-found',
   HOLDING_PAGE: '/holding-page',
   CHECKLIST: '/checklist',
+  LIP_OR_REPRESENTATIVE: '/lip-or-representative',
   CASE_NUMBER_CHECK: '/case-number-check',
   REMOVE_FILE: '/remove-file/:fileId/:contestClaimDetails',
   SELF_ASSIGNMENT_FORM: '/self-assignment-form',
@@ -144,6 +149,7 @@ export const PageUrls = {
   OTHER_RESPONDENTS_ET3: '/other-respondents-et3',
   CLAIMANT_CONTACT_DETAILS: '/claimant-contact-details',
   RESPONDENT_RESPONSE_LANDING: '/respondent-response-landing',
+  REP_RESPONSE_LANDING: '/rep-response-landing',
   RESPONDENT_RESPONSE_TASK_LIST: '/respondent-response-task-list',
   RESPONDENT_NAME: '/respondent-name',
   TYPE_OF_ORGANISATION: '/type-of-organisation',
@@ -236,6 +242,9 @@ export const PageUrls = {
   YOUR_SUPPORT_CONFIRMATION: '/your-support-confirmation',
   YOUR_SUPPORT_SUBMITTED_CONFIRMATION: '/your-support-submitted-confirmation',
   TRANSFERRED_CASE: '/transferred-case',
+  // non-MyHMCTS Respondent rep
+  REP_CASE_OVERVIEW: '/rep-case-overview',
+  RESPONDENT_CONTACT_DETAILS: '/respondent-contact-details',
 } as const;
 
 export const InterceptPaths = {

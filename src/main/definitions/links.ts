@@ -7,6 +7,7 @@ export enum ET3CaseDetailsLinkNames {
   ClaimantContactDetails = 'claimantContactDetails',
   RespondentResponse = 'respondentResponse',
   OtherRespondentEt3 = 'otherRespondentEt3',
+  RespondentContactDetails = 'respondentContactDetails',
   HearingDetails = 'hearingDetails',
   YourRequestsAndApplications = 'respondentRequestsAndApplications',
   ClaimantApplications = 'claimantApplications',
@@ -33,6 +34,8 @@ export class ET3CaseDetailsLinksStatuses {
       } else if (name === ET3CaseDetailsLinkNames.RespondentResponse) {
         this[name] = LinkStatus.NOT_STARTED_YET;
       } else if (name === ET3CaseDetailsLinkNames.OtherRespondentEt3) {
+        this[name] = LinkStatus.NOT_YET_AVAILABLE;
+      } else if (name === ET3CaseDetailsLinkNames.RespondentContactDetails) {
         this[name] = LinkStatus.NOT_YET_AVAILABLE;
       } else if (name === ET3CaseDetailsLinkNames.HearingDetails) {
         this[name] = LinkStatus.NOT_YET_AVAILABLE;
