@@ -33,10 +33,10 @@
               <p class='govuk-body'>" + insetTxt2 + "</p>"
       }) }}
 
-      <ol class="app-task-list">
+      <ol class="govuk-list govuk-list--number govuk-heading-m">
         {% for section in sections %}
           <li>
-            <h2 class="app-task-list__section">{{ getContent(section.title) }}</h2>
+            <h2 class="govuk-heading-m">{{ getContent(section.title) }}</h2>
             {{ govukTaskList({
               items: section.items
               }) }}
