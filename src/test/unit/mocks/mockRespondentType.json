@@ -18,6 +18,7 @@
     "et1ClaimForm": "notViewedYet",
     "claimantContactDetails": "readyToView",
     "respondentResponse": "notStartedYet",
+    "otherRespondentEt3": "notAvailableYet",
     "hearingDetails": "notAvailableYet",
     "respondentRequestsAndApplications": "notAvailableYet",
     "claimantApplications": "notAvailableYet",
