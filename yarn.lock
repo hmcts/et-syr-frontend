@@ -8402,7 +8402,7 @@ __metadata:
     helmet: "npm:^8.0.0"
     html-webpack-plugin: "npm:^5.5.1"
     husky: "npm:^9.0.0"
-    i18next: "npm:^26.0.0"
+    i18next: "npm:^26.3.4"
     i18next-http-middleware: "npm:^3.9.3"
     jest: "npm:^29.6.2"
     jest-environment-jsdom: "npm:^29.5.0"
@@ -9928,7 +9928,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^26.0.0":
+"i18next@npm:^26.3.4":
   version: 26.7.2
   resolution: "i18next@npm:26.7.2"
   peerDependencies:
