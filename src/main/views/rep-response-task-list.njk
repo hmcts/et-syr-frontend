@@ -1,5 +1,6 @@
 {% extends "form/main/template.njk" %}
-{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/task-list/macro.njk" import govukTaskList %}
 
 {% block beforeContent %}
   {{ super() }}
@@ -9,16 +10,6 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-
-      {% set yourSupportCallbackError = getError('yourSupportCallback') %}
-      {% if yourSupportCallbackError %}
-        {{ govukNotificationBanner({
-          titleText: errorSummaryTitle,
-          titleId: 'your-support-callback-error-title',
-          role: 'alert',
-          text: yourSupportCallbackError.text
-        }) }}
-      {% endif %}
 
       <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 

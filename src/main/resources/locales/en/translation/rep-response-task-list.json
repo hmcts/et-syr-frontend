@@ -1,12 +1,12 @@
 {
   "yourDetails": {
     "heading": "Your details as the representative",
-    "contactDetails": "Contact details",
+    "yourContactDetails": "Contact details",
     "yourPreferences": "Your preferences"
   },
   "aboutRespondent": {
     "heading": "Tell us about the respondent",
-    "contactDetails": "Contact details"
+    "respondentContactDetails": "Contact details"
   },
   "aboutClaimant": {
     "heading": "Tell us about the claimant",
@@ -15,7 +15,8 @@
   },
   "giveResponse": {
     "heading": "Give us your response",
-    "contestClaim": "Contest the claim"
+    "contestClaim": "Contest the claim",
+    "employersContractClaim": "Employer’s contract claim"
   },
   "checkAndSubmit": {
     "heading": "Check and submit your response",
