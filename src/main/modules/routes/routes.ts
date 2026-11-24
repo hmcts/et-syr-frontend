@@ -77,6 +77,7 @@ import ReasonableAdjustmentsController from '../../controllers/ReasonableAdjustm
 import RemoveFileController from '../../controllers/RemoveFileController';
 import RepCaseOverviewController from '../../controllers/RepCaseOverviewController';
 import RepResponseLandingController from '../../controllers/RepResponseLandingController';
+import RepResponseTaskListController from '../../controllers/RepResponseTaskListController';
 import RespondToApplicationCYAController from '../../controllers/RespondToApplicationCYAController';
 import RespondToApplicationCompleteController from '../../controllers/RespondToApplicationCompleteController';
 import RespondToApplicationController from '../../controllers/RespondToApplicationController';
@@ -406,6 +407,7 @@ export class Routes {
     app.post(PageUrls.CHANGE_LEGAL_REPRESENTATIVE, new ChangeLegalRepresentativeController().post);
     app.get(PageUrls.REP_CASE_OVERVIEW, new RepCaseOverviewController().get);
     app.get(PageUrls.REP_RESPONSE_LANDING, new RepResponseLandingController().get);
+    app.get(PageUrls.REP_RESPONSE_TASK_LIST, new RepResponseTaskListController().get);
     app.get(
       Urls.INFO,
       infoRequestHandler({

@@ -1,0 +1,61 @@
+{% extends "form/main/template.njk" %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+{% block beforeContent %}
+  {{ super() }}
+  {% include "back-link.njk"%}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+
+      {% set yourSupportCallbackError = getError('yourSupportCallback') %}
+      {% if yourSupportCallbackError %}
+        {{ govukNotificationBanner({
+          titleText: errorSummaryTitle,
+          titleId: 'your-support-callback-error-title',
+          role: 'alert',
+          text: yourSupportCallbackError.text
+        }) }}
+      {% endif %}
+
+      <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+      <p class="govuk-body">{{ responseLandingTxt1 }}</p>
+      <p class="govuk-body">{{ responseLandingTxt2 }}</p>
+      <p class="govuk-body">{{ responseLandingTxt3 }}</p>
+      <p class="govuk-body">{{ responseLandingTxt4 }}</p>
+
+      <p class="govuk-body">{{ helpTxt1 }}</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>
+          <a href="getCaseDocument/{{ et1FormId }}" class="govuk-link" rel="noreferrer noopener" target="_blank"> {{ helpET1ClaimTxt }}</a>
+        </li>
+        <li>
+          <a href="getCaseDocument/{{ acasCertificateId }}" class="govuk-link" rel="noreferrer noopener" target="_blank"> {{ helpAcasTxt }}</a>
+        </li>
+      </ul>
+
+      {{ govukInsetText({
+        html: "<p class='govuk-body'>" + insetTxt1 + "</p>
+              <p class='govuk-body'>" + insetTxt2 + "</p>"
+      }) }}
+
+      <ol class="app-task-list">
+        {% for section in sections %}
+          <li>
+            <h2 class="app-task-list__section">{{ getContent(section.title) }}</h2>
+            {{ govukTaskList({
+              items: section.items
+              }) }}
+          </li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    <div class="govuk-grid-column-one-third-from-desktop">
+      {% include "./components/sidebar/sidebar-with-details.njk" %}
+    </div>
+  </div>
+{% endblock %}

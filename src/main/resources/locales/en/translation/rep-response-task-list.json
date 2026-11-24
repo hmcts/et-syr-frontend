@@ -1,0 +1,24 @@
+{
+  "yourDetails": {
+    "heading": "Your details as the representative",
+    "contactDetails": "Contact details",
+    "yourPreferences": "Your preferences"
+  },
+  "aboutRespondent": {
+    "heading": "Tell us about the respondent",
+    "contactDetails": "Contact details"
+  },
+  "aboutClaimant": {
+    "heading": "Tell us about the claimant",
+    "conciliationAndEmployeeDetails": "Early conciliation and employee details",
+    "payPensionBenefitDetails": "Pay, pension and benefits details"
+  },
+  "giveResponse": {
+    "heading": "Give us your response",
+    "contestClaim": "Contest the claim"
+  },
+  "checkAndSubmit": {
+    "heading": "Check and submit your response",
+    "checkYourAnswers": "Check your answers"
+  }
+}

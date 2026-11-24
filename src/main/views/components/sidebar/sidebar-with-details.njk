@@ -1,0 +1,10 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% set sideBarContent %}
+  {% include "./sidebar.njk" %}
+{% endset %}
+
+{{ govukDetails({
+  summaryHtml: "<span id='contact-us-sidebar'>" + contact + "</span>",
+  html: sideBarContent
+}) }}

@@ -13,7 +13,7 @@ export default class RepResponseLandingController {
       ...req.t(TranslationKeys.RESPONDENT_RESPONSE_LANDING as never, { returnObjects: true } as never),
       ...req.t(TranslationKeys.REP_RESPONSE_LANDING as never, { returnObjects: true } as never),
       PageUrls,
-      redirectUrl: setUrlLanguage(req, PageUrls.RESPONDENT_RESPONSE_TASK_LIST),
+      redirectUrl: setUrlLanguage(req, PageUrls.REP_RESPONSE_TASK_LIST),
       languageParam: getLanguageParam(req.url),
       hideContactUs: true,
     });
