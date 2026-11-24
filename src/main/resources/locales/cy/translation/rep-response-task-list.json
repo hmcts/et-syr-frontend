@@ -1,0 +1,25 @@
+{
+  "yourDetails": {
+    "heading": "[W]Your details as the representative",
+    "yourContactDetails": "Manylion cyswllt",
+    "yourPreferences": "[W]Your preferences"
+  },
+  "aboutRespondent": {
+    "heading": "Dywedwch wrthym am yr atebydd",
+    "respondentContactDetails": "Manylion cyswllt"
+  },
+  "aboutClaimant": {
+    "heading": "Dywedwch wrthym am yr hawlydd",
+    "conciliationAndEmployeeDetails": "Cymodi cynnar a manylion gweithiwr",
+    "payPensionBenefitDetails": "Manylion cyflog, pensiwn a buddion"
+  },
+  "giveResponse": {
+    "heading": "Rhowch eich ymateb i ni",
+    "contestClaim": "Herio’r hawliad",
+    "employersContractClaim": "Hawliad Contract y Cyflogwr"
+  },
+  "checkAndSubmit": {
+    "heading": "Gwirio a chyflwyno’ch ymateb",
+    "checkYourAnswers": "Gwirio eich atebion"
+  }
+}

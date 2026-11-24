@@ -1,17 +1,30 @@
 import { AppRequest } from '../../definitions/appRequest';
-import { TranslationKeys } from '../../definitions/constants';
+import { PageUrls, TranslationKeys } from '../../definitions/constants';
 import { GovUKTaskListItem } from '../../definitions/govuk/govukTaskList';
 import { linkStatusColorMap } from '../../definitions/links';
-import { AnyRecord } from '../../definitions/util-types';
 import {
   DEFAULT_REP_TASK_STATUS,
   REP_ET3_TASKS_BY_SECTION,
   RepET3TaskKey,
   SectionConfig,
-  getRepET3LinksUrlMap,
-} from '../RepET3SectionHelper';
-import { shouldCaseDetailsLinkBeClickable } from '../ResponseHubHelper';
+} from '../../definitions/rep-response-tasks';
+import { AnyRecord } from '../../definitions/util-types';
+import { baseUrls, shouldCaseDetailsLinkBeClickable } from '../ResponseHubHelper';
 import { getLanguageParam } from '../RouterHelpers';
+
+const getRepET3LinksUrlMap = (languageParam: string): Map<string, string> => {
+  // TODO: Add other rep ET3 tasks when they are implemented
+  return new Map<string, string>([
+    [
+      RepET3TaskKey.ConciliationAndEmployeeDetails,
+      PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + baseUrls[languageParam],
+    ],
+    [RepET3TaskKey.PayPensionBenefitDetails, PageUrls.CLAIMANT_PAY_DETAILS + baseUrls[languageParam]],
+    [RepET3TaskKey.ContestClaim, PageUrls.RESPONDENT_CONTEST_CLAIM + baseUrls[languageParam]],
+    [RepET3TaskKey.EmployersContractClaim, PageUrls.EMPLOYERS_CONTRACT_CLAIM + baseUrls[languageParam]],
+    [RepET3TaskKey.CheckYourAnswers, PageUrls.CHECK_YOUR_ANSWERS_ET3 + baseUrls[languageParam]],
+  ]);
+};
 
 interface Section {
   title: string;

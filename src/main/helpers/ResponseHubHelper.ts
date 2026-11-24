@@ -8,7 +8,7 @@ export const shouldCaseDetailsLinkBeClickable = (status: LinkStatus): boolean =>
   return status !== LinkStatus.NOT_YET_AVAILABLE && status !== LinkStatus.CANNOT_START_YET;
 };
 
-const baseUrls = {
+export const baseUrls = {
   [languages.ENGLISH_URL_PARAMETER]: '',
   [languages.WELSH_URL_PARAMETER]: languages.WELSH_URL_PARAMETER,
 };

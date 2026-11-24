@@ -1,5 +1,4 @@
-import { PageUrls, languages } from '../definitions/constants';
-import { LinkStatus } from '../definitions/links';
+import { LinkStatus } from './links';
 
 enum RepET3SectionKey {
   YourDetails = 'yourDetails',
@@ -57,22 +56,4 @@ export const DEFAULT_REP_TASK_STATUS: Record<RepET3TaskKey, LinkStatus> = {
   [RepET3TaskKey.ContestClaim]: LinkStatus.NOT_STARTED_YET,
   [RepET3TaskKey.EmployersContractClaim]: LinkStatus.NOT_STARTED_YET,
   [RepET3TaskKey.CheckYourAnswers]: LinkStatus.CANNOT_START_YET,
-};
-
-const baseUrls = {
-  [languages.ENGLISH_URL_PARAMETER]: '',
-  [languages.WELSH_URL_PARAMETER]: languages.WELSH_URL_PARAMETER,
-};
-
-export const getRepET3LinksUrlMap = (languageParam: string): Map<string, string> => {
-  return new Map<string, string>([
-    [
-      RepET3TaskKey.ConciliationAndEmployeeDetails,
-      PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + baseUrls[languageParam],
-    ],
-    [RepET3TaskKey.PayPensionBenefitDetails, PageUrls.CLAIMANT_PAY_DETAILS + baseUrls[languageParam]],
-    [RepET3TaskKey.ContestClaim, PageUrls.RESPONDENT_CONTEST_CLAIM + baseUrls[languageParam]],
-    [RepET3TaskKey.EmployersContractClaim, PageUrls.EMPLOYERS_CONTRACT_CLAIM + baseUrls[languageParam]],
-    [RepET3TaskKey.CheckYourAnswers, PageUrls.CHECK_YOUR_ANSWERS_ET3 + baseUrls[languageParam]],
-  ]);
 };
