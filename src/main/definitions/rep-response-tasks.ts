@@ -1,6 +1,6 @@
 import { LinkStatus } from './links';
 
-enum RepET3SectionKey {
+enum RepResponseSectionKey {
   YourDetails = 'yourDetails',
   AboutRespondent = 'aboutRespondent',
   AboutClaimant = 'aboutClaimant',
@@ -8,7 +8,7 @@ enum RepET3SectionKey {
   CheckAndSubmit = 'checkAndSubmit',
 }
 
-export enum RepET3TaskKey {
+export enum RepResponseTaskKey {
   YourContactDetails = 'yourContactDetails',
   YourPreferences = 'yourPreferences',
   RespondentContactDetails = 'respondentContactDetails',
@@ -20,40 +20,40 @@ export enum RepET3TaskKey {
 }
 
 export type SectionConfig = {
-  section: RepET3SectionKey;
-  tasks: RepET3TaskKey[];
+  section: RepResponseSectionKey;
+  tasks: RepResponseTaskKey[];
 };
 
-export const REP_ET3_TASKS_BY_SECTION: SectionConfig[] = [
+export const REP_RESPONSE_TASKS_BY_SECTION: SectionConfig[] = [
   {
-    section: RepET3SectionKey.YourDetails,
-    tasks: [RepET3TaskKey.YourContactDetails, RepET3TaskKey.YourPreferences],
+    section: RepResponseSectionKey.YourDetails,
+    tasks: [RepResponseTaskKey.YourContactDetails, RepResponseTaskKey.YourPreferences],
   },
   {
-    section: RepET3SectionKey.AboutRespondent,
-    tasks: [RepET3TaskKey.RespondentContactDetails],
+    section: RepResponseSectionKey.AboutRespondent,
+    tasks: [RepResponseTaskKey.RespondentContactDetails],
   },
   {
-    section: RepET3SectionKey.AboutClaimant,
-    tasks: [RepET3TaskKey.ConciliationAndEmployeeDetails, RepET3TaskKey.PayPensionBenefitDetails],
+    section: RepResponseSectionKey.AboutClaimant,
+    tasks: [RepResponseTaskKey.ConciliationAndEmployeeDetails, RepResponseTaskKey.PayPensionBenefitDetails],
   },
   {
-    section: RepET3SectionKey.GiveResponse,
-    tasks: [RepET3TaskKey.ContestClaim, RepET3TaskKey.EmployersContractClaim],
+    section: RepResponseSectionKey.GiveResponse,
+    tasks: [RepResponseTaskKey.ContestClaim, RepResponseTaskKey.EmployersContractClaim],
   },
   {
-    section: RepET3SectionKey.CheckAndSubmit,
-    tasks: [RepET3TaskKey.CheckYourAnswers],
+    section: RepResponseSectionKey.CheckAndSubmit,
+    tasks: [RepResponseTaskKey.CheckYourAnswers],
   },
 ];
 
-export const DEFAULT_REP_TASK_STATUS: Record<RepET3TaskKey, LinkStatus> = {
-  [RepET3TaskKey.YourContactDetails]: LinkStatus.NOT_STARTED_YET,
-  [RepET3TaskKey.YourPreferences]: LinkStatus.NOT_STARTED_YET,
-  [RepET3TaskKey.RespondentContactDetails]: LinkStatus.NOT_STARTED_YET,
-  [RepET3TaskKey.ConciliationAndEmployeeDetails]: LinkStatus.NOT_STARTED_YET,
-  [RepET3TaskKey.PayPensionBenefitDetails]: LinkStatus.NOT_STARTED_YET,
-  [RepET3TaskKey.ContestClaim]: LinkStatus.NOT_STARTED_YET,
-  [RepET3TaskKey.EmployersContractClaim]: LinkStatus.NOT_STARTED_YET,
-  [RepET3TaskKey.CheckYourAnswers]: LinkStatus.CANNOT_START_YET,
+export const DEFAULT_REP_TASK_STATUS: Record<RepResponseTaskKey, LinkStatus> = {
+  [RepResponseTaskKey.YourContactDetails]: LinkStatus.NOT_STARTED_YET,
+  [RepResponseTaskKey.YourPreferences]: LinkStatus.NOT_STARTED_YET,
+  [RepResponseTaskKey.RespondentContactDetails]: LinkStatus.NOT_STARTED_YET,
+  [RepResponseTaskKey.ConciliationAndEmployeeDetails]: LinkStatus.NOT_STARTED_YET,
+  [RepResponseTaskKey.PayPensionBenefitDetails]: LinkStatus.NOT_STARTED_YET,
+  [RepResponseTaskKey.ContestClaim]: LinkStatus.NOT_STARTED_YET,
+  [RepResponseTaskKey.EmployersContractClaim]: LinkStatus.NOT_STARTED_YET,
+  [RepResponseTaskKey.CheckYourAnswers]: LinkStatus.CANNOT_START_YET,
 };

@@ -4,25 +4,25 @@ import { GovUKTaskListItem } from '../../definitions/govuk/govukTaskList';
 import { linkStatusColorMap } from '../../definitions/links';
 import {
   DEFAULT_REP_TASK_STATUS,
-  REP_ET3_TASKS_BY_SECTION,
-  RepET3TaskKey,
+  REP_RESPONSE_TASKS_BY_SECTION,
+  RepResponseTaskKey,
   SectionConfig,
 } from '../../definitions/rep-response-tasks';
 import { AnyRecord } from '../../definitions/util-types';
 import { baseUrls, shouldCaseDetailsLinkBeClickable } from '../ResponseHubHelper';
 import { getLanguageParam } from '../RouterHelpers';
 
-const getRepET3LinksUrlMap = (languageParam: string): Map<string, string> => {
-  // TODO: Add other rep ET3 tasks when they are implemented
+const getRepResponseLinksUrlMap = (languageParam: string): Map<string, string> => {
+  // TODO: Add other tasks link when they are implemented
   return new Map<string, string>([
     [
-      RepET3TaskKey.ConciliationAndEmployeeDetails,
+      RepResponseTaskKey.ConciliationAndEmployeeDetails,
       PageUrls.ACAS_EARLY_CONCILIATION_CERTIFICATE + baseUrls[languageParam],
     ],
-    [RepET3TaskKey.PayPensionBenefitDetails, PageUrls.CLAIMANT_PAY_DETAILS + baseUrls[languageParam]],
-    [RepET3TaskKey.ContestClaim, PageUrls.RESPONDENT_CONTEST_CLAIM + baseUrls[languageParam]],
-    [RepET3TaskKey.EmployersContractClaim, PageUrls.EMPLOYERS_CONTRACT_CLAIM + baseUrls[languageParam]],
-    [RepET3TaskKey.CheckYourAnswers, PageUrls.CHECK_YOUR_ANSWERS_ET3 + baseUrls[languageParam]],
+    [RepResponseTaskKey.PayPensionBenefitDetails, PageUrls.CLAIMANT_PAY_DETAILS + baseUrls[languageParam]],
+    [RepResponseTaskKey.ContestClaim, PageUrls.RESPONDENT_CONTEST_CLAIM + baseUrls[languageParam]],
+    [RepResponseTaskKey.EmployersContractClaim, PageUrls.EMPLOYERS_CONTRACT_CLAIM + baseUrls[languageParam]],
+    [RepResponseTaskKey.CheckYourAnswers, PageUrls.CHECK_YOUR_ANSWERS_ET3 + baseUrls[languageParam]],
   ]);
 };
 
@@ -32,7 +32,7 @@ interface Section {
 }
 
 const buildItem = (
-  taskKey: RepET3TaskKey,
+  taskKey: RepResponseTaskKey,
   statusTranslations: AnyRecord,
   taskTranslations: AnyRecord,
   languageParam: string
@@ -61,7 +61,7 @@ const buildItem = (
   return shouldLinkClickable
     ? {
         title,
-        href: getRepET3LinksUrlMap(languageParam).get(taskKey),
+        href: getRepResponseLinksUrlMap(languageParam).get(taskKey),
         status: statusItem,
       }
     : {
@@ -96,7 +96,7 @@ export const buildRepTaskListSections = (req: AppRequest): Section[] => {
 
   const languageParam = getLanguageParam(req.url);
 
-  return REP_ET3_TASKS_BY_SECTION.map(sectionConfig =>
+  return REP_RESPONSE_TASKS_BY_SECTION.map(sectionConfig =>
     buildSection(sectionConfig, statusTranslations, listTranslations, languageParam)
   );
 };
